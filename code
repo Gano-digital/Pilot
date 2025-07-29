@@ -1,0 +1,387 @@
+import os
+import sys
+import argparse
+import requests
+from urllib.parse import urlparse, urljoin, unquote, quote
+from collections import deque
+from bs4 import BeautifulSoup
+
+class SiteCloner:
+    """
+    A lightweight web cloner tool similar to HTTrack, designed to download
+    a website for offline browsing.
+    """
+    def __init__(self, base_url, output_dir):
+        """
+        Initializes the SiteCloner with a base URL and an output directory.
+
+        Args:
+            base_url (str): The starting URL of the website to clone.
+            output_dir (str): The local path to save the cloned site.
+                              Defaults to the domain name if None.
+        """
+        # Normalize the base URL to ensure consistency (remove fragments/queries)
+        parsed_base = urlparse(base_url)
+        # Reconstruct URL ensuring scheme and netloc are present for base_domain extraction
+        # Also remove fragment and query for the base URL we operate on.
+        self.base_url = parsed_base._replace(fragment='', query='').geturl()
+        
+        # Heuristic: If the parsed path has no extension and is not just '/',
+        # assume it's a directory and append a trailing slash. This helps in
+        # consistent path generation (e.g., /about becomes /about/).
+        if not os.path.splitext(parsed_base.path)[1] and not self.base_url.endswith('/') and parsed_base.path != '':
+            self.base_url += '/'
+
+        self.base_domain = urlparse(self.base_url).netloc
+        
+        # Set output directory, defaulting to the base domain
+        if output_dir is None:
+            self.output_dir = self.base_domain
+        else:
+            self.output_dir = output_dir
+
+        self.visited_urls = set()  # Stores URLs that have been fetched
+        self.urls_to_visit = deque() # Queue of URLs to be visited
+
+        print(f"SiteCloner: Initializing for '{self.base_url}' -> '{self.output_dir}'")
+
+    def _normalize_url(self, url):
+        """
+        Normalizes a URL by removing fragments and query parameters,
+        and ensuring consistent scheme and path for comparison.
+        Handles percent-encoding of paths to ensure consistency.
+
+        Args:
+            url (str): The URL to normalize.
+
+        Returns:
+            str or None: The normalized URL string, or None if it's not a valid
+                         http/https URL.
+        """
+        parsed = urlparse(url)
+        
+        # Remove fragment and query parameters for normalization and comparison purposes.
+        # These are usually not relevant for identifying unique pages to download.
+        normalized = parsed._replace(fragment='', query='')
+
+        # Ensure scheme is either http or https for internal checks.
+        if not normalized.scheme:
+            # If scheme is missing (e.g., //example.com/path), default to https.
+            normalized = normalized._replace(scheme='https')
+        elif normalized.scheme not in ('http', 'https'):
+            # If it's a non-web scheme (e.g., mailto:, tel:, ftp:), we won't process it.
+            return None 
+
+        # Clean path: Decode then re-encode to normalize percent-encoding (%20 -> ' ').
+        # Also remove redundant slashes (e.g., /a//b -> /a/b), and ensure a leading slash.
+        path_components = [unquote(segment) for segment in normalized.path.split('/') if segment]
+        # Re-quote path components to handle special characters correctly in URL paths
+        # safe='' means all characters except ASCII letters, digits, and ._~- are quoted.
+        cleaned_path = '/' + '/'.join(quote(segment, safe='') for segment in path_components)
+
+        # Preserve trailing slash if it was originally a directory path (e.g., /foo/ -> /foo/)
+        # but not if it was just the root '/'. This helps in consistent URL joining.
+        if parsed.path.endswith('/') and cleaned_path != '/':
+            cleaned_path += '/'
+        elif not cleaned_path: # Handles cases like domain.com (empty path)
+            cleaned_path = '/'
+        
+        normalized = normalized._replace(path=cleaned_path)
+        
+        return normalized.geturl()
+
+    def _is_internal_url(self, url):
+        """
+        Checks if a URL belongs to the base domain of the site being cloned.
+
+        Args:
+            url (str): The URL to check.
+
+        Returns:
+            bool: True if the URL is internal, False otherwise.
+        """
+        parsed_url = urlparse(url)
+        # Compare netloc (domain) and ensure it's a web scheme (http/https).
+        return parsed_url.netloc == self.base_domain and \
+               parsed_url.scheme in ('http', 'https')
+
+    def _get_local_file_path(self, url):
+        """
+        Determines the local file path for a given URL relative to the output directory.
+        Handles index.html for directory-like URLs and sanitizes the path for filesystem compatibility.
+
+        Args:
+            url (str): The absolute URL.
+
+        Returns:
+            str: The relative path within the output directory (e.g., 'about/index.html').
+        """
+        parsed_url = urlparse(url)
+        # Remove leading slash from path for local filesystem structure
+        path = parsed_url.path.lstrip('/') 
+
+        # Decode percent-encoded characters for cleaner filesystem paths (e.g., %20 to space)
+        path = unquote(path)
+
+        # If path is empty (root), or ends with a slash (directory), or has no extension
+        # (e.g., /about, /products), treat it as an index.html file within a directory.
+        if not path or path.endswith('/') or '.' not in os.path.basename(path):
+            if path and not path.endswith('/'):
+                path += '/' # Ensure directory path ends with a slash before adding index.html
+            path += 'index.html'
+
+        # Sanitize path for filesystem by replacing potentially problematic characters.
+        # This is a basic sanitization. Allows alphanumeric, period (.), slash (/),
+        # underscore (_), hyphen (-), and space ( ). Other chars become underscores.
+        sanitized_path_components = []
+        for segment in path.split('/'):
+            sanitized_segment = "".join(c if c.isalnum() or c in "._-" else "_" for c in segment)
+            sanitized_path_components.append(sanitized_segment)
+        
+        sanitized_path = os.path.join(*sanitized_path_components).replace('\\', '/') # Use forward slashes for consistency
+
+        return sanitized_path
+
+    def _save_file(self, url, content_bytes, content_type=None):
+        """
+        Saves content (bytes) to the local file system, creating directories as needed.
+        Attempts to decode text-based content (HTML, CSS, JS) to UTF-8 before writing.
+
+        Args:
+            url (str): The original URL of the content.
+            content_bytes (bytes): The raw content bytes to save.
+            content_type (str, optional): The MIME type of the content (e.g., 'text/html').
+
+        Returns:
+            bool: True if save was successful, False otherwise.
+        """
+        local_file_path_relative = self._get_local_file_path(url)
+        full_local_path = os.path.join(self.output_dir, local_file_path_relative)
+        
+        # Create necessary parent directories if they don't exist
+        os.makedirs(os.path.dirname(full_local_path), exist_ok=True)
+        
+        try:
+            # If it's a text-based content type, attempt to decode it before writing.
+            # This is crucial for rewriting links in HTML and for readable text files.
+            if content_type and ('text/html' in content_type or 'text/css' in content_type or 'application/javascript' in content_type or 'text/plain' in content_type):
+                # Try to decode as UTF-8, fall back to latin-1 if it fails
+                try:
+                    content_str = content_bytes.decode('utf-8')
+                except UnicodeDecodeError:
+                    content_str = content_bytes.decode('latin-1', errors='ignore') # Ignore errors for non-strict decoding
+                with open(full_local_path, 'w', encoding='utf-8') as f:
+                    f.write(content_str)
+            else:
+                # For all other binary content types (images, videos, fonts etc.)
+                with open(full_local_path, 'wb') as f:
+                    f.write(content_bytes)
+            print(f"Downloaded: {url} -> {full_local_path}")
+            return True
+        except IOError as e:
+            print(f"Error saving {url} to {full_local_path}: {e}")
+            return False
+
+    def _rewrite_links(self, soup, current_url):
+        """
+        Rewrites internal absolute links within the BeautifulSoup object to relative paths.
+        This modifies the BeautifulSoup object in place.
+
+        Args:
+            soup (BeautifulSoup): The parsed HTML content.
+            current_url (str): The URL of the page being processed (needed for relative path calculation).
+        """
+        # Determine the local path of the current HTML file to calculate relative paths from.
+        current_local_path_relative = self._get_local_file_path(current_url)
+        current_dir_for_relpath = os.path.dirname(current_local_path_relative)
+        
+        # Find all tags that typically contain links (href or src attributes)
+        for tag in soup.find_all(['a', 'link', 'script', 'img', 'source', 'iframe']):
+            attributes = []
+            if tag.name in ['a', 'link'] and tag.has_attr('href'):
+                attributes.append('href')
+            elif tag.name in ['script', 'img', 'source', 'iframe'] and tag.has_attr('src'):
+                attributes.append('src')
+
+            for attr in attributes:
+                original_link = tag[attr]
+                
+                # Skip non-HTTP/S links like mailto, tel, javascript
+                if original_link.startswith(('mailto:', 'tel:', 'javascript:')):
+                    continue
+
+                # Convert the found link to an absolute URL using the current page's URL as base.
+                absolute_link = urljoin(current_url, original_link)
+                
+                # Normalize the absolute link for consistent comparison and local path generation.
+                normalized_absolute_link = self._normalize_url(absolute_link)
+                
+                # If the normalized link is internal and valid, rewrite it to a relative path.
+                if normalized_absolute_link and self._is_internal_url(normalized_absolute_link):
+                    # Determine the future local path of the linked resource.
+                    target_local_path_relative = self._get_local_file_path(normalized_absolute_link)
+                    
+                    try:
+                        # Calculate the relative path from the current HTML file's directory
+                        # to the target resource's local path.
+                        relative_path = os.path.relpath(target_local_path_relative, start=current_dir_for_relpath)
+                        # Ensure Windows paths use forward slashes for web compatibility.
+                        tag[attr] = relative_path.replace('\\', '/')
+                    except ValueError as e:
+                        # This can happen in rare edge cases (e.g., paths on different Windows drives)
+                        # or if path calculation is unexpected. Fall back to keeping the absolute URL.
+                        print(f"Warning: Could not calculate relative path for '{original_link}' from '{current_url}'. Error: {e}. Keeping absolute.")
+                        tag[attr] = absolute_link
+                # Else: it's an external link or an invalid internal link (e.g. malformed), keep it as is (absolute).
+
+    def _process_html_page(self, url, html_content_bytes):
+        """
+        Parses HTML content, rewrites internal links, discovers new URLs for crawling,
+        and saves the modified HTML page to disk.
+
+        Args:
+            url (str): The URL of the HTML page being processed.
+            html_content_bytes (bytes): The raw HTML content in bytes.
+        """
+        try:
+            # Decode HTML content for BeautifulSoup. Use requests' encoding detection first,
+            # then fall back to UTF-8, then Latin-1 with error ignoring.
+            encoding = requests.utils.get_encoding_from_headers(
+                requests.structures.CaseInsensitiveDict({'Content-Type': 'text/html; charset=utf-8'}), 
+                html_content_bytes
+            ) or 'utf-8'
+            
+            try:
+                html_content_str = html_content_bytes.decode(encoding)
+            except UnicodeDecodeError:
+                html_content_str = html_content_bytes.decode('latin-1', errors='ignore')
+                
+            soup = BeautifulSoup(html_content_str, 'html.parser')
+            
+            # Rewrite internal links to relative paths before saving the HTML file.
+            self._rewrite_links(soup, url)
+
+            # Save the modified HTML content. It's encoded back to UTF-8 for saving.
+            if not self._save_file(url, str(soup).encode('utf-8'), content_type='text/html'):
+                return # Stop processing if saving failed
+
+            # Discover new internal URLs for subsequent crawling.
+            # We look for links in anchor, link, script, img, source, and iframe tags.
+            for tag in soup.find_all(['a', 'link', 'script', 'img', 'source', 'iframe']):
+                link_to_check = tag.get('href') or tag.get('src')
+                
+                if link_to_check:
+                    # Skip non-HTTP/S links (like mailto, tel, javascript) from being added to queue.
+                    if link_to_check.startswith(('mailto:', 'tel:', 'javascript:')):
+                        continue
+
+                    # Convert the discovered link to an absolute URL.
+                    absolute_link = urljoin(url, link_to_check)
+                    
+                    # Normalize the absolute link for consistent processing and to avoid duplicates.
+                    normalized_link = self._normalize_url(absolute_link)
+
+                    # Add to the queue only if it's a valid, internal URL and has not been visited yet.
+                    if normalized_link and self._is_internal_url(normalized_link) and normalized_link not in self.visited_urls:
+                        self.urls_to_visit.append(normalized_link)
+                        print(f"Discovered: {normalized_link} (from {url})")
+
+        except Exception as e:
+            print(f"Error processing HTML for {url}: {e}")
+
+    def _fetch_url(self, url):
+        """
+        Fetches the content of a given URL and determines how to process it
+        (HTML parsing or direct asset saving).
+
+        Args:
+            url (str): The URL to fetch.
+        """
+        # Mark URL as visited immediately to prevent duplicate fetches/queueing
+        # if discovered again while this fetch is in progress.
+        if url in self.visited_urls:
+            return 
+        
+        self.visited_urls.add(url)
+        print(f"Fetching: {url}")
+
+        try:
+            # Make the HTTP GET request with a timeout.
+            response = requests.get(url, timeout=15)
+            response.raise_for_status() # Raise HTTPError for bad responses (4xx or 5xx)
+
+            # Determine content type from headers.
+            content_type = response.headers.get('Content-Type', '').lower()
+            
+            if 'text/html' in content_type:
+                # If it's HTML, process it for link rewriting and discovery.
+                self._process_html_page(url, response.content)
+            else:
+                # Otherwise, treat it as a general asset (image, CSS, JS, font, etc.)
+                # and save its raw bytes directly.
+                if not self._save_file(url, response.content, content_type=content_type):
+                    print(f"Failed to save asset: {url}")
+
+        except requests.exceptions.RequestException as e:
+            # Catch network-related errors (e.g., connection issues, timeouts, HTTP errors)
+            print(f"Request error for {url}: {e}")
+        except Exception as e:
+            # Catch any other unexpected errors during fetching or processing
+            print(f"An unexpected error occurred for {url}: {e}")
+
+    def crawl(self):
+        """
+        Starts the crawling process. It adds the initial URL to the queue
+        and processes URLs until the queue is empty.
+        """
+        # Normalize the initial URL before adding it to the queue.
+        initial_normalized_url = self._normalize_url(self.base_url)
+        if not initial_normalized_url:
+            print(f"Error: The provided base URL '{self.base_url}' is not a valid HTTP/HTTPS URL.")
+            return
+
+        self.urls_to_visit.append(initial_normalized_url)
+
+        # Main crawling loop: continues as long as there are URLs to visit.
+        while self.urls_to_visit:
+            current_url = self.urls_to_visit.popleft() # Get the next URL from the front of the queue
+            
+            # Fetch and process the current URL. The _fetch_url method handles
+            # marking as visited and processing based on content type.
+            self._fetch_url(current_url)
+
+        print("\nSiteCloner: Cloning complete!")
+
+def main():
+    """
+    Main function to parse command-line arguments and start the SiteCloner.
+    """
+    parser = argparse.ArgumentParser(
+        description="SiteCloner: A lightweight tool to download websites for offline browsing.",
+        formatter_class=argparse.RawTextHelpFormatter # Allows for custom formatting of help text
+    )
+    parser.add_argument(
+        "--url",
+        required=True,
+        help="The full starting URL of the website to clone (e.g., https://example.com/)"
+    )
+    parser.add_argument(
+        "--output-dir",
+        help="""The local path to save the cloned site.
+(Optional, defaults to a folder named after the website's domain, e.g., 'example.com')"""
+    )
+
+    args = parser.parse_args()
+
+    # Basic validation for the provided URL to ensure it has a scheme and network location.
+    parsed_url = urlparse(args.url)
+    if not parsed_url.scheme or not parsed_url.netloc:
+        print(f"Error: Invalid URL format. Please provide a full URL including scheme (e.g., https://example.com/).")
+        sys.exit(1)
+
+    # Create an instance of SiteCloner and start the crawling process.
+    cloner = SiteCloner(args.url, args.output_dir)
+    cloner.crawl()
+
+if __name__ == "__main__":
+    main()
