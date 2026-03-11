@@ -5,27 +5,501 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  schedule:
+    # Run every Monday at 06:00 UTC for weekly automated audits
+    - cron: '0 6 * * 1'
   workflow_dispatch:
 
-jobs:
-  audit:
-    runs-on: ubuntu-latest
+env:
+  SERVER_HOST: 160.153.0.23
+  SERVER_USER: ${{ secrets.SERVER_USER }}
+  REPORT_DIR: /tmp/security-audit-${{ github.run_id }}
 
+jobs:
+  # ─────────────────────────────────────────────
+  # JOB 1: Static analysis – no server access needed
+  # ─────────────────────────────────────────────
+  static-analysis:
+    name: Static Repository Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.7.0
+      - name: Scan for secrets and credentials in source code
+        run: |
+          echo "=== Scanning for hardcoded secrets ==="
+          # Look for patterns that suggest embedded credentials
+          FOUND=0
+          patterns=(
+            "password\s*=\s*['\"][^'\"]{4,}"
+            "secret\s*=\s*['\"][^'\"]{4,}"
+            "api_key\s*=\s*['\"][^'\"]{4,}"
+            "PRIVATE_KEY\s*=\s*['\"][^'\"]{4,}"
+            "-----BEGIN (RSA|EC|OPENSSH) PRIVATE KEY-----"
+          )
+          for pat in "${patterns[@]}"; do
+            if grep -rEi "$pat" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.json" --include="*.env" --include="*.yml" --include="*.yaml" . 2>/dev/null | grep -v ".github/workflows"; then
+              echo "WARNING: Possible hardcoded credential found matching: $pat"
+              FOUND=1
+            fi
+          done
+          if [ "$FOUND" -eq 0 ]; then
+            echo "OK: No hardcoded credentials detected in source code."
+          fi
+
+      - name: Check for vulnerable dependency patterns
+        run: |
+          echo "=== Reviewing package.json for known-risky packages ==="
+          if [ -f package.json ]; then
+            cat package.json
+            # Flag any direct use of eval-like packages
+            if grep -E '"(eval5|serialize-javascript|vm2)"' package.json; then
+              echo "WARNING: Potentially unsafe JS package detected."
+            else
+              echo "OK: No high-risk packages found in package.json."
+            fi
+          fi
+
+      - name: Validate .htaccess security configuration
+        run: |
+          echo "=== Validating Apache/.htaccess security rules ==="
+          if [ -f security/htaccess-security.conf ]; then
+            echo "OK: htaccess-security.conf is present."
+            # Ensure critical security directives are present
+            for directive in "X-Frame-Options" "X-Content-Type-Options" "Referrer-Policy" "ServerSignature Off"; do
+              if grep -q "$directive" security/htaccess-security.conf; then
+                echo "  [OK] $directive"
+              else
+                echo "  [MISSING] $directive"
+              fi
+            done
+          else
+            echo "WARNING: security/htaccess-security.conf not found."
+          fi
+
+  # ─────────────────────────────────────────────
+  # JOB 2: Server security audit via SSH
+  # ─────────────────────────────────────────────
+  server-audit:
+    name: Server Security Audit (GoDaddy)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.PRIVATE_KEY }}
 
-      - name: Verificar permisos en rutas críticas
+      - name: Add server to known_hosts
         run: |
-          ssh user@160.153.0.23 << 'EOF'
-          echo "Listando directorios críticos..."
-          ls -la /var/www
-          ls -la /home
-          ls -la /etc
-          echo "Revisión completada"
-          EOF
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          # Fetch and pin the server's host key to prevent MITM attacks
+          ssh-keyscan -H "${{ env.SERVER_HOST }}" >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      # ── 1. SSH & FILE PERMISSION AUDIT ──────────────
+      - name: Audit SSH configuration and file permissions
+        run: |
+          ssh -o StrictHostKeyChecking=yes "${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}" << 'ENDSSH'
+          set -e
+          REPORT="$HOME/audit-ssh-perms.txt"
+          echo "====== SSH & PERMISSION AUDIT - $(date -u) ======" > "$REPORT"
+
+          echo "" >> "$REPORT"
+          echo "--- 1. SSH authorized_keys ---" >> "$REPORT"
+          for ah in $(find /home -maxdepth 3 -name "authorized_keys" 2>/dev/null); do
+            echo "File: $ah" >> "$REPORT"
+            ls -la "$ah" >> "$REPORT"
+            echo "Keys present: $(wc -l < "$ah")" >> "$REPORT"
+            # Warn if file permissions are too open
+            perms=$(stat -c "%a" "$ah")
+            if [ "$perms" != "600" ] && [ "$perms" != "400" ]; then
+              echo "  WARNING: $ah has insecure permissions ($perms). Should be 600." >> "$REPORT"
+            else
+              echo "  OK: permissions are $perms" >> "$REPORT"
+            fi
+          done
+
+          echo "" >> "$REPORT"
+          echo "--- 2. SSH daemon configuration ---" >> "$REPORT"
+          if [ -f /etc/ssh/sshd_config ]; then
+            grep -E "^(PermitRootLogin|PasswordAuthentication|PubkeyAuthentication|PermitEmptyPasswords|Protocol|MaxAuthTries|AllowUsers|DenyUsers|Port)" /etc/ssh/sshd_config >> "$REPORT" 2>/dev/null || echo "  Could not read sshd_config" >> "$REPORT"
+          else
+            echo "  /etc/ssh/sshd_config not accessible (shared hosting)" >> "$REPORT"
+          fi
+
+          echo "" >> "$REPORT"
+          echo "--- 3. World-writable files in web root ---" >> "$REPORT"
+          WEBROOT="${HOME}/public_html"
+          if [ -d "$WEBROOT" ]; then
+            WW=$(find "$WEBROOT" -type f -perm -0002 2>/dev/null | head -20)
+            if [ -n "$WW" ]; then
+              echo "WARNING: World-writable files found:" >> "$REPORT"
+              echo "$WW" >> "$REPORT"
+            else
+              echo "  OK: No world-writable files in $WEBROOT" >> "$REPORT"
+            fi
+          fi
+
+          echo "" >> "$REPORT"
+          echo "--- 4. SUID/SGID binaries in home directory ---" >> "$REPORT"
+          find "$HOME" -type f \( -perm -4000 -o -perm -2000 \) 2>/dev/null >> "$REPORT" || echo "  None found" >> "$REPORT"
+
+          echo "" >> "$REPORT"
+          echo "--- 5. wp-config.php permissions ---" >> "$REPORT"
+          for wpconf in $(find "$HOME" -maxdepth 5 -name "wp-config.php" 2>/dev/null); do
+            perms=$(stat -c "%a" "$wpconf")
+            echo "  $wpconf -> $perms" >> "$REPORT"
+            if [ "$perms" -gt "440" ] 2>/dev/null; then
+              echo "  WARNING: wp-config.php permissions too open ($perms). Recommend 440 or 400." >> "$REPORT"
+            else
+              echo "  OK: wp-config.php permissions are acceptable ($perms)" >> "$REPORT"
+            fi
+          done
+
+          cat "$REPORT"
+          ENDSSH
+
+      # ── 2. FIREWALL AUDIT ───────────────────────────
+      - name: Audit firewall rules
+        run: |
+          ssh -o StrictHostKeyChecking=yes "${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}" << 'ENDSSH'
+          REPORT="$HOME/audit-firewall.txt"
+          echo "====== FIREWALL AUDIT - $(date -u) ======" > "$REPORT"
+
+          echo "" >> "$REPORT"
+          echo "--- 1. iptables rules ---" >> "$REPORT"
+          if command -v iptables >/dev/null 2>&1; then
+            iptables -L -n -v 2>/dev/null >> "$REPORT" || echo "  iptables not accessible (shared hosting – expected)" >> "$REPORT"
+          else
+            echo "  iptables not available" >> "$REPORT"
+          fi
+
+          echo "" >> "$REPORT"
+          echo "--- 2. ufw status ---" >> "$REPORT"
+          if command -v ufw >/dev/null 2>&1; then
+            ufw status verbose 2>/dev/null >> "$REPORT" || echo "  ufw not accessible" >> "$REPORT"
+          else
+            echo "  ufw not available" >> "$REPORT"
+          fi
+
+          echo "" >> "$REPORT"
+          echo "--- 3. Open listening ports (user-level) ---" >> "$REPORT"
+          if command -v ss >/dev/null 2>&1; then
+            ss -tlnp 2>/dev/null >> "$REPORT" || echo "  ss not available" >> "$REPORT"
+          elif command -v netstat >/dev/null 2>&1; then
+            netstat -tlnp 2>/dev/null >> "$REPORT" || echo "  netstat not available" >> "$REPORT"
+          else
+            echo "  No network stat tool available" >> "$REPORT"
+          fi
+
+          echo "" >> "$REPORT"
+          echo "--- 4. .htaccess firewall rules check ---" >> "$REPORT"
+          WEBROOT="${HOME}/public_html"
+          if [ -f "${WEBROOT}/.htaccess" ]; then
+            echo "  .htaccess present" >> "$REPORT"
+            grep -E "(Deny from|Allow from|mod_security|SecRule)" "${WEBROOT}/.htaccess" 2>/dev/null >> "$REPORT" || echo "  No IP restriction rules found in .htaccess" >> "$REPORT"
+          else
+            echo "  WARNING: No .htaccess in $WEBROOT" >> "$REPORT"
+          fi
+
+          cat "$REPORT"
+          ENDSSH
+
+      # ── 3. WORDPRESS PLUGIN/THEME AUDIT ─────────────
+      - name: Audit WordPress plugins and themes
+        run: |
+          ssh -o StrictHostKeyChecking=yes "${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}" << 'ENDSSH'
+          REPORT="$HOME/audit-wordpress.txt"
+          echo "====== WORDPRESS AUDIT - $(date -u) ======" > "$REPORT"
+
+          WEBROOT="${HOME}/public_html"
+          WP_CONTENT="${WEBROOT}/wp-content"
+
+          echo "" >> "$REPORT"
+          echo "--- 1. WordPress core version ---" >> "$REPORT"
+          if [ -f "${WEBROOT}/wp-includes/version.php" ]; then
+            grep -E "\\\$wp_version" "${WEBROOT}/wp-includes/version.php" >> "$REPORT"
+          else
+            echo "  WordPress not found at $WEBROOT" >> "$REPORT"
+          fi
+
+          echo "" >> "$REPORT"
+          echo "--- 2. Active plugins ---" >> "$REPORT"
+          if command -v wp >/dev/null 2>&1; then
+            wp plugin list --path="$WEBROOT" --allow-root 2>/dev/null >> "$REPORT" || echo "  wp-cli not accessible" >> "$REPORT"
+          elif [ -d "${WP_CONTENT}/plugins" ]; then
+            echo "  Installed plugin directories:" >> "$REPORT"
+            ls -1 "${WP_CONTENT}/plugins" 2>/dev/null >> "$REPORT"
+            echo "" >> "$REPORT"
+            echo "  Plugin version files:" >> "$REPORT"
+            for plugin_dir in "${WP_CONTENT}/plugins"/*/; do
+              plugin_name=$(basename "$plugin_dir")
+              # Try to find plugin header with version
+              main_file=$(find "$plugin_dir" -maxdepth 1 -name "*.php" 2>/dev/null | head -1)
+              if [ -n "$main_file" ]; then
+                version=$(grep -i "Version:" "$main_file" 2>/dev/null | head -1 | sed 's/.*Version:\s*//')
+                echo "    $plugin_name: ${version:-unknown}" >> "$REPORT"
+              fi
+            done
+          else
+            echo "  wp-content/plugins directory not found" >> "$REPORT"
+          fi
+
+          echo "" >> "$REPORT"
+          echo "--- 3. Active themes ---" >> "$REPORT"
+          if command -v wp >/dev/null 2>&1; then
+            wp theme list --path="$WEBROOT" --allow-root 2>/dev/null >> "$REPORT" || echo "  wp-cli not accessible" >> "$REPORT"
+          elif [ -d "${WP_CONTENT}/themes" ]; then
+            echo "  Installed theme directories:" >> "$REPORT"
+            ls -1 "${WP_CONTENT}/themes" 2>/dev/null >> "$REPORT"
+          fi
+
+          echo "" >> "$REPORT"
+          echo "--- 4. WordPress security hardening checks ---" >> "$REPORT"
+          # Check for wp-config.php security settings
+          if [ -f "${WEBROOT}/wp-config.php" ]; then
+            echo "  Checking wp-config.php security keys..." >> "$REPORT"
+            if grep -q "put your unique phrase here" "${WEBROOT}/wp-config.php" 2>/dev/null; then
+              echo "  WARNING: Default WordPress security keys detected. Regenerate at https://api.wordpress.org/secret-key/1.1/salt/" >> "$REPORT"
+            else
+              echo "  OK: Security keys appear to be set" >> "$REPORT"
+            fi
+            if grep -qE "table_prefix\s*=\s*['\"]wp_['\"]" "${WEBROOT}/wp-config.php" 2>/dev/null; then
+              echo "  WARNING: Default database prefix 'wp_' in use. Change to a custom prefix to mitigate SQL injection." >> "$REPORT"
+            else
+              echo "  OK: Custom database prefix detected" >> "$REPORT"
+            fi
+            if grep -q "define.*DISALLOW_FILE_EDIT.*true" "${WEBROOT}/wp-config.php" 2>/dev/null; then
+              echo "  OK: DISALLOW_FILE_EDIT is enabled" >> "$REPORT"
+            else
+              echo "  WARNING: DISALLOW_FILE_EDIT not set. Add: define('DISALLOW_FILE_EDIT', true);" >> "$REPORT"
+            fi
+            if grep -q "define.*WP_DEBUG.*false" "${WEBROOT}/wp-config.php" 2>/dev/null; then
+              echo "  OK: WP_DEBUG is disabled" >> "$REPORT"
+            else
+              echo "  WARNING: WP_DEBUG may be enabled in production. Ensure define('WP_DEBUG', false);" >> "$REPORT"
+            fi
+          fi
+
+          echo "" >> "$REPORT"
+          echo "--- 5. Sensitive files exposure check ---" >> "$REPORT"
+          for dangerous_file in "${WEBROOT}/readme.html" "${WEBROOT}/license.txt" "${WEBROOT}/wp-admin/install.php" "${WEBROOT}/xmlrpc.php"; do
+            if [ -f "$dangerous_file" ]; then
+              echo "  WARNING: $dangerous_file exists – consider blocking via .htaccess" >> "$REPORT"
+            else
+              echo "  OK: $dangerous_file not publicly accessible" >> "$REPORT"
+            fi
+          done
+
+          cat "$REPORT"
+          ENDSSH
+
+      # ── 4. ACCESS LOG ANALYSIS ───────────────────────
+      - name: Analyze access logs for suspicious activity
+        run: |
+          ssh -o StrictHostKeyChecking=yes "${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}" << 'ENDSSH'
+          REPORT="$HOME/audit-access-logs.txt"
+          echo "====== ACCESS LOG ANALYSIS - $(date -u) ======" > "$REPORT"
+
+          # Common log locations on GoDaddy shared hosting
+          LOG_DIRS=("$HOME/logs" "$HOME/access-logs" "/var/log/apache2" "/usr/local/apache/logs" "/var/log/httpd")
+          LOG_FILE=""
+          for d in "${LOG_DIRS[@]}"; do
+            found=$(find "$d" -maxdepth 2 -name "*.log" -o -name "access_log" 2>/dev/null | head -1)
+            if [ -n "$found" ]; then
+              LOG_FILE="$found"
+              break
+            fi
+          done
+
+          if [ -z "$LOG_FILE" ]; then
+            echo "  No access log file found in standard locations." >> "$REPORT"
+            echo "  Checked: ${LOG_DIRS[*]}" >> "$REPORT"
+          else
+            echo "  Analyzing: $LOG_FILE" >> "$REPORT"
+            echo "" >> "$REPORT"
+
+            echo "--- 1. Top 20 requesting IPs (last 10 000 lines) ---" >> "$REPORT"
+            tail -10000 "$LOG_FILE" | awk '{print $1}' | sort | uniq -c | sort -rn | head -20 >> "$REPORT"
+
+            echo "" >> "$REPORT"
+            echo "--- 2. Suspicious request patterns (SQLi, XSS, path traversal, shell injection) ---" >> "$REPORT"
+            grep -E "(union.*select|<script|alert\(|'--|\.\.\/|cmd=|exec\(|base64_decode|eval\(|\/etc\/passwd|\/proc\/self)" "$LOG_FILE" 2>/dev/null | tail -30 >> "$REPORT" || echo "  No common attack patterns found." >> "$REPORT"
+
+            echo "" >> "$REPORT"
+            echo "--- 3. HTTP 4xx/5xx error summary (last 10 000 lines) ---" >> "$REPORT"
+            tail -10000 "$LOG_FILE" | awk '{print $9}' | grep -E "^[45][0-9]{2}$" | sort | uniq -c | sort -rn >> "$REPORT" || echo "  Could not parse HTTP status codes." >> "$REPORT"
+
+            echo "" >> "$REPORT"
+            echo "--- 4. Brute-force indicators on wp-login.php and xmlrpc.php (last 10 000 lines) ---" >> "$REPORT"
+            tail -10000 "$LOG_FILE" | grep -E "(wp-login\.php|xmlrpc\.php)" | awk '{print $1}' | sort | uniq -c | sort -rn | head -20 >> "$REPORT" || echo "  No brute-force candidates detected." >> "$REPORT"
+
+            echo "" >> "$REPORT"
+            echo "--- 5. User-agent anomalies (scanners, bots) ---" >> "$REPORT"
+            tail -10000 "$LOG_FILE" | grep -iE "(sqlmap|nikto|nmap|masscan|zgrab|nuclei|dirbuster|gobuster|wfuzz|hydra|curl/[0-9]|python-requests)" | awk '{print $1, $12}' | sort | uniq -c | sort -rn | head -20 >> "$REPORT" || echo "  No known scanner user-agents detected." >> "$REPORT"
+          fi
+
+          cat "$REPORT"
+          ENDSSH
+
+      # ── 5. AUTHENTICATION POLICY AUDIT ──────────────
+      - name: Audit authentication policies
+        run: |
+          ssh -o StrictHostKeyChecking=yes "${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}" << 'ENDSSH'
+          REPORT="$HOME/audit-auth-policy.txt"
+          echo "====== AUTHENTICATION POLICY AUDIT - $(date -u) ======" > "$REPORT"
+
+          echo "" >> "$REPORT"
+          echo "--- 1. fail2ban status ---" >> "$REPORT"
+          if command -v fail2ban-client >/dev/null 2>&1; then
+            fail2ban-client status 2>/dev/null >> "$REPORT" || echo "  fail2ban not running or not accessible" >> "$REPORT"
+            fail2ban-client status sshd 2>/dev/null >> "$REPORT" || true
+          else
+            echo "  fail2ban not installed – consider requesting it via GoDaddy support or use .htaccess rate limiting" >> "$REPORT"
+          fi
+
+          echo "" >> "$REPORT"
+          echo "--- 2. Active user sessions ---" >> "$REPORT"
+          who 2>/dev/null >> "$REPORT" || echo "  'who' command not available" >> "$REPORT"
+          last 2>/dev/null | head -20 >> "$REPORT" || echo "  'last' command not available" >> "$REPORT"
+
+          echo "" >> "$REPORT"
+          echo "--- 3. Cron jobs (potential persistence mechanism) ---" >> "$REPORT"
+          crontab -l 2>/dev/null >> "$REPORT" || echo "  No crontab entries or not accessible" >> "$REPORT"
+
+          echo "" >> "$REPORT"
+          echo "--- 4. .htpasswd files (HTTP Basic Auth) ---" >> "$REPORT"
+          find "$HOME" -maxdepth 5 -name ".htpasswd" 2>/dev/null >> "$REPORT" || echo "  No .htpasswd files found" >> "$REPORT"
+
+          echo "" >> "$REPORT"
+          echo "--- 5. GoDaddy FTP/SFTP account check ---" >> "$REPORT"
+          echo "  NOTE: Review active FTP sub-accounts in GoDaddy cPanel > FTP Accounts." >> "$REPORT"
+          echo "  Ensure only authorized accounts exist and passwords meet complexity requirements." >> "$REPORT"
+
+          echo "" >> "$REPORT"
+          echo "--- 6. Deployment key permissions ---" >> "$REPORT"
+          for keyfile in "$HOME/.ssh/id_rsa" "$HOME/.ssh/id_ed25519" "$HOME/.ssh/deploy_key"; do
+            if [ -f "$keyfile" ]; then
+              perms=$(stat -c "%a" "$keyfile")
+              echo "  $keyfile -> $perms" >> "$REPORT"
+              if [ "$perms" != "600" ] && [ "$perms" != "400" ]; then
+                echo "  WARNING: Key file has insecure permissions ($perms). Run: chmod 600 $keyfile" >> "$REPORT"
+              else
+                echo "  OK: Key permissions are $perms" >> "$REPORT"
+              fi
+            fi
+          done
+
+          cat "$REPORT"
+          ENDSSH
+
+      # ── 6. TLS / HTTPS CONFIGURATION ────────────────
+      - name: Audit TLS/HTTPS configuration
+        run: |
+          echo "=== TLS/HTTPS Audit for ${{ env.SERVER_HOST }} ==="
+
+          # Check certificate expiry
+          CERT_INFO=$(echo | openssl s_client -connect "${{ env.SERVER_HOST }}:443" -servername "${{ env.SERVER_HOST }}" 2>/dev/null | openssl x509 -noout -dates -subject -issuer 2>/dev/null) || CERT_INFO="Could not retrieve certificate (port 443 may not be open on this IP)"
+          echo "$CERT_INFO"
+
+          # Warn if certificate expires within 30 days
+          EXPIRY=$(echo "$CERT_INFO" | grep "notAfter" | cut -d= -f2)
+          if [ -n "$EXPIRY" ]; then
+            EXPIRY_TS=$(date -d "$EXPIRY" +%s 2>/dev/null || echo 0)
+            NOW_TS=$(date +%s)
+            DAYS_LEFT=$(( (EXPIRY_TS - NOW_TS) / 86400 ))
+            if [ "$DAYS_LEFT" -lt 0 ]; then
+              echo "CRITICAL: TLS certificate has EXPIRED ($DAYS_LEFT days ago). Renew immediately."
+            elif [ "$DAYS_LEFT" -lt 30 ]; then
+              echo "WARNING: TLS certificate expires in $DAYS_LEFT days. Renew immediately."
+            else
+              echo "OK: TLS certificate valid for $DAYS_LEFT more days."
+            fi
+          fi
+
+          # Check for deprecated TLS versions
+          for proto in ssl2 ssl3 tls1 tls1_1; do
+            result=$(echo | openssl s_client -connect "${{ env.SERVER_HOST }}:443" -"$proto" 2>&1 | grep -c "CONNECTED") || result=0
+            if [ "$result" -gt 0 ]; then
+              echo "WARNING: Deprecated protocol $proto is accepted – disable immediately."
+            else
+              echo "OK: $proto is not accepted."
+            fi
+          done
+
+      # ── 7. COLLECT AND UPLOAD REPORT ────────────────
+      - name: Collect audit reports from server
+        run: |
+          mkdir -p /tmp/audit-reports
+          scp -o StrictHostKeyChecking=yes \
+            "${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}:$HOME/audit-*.txt" \
+            /tmp/audit-reports/ 2>/dev/null || echo "No report files to collect (SSH steps may have been skipped)"
+
+          # Generate consolidated report
+          CONSOLIDATED="/tmp/audit-reports/SECURITY-AUDIT-REPORT-$(date +%Y%m%d).md"
+          cat > "$CONSOLIDATED" << MDEOF
+          # Security Audit Report – GoDaddy Shared Hosting
+          **Date:** $(date -u)
+          **Server:** ${{ env.SERVER_HOST }}
+          **Triggered by:** ${{ github.actor }} (${{ github.event_name }})
+          **Commit:** ${{ github.sha }}
+
+          ---
+
+          MDEOF
+
+          for f in /tmp/audit-reports/audit-*.txt; do
+            [ -f "$f" ] || continue
+            echo "## $(basename "$f" .txt)" >> "$CONSOLIDATED"
+            echo '```' >> "$CONSOLIDATED"
+            cat "$f" >> "$CONSOLIDATED"
+            echo '```' >> "$CONSOLIDATED"
+            echo "" >> "$CONSOLIDATED"
+          done
+
+          echo "=== Consolidated report preview ==="
+          head -80 "$CONSOLIDATED" || true
+
+      - name: Upload audit report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-audit-report-${{ github.run_id }}
+          path: /tmp/audit-reports/
+          retention-days: 90
+
+  # ─────────────────────────────────────────────
+  # JOB 3: Dependency vulnerability scan
+  # ─────────────────────────────────────────────
+  dependency-scan:
+    name: Dependency Vulnerability Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run npm audit
+        run: |
+          echo "=== npm audit results ==="
+          npm audit --audit-level=moderate 2>&1 || true
+          npm audit --json 2>/dev/null | python3 scripts/parse-npm-audit.py || true
