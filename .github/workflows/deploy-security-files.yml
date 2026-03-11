@@ -1,0 +1,113 @@
+name: Deploy Security Files (FTP)
+
+# Pushes hardened security configuration files to the GoDaddy server via
+# FTP/SFTP – no SSH required.
+#
+# Required GitHub Secrets (Settings → Secrets and variables → Actions):
+#   FTP_HOST     – your GoDaddy SFTP/FTP hostname
+#                  (shown in cPanel → Hosting Configuration → SSH/SFTP Login)
+#                  Example: kfw.f71.myftpupload.com
+#   FTP_USER     – your GoDaddy cPanel / FTP username
+#   FTP_PASSWORD – your GoDaddy cPanel / FTP password
+#
+# Optional (advanced):
+#   FTP_REMOTE_DIR – remote directory to deploy into (default: /)
+#                    Use / for the document root, or /public_html/ explicitly.
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'security/htaccess-security.conf'
+      - '.github/workflows/deploy-security-files.yml'
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type YES to confirm you want to overwrite the remote .htaccess'
+        required: true
+        default: 'NO'
+
+jobs:
+  deploy-htaccess:
+    name: Deploy .htaccess Security Rules (FTP)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    # For manual dispatch, require explicit confirmation
+    if: >
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.confirm == 'YES')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify FTP secrets are configured
+        run: |
+          MISSING=0
+          for secret_name in FTP_HOST FTP_USER FTP_PASSWORD; do
+            # We cannot read secret values directly; check via env mapping below.
+            : # checked in the FTP action itself – it will fail with a clear message
+          done
+
+          if [ -z "${{ secrets.FTP_HOST }}" ]; then
+            echo "::error::Secret FTP_HOST is not set."
+            echo "Set it to your GoDaddy SFTP hostname, e.g. kfw.f71.myftpupload.com"
+            echo "Found in: GoDaddy cPanel → Hosting Configuration → SSH/SFTP Login"
+            MISSING=1
+          fi
+          if [ -z "${{ secrets.FTP_USER }}" ]; then
+            echo "::error::Secret FTP_USER is not set."
+            MISSING=1
+          fi
+          if [ -z "${{ secrets.FTP_PASSWORD }}" ]; then
+            echo "::error::Secret FTP_PASSWORD is not set."
+            echo "This is your GoDaddy cPanel or FTP sub-account password."
+            MISSING=1
+          fi
+          if [ "$MISSING" -eq 1 ]; then
+            echo ""
+            echo "See security/godaddy-ssh-setup.md for full setup instructions."
+            exit 1
+          fi
+          echo "OK: All FTP secrets are present."
+
+      - name: Prepare .htaccess for deployment
+        run: |
+          # Copy the security conf as .htaccess ready for upload
+          cp security/htaccess-security.conf /tmp/.htaccess
+
+          echo "=== .htaccess content to be deployed ==="
+          cat /tmp/.htaccess
+
+      - name: Deploy .htaccess via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.4
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # FTPS (FTP over TLS) – more secure than plain FTP; GoDaddy supports it on port 21
+          protocol: ftps
+          port: 21
+          # local-dir points to /tmp/ where only .htaccess was placed – nothing else uploaded
+          local-dir: /tmp/
+          server-dir: ${{ secrets.FTP_REMOTE_DIR || '/' }}
+          # Do not delete files on the server that aren't in the local-dir
+          dangerous-clean-slate: false
+          log-level: verbose
+
+      - name: Verify deployment
+        run: |
+          echo "=== Deployment summary ==="
+          echo "File  : .htaccess"
+          echo "Source: security/htaccess-security.conf"
+          echo "Target: ${{ secrets.FTP_HOST }} → ${{ secrets.FTP_REMOTE_DIR || '/' }}.htaccess"
+          echo "Time  : $(date -u)"
+          echo ""
+          echo "NEXT STEPS:"
+          echo "  1. Visit your site and verify it loads correctly."
+          echo "  2. Check for any blocked resources in your browser console."
+          echo "  3. If something breaks, restore from backup:"
+          echo "     - The previous .htaccess was backed up by firewall-rules.sh"
+          echo "     - Or restore via GoDaddy File Manager in cPanel"

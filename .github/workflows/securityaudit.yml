@@ -11,8 +11,14 @@ on:
   workflow_dispatch:
 
 env:
-  SERVER_HOST: 160.153.0.23
+  # SSH/SFTP hostname shown in GoDaddy cPanel → Hosting Configuration → SSH/SFTP Login
+  # Example from this account: kfw.f71.myftpupload.com
+  # Store this value in GitHub Secrets → SERVER_HOST
+  SERVER_HOST: ${{ secrets.SERVER_HOST }}
   SERVER_USER: ${{ secrets.SERVER_USER }}
+  # Raw IP is kept only for the TLS certificate check (openssl needs it when SNI
+  # is not tied to a domain).  Update if GoDaddy reassigns the IP.
+  SERVER_IP: 160.153.0.23
   REPORT_DIR: /tmp/security-audit-${{ github.run_id }}
 
 jobs:
@@ -94,12 +100,84 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # ── SSH PREREQUISITE CHECK ──────────────────────
+      # Verifies that the required GitHub Secrets are set AND that the GoDaddy
+      # server actually accepts SSH connections on the configured hostname.
+      # If this step fails, read the troubleshooting guide:
+      #   security/godaddy-ssh-setup.md
+      - name: Check SSH prerequisites and probe connectivity
+        id: ssh-probe
+        continue-on-error: true
+        run: |
+          echo "=== SSH Prerequisites Check ==="
+
+          # 1. Verify required secrets are set
+          MISSING=0
+          if [ -z "${{ secrets.SERVER_HOST }}" ]; then
+            echo "::warning::SECRET MISSING: SERVER_HOST is not set."
+            echo "  ➜ Go to: GitHub repo → Settings → Secrets → New secret"
+            echo "  ➜ Name: SERVER_HOST"
+            echo "  ➜ Value: kfw.f71.myftpupload.com  (shown in GoDaddy cPanel → Hosting Config → SSH/SFTP Login)"
+            MISSING=1
+          else
+            echo "OK: SERVER_HOST is set (${{ env.SERVER_HOST }})"
+          fi
+
+          if [ -z "${{ secrets.SERVER_USER }}" ]; then
+            echo "::warning::SECRET MISSING: SERVER_USER is not set."
+            echo "  ➜ Name: SERVER_USER"
+            echo "  ➜ Value: your GoDaddy cPanel username"
+            MISSING=1
+          else
+            echo "OK: SERVER_USER is set"
+          fi
+
+          if [ -z "${{ secrets.PRIVATE_KEY }}" ]; then
+            echo "::warning::SECRET MISSING: PRIVATE_KEY is not set."
+            echo "  ➜ Name: PRIVATE_KEY"
+            echo "  ➜ Value: contents of the private key file generated via GoDaddy SSH setup"
+            echo "  ➜ Full instructions: security/godaddy-ssh-setup.md"
+            MISSING=1
+          else
+            echo "OK: PRIVATE_KEY is set"
+          fi
+
+          if [ "$MISSING" -eq 1 ]; then
+            echo ""
+            echo "::error::One or more required GitHub Secrets are missing."
+            echo "SSH audit steps will be skipped. See security/godaddy-ssh-setup.md for setup instructions."
+            exit 1
+          fi
+
+          # 2. Probe TCP port 22 on the SSH hostname (5-second timeout)
+          if ! nc -z -w 5 "${{ env.SERVER_HOST }}" 22 2>/dev/null; then
+            echo "::warning::Cannot reach ${{ env.SERVER_HOST }}:22"
+            echo ""
+            echo "Possible causes and fixes:"
+            echo "  A) SSH is disabled in GoDaddy cPanel."
+            echo "     ➜ cPanel → SSH Access → Manage SSH Keys → Enable"
+            echo "     ➜ Full guide: security/godaddy-ssh-setup.md"
+            echo ""
+            echo "  B) CI/CD Integration is disabled (seen in your hosting dashboard)."
+            echo "     ➜ GoDaddy Hosting Config → Integración CI/CD → Habilitar"
+            echo ""
+            echo "  C) The SSH hostname in SERVER_HOST is wrong."
+            echo "     ➜ Correct value is shown in GoDaddy cPanel:"
+            echo "       Hosting Configuration → SSH/SFTP Login (e.g. kfw.f71.myftpupload.com)"
+            echo "     ➜ Current SERVER_HOST = ${{ env.SERVER_HOST }}"
+            exit 1
+          fi
+
+          echo "OK: Port 22 is reachable on ${{ env.SERVER_HOST }}"
+
       - name: Setup SSH agent
+        if: steps.ssh-probe.outcome == 'success'
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.PRIVATE_KEY }}
 
       - name: Add server to known_hosts
+        if: steps.ssh-probe.outcome == 'success'
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
@@ -109,6 +187,8 @@ jobs:
 
       # ── 1. SSH & FILE PERMISSION AUDIT ──────────────
       - name: Audit SSH configuration and file permissions
+        if: steps.ssh-probe.outcome == 'success'
+        continue-on-error: true
         run: |
           ssh -o StrictHostKeyChecking=yes "${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}" << 'ENDSSH'
           set -e
@@ -160,7 +240,7 @@ jobs:
           for wpconf in $(find "$HOME" -maxdepth 5 -name "wp-config.php" 2>/dev/null); do
             perms=$(stat -c "%a" "$wpconf")
             echo "  $wpconf -> $perms" >> "$REPORT"
-            if [ "$perms" -gt "440" ] 2>/dev/null; then
+            if [ $((8#$perms)) -gt $((8#440)) ] 2>/dev/null; then
               echo "  WARNING: wp-config.php permissions too open ($perms). Recommend 440 or 400." >> "$REPORT"
             else
               echo "  OK: wp-config.php permissions are acceptable ($perms)" >> "$REPORT"
@@ -172,6 +252,8 @@ jobs:
 
       # ── 2. FIREWALL AUDIT ───────────────────────────
       - name: Audit firewall rules
+        if: steps.ssh-probe.outcome == 'success'
+        continue-on-error: true
         run: |
           ssh -o StrictHostKeyChecking=yes "${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}" << 'ENDSSH'
           REPORT="$HOME/audit-firewall.txt"
@@ -218,6 +300,8 @@ jobs:
 
       # ── 3. WORDPRESS PLUGIN/THEME AUDIT ─────────────
       - name: Audit WordPress plugins and themes
+        if: steps.ssh-probe.outcome == 'success'
+        continue-on-error: true
         run: |
           ssh -o StrictHostKeyChecking=yes "${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}" << 'ENDSSH'
           REPORT="$HOME/audit-wordpress.txt"
@@ -307,6 +391,8 @@ jobs:
 
       # ── 4. ACCESS LOG ANALYSIS ───────────────────────
       - name: Analyze access logs for suspicious activity
+        if: steps.ssh-probe.outcome == 'success'
+        continue-on-error: true
         run: |
           ssh -o StrictHostKeyChecking=yes "${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}" << 'ENDSSH'
           REPORT="$HOME/audit-access-logs.txt"
@@ -355,6 +441,8 @@ jobs:
 
       # ── 5. AUTHENTICATION POLICY AUDIT ──────────────
       - name: Audit authentication policies
+        if: steps.ssh-probe.outcome == 'success'
+        continue-on-error: true
         run: |
           ssh -o StrictHostKeyChecking=yes "${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}" << 'ENDSSH'
           REPORT="$HOME/audit-auth-policy.txt"
@@ -405,12 +493,14 @@ jobs:
           ENDSSH
 
       # ── 6. TLS / HTTPS CONFIGURATION ────────────────
+      # This step does NOT need SSH – it connects from the Actions runner directly.
       - name: Audit TLS/HTTPS configuration
+        continue-on-error: true
         run: |
-          echo "=== TLS/HTTPS Audit for ${{ env.SERVER_HOST }} ==="
+          echo "=== TLS/HTTPS Audit for ${{ env.SERVER_IP }} ==="
 
           # Check certificate expiry
-          CERT_INFO=$(echo | openssl s_client -connect "${{ env.SERVER_HOST }}:443" -servername "${{ env.SERVER_HOST }}" 2>/dev/null | openssl x509 -noout -dates -subject -issuer 2>/dev/null) || CERT_INFO="Could not retrieve certificate (port 443 may not be open on this IP)"
+          CERT_INFO=$(echo | openssl s_client -connect "${{ env.SERVER_IP }}:443" -servername "${{ env.SERVER_HOST }}" 2>/dev/null | openssl x509 -noout -dates -subject -issuer 2>/dev/null) || CERT_INFO="Could not retrieve certificate (port 443 may not be open on this IP)"
           echo "$CERT_INFO"
 
           # Warn if certificate expires within 30 days
@@ -430,7 +520,7 @@ jobs:
 
           # Check for deprecated TLS versions
           for proto in ssl2 ssl3 tls1 tls1_1; do
-            result=$(echo | openssl s_client -connect "${{ env.SERVER_HOST }}:443" -"$proto" 2>&1 | grep -c "CONNECTED") || result=0
+            result=$(echo | openssl s_client -connect "${{ env.SERVER_IP }}:443" -"$proto" 2>&1 | grep -c "CONNECTED") || result=0
             if [ "$result" -gt 0 ]; then
               echo "WARNING: Deprecated protocol $proto is accepted – disable immediately."
             else
@@ -442,9 +532,14 @@ jobs:
       - name: Collect audit reports from server
         run: |
           mkdir -p /tmp/audit-reports
-          scp -o StrictHostKeyChecking=yes \
-            "${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}:$HOME/audit-*.txt" \
-            /tmp/audit-reports/ 2>/dev/null || echo "No report files to collect (SSH steps may have been skipped)"
+          if [ "${{ steps.ssh-probe.outcome }}" = "success" ]; then
+            scp -o StrictHostKeyChecking=yes \
+              "${{ env.SERVER_USER }}@${{ env.SERVER_HOST }}:$HOME/audit-*.txt" \
+              /tmp/audit-reports/ 2>/dev/null || echo "No report files to collect (SSH audit steps were skipped or failed)"
+          else
+            echo "SSH probe did not succeed – skipping remote report collection."
+            echo "See security/godaddy-ssh-setup.md to enable SSH and re-run."
+          fi
 
           # Generate consolidated report
           CONSOLIDATED="/tmp/audit-reports/SECURITY-AUDIT-REPORT-$(date +%Y%m%d).md"
