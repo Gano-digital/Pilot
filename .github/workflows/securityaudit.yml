@@ -16,9 +16,9 @@ env:
   # Store this value in GitHub Secrets → SERVER_HOST
   SERVER_HOST: ${{ secrets.SERVER_HOST }}
   SERVER_USER: ${{ secrets.SERVER_USER }}
-  # Raw IP is kept only for the TLS certificate check (openssl needs it when SNI
-  # is not tied to a domain).  Update if GoDaddy reassigns the IP.
-  SERVER_IP: 160.153.0.23
+  # Raw IP used only for the TLS certificate check (openssl needs it when SNI
+  # is not tied to a domain). Store this value in GitHub Secrets → SERVER_IP.
+  SERVER_IP: ${{ secrets.SERVER_IP }}
   REPORT_DIR: /tmp/security-audit-${{ github.run_id }}
 
 jobs:
@@ -117,7 +117,7 @@ jobs:
             echo "::warning::SECRET MISSING: SERVER_HOST is not set."
             echo "  ➜ Go to: GitHub repo → Settings → Secrets → New secret"
             echo "  ➜ Name: SERVER_HOST"
-            echo "  ➜ Value: kfw.f71.myftpupload.com  (shown in GoDaddy cPanel → Hosting Config → SSH/SFTP Login)"
+            echo "  ➜ Value: your SSH/SFTP hostname (shown in GoDaddy cPanel → Hosting Config → SSH/SFTP Login)"
             MISSING=1
           else
             echo "OK: SERVER_HOST is set (${{ env.SERVER_HOST }})"
@@ -163,7 +163,7 @@ jobs:
             echo ""
             echo "  C) The SSH hostname in SERVER_HOST is wrong."
             echo "     ➜ Correct value is shown in GoDaddy cPanel:"
-            echo "       Hosting Configuration → SSH/SFTP Login (e.g. kfw.f71.myftpupload.com)"
+            echo "       Hosting Configuration → SSH/SFTP Login"
             echo "     ➜ Current SERVER_HOST = ${{ env.SERVER_HOST }}"
             exit 1
           fi

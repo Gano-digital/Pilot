@@ -11,8 +11,8 @@
 
 | Setting | Value |
 |---------|-------|
-| **SSH/SFTP hostname** | `kfw.f71.myftpupload.com` |
-| **Server IP** | `160.153.0.23` |
+| **SSH/SFTP hostname** | found in GoDaddy cPanel → Hosting Configuration → SSH/SFTP Login |
+| **Server IP** | found in GoDaddy cPanel → Hosting Configuration |
 | **WordPress version** | 6.9.1 |
 | **PHP version** | 8.3 |
 | **CI/CD integration** | ⚠️ Disabled — click **Habilitar** (Step 4) |
@@ -64,7 +64,7 @@ This creates two files:
 
 ```bash
 # Connect using password authentication first (one-time setup):
-ssh YOUR_CPANEL_USER@kfw.f71.myftpupload.com
+ssh YOUR_CPANEL_USER@YOUR_SSH_HOSTNAME
 
 # Then add your public key:
 mkdir -p ~/.ssh && chmod 700 ~/.ssh
@@ -96,12 +96,13 @@ Add **all** of these secrets:
 
 | Secret name | Value | Used by |
 |-------------|-------|---------|
-| `SERVER_HOST` | `kfw.f71.myftpupload.com` | deploy + audit |
+| `SERVER_HOST` | your GoDaddy SSH/SFTP hostname (shown in cPanel → Hosting Configuration) | deploy + audit |
+| `SERVER_IP` | your server's IP address (shown in cPanel → Hosting Configuration) | audit (TLS check) |
 | `SERVER_USER` | your GoDaddy cPanel username | deploy + audit |
 | `PRIVATE_KEY` | full contents of `~/.ssh/godaddy_deploy` (the **private** key) | deploy + audit |
 | `GEMINI_API_KEY` | your Google Gemini API key ([get one here](https://aistudio.google.com/app/apikey)) | deploy (baked into build) |
 | `DEPLOY_PATH` | path on server to deploy to, **without trailing slash** (e.g. `~/public_html` or `~/public_html/pilot`) | deploy |
-| `FTP_HOST` | `kfw.f71.myftpupload.com` | FTP security deploy |
+| `FTP_HOST` | your GoDaddy SSH/SFTP hostname | FTP security deploy |
 | `FTP_USER` | your GoDaddy cPanel / FTP username | FTP security deploy |
 | `FTP_PASSWORD` | your GoDaddy cPanel / FTP password | FTP security deploy |
 
@@ -116,7 +117,7 @@ Add **all** of these secrets:
 ```bash
 ssh -i ~/.ssh/godaddy_deploy \
     -o StrictHostKeyChecking=accept-new \
-    YOUR_CPANEL_USER@kfw.f71.myftpupload.com
+    YOUR_CPANEL_USER@YOUR_SSH_HOSTNAME
 ```
 
 You should see a shell prompt. Type `exit` to disconnect.

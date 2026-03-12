@@ -1,1 +1,18 @@
 scripts/__pycache__/
+
+# Build output – do not commit compiled assets
+dist/
+
+# Dependencies – do not commit installed packages
+node_modules/
+
+# Environment variable files – NEVER commit secrets
+.env
+.env.local
+.env.*.local
+.env.production
+.env.production.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
