@@ -1,12 +1,13 @@
 import React from 'react';
-import { PythonIcon, CloudUploadIcon, PuzzleIcon } from './icons';
+import { PythonIcon, CloudUploadIcon, PuzzleIcon, BriefcaseIcon } from './icons';
 
 interface HeaderProps {
   onDeployClick: () => void;
   onIntegrationsClick: () => void;
+  onPropuestaClick: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onDeployClick, onIntegrationsClick }) => {
+const Header: React.FC<HeaderProps> = ({ onDeployClick, onIntegrationsClick, onPropuestaClick }) => {
   return (
     <header className="bg-slate-800/50 backdrop-blur-sm border-b border-slate-700/50 sticky top-0 z-10">
       <div className="container mx-auto px-4 md:px-6 lg:px-8 py-4">
@@ -19,6 +20,14 @@ const Header: React.FC<HeaderProps> = ({ onDeployClick, onIntegrationsClick }) =
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <button
+              onClick={onPropuestaClick}
+              aria-label="Propuesta comercial Gano Digital"
+              className="bg-sky-700 hover:bg-sky-600 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition-colors"
+            >
+              <BriefcaseIcon className="h-5 w-5" />
+              <span className="hidden sm:inline">Propuesta Comercial</span>
+            </button>
             <button
               onClick={onIntegrationsClick}
               aria-label="Integration opportunities"
