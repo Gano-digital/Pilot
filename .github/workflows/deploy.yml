@@ -1,0 +1,181 @@
+name: Build & Deploy to GoDaddy
+
+# Builds the Vite/React app and deploys the output to the GoDaddy shared
+# hosting server via rsync over SSH.
+#
+# ── Required GitHub Secrets ──────────────────────────────────────────────────
+# (Settings → Secrets and variables → Actions → New repository secret)
+#
+#   SERVER_HOST    – SSH/SFTP hostname shown in GoDaddy Hosting Configuration
+#                    Example: kfw.f71.myftpupload.com
+#
+#   SERVER_USER    – your GoDaddy cPanel username
+#
+#   PRIVATE_KEY    – contents of the SSH private key whose public key is
+#                    authorized in cPanel → SSH Access → Manage SSH Keys
+#
+#   GEMINI_API_KEY – Google Gemini API key (baked into the build at compile time)
+#
+#   DEPLOY_PATH    – absolute path on the server to deploy into
+#                    Typical value: ~/public_html
+#                    If the Pilot app should live in a sub-folder alongside
+#                    WordPress, use e.g. ~/public_html/pilot
+#
+# ── One-time GoDaddy setup needed ────────────────────────────────────────────
+#   1. In GoDaddy Hosting Configuration → Integración CI/CD → click "Habilitar"
+#   2. Ensure your SSH public key is authorized (cPanel → SSH Access)
+#   Full guide: security/godaddy-ssh-setup.md
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      deploy_path_override:
+        description: 'Override deploy path on server (e.g. ~/public_html/pilot)'
+        required: false
+        default: ''
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy (GoDaddy SSH)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ── PREREQUISITE CHECK ────────────────────────────────────────────────
+      - name: Verify required secrets are configured
+        id: check-secrets
+        run: |
+          MISSING=0
+
+          if [ -z "${{ secrets.SERVER_HOST }}" ]; then
+            echo "::error::Secret SERVER_HOST is missing."
+            echo "  ➜ Set it to your GoDaddy SSH hostname, e.g. kfw.f71.myftpupload.com"
+            MISSING=1
+          fi
+          if [ -z "${{ secrets.SERVER_USER }}" ]; then
+            echo "::error::Secret SERVER_USER is missing."
+            echo "  ➜ Set it to your GoDaddy cPanel username"
+            MISSING=1
+          fi
+          if [ -z "${{ secrets.PRIVATE_KEY }}" ]; then
+            echo "::error::Secret PRIVATE_KEY is missing."
+            echo "  ➜ Paste the private key whose public key is authorized on the server"
+            echo "  ➜ Full guide: security/godaddy-ssh-setup.md"
+            MISSING=1
+          fi
+          if [ -z "${{ secrets.GEMINI_API_KEY }}" ]; then
+            echo "::error::Secret GEMINI_API_KEY is missing."
+            echo "  ➜ Get a key at https://aistudio.google.com/app/apikey"
+            MISSING=1
+          fi
+          if [ -z "${{ secrets.DEPLOY_PATH }}" ] && [ -z "${{ github.event.inputs.deploy_path_override }}" ]; then
+            echo "::warning::Secret DEPLOY_PATH is not set – defaulting to ~/public_html"
+            echo "  ➜ Add a DEPLOY_PATH secret (e.g. ~/public_html or ~/public_html/pilot)"
+            echo "  ➜ if WordPress is in the root, use ~/public_html/pilot to avoid conflicts"
+          fi
+
+          if [ "$MISSING" -eq 1 ]; then
+            echo ""
+            echo "Add the missing secrets and re-run this workflow."
+            echo "Full setup guide: security/godaddy-ssh-setup.md"
+            exit 1
+          fi
+          echo "OK: All required secrets are present."
+
+      # ── BUILD ─────────────────────────────────────────────────────────────
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Build app
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          echo "=== Building Vite app ==="
+          npm run build
+          echo "=== Build output ==="
+          ls -lh dist/
+
+      # ── DEPLOY ────────────────────────────────────────────────────────────
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.PRIVATE_KEY }}
+
+      - name: Add server to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan -H "${{ secrets.SERVER_HOST }}" >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+          echo "OK: ${{ secrets.SERVER_HOST }} added to known_hosts"
+
+      - name: Determine deploy path
+        id: deploy-path
+        run: |
+          OVERRIDE="${{ github.event.inputs.deploy_path_override }}"
+          SECRET="${{ secrets.DEPLOY_PATH }}"
+          if [ -n "$OVERRIDE" ]; then
+            RAW_PATH="$OVERRIDE"
+            echo "Using override path: $OVERRIDE"
+          elif [ -n "$SECRET" ]; then
+            RAW_PATH="$SECRET"
+            echo "Using secret DEPLOY_PATH: $SECRET"
+          else
+            RAW_PATH="~/public_html"
+            echo "Using default path: ~/public_html"
+          fi
+          # Strip any trailing slash — the rsync step appends / itself
+          CLEAN_PATH="${RAW_PATH%/}"
+          echo "path=$CLEAN_PATH" >> "$GITHUB_OUTPUT"
+          echo "Resolved deploy path: $CLEAN_PATH"
+
+      - name: Create deploy directory on server
+        run: |
+          ssh -o StrictHostKeyChecking=yes \
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" \
+            "mkdir -p ${{ steps.deploy-path.outputs.path }}"
+
+      - name: Deploy dist/ to server via rsync
+        run: |
+          DEPLOY_PATH="${{ steps.deploy-path.outputs.path }}"
+          echo "=== Deploying dist/ → ${DEPLOY_PATH} ==="
+
+          rsync \
+            --archive \
+            --compress \
+            --delete \
+            --verbose \
+            --progress \
+            -e "ssh -o StrictHostKeyChecking=yes" \
+            dist/ \
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${DEPLOY_PATH}/"
+
+          echo "=== Deployment complete ==="
+
+      - name: Verify deployment
+        run: |
+          DEPLOY_PATH="${{ steps.deploy-path.outputs.path }}"
+          echo "=== Remote file listing ==="
+          ssh -o StrictHostKeyChecking=yes \
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" \
+            "ls -lh ${DEPLOY_PATH}/ | head -20"
+
+          echo ""
+          echo "✅ Deployment successful!"
+          echo "   Host  : ${{ secrets.SERVER_HOST }}"
+          echo "   Path  : ${DEPLOY_PATH}"
+          echo "   Commit: ${{ github.sha }}"
+          echo "   By    : ${{ github.actor }}"
