@@ -54,20 +54,21 @@ for automating common domain and DNS tasks via the
 ### Setting up API credentials
 
 1. Log in to the [GoDaddy Developer Portal](https://developer.godaddy.com).
-2. Go to **API Keys → Create New API Key**.
-3. The portal displays a combined key in the format `KEY_SECRET`.  
-   Split it at the underscore and store each half as a separate GitHub secret:
+2. Go to **API Keys** and create keys for both **OTE** (test) and **PRODUCTION**.
+3. Add the following GitHub Secrets (Settings → Secrets and variables → Actions):
 
-   | Secret | Value |
-   |--------|-------|
-   | `GODADDY_API_KEY` | segment **before** the underscore (e.g. `3mM44YwfLcmKrY`) |
-   | `GODADDY_API_SECRET` | segment **after** the underscore (e.g. `Kpamb4Uk1KT1RgFSaMHgPA`) |
-   | `GODADDY_API_ENV` | `OTE` while testing · `PRODUCTION` for live credentials |
-   | `GODADDY_DOMAIN` | your domain, e.g. `gano.digital` (optional, used in deploy verify step) |
+   | Secret | Description |
+   |--------|-------------|
+   | `GODADDY_OTE_API_KEY` | OTE API key from the Developer Portal |
+   | `GODADDY_OTE_API_SECRET` | OTE API secret |
+   | `GODADDY_PROD_API_KEY` | Production API key |
+   | `GODADDY_PROD_API_SECRET` | Production API secret |
+   | `GODADDY_API_ENV` | `OTE` while testing · `PRODUCTION` for live operations |
+   | `GODADDY_DOMAIN` | domain to verify after deploy, e.g. `gano.digital` (optional) |
 
-   > **OTE vs PRODUCTION** – OTE is the GoDaddy sandbox environment. Use it
-   > for all development and testing. Switch to `PRODUCTION` only with live
-   > credentials obtained from the Developer Portal under a production environment.
+   > **OTE vs PRODUCTION** – OTE is the GoDaddy sandbox environment. All development
+   > and CI testing should use OTE credentials. Switch `GODADDY_API_ENV` to
+   > `PRODUCTION` only for live domain and DNS operations.
 
 ### Available operations (manual workflow)
 
@@ -90,6 +91,11 @@ deployment to confirm the domain status and root `A` record.
 ### Using the service in code (server-side only)
 
 ```typescript
+// Set env before calling (in Node.js / CI):
+// process.env.GODADDY_API_ENV        = 'OTE';            // or 'PRODUCTION'
+// process.env.GODADDY_OTE_API_KEY    = '<your OTE key>';
+// process.env.GODADDY_OTE_API_SECRET = '<your OTE secret>';
+
 import {
   listDomains,
   checkDomainAvailability,

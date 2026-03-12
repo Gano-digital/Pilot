@@ -1,22 +1,26 @@
-// ── GoDaddy Reseller API service ─────────────────────────────────────────────
+// -- GoDaddy Reseller API service --------------------------------------------
 //
 // Server-side / CI-CD only. Do NOT import this module into browser-bundled
-// code — the API credentials would be exposed in the public bundle.
+// code -- the API credentials would be exposed in the public bundle.
 //
-// Required environment variables:
-//   GODADDY_API_KEY    – API key from the GoDaddy Developer Portal
-//                        (the segment before the underscore in the portal key,
-//                         e.g. for "3mM44YwfLcmKrY_Kpamb4Uk1KT1RgFSaMHgPA"
-//                         the key is "3mM44YwfLcmKrY")
-//   GODADDY_API_SECRET – API secret from the GoDaddy Developer Portal
-//                        (the segment after the underscore, e.g. "Kpamb4Uk1KT1RgFSaMHgPA")
-//   GODADDY_API_ENV    – 'OTE' for the test/sandbox environment (default)
-//                         or 'PRODUCTION' for live credentials.
+// Supported environment variables (set in GitHub Secrets or .env.local):
+//
+//   OTE (test/sandbox) environment:
+//     GODADDY_OTE_API_KEY    - OTE API key from the GoDaddy Developer Portal
+//     GODADDY_OTE_API_SECRET - OTE API secret
+//
+//   Production environment:
+//     GODADDY_PROD_API_KEY    - Production API key from the GoDaddy Developer Portal
+//     GODADDY_PROD_API_SECRET - Production API secret
+//
+//   Active environment selector:
+//     GODADDY_API_ENV - 'OTE' (default) or 'PRODUCTION'
+//                       Controls which key/secret pair is used.
 //
 // GoDaddy Developer Portal: https://developer.godaddy.com
 // OTE base URL  : https://api.ote-godaddy.com
 // PROD base URL : https://api.godaddy.com
-// ─────────────────────────────────────────────────────────────────────────────
+// ----------------------------------------------------------------------------
 
 export type GodaddyEnv = 'OTE' | 'PRODUCTION';
 
@@ -25,7 +29,7 @@ const BASE_URLS: Record<GodaddyEnv, string> = {
   PRODUCTION: 'https://api.godaddy.com',
 };
 
-// ── Public types ─────────────────────────────────────────────────────────────
+// -- Public types ------------------------------------------------------------
 
 export interface DomainAvailability {
   available: boolean;
@@ -76,21 +80,33 @@ export interface GodaddyApiError {
   fields?: Array<{ code: string; message: string; path: string }>;
 }
 
-// ── Internal helpers ─────────────────────────────────────────────────────────
+// -- Internal helpers --------------------------------------------------------
 
 const getConfig = (): { apiKey: string; apiSecret: string; baseUrl: string } => {
-  const apiKey = process.env.GODADDY_API_KEY;
-  const apiSecret = process.env.GODADDY_API_SECRET;
   const env = (process.env.GODADDY_API_ENV as GodaddyEnv) ?? 'OTE';
 
-  if (!apiKey) {
-    throw new Error('GODADDY_API_KEY environment variable is not set.');
-  }
-  if (!apiSecret) {
-    throw new Error('GODADDY_API_SECRET environment variable is not set.');
-  }
   if (env !== 'OTE' && env !== 'PRODUCTION') {
     throw new Error(`GODADDY_API_ENV must be 'OTE' or 'PRODUCTION', got: '${env}'`);
+  }
+
+  const apiKey =
+    env === 'PRODUCTION'
+      ? process.env.GODADDY_PROD_API_KEY
+      : process.env.GODADDY_OTE_API_KEY;
+
+  const apiSecret =
+    env === 'PRODUCTION'
+      ? process.env.GODADDY_PROD_API_SECRET
+      : process.env.GODADDY_OTE_API_SECRET;
+
+  if (!apiKey) {
+    const varName = env === 'PRODUCTION' ? 'GODADDY_PROD_API_KEY' : 'GODADDY_OTE_API_KEY';
+    throw new Error(`${varName} environment variable is not set.`);
+  }
+  if (!apiSecret) {
+    const varName =
+      env === 'PRODUCTION' ? 'GODADDY_PROD_API_SECRET' : 'GODADDY_OTE_API_SECRET';
+    throw new Error(`${varName} environment variable is not set.`);
   }
 
   return { apiKey, apiSecret, baseUrl: BASE_URLS[env] };
@@ -117,7 +133,7 @@ const apiRequest = async <T>(
     try {
       errBody = (await response.json()) as GodaddyApiError;
     } catch {
-      // ignore JSON parse failure – use the default
+      // ignore JSON parse failure -- use the default
     }
     throw new Error(
       `GoDaddy API Error [${response.status}]: ${errBody.message} (${errBody.code})`
@@ -131,7 +147,7 @@ const apiRequest = async <T>(
   return response.json() as Promise<T>;
 };
 
-// ── Domain operations ────────────────────────────────────────────────────────
+// -- Domain operations -------------------------------------------------------
 
 /** List all domains in the account, optionally filtered by status. */
 export const listDomains = async (statuses?: string[]): Promise<DomainSummary[]> => {
@@ -153,7 +169,7 @@ export const getDomain = async (domain: string): Promise<DomainSummary> => {
   return apiRequest<DomainSummary>(`/v1/domains/${encodeURIComponent(domain)}`);
 };
 
-// ── DNS record operations ────────────────────────────────────────────────────
+// -- DNS record operations ---------------------------------------------------
 
 /**
  * Retrieve DNS records for a domain.
@@ -171,7 +187,7 @@ export const getDnsRecords = async (
 };
 
 /**
- * Add or update DNS records (PATCH – upserts by type+name combination).
+ * Add or update DNS records (PATCH -- upserts by type+name combination).
  * Existing records that share the same type+name are replaced; others survive.
  */
 export const upsertDnsRecords = async (
