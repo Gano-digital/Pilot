@@ -1,24 +1,59 @@
 name: Deploy WordPress to GoDaddy via rsync
+
+# ── Required GitHub Secrets ────────────────────────────────────────────────────
+# SERVER_HOST  – GoDaddy SSH/SFTP hostname  (e.g. l9w.f71.myftpupload.com)
+# SERVER_USER  – GoDaddy cPanel / SSH username
+# PRIVATE_KEY  – SSH private key contents (public key must be authorized in cPanel)
+# ──────────────────────────────────────────────────────────────────────────────
+
 on:
   workflow_dispatch:
-    inputs:
-      deployment_dest:
-        description: 'Target server directory, leave blank for root directory'
-        required: false
-        default: ''
+      inputs:
+            deployment_dest:
+                    description: 'Target server directory, leave blank for root directory'
+                            required: false
+                                    default: ''
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+                                    # Prevent concurrent deployments on the same ref
+                                    concurrency:
+                                      group: wordpress-deploy-${{ github.ref }}
+                                        cancel-in-progress: false
 
-    steps:
-      - name: Checkout Repository Code
-        uses: actions/checkout@v3
+                                        jobs:
+                                          deploy:
+                                              runs-on: ubuntu-latest
+                                                  permissions:
+                                                        contents: read
 
-      - name: Synchronize Files with GoDaddy WordPress Hosting Server
-        uses: godaddy-wordpress/gd-wordpress-deployer@v1
-        with:
-          remote_host: "l9w.f71.myftpupload.com"
-          ssh_user: "git_deployer_e839257cfe_708943"
-          ssh_private_key: ${{secrets.PRIVATE_KEY}}
-          deployment_dest: ${{ github.event.inputs.deployment_dest }}
+                                                            steps:
+                                                                  - name: Checkout Repository Code
+                                                                          uses: actions/checkout@v4
+
+                                                                                - name: Verify required secrets are configured
+                                                                                        run: |
+                                                                                                  MISSING=0
+                                                                                                            if [ -z "${{ secrets.SERVER_HOST }}" ]; then
+                                                                                                                        echo "::error::Secret SERVER_HOST is missing."
+                                                                                                                                    MISSING=1
+                                                                                                                                              fi
+                                                                                                                                                        if [ -z "${{ secrets.SERVER_USER }}" ]; then
+                                                                                                                                                                    echo "::error::Secret SERVER_USER is missing."
+                                                                                                                                                                                MISSING=1
+                                                                                                                                                                                          fi
+                                                                                                                                                                                                    if [ -z "${{ secrets.PRIVATE_KEY }}" ]; then
+                                                                                                                                                                                                                echo "::error::Secret PRIVATE_KEY is missing."
+                                                                                                                                                                                                                            MISSING=1
+                                                                                                                                                                                                                                      fi
+                                                                                                                                                                                                                                                if [ "$MISSING" -eq 1 ]; then
+                                                                                                                                                                                                                                                            echo "Add the missing secrets and re-run this workflow."
+                                                                                                                                                                                                                                                                        exit 1
+                                                                                                                                                                                                                                                                                  fi
+                                                                                                                                                                                                                                                                                            echo "OK: All required secrets are present."
+                                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                  - name: Synchronize Files with GoDaddy WordPress Hosting Server
+                                                                                                                                                                                                                                                                                                          uses: godaddy-wordpress/gd-wordpress-deployer@v1
+                                                                                                                                                                                                                                                                                                                  with:
+                                                                                                                                                                                                                                                                                                                            remote_host: ${{ secrets.SERVER_HOST }}
+                                                                                                                                                                                                                                                                                                                                      ssh_user: ${{ secrets.SERVER_USER }}
+                                                                                                                                                                                                                                                                                                                                                ssh_private_key: ${{ secrets.PRIVATE_KEY }}
+                                                                                                                                                                                                                                                                                                                                                          deployment_dest: ${{ github.event.inputs.deployment_dest }}
