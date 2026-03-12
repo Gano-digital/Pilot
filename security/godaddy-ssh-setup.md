@@ -1,13 +1,13 @@
-# How to Enable SSH Access on GoDaddy Shared Hosting
+# GoDaddy SSH + CI/CD Setup Guide
 
-> **Why this guide?**  
-> The automated security audit workflow requires SSH access to the GoDaddy server.  
-> By default GoDaddy **disables SSH**. You must enable it via cPanel and store the  
-> connection details as GitHub Secrets before the `server-audit` job can run.
+> **Current status:**  
+> ✅ SSH connection to the server — **working**  
+> ⚠️ GoDaddy CI/CD Integration — **Desactivado** → needs one click (Step 4 below)  
+> ⚠️ GitHub Secrets — not yet added (Step 5 below)
 
 ---
 
-## What you have (from your hosting dashboard)
+## Your hosting configuration
 
 | Setting | Value |
 |---------|-------|
@@ -15,11 +15,11 @@
 | **Server IP** | `160.153.0.23` |
 | **WordPress version** | 6.9.1 |
 | **PHP version** | 8.3 |
-| **CI/CD integration** | ⚠️ Disabled — see Step 4 |
+| **CI/CD integration** | ⚠️ Disabled — click **Habilitar** (Step 4) |
 
 ---
 
-## Step 1 — Enable SSH in GoDaddy cPanel
+## Step 1 — Enable SSH in GoDaddy cPanel ✅ Done
 
 1. Log in to **[my.godaddy.com](https://my.godaddy.com)**.
 2. Go to **My Products → Web Hosting → Manage**.
@@ -33,7 +33,7 @@
 
 ---
 
-## Step 2 — Generate an SSH key pair
+## Step 2 — Generate an SSH key pair ✅ Done
 
 Run this on your local machine (not on the server):
 
@@ -49,7 +49,7 @@ This creates two files:
 
 ---
 
-## Step 3 — Upload the public key to GoDaddy
+## Step 3 — Upload the public key to GoDaddy ✅ Done
 
 ### Option A — via cPanel SSH Access manager
 
@@ -74,40 +74,44 @@ chmod 600 ~/.ssh/authorized_keys
 
 ---
 
-## Step 4 — Enable CI/CD Integration in GoDaddy
+## Step 4 — Enable CI/CD Integration in GoDaddy ⚠️ ACTION NEEDED
 
 Your hosting dashboard shows **"Integración CI/CD: Desactivado"**.
 
-1. In GoDaddy cPanel → **Hosting Configuration** (the same screen from your screenshot).
-2. Find **Integración CI/CD** → click **Habilitar** (Enable).
-3. This allows GitHub Actions to connect to the server via the SFTP/SSH endpoint.
+1. In your GoDaddy hosting dashboard, find **Integración CI/CD**.
+2. Click **Habilitar** (Enable).
+3. This allows GitHub Actions to connect to the server via the SSH/SFTP endpoint.
+
+> ⚠️ **This is the most important step remaining.** Without it, the
+> deployment workflow (`Build & Deploy`) will be blocked even though SSH
+> works from your local machine.
 
 ---
 
-## Step 5 — Add GitHub Secrets
+## Step 5 — Add GitHub Secrets ⚠️ ACTION NEEDED
 
 Go to your GitHub repository → **Settings → Secrets and variables → Actions → New repository secret**.
 
-Add these three secrets:
+Add **all** of these secrets:
 
-| Secret name | Value |
-|-------------|-------|
-| `SERVER_HOST` | `kfw.f71.myftpupload.com` |
-| `SERVER_USER` | your GoDaddy cPanel username |
-| `PRIVATE_KEY` | full contents of `~/.ssh/godaddy_deploy` (the **private** key) |
+| Secret name | Value | Used by |
+|-------------|-------|---------|
+| `SERVER_HOST` | `kfw.f71.myftpupload.com` | deploy + audit |
+| `SERVER_USER` | your GoDaddy cPanel username | deploy + audit |
+| `PRIVATE_KEY` | full contents of `~/.ssh/godaddy_deploy` (the **private** key) | deploy + audit |
+| `GEMINI_API_KEY` | your Google Gemini API key ([get one here](https://aistudio.google.com/app/apikey)) | deploy (baked into build) |
+| `DEPLOY_PATH` | path on server to deploy to, **without trailing slash** (e.g. `~/public_html` or `~/public_html/pilot`) | deploy |
+| `FTP_HOST` | `kfw.f71.myftpupload.com` | FTP security deploy |
+| `FTP_USER` | your GoDaddy cPanel / FTP username | FTP security deploy |
+| `FTP_PASSWORD` | your GoDaddy cPanel / FTP password | FTP security deploy |
 
-For FTP-based deployment, also add:
-
-| Secret name | Value |
-|-------------|-------|
-| `FTP_HOST` | `kfw.f71.myftpupload.com` |
-| `FTP_USER` | your GoDaddy cPanel / FTP username |
-| `FTP_PASSWORD` | your GoDaddy cPanel / FTP password |
-| `FTP_REMOTE_DIR` | `/` or `/public_html/` (the web root on the server) |
+> **Note about `DEPLOY_PATH`:** WordPress 6.9.1 is already running in `~/public_html`.
+> To avoid conflicts, deploy the Pilot app to `~/public_html/pilot` so both
+> coexist at `yourdomain.com/pilot/`.
 
 ---
 
-## Step 6 — Test the SSH connection locally
+## Step 6 — Test the SSH connection locally ✅ Done
 
 ```bash
 ssh -i ~/.ssh/godaddy_deploy \
@@ -119,13 +123,18 @@ You should see a shell prompt. Type `exit` to disconnect.
 
 ---
 
-## Step 7 — Re-run the security audit workflow
+## Step 7 — Trigger the deployment workflow ⚠️ After Step 4 & 5
 
-1. Go to **GitHub → Actions → Security Audit**.
-2. Click **Run workflow** → **Run workflow**.
-3. The `server-audit` job's first step (`Check SSH prerequisites and probe connectivity`) will now pass and all audit steps will execute.
+Once Steps 4 and 5 are complete:
 
----
+1. Push any commit to the `main` branch, **or** go to:  
+   **GitHub → Actions → Build & Deploy to GoDaddy → Run workflow**.
+2. Watch the `build-and-deploy` job. It will:
+   - Install Node.js dependencies
+   - Build the Vite app (embedding `GEMINI_API_KEY`)
+   - `rsync` the `dist/` folder to `DEPLOY_PATH` on the server via SSH
+3. The Security Audit workflow also now runs end-to-end:  
+   **GitHub → Actions → Security Audit → Run workflow**.
 
 ## Troubleshooting
 
