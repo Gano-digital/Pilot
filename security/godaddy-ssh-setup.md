@@ -2,8 +2,8 @@
 
 > **Current status:**  
 > ✅ SSH connection to the server — **working**  
-> ⚠️ GoDaddy CI/CD Integration — **Desactivado** → needs one click (Step 4 below)  
-> ⚠️ GitHub Secrets — not yet added (Step 5 below)
+> ✅ GoDaddy CI/CD Integration — **Habilitadas** (enabled)  
+> ⚠️ GitHub Secrets — **not yet added** → follow Step 5 below to add them
 
 ---
 
@@ -15,7 +15,8 @@
 | **Server IP** | `160.153.0.23` |
 | **WordPress version** | 6.9.1 |
 | **PHP version** | 8.3 |
-| **CI/CD integration** | ⚠️ Disabled — click **Habilitar** (Step 4) |
+| **CDN** | ✅ Habilitadas |
+| **CI/CD integration** | ✅ Habilitadas |
 
 ---
 
@@ -74,21 +75,15 @@ chmod 600 ~/.ssh/authorized_keys
 
 ---
 
-## Step 4 — Enable CI/CD Integration in GoDaddy ⚠️ ACTION NEEDED
+## Step 4 — Enable CI/CD Integration in GoDaddy ✅ Done
 
-Your hosting dashboard shows **"Integración CI/CD: Desactivado"**.
+Your hosting dashboard shows **"Integración CI/CD: Habilitadas"** — no action needed.
 
-1. In your GoDaddy hosting dashboard, find **Integración CI/CD**.
-2. Click **Habilitar** (Enable).
-3. This allows GitHub Actions to connect to the server via the SSH/SFTP endpoint.
-
-> ⚠️ **This is the most important step remaining.** Without it, the
-> deployment workflow (`Build & Deploy`) will be blocked even though SSH
-> works from your local machine.
+> This allows GitHub Actions to connect to the server via the SSH/SFTP endpoint.
 
 ---
 
-## Step 5 — Add GitHub Secrets ⚠️ ACTION NEEDED
+## Step 5 — Add GitHub Secrets ⚠️ ACTION NEEDED (only remaining step)
 
 Go to your GitHub repository → **Settings → Secrets and variables → Actions → New repository secret**.
 
@@ -123,9 +118,9 @@ You should see a shell prompt. Type `exit` to disconnect.
 
 ---
 
-## Step 7 — Trigger the deployment workflow ⚠️ After Step 4 & 5
+## Step 7 — Trigger the deployment workflow ⚠️ After Step 5
 
-Once Steps 4 and 5 are complete:
+Once Step 5 (GitHub Secrets) is complete:
 
 1. Push any commit to the `main` branch, **or** go to:  
    **GitHub → Actions → Build & Deploy to GoDaddy → Run workflow**.

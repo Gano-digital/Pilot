@@ -18,7 +18,7 @@ env:
   SERVER_USER: ${{ secrets.SERVER_USER }}
   # Raw IP is kept only for the TLS certificate check (openssl needs it when SNI
   # is not tied to a domain).  Update if GoDaddy reassigns the IP.
-    SERVER_IP: ${{ secrets.SERVER_IP }}
+  SERVER_IP: ${{ secrets.SERVER_IP }}
   REPORT_DIR: /tmp/security-audit-${{ github.run_id }}
 
 jobs:

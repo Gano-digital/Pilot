@@ -1,15 +1,21 @@
 name: Deploy WordPress to GoDaddy via rsync
 
 # Required GitHub Secrets:
-# SERVER_HOST  - GoDaddy SSH/SFTP hostname (e.g. l9w.f71.myftpupload.com)
+# SERVER_HOST  - GoDaddy SSH/SFTP hostname (e.g. kfw.f71.myftpupload.com)
+#                shown in cPanel → Hosting Configuration → SSH/SFTP Login
 # SERVER_USER  - GoDaddy cPanel / SSH username
 # PRIVATE_KEY  - SSH private key contents (public key authorized in cPanel)
+#
+# Optional GitHub Secret:
+# DEPLOY_PATH  - Absolute path on server (default: ~/public_html)
+#                Use ~/public_html for WordPress root, or ~/public_html/pilot
+#                to coexist with an existing WordPress install.
 
 on:
   workflow_dispatch:
     inputs:
       deployment_dest:
-        description: 'Target server directory, leave blank for root directory'
+        description: 'Override deploy path on server (e.g. ~/public_html/pilot). Leave blank to use DEPLOY_PATH secret or ~/public_html.'
         required: false
         default: ''
 
@@ -30,16 +36,94 @@ jobs:
       - name: Verify required secrets
         run: |
           MISSING=0
-          if [ -z "${{ secrets.SERVER_HOST }}" ]; then echo "::error::SERVER_HOST missing."; MISSING=1; fi
-          if [ -z "${{ secrets.SERVER_USER }}" ]; then echo "::error::SERVER_USER missing."; MISSING=1; fi
-          if [ -z "${{ secrets.PRIVATE_KEY }}" ]; then echo "::error::PRIVATE_KEY missing."; MISSING=1; fi
+          if [ -z "${{ secrets.SERVER_HOST }}" ]; then
+            echo "::error::SERVER_HOST missing."
+            echo "  Set it to your GoDaddy SSH hostname, e.g. kfw.f71.myftpupload.com"
+            MISSING=1
+          fi
+          if [ -z "${{ secrets.SERVER_USER }}" ]; then
+            echo "::error::SERVER_USER missing."
+            echo "  Set it to your GoDaddy cPanel username"
+            MISSING=1
+          fi
+          if [ -z "${{ secrets.PRIVATE_KEY }}" ]; then
+            echo "::error::PRIVATE_KEY missing."
+            echo "  Full setup guide: security/godaddy-ssh-setup.md"
+            MISSING=1
+          fi
           [ "$MISSING" -eq 1 ] && exit 1
           echo "OK: All required secrets are present."
 
-      - name: Synchronize Files with GoDaddy WordPress Hosting Server
-        uses: godaddy-wordpress/gd-wordpress-deployer@v1
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
         with:
-          remote_host: ${{ secrets.SERVER_HOST }}
-          ssh_user: ${{ secrets.SERVER_USER }}
-          ssh_private_key: ${{ secrets.PRIVATE_KEY }}
-          deployment_dest: ${{ github.event.inputs.deployment_dest }}
+          ssh-private-key: ${{ secrets.PRIVATE_KEY }}
+
+      - name: Add server to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan -H "${{ secrets.SERVER_HOST }}" >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Determine deploy path
+        id: deploy-path
+        run: |
+          OVERRIDE="${{ github.event.inputs.deployment_dest }}"
+          SECRET="${{ secrets.DEPLOY_PATH }}"
+          if [ -n "$OVERRIDE" ]; then
+            RAW_PATH="$OVERRIDE"
+            echo "Using input override path: $OVERRIDE"
+          elif [ -n "$SECRET" ]; then
+            RAW_PATH="$SECRET"
+            echo "Using DEPLOY_PATH secret: $SECRET"
+          else
+            RAW_PATH="~/public_html"
+            echo "Using default path: ~/public_html"
+          fi
+          CLEAN_PATH="${RAW_PATH%/}"
+          echo "path=$CLEAN_PATH" >> "$GITHUB_OUTPUT"
+          echo "Resolved deploy path: $CLEAN_PATH"
+
+      - name: Create deploy directory on server
+        run: |
+          ssh -o StrictHostKeyChecking=yes \
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" \
+            "mkdir -p ${{ steps.deploy-path.outputs.path }}"
+
+      - name: Synchronize Files with GoDaddy WordPress Hosting Server
+        run: |
+          DEPLOY_PATH="${{ steps.deploy-path.outputs.path }}"
+          echo "=== Deploying repository files → ${DEPLOY_PATH} ==="
+
+          rsync \
+            --archive \
+            --compress \
+            --verbose \
+            --progress \
+            --exclude='.git/' \
+            --exclude='node_modules/' \
+            --exclude='dist/' \
+            --exclude='.github/' \
+            --exclude='*.log' \
+            -e "ssh -o StrictHostKeyChecking=yes" \
+            ./ \
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${DEPLOY_PATH}/"
+
+          echo "=== Deployment complete ==="
+
+      - name: Verify deployment
+        run: |
+          DEPLOY_PATH="${{ steps.deploy-path.outputs.path }}"
+          echo "=== Remote file listing ==="
+          ssh -o StrictHostKeyChecking=yes \
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" \
+            "ls -lh ${DEPLOY_PATH}/ | head -20"
+
+          echo ""
+          echo "✅ Deployment successful!"
+          echo "   Host  : ${{ secrets.SERVER_HOST }}"
+          echo "   Path  : ${DEPLOY_PATH}"
+          echo "   Commit: ${{ github.sha }}"
+          echo "   By    : ${{ github.actor }}"
+
