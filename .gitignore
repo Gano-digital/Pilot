@@ -1,1 +1,6 @@
 scripts/__pycache__/
+dist/
+node_modules/
+.env
+.env.local
+.env.*.local
