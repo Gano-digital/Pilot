@@ -1,0 +1,24 @@
+name: Deploy WordPress to GoDaddy via rsync
+on:
+  workflow_dispatch:
+    inputs:
+      deployment_dest:
+        description: 'Target server directory, leave blank for root directory'
+        required: false
+        default: ''
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Synchronize Files with GoDaddy WordPress Hosting Server
+        uses: godaddy-wordpress/gd-wordpress-deployer@v1
+        with:
+          remote_host: "l9w.f71.myftpupload.com"
+          ssh_user: "git_deployer_e839257cfe_708943"
+          ssh_private_key: ${{secrets.PRIVATE_KEY}}
+          deployment_dest: ${{ github.event.inputs.deployment_dest }}
