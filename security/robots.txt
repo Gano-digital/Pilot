@@ -1,0 +1,52 @@
+# robots.txt – GoDaddy / WordPress hosting
+#
+# DEPLOY TO: ~/public_html/robots.txt
+#
+# WHY:
+#   robots.txt prevents legitimate search engine crawlers from indexing
+#   WordPress administration pages, sensitive configuration paths, and
+#   internal WordPress directories that have no value in search results
+#   but provide attackers with a roadmap of your installation.
+#
+# NOTE: robots.txt is advisory only – it does not enforce access control.
+#       Pair this with the .htaccess rules in htaccess-security.conf for
+#       hard access control on the same paths.
+#
+# USAGE:
+#   Deployed automatically by the "Deploy Security Files" GitHub Actions workflow,
+#   or manually: copy this file to ~/public_html/robots.txt
+
+User-agent: *
+
+# ── WordPress administration ───────────────────────────────────────────────────
+Disallow: /wp-admin/
+Disallow: /wp-login.php
+Disallow: /xmlrpc.php
+
+# ── WordPress core directories (no public content) ────────────────────────────
+Disallow: /wp-includes/
+Disallow: /wp-content/plugins/
+Disallow: /wp-content/themes/
+Disallow: /wp-content/cache/
+Disallow: /wp-content/upgrade/
+Disallow: /wp-content/uploads/wc-logs/
+
+# ── Sensitive configuration and metadata files ────────────────────────────────
+Disallow: /wp-config.php
+Disallow: /readme.html
+Disallow: /license.txt
+Disallow: /.env
+Disallow: /.git/
+Disallow: /composer.json
+Disallow: /package.json
+
+# ── Query-string patterns that could leak information ─────────────────────────
+Disallow: /*?s=
+Disallow: /*?author=
+
+# Allow the REST API discovery endpoint (harmless, used by Jetpack/Gutenberg)
+Allow: /wp-json/
+
+# ── Sitemap reference ─────────────────────────────────────────────────────────
+# Uncomment and update the line below once you have generated a sitemap.
+# Sitemap: https://yourdomain.com/sitemap.xml

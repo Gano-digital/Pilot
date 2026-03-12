@@ -3,6 +3,12 @@ name: Deploy Security Files (FTP)
 # Pushes hardened security configuration files to the GoDaddy server via
 # FTP/SFTP – no SSH required.
 #
+# Files deployed:
+#   security/htaccess-security.conf  →  public_html/.htaccess
+#   security/uploads-htaccess.conf   →  public_html/wp-content/uploads/.htaccess
+#   security/robots.txt              →  public_html/robots.txt
+#   public/.well-known/security.txt  →  public_html/.well-known/security.txt
+#
 # Required GitHub Secrets (Settings → Secrets and variables → Actions):
 #   FTP_HOST     – your GoDaddy SFTP/FTP hostname
 #                  (shown in cPanel → Hosting Configuration → SSH/SFTP Login)
@@ -11,25 +17,28 @@ name: Deploy Security Files (FTP)
 #   FTP_PASSWORD – your GoDaddy cPanel / FTP password
 #
 # Optional (advanced):
-#   FTP_REMOTE_DIR – remote directory to deploy into (default: /)
-#                    Use / for the document root, or /public_html/ explicitly.
+#   FTP_REMOTE_DIR – remote document root on the server (default: /public_html/)
+#                    Typical values: /public_html/   or   /
 
 on:
   push:
     branches: [ "main" ]
     paths:
       - 'security/htaccess-security.conf'
+      - 'security/uploads-htaccess.conf'
+      - 'security/robots.txt'
+      - 'public/.well-known/security.txt'
       - '.github/workflows/deploy-security-files.yml'
   workflow_dispatch:
     inputs:
       confirm:
-        description: 'Type YES to confirm you want to overwrite the remote .htaccess'
+        description: 'Type YES to confirm you want to overwrite the remote security files'
         required: true
         default: 'NO'
 
 jobs:
-  deploy-htaccess:
-    name: Deploy .htaccess Security Rules (FTP)
+  deploy-security-files:
+    name: Deploy Security Files (FTP)
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -46,11 +55,6 @@ jobs:
       - name: Verify FTP secrets are configured
         run: |
           MISSING=0
-          for secret_name in FTP_HOST FTP_USER FTP_PASSWORD; do
-            # We cannot read secret values directly; check via env mapping below.
-            : # checked in the FTP action itself – it will fail with a clear message
-          done
-
           if [ -z "${{ secrets.FTP_HOST }}" ]; then
             echo "::error::Secret FTP_HOST is not set."
             echo "Set it to your GoDaddy SFTP hostname, e.g. kfw.f71.myftpupload.com"
@@ -73,15 +77,50 @@ jobs:
           fi
           echo "OK: All FTP secrets are present."
 
-      - name: Prepare .htaccess for deployment
+      - name: Stage security files for deployment
         run: |
-          # Copy the security conf as .htaccess ready for upload
-          cp security/htaccess-security.conf /tmp/.htaccess
+          # Build a staging directory that mirrors the remote web root structure.
+          # The FTP action will upload this entire tree preserving the paths.
+          STAGING=/tmp/security-deploy
+          mkdir -p "$STAGING"
+          mkdir -p "$STAGING/wp-content/uploads"
+          mkdir -p "$STAGING/.well-known"
 
-          echo "=== .htaccess content to be deployed ==="
-          cat /tmp/.htaccess
+          # 1. Root .htaccess – main security hardening rules
+          cp security/htaccess-security.conf "$STAGING/.htaccess"
+          echo "[+] Staged: .htaccess (from security/htaccess-security.conf)"
 
-      - name: Deploy .htaccess via FTP
+          # 2. wp-content/uploads/.htaccess – block PHP execution in uploads
+          cp security/uploads-htaccess.conf "$STAGING/wp-content/uploads/.htaccess"
+          echo "[+] Staged: wp-content/uploads/.htaccess (from security/uploads-htaccess.conf)"
+
+          # 3. robots.txt – block crawling of admin/sensitive paths
+          cp security/robots.txt "$STAGING/robots.txt"
+          echo "[+] Staged: robots.txt (from security/robots.txt)"
+
+          # 4. .well-known/security.txt – responsible disclosure file (RFC 9116)
+          cp public/.well-known/security.txt "$STAGING/.well-known/security.txt"
+          echo "[+] Staged: .well-known/security.txt"
+
+          echo ""
+          echo "=== Staging directory tree ==="
+          find "$STAGING" -type f | sort
+
+      - name: Show file contents to be deployed
+        run: |
+          echo "=== .htaccess ==="
+          cat /tmp/security-deploy/.htaccess
+          echo ""
+          echo "=== wp-content/uploads/.htaccess ==="
+          cat /tmp/security-deploy/wp-content/uploads/.htaccess
+          echo ""
+          echo "=== robots.txt ==="
+          cat /tmp/security-deploy/robots.txt
+          echo ""
+          echo "=== .well-known/security.txt ==="
+          cat /tmp/security-deploy/.well-known/security.txt
+
+      - name: Deploy security files via FTP
         uses: SamKirkland/FTP-Deploy-Action@4.3.4
         with:
           server: ${{ secrets.FTP_HOST }}
@@ -90,24 +129,43 @@ jobs:
           # FTPS (FTP over TLS) – more secure than plain FTP; GoDaddy supports it on port 21
           protocol: ftps
           port: 21
-          # local-dir points to /tmp/ where only .htaccess was placed – nothing else uploaded
-          local-dir: /tmp/
-          server-dir: ${{ secrets.FTP_REMOTE_DIR || '/' }}
-          # Do not delete files on the server that aren't in the local-dir
+          # local-dir is the staging directory that mirrors the remote web root
+          local-dir: /tmp/security-deploy/
+          server-dir: ${{ secrets.FTP_REMOTE_DIR || '/public_html/' }}
+          # Do not delete files on the server that aren't in the staging dir
           dangerous-clean-slate: false
           log-level: verbose
 
-      - name: Verify deployment
+      - name: Deployment summary
         run: |
-          echo "=== Deployment summary ==="
-          echo "File  : .htaccess"
-          echo "Source: security/htaccess-security.conf"
-          echo "Target: ${{ secrets.FTP_HOST }} → ${{ secrets.FTP_REMOTE_DIR || '/' }}.htaccess"
-          echo "Time  : $(date -u)"
+          # Ensure REMOTE_DIR has exactly one trailing slash for consistent path display
+          RAW_DIR="${{ secrets.FTP_REMOTE_DIR || '/public_html/' }}"
+          REMOTE_DIR="${RAW_DIR%/}/"
+          echo "=== Deployment summary – $(date -u) ==="
+          echo ""
+          echo "Host      : ${{ secrets.FTP_HOST }}"
+          echo "Remote dir: $REMOTE_DIR"
+          echo "Commit    : ${{ github.sha }}"
+          echo ""
+          echo "Files deployed:"
+          echo "  [✓] ${REMOTE_DIR}.htaccess"
+          echo "      (main security rules + HTTPS redirect)"
+          echo "  [✓] ${REMOTE_DIR}wp-content/uploads/.htaccess"
+          echo "      (block PHP execution + force-download SVG/XML)"
+          echo "  [✓] ${REMOTE_DIR}robots.txt"
+          echo "      (block crawling of admin paths)"
+          echo "  [✓] ${REMOTE_DIR}.well-known/security.txt"
+          echo "      (responsible disclosure – RFC 9116)"
+          echo ""
+          echo "MANUAL STEP – wp-admin double authentication:"
+          echo "  security/wp-admin-htaccess.conf is NOT auto-deployed because it"
+          echo "  requires a pre-created .htpasswd file on the server."
+          echo "  Follow the instructions inside security/wp-admin-htaccess.conf"
+          echo "  to complete this step."
           echo ""
           echo "NEXT STEPS:"
-          echo "  1. Visit your site and verify it loads correctly."
+          echo "  1. Visit your site and verify it loads correctly over HTTPS."
           echo "  2. Check for any blocked resources in your browser console."
-          echo "  3. If something breaks, restore from backup:"
-          echo "     - The previous .htaccess was backed up by firewall-rules.sh"
-          echo "     - Or restore via GoDaddy File Manager in cPanel"
+          echo "  3. Verify robots.txt: https://yourdomain.com/robots.txt"
+          echo "  4. Verify security.txt: https://yourdomain.com/.well-known/security.txt"
+          echo "  5. If something breaks, restore via GoDaddy File Manager in cPanel."

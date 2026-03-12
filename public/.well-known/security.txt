@@ -1,0 +1,32 @@
+# security.txt – RFC 9116 Security Disclosure File
+#
+# DEPLOY TO: ~/public_html/.well-known/security.txt
+#
+# WHY:
+#   security.txt is an industry-standard file (RFC 9116) that tells security
+#   researchers how to responsibly disclose vulnerabilities they discover on
+#   your site.  It is checked by automated scanners, bug-bounty platforms, and
+#   browsers.  Its absence signals that the site owner has not set up a
+#   vulnerability-disclosure process.
+#
+# SETUP REQUIRED:
+#   1. Replace "security@yourdomain.com" with your actual security contact email.
+#   2. Update the Expires date to one year from today.
+#   3. Optionally add a PGP key URL for encrypted reports.
+#
+# USAGE:
+#   Deployed automatically by the "Deploy Security Files" GitHub Actions workflow,
+#   or manually: copy this file to ~/public_html/.well-known/security.txt
+
+Contact: mailto:security@yourdomain.com
+Expires: 2027-03-12T00:00:00.000Z
+Preferred-Languages: en, es
+Canonical: https://yourdomain.com/.well-known/security.txt
+
+# Encryption (optional – generate a PGP key and host the public key, then uncomment)
+# Encryption: https://yourdomain.com/.well-known/pgp-key.txt
+
+Policy: https://yourdomain.com/security-policy
+
+# Acknowledgements page for researchers who have responsibly disclosed issues
+# Acknowledgments: https://yourdomain.com/hall-of-fame
