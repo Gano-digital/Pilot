@@ -11,11 +11,18 @@
 
 | Setting | Value |
 |---------|-------|
-| **SSH/SFTP hostname** | `kfw.f71.myftpupload.com` |
+| **Website domain** | `gano.digital` (primary domain, DNS propagating) |
+| **SSH/SFTP hostname** | `kfw.f71.myftpupload.com` (cPanel SSH endpoint — separate from the web domain) |
 | **Server IP** | `160.153.0.23` |
 | **WordPress version** | 6.9.1 |
 | **PHP version** | 8.3 |
-| **CI/CD integration** | ✅ Enabled (Habilitadas) |
+| **CDN** | ✅ Habilitadas |
+| **CI/CD integration** | ✅ Habilitadas |
+
+> **Note on SSH vs. web domain:** `kfw.f71.myftpupload.com` is GoDaddy's internal  
+> cPanel SSH endpoint — it does **not** change when you update the primary website  
+> domain. GitHub Actions always connects to this hostname for deployments.  
+> Your site is served publicly at **https://gano.digital**.
 
 ---
 
@@ -100,9 +107,9 @@ Add **all** of these secrets:
 | `FTP_USER` | your GoDaddy cPanel / FTP username | FTP security deploy |
 | `FTP_PASSWORD` | your GoDaddy cPanel / FTP password | FTP security deploy |
 
-> **Note about `DEPLOY_PATH`:** WordPress 6.9.1 is already running in `~/public_html`.
+> **Note about `DEPLOY_PATH`:** WordPress 6.9.1 is already running in `~/public_html` serving **https://gano.digital**.
 > To avoid conflicts, deploy the Pilot app to `~/public_html/pilot` so both
-> coexist at `yourdomain.com/pilot/`.
+> coexist at `https://gano.digital/pilot/`.
 
 ---
 

@@ -166,6 +166,6 @@ jobs:
           echo "NEXT STEPS:"
           echo "  1. Visit your site and verify it loads correctly over HTTPS."
           echo "  2. Check for any blocked resources in your browser console."
-          echo "  3. Verify robots.txt: https://yourdomain.com/robots.txt"
-          echo "  4. Verify security.txt: https://yourdomain.com/.well-known/security.txt"
+          echo "  3. Verify robots.txt: https://gano.digital/robots.txt"
+          echo "  4. Verify security.txt: https://gano.digital/.well-known/security.txt"
           echo "  5. If something breaks, restore via GoDaddy File Manager in cPanel."

@@ -49,4 +49,4 @@ Allow: /wp-json/
 
 # ── Sitemap reference ─────────────────────────────────────────────────────────
 # Uncomment and update the line below once you have generated a sitemap.
-# Sitemap: https://yourdomain.com/sitemap.xml
+# Sitemap: https://gano.digital/sitemap.xml

@@ -11,7 +11,7 @@
  *       /* That's all, stop editing! Happy publishing. */
  *
  * These constants harden the WordPress installation running on this GoDaddy
- * server (WordPress 6.9.1 / PHP 8.3 / kfw.f71.myftpupload.com).
+ * server (WordPress 6.9.1 / PHP 8.3 / gano.digital, IP: 160.153.0.23).
  */
 
 // ── 1. Disable the in-dashboard theme and plugin file editor ─────────────────
@@ -64,7 +64,7 @@ define( 'WP_POST_REVISIONS', 5 );
 // CAUTION: Only apply to fresh installations; migrating an existing site
 //          requires updating all media URLs in the database.
 // define( 'WP_CONTENT_DIR', dirname( __FILE__ ) . '/content' );
-// define( 'WP_CONTENT_URL', 'https://yourdomain.com/content' );
+// define( 'WP_CONTENT_URL', 'https://gano.digital/content' );
 
 // ── 9. Security keys and salts ───────────────────────────────────────────────
 // WHY: Unique, random keys invalidate all existing sessions when changed and

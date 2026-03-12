@@ -9,24 +9,19 @@
 #   browsers.  Its absence signals that the site owner has not set up a
 #   vulnerability-disclosure process.
 #
-# SETUP REQUIRED:
-#   1. Replace "security@yourdomain.com" with your actual security contact email.
-#   2. Update the Expires date to one year from today.
-#   3. Optionally add a PGP key URL for encrypted reports.
-#
 # USAGE:
 #   Deployed automatically by the "Deploy Security Files" GitHub Actions workflow,
 #   or manually: copy this file to ~/public_html/.well-known/security.txt
 
-Contact: mailto:security@yourdomain.com
+Contact: mailto:security@gano.digital
 Expires: 2027-03-12T00:00:00.000Z
 Preferred-Languages: en, es
-Canonical: https://yourdomain.com/.well-known/security.txt
+Canonical: https://gano.digital/.well-known/security.txt
 
 # Encryption (optional – generate a PGP key and host the public key, then uncomment)
-# Encryption: https://yourdomain.com/.well-known/pgp-key.txt
+# Encryption: https://gano.digital/.well-known/pgp-key.txt
 
-Policy: https://yourdomain.com/security-policy
+Policy: https://gano.digital/security-policy
 
 # Acknowledgements page for researchers who have responsibly disclosed issues
-# Acknowledgments: https://yourdomain.com/hall-of-fame
+# Acknowledgments: https://gano.digital/hall-of-fame
