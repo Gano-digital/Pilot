@@ -37,6 +37,11 @@ on:
         required: false
         default: ''
 
+# Prevent concurrent deployments on the same ref (avoids race conditions)
+concurrency:
+  group: godaddy-deploy-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build-and-deploy:
     name: Build & Deploy (GoDaddy SSH)
