@@ -29,16 +29,16 @@ const CodeDisplay: React.FC<CodeDisplayProps> = ({ code, isLoading, error }) => 
   };
 
   const CodeHeader: React.FC = () => (
-    <div className="bg-slate-900 px-4 py-2 flex justify-between items-center border-b border-slate-700 flex-shrink-0">
-      <span className="text-sm font-semibold text-slate-300">Generated Python Script</span>
+    <div className="bg-indigo-950/80 px-4 py-2 flex justify-between items-center border-b border-violet-800/40 flex-shrink-0">
+      <span className="text-sm font-semibold text-violet-200">Generated Python Script</span>
       {code && !isLoading && !error && (
         <button
           onClick={handleCopy}
-          className="bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1.5 rounded-md text-xs font-medium flex items-center transition-colors"
+          className="bg-violet-800/50 hover:bg-violet-700/60 text-violet-200 border border-violet-700/40 px-3 py-1.5 rounded-md text-xs font-medium flex items-center transition-colors"
         >
           {isCopied ? (
             <>
-              <CheckIcon className="h-4 w-4 mr-1.5 text-green-400" />
+              <CheckIcon className="h-4 w-4 mr-1.5 text-blue-400" />
               Copied!
             </>
           ) : (
@@ -78,7 +78,7 @@ const CodeDisplay: React.FC<CodeDisplayProps> = ({ code, isLoading, error }) => 
       <div className="h-full flex flex-col">
         <CodeHeader />
         <StatusDisplay
-          icon={<LoadingSpinnerIcon className="h-16 w-16 text-sky-500 animate-spin" />}
+          icon={<LoadingSpinnerIcon className="h-16 w-16 text-violet-500 animate-spin" />}
           title="Generating Code..."
           message="The AI is thinking. Please wait a moment."
         />
@@ -91,7 +91,7 @@ const CodeDisplay: React.FC<CodeDisplayProps> = ({ code, isLoading, error }) => 
       <div className="h-full flex flex-col">
         <CodeHeader />
         <StatusDisplay
-          icon={<SparklesIcon className="h-16 w-16 text-sky-500" />}
+          icon={<SparklesIcon className="h-16 w-16 text-violet-500" />}
           title="Ready to Generate"
           message="Click the 'Generate Python Script' button to create the code."
         />
@@ -100,7 +100,7 @@ const CodeDisplay: React.FC<CodeDisplayProps> = ({ code, isLoading, error }) => 
   }
 
   return (
-    <div className="h-full flex flex-col bg-slate-800">
+    <div className="h-full flex flex-col bg-indigo-950/60">
       <CodeHeader />
       <div className="flex-grow overflow-auto">
         <SyntaxHighlighter
@@ -110,7 +110,7 @@ const CodeDisplay: React.FC<CodeDisplayProps> = ({ code, isLoading, error }) => 
             margin: 0,
             padding: '1rem',
             height: '100%',
-            backgroundColor: '#1e293b', // slate-800
+            backgroundColor: '#0d0b1a',
           }}
           codeTagProps={{
             className: 'text-sm'

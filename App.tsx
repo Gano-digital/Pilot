@@ -32,7 +32,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-200 font-sans flex flex-col">
+    <div className="min-h-screen bg-[#0d0b1a] text-slate-200 font-sans flex flex-col">
       <Header
         onDeployClick={() => setIsDeployGuideOpen(true)}
         onIntegrationsClick={() => setIsIntegrationsOpen(true)}
@@ -44,7 +44,7 @@ const App: React.FC = () => {
           <button
             onClick={handleGenerateScript}
             disabled={isLoading}
-            className="w-full bg-sky-600 hover:bg-sky-500 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-sky-500/50"
+            className="w-full bg-violet-600 hover:bg-violet-500 disabled:bg-slate-700 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-violet-500/40"
           >
             {isLoading ? (
               <>
@@ -59,7 +59,7 @@ const App: React.FC = () => {
             )}
           </button>
           
-          <div className="bg-slate-800 rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[calc(80vh-80px)]">
+          <div className="bg-indigo-950/60 border border-violet-900/30 rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[calc(80vh-80px)]">
             <CodeDisplay
               code={generatedCode}
               isLoading={isLoading}

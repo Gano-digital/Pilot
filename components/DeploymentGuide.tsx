@@ -6,12 +6,12 @@ interface DeploymentGuideProps {
 }
 
 const DeploymentGuide: React.FC<DeploymentGuideProps> = ({ onClose }) => {
-  const codeBlockClass = "bg-slate-900/70 text-sky-300 font-mono text-xs px-2 py-1 rounded-sm";
-  const preBlockClass = "bg-slate-900 rounded-md p-3 mt-2 overflow-x-auto text-slate-300 text-sm font-mono";
+  const codeBlockClass = "bg-violet-950/60 text-violet-300 font-mono text-xs px-2 py-1 rounded-sm";
+  const preBlockClass = "bg-[#0d0b1a] border border-violet-900/30 rounded-md p-3 mt-2 overflow-x-auto text-violet-200 text-sm font-mono";
 
   const Step: React.FC<{ number: number; title: string; icon: React.ReactNode; children: React.ReactNode }> = ({ number, title, icon, children }) => (
     <li className="flex items-start gap-4">
-      <div className="flex-shrink-0 bg-sky-500/10 text-sky-400 rounded-full h-8 w-8 flex items-center justify-center font-bold ring-2 ring-sky-500/30">{number}</div>
+      <div className="flex-shrink-0 bg-violet-500/10 text-violet-300 rounded-full h-8 w-8 flex items-center justify-center font-bold ring-2 ring-violet-500/30">{number}</div>
       <div className="flex-grow">
         <strong className="font-semibold text-slate-100 flex items-center gap-2">
           {icon}
@@ -31,17 +31,17 @@ const DeploymentGuide: React.FC<DeploymentGuideProps> = ({ onClose }) => {
       aria-labelledby="deploy-guide-title"
     >
       <div
-        className="bg-slate-800 border border-slate-700/50 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-modal-slide-in"
+        className="bg-indigo-950 border border-violet-800/40 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-modal-slide-in"
         onClick={e => e.stopPropagation()}
       >
-        <header className="flex items-center justify-between p-4 border-b border-slate-700 flex-shrink-0">
+        <header className="flex items-center justify-between p-4 border-b border-violet-800/40 flex-shrink-0">
           <h2 id="deploy-guide-title" className="text-lg font-bold text-white flex items-center gap-3">
-            <CloudUploadIcon className="h-6 w-6 text-sky-400" />
+            <CloudUploadIcon className="h-6 w-6 text-violet-400" />
             Deploy to IBM Cloud Code Engine
           </h2>
           <button
             onClick={onClose}
-            className="p-1 rounded-full text-slate-400 hover:bg-slate-700 hover:text-white transition-colors"
+            className="p-1 rounded-full text-violet-300/70 hover:bg-violet-800/50 hover:text-white transition-colors"
             aria-label="Close deployment guide"
           >
             <CloseIcon className="h-6 w-6" />
@@ -77,7 +77,7 @@ const DeploymentGuide: React.FC<DeploymentGuideProps> = ({ onClose }) => {
           </ol>
         </main>
         
-        <footer className="p-4 border-t border-slate-700 bg-slate-800/50 flex-shrink-0">
+        <footer className="p-4 border-t border-violet-800/40 bg-indigo-950/80 flex-shrink-0">
             <p className="text-center text-xs text-slate-400">Once you click 'Create', Code Engine will build and deploy your app to a public URL.</p>
         </footer>
       </div>

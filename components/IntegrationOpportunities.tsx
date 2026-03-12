@@ -147,9 +147,9 @@ const OPPORTUNITIES: Opportunity[] = [
 ];
 
 const complexityColors: Record<Opportunity['complexity'], string> = {
-  Low: 'bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/30',
-  Medium: 'bg-amber-500/10 text-amber-400 ring-1 ring-amber-500/30',
-  High: 'bg-rose-500/10 text-rose-400 ring-1 ring-rose-500/30',
+  Low: 'bg-blue-500/10 text-blue-400 ring-1 ring-blue-500/30',
+  Medium: 'bg-violet-500/10 text-violet-300 ring-1 ring-violet-500/30',
+  High: 'bg-indigo-500/10 text-indigo-300 ring-1 ring-indigo-500/30',
 };
 
 const IntegrationOpportunities: React.FC<IntegrationOpportunitiesProps> = ({ onClose }) => {
@@ -168,17 +168,17 @@ const IntegrationOpportunities: React.FC<IntegrationOpportunitiesProps> = ({ onC
       aria-labelledby="integration-opportunities-title"
     >
       <div
-        className="bg-slate-800 border border-slate-700/50 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-modal-slide-in"
+        className="bg-indigo-950 border border-violet-800/40 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-modal-slide-in"
         onClick={e => e.stopPropagation()}
       >
-        <header className="flex items-center justify-between p-4 border-b border-slate-700 flex-shrink-0">
+        <header className="flex items-center justify-between p-4 border-b border-violet-800/40 flex-shrink-0">
           <h2 id="integration-opportunities-title" className="text-lg font-bold text-white flex items-center gap-3">
-            <PuzzleIcon className="h-6 w-6 text-sky-400" />
+            <PuzzleIcon className="h-6 w-6 text-violet-400" />
             Reseller API — Integration Opportunities
           </h2>
           <button
             onClick={onClose}
-            className="p-1 rounded-full text-slate-400 hover:bg-slate-700 hover:text-white transition-colors"
+            className="p-1 rounded-full text-violet-300/70 hover:bg-violet-800/50 hover:text-white transition-colors"
             aria-label="Close integration opportunities"
           >
             <CloseIcon className="h-6 w-6" />
@@ -193,21 +193,21 @@ const IntegrationOpportunities: React.FC<IntegrationOpportunitiesProps> = ({ onC
           {OPPORTUNITIES.map(op => (
             <div
               key={op.id}
-              className="border border-slate-700/50 rounded-lg overflow-hidden"
+              className="border border-violet-800/30 rounded-lg overflow-hidden"
             >
               <button
                 onClick={() => toggleExpanded(op.id)}
-                className="w-full flex items-center gap-3 p-3 text-left hover:bg-slate-700/40 transition-colors"
+                className="w-full flex items-center gap-3 p-3 text-left hover:bg-violet-900/30 transition-colors"
                 aria-expanded={expandedId === op.id}
               >
-                <span className="flex-shrink-0 bg-sky-500/10 text-sky-400 rounded-full h-7 w-7 flex items-center justify-center text-xs font-bold ring-1 ring-sky-500/30">
+                <span className="flex-shrink-0 bg-violet-500/10 text-violet-300 rounded-full h-7 w-7 flex items-center justify-center text-xs font-bold ring-1 ring-violet-500/30">
                   {op.id}
                 </span>
                 <span className="flex-grow font-semibold text-slate-100 text-sm">{op.title}</span>
                 <span className={`flex-shrink-0 text-xs font-medium px-2 py-0.5 rounded-full ${complexityColors[op.complexity]}`}>
                   {op.complexity}
                 </span>
-                <span className={`flex-shrink-0 text-slate-400 transition-transform duration-200 ${expandedId === op.id ? 'rotate-180' : ''}`}>
+                <span className={`flex-shrink-0 text-violet-400/70 transition-transform duration-200 ${expandedId === op.id ? 'rotate-180' : ''}`}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-4 w-4" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                   </svg>
@@ -215,12 +215,12 @@ const IntegrationOpportunities: React.FC<IntegrationOpportunitiesProps> = ({ onC
               </button>
 
               {expandedId === op.id && (
-                <div className="px-4 pb-4 bg-slate-900/30 border-t border-slate-700/50">
+                <div className="px-4 pb-4 bg-violet-950/40 border-t border-violet-800/30">
                   <p className="text-slate-300 text-sm mt-3 mb-3">{op.description}</p>
                   <ul className="space-y-1.5">
                     {op.details.map((detail, i) => (
                       <li key={i} className="flex items-start gap-2 text-slate-400 text-sm">
-                        <span className="text-sky-500 mt-0.5 flex-shrink-0">›</span>
+                        <span className="text-violet-400 mt-0.5 flex-shrink-0">›</span>
                         {detail}
                       </li>
                     ))}
@@ -231,11 +231,11 @@ const IntegrationOpportunities: React.FC<IntegrationOpportunitiesProps> = ({ onC
           ))}
         </main>
 
-        <footer className="p-4 border-t border-slate-700 bg-slate-800/50 flex-shrink-0">
+        <footer className="p-4 border-t border-violet-800/40 bg-indigo-950/80 flex-shrink-0">
           <p className="text-center text-xs text-slate-400">
             Full details in{' '}
-            <code className="bg-slate-700 px-1 py-0.5 rounded text-sky-300">docs/reseller-api-integrations.md</code>
-            {' '}· Items rated <span className="text-emerald-400">Low</span> complexity are recommended as the next step.
+            <code className="bg-violet-900/50 px-1 py-0.5 rounded text-violet-300">docs/reseller-api-integrations.md</code>
+            {' '}· Items rated <span className="text-blue-400">Low</span> complexity are recommended as the next step.
           </p>
         </footer>
       </div>
