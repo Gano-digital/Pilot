@@ -99,7 +99,7 @@ Add **all** of these secrets:
 | `SERVER_HOST` | `kfw.f71.myftpupload.com` | deploy + audit |
 | `SERVER_USER` | your GoDaddy cPanel username | deploy + audit |
 | `PRIVATE_KEY` | full contents of `~/.ssh/godaddy_deploy` (the **private** key) | deploy + audit |
-| `GEMINI_API_KEY` | your Google Gemini API key ([get one here](https://aistudio.google.com/app/apikey)) | deploy (baked into build) |
+| `GEMINI_API_KEY` | your Google Gemini API key — see **[What is the Gemini API key?](#what-is-the-gemini-api-key)** below | deploy (baked into build) |
 | `DEPLOY_PATH` | path on server to deploy to, **without trailing slash** (e.g. `~/public_html` or `~/public_html/pilot`) | deploy |
 | `FTP_HOST` | `kfw.f71.myftpupload.com` | FTP security deploy |
 | `FTP_USER` | your GoDaddy cPanel / FTP username | FTP security deploy |
@@ -154,3 +154,35 @@ Once Steps 4 and 5 are complete:
 - The private key in `PRIVATE_KEY` is used **only inside GitHub Actions** — it is never exposed in logs.
 - Rotate the SSH key every 90 days: generate a new pair, update the secret, remove the old authorized key from GoDaddy.
 - Once SSH is working, run `security/ssh-hardening.sh` on the server to lock down the SSH directory permissions.
+
+---
+
+## What is the Gemini API key?
+
+### Why does the app need it?
+
+The Pilot app uses **Google Gemini AI** (specifically the `gemini-2.5-flash` model) to automatically generate Python scripts. Every time a user clicks "Generate Python Script" inside the app, it calls Google's AI service. The `GEMINI_API_KEY` is the credential that identifies your account and authorises those AI requests.
+
+The build step in GitHub Actions embeds the key into the compiled app files at build time (via Vite's `import.meta.env`). Without the key the build succeeds but the app will show an error at runtime whenever it tries to call the AI.
+
+### Is it free?
+
+Yes — Google offers a **free tier** for the Gemini API with a generous monthly quota, more than enough for personal or small-team use. No credit card is required; only a Google account (e.g., Gmail) is needed.
+
+### How to get your key (takes ~2 minutes)
+
+1. Open **[https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)** in your browser.
+2. Sign in with your Google account if prompted.
+3. Click **"Create API key"** (or **"Crear clave de API"** if the page is in Spanish).
+4. Select **"Create API key in new project"** — Google creates the project automatically.
+5. Your new key appears on screen (it starts with `AIzaSy…`). **Copy it immediately** — you will not see the full value again after you navigate away.
+
+### Where to put the key
+
+| Context | Where to add it |
+|---------|-----------------|
+| **GitHub Actions (deploy)** | GitHub → Settings → Secrets and variables → Actions → **New repository secret** → name: `GEMINI_API_KEY`, value: paste the key |
+| **Running the app locally** | Create a `.env.local` file in the project root and add the line `GEMINI_API_KEY=AIzaSy…` (this file is in `.gitignore` and is never committed) |
+
+> **Security note:** Never paste your API key directly in the source code or commit it to Git.
+> The `.env.local` file is excluded from version control by `.gitignore` automatically.
