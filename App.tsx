@@ -6,6 +6,7 @@ import PromptDisplay from './components/PromptDisplay';
 import CodeDisplay from './components/CodeDisplay';
 import UsageGuide from './components/UsageGuide';
 import DeploymentGuide from './components/DeploymentGuide';
+import IntegrationOpportunities from './components/IntegrationOpportunities';
 import { SparklesIcon, LoadingSpinnerIcon } from './components/icons';
 
 const App: React.FC = () => {
@@ -13,6 +14,7 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isDeployGuideOpen, setIsDeployGuideOpen] = useState<boolean>(false);
+  const [isIntegrationsOpen, setIsIntegrationsOpen] = useState<boolean>(false);
 
   const handleGenerateScript = useCallback(async () => {
     setIsLoading(true);
@@ -31,7 +33,10 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-200 font-sans flex flex-col">
-      <Header onDeployClick={() => setIsDeployGuideOpen(true)} />
+      <Header
+        onDeployClick={() => setIsDeployGuideOpen(true)}
+        onIntegrationsClick={() => setIsIntegrationsOpen(true)}
+      />
       <main className="flex-grow container mx-auto p-4 md:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         <PromptDisplay prompt={USER_PROMPT} />
         
@@ -68,6 +73,7 @@ const App: React.FC = () => {
         </div>
       </main>
       {isDeployGuideOpen && <DeploymentGuide onClose={() => setIsDeployGuideOpen(false)} />}
+      {isIntegrationsOpen && <IntegrationOpportunities onClose={() => setIsIntegrationsOpen(false)} />}
     </div>
   );
 };
