@@ -1,0 +1,167 @@
+name: GoDaddy Domain & DNS Operations
+
+# Manual workflow for common GoDaddy Reseller API tasks:
+#   • list-domains   – show all domains and their status
+#   • check-domain   – check whether a domain is available for registration
+#   • list-dns       – list all DNS records for a domain
+#   • update-a-record – point the root A record of a domain to a new IP
+#
+# ── Required GitHub Secrets ──────────────────────────────────────────────────
+# (Settings → Secrets and variables → Actions → New repository secret)
+#
+#   GODADDY_API_KEY    – API key from the GoDaddy Developer Portal
+#                        (segment BEFORE the underscore in the portal key)
+#   GODADDY_API_SECRET – API secret from the GoDaddy Developer Portal
+#                        (segment AFTER the underscore in the portal key)
+#
+# Portal: https://developer.godaddy.com  →  API Keys
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: 'Operation to perform'
+        required: true
+        type: choice
+        options:
+          - list-domains
+          - check-domain
+          - list-dns
+          - update-a-record
+      domain:
+        description: 'Domain name (e.g. gano.digital)'
+        required: false
+        default: 'gano.digital'
+      new_ip:
+        description: 'New IP address for root A record (only for update-a-record)'
+        required: false
+        default: ''
+      environment:
+        description: 'GoDaddy API environment'
+        required: true
+        type: choice
+        default: 'OTE'
+        options:
+          - OTE
+          - PRODUCTION
+
+jobs:
+  domain-ops:
+    name: GoDaddy Domain Operations (${{ github.event.inputs.operation }})
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      # ── PREREQUISITE CHECK ────────────────────────────────────────────────
+      - name: Verify GoDaddy API secrets
+        run: |
+          MISSING=0
+          if [ -z "${{ secrets.GODADDY_API_KEY }}" ]; then
+            echo "::error::Secret GODADDY_API_KEY is missing."
+            echo "  ➜ Portal: https://developer.godaddy.com  →  API Keys"
+            echo "  ➜ Use the segment BEFORE the underscore in the portal key"
+            MISSING=1
+          fi
+          if [ -z "${{ secrets.GODADDY_API_SECRET }}" ]; then
+            echo "::error::Secret GODADDY_API_SECRET is missing."
+            echo "  ➜ Use the segment AFTER the underscore in the portal key"
+            MISSING=1
+          fi
+          if [ "$MISSING" -eq 1 ]; then
+            echo "Add the missing secrets and re-run this workflow."
+            exit 1
+          fi
+          echo "OK: GoDaddy API secrets are present."
+
+      - name: Resolve GoDaddy API base URL
+        id: api-url
+        run: |
+          if [ "${{ github.event.inputs.environment }}" = "PRODUCTION" ]; then
+            echo "url=https://api.godaddy.com" >> "$GITHUB_OUTPUT"
+          else
+            echo "url=https://api.ote-godaddy.com" >> "$GITHUB_OUTPUT"
+          fi
+          echo "Environment: ${{ github.event.inputs.environment }}"
+
+      # ── OPERATIONS ────────────────────────────────────────────────────────
+      - name: List domains
+        if: github.event.inputs.operation == 'list-domains'
+        env:
+          GODADDY_API_KEY: ${{ secrets.GODADDY_API_KEY }}
+          GODADDY_API_SECRET: ${{ secrets.GODADDY_API_SECRET }}
+        run: |
+          echo "=== GoDaddy domains (ACTIVE) ==="
+          curl --fail-with-body -s \
+            -H "Authorization: sso-key ${GODADDY_API_KEY}:${GODADDY_API_SECRET}" \
+            -H "Accept: application/json" \
+            "${{ steps.api-url.outputs.url }}/v1/domains?statuses=ACTIVE" \
+          | jq '[.[] | {domain: .domain, status: .status, expires: .expires, renewAuto: .renewAuto, locked: .locked}]'
+
+      - name: Check domain availability
+        if: github.event.inputs.operation == 'check-domain'
+        env:
+          GODADDY_API_KEY: ${{ secrets.GODADDY_API_KEY }}
+          GODADDY_API_SECRET: ${{ secrets.GODADDY_API_SECRET }}
+        run: |
+          DOMAIN="${{ github.event.inputs.domain }}"
+          echo "=== Checking availability: $DOMAIN ==="
+          curl --fail-with-body -s \
+            -H "Authorization: sso-key ${GODADDY_API_KEY}:${GODADDY_API_SECRET}" \
+            -H "Accept: application/json" \
+            "${{ steps.api-url.outputs.url }}/v1/domains/available?domain=${DOMAIN}" \
+          | jq '{domain: .domain, available: .available, price: .price, currency: .currency, definitive: .definitive}'
+
+      - name: List DNS records
+        if: github.event.inputs.operation == 'list-dns'
+        env:
+          GODADDY_API_KEY: ${{ secrets.GODADDY_API_KEY }}
+          GODADDY_API_SECRET: ${{ secrets.GODADDY_API_SECRET }}
+        run: |
+          DOMAIN="${{ github.event.inputs.domain }}"
+          echo "=== DNS records for: $DOMAIN ==="
+          curl --fail-with-body -s \
+            -H "Authorization: sso-key ${GODADDY_API_KEY}:${GODADDY_API_SECRET}" \
+            -H "Accept: application/json" \
+            "${{ steps.api-url.outputs.url }}/v1/domains/${DOMAIN}/records" \
+          | jq 'sort_by(.type, .name) | [.[] | {type: .type, name: .name, data: .data, ttl: .ttl}]'
+
+      - name: Update root A record
+        if: github.event.inputs.operation == 'update-a-record'
+        env:
+          GODADDY_API_KEY: ${{ secrets.GODADDY_API_KEY }}
+          GODADDY_API_SECRET: ${{ secrets.GODADDY_API_SECRET }}
+        run: |
+          DOMAIN="${{ github.event.inputs.domain }}"
+          NEW_IP="${{ github.event.inputs.new_ip }}"
+
+          if [ -z "$NEW_IP" ]; then
+            echo "::error::new_ip input is required for the update-a-record operation."
+            exit 1
+          fi
+
+          # Basic IP address format validation
+          if ! echo "$NEW_IP" | grep -qE '^([0-9]{1,3}\.){3}[0-9]{1,3}$'; then
+            echo "::error::new_ip '$NEW_IP' does not look like a valid IPv4 address."
+            exit 1
+          fi
+
+          echo "=== Updating root A record: $DOMAIN → $NEW_IP ==="
+          curl --fail-with-body -s -X PUT \
+            -H "Authorization: sso-key ${GODADDY_API_KEY}:${GODADDY_API_SECRET}" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json" \
+            "${{ steps.api-url.outputs.url }}/v1/domains/${DOMAIN}/records/A/@" \
+            -d "[{\"data\": \"${NEW_IP}\", \"ttl\": 600, \"type\": \"A\", \"name\": \"@\"}]"
+
+          echo ""
+          echo "=== Verifying updated record ==="
+          curl --fail-with-body -s \
+            -H "Authorization: sso-key ${GODADDY_API_KEY}:${GODADDY_API_SECRET}" \
+            -H "Accept: application/json" \
+            "${{ steps.api-url.outputs.url }}/v1/domains/${DOMAIN}/records/A/@" \
+          | jq '[.[] | {type: .type, name: .name, data: .data, ttl: .ttl}]'
+
+          echo ""
+          echo "✅ A record updated: $DOMAIN → $NEW_IP"

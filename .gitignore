@@ -1,1 +1,10 @@
 scripts/__pycache__/
+
+# local environment files (never commit secrets)
+.env
+.env.*
+!.env.example
+
+# build output & dependencies
+dist/
+node_modules/

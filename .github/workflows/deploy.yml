@@ -21,6 +21,15 @@ name: Build & Deploy to GoDaddy
 #                    If the Pilot app should live in a sub-folder alongside
 #                    WordPress, use e.g. ~/public_html/pilot
 #
+# ── Optional GitHub Secrets (GoDaddy Reseller API) ───────────────────────────
+# When set, a post-deploy step verifies the domain DNS via the GoDaddy API.
+#
+#   GODADDY_API_KEY    – API key from https://developer.godaddy.com  (API Keys)
+#                        segment BEFORE the underscore in the portal key
+#   GODADDY_API_SECRET – segment AFTER the underscore in the portal key
+#   GODADDY_DOMAIN     – domain to verify, e.g. gano.digital (default: gano.digital)
+#   GODADDY_API_ENV    – 'OTE' (test) or 'PRODUCTION' (default: OTE)
+#
 # ── One-time GoDaddy setup needed ────────────────────────────────────────────
 #   1. In GoDaddy Hosting Configuration → Integración CI/CD → click "Habilitar"
 #   2. Ensure your SSH public key is authorized (cPanel → SSH Access)
@@ -179,3 +188,40 @@ jobs:
           echo "   Path  : ${DEPLOY_PATH}"
           echo "   Commit: ${{ github.sha }}"
           echo "   By    : ${{ github.actor }}"
+
+      # ── OPTIONAL: GoDaddy domain DNS verification ──────────────────────────
+      # Runs only when the GODADDY_API_KEY secret is configured.
+      # Confirms the domain's root A record matches the deployed server.
+      - name: Verify domain DNS via GoDaddy API
+        if: ${{ secrets.GODADDY_API_KEY != '' }}
+        env:
+          GODADDY_API_KEY: ${{ secrets.GODADDY_API_KEY }}
+          GODADDY_API_SECRET: ${{ secrets.GODADDY_API_SECRET }}
+          GODADDY_DOMAIN: ${{ secrets.GODADDY_DOMAIN || 'gano.digital' }}
+          GODADDY_API_ENV: ${{ secrets.GODADDY_API_ENV || 'OTE' }}
+        run: |
+          if [ "$GODADDY_API_ENV" = "PRODUCTION" ]; then
+            API_BASE="https://api.godaddy.com"
+          else
+            API_BASE="https://api.ote-godaddy.com"
+          fi
+
+          echo "=== GoDaddy domain status: ${GODADDY_DOMAIN} (${GODADDY_API_ENV}) ==="
+          DOMAIN_INFO=$(curl --fail-with-body -s \
+            -H "Authorization: sso-key ${GODADDY_API_KEY}:${GODADDY_API_SECRET}" \
+            -H "Accept: application/json" \
+            "${API_BASE}/v1/domains/${GODADDY_DOMAIN}" 2>&1) || {
+            echo "::warning::Could not reach GoDaddy API – skipping domain verification."
+            exit 0
+          }
+
+          echo "$DOMAIN_INFO" | jq '{domain: .domain, status: .status, expires: .expires, nameServers: .nameServers}'
+
+          echo ""
+          echo "=== Root A record for ${GODADDY_DOMAIN} ==="
+          curl --fail-with-body -s \
+            -H "Authorization: sso-key ${GODADDY_API_KEY}:${GODADDY_API_SECRET}" \
+            -H "Accept: application/json" \
+            "${API_BASE}/v1/domains/${GODADDY_DOMAIN}/records/A/@" \
+          | jq '[.[] | {type: .type, name: .name, data: .data, ttl: .ttl}]' || \
+            echo "::warning::Could not retrieve A records – check API credentials."
