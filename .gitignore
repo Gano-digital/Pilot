@@ -1,0 +1,60 @@
+# ─── WordPress Architecture ──────────────────────────────────────────────────
+/wp-admin/
+/wp-includes/
+/wp-*.php
+/xmlrpc.php
+/license.txt
+/readme.html
+!/wp-config-sample.php
+!/index.php
+!/.htaccess
+
+# Content Folders
+/wp-content/uploads/*
+!/wp-content/uploads/2026/03/ # Permitir assets de la Fase 3
+/wp-content/backup-db/
+/wp-content/cache/
+/wp-content/upgrade/
+
+# ─── Credenciales y Archivos Sensibles ────────────────────────────────────────
+# Estos archivos contienen credenciales del servidor — NUNCA en git
+ssh_cli.py
+gano_sftp_manager.py
+import_staging_db.py
+cleanup_staging_db.py
+wp-config-staging.php
+mwp_db/
+deploy.ps1
+
+# ─── Documentos y Binarios ────────────────────────────────────────────────────
+*.pdf
+*.docx
+*.xlsx
+*.zip
+
+# ─── Base de Datos ────────────────────────────────────────────────────────────
+*.sql
+CREATE_STAGING_DB.sql
+
+# ─── Dependencias (no subir vendor de PHP/Node) ───────────────────────────────
+git-deployer-app/vendor/
+node_modules/
+
+# ─── Archivos temporales / OS ─────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ─── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+wp-content/debug.log
+
+# ─── Archivos de backup locales ───────────────────────────────────────────────
+../configs/
+*.bak
+*.backup

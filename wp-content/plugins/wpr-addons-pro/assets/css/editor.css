@@ -1,0 +1,10 @@
+/*--------------------------------------------------------------
+== General
+--------------------------------------------------------------*/
+.elementor-control select option[value*=pro-] {
+	background: #ffffff;
+}
+
+.elementor-control-layout_select .elementor-choices label:after {
+	display: none !important;
+}

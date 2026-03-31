@@ -1,0 +1,1078 @@
+/*
+Theme Name:   Gano Digital
+Theme URI:    https://gano.digital
+Description:  Child theme de Royal Elementor Kit para Gano Digital. Contiene la identidad de marca, tokens de color, tipografía y overrides de componentes WooCommerce.
+Author:       Gano Digital
+Author URI:   https://gano.digital
+Template:     royal-elementor-kit
+Version:      1.0.0
+License:      GNU General Public License v3 or later
+Text Domain:  gano-child
+Tags:         hosting, digital-services, colombia
+*/
+
+/* Gano Member Portal Styles */
+.woocommerce-account .woocommerce-MyAccount-navigation { background: rgba(15, 17, 21, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 12px; padding: 20px; margin-right: 30px; }
+.woocommerce-account .woocommerce-MyAccount-navigation ul { list-style: none; padding: 0; }
+.woocommerce-account .woocommerce-MyAccount-navigation ul li { border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding: 10px 0; }
+.woocommerce-account .woocommerce-MyAccount-navigation ul li.is-active a { color: #D4AF37; font-weight: 700; }
+.woocommerce-account .woocommerce-MyAccount-navigation ul li a { color: #94a3b8; text-decoration: none; font-size: 0.95rem; transition: color 0.3s; }
+.woocommerce-account .woocommerce-MyAccount-navigation ul li a:hover { color: #fff; }
+.woocommerce-account .woocommerce-MyAccount-content { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 40px; color: #e2e8f0; }
+.gano-portal-card { background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 0, 0, 0)); border: 1px solid rgba(212, 175, 55, 0.3); padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+
+/* ============================================================
+   TOKENS DE MARCA — GANO DIGITAL
+   Editar estos valores para cambiar toda la paleta del sitio.
+   ============================================================ */
+:root {
+    /* Colores primarios */
+    --gano-blue:         #1B4FD8;   /* Azul corporativo — confianza */
+    --gano-blue-dark:    #1240B0;
+    --gano-blue-light:   #E8EEFB;
+    --gano-green:        #00C26B;   /* Verde digital — éxito / "ganar" */
+    --gano-green-dark:   #00A058;
+    --gano-green-light:  #E0FAF0;
+
+    /* Acción */
+    --gano-orange:       #FF6B35;   /* CTA — contratar, comprar */
+    --gano-orange-dark:  #E55520;
+    --gano-orange-light: #FFF0EB;
+
+    /* Neutrales */
+    --gano-dark:         #0F1923;   /* Títulos principales */
+    --gano-gray-900:     #1A2535;
+    --gano-gray-700:     #374151;
+    --gano-gray-500:     #6B7280;
+    --gano-gray-300:     #D1D5DB;
+    --gano-gray-100:     #F3F4F6;
+    --gano-white:        #FFFFFF;
+
+    /* Fondos */
+    --gano-bg-primary:   #FFFFFF;
+    --gano-bg-alt:       #F8FAFC;
+    --gano-bg-dark:      #0F1923;
+
+    /* Tipografía */
+    --gano-font-heading: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+    --gano-font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --gano-font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+    /* Tamaños de fuente */
+    --gano-fs-xs:   0.75rem;    /* 12px */
+    --gano-fs-sm:   0.875rem;   /* 14px */
+    --gano-fs-base: 1rem;       /* 16px */
+    --gano-fs-lg:   1.125rem;   /* 18px */
+    --gano-fs-xl:   1.25rem;    /* 20px */
+    --gano-fs-2xl:  1.5rem;     /* 24px */
+    --gano-fs-3xl:  1.875rem;   /* 30px */
+    --gano-fs-4xl:  2.25rem;    /* 36px */
+    --gano-fs-5xl:  3rem;       /* 48px */
+
+    /* Espaciado */
+    --gano-radius-sm:  4px;
+    --gano-radius-md:  8px;
+    --gano-radius-lg:  12px;
+    --gano-radius-xl:  20px;
+    --gano-radius-pill:9999px;
+
+    /* Sombras */
+    --gano-shadow-sm:  0 1px 3px rgba(15,25,35,0.08);
+    --gano-shadow-md:  0 4px 16px rgba(15,25,35,0.10);
+    --gano-shadow-lg:  0 8px 32px rgba(15,25,35,0.14);
+    --gano-shadow-xl:  0 20px 64px rgba(15,25,35,0.18);
+
+    /* Transiciones */
+    --gano-transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Layout */
+    --gano-container:  1200px;
+    --gano-container-sm: 800px;
+}
+
+/* ============================================================
+   TIPOGRAFÍA BASE
+   ============================================================ */
+body {
+    font-family: var(--gano-font-body);
+    font-size: var(--gano-fs-base);
+    color: var(--gano-gray-700);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--gano-font-heading);
+    color: var(--gano-dark);
+    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(var(--gano-fs-3xl), 5vw, var(--gano-fs-5xl)); }
+h2 { font-size: clamp(var(--gano-fs-2xl), 3.5vw, var(--gano-fs-4xl)); }
+h3 { font-size: clamp(var(--gano-fs-xl), 2.5vw, var(--gano-fs-3xl)); }
+h4 { font-size: var(--gano-fs-xl); }
+h5 { font-size: var(--gano-fs-lg); }
+h6 { font-size: var(--gano-fs-base); }
+
+a {
+    color: var(--gano-blue);
+    text-decoration: none;
+    transition: var(--gano-transition);
+}
+a:hover {
+    color: var(--gano-blue-dark);
+    text-decoration: underline;
+}
+
+code, pre, kbd {
+    font-family: var(--gano-font-mono);
+    background: var(--gano-gray-100);
+    border-radius: var(--gano-radius-sm);
+    padding: 0.15em 0.4em;
+    font-size: 0.9em;
+}
+
+/* ============================================================
+   BOTONES GLOBALES
+   ============================================================ */
+.btn-primary,
+.gano-btn,
+.elementor-button.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--gano-blue);
+    color: var(--gano-white) !important;
+    border: 2px solid var(--gano-blue);
+    border-radius: var(--gano-radius-md);
+    padding: 0.75rem 1.75rem;
+    font-family: var(--gano-font-heading);
+    font-weight: 600;
+    font-size: var(--gano-fs-base);
+    cursor: pointer;
+    transition: var(--gano-transition);
+    text-decoration: none !important;
+}
+.btn-primary:hover,
+.gano-btn:hover {
+    background: var(--gano-blue-dark);
+    border-color: var(--gano-blue-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--gano-shadow-md);
+}
+
+.btn-cta,
+.gano-btn-cta {
+    background: var(--gano-orange);
+    border-color: var(--gano-orange);
+}
+.btn-cta:hover,
+.gano-btn-cta:hover {
+    background: var(--gano-orange-dark);
+    border-color: var(--gano-orange-dark);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--gano-blue);
+    color: var(--gano-blue) !important;
+}
+.btn-outline:hover {
+    background: var(--gano-blue);
+    color: var(--gano-white) !important;
+}
+
+/* ============================================================
+   WOOCOMMERCE — BOTONES DE COMPRA
+   ============================================================ */
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce input.button,
+.woocommerce #respond input#submit,
+.woocommerce .button.alt,
+.woocommerce .single_add_to_cart_button {
+    background-color: var(--gano-orange) !important;
+    color: var(--gano-white) !important;
+    border-radius: var(--gano-radius-md) !important;
+    font-family: var(--gano-font-heading) !important;
+    font-weight: 600 !important;
+    padding: 0.75rem 1.5rem !important;
+    border: none !important;
+    transition: var(--gano-transition) !important;
+    letter-spacing: 0.01em;
+}
+.woocommerce a.button:hover,
+.woocommerce button.button:hover,
+.woocommerce .single_add_to_cart_button:hover {
+    background-color: var(--gano-orange-dark) !important;
+    transform: translateY(-1px);
+    box-shadow: var(--gano-shadow-sm);
+}
+
+/* Precio WooCommerce */
+.woocommerce .price,
+.woocommerce .price .amount {
+    color: var(--gano-blue) !important;
+    font-family: var(--gano-font-heading);
+    font-weight: 700;
+}
+.woocommerce .price del {
+    color: var(--gano-gray-500) !important;
+    font-weight: 400;
+}
+.woocommerce .price ins {
+    text-decoration: none;
+    color: var(--gano-green) !important;
+}
+
+/* Badge "En oferta" */
+.woocommerce span.onsale {
+    background-color: var(--gano-green) !important;
+    border-radius: var(--gano-radius-pill) !important;
+    font-family: var(--gano-font-heading) !important;
+    font-weight: 700;
+}
+
+/* Tarjetas de producto */
+.woocommerce ul.products li.product .woocommerce-loop-product__title {
+    font-family: var(--gano-font-heading);
+    font-weight: 600;
+    color: var(--gano-dark);
+}
+.woocommerce ul.products li.product {
+    border-radius: var(--gano-radius-lg);
+    box-shadow: var(--gano-shadow-sm);
+    transition: var(--gano-transition);
+    overflow: hidden;
+}
+.woocommerce ul.products li.product:hover {
+    box-shadow: var(--gano-shadow-lg);
+    transform: translateY(-4px);
+}
+
+/* ============================================================
+   CARDS GENÉRICAS
+   ============================================================ */
+.gano-card {
+    background: var(--gano-bg-primary);
+    border-radius: var(--gano-radius-lg);
+    box-shadow: var(--gano-shadow-sm);
+    padding: 2rem;
+    border: 1px solid var(--gano-gray-100);
+    transition: var(--gano-transition);
+}
+.gano-card:hover {
+    box-shadow: var(--gano-shadow-lg);
+    transform: translateY(-4px);
+    border-color: var(--gano-blue-light);
+}
+
+/* Card de plan de precios */
+.gano-pricing-card {
+    border-radius: var(--gano-radius-xl);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    border: 2px solid var(--gano-gray-100);
+    transition: var(--gano-transition);
+    background: var(--gano-bg-primary);
+}
+.gano-pricing-card.featured {
+    border-color: var(--gano-blue);
+    background: linear-gradient(135deg, var(--gano-blue-light) 0%, #FFFFFF 100%);
+    box-shadow: var(--gano-shadow-xl);
+    transform: scale(1.04);
+}
+.gano-pricing-card .price-tag {
+    font-size: var(--gano-fs-4xl);
+    font-weight: 800;
+    color: var(--gano-blue);
+    font-family: var(--gano-font-heading);
+}
+.gano-pricing-card .price-tag span {
+    font-size: var(--gano-fs-lg);
+    color: var(--gano-gray-500);
+    font-weight: 400;
+}
+
+/* ============================================================
+   BADGE / CHIP DE CATEGORÍA
+   ============================================================ */
+.gano-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--gano-radius-pill);
+    font-size: var(--gano-fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+.gano-badge--blue   { background: var(--gano-blue-light);  color: var(--gano-blue); }
+.gano-badge--green  { background: var(--gano-green-light); color: var(--gano-green-dark); }
+.gano-badge--orange { background: var(--gano-orange-light);color: var(--gano-orange-dark); }
+
+/* ============================================================
+   SECCIÓN HERO
+   ============================================================ */
+.gano-hero {
+    background: linear-gradient(135deg, var(--gano-dark) 0%, var(--gano-gray-900) 60%, #1B3A8A 100%);
+    padding: 6rem 0 5rem;
+    color: var(--gano-white);
+    position: relative;
+    overflow: hidden;
+}
+.gano-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231B4FD8' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.4;
+}
+.gano-hero h1 { color: var(--gano-white); }
+.gano-hero p  { color: rgba(255,255,255,0.82); }
+
+/* ============================================================
+   SECCIÓN "FEATURES" — íconos + texto
+   ============================================================ */
+.gano-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+.gano-feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: var(--gano-radius-lg);
+    background: var(--gano-bg-alt);
+    border: 1px solid var(--gano-gray-100);
+}
+.gano-feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--gano-radius-md);
+    background: var(--gano-blue-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   TABLAS — comparativas de planes
+   ============================================================ */
+.wp-block-table table,
+.wp-block-table table,
+table.gano-table {
+    border-collapse: collapse;
+    width: 100%;
+    border-radius: var(--gano-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--gano-shadow-sm);
+}
+.wp-block-table th,
+table.gano-table th {
+    background: var(--gano-blue);
+    color: var(--gano-white);
+    padding: 1rem 1.25rem;
+    font-family: var(--gano-font-heading);
+    font-weight: 600;
+    text-align: left;
+}
+.wp-block-table td,
+table.gano-table td {
+    padding: 0.875rem 1.25rem;
+    border-bottom: 1px solid var(--gano-gray-100);
+    color: var(--gano-gray-700);
+}
+.wp-block-table tr:nth-child(even) td,
+table.gano-table tr:nth-child(even) td {
+    background: var(--gano-bg-alt);
+}
+
+/* ============================================================
+   HEADER / NAVEGACIÓN (overrides Royal Kit)
+   ============================================================ */
+.site-header,
+.header-main {
+    border-bottom: 1px solid var(--gano-gray-100);
+    background: var(--gano-white) !important;
+    box-shadow: var(--gano-shadow-sm);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer,
+.footer-main {
+    background: var(--gano-dark) !important;
+    color: rgba(255,255,255,0.75) !important;
+}
+.site-footer a,
+.footer-main a {
+    color: rgba(255,255,255,0.75);
+}
+.site-footer a:hover,
+.footer-main a:hover {
+    color: var(--gano-green);
+}
+
+/* ============================================================
+   FORMS — inputs y contacto
+   ============================================================ */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="password"],
+input[type="search"],
+textarea,
+select {
+    border: 1.5px solid var(--gano-gray-300);
+    border-radius: var(--gano-radius-md);
+    padding: 0.625rem 0.875rem;
+    font-family: var(--gano-font-body);
+    font-size: var(--gano-fs-base);
+    transition: var(--gano-transition);
+    width: 100%;
+    background: var(--gano-white);
+    color: var(--gano-dark);
+}
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--gano-blue);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(27, 79, 216, 0.12);
+}
+
+/* ============================================================
+   UTILIDADES
+   ============================================================ */
+.gano-text-blue   { color: var(--gano-blue); }
+.gano-text-green  { color: var(--gano-green); }
+.gano-text-orange { color: var(--gano-orange); }
+.gano-text-muted  { color: var(--gano-gray-500); }
+.gano-bg-alt      { background: var(--gano-bg-alt); }
+.gano-bg-dark     { background: var(--gano-bg-dark); color: var(--gano-white); }
+.gano-center      { text-align: center; }
+.gano-section     { padding: 5rem 0; }
+.gano-section-sm  { padding: 3rem 0; }
+
+/* Gradient text */
+.gano-gradient-text {
+    background: linear-gradient(90deg, var(--gano-blue), var(--gano-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+    h1 { font-size: var(--gano-fs-3xl); }
+    h2 { font-size: var(--gano-fs-2xl); }
+    .gano-hero { padding: 4rem 0 3rem; }
+}
+
+/* ============================================================
+   WOOCOMMERCE — CATALOG PREMIUM UI (Wrappers injectados)
+   ============================================================ */
+.gano-product-card-premium {
+    background: var(--gano-bg-primary);
+    border: 1px solid var(--gano-gray-100);
+    border-radius: var(--gano-radius-xl);
+    padding: 1.5rem;
+    transition: var(--gano-transition);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.dark-mode .gano-product-card-premium {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.gano-product-card-premium:hover {
+    transform: translateY(-5px);
+    border-color: var(--gano-blue);
+    box-shadow: 0 10px 30px rgba(27, 79, 216, 0.15);
+}
+
+.gano-product-card-premium::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gano-blue), var(--gano-orange));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.gano-product-card-premium:hover::before {
+    transform: scaleX(1);
+}
+
+/* ============================================================
+   WOOCOMMERCE — FLUID CHECKOUT EXPERIENCIA
+   ============================================================ */
+body.woocommerce-checkout .woocommerce {
+    max-width: 900px;
+    margin: 3rem auto;
+    background: var(--gano-bg-alt);
+    padding: 3rem;
+    border-radius: var(--gano-radius-xl);
+    box-shadow: var(--gano-shadow-lg);
+    border: 1px solid var(--gano-gray-100);
+}
+
+body.woocommerce-checkout #customer_details {
+    margin-bottom: 2.5rem;
+}
+
+.woocommerce-checkout .col2-set .col-1, 
+.woocommerce-checkout .col2-set .col-2 {
+    width: 100%;
+    float: none;
+    margin-bottom: 1.5rem;
+}
+
+.woocommerce-checkout h3 {
+    font-size: var(--gano-fs-xl);
+    color: var(--gano-dark);
+    border-bottom: 2px solid var(--gano-blue-light);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.75rem;
+}
+
+#order_review_heading {
+    margin-top: 2rem;
+    font-size: var(--gano-fs-xl);
+}
+
+/* Pasarela de pago modernizada */
+.woocommerce-checkout #payment {
+    background: var(--gano-bg-primary);
+    border-radius: var(--gano-radius-lg);
+    box-shadow: var(--gano-shadow-sm);
+    padding: 2rem;
+    border: 1px solid var(--gano-gray-100);
+}
+
+.woocommerce-checkout #payment ul.payment_methods {
+    border-bottom: 1px solid var(--gano-gray-100);
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Botón de compra gigante y confiable */
+#place_order {
+    width: 100%;
+    font-size: var(--gano-fs-lg) !important;
+    padding: 1.25rem !important;
+    margin-top: 1rem;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.25);
+}
+
+#place_order:hover {
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+}
+
+@media (min-width: 992px) {
+    .woocommerce-checkout .col2-set {
+        display: flex;
+        gap: 3rem;
+    }
+}
+
+/* ============================================================
+   SOTA INNOVATION HUB — Mobile-First Content Pages
+   ============================================================ */
+
+.gano-sota-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+    color: var(--gano-text-primary, #e8eaf0);
+    font-family: 'Inter', 'Outfit', sans-serif;
+    line-height: 1.75;
+}
+
+.gano-sota-page h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #1B4FD8, #00C26B);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+    line-height: 1.25;
+}
+
+.gano-sota-page h2 {
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    font-weight: 700;
+    color: #00C26B;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.gano-sota-page p {
+    font-size: 1rem;
+    max-width: 65ch;
+    margin-bottom: 1rem;
+}
+
+.gano-sota-page ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.gano-sota-page ul li {
+    margin-bottom: 0.6rem;
+    font-size: 0.97rem;
+}
+
+/* Hook Box */
+.gano-hook-box {
+    background: rgba(27, 79, 216, 0.10);
+    border-left: 4px solid #1B4FD8;
+    border-radius: 0 12px 12px 0;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.gano-hook-box p {
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin: 0;
+    color: #c5cfe8;
+}
+
+/* Glassmorphism 2.0 — Kinetic Monolith High Refraction */
+.gano-glass-panel, 
+.sota-single-container .sota-layout aside > div {
+    background: rgba(15, 25, 35, 0.7) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Organic Noise Overlay: Vivid & Analog Texture */
+.gano-glass-panel::after,
+.sota-single-container .sota-layout aside > div::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    filter: url(#gano-organic-noise);
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+/* Luminous Ghost Borders: Editorial-grade precision */
+.gano-ghost-border {
+    position: relative;
+}
+.gano-ghost-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, rgba(212,175,55,0.4), transparent, rgba(27,79,216,0.4)) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+/* Vivid Gradients: The "Kinetic Monolith" Palette */
+.gano-vivid-gradient {
+    background: linear-gradient(135deg, #1B4FD8 0%, #00C26B 50%, #FF6B35 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Pulse Animations: Signature SOTA Indicator */
+@keyframes gano-pulse-vivid {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+}
+
+.gano-sota-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    color: #D4AF37;
+    padding: 6px 16px;
+    border-radius: 99px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.gano-sota-badge::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: #D4AF37;
+    border-radius: 50%;
+    animation: gano-pulse-vivid 2s infinite;
+}
+
+/* Hover Mastery: Magnetic Interaction Smoothness */
+.gano-buy-button, .gano-btn-primary {
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1) !important;
+    text-transform: uppercase;
+    font-weight: 900 !important;
+    letter-spacing: 0.05em;
+}
+
+/* Quote / Share Box */
+.gano-quote-box {
+    background: rgba(0, 194, 107, 0.08);
+    border: 1px solid rgba(0, 194, 107, 0.3);
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    position: relative;
+}
+
+.gano-quote-box::before {
+    content: '💬';
+    position: absolute;
+    top: -14px;
+    left: 20px;
+    font-size: 1.4rem;
+    background: var(--gano-bg-primary, #0F1923);
+    padding: 0 8px;
+}
+
+.gano-quote-box p {
+    font-style: italic;
+    font-size: 1rem;
+    color: #b6f5d4;
+    margin: 0;
+}
+
+/* CTA Box */
+.gano-cta-box {
+    text-align: center;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.gano-btn-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, #1B4FD8, #00C26B);
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.85rem 2rem;
+    border-radius: 50px;
+    text-decoration: none !important;
+    letter-spacing: 0.03em;
+    box-shadow: 0 6px 24px rgba(27, 79, 216, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gano-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 32px rgba(0, 194, 107, 0.4);
+    color: #fff !important;
+}
+
+/* Sticky Mobile CTA — individual pages can use JS to activate */
+.gano-sticky-cta {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    padding: 0.75rem 1rem;
+    background: rgba(15, 25, 35, 0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(27, 79, 216, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.gano-sticky-cta .gano-btn-primary {
+    padding: 0.7rem 1.6rem;
+    font-size: 0.92rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .gano-sota-page {
+        padding: 1.25rem 1rem 5rem;
+    }
+
+    .gano-sota-page h1 {
+        font-size: 1.5rem;
+    }
+
+    .gano-hook-box,
+    .gano-quote-box {
+        padding: 0.85rem 1rem;
+    }
+
+    .gano-quote-box p,
+    .gano-hook-box p {
+        font-size: 0.94rem;
+    }
+
+    .gano-btn-primary {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* ==========================================================================
+   PHASE 6: PREMIUM SHOP & CATALOG (ANIMATED)
+   ========================================================================== */
+
+:root {
+    --gano-gold: #D4AF37;
+    --gano-gold-soft: rgba(212, 175, 55, 0.1);
+    --gano-dark-bg: #0f1115;
+    --gano-glass: rgba(255, 255, 255, 0.05);
+    --gano-glass-border: rgba(255, 255, 255, 0.1);
+}
+
+.gano-shop-header {
+    background: radial-gradient(circle at top, #1a1e26 0%, #0f1115 100%);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.gano-shop-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+    padding: 80px 5%;
+    background: var(--gano-dark-bg);
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.gano-product-card {
+    background: var(--gano-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--gano-glass-border);
+    border-radius: 24px;
+    padding: 45px;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.gano-product-card:hover {
+    transform: translateY(-20px);
+    border-color: var(--gano-gold);
+    box-shadow: 0 30px 60px rgba(212, 175, 55, 0.15);
+}
+
+.gano-product-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(212, 175, 55, 0.03) 100%);
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.gano-product-card:hover::after {
+    opacity: 1;
+}
+
+.gano-product-badge {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background: var(--gano-gold);
+    color: #000;
+    padding: 6px 18px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.gano-product-title {
+    font-size: 28px !important;
+    font-weight: 800 !important;
+    margin-bottom: 15px !important;
+    color: var(--gano-gold) !important;
+    letter-spacing: -0.5px !important;
+}
+
+.gano-product-price {
+    font-size: 42px;
+    font-weight: 900;
+    margin: 25px 0;
+    color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.gano-product-price span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #888;
+    margin-left: 5px;
+}
+
+.gano-product-specs {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 35px 0 !important;
+    flex-grow: 1;
+}
+
+.gano-product-specs li {
+    padding: 14px 0 !important;
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+    font-size: 15px !important;
+    display: flex;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+}
+
+.gano-product-specs li span {
+    color: var(--gano-gold);
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    background: rgba(212, 175, 55, 0.08);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.gano-buy-button {
+    background: var(--gano-gold) !important;
+    color: #000 !important;
+    text-align: center;
+    padding: 18px !important;
+    border-radius: 14px !important;
+    font-weight: 800 !important;
+    text-decoration: none !important;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 14px !important;
+    margin-top: 20px;
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+}
+
+.gano-buy-button:hover {
+    background: #fff !important;
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(255,255,255,0.1);
+}
+
+.gano-price-toggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    color: #888;
+    font-weight: 600;
+}
+
+.gano-price-toggle span.active {
+    color: var(--gano-gold);
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 64px;
+    height: 34px;
+}
+
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #222;
+    transition: .4s;
+    border-radius: 34px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 24px; width: 24px;
+    left: 4px; bottom: 4px;
+    background-color: var(--gano-gold);
+    transition: .4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+input:checked + .slider:before { transform: translateX(30px); }
+input:checked + .slider { background-color: var(--gano-gold-soft); border-color: var(--gano-gold); }
+
+/* ============================================================
+   GODADDY RESELLER STORE — UNIFIED UI
+   ============================================================ */
+.rstore-product-header .rstore-pricing {
+    font-size: 28px;
+    font-weight: 900;
+    color: #fff;
+    margin: 15px 0;
+}
+
+.rstore-add-to-cart-form button.rstore-add-to-cart {
+    background: var(--gano-gold) !important;
+    color: #000 !important;
+    width: 100%;
+    padding: 16px !important;
+    border-radius: 14px !important;
+    font-weight: 800 !important;
+    border: none !important;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: all 0.4s ease !important;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.rstore-add-to-cart-form button.rstore-add-to-cart:hover {
+    background: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+}
+
+.rstore-product-summary .gano-product-specs {
+    margin: 20px 0 !important;
+}

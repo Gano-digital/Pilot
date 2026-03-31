@@ -1,0 +1,5 @@
+/* Widget Builder - Elementor Editor Styles */
+/* Hide unnecessary Elementor UI when previewing custom widget posts */
+.post-type-wpr_custom_widget #elementor-panel-header-title {
+	text-transform: capitalize;
+}

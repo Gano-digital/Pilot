@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkpojo_accessibility=globalThis.webpackChunkpojo_accessibility||[]).push([[2934],{2934(e){e.exports=JSON.parse('{"example":{"component":"Voorbeeldcomponent"}}')}}]);

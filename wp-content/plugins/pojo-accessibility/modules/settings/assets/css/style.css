@@ -1,0 +1,61 @@
+#wpbody-content {
+	padding-bottom: 0;
+}
+
+/* Hide wp notices */
+.notice,
+.update-nag {
+	display: none;
+}
+
+body {
+	background: #fff;
+}
+
+.wrap {
+	margin-top: 0;
+}
+
+#ea11y-app {
+	position: fixed;
+	z-index: 1;
+	height: calc(100vh - 32px);
+	inset-block: 32px 0; /* 32px is for WP admin bar. */
+	inset-inline: 180px 0;
+	margin-inline-start: -20px;
+	background: #fff;
+}
+
+body.folded #ea11y-app {
+	inset-inline-start: 36px;
+	margin-inline-start: 0;
+}
+
+#ea11y-app * {
+	box-sizing: border-box;
+}
+
+#ea11y-app .wrap {
+	padding: 20px 40px 0;
+}
+
+.ea11y-textfield .MuiInputBase-input {
+	height: 40px;
+	padding: 8px 12px;
+	box-shadow: none;
+	border-color: rgb(12 13 14 / 0.23);
+}
+
+/* Widget Preview in Menu Settings */
+
+#ea11y-widget-preview--container #ea11y-root {
+	display: flex;
+	justify-content: center;
+}
+
+@media (min-width: 480px) {
+
+	.ea11y-widget-container {
+		max-width: 100% !important;
+	}
+}

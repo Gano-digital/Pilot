@@ -1,0 +1,12 @@
+#adminmenu .toplevel_page_accessibility-settings .wp-menu-image img,
+#adminmenu .elementor_page_accessibility-settings .wp-menu-image img {
+  width: 20px;
+  height: 20px;
+  padding: 7px 0;
+  opacity: 1;
+  filter: none;
+}
+
+.error-elementor {
+  border-left-color: #93003F;
+}

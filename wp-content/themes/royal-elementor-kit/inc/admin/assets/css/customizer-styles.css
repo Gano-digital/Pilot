@@ -1,0 +1,33 @@
+#accordion-section-rek_general_section h3 button {
+    width: calc(100% + 4px) !important;
+    background-color: #116acc !important;
+    color: #fff !important;
+    margin-left: -4px !important;
+}
+
+#accordion-section-rek_general_section h3:after {
+    color: #fff !important;
+}
+
+#_customize-description-rek_templates_buttons {
+    font-style: normal !important;
+}
+
+#_customize-description-rek_templates_buttons a.button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 15px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+#_customize-description-rek_templates_buttons a.button .dashicons {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+}
+
+#_customize-description-rek_templates_buttons .rek-get-started-btn{
+    margin-bottom: 10px;
+}

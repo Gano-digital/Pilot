@@ -1,0 +1,591 @@
+/**
+ * ============================================================================
+ * GANO SOTA — ANIMATIONS & ENHANCED COMPONENTS
+ * ============================================================================
+ *
+ * Este archivo mejora significativamente la experiencia visual de las 20
+ * páginas SOTA con animaciones fluidas, transiciones suaves y componentes
+ * modernos con mejor engagement.
+ *
+ * Características:
+ * - Reveal animations para bullet points (staggered)
+ * - Smooth scrolled animations
+ * - Hover interactions con feedback visual
+ * - Responsive media queries
+ * - Accesibilidad (prefers-reduced-motion)
+ * - GPU-accelerated transforms
+ *
+ * Cargar en: gano-child/functions.php
+ * wp_enqueue_style('gano-sota-animations', get_stylesheet_directory_uri() . '/gano-sota-animations.css', [], '2.0');
+ */
+
+:root {
+  /* Harmonización con Gano Digital Brand Tokens */
+  --gano-primary:       var(--gano-blue, #1B4FD8);
+  --gano-primary-dark:  var(--gano-blue-dark, #1240B0);
+  --gano-accent:        var(--gano-green, #00C26B);
+  --gano-accent-light:  var(--gano-green-light, #E0FAF0);
+  --gano-gold-sota:     #D4AF37; /* Gano Gold para acentos SOTA */
+  --gano-dark-bg:       var(--gano-dark, #0F1923);
+  --gano-dark-secondary: var(--gano-gray-900, #1A2535);
+  --gano-text-dark:     var(--gano-gray-900, #1A2535);
+  --gano-text-light:    var(--gano-gray-700, #374151);
+  --gano-text-muted:    var(--gano-gray-500, #6B7280);
+  --gano-border:        var(--gano-gray-100, #F3F4F6);
+  --transition-base:    var(--gano-transition, all 0.22s cubic-bezier(0.4, 0, 0.2, 1));
+  --transition-bounce:  all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ============================================================================
+   1. PÁGINA SOTA — Contenedor Principal
+   ============================================================================ */
+
+.gano-sota-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: var(--gano-text-dark);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.gano-sota-page h1 {
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 800;
+  margin: 0 0 30px;
+  line-height: 1.2;
+  background: linear-gradient(135deg, var(--gano-primary), var(--gano-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: slideInDown 0.5s ease-out;
+}
+
+.gano-sota-page h2 {
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  font-weight: 700;
+  margin: 40px 0 20px;
+  color: var(--gano-text-dark);
+  position: relative;
+  padding-left: 20px;
+}
+
+.gano-sota-page h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--gano-primary), var(--gano-accent));
+  border-radius: 2px;
+  animation: expandHeight 0.4s ease-out;
+}
+
+.gano-sota-page p {
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 16px 0;
+  color: var(--gano-text-light);
+}
+
+/* ============================================================================
+   2. HOOK BOX — Proposición Inicial
+   ============================================================================ */
+
+.gano-hook-box {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.08));
+  border-left: 4px solid var(--gano-primary);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 30px 0;
+  position: relative;
+  overflow: hidden;
+  animation: slideInLeft 0.5s ease-out 0.1s both;
+}
+
+.gano-hook-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gano-primary), var(--gano-accent), transparent);
+  animation: slideInRight 0.6s ease-out 0.2s both;
+}
+
+.gano-hook-box p {
+  margin: 0;
+  font-weight: 500;
+  color: var(--gano-text-dark);
+  font-size: 1.05rem;
+}
+
+/* ============================================================================
+   3. BULLET POINTS CON REVEAL ANIMATION
+   ============================================================================ */
+
+.gano-sota-page ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.gano-sota-page li {
+  padding: 12px 0 12px 32px;
+  position: relative;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--gano-text-light);
+  animation: bulletReveal 0.5s ease-out both;
+  margin: 8px 0;
+}
+
+/* Stagger effect para cada bullet */
+.gano-sota-page li:nth-child(1) { animation-delay: 0.2s; }
+.gano-sota-page li:nth-child(2) { animation-delay: 0.3s; }
+.gano-sota-page li:nth-child(3) { animation-delay: 0.4s; }
+.gano-sota-page li:nth-child(4) { animation-delay: 0.5s; }
+.gano-sota-page li:nth-child(5) { animation-delay: 0.6s; }
+
+.gano-sota-page li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, var(--gano-primary), var(--gano-accent));
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transform: scale(0);
+  animation: checkmarkPulse 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+.gano-sota-page li:nth-child(1)::before { animation-delay: 0.3s; }
+.gano-sota-page li:nth-child(2)::before { animation-delay: 0.4s; }
+.gano-sota-page li:nth-child(3)::before { animation-delay: 0.5s; }
+.gano-sota-page li:nth-child(4)::before { animation-delay: 0.6s; }
+.gano-sota-page li:nth-child(5)::before { animation-delay: 0.7s; }
+
+.gano-sota-page li strong {
+  color: var(--gano-primary);
+  font-weight: 700;
+}
+
+/* ============================================================================
+   4. QUOTE BOX — Testimonio/Reflexión
+   ============================================================================ */
+
+.gano-quote-box {
+  background: linear-gradient(135deg, var(--gano-dark-bg), var(--gano-dark-secondary));
+  border: 1px solid rgba(163, 230, 53, 0.2);
+  border-radius: 16px;
+  padding: 32px;
+  margin: 30px 0;
+  position: relative;
+  overflow: hidden;
+  animation: slideInUp 0.5s ease-out 0.2s both;
+}
+
+.gano-quote-box::before {
+  content: '"';
+  position: absolute;
+  top: 10px;
+  left: 16px;
+  font-size: 4rem;
+  color: rgba(99, 102, 241, 0.1);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.gano-quote-box p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+}
+
+.gano-quote-box p em {
+  font-style: italic;
+  color: var(--gano-accent-light);
+}
+
+/* Animated left border */
+.gano-quote-box::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--gano-accent), var(--gano-primary));
+  animation: expandHeight 0.6s ease-out 0.3s both;
+}
+
+/* ============================================================================
+   5. CTA BOX — Llamado a la Acción
+   ============================================================================ */
+
+.gano-cta-box {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.08));
+  border: 2px solid rgba(99, 102, 241, 0.3);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 30px 0 0;
+  text-align: center;
+  animation: slideInUp 0.5s ease-out 0.3s both;
+  position: relative;
+  overflow: hidden;
+}
+
+.gano-cta-box::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.2), transparent);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ============================================================================
+   6. BOTONES — Primario y Secundario
+   ============================================================================ */
+
+.gano-btn-primary {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--gano-primary), var(--gano-accent));
+  color: white;
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  text-align: center;
+  transition: var(--transition-bounce);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  cursor: pointer;
+  border: none;
+}
+
+.gano-btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+  z-index: -1;
+}
+
+.gano-btn-primary:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
+  color: white;
+}
+
+.gano-btn-primary:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.gano-btn-primary:active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+/* Versión secundaria */
+.gano-btn-secondary {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: var(--transition-base);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+.gano-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.6);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* ============================================================================
+   7. SECCIONES CON DIVIDERS MEJORADOS
+   ============================================================================ */
+
+.gano-sota-page > section {
+  padding: 40px 0;
+  border-bottom: 1px solid var(--gano-border);
+  position: relative;
+}
+
+.gano-sota-page > section:last-child {
+  border-bottom: none;
+}
+
+/* Divider decorativo */
+.gano-sota-divider {
+  height: 2px;
+  margin: 40px 0;
+  background: linear-gradient(90deg, transparent, var(--gano-primary) 20%, var(--gano-primary) 80%, transparent);
+  position: relative;
+}
+
+.gano-sota-divider::before {
+  content: '◆';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--gano-primary);
+  font-size: 0.8rem;
+  background: white;
+  padding: 0 8px;
+}
+
+/* ============================================================================
+   8. ANIMACIONES GLOBALES — Keyframes
+   ============================================================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bulletReveal {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes checkmarkPulse {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes expandHeight {
+  from {
+    height: 0;
+  }
+  to {
+    height: 100%;
+  }
+}
+
+/* ============================================================================
+   9. SCROLL ANIMATIONS — In-View Reveal
+   ============================================================================ */
+
+.gano-sota-page.scroll-reveal {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* ============================================================================
+   10. RESPONSIVE DESIGN — Mobile First
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .gano-sota-page {
+    padding: 30px 16px;
+  }
+
+  .gano-sota-page h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  .gano-sota-page h2 {
+    font-size: 1.4rem;
+    margin: 30px 0 16px;
+  }
+
+  .gano-hook-box,
+  .gano-quote-box,
+  .gano-cta-box {
+    padding: 20px;
+  }
+
+  .gano-btn-primary,
+  .gano-btn-secondary {
+    padding: 12px 28px;
+    font-size: 0.95rem;
+    width: 100%;
+  }
+
+  .gano-sota-page li {
+    padding-left: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gano-sota-page {
+    padding: 20px 12px;
+  }
+
+  .gano-sota-page h1 {
+    font-size: 1.5rem;
+  }
+
+  .gano-sota-page h2 {
+    font-size: 1.2rem;
+  }
+
+  .gano-btn-primary {
+    font-size: 0.9rem;
+    padding: 12px 20px;
+  }
+
+  .gano-quote-box::before {
+    font-size: 2rem;
+  }
+}
+
+/* ============================================================================
+   11. ACCESIBILIDAD — Respeto a Preferencias del Usuario
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .gano-sota-page {
+    color: #e5e7eb;
+  }
+
+  .gano-sota-page h1 {
+    color: var(--gano-accent-light);
+  }
+
+  .gano-hook-box {
+    background: rgba(99, 102, 241, 0.15);
+  }
+
+  .gano-btn-primary {
+    color: white;
+  }
+}
+
+/* ============================================================================
+   12. UTILIDADES — Clases Reutilizables
+   ============================================================================ */
+
+.gano-text-center {
+  text-align: center;
+}
+
+.gano-mt-large {
+  margin-top: 40px;
+}
+
+.gano-mb-large {
+  margin-bottom: 40px;
+}
+
+.gano-accent-text {
+  color: var(--gano-primary);
+  font-weight: 700;
+}
+
+.gano-muted-text {
+  color: var(--gano-text-muted);
+  font-size: 0.9rem;
+}
+
+/* ============================================================================
+   FIN — gano-sota-animations.css v2.0
+   ============================================================================ */

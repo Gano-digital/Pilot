@@ -1,0 +1,102 @@
+<wpml-config>
+    <elementor-widgets>
+
+        <widget name="wpr-breadcrumbs-pro">
+            <fields>
+                <field name="Breadcrumbs Pro: Breadcrumb Separator" editor_type="LINE">breadcrumb_separator</field>
+            </fields>
+        </widget>
+
+        <widget name="wpr-category-grid-pro">
+            <fields-in-item items_of="grid_elements">
+                <field name="Category Grid Pro: Separator" editor_type="LINE">element_tax_sep</field>
+                <field name="Category Grid Pro: Extra Text" editor_type="LINE">element_extra_text</field>
+            </fields-in-item>
+        </widget>
+    
+        <widget name="wpr-compare-button-pro">
+            <fields>
+                <field name="Compare Button: Add to Compare" editor_type="LINE">add_to_compare_text</field>
+                <field name="Compare Button: Remove from Compare" editor_type="LINE">remove_from_compare_text</field>
+            </fields>
+        </widget>
+    
+        <widget name="wpr-compare-pro">
+            <fields>
+                <field name="Compare: Remove Text" editor_type="LINE">remove_from_compare_text</field>
+                <field name="Compare: Empty Text" editor_type="LINE">compare_empty_text</field>
+                <field name="Compare: Simple Product Text" editor_type="LINE">element_addcart_simple_txt</field>
+                <field name="Compare: Grouped Product Text" editor_type="LINE">element_addcart_grouped_txt</field>
+                <field name="Compare: Variable Product Text" editor_type="LINE">element_addcart_variable_txt</field>
+            </fields>
+        </widget>
+    
+        <widget name="wpr-mini-compare-pro">
+            <fields>
+                <field name="Mini Compare: View Compare Text" editor_type="LINE">view_compare_text</field>
+                <field name="Mini Compare: Close Compare Text" editor_type="LINE">close_compare_heading</field>
+            </fields>
+        </widget>
+    
+        <widget name="wpr-mini-wishlist-pro">
+            <fields>
+                <field name="Mini Wishlist: View Wishlist Text" editor_type="LINE">view_wishlist_text</field>
+                <field name="Mini Wishlist: Empty Text" editor_type="LINE">wishlist_empty_text</field>
+                <field name="Mini Wishlist: Close Wishlist Text" editor_type="LINE">close_wishlist_heading</field>
+            </fields>
+        </widget>
+
+        <widget name="wpr-page-my-account-pro">
+            <fields-in-item items_of="tab_labels">
+                <field name="My Account: Tab Label" editor_type="LINE">tab_label_name</field>
+            </fields-in-item>
+        </widget>
+
+        <widget name="wpr-product-breadcrumbs-pro">
+            <fields>
+                <field name="Product Breadcrumbs: Separator" editor_type="LINE">breadcrumb_separator</field>
+            </fields>
+        </widget>
+
+        <widget name="wpr-product-filters-pro">
+            <fields>
+                <field name="Product Filters: Title Text" editor_type="LINE">filter_title_text</field>
+                <field name="Product Filters: Search Placeholder" editor_type="LINE">search_placeholder</field>
+                <field name="Product Filters: Search Button Text" editor_type="LINE">search_btn_text</field>
+            </fields>
+        </widget>
+
+        <widget name="wpr-wishlist-button-pro">
+            <fields>
+                <field name="Wishlist Button: Add to Wishlist Text" editor_type="LINE">add_to_wishlist_text</field>
+                <field name="Wishlist Button: Remove from Wishlist Text" editor_type="LINE">remove_from_wishlist_text</field>
+            </fields>
+        </widget>
+
+        <widget name="wpr-wishlist-pro">
+            <fields>
+                <field name="Wishlist: Wishlist Empty Text" editor_type="LINE">wishlist_empty_text</field>
+                <field name="Wishlist: Simple Product Text" editor_type="LINE">element_addcart_simple_txt</field>
+                <field name="Wishlist: Grouped Product Text" editor_type="LINE">element_addcart_grouped_txt</field>
+                <field name="Wishlist: Variable Product Text" editor_type="LINE">element_addcart_variable_txt</field>
+            </fields>
+        </widget>
+
+        <widget name="wpr-woo-category-grid-pro">
+            <fields-in-item items_of="grid_elements">
+                <field name="Woo Category Grid: Separator" editor_type="LINE">element_tax_sep</field>
+                <field name="Woo Category Grid: Extra Text" editor_type="LINE">element_extra_text</field>
+            </fields-in-item>
+        </widget>
+    
+        <!-- <widget name="">
+            <fields>
+                <field name="" editor_type="LINE"></field>
+            </fields>
+            <fields-in-item items_of="">
+                <field name="" editor_type="LINE"></field>
+            </fields-in-item>
+        </widget> -->
+
+    </elementor-widgets>
+</wpml-config>

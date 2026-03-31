@@ -1,0 +1,27 @@
+# BEGIN WordPress
+# The directives (lines) between "BEGIN WordPress" and "END WordPress" are
+# dynamically generated, and should only be modified via WordPress filters.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
+
+# BEGIN GANO DIGITAL ANTI-SCRAPER & AI BOT PROTECTION
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Block known commercial AI Scrapers and Crawlers
+RewriteCond %{HTTP_USER_AGENT} (GPTBot|ChatGPT-User|OAI-SearchBot|anthropic-ai|Claude-Web|ClaudeBot|Cohere-ai|CCBot|facebookexternalhit|Google-Extended|Amazonbot|Applebot|Bytespider|Diffbot|PerplexityBot) [NC,OR]
+# Block generic dev tools and scraping libraries commonly used for abuse
+RewriteCond %{HTTP_USER_AGENT} (python-requests|scrapy|wget|curl|libwww-perl|urllib|Go-http-client|Java|HTTrack|WinHTTrack|AhrefsSEO|DotBot|MJ12bot) [NC]
+
+# Return a 403 Forbidden
+RewriteRule .* - [F,L]
+</IfModule>
+# END GANO DIGITAL ANTI-SCRAPER & AI BOT PROTECTION

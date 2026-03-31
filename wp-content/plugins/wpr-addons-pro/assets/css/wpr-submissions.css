@@ -1,0 +1,76 @@
+#wpr_submission_fields .wpr-submissions-wrap {
+	margin-bottom: 10px;
+}
+
+.wpr-submissions-wrap {
+    width: 50%;
+}
+
+.wpr-submissions-wrap * {
+    width: 100%;
+}
+
+.wpr-submissions-wrap input {
+    display: block;
+}
+
+.wpr-submissions-wrap label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.wpr-submissions-wrap p {
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 0 !important;
+    border-top: none;
+    border-bottom: none;
+    border-right: none;
+}
+
+.wpr-submissions-wrap .notice-error {
+    background: #f2dede;
+}
+
+.wpr-submissions-wrap .notice-success {
+    background: #dff0d8;
+}
+
+.wpr-submission-read {
+    opacity: 0.5;
+}
+
+.wpr-submission-read,
+.wpr-submission-unread {
+    cursor: pointer;
+}
+
+.wpr-submissions-meta {
+    font-weight: 600;
+}
+
+.wpr-submission-unread-column,
+.wpr-submission-unread {
+    font-weight: bold;
+}
+
+#postbox-container-2 {
+    opacity: 0;
+}
+
+.wpr-edit-submissions {
+    position: absolute;
+    right: 2%;
+    top: 2%;
+}
+
+.wpr-submissions-wrap > *[readonly]:not(p) {
+    border: none;
+}
+
+.wpr-inline {
+    display: inline-block !important;
+    width: auto;
+    margin-right: 10px;
+}

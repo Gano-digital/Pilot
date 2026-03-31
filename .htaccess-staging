@@ -1,0 +1,38 @@
+# Gano Digital - Staging Access Control
+# Protege /staging solo para IPs autorizadas
+# Diego IP: 181.234.195.22
+
+<IfModule mod_authz_core.c>
+    # Denegar acceso a todos por defecto
+    Require all denied
+
+    # Permitir solo la IP de Diego
+    Require ip 181.234.195.22
+</IfModule>
+
+# Si mod_authz_core.c no está disponible, usar alternativa antigua
+<IfModule !mod_authz_core.c>
+    Order Deny,Allow
+    Deny from all
+    Allow from 181.234.195.22
+</IfModule>
+
+# WordPress rewrite rules
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /staging/
+    RewriteRule ^index\.html$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /staging/index.php [L]
+</IfModule>
+
+# Seguridad adicional
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Prevenir acceso directo a wp-config
+<FilesMatch "^wp-config.*\.php$">
+    Require all denied
+</FilesMatch>

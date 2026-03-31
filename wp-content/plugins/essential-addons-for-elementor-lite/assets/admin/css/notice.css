@@ -1,0 +1,286 @@
+/* review notice */
+
+#wpnotice-essential-addons-for-elementor-black_friday_notice .wpnotice-content-wrapper {
+    padding: 0 !important;
+}
+#wpnotice-essential-addons-for-elementor-black_friday_notice .wpnotice-content-wrapper p {
+    margin: 0;
+}
+
+.wpnotice-content-wrapper .button {
+    text-transform: capitalize;
+}
+
+.wpdeveloper-review-notice {
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 3px;
+    margin: 15px;
+    border-left: 4px solid transparent;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.wpdeveloper-review-notice:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.wpdeveloper-notice-thumbnail {
+    width: 90px;
+    float: left;
+    padding: 5px;
+    text-align: center;
+    border-right: 4px solid transparent;
+}
+.wpdeveloper-notice-thumbnail img {
+    width: 72px;
+    opacity: 0.85;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.wpdeveloper-notice-thumbnail img:hover {
+    opacity: 1;
+}
+.wpdeveloper-update-notice .wpdeveloper-notice-thumbnail img,
+.wpdeveloper-update_400k-notice .wpdeveloper-notice-thumbnail img {
+    width: 32px;
+}
+.wpdeveloper-update-notice .wpdeveloper-notice-thumbnail,
+.wpdeveloper-update_400k-notice .wpdeveloper-notice-thumbnail {
+    width: auto;
+    padding: 7px;
+}
+.wpdeveloper-update-notice .wpdeveloper-notice-message,
+.wpdeveloper-update_400k-notice .wpdeveloper-notice-message {
+    padding: 5px 0;
+}
+.wpdeveloper-update-notice,
+.wpdeveloper-update_400k-notice {
+    border-color: #6648fe;
+    padding: 0
+}
+a.ea-notice-cta {
+    background-color: #4d18ff;
+    background: linear-gradient(-30deg, #4d18ff, #9a7cff);
+    margin-top: 30px;
+    color: #fff;
+    padding: 8px 20px;
+    outline: none;
+    text-decoration: none;
+    border-radius: 3px;
+    margin-left: 10px;
+    transition: all 0.3s ease;
+}
+a.ea-notice-cta:hover {
+    opacity: 0.85;
+}
+span.coupon-code {
+    background: #ebebeb;
+    padding: 5px 10px;
+    letter-spacing: 0.035em;
+}
+.eael-review-text {
+    overflow: hidden;
+}
+.eael-review-text h3 {
+    font-size: 24px;
+    margin: 0 0 5px;
+    font-weight: 400;
+    line-height: 1.3;
+}
+.eael-review-text p {
+    font-size: 13px;
+    margin: 0 0 5px;
+}
+.wpdeveloper-notice-link {
+    margin: 8px 0 0 0;
+    padding: 0;
+}
+.wpdeveloper-notice-link li {
+    display: inline-block;
+    margin-right: 15px;
+}
+.wpdeveloper-notice-link li a {
+    display: inline-block;
+    color: #10738b;
+    text-decoration: none;
+    padding-left: 26px;
+    position: relative;
+}
+.wpdeveloper-notice-link li a span {
+    position: absolute;
+    left: 0;
+    top: -2px;
+}
+.wpdeveloper-notice-message {
+    padding: 10px 0;
+}
+.wpdeveloper-upsale-notice .wpdeveloper-notice-message {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 10px 0;
+}
+.wpdeveloper-upsale-notice .wpdeveloper-notice-message + .notice-dismiss {
+    top: 10px;
+}
+.wpdeveloper-upsale-notice #plugin-install-core {
+    margin-left: 10px;
+}
+.notice.notice-has-thumbnail {
+    padding-left: 0;
+}
+.wpdeveloper-upsale-notice {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.wpdeveloper-upsale-notice .wpdeveloper-notice-thumbnail {
+    padding: 10px;
+    width: 40px;
+}
+.wpdeveloper-upsale-notice .wpdeveloper-notice-thumbnail img {
+    width: 32px;
+}
+.toplevel_page_eael-settings .wp-menu-image img {
+    max-width: 20px;
+    padding-top: 8px !important;
+}
+.wpdeveloper-upsale-notice .wpdeveloper-notice-message .button {
+    margin-left: 15px;
+}
+
+.eael-menu-notice {
+    background: red;
+    position: absolute;
+    bottom: 24px;
+    right: 0px;
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+    margin: 1px 0 -1px 2px;
+    padding: 0 5px;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    background-color: #D63638;
+    color: #fff;
+    font-size: 11px;
+    line-height: 1.6;
+    text-align: center;
+    z-index: 26;
+    display:none;
+}
+
+/* February Deal 2026 notice */
+.notice-essential-addons-for-elementor-lite-february_deal_2026_notice,
+.notice-essential-addons-for-elementor-lite-february_deal_2026_notice * {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+.notice-essential-addons-for-elementor-lite-february_deal_2026_notice {
+    padding: 0;
+    border: 0;
+    border-left: 3px solid #B083F4;
+}
+.notice-essential-addons-for-elementor-lite-february_deal_2026_notice .wpnotice-content-wrapper {
+    display: flex;
+    width: 100%;
+    padding: 12px 0;
+    align-items: center;
+}
+.notice-essential-addons-for-elementor-lite-february_deal_2026_notice .wpnotice-content-wrapper .eael-black-friday-optin-logo {
+    width: 245px;
+    padding: 0;
+    text-align: center;
+}
+.notice-essential-addons-for-elementor-lite-february_deal_2026_notice .wpnotice-content-wrapper .eael-black-friday-optin-logo img {
+    width: auto;
+    display: block;
+    margin: auto 34px auto 40px;
+    max-width: 163px;
+}
+.notice-essential-addons-for-elementor-lite-february_deal_2026_notice .wpnotice-content-wrapper .eael-february-deal-content {
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: calc(100% - 225px);
+    align-items: flex-start;
+}
+.notice-essential-addons-for-elementor-lite-february_deal_2026_notice .wpnotice-content-wrapper .eael-february-deal-content p {
+    color: #171717;
+    font-size: 14px;
+    margin-top: 0;
+    text-transform: capitalize;
+}
+
+.notice-essential-addons-for-elementor-lite-february_deal_2026_notice .eael-notice-action-button .eael-action-dismiss-btn {
+    text-decoration: underline;
+    color: #424242;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.notice-essential-addons-for-elementor-lite-february_deal_2026_notice .wpnotice-content-wrapper .eael-february-deal-content a.button-primary {
+    background-color: #5626E7;
+    color: #fff;
+    box-shadow: 0px 1px 0px 0px #000000;
+    border: none;
+    border-radius: 6px;
+    padding: 2px 16px;
+    font-size: 14px;
+    font-weight: 500;
+
+}
+
+.notice-essential-addons-for-elementor-lite-february_deal_2026_notice .wpnotice-content-wrapper .eael-february-deal-content a + a {
+    color: #5626E7;
+    margin-left: 20px;
+}
+.notice-essential-addons-for-elementor-lite-february_deal_2026_notice .wpnotice-content-wrapper .eael-february-deal-content svg {
+    vertical-align: sub;
+    margin-right: 3px;
+}
+.notice-essential-addons-for-elementor-lite-february_deal_2026_notice .notice-dismiss:before {
+    content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgZmlsdGVyPSJ1cmwoI2ZpbHRlcjBfaV8xODFfMzM3NjYpIj4KPHBhdGggZD0iTTEwLjAwMDEgOS4wNDc3MkwxMy4zMzM0IDUuNzE0MzZMMTQuMjg1OCA2LjY2Njc0TDEwLjk1MjQgMTAuMDAwMUwxNC4yODU4IDEzLjMzMzRMMTMuMzMzNCAxNC4yODU4TDEwLjAwMDEgMTAuOTUyNUw2LjY2Njc0IDE0LjI4NThMNS43MTQzNiAxMy4zMzM0TDkuMDQ3NjkgMTAuMDAwMUw1LjcxNDM2IDYuNjY2NzRMNi42NjY3NCA1LjcxNDM2TDEwLjAwMDEgOS4wNDc3MloiIGZpbGw9IiMxNzE3MTciLz4KPC9nPgo8ZGVmcz4KPGZpbHRlciBpZD0iZmlsdGVyMF9pXzE4MV8zMzc2NiIgeD0iMCIgeT0iMCIgd2lkdGg9IjIwLjcxNDMiIGhlaWdodD0iMjAiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY29sb3ItaW50ZXJwb2xhdGlvbi1maWx0ZXJzPSJzUkdCIj4KPGZlRmxvb2QgZmxvb2Qtb3BhY2l0eT0iMCIgcmVzdWx0PSJCYWNrZ3JvdW5kSW1hZ2VGaXgiLz4KPGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbj0iU291cmNlR3JhcGhpYyIgaW4yPSJCYWNrZ3JvdW5kSW1hZ2VGaXgiIHJlc3VsdD0ic2hhcGUiLz4KPGZlQ29sb3JNYXRyaXggaW49IlNvdXJjZUFscGhhIiB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMTI3IDAiIHJlc3VsdD0iaGFyZEFscGhhIi8+CjxmZU9mZnNldCBkeD0iMC43MTQyODYiLz4KPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMC43MTQyODYiLz4KPGZlQ29tcG9zaXRlIGluMj0iaGFyZEFscGhhIiBvcGVyYXRvcj0iYXJpdGhtZXRpYyIgazI9Ii0xIiBrMz0iMSIvPgo8ZmVDb2xvck1hdHJpeCB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAxIDAgMCAwIDAgMSAwIDAgMCAwIDEgMCAwIDAgMC4wOCAwIi8+CjxmZUJsZW5kIG1vZGU9Im5vcm1hbCIgaW4yPSJzaGFwZSIgcmVzdWx0PSJlZmZlY3QxX2lubmVyU2hhZG93XzE4MV8zMzc2NiIvPgo8L2ZpbHRlcj4KPC9kZWZzPgo8L3N2Zz4K");
+}
+
+#wpnotice-essential-addons-for-elementor-review {
+    display: grid !important;
+    grid-template-columns: 80px 1fr !important;
+    padding: 10px;
+}
+
+#wpnotice-essential-addons-for-elementor-review a {
+    text-decoration: none;
+}
+
+@media screen and (max-width: 767px) {
+    .notice-essential-addons-for-elementor-lite-bfcm_2025_notice {
+        display: none !important;
+    }
+}
+
+.notice-essential-addons-for-elementor-lite-review ul.essential-addons-for-elementor-lite-notice-links li a span {
+    text-decoration: none;
+}
+
+#elementor-element-manager-wrap .wp-list-table tr[data-key-id="eael-better-payment"],
+#elementor-element-manager-wrap .wp-list-table tr[data-key-id="eael-career-page"],
+#elementor-element-manager-wrap .wp-list-table tr[data-key-id="eael-embedpress"] {
+    display: none;
+}
+
+#elementor-element-manager-wrap .wp-list-table tr[data-key-id="eael-woo-product-carousel"] .eaicon-product-carousel:before,
+#elementor-element-manager-wrap .wp-list-table tr[data-key-id="eael-woo-product-slider"] .eaicon-product-slider:before,
+#elementor-element-manager-wrap .wp-list-table tr[data-key-id="eael-woo-product-list"] .eaicon-woo-product-list:before {
+    font-size: unset;
+}
