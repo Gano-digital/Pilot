@@ -8,49 +8,6 @@
  * License: GPL v2+
  */
 
-/*
- * ╔══════════════════════════════════════════════════════════════════════════╗
- * ║                  🎯 VERSIÓN 2.0 — MEJORAS IMPLEMENTADAS                 ║
- * ╠══════════════════════════════════════════════════════════════════════════╣
- * ║                                                                          ║
- * ║  ✅ SEGURIDAD:                                                            ║
- * ║     • wp_kses_post() en contenido HTML                                   ║
- * ║     • Sanitización mejorada de metadata                                  ║
- * ║     • Logging de errores en error_log()                                  ║
- * ║     • Validación de permisos en activation hook                          ║
- * ║                                                                          ║
- * ║  ✅ UX & ANIMACIONES:                                                     ║
- * ║     • Enqueuear CSS de animaciones (gano-sota-animations.css)            ║
- * ║     • Estructura HTML mejorada con ARIA labels y semántica               ║
- * ║     • Dividers decorativos entre secciones                               ║
- * ║     • Schema.org microdata (Article, FAQPage)                            ║
- * ║                                                                          ║
- * ║  ✅ ENGAGEMENT:                                                           ║
- * ║     • CTAs dinámicos por categoría (no hardcodeado)                      ║
- * ║     • Sección de testimonios/social proof                                ║
- * ║     • Tabla comparativa integrada (opcional)                             ║
- * ║     • Estadísticas animadas por página                                   ║
- * ║     • Related content suggestions                                         ║
- * ║                                                                          ║
- * ║  ✅ RESPONSIVIDAD:                                                        ║
- * ║     • Media queries integradas en gano-sota-animations.css               ║
- * ║     • Estructura flexible de contenido                                   ║
- * ║     • Imágenes con lazy loading                                          ║
- * ║                                                                          ║
- * ║  ✅ INTEGRACIONES:                                                        ║
- * ║     • URLs dinámicas desde opciones de WordPress                         ║
- * ║     • Filtro: gano_sota_page_content — permite modificar contenido       ║
- * ║     • Filtro: gano_sota_cta_url — personalizar URLs de CTA              ║
- * ║     • Hook: gano_sota_after_page — agregar contenido adicional          ║
- * ║                                                                          ║
- * ║  📝 ELIMINACIÓN:                                                          ║
- * ║     Este plugin debe eliminarse después de UNA SOLA activación.          ║
- * ║     Las páginas creadas permanecen indefinidamente.                      ║
- * ║     El plugin no es necesario en producción.                             ║
- * ║                                                                          ║
- * ╚══════════════════════════════════════════════════════════════════════════╝
- */
-
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Define constants
@@ -63,32 +20,23 @@ define( 'GANO_CONTENT_IMPORTER_PATH', plugin_dir_path( __FILE__ ) );
 
 register_activation_hook( __FILE__, 'gano_import_content_hub_v2' );
 
-/**
- * Main activation handler
- */
 function gano_import_content_hub_v2() {
-    // Only allow activation by admins
     if ( ! current_user_can( 'activate_plugins' ) ) {
         wp_die( 'No tienes permisos para activar plugins.' );
     }
 
-    // Get pages data
     $pages = gano_get_pages_data_v2();
     $imported_count = 0;
     $error_count = 0;
 
     foreach ( $pages as $page ) {
-        // Skip if already exists (idempotency)
         $exists = get_page_by_path( sanitize_title( $page['title'] ), OBJECT, 'page' );
         if ( $exists ) {
-            error_log( "GANO IMPORTER: Página '{$page['title']}' ya existe. Saltada." );
             continue;
         }
 
-        // Sanitize content with wp_kses_post (security improvement)
         $safe_content = wp_kses_post( $page['content'] );
 
-        // Insert post
         $post_id = wp_insert_post( [
             'post_title'   => wp_strip_all_tags( $page['title'] ),
             'post_content' => $safe_content,
@@ -104,29 +52,18 @@ function gano_import_content_hub_v2() {
         ] );
 
         if ( is_wp_error( $post_id ) ) {
-            error_log( "GANO IMPORTER ERROR: No se pudo crear '{$page['title']}'— " . $post_id->get_error_message() );
             $error_count++;
             continue;
         }
 
-        // Assign featured image if available
         if ( ! empty( $page['feature_img_name'] ) ) {
-            $attach_result = gano_attach_image_by_filename_v2( $page['feature_img_name'], $post_id );
-            if ( ! $attach_result ) {
-                error_log( "GANO IMPORTER WARNING: Imagen '{$page['feature_img_name']}' no encontrada para post ID {$post_id}" );
-            }
+            gano_attach_image_by_filename_v2( $page['feature_img_name'], $post_id );
         }
 
-        // Apply filter to allow customization
         do_action( 'gano_sota_page_created', $post_id, $page );
-
         $imported_count++;
     }
 
-    // Log summary
-    error_log( "GANO IMPORTER v2.0: Importación completada. {$imported_count} páginas creadas, {$error_count} errores." );
-
-    // Store stats in option for later reference
     update_option( 'gano_sota_import_stats', [
         'version'       => GANO_CONTENT_IMPORTER_VERSION,
         'imported'      => $imported_count,
@@ -135,954 +72,584 @@ function gano_import_content_hub_v2() {
     ] );
 }
 
-// ============================================================================
-// DEACTIVATION HOOK — Nota de eliminación
-// ============================================================================
-
 register_deactivation_hook( __FILE__, 'gano_content_importer_deactivate' );
 
 function gano_content_importer_deactivate() {
-    error_log( 'GANO IMPORTER: Plugin desactivado. ⚠️ Elimina este plugin ahora si no lo necesitas más.' );
     delete_option( 'gano_sota_import_stats' );
 }
 
-// ============================================================================
-// IMAGE ATTACHMENT HANDLER
-// ============================================================================
-
-/**
- * Attach an image from /uploads/2026/03/ to a post as featured image.
- * Version 2.0: Better error handling and logging
- */
 function gano_attach_image_by_filename_v2( $filename, $post_id ) {
-    if ( empty( $filename ) ) {
-        return false;
-    }
-
+    if ( empty( $filename ) ) return false;
     global $wpdb;
-
-    // First try to find in media library
-    $results = $wpdb->get_results(
-        $wpdb->prepare(
-            "SELECT ID FROM {$wpdb->posts} WHERE post_type='attachment' AND post_title LIKE %s LIMIT 1",
-            '%' . $wpdb->esc_like( $filename ) . '%'
-        )
-    );
-
+    $results = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_type='attachment' AND post_title LIKE %s LIMIT 1", '%' . $wpdb->esc_like( $filename ) . '%' ) );
     if ( ! empty( $results ) ) {
         set_post_thumbnail( $post_id, $results[0]->ID );
         return true;
     }
-
-    // If not in library, try to sideload
-    $uploads = wp_upload_dir();
-    $file_path = $uploads['basedir'] . '/2026/03/' . sanitize_file_name( $filename );
-
-    if ( ! file_exists( $file_path ) ) {
-        error_log( "GANO IMPORTER: Archivo no encontrado: {$file_path}" );
-        return false;
-    }
-
-    // Require media handling functions
-    require_once ABSPATH . 'wp-admin/includes/image.php';
-    require_once ABSPATH . 'wp-admin/includes/file.php';
-    require_once ABSPATH . 'wp-admin/includes/media.php';
-
-    $file_array = [
-        'name'     => sanitize_file_name( $filename ),
-        'tmp_name' => $file_path,
-    ];
-
-    $attach_id = media_handle_sideload( $file_array, $post_id );
-
-    if ( is_wp_error( $attach_id ) ) {
-        error_log( "GANO IMPORTER ERROR (sideload): {$attach_id->get_error_message()}" );
-        return false;
-    }
-
-    set_post_thumbnail( $post_id, $attach_id );
-    return true;
+    return false;
 }
-
-// ============================================================================
-// FRONTEND ENQUEUE — Load animations CSS
-// ============================================================================
 
 add_action( 'wp_enqueue_scripts', 'gano_enqueue_sota_styles' );
 
 function gano_enqueue_sota_styles() {
-    // Only enqueue on pages with SOTA content
-    if ( ! is_singular( 'page' ) ) {
-        return;
-    }
-
+    if ( ! is_singular( 'page' ) ) return;
     $post = get_post();
-    if ( ! $post || get_post_meta( $post->ID, '_gano_sota_category', true ) === '' ) {
-        return;
-    }
+    if ( ! $post || get_post_meta( $post->ID, '_gano_sota_category', true ) === '' ) return;
 
-    // Enqueue animation styles
-    wp_enqueue_style(
-        'gano-sota-animations',
-        get_stylesheet_directory_uri() . '/gano-sota-animations.css',
-        [],
-        GANO_CONTENT_IMPORTER_VERSION
-    );
-
-    // Enqueue optional scroll animation JS
-    wp_enqueue_script(
-        'gano-sota-scroll-reveal',
-        GANO_CONTENT_IMPORTER_PATH . 'js/scroll-reveal.js',
-        [],
-        GANO_CONTENT_IMPORTER_VERSION,
-        true
-    );
+    wp_enqueue_style( 'gano-sota-animations', get_stylesheet_directory_uri() . '/gano-sota-animations.css', [], GANO_CONTENT_IMPORTER_VERSION );
 }
 
-// ============================================================================
-// FILTER HOOKS — Customization points
-// ============================================================================
-
-/**
- * Filter para personalizar URLs de CTA
- * Uso: add_filter( 'gano_sota_cta_url', function( $url, $category ) { ... }, 10, 2 );
- */
 function gano_get_cta_url( $category = '' ) {
     $base_url = get_option( 'gano_sota_cta_base_url', '/contacto' );
-
-    // Allow customization by category
-    $url = apply_filters( 'gano_sota_cta_url', $base_url, sanitize_key( $category ) );
-
-    return esc_url( $url );
+    return esc_url( apply_filters( 'gano_sota_cta_url', $base_url, sanitize_key( $category ) ) );
 }
 
-/**
- * Filter para personalizar contenido de página
- * Uso: add_filter( 'gano_sota_page_content', function( $content, $page_data ) { ... }, 10, 2 );
- */
-function gano_filter_page_content( $content, $page_data = [] ) {
-    return apply_filters( 'gano_sota_page_content', $content, $page_data );
-}
-
-// ============================================================================
-// PAGE DATA — 20 SOTA Pages (v2.0 with improvements)
-// ============================================================================
-
-/**
- * Returns an array of all 20 SOTA pages with improved HTML structure
- * v2.0: Added semantic HTML, ARIA labels, better structure for animations
- */
 function gano_get_pages_data_v2() {
     $cta_base = gano_get_cta_url();
 
     return [
         // PAGE 1 — NVMe Architecture
         [
-            'title'            => 'Arquitectura NVMe: La Muerte del SSD Tradicional',
+            'title'            => 'Arquitectura NVMe: El Manifiesto de la Velocidad Crítica',
             'category'         => 'infraestructura',
             'feature_img_name' => 'icon_nvme_speed.png',
             'cta_url'          => $cta_base . '#nvme',
-            'stats'            => [
-                ['label' => 'IOPS', 'value' => '6x'],
-                ['label' => 'Latencia', 'value' => '< 1ms'],
-            ],
+            'stats'            => [['label' => 'Latencia IOPS', 'value' => 'Récord'], ['label' => 'Soberanía Técnica', 'value' => 'Total']],
             'content'          => '
 <article class="gano-sota-page" role="main" aria-label="Arquitectura NVMe">
-
-<h1>⚡ Arquitectura NVMe: La Muerte del SSD Tradicional</h1>
-
-<div class="gano-hook-box" role="doc-introduction" aria-label="Introducción">
-<p>Los discos SSD tradicionales nacieron para PCs, no para centros de datos modernos. Cuando tu web recibe 500 visitantes simultáneos, el embotellamiento del disco aniquila tu velocidad, sin importar tu procesador.</p>
+<h1>⚡ Manifiesto NVMe: Ingeniería para la Latencia Cero</h1>
+<div class="gano-hook-box" role="doc-introduction">
+<p>La infraestructura convencional se asfixia en el protocolo SATA. Nuestra arquitectura NVMe Gen4 se comunica directamente con el procesador, eliminando el cuello de botella más crítico de la web moderna.</p>
 </div>
-
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
+<h2>🧠 Anatomía del Estado del Arte</h2>
 <ul role="list">
-<li><strong>Protocolo PCIe Directo:</strong> NVMe se salta las interfaces antiguas (SATA) comunicándose directo con el procesador.</li>
-<li><strong>IOPS Masivos:</strong> Capacidad de lectura/escritura hasta 6 veces más rápida que el mejor SSD corporativo.</li>
-<li><strong>Milisegundos que Venden:</strong> Reduce latencia al punto donde la "pantalla en blanco" de carga desaparece.</li>
+<li><strong>Instrucciones Paralelas:</strong> Capacidad de procesar miles de colas de comandos simultáneos.</li>
+<li><strong>Transferencia Directa:</strong> Eliminamos las capas de abstracción heredadas.</li>
+<li><strong>Resiliencia de Hardware:</strong> Almacenamiento diseñado para ciclos de escritura intensivos.</li>
 </ul>
 </section>
-
 <div class="gano-divider" aria-hidden="true"></div>
-
 <div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"Tener un servidor SSD en 2026 es como ponerle un motor de podadora a un Ferrari. Da el salto a la arquitectura NVMe."</em></p>
+<p>💬 <em>"El almacenamiento no es un commodity; es el sistema circulatorio de tu soberanía digital."</em></p>
 </div>
-
 <section>
-<h2>🛠️ ¿Cómo lo activamos en tu Ecosistema Gano Digital?</h2>
-<p>En tu panel Gano Digital, la etiqueta <strong>NVMe-Tier1</strong> certifica que tu ecosistema usa hardware de última generación sin discos magnéticos heredados. <strong>Disponible en todos nuestros planes Premium, Enterprise y Agencia.</strong></p>
+<h2>🛠️ Integración en tu Ecosistema</h2>
+<p>La certificación <strong>NVMe-SOTA</strong> es nuestra base de ingeniería en el ecosistema <strong>Núcleo Prime</strong>.</p>
 </section>
-
 <div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Migrar a almacenamiento NVMe">🚀 Migrar a NVMe Ahora</a>
-<p class="gano-muted-text">Sin penalizaciones. Migración gratuita en 24 horas.</p>
+<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary">🚀 Activar Ingeniería NVMe</a>
 </div>
-
 </article>',
         ],
 
         // PAGE 2 — Zero-Trust Security
         [
-            'title'            => 'Zero-Trust Security: El Fin de las Contraseñas',
+            'title'            => 'Zero-Trust: El Fin de la Confianza Implícita',
             'category'         => 'seguridad',
             'feature_img_name' => 'icon_zero_trust_security.png',
             'cta_url'          => $cta_base . '#security',
-            'stats'            => [
-                ['label' => 'Hackeos reducidos', 'value' => '99.7%'],
-                ['label' => 'Tiempo respuesta', 'value' => '< 5ms'],
-            ],
+            'stats'            => [['label' => 'Protocolo', 'value' => 'SOTA'], ['label' => 'Autenticación', 'value' => 'Multicapa']],
             'content'          => '
 <article class="gano-sota-page" role="main" aria-label="Zero-Trust Security">
-
-<h1>🛡️ Zero-Trust Security: El Fin de las Contraseñas</h1>
-
+<h1>🛡️ Manifiesto Zero-Trust: Nunca Confiar, Siempre Verificar</h1>
 <div class="gano-hook-box" role="doc-introduction">
-<p>Las contraseñas de 16 caracteres ya no sirven. El 80% de los hackeos modernos en WordPress ocurren por fuerza bruta o credenciales robadas en la deep web, no por vulnerabilidades del servidor.</p>
+<p>El perímetro tradicional ya no existe. En Gano Digital, cada solicitud es tratada como una amenaza potencial hasta que se demuestre lo contrario mediante criptografía avanzada.</p>
 </div>
-
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
+<h2>🧠 La Filosofía de Inmunidad Digital</h2>
 <ul role="list">
-<li><strong>Verificación Continua:</strong> Zero-Trust significa "Nunca Confíes, Siempre Verifica". El sistema duda de ti incluso si ya iniciaste sesión.</li>
-<li><strong>Passkeys (Biometría Web):</strong> Tu huella dactilar o FaceID reemplazan el texto. Es matemáticamente imposible hacer phishing a una Passkey.</li>
-<li><strong>Geocercas Lógicas:</strong> Bloqueo instantáneo si la clave admin se usa fuera de los nodos autorizados.</li>
+<li><strong>Identidad Monolítica:</strong> Eliminamos las contraseñas estáticas por tokens dinámicos.</li>
+<li><strong>Micro-Segmentación:</strong> Cada componente de tu WordPress está aislado.</li>
+<li><strong>Visibilidad Total:</strong> Auditoría en tiempo real de cada intento de acceso.</li>
 </ul>
 </section>
-
 <div class="gano-divider" aria-hidden="true"></div>
-
 <div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"No basta con tener una contraseña fuerte. En la era de la IA, si confías, pierdes. Implementa Zero-Trust en tu ecosistema digital."</em></p>
+<p>💬 <em>"La seguridad no es un muro; es un sistema inmunológico que aprende de cada ataque."</em></p>
 </div>
-
 <section>
-<h2>🛠️ Activación en tu Ecosistema Gano Digital</h2>
-<p>Todos los ecosistemas Gano vienen preparados para Passkeys. Entra con tu rostro desde tu celular y olvídate del panel <code>/wp-admin</code> tradicional. <strong>Incluido en planes Starter+</strong>.</p>
+<h2>🛠️ Blindaje en tu Ecosistema</h2>
+<p>El protocolo Zero-Trust es la columna vertebral de nuestra <strong>Fortaleza Delta</strong>.</p>
 </section>
-
 <div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Blindar la web con seguridad Zero-Trust">🔐 Blindar mi Web Ahora</a>
-<p class="gano-muted-text">Certificado ISO 27001. Cumple con regulaciones colombianas.</p>
+<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary">🔐 Blindar mi Activo Digital</a>
 </div>
-
 </article>',
         ],
 
         // PAGE 3 — Predictive AI Management
         [
-            'title'            => 'Gestión Predictiva con AI: Cero Caídas, Cero Sorpresas',
+            'title'            => 'IA Predictiva: La Mente que Anticipa el Fallo',
             'category'         => 'inteligencia-artificial',
             'feature_img_name' => 'icon_predictive_ai_server.png',
             'cta_url'          => $cta_base . '#ai',
-            'stats'            => [
-                ['label' => 'Disponibilidad', 'value' => '99.99%'],
-                ['label' => 'Problemas evitados', 'value' => '94%'],
-            ],
+            'stats'            => [['label' => 'MTTR', 'value' => 'Cero'], ['label' => 'Autonomía', 'value' => 'Total']],
             'content'          => '
 <article class="gano-sota-page" role="main" aria-label="Gestión Predictiva con IA">
-
-<h1>🤖 Gestión Predictiva con AI: Cero Caídas, Cero Sorpresas</h1>
-
+<h1>🤖 Inteligencia Predictiva: El Fin del Soporte Reaccionario</h1>
 <div class="gano-hook-box" role="doc-introduction">
-<p>El soporte técnico tradicional es reaccionario: esperas a que la página se caiga, abres un ticket, y 4 horas después te dicen qué falló. Eso es inaceptable en 2026.</p>
+<p>Nuestros algoritmos auditan millones de puntos de datos en tiempo real para predecir anomalías antes de que afecten tu facturación.</p>
 </div>
-
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
+<h2>🧠 Arquitectura de Auto-Cura SOTA</h2>
 <ul role="list">
-<li><strong>Análisis de Logs por Redes Neuronales:</strong> La IA de nuestro servidor (Gano Agent) "lee" anomalías milisegundos antes de que el servidor se desborde.</li>
-<li><strong>Auto-Escalamiento Predictivo:</strong> Si la IA detecta un patrón viral similar a un ataque DDoS, asigna núcleos extra preventivamente.</li>
-<li><strong>Prevención de Cuellos de Botella DB:</strong> Optimiza consultas lentas a la base de datos de Elementor mientras tú duermes.</li>
+<li><strong>Detección Temprana:</strong> Redes neuronales que identifican patrones de carga inusual.</li>
+<li><strong>Optimización Autónoma:</strong> Redirección de recursos y purga de caché inteligente.</li>
+<li><strong>Soporte Proactivo:</strong> Intervención antes de que tú notes la incidencia.</li>
 </ul>
 </section>
-
 <div class="gano-divider" aria-hidden="true"></div>
-
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"El soporte técnico del futuro no atiende llamadas, previene las caídas 30 minutos antes de que sucedan. Bienvenido a la Infraestructura Inteligente."</em></p>
-</div>
-
 <section>
-<h2>🛠️ El Gano Agent en Acción</h2>
-<p>Accede al "Agent Monitor" en tu panel y ve el registro de amenazas esquivadas y micro-optimizaciones ejecutadas en las últimas 24H. Dashboard en español, decisiones autónomas.</p>
+<h2>🛠️ El Agente IA en tu Bastión SOTA</h2>
+<p>Administra tu infraestructura 24/7/365 con precisión quirúrgica en el <strong>Bastión SOTA</strong>.</p>
 </section>
-
 <div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Ver el Agente IA en acción">🧠 Ver el Agente AI en Acción</a>
-<p class="gano-muted-text">Prueba gratis 7 días. Sin tarjeta de crédito.</p>
+<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary">🧠 Desplegar IA Predictiva</a>
 </div>
-
 </article>',
         ],
-        // PAGE 4 — Digital Sovereignty LATAM
+
+        // PAGE 4 — Digital Sovereignty
         [
-            'title'            => 'Soberanía Digital en LATAM: Tus Datos, Tu Control',
+            'title'            => 'Soberanía Digital: Jurisdicción y Control Total',
             'category'         => 'estrategia',
             'feature_img_name' => 'icon_sovereignty_data.png',
-            'cta_url'          => $cta_base . '#sovereignty',
-            'stats'            => [
-                ['label' => 'Datos en suelo LATAM', 'value' => '100%'],
-                ['label' => 'Cumplimiento RGPD', 'value' => 'Sí'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="Soberanía Digital LATAM">
-<h1>🌎 Soberanía Digital en LATAM: Tus Datos, Tu Control</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>Si tus datos están en servidores de EE.UU., la Ley CLOUD puede obligar a Microsoft a entregarlos al gobierno sin consentimiento tuyo. En Colombia, esto es un riesgo real para PyMEs con datos sensibles de clientes.</p>
+            'stats'            => [['label' => 'Jurisdicción', 'value' => 'LATAM'], ['label' => 'Control', 'value' => 'Total']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>🌎 Manifiesto de Soberanía: El Poder de la Propiedad</h1>
+<div class=\"gano-hook-box\">
+<p>En el estado del arte, ceder el control de tus datos a jurisdicciones extranjeras es ceder el futuro de tu empresa. Gano Digital garantiza la soberanía absoluta de tu activo digital.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>Centros de Datos Locales (Bogotá):</strong> Tus datos nunca salen de la jurisdicción colombiana.</li>
-<li><strong>Cumplimiento GDPR + Normativa Local:</strong> Certificación con SRI Colombia y facturación DIAN integrada.</li>
-<li><strong>Auditoría Independiente:</strong> Reporte anual de seguridad físico-digital en línea.</li>
+<h2>🧠 Independencia Tecnológica</h2>
+<ul role=\"list\">
+<li><strong>Jurisdicción Soberana:</strong> Protección bajo leyes locales de privacidad y propiedad.</li>
+<li><strong>Inmunidad de Datos:</strong> Tus activos no son sujetos de normativas externas intrusivas.</li>
+<li><strong>Propiedad del Metal:</strong> Control total desde el hardware hasta la capa de aplicación.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"Tus datos no son commodity de EE.UU. Con Gano Digital, tu infraestructura respeta leyes colombianas."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">🛡️ Reclamar Soberanía Digital</a>
 </div>
-<section>
-<h2>🛠️ Infraestructura Localmente Soberana</h2>
-<p>Ecosistema Gano en centros de datos nacionales con respaldo en 3 regiones de LATAM (Colombia, México, Argentina). Dashboard con certificados de cumplimiento normativo.</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Recuperar soberanía digital de tus datos">🛡️ Recuperar Soberanía Digital</a>
-<p class="gano-muted-text">Certificación incluida. Datos 100% locales.</p>
-</div>
-</article>',
+</article>",
         ],
 
         // PAGE 5 — Headless WordPress
         [
-            'title'            => 'Headless WordPress: La Velocidad Absoluta',
+            'title'            => 'Arquitectura Headless: Desacoplando el Futuro',
             'category'         => 'rendimiento',
             'feature_img_name' => 'icon_headless_speed.png',
-            'cta_url'          => $cta_base . '#headless',
-            'stats'            => [
-                ['label' => 'Tiempo carga', 'value' => '< 0.8s'],
-                ['label' => 'Lighthouse Score', 'value' => '98/100'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="Headless WordPress">
-<h1>⚙️ Headless WordPress: La Velocidad Absoluta</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>WordPress renderiza HTML en el servidor. Eso es lento. La arquitectura Headless separa la API de contenido del frontend, dejando que Vercel/Netlify sirva HTML estático a la velocidad de la luz CDN.</p>
+            'stats'            => [['label' => 'Lighthouse', 'value' => '100%'], ['label' => 'Flexibilidad', 'value' => 'Total']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>⚙️ Manifiesto Headless: Velocidad sin Límites</h1>
+<div class=\"gano-hook-box\">
+<p>Separamos el cerebro (gestión) del cuerpo (visualización) para entregar contenido a la velocidad de la luz mediante APIs modernas.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>REST API + Next.js/Astro:</strong> WordPress como CMS puro, frontend desacoplado en JS moderno.</li>
-<li><strong>ISR (Incremental Static Regeneration):</strong> Página actualizadas a velocidad de BD, servidas como estáticas.</li>
-<li><strong>Libre de "Bloat" de Plugins:</strong> Solo instalas plugins en el backend. El frontend es minimalista.</li>
+<h2>🧠 Ingeniería de Alto Desempeño</h2>
+<ul role=\"list\">
+<li><strong>Seguridad por Diseño:</strong> Eliminamos los vectores de ataque tradicionales del frontend PHP.</li>
+<li><strong>Experiencia Instantánea:</strong> Carga de milisegundos mediante Next.js o Astro.</li>
+<li><strong>Escalabilidad Infinita:</strong> Diseñado para soportar millones de hits sin degradación.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"Si tu WooCommerce sigue renderizándose en PHP en 2026, estás dejando dinero en la mesa. Headless WordPress es para tiendas que quieren velocidad real."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">🚀 Evolucionar a Headless</a>
 </div>
-<section>
-<h2>🛠️ Headless en tu Ecosistema Gano</h2>
-<p>Plan Enterprise y Agencia incluyen setup de Headless WordPress con Vercel + base de datos replicada. Tu tienda carga en <400ms desde cualquier punto del mundo.</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Pasar a arquitectura Headless">🚀 Configurar Headless Ahora</a>
-<p class="gano-muted-text">Incluye migración de contenido. CDN global gratis.</p>
-</div>
-</article>',
+</article>",
         ],
 
-        // PAGE 6 — Intelligent DDoS Mitigation
+        // PAGE 6 — DDoS Immunity
         [
-            'title'            => 'Mitigación DDoS Inteligente: Firewall de Nueva Generación',
+            'title'            => 'Inmunidad DDoS: Blindaje IA en el Perímetro',
             'category'         => 'seguridad',
             'feature_img_name' => 'icon_ddos_firewall.png',
-            'cta_url'          => $cta_base . '#ddos',
-            'stats'            => [
-                ['label' => 'Ataques bloqueados/día', 'value' => '50K+'],
-                ['label' => 'Falsos positivos', 'value' => '0.01%'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="Mitigación DDoS">
-<h1>🔥 Mitigación DDoS Inteligente: Firewall de Nueva Generación</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>Un atacante puede mandar 10 millones de requests por segundo disfrazados de usuarios reales. Un firewall tradicional simplemente se colapsa. La IA debe "entender" el tráfico malicioso en tiempo real.</p>
+            'stats'            => [['label' => 'Mitigación', 'value' => 'IA Activa'], ['label' => 'Falsos Positivos', 'value' => '0%']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>🔥 Inmunidad ante el Caos: Blindaje DDoS SOTA</h1>
+<div class=\"gano-hook-box\">
+<p>Neutralizamos ataques volumétricos en el borde de la red, antes de que toquen tu infraestructura. Inmunidad garantizada.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>Análisis Conductual de Redes Neuronales:</strong> Detecta patrones botnet incluso si imitan comportamiento humano.</li>
-<li><strong>Rate Limiting Adaptativo:</strong> No bloquea a usuarios reales, solo ataca dirigidos.</li>
-<li><strong>Replicación Geográfica:</strong> Si un datacenter sufre ataque, el tráfico se redirige automáticamente a 5 nodos backup.</li>
+<h2>🧠 Inteligencia Perimetral</h2>
+<ul role=\"list\">
+<li><strong>Filtrado Heurístico:</strong> Diferenciamos clientes reales de bots maliciosos en microsegundos.</li>
+<li><strong>Red Anycast Global:</strong> Distribuimos el impacto para que sea imperceptible.</li>
+<li><strong>Uptime de Hierro:</strong> Blindaje permanente para los negocios más críticos.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"DDoS no es un 'si' sino un 'cuándo'. Gano Digital bloquea 50k ataques diarios. Tu página seguirá online."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">🛡️ Activar Inmunidad Digital</a>
 </div>
-<section>
-<h2>🛠️ Protección en Tiempo Real</h2>
-<p>Firewall DDoS automático en todos los ecosistemas. Monitor en vivo de ataques bloqueados, reportes de amenazas por IP, y logs auditables con compliance regulatorio.</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Activar protección DDoS inteligente">🛡️ Activar Protección DDoS</a>
-<p class="gano-muted-text">Incluido en todos los planes. Garantía de uptime.</p>
-</div>
-</article>',
+</article>",
         ],
 
-        // PAGE 7 — Death of Shared Hosting
+        // PAGE 7 — Containers & Isolation
         [
-            'title'            => 'La Muerte del Hosting Compartido: El Riesgo Invisible',
+            'title'            => 'Contenedores Aislados: Tu Isla de Rendimiento',
             'category'         => 'infraestructura',
             'feature_img_name' => 'icon_shared_hosting_death.png',
-            'cta_url'          => $cta_base . '#shared-hosting',
-            'stats'            => [
-                ['label' => 'Riesgo de "noisy neighbor"', 'value' => '100%'],
-                ['label' => 'Sitios por servidor', 'value' => '1 (tuyo)'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="La Muerte del Hosting Compartido">
-<h1>💀 La Muerte del Hosting Compartido: El Riesgo Invisible</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>En un servidor compartido con 200 webs, si la página 57 sufre un ataque botnet, el CPU se bloquea para todos. Literalmente esperas a que otro sitio termine su ataque para recuperar velocidad.</p>
+            'stats'            => [['label' => 'Aislamiento', 'value' => 'Total'], ['label' => 'Recursos', 'value' => 'Dedicados']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>🛡️ Manifiesto de Aislamiento: El Fin del Hosting Compartido</h1>
+<div class=\"gano-hook-box\">
+<p>Tus recursos son tuyos y solo tuyos. Eliminamos el riesgo de vecinos ruidosos mediante orquestación de contenedores de clase mundial.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>Contenedores Aislados (Docker):</strong> Tu PHP, base de datos y archivos corren en sandbox separado.</li>
-<li><strong>Recursos Garantizados:</strong> Te prometemos X GB RAM y Y CPUs. Nunca compartidos, nunca robados por vecinos.</li>
-<li><strong>Costo Eficiente a Escala:</strong> Menos caro que un VPS porque nuestros contenedores usan IA para consolidación inteligente.</li>
+<h2>🧠 Ingeniería de Recursos Garantizados</h2>
+<ul role=\"list\">
+<li><strong>Sandbox Estricto:</strong> Ningún proceso externo puede afectar tu tiempo de respuesta.</li>
+<li><strong>Seguridad Compartimentada:</strong> Aislamiento total de datos y ejecución.</li>
+<li><strong>Potencia Predecible:</strong> Rendimiento constante, 24/7.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"Hosting compartido es jugar a la ruleta rusa con tu reputación online. Migra a contenedores aislados. La velocidad será noticia."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">🚀 Activar Aislamiento Total</a>
 </div>
-<section>
-<h2>🛠️ Ecosistema Dedicado para tu PyME</h2>
-<p>Planes Starter Premium en adelante ofrecen contenedor aislado garantizado. Dashboard muestra CPU/RAM real en tiempo real. Sin "noisy neighbors", sin sorpresas.</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Migrar de hosting compartido">🚀 Migrar a Contenedor Aislado</a>
-<p class="gano-muted-text">Soporte migratorio gratis. Cero downtime.</p>
-</div>
-</article>',
+</article>",
         ],
 
         // PAGE 8 — Edge Computing
         [
-            'title'            => 'Edge Computing: Contenido a Cero Distancia de tu Cliente',
+            'title'            => 'Edge Computing: Colapsando la Latencia Geográfica',
             'category'         => 'infraestructura',
             'feature_img_name' => 'icon_edge_computing.png',
-            'cta_url'          => $cta_base . '#edge',
-            'stats'            => [
-                ['label' => 'Latencia a usuario', 'value' => '< 10ms'],
-                ['label' => 'Nodos globales', 'value' => '250+'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="Edge Computing">
-<h1>🌐 Edge Computing: Contenido a Cero Distancia de tu Cliente</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>Un usuario en Medellín que accede tu sitio hosted en EE.UU. viaja en red 8,000 km ida y vuelta. En 2026, eso es inexcusable. El edge trae el servidor a cada ciudad.</p>
+            'stats'            => [['label' => 'Latencia Local', 'value' => '< 10ms'], ['label' => 'Despliegue', 'value' => 'Borde']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>🌐 Manifiesto del Borde: La Web donde está el Usuario</h1>
+<div class=\"gano-hook\">
+<p>Llevamos la ejecución y el contenido al nodo más cercano al visitante, eliminando la tiranía de la distancia física.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>Cloudflare Workers + CDN Geo-Distribuido:</strong> Código corre en la ciudad más cercana a tu usuario, no en un datacenter lejano.</li>
-<li><strong>Replicación de BD Inteligente:</strong> Replica local-only de datos sin-estado. Transacciones vuelven al maestro en Bogotá.</li>
-<li><strong>Disponibilidad Verdadera 99.99%:</strong> Si el nodo de Medellín falla, otro pickup la carga automáticamente.</li>
+<h2>🧠 Arquitectura de Proximidad</h2>
+<ul role=\"list\">
+<li><strong>Edge Workers:</strong> Lógica de negocio ejecutada en milisegundos.</li>
+<li><strong>Fastest Routing:</strong> Algoritmos que encuentran el camino más corto al usuario.</li>
+<li><strong>Cache Predictivo:</strong> Distribución inteligente de activos críticos.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"Los gigantes (Airbnb, Spotify) descubrieron: Edge no es lujo, es standard. Gano Digital lo incluye."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">⚡ Desplegar en el Edge</a>
 </div>
-<section>
-<h2>🛠️ Edge en tu Ecosistema</h2>
-<p>Plans Pro+ incluyen Edge Computing automático. Tu contenido se sirve desde 250+ puntos globales. Dashboard muestra latencia por región y ahorros de ancho de banda.</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Activar Edge Computing">⚡ Activar Edge Computing</a>
-<p class="gano-muted-text">Latencia < 10ms garantizada. Cualquier continente.</p>
-</div>
-</article>',
+</article>",
         ],
 
-        // PAGE 9 — Green Hosting
+        // PAGE 9 — Green Infrastructure
         [
-            'title'            => 'Green Hosting: Infraestructura Sostenible para tu Negocio',
-            'category'         => 'rendimiento',
+            'title'            => 'Ingeniería Sostenible: Rendimiento con Conciencia',
+            'category'         => 'estrategia',
             'feature_img_name' => 'icon_green_hosting.png',
-            'cta_url'          => $cta_base . '#green',
-            'stats'            => [
-                ['label' => 'Energía renovable', 'value' => '100%'],
-                ['label' => 'Huella carbono/año', 'value' => 'Neutral'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="Green Hosting">
-<h1>🌱 Green Hosting: Infraestructura Sostenible para tu Negocio</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>El 4% de las emisiones globales de CO2 vienen de datacenters. Si tu PyME quiere diferenciarse en marketing sostenible, comienza por infraestructura carbono-neutral.</p>
+            'stats'            => [['label' => 'Energía', 'value' => 'Renovable'], ['label' => 'Huella', 'value' => 'Neutral']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>🌱 Manifiesto Sostenible: Potencia para un Futuro Consciente</h1>
+<div class=\"gano-hook-box\">
+<p>La tecnología SOTA es inherentemente eficiente. Operamos bajo estándares de consumo energético neutral para un impacto planetario positivo.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>100% Energías Renovables:</strong> Paneles solares + energía eólica certificada por IRENA.</li>
-<li><strong>Virtualización Eficiente:</strong> Consolidación de servidores reduce hardware ocioso en 60%.</li>
-<li><strong>Certificación B Corp:</strong> Auditoría externa anual de impacto ambiental y reporte público.</li>
+<h2>🧠 Eficiencia con Propósito</h2>
+<ul role=\"list\">
+<li><strong>Ciclo Termodinámico Optimizado:</strong> Enfriamiento inteligente y hardware eficiente.</li>
+<li><strong>Soberanía Ecológica:</strong> Tu infraestructura digital es aliada del medio ambiente.</li>
+<li><strong>Certificación Green:</strong> Valor diferencial para marcas con propósito.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"Ser sostenible no cuesta más. Gano Digital es green por default, y tu marca lo comunica sin esfuerzo."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">🌿 Activar Ecosistema Verde</a>
 </div>
-<section>
-<h2>🛠️ Green Hosting en Acción</h2>
-<p>Tu panel mostrará compensación de carbono por mes. Certificado verde adjunto a cada factura. Promociona en tu web: "Hospedado en datacenter carbono-neutral".</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Cambiar a hosting verde y sostenible">🌿 Cambiar a Hosting Verde</a>
-<p class="gano-muted-text">Misma velocidad. Planeta más limpio.</p>
-</div>
-</article>',
+</article>",
         ],
 
-        // PAGE 10 — Post-Quantum Encryption
+        // PAGE 10 — Quantum-Safe Encryption
         [
-            'title'            => 'Cifrado Post-Cuántico: La Bóveda del Futuro',
+            'title'            => 'Blindaje Post-Cuántico: Cifrado para la Próxima Década',
             'category'         => 'seguridad',
             'feature_img_name' => 'icon_quantum_encryption.png',
-            'cta_url'          => $cta_base . '#quantum',
-            'stats'            => [
-                ['label' => 'Algoritmo', 'value' => 'CRYSTALS-Kyber'],
-                ['label' => 'Inmunidad QC', 'value' => 'Sí'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="Cifrado Post-Cuántico">
-<h1>🔐 Cifrado Post-Cuántico: La Bóveda del Futuro</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>Una computadora cuántica podría romper RSA-2048 en minutos. Google anunció su "supremacía cuántica" en 2019. Si no cambias de criptografía ahora, tus datos están en riesgo en 5-10 años.</p>
+            'stats'            => [['label' => 'Inmunidad', 'value' => 'Cuántica'], ['label' => 'Resiliencia', 'value' => 'Futura']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>🔐 Inmunidad Cuántica: Protegiendo el Mañana Hoy</h1>
+<div class=\"gano-hook-box\">
+<p>Implementamos algoritmos resistentes a la computación cuántica, asegurando que tus secretos corporativos permanezcan privados para siempre.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>NIST Post-Quantum Standard:</strong> Gano usa CRYSTALS-Kyber, aprobado por NIST para defensa post-cuántica.</li>
-<li><strong>Hybrid Encryption:</strong> Combina RSA clásico + Kyber para compatibilidad hoy, invulnerabilidad mañana.</li>
-<li><strong>Certificados SSL/TLS Listos:</strong> Todos los certificados en ecosistemas Gano ya soportan firma post-cuántica.</li>
+<h2>🧠 Criptografía de Vanguardia</h2>
+<ul role=\"list\">
+<li><strong>Lattice-based Security:</strong> Estándares de cifrado irrompibles por IA o computación cuántica.</li>
+<li><strong>Privacidad Persistente:</strong> Blindaje de datos a largo plazo frente a futuras amenazas.</li>
+<li><strong>Confianza Total:</strong> Tu soberanía digital protegida por la matemática más avanzada.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"Los bancos ya migran a cifrado post-cuántico. ¿Por qué tu tienda online espera? El futuro es hoy."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">🛡️ Activar Blindaje Cuántico</a>
 </div>
-<section>
-<h2>🛠️ Protección Cuántica Activada</h2>
-<p>Enterprise y Agencia incluyen certificados Kyber. Dashboard muestra estatus de encriptación de datos en reposo + tránsito. Cumple NIST SP 800-131C.</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Proteger datos con cifrado post-cuántico">🛡️ Implementar Cifrado Post-Cuántico</a>
-<p class="gano-muted-text">Protección eterna. Incluso contra QC.</p>
-</div>
-</article>',
+</article>",
         ],
 
-        // PAGE 11 — Automated CI/CD
+        // PAGE 11 — CI/CD Pipeline
         [
-            'title'            => 'CI/CD Automatizado: Nunca Más Rompas tu Tienda en Vivo',
+            'title'            => 'Orquestación CI/CD: Evolución sin Interrupción',
             'category'         => 'rendimiento',
             'feature_img_name' => 'icon_cicd_automation.png',
-            'cta_url'          => $cta_base . '#cicd',
-            'stats'            => [
-                ['label' => 'Despliegues/día', 'value' => '50+'],
-                ['label' => 'Rollback automático', 'value' => 'Sí'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="CI/CD Automatizado">
-<h1>⚙️ CI/CD Automatizado: Nunca Más Rompas tu Tienda en Vivo</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>Actualizas un plugin, la web se cae a las 14:00 en viernes y pierdes 50 ordenes. Con CI/CD, cada cambio se prueba automáticamente antes de llegar a producción. Cero riesgos.</p>
+            'stats'            => [['label' => 'Despliegues', 'value' => 'Automáticos'], ['label' => 'Error Rate', 'value' => '0.01%']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>⚙️ Manifiesto CI/CD: El Ciclo de Innovación Perpetua</h1>
+<div class=\"gano-hook-box\">
+<p>Eliminamos el factor de error humano en los despliegues. Tu código fluye desde el desarrollo hasta la producción de forma atómica y segura.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>GitHub/GitLab Integration:</strong> Push a rama → tests automáticos → staging → producción (si todo pasa).</li>
-<li><strong>Rollback Instantáneo:</strong> Si un despliegue falla, vuelves a la versión anterior en < 2 segundos.</li>
-<li><strong>Blue-Green Deployment:</strong> Dos versiones corren en paralelo. Cambio de tráfico es invisible al usuario.</li>
+<h2>🧠 Ingeniería de Despliegue Continuo</h2>
+<ul role=\"list\">
+<li><strong>Tests Automatizados:</strong> Validación de integridad antes de cada cambio.</li>
+<li><strong>Zero Downtime:</strong> Actualizaciones invisibles para el usuario final.</li>
+<li><strong>Rollback Instantáneo:</strong> Seguridad absoluta en cada iteración.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"Los grandes (Netflix, Shopify) despliegan 50 veces al día sin miedo. CI/CD es su secreto. Ahora es tuyo."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">🚀 Activar Ingeniería CI/CD</a>
 </div>
-<section>
-<h2>🛠️ Pipeline Listo para tu Repo</h2>
-<p>Enterprise+ incluye GitHub Actions configurado. Vincula tu repo, configura tests, y toda actualización es segura. Reportes de cambios por deploy disponibles.</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Configurar CI/CD automatizado">🚀 Configurar CI/CD</a>
-<p class="gano-muted-text">Despliegues seguros. Cero downtime.</p>
-</div>
-</article>',
+</article>",
         ],
 
-        // PAGE 12 — Continuous Real-Time Backups
+        // PAGE 12 — Real-Time Backups
         [
-            'title'            => 'Backups Continuos en Tiempo Real: Tu Máquina del Tiempo',
+            'title'            => 'Resiliencia de Datos: Máquina del Tiempo Digital',
             'category'         => 'infraestructura',
             'feature_img_name' => 'icon_backup_time_machine.png',
-            'cta_url'          => $cta_base . '#backups',
-            'stats'            => [
-                ['label' => 'Frecuencia', 'value' => 'Cada 5 min'],
-                ['label' => 'Retención', 'value' => '30 días'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="Backups Continuos">
-<h1>⏮️ Backups Continuos en Tiempo Real: Tu Máquina del Tiempo</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>Un backup diario es insuficiente. Si el ataque ocurre a las 15:00, el último backup es de las 06:00 del mismo día. Perdiste 9 horas de datos. Con replicación continua, el máximo RPO es 5 minutos.</p>
+            'stats'            => [['label' => 'RPO', 'value' => '5 min'], ['label' => 'Ubicaciones', 'value' => 'Tri-redundante']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>⏮️ Manifiesto de Continuidad: Tu Información es Inmortal</h1>
+<div class=\"gano-hook-box\">
+<p>En el estado del arte, los incidentes son lecciones, no desastres. Nuestra replicación continua garantiza la supervivencia absoluta de tus activos.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>Replicación Multi-Zona:</strong> BD se replica en tiempo real a 3 datacenters diferentes.</li>
-<li><strong>Point-in-Time Recovery:</strong> Recupera tu sitio a cualquier minuto de las últimas 30 días. Incluso si se hackean.</li>
-<li><strong>Automático, Sin Esfuerzo:</strong> No tienesy que hacer "click en backup". Ocurre permanentemente.</li>
+<h2>🧠 Ingeniería de Respaldo Premium</h2>
+<ul role=\"list\">
+<li><strong>Snapshots de Bloques:</strong> Replicación en tiempo real a nivel de infraestructura.</li>
+<li><strong>Recuperación Quirúrgica:</strong> Vuelve a cualquier punto del tiempo en milisegundos.</li>
+<li><strong>Georedundancia:</strong> Tus datos están seguros en múltiples puntos soberanos.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"Perder datos no es un accidente, es negligencia. Backups continuos son requisito, no lujo."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">💾 Activar Resiliencia Total</a>
 </div>
-<section>
-<h2>🛠️ Viaja en el Tiempo</h2>
-<p>Panel muestra histórico de backups. Selecciona fecha/hora específica y restaura en minutos. Base de datos + archivos + configuración WordPress. Todo replicado.</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Activar backups continuos en tiempo real">💾 Activar Backups Continuos</a>
-<p class="gano-muted-text">Recuperación point-in-time. Hasta 30 días atrás.</p>
-</div>
-</article>',
+</article>",
         ],
 
-        // PAGE 13 — Skeleton Screens
+        // PAGE 13 — UX Acceleration
         [
-            'title'            => 'Skeleton Screens: La Psicología de la Velocidad Percibida',
+            'title'            => 'Skeleton Screens: Psicología del Rendimiento',
             'category'         => 'rendimiento',
             'feature_img_name' => 'icon_skeleton_screens.png',
-            'cta_url'          => $cta_base . '#skeleton',
-            'stats'            => [
-                ['label' => 'Mejora percepción', 'value' => '+30%'],
-                ['label' => 'Bounce rate reducido', 'value' => '-15%'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="Skeleton Screens">
-<h1>👻 Skeleton Screens: La Psicología de la Velocidad Percibida</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>Tu página carga en 0.9 segundos, pero si muestra pantalla en blanco por 0.5s, el usuario "siente" que es lenta. Un "skeleton" (esqueleto de carga) engaña el cerebro: se ve como si algo está pasando.</p>
+            'stats'            => [['label' => 'UX Score', 'value' => 'Elite'], ['label' => 'Ansiedad Carga', 'value' => '0%']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>🎭 Manifiesto de Percepción: Velocidad que se Siente</h1>
+<div class=\"gano-hook-box\">
+<p>Optimizamos la experiencia subjetiva mediante estructuras visuales instantáneas que pre-abastecen la mente del usuario.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>Placeholders Animados:</strong> Mientras carga el producto, muestra forma gris que "respira".</li>
-<li><strong>Progresivo Enhancement:</strong> Texto llega primero, imágenes después. No bloquea visualización.</li>
-<li><strong>Reducción Ansiedad:</strong> Estudios muestran: skeleton vs blanco = 30% menos sensación de demora.</li>
+<h2>🧠 Ingeniería de Interfaz Fluida</h2>
+<ul role=\"list\">
+<li><strong>Carga Progresiva SOTA:</strong> Contenido disponible antes de que la página termine su proceso.</li>
+<li><strong>Placeholders Inteligentes:</strong> Mantén el flujo visual y reduce el rebote.</li>
+<li><strong>Optimización de Fricción:</strong> Diseño centrado en la continuidad cognitiva.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"No se trata de velocidad real, sino de percepción. Un skeleton screen es psicología pura."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">🎭 Activar Aceleración UX</a>
 </div>
-<section>
-<h2>🛠️ Activar para WooCommerce</h2>
-<p>Todos los ecosistemas Gano incluyen skeleton screens en productos, carrito y checkout. Animación CSS suave, sin JS pesado. Mejora Core Web Vitals automáticamente.</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Activar skeleton screens para mejora de UX">🎭 Activar Skeleton Screens</a>
-<p class="gano-muted-text">Velocidad percibida. Conversión +12%.</p>
-</div>
-</article>',
+</article>",
         ],
 
         // PAGE 14 — Elastic Scaling
         [
-            'title'            => 'Escalamiento Elástico: Sobrevive a tu Propio Éxito Viral',
+            'title'            => 'Escalamiento Elástico: El Ecosistema Infinito',
             'category'         => 'infraestructura',
             'feature_img_name' => 'icon_elastic_scaling.png',
-            'cta_url'          => $cta_base . '#scaling',
-            'stats'            => [
-                ['label' => 'Auto-scale range', 'value' => '1-100x'],
-                ['label' => 'Tiempo activación', 'value' => '< 30s'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="Escalamiento Elástico">
-<h1>📈 Escalamiento Elástico: Sobrevive a tu Propio Éxito Viral</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>Tu producto viral genera 100x tráfico en 6 horas. Un servidor fijo se cae. Con elastic scaling, 100 servidores se activan automáticamente, y cobras solo por lo que usaste, en esos 30 minutos.</p>
+            'stats'            => [['label' => 'Rango Scaling', 'value' => 'Ilimitado'], ['label' => 'Activación', 'value' => '< 30s']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>📈 Manifiesto de Elasticidad: Sobreviviendo al Éxito Viral</h1>
+<div class=\"gano-hook-box\">
+<p>Tu infraestructura se expande y contrae como un organismo vivo, respondiendo instantáneamente a la demanda del mercado.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>Kubernetes Automático:</strong> Detecta CPU > 70%, y en < 30s lanzan contenedores nuevos.</li>
-<li><strong>Scale-Down Inteligente:</strong> Cuando el tráfico cae, mata servidores ociosos. Ahorras dinero automáticamente.</li>
-<li><strong>Predictivo por IA:</strong> Anticipa picos (ej: Black Friday) y pre-proviciona servidores.</li>
+<h2>🧠 Arquitectura de Auto-Expansión</h2>
+<ul role=\"list\">
+<li><strong>Orquestación Kubernetes:</strong> Gestión de picos de carga mediante nodos dinámicos.</li>
+<li><strong>Soberanía de Recursos:</strong> Capacidad infinita bajo demanda estratégica.</li>
+<li><strong>Eficiencia SOTA:</strong> Inversión optimizada automáticamente según el flujo de tráfico.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"Viral no es un lujo que tu infrastructure pueda darse. Gano escala automático a 100x sin que levantes un dedo."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">📈 Activar Escalamiento Pro</a>
 </div>
-<section>
-<h2>🛠️ Escalamiento Automático Activado</h2>
-<p>Enterprise+ incluye Kubernetes nativo. Dashboard muestra histórico de scaling, costo de recursos por hora, y predicción de demanda para próximos 7 días.</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Activar escalamiento elástico automático">🚀 Activar Escalamiento Elástico</a>
-<p class="gano-muted-text">Crece infinitamente. Paga solo por uso.</p>
-</div>
-</article>',
+</article>",
         ],
 
         // PAGE 15 — Self-Healing
         [
-            'title'            => 'Self-Healing: El Ecosistema que se Cura Solo',
+            'title'            => 'Self-Healing: Resiliencia Autónoma',
             'category'         => 'inteligencia-artificial',
             'feature_img_name' => 'icon_self_healing.png',
-            'cta_url'          => $cta_base . '#healing',
-            'stats'            => [
-                ['label' => 'MTTR (tiempo reparación)', 'value' => '< 2 min'],
-                ['label' => 'Intervención manual', 'value' => '0%'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="Self-Healing">
-<h1>🏥 Self-Healing: El Ecosistema que se Cura Solo</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>A las 03:00 falla una zona de almacenamiento. En 2 minutos, Gano Agent detecta, redirige tráfico, restaura datos, y vuelve online sin despertarte. Eso es self-healing.</p>
+            'stats'            => [['label' => 'MTTR', 'value' => '< 2 min'], ['label' => 'Falla Manual', 'value' => '0%']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>🏥 Manifiesto de Autocuración: La Infraestructura Viva</h1>
+<div class=\"gano-hook-box\">
+<p>Eliminamos la intervención humana en la recuperación de fallos. El sistema diagnostica, aísla y repara anomalías en tiempo real.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>Detección Automática:</strong> Healthcheck cada 10 segundos identifica fallas antes de que impacten usuarios.</li>
-<li><strong>Remedios Pre-Configurados:</strong> Reiniciar servicio, failover BD, purgar caché, rotar logs. Sin tickets.</li>
-<li><strong>Aprendizaje Continuo:</strong> Cada falla genera regla nueva en la IA. El sistema mejora solo.</li>
+<h2>🧠 Ingeniería de Inmunidad Digital</h2>
+<ul role=\"list\">
+<li><strong>Remediación IA:</strong> Protocolos automáticos que restauran servicios en segundos.</li>
+<li><strong>Prevención Activa:</strong> Identificación de patrones de degradación pre-fallo.</li>
+<li><strong>Soberanía Operativa:</strong> Tu negocio continúa operando mientras tú descansas.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"El soporte 24/7 no escala. Self-healing sí. Tu infraestructura se cura mientras duermes."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">🏥 Activar Autocuración SOTA</a>
 </div>
-<section>
-<h2>🛠️ Curación Autónoma</h2>
-<p>Todos los planes incluyen healthchecks automáticos. Panel muestra log de "curaciones" ejecutadas (restarts, failovers, optimizaciones) en últimas 24H. Cero intervención manual.</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Activar self-healing automático">💚 Activar Self-Healing</a>
-<p class="gano-muted-text">Uptime 99.99%. Sin soporte nocturno.</p>
-</div>
-</article>',
+</article>",
         ],
 
-        // PAGE 16 — Micro-Animations
+        // PAGE 16 — Kinetic Experiences
         [
-            'title'            => 'Micro-Animaciones e Interacciones Hápticas: Diseño que se Siente',
+            'title'            => 'Experiencias Cinéticas: Diseño que se Siente Premium',
             'category'         => 'rendimiento',
             'feature_img_name' => 'icon_microanimations.png',
-            'cta_url'          => $cta_base . '#animations',
-            'stats'            => [
-                ['label' => 'Mejora engagement', 'value' => '+45%'],
-                ['label' => 'Tiempo en página', 'value' => '+2min'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="Micro-Animaciones">
-<h1>✨ Micro-Animaciones e Interacciones Hápticas: Diseño que se Siente</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>Botones que tiemblan, checkboxes que pulsan, transiciones suaves. Animaciones de 200-500ms no son "adorno", son psicología UX. Aumentan confianza y engagement en 40%+.</p>
+            'stats'            => [['label' => 'Engagement', 'value' => '+45%'], ['label' => 'Fluidez', 'value' => '60fps']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>✨ Manifiesto de Cinética UX: La Belleza de lo Fluido</h1>
+<div class=\"gano-hook-box\">
+<p>En el estado del arte, la interfaz debe responder con elegancia háptica. Las micro-interacciones cinéticas elevan tu marca a un estándar de élite.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>Framer Motion / Lottie:</strong> Librerías que permiten micro-animaciones 60fps sin lag.</li>
-<li><strong>Haptic Feedback (Móvil):</strong> El teléfono vibra cuando agregasproducto al carrito. Sensación táctil = recordación.</li>
-<li><strong>Easing Curves Científicas:</strong> Animación no lineal sigue leyes de física, se siente "natural".</li>
+<h2>🧠 Ingeniería de Interacción Sensorial</h2>
+<ul role=\"list\">
+<li><strong>Transiciones Orgánicas:</strong> Animaciones que guían la mirada y la atención del usuario.</li>
+<li><strong>Feedback Háptico Digital:</strong> Cada acción tiene una respuesta visual coherente y premium.</li>
+<li><strong>Ritmo de Marca:</strong> Coherencia estética en cada micro-movimiento del ecosistema.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"Apple sabe: el mejor software se siente, no solo se ve. Gano Digital prioriza micro-interacciones."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">🎨 Activar Experiencia Cinética</a>
 </div>
-<section>
-<h2>🛠️ Animaciones Incluidas</h2>
-<p>Tema gano-child incluye biblioteca de micro-animaciones CSS/Lottie para WooCommerce. Botones, carrito, checkout, notificaciones. Todo con haptic feedback móvil.</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Activar micro-animaciones y diseño fluido">🎨 Activar Micro-Animaciones</a>
-<p class="gano-muted-text">Engagement +45%. Conversión +18%.</p>
-</div>
-</article>',
+</article>",
         ],
 
-        // PAGE 17 — HTTP/3 & QUIC
+        // PAGE 17 — Advanced Protocol Delivery
         [
-            'title'            => 'HTTP/3 y QUIC: El Protocolo que Rompe la Congestión',
+            'title'            => 'Protocolos de Vanguardia: HTTP/3 & QUIC Transmisión',
             'category'         => 'rendimiento',
             'feature_img_name' => 'icon_http3_quic.png',
-            'cta_url'          => $cta_base . '#http3',
-            'stats'            => [
-                ['label' => 'Velocidad con pérdida paquetes', 'value' => '+10-50%'],
-                ['label' => 'Handshake TLS', 'value' => '0 RTT'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="HTTP/3 QUIC">
-<h1>🚀 HTTP/3 y QUIC: El Protocolo que Rompe la Congestión</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>HTTP/2 usa TCP, que "para" si pierde un paquete. En conexiones móviles con pérdida, esto es desastre. QUIC (UDP mejorado) avanza incluso si falta data. Velocidad real en el mundo.</p>
+            'stats'            => [['label' => 'Handshake', 'value' => '0-RTT'], ['label' => 'Velocidad', 'value' => 'Ultra']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>🚀 Manifiesto de Transmisión: Rompiendo la Barrera del TCP</h1>
+<div class=\"gano-hook-box\">
+<p>Implementamos el protocolo HTTP/3 para asegurar una entrega de datos inmune a la congestión de red, optimizada para la movilidad global.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>0-RTT Handshake:</strong> Resumidas conexión sin espera TLS. El primer byte llega 200ms más rápido.</li>
-<li><strong>Multiplexión Real:</strong> A diferencia de HTTP/2, fallo en un stream no bloquea otros. Velocidad fluida.</li>
-<li><strong>Conexión Persistente Móvil:</strong> WiFi a 4G sin desconexión. QUIC se adapta automáticamente.</li>
+<h2>🧠 Ingeniería de Conectividad Futurista</h2>
+<ul role=\"list\">
+<li><strong>QUIC Protocol:</strong> Conexiones persistentes y resilientes en cualquier entorno de red.</li>
+<li><strong>Multiplexión sin Bloqueo:</strong> Los datos fluyen de forma independiente y paralela.</li>
+<li><strong>Carga Instantánea Móvil:</strong> Rendimiento SOTA en dispositivos de baja latencia.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"Google y Cloudflare ya sirven 50% del tráfico vía QUIC. Gano Digital está en el futuro."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">⚡ Activar Protocolos SOTA</a>
 </div>
-<section>
-<h2>🛠️ QUIC Nativo</h2>
-<p>Todos los ecosistemas Gano sirven HTTP/3 + QUIC por default. Dashboard muestra % de tráfico QUIC y mejora de velocidad vs HTTP/2. Compatibilidad automática con navegadores antiguos.</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Activar protocolo HTTP/3 QUIC">⚡ Activar HTTP/3 QUIC</a>
-<p class="gano-muted-text">Velocidad futura. Disponible hoy.</p>
-</div>
-</article>',
+</article>",
         ],
 
-        // PAGE 18 — High Availability (HA)
+        // PAGE 18 — Enterprise Indestructibility
         [
-            'title'            => 'Alta Disponibilidad (HA): La Infraestructura Indestructible',
+            'title'            => 'Arquitectura Indestructible: Alta Disponibilidad Enterprise',
             'category'         => 'infraestructura',
             'feature_img_name' => 'icon_ha_infrastructure.png',
-            'cta_url'          => $cta_base . '#ha',
-            'stats'            => [
-                ['label' => 'Uptime garantizado', 'value' => '99.99%'],
-                ['label' => 'SLA credit', 'value' => '100 días free'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="Alta Disponibilidad">
-<h1>🔗 Alta Disponibilidad (HA): La Infraestructura Indestructible</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>HA significa: si un servidor muere, 10 backup lo reemplazan automáticamente. Si un datacenter se destruye, otro en otra región toma la carga. Tu sitio nunca se cae.</p>
+            'stats'            => [['label' => 'Uptime SLA', 'value' => '99.99%'], ['label' => 'Redundancia', 'value' => '∞']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>🔗 Manifiesto de Invulnerabilidad: Tu Legado no tiene Off-switch</h1>
+<div class=\"gano-hook-box\">
+<p>Diseñamos infraestructuras hiper-disponibles donde la falla de un componente activa instantáneamente un ecosistema de respaldo gemelo.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>Active-Active Replication:</strong> Todos los nodos están vivos, no es standby. Distribución inteligente de carga.</li>
-<li><strong>Geo-Failover Automático:</strong> Si Bogotá falla, Miami, México y Buenos Aires están listos en < 1s.</li>
-<li><strong>99.99% SLA con Crédito:</strong> Si no cumplimos, págale directo. 100 días gratis por cada hora de downtime.</li>
+<h2>🧠 Orquestación de Negocio Continuo</h2>
+<ul role=\"list\">
+<li><strong>Escalamiento Multi-Región:</strong> Tu activo digital vive en múltiples puntos soberanos simultáneamente.</li>
+<li><strong>Geo-Failover Inteligente:</strong> Respuesta automática ante desastres de infraestructura masiva.</li>
+<li><strong>Garantía de Soberanía:</strong> Continuidad absoluta para operaciones que no permiten el error.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"Amazon usa HA, Netflix usa HA, Stripe usa HA. Gano Digital también. La alternativa es rezar."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">🛡️ Activar Arquitectura Indestructible</a>
 </div>
-<section>
-<h2>🛠️ Indestructibilidad Garantizada</h2>
-<p>Enterprise+ soporta HA con 4+ nodos. Dashboard muestra replicación en tiempo real, histórico de failovers, y certificado SLA firmado. Auditoría externa trimestral.</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Activar infraestructura de alta disponibilidad">🛡️ Activar Alta Disponibilidad</a>
-<p class="gano-muted-text">99.99% uptime. O paga cero.</p>
-</div>
-</article>',
+</article>",
         ],
 
-        // PAGE 19 — Server-Side Analytics
+        // PAGE 19 — Privacy Sovereignty
         [
-            'title'            => 'Analytics Server-Side: Privacidad, Velocidad y Datos Reales',
+            'title'            => 'Soberanía de Datos: Analytics Privado Server-Side',
             'category'         => 'estrategia',
             'feature_img_name' => 'icon_serverside_analytics.png',
-            'cta_url'          => $cta_base . '#analytics',
-            'stats'            => [
-                ['label' => 'Datos sin JS', 'value' => '100%'],
-                ['label' => 'Privacidad GDPR', 'value' => 'Nativa'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="Analytics Server-Side">
-<h1>📊 Analytics Server-Side: Privacidad, Velocidad y Datos Reales</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>Google Analytics carga 80KB de JS. Ad-blockers lo bloquean. Privacidad de usuario es ficción. Server-side analytics vive en tu servidor, invisible a los bloqueadores, sin JS de terceros.</p>
+            'stats'            => [['label' => 'Privacidad', 'value' => 'GDPR/SOTA'], ['label' => 'Scripts Terceros', 'value' => '0']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>📊 Manifiesto de Inteligencia Privada: Datos de tu Propiedad</h1>
+<div class=\"gano-hook-box\">
+<p>Captura inteligencia de mercado vital sin comprometer la privacidad del usuario ni depender de scripts de terceros invasivos.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>Datos sin JavaScript:</strong> Cada request HTTP es logeado. Conversiones, clics, navegación. Ad-block agnostic.</li>
-<li><strong>GDPR + CCPA Nativo:</strong> No necesitas banners de cookies. Tus datos, tu servidor, sin terceros.</li>
-<li><strong>Dashboard Privado:</strong> Control total de qué compartir (ej: nunca envíes a externos).</li>
+<h2>🧠 Ingeniería de Datos Soberanos</h2>
+<ul role=\"list\">
+<li><strong>Analytics Invisible:</strong> Procesamiento en el lado del servidor para máxima velocidad y precisión.</li>
+<li><strong>Propiedad del Insight:</strong> Tus datos de comportamiento no son compartidos con gigantes tecnológicos.</li>
+<li><strong>Transparencia Ética:</strong> Construye confianza de marca mediante el respeto absoluto a la privacidad.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"Google monitorea a tus usuarios. Gano Digital no. Analytics privado es responsabilidad empresarial."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">🔒 Reclamar Soberanía de Datos</a>
 </div>
-<section>
-<h2>🛠️ Panel de Analytics Privado</h2>
-<p>Pro+ incluye Plausible Analytics o Fathom integrado. Dashboard muestra conversiones, fuentes de tráfico, comportamiento. Datos nunca salen de tu servidor. GDPR automático.</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Activar analytics server-side privado">🔒 Activar Analytics Privado</a>
-<p class="gano-muted-text">Privacidad + datos reales. Sin vendors.</p>
-</div>
-</article>',
+</article>",
         ],
 
-        // PAGE 20 — AI Administration Agent
+        // PAGE 20 — Sovereign AI Co-Pilot
         [
-            'title'            => 'El Agente IA de Administración: Tu Infraestructura Habla Español',
+            'title'            => 'Co-Piloto de IA Soberana: Administración por Conversación',
             'category'         => 'inteligencia-artificial',
             'feature_img_name' => 'icon_ai_agent_admin.png',
-            'cta_url'          => $cta_base . '#agent',
-            'stats'            => [
-                ['label' => 'Respuesta IA', 'value' => '< 2s'],
-                ['label' => 'Tareas autónomas', 'value' => '100+'],
-            ],
-            'content'          => '
-<article class="gano-sota-page" role="main" aria-label="Agente IA de Administración">
-<h1>🤖 El Agente IA de Administración: Tu Infraestructura Habla Español</h1>
-<div class="gano-hook-box" role="doc-introduction">
-<p>"Optimiza mi base de datos". El Gano Agent entiende español, ejecuta la tarea en 30 segundos, y reporta resultados. No necesitas CLI, SSH, ni ser DevOps.</p>
+            'stats'            => [['label' => 'Respuesta', 'value' => 'Instantánea'], ['label' => 'Idioma', 'value' => 'Español']],
+            'content'          => "
+<article class=\"gano-sota-page\" role=\"main\">
+<h1>🤖 Manifiesto de Control Natural: El Fin de la Línea de Comandos</h1>
+<div class=\"gano-hook-box\">
+<p>Administra tu arquitectura soberana mediante lenguaje natural. Nuestro Agente IA entiende tus objetivos y los ejecuta con precisión técnica.</p>
 </div>
 <section>
-<h2>🧠 La Innovación — Estado del Arte</h2>
-<ul role="list">
-<li><strong>Interfaz en Lenguaje Natural:</strong> Chat en español. Pregunta "¿cuánta banda ancha gastó hoy?". El Agent responde con gráficos.</li>
-<li><strong>Ejecución Autónoma:</strong> "Limpia bases de datos de comentarios spam". Agent ejecuta Query, valida, y reporta.</li>
-<li><strong>Prevención de Errores:</strong> IA pide confirmación en acciones destructivas. Zero random deletions.</li>
+<h2>🧠 Orquestación Inteligente SOTA</h2>
+<ul role=\"list\">
+<li><strong>DevOps Conversacional:</strong> Optimiza, escala o repara tu infraestructura mediante un chat seguro.</li>
+<li><strong>Prevención Heurística:</strong> El agente detecta y sugiere mejoras antes de que las necesites.</li>
+<li><strong>IA de Grado Soberano:</strong> Ejecución interna y privada, alineada con los valores de tu negocio.</li>
 </ul>
 </section>
-<div class="gano-divider" aria-hidden="true"></div>
-<div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"El futuro del hosting no es CLI. Es conversación. Gano Agent entiende, ejecuta, reporta. En tu idioma."</em></p>
+<div class=\"gano-cta-box\">
+<a href=\"" . esc_url( $cta_base ) . "\" class=\"gano-btn-primary\">🧠 Activar Co-Piloto Soberano</a>
 </div>
-<section>
-<h2>🛠️ Agent Chat en Tu Panel</h2>
-<p>Enterprise+ acceso a Gano Agent. Chat en el panel, IA entiende contexto de tu infraestructura y ejecuta tareas. Historial completo de acciones. Auditable, seguro, en español.</p>
-</section>
-<div class="gano-cta-box">
-<a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Activar Agente IA de administración">🧠 Activar Agente IA</a>
-<p class="gano-muted-text">DevOps en español. Sin línea de comando.</p>
-</div>
-</article>',
+</article>",
         ],
     ];
 }
-
-// ============================================================================
-// END OF PLUGIN — v2.0.0
-// ============================================================================
-
-error_log( 'GANO IMPORTER v2.0: Plugin loaded. Ready for activation.' );

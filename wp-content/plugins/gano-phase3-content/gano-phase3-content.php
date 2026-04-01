@@ -203,13 +203,13 @@ function gano_p3_pages() {
         ],
 
         'nosotros' => [
-            'title'   => 'Nosotros',
-            'excerpt' => 'Somos Gano Digital, tu aliado en transformación digital.',
+            'title'   => 'Nuestra Filosofía',
+            'excerpt' => 'Arquitectos de la soberanía digital en Colombia.',
             'content' => gano_p3_about_content(),
             'seo'     => [
-                'title'       => 'Quiénes Somos | Gano Digital — Servicios Digitales en Colombia',
-                'description' => 'Conoce el equipo detrás de Gano Digital. Ayudamos a empresas colombianas a crecer con soluciones digitales profesionales.',
-                'keywords'    => 'gano digital, agencia digital colombia, servicios web bogota',
+                'title'       => 'Nuestra Misión SOTA | Gano Digital — Infraestructura Soberana',
+                'description' => 'Conoce la visión de Gano Digital: devolver el control de la infraestructura a las empresas colombianas mediante tecnología de vanguardia.',
+                'keywords'    => 'soberania digital colombia, gano digital vision, hosting etico',
             ],
         ],
 
@@ -225,24 +225,24 @@ function gano_p3_pages() {
         ],
 
         'hosting' => [
-            'title'   => 'Planes de Hosting',
-            'excerpt' => 'Alojamiento web rápido, seguro y con soporte 24/7.',
+            'title'   => 'Ecosistemas de Infraestructura',
+            'excerpt' => 'Arquitectura de alta disponibilidad y soberanía digital en Colombia.',
             'content' => gano_p3_hosting_content(),
             'seo'     => [
-                'title'       => 'Hosting Web Colombia | Planes desde $15.000/mes | Gano Digital',
-                'description' => 'Hosting cPanel, WordPress y VPS para tu sitio web. Servidores en Colombia, uptime 99.9%, soporte en español. Desde $15.000 COP/mes.',
-                'keywords'    => 'hosting colombia, hospedaje web colombia, hosting cpanel bogota',
+                'title'       => 'Infraestructura SOTA | Hosting NVMe Gen4 en Colombia | Gano Digital',
+                'description' => 'Ecosistemas de hosting diseñados para la soberanía de tus datos. Velocidad NVMe sin precedentes, blindaje Zero-Trust y soporte local de élite en Bogotá.',
+                'keywords'    => 'hosting nvme colombia, soberania digital, hosting premium bogota',
             ],
         ],
 
         'servicios' => [
-            'title'   => 'Servicios',
-            'excerpt' => 'Todos los servicios digitales que tu empresa necesita.',
+            'title'   => 'Blindaje y Optimización',
+            'excerpt' => 'Capas adicionales de inteligencia y seguridad para tu activo digital.',
             'content' => gano_p3_services_content(),
             'seo'     => [
-                'title'       => 'Servicios Digitales | SSL, SEO, Email, Seguridad | Gano Digital',
-                'description' => 'Certificados SSL, SEO, email marketing, seguridad web y backups. Protege y potencia tu presencia en internet con Gano Digital.',
-                'keywords'    => 'servicios digitales colombia, ssl colombia, seo colombia',
+                'title'       => 'Servicios SOTA | Seguridad y Rendimiento Avanzado | Gano Digital',
+                'description' => 'Certificados de encriptación de grado militar, SEO de autoridad y blindaje perimetral. Protege tu imperio digital con Gano.',
+                'keywords'    => 'seguridad web colombia, ssl avanzado, seo de autoridad',
             ],
         ],
 
@@ -282,100 +282,101 @@ function gano_p3_pages() {
         /* ─── NÚCLEO SOTA (Arquitectura e Innovación) ────────────────────────── */
 
         'seguridad-zero-trust' => [
-            'title'    => 'Seguridad Zero-Trust',
-            'excerpt'  => 'Infrastructura blindada con el modelo de confianza cero.',
+            'title'    => 'Fortaleza Zero-Trust',
+            'excerpt'  => 'Manifiesto de Inmunidad: Perímetro blindado mediante verificación continua.',
             'content'  => '<!-- SOTA Architecture Content -->',
             'category' => 'sota',
-            'seo'      => [ 'title' => 'Seguridad Zero-Trust | SOTA Gano Digital', 'description' => 'Seguridad perimetral y autenticación continua.', 'keywords' => 'zero trust colombia' ],
+            'seo'      => [ 'title' => 'Inmunidad Zero-Trust | SOTA Gano Digital', 'description' => 'Blindaje perimetral SOTA mediante el modelo de confianza cero.', 'keywords' => 'zero trust colombia' ],
         ],
 
         'almacenamiento-nvme' => [
-            'title'    => 'Power NVMe Gen4',
-            'excerpt'  => 'Velocidad de lectura/escritura sin precedentes.',
+            'title'    => 'Núcleo NVMe Gen4',
+            'excerpt'  => 'Ingeniería de Latencia Cero: Almacenamiento de estado sólido para misión crítica.',
             'content'  => '<!-- SOTA Architecture Content -->',
             'category' => 'sota',
-            'seo'      => [ 'title' => 'NVMe Gen4 | Rendimiento SOTA', 'description' => 'I/O ultra rápido para aplicaciones críticas.', 'keywords' => 'nvme hosting colombia' ],
+            'seo'      => [ 'title' => 'NVMe Gen4 | Ingeniería SOTA Gano Digital', 'description' => 'I/O ultra rápido para aplicaciones empresariales.', 'keywords' => 'nvme hosting colombia' ],
         ],
 
         'soberania-digital' => [
-            'title'    => 'Soberanía Digital',
-            'excerpt'  => 'Control total sobre tus datos e infraestructura.',
+            'title'    => 'Soberanía Digital Absoluta',
+            'excerpt'  => 'Jurisdicción Soberana: El poder total sobre tus datos y hardware.',
             'content'  => '<!-- SOTA Architecture Content -->',
             'category' => 'sota',
-            'seo'      => [ 'title' => 'Soberanía Digital | Independencia Tecnológica', 'description' => 'Tus datos, tus reglas.', 'keywords' => 'soberania digital colombia' ],
+            'seo'      => [ 'title' => 'Soberanía Digital | Independencia Tecnológica', 'description' => 'Control estratégico de infraestructura en Colombia.', 'keywords' => 'soberania digital colombia' ],
         ],
 
         'inteligencia-sintetica' => [
-            'title'    => 'Inteligencia Sintética',
-            'excerpt'  => 'Redes neuronales aplicadas al análisis de infraestructura.',
+            'title'    => 'Cerebro IA Predictivo',
+            'excerpt'  => 'Gestión Autónoma: Prevención de fallos mediante redes neuronales.',
             'content'  => '<!-- SOTA Architecture Content -->',
             'category' => 'sota',
-            'seo'      => [ 'title' => 'IA Infraestructura | Gano Digital', 'description' => 'Optimización predictiva mediante IA.', 'keywords' => 'ia hosting colombia' ],
+            'seo'      => [ 'title' => 'IA Infraestructura | Agente Soberano Gano Digital', 'description' => 'Optimización y autocuración mediante Inteligencia Artificial SOTA.', 'keywords' => 'ia hosting colombia' ],
         ],
 
         'red-global-anycast' => [
-            'title'    => 'Red Global Anycast',
-            'excerpt'  => 'Latencia mínima distribuida en nodos mundiales.',
+            'title'    => 'Malla de Borde Anycast',
+            'excerpt'  => 'Proximidad de Élite: Tu contenido en el borde de la red global.',
             'content'  => '<!-- SOTA Architecture Content -->',
             'category' => 'sota',
-            'seo'      => [ 'title' => 'Anycast Network | Distribución SOTA', 'description' => 'Conexión instantánea desde cualquier lugar.', 'keywords' => 'anycast cdn colombia' ],
+            'seo'      => [ 'title' => 'Anycast Network | Distribución SOTA', 'description' => 'Latencia mínima distribuida regionalmente.', 'keywords' => 'anycast cdn colombia' ],
         ],
 
         'computacion-serverless' => [
-            'title'    => 'Computación Serverless',
-            'excerpt'  => 'Escalabilidad infinita sin gestionar servidores.',
+            'title'    => 'Elasticidad Serverless',
+            'excerpt'  => 'Escalabilidad Monolítica: Potencia sin gestión de infraestructura.',
             'content'  => '<!-- SOTA Architecture Content -->',
             'category' => 'sota',
-            'seo'      => [ 'title' => 'Serverless Hosting | Escalabilidad SOTA', 'description' => 'Despliega funciones sin preocuparte por el hardware.', 'keywords' => 'serverless colombia' ],
+            'seo'      => [ 'title' => 'Serverless Hosting | Escalabilidad SOTA', 'description' => 'Infraestructura elástica para alta demanda.', 'keywords' => 'serverless colombia' ],
         ],
 
         'ecosistemas-hibridos' => [
-            'title'    => 'Ecosistemas Híbridos',
-            'excerpt'  => 'Lo mejor del cloud privado y público en una malla única.',
+            'title'    => 'Ecosistemas Híbridos SOTA',
+            'excerpt'  => 'Sinergia Crítica: Lo mejor del cloud privado en una infraestructura soberana.',
             'content'  => '<!-- SOTA Architecture Content -->',
             'category' => 'sota',
-            'seo'      => [ 'title' => 'Hybrid Cloud SOTA | Gano Digital', 'description' => 'Flexibilidad y seguridad en entornos mixtos.', 'keywords' => 'nube hibrida colombia' ],
+            'seo'      => [ 'title' => 'Hybrid Cloud SOTA | Gano Digital', 'description' => 'Malla única de infraestructura de alto rendimiento.', 'keywords' => 'nube hibrida colombia' ],
         ],
 
         'edge-computing-pro' => [
-            'title'    => 'Edge Computing Pro',
-            'excerpt'  => 'Procesamiento en el borde para tiempos de respuesta ultra-bajos.',
+            'title'    => 'Edge Computing de Autoridad',
+            'excerpt'  => 'Lógica Proximal: Ejecución milimétrica en el nodo más cercano.',
             'content'  => '<!-- SOTA Architecture Content -->',
             'category' => 'sota',
-            'seo'      => [ 'title' => 'Edge Computing | SOTA Infraestructura', 'description' => 'Velocidad local en escala global.', 'keywords' => 'edge computing colombia' ],
+            'seo'      => [ 'title' => 'Edge Computing | SOTA Infraestructura', 'description' => 'Rendimiento de borde para aplicaciones de élite.', 'keywords' => 'edge computing colombia' ],
         ],
 
         'ciber-resiliencia-fractal' => [
             'title'    => 'Ciber-Resiliencia Fractal',
-            'excerpt'  => 'Recuperación ante desastres con redundancia multi-capa.',
+            'excerpt'  => 'Inmunidad ante Desastres: Recuperación automática y redundancia infinita.',
             'content'  => '<!-- SOTA Architecture Content -->',
             'category' => 'sota',
-            'seo'      => [ 'title' => 'Resiliencia Digital | Gano Digital', 'description' => 'Continuidad de negocio contra cualquier amenaza.', 'keywords' => 'disaster recovery colombia' ],
+            'seo'      => [ 'title' => 'Resiliencia Digital | Gano Digital', 'description' => 'Continuidad de negocio mediante protocolos SOTA.', 'keywords' => 'disaster recovery colombia' ],
         ],
 
         'catalogo-sota' => [
-            'title'    => 'Catálogo de Innovación',
-            'excerpt'  => 'Explora la frontera tecnológica de Gano Digital.',
+            'title'    => 'Gano SOTA Index',
+            'excerpt'  => 'Explora el Estado del Arte: El catálogo de la vanguardia tecnológica.',
             'content'  => '<!-- SOTA Catalog -->',
             'category' => 'sota',
-            'seo'      => [ 'title' => 'Catálogo SOTA | Gano Digital', 'description' => 'Servicios de vanguardia digital.', 'keywords' => 'tecnologia sota' ],
+            'seo'      => [ 'title' => 'SOTA Index | El Estado del Arte en Colombia', 'description' => 'Directorio de innovaciones de valor estratégico.', 'keywords' => 'tecnologia sota colombia' ],
         ],
 
         'dashboard-infraestructura' => [
-            'title'    => 'Dashboard Inteligente',
-            'excerpt'  => 'Visualización en tiempo real de tu ecosistema.',
+            'title'    => 'Panel de Control Soberano',
+            'excerpt'  => 'Soberanía Visual: Monitoreo en tiempo real de tu activo digital.',
             'content'  => '<!-- SOTA Dashboard -->',
             'category' => 'sota',
-            'seo'      => [ 'title' => 'Dashboard SOTA | Gestión Total', 'description' => 'Métrica y control de red en vivo.', 'keywords' => 'panel hosting colombia' ],
+            'seo'      => [ 'title' => 'Dashboard SOTA | Gestión Total', 'description' => 'Control absoluto de red e infraestructura.', 'keywords' => 'panel hosting colombia' ],
         ],
 
         'arquitectura-cloud' => [
-            'title'    => 'Arquitectura Cloud',
-            'excerpt'  => 'Diseño de infraestructuras elásticas y resilientes.',
+            'title'    => 'Arquitectura Cloud SOTA',
+            'excerpt'  => 'Diseño de Resiliencia: Ingeniería de nubes de alto desempeño.',
             'content'  => '<!-- SOTA Cloud Architecture -->',
             'category' => 'sota',
-            'seo'      => [ 'title' => 'Cloud SOTA | Gano Digital', 'description' => 'Nube de alto rendimiento.', 'keywords' => 'cloud server colombia' ],
+            'seo'      => [ 'title' => 'Cloud SOTA | Infraestructura Gano Digital', 'description' => 'Ecosistemas en la nube para empresas de misión crítica.', 'keywords' => 'cloud server colombia' ],
         ],
+
     ];
 }
 
@@ -386,40 +387,40 @@ function gano_p3_about_content() {
 <div class="wp-block-group">
 
 <!-- wp:heading {"level":1} -->
-<h1>Somos Gano Digital</h1>
+<h1>Arquitectos de tu Libertad Digital</h1>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"fontSize":"large"} -->
-<p class="has-large-font-size">Somos una empresa colombiana de servicios digitales con sede en Bogotá. Nuestra misión es hacer que cualquier negocio o persona pueda construir y hacer crecer su presencia en internet, con herramientas profesionales y soporte en español.</p>
+<p class="has-large-font-size">En Gano Digital no solo proveemos servidores; diseñamos <strong>Soberanía Digital</strong>. Somos una firma tecnológica colombiana nacida en Bogotá con una misión clara: devolver el control de la infraestructura crítica a las empresas que mueven la economía del país.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":2} -->
-<h2>¿Por qué Gano Digital?</h2>
+<h2>El Manifiesto SOTA</h2>
 <!-- /wp:heading -->
 
 <!-- wp:list -->
 <ul>
-  <li><strong>Soporte local en español</strong> — Resolvemos tus dudas sin barreras de idioma ni de horario.</li>
-  <li><strong>Precios en pesos colombianos (COP)</strong> — Sin sorpresas con la TRM. Pagas exactamente lo que ves.</li>
-  <li><strong>Tecnología de nivel global</strong> — Infraestructura respaldada por los mejores centros de datos.</li>
-  <li><strong>Soluciones integrales</strong> — De la idea a la tienda online: dominio, hosting, diseño, seguridad y marketing.</li>
+  <li><strong>Soberanía de Datos</strong> — Tus activos digitales bajo jurisdicción y protección local absoluta.</li>
+  <li><strong>Rendimiento Crítico</strong> — Infraestructura NVMe Gen4 diseñada para la latencia cero en el mercado colombiano.</li>
+  <li><strong>Confianza Zero-Trust</strong> — Un modelo de seguridad donde la confianza no se asume, se verifica en cada paquete.</li>
+  <li><strong>Soporte de Élite</strong> — Ingeniería en español que entiende la presión de tu operación en tiempo real.</li>
 </ul>
 <!-- /wp:list -->
 
 <!-- wp:heading {"level":2} -->
-<h2>Nuestra historia</h2>
+<h2>Nuestra Visión</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Gano Digital nació en Bogotá con una convicción simple: las pequeñas y medianas empresas colombianas merecen las mismas herramientas digitales que las grandes corporaciones, pero con precios justos y soporte que entiende su realidad. Desde nuestros inicios hemos acompañado a emprendedores, comercios locales y agencias en la construcción de su huella digital.</p>
+<p>Nacimos para romper la dependencia de las "nubes opacas". Gano Digital es el puente entre la potencia global y el control local. Creemos que la independencia tecnológica es el único camino hacia una competitividad real en la era de la Inteligencia Artificial.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":2} -->
-<h2>Nuestro compromiso</h2>
+<h2>Compromiso Monolítico</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Trabajamos con los estándares más exigentes de seguridad y disponibilidad. Nuestros servidores garantizan un uptime del <strong>99.9%</strong>, y nuestro equipo de soporte está disponible para acompañarte en cada paso.</p>
+<p>Operamos bajo el concepto de <strong>Kinetic Monolith</strong>: nuestras soluciones son sólidas como el granito pero ágiles como la fibra óptica. Garantizamos un ecosistema de alta disponibilidad (99.9% Uptime) blindado contra las amenazas del mañana.</p>
 <!-- /wp:paragraph -->
 
 </div>
@@ -431,41 +432,43 @@ HTML;
 function gano_p3_domains_content() {
     return <<<HTML
 <!-- wp:heading {"level":1} -->
-<h1>Registra tu dominio</h1>
+<h1>Gestión de Activos de Soberanía</h1>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"fontSize":"large"} -->
-<p class="has-large-font-size">Tu dominio es la dirección de tu negocio en internet. Elige el nombre perfecto y regístralo hoy.</p>
+<p class="has-large-font-size">Tu dominio no es solo una dirección; es el nodo primario de tu autoridad en internet. Orquestamos la gestión técnica de tus activos DNS bajo criterios de seguridad de misión crítica.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":2} -->
-<h2>Extensiones disponibles</h2>
+<h2>Extensiones de Alta Autoridad</h2>
 <!-- /wp:heading -->
 
 <!-- wp:table -->
 <figure class="wp-block-table"><table>
-  <thead><tr><th>Extensión</th><th>¿Para quién?</th><th>Precio/año</th></tr></thead>
+  <thead><tr><th>Extensión de Soberanía</th><th>Aplicabilidad Estratégica</th><th>Gestión / Auditoría</th></tr></thead>
   <tbody>
-    <tr><td>.com</td><td>Negocios globales — la extensión más reconocida</td><td>$85.000 COP</td></tr>
-    <tr><td>.co</td><td>Empresas colombianas — autoridad local</td><td>$95.000 COP</td></tr>
-    <tr><td>.net</td><td>Tecnología y redes</td><td>$85.000 COP</td></tr>
-    <tr><td>.org</td><td>ONGs y organizaciones sin ánimo de lucro</td><td>$75.000 COP</td></tr>
-    <tr><td>.store</td><td>Tiendas en línea</td><td>$90.000 COP</td></tr>
-    <tr><td>.digital</td><td>Agencias y negocios digitales</td><td>$110.000 COP</td></tr>
+    <tr><td>.com</td><td>Proyectos Globales — La extensión de mayor autoridad técnica y comercial.</td><td>Bajo demanda estratégica</td></tr>
+    <tr><td>.co / .com.co</td><td>Autoridad Local Colombia — Posicionamiento y resiliencia nacional.</td><td>Bajo demanda estratégica</td></tr>
+    <tr><td>.net / .store</td><td>Ecosistemas de Red y Plataformas de Comercio SOTA de alto volumen.</td><td>Bajo demanda estratégica</td></tr>
+    <tr><td>SOTA Custom</td><td>Extensiones de lujo (ej. .ai, .security) para infraestructura crítica.</td><td>Bajo demanda estratégica</td></tr>
   </tbody>
 </table></figure>
 <!-- /wp:table -->
 
+<!-- wp:paragraph {"align":"center"} -->
+<p class="has-text-align-center"><em>La gestión de dominios en Gano Digital es un servicio exclusivo para socios de infraestructura soberana. No operamos como registrador minorista.</em></p>
+<!-- /wp:paragraph -->
+
 <!-- wp:heading {"level":2} -->
-<h2>¿Qué incluye tu dominio?</h2>
+<h2>Protocolo de Gestión SOTA</h2>
 <!-- /wp:heading -->
 
 <!-- wp:list -->
 <ul>
-  <li>Panel de control intuitivo para gestionar DNS, redirecciones y más.</li>
-  <li>Bloqueo de dominio contra transferencias no autorizadas.</li>
-  <li>Renovación automática para que nunca pierdas tu dirección.</li>
-  <li>Opción de protección de privacidad WHOIS.</li>
+  <li><strong>Control Autoritario de DNS</strong> — Infraestructura de nombres redundante para latencia cero.</li>
+  <li><strong>Blindaje contra Secuestro</strong> — Bloqueo de registro multicapa y verificación de identidad proactiva.</li>
+  <li><strong>Resiliencia de Renovación</strong> — Ciclos de vida gestionados para garantizar la continuidad total de la operación.</li>
+  <li><strong>Privacidad Soberana WHOIS</strong> — Protección de los datos de contacto del titular bajo estándares corporativos.</li>
 </ul>
 <!-- /wp:list -->
 HTML;
@@ -475,36 +478,32 @@ HTML;
 function gano_p3_hosting_content() {
     return <<<HTML
 <!-- wp:heading {"level":1} -->
-<h1>Planes de Hosting Web</h1>
+<h1>Ecosistemas de Infraestructura SOTA</h1>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"fontSize":"large"} -->
-<p class="has-large-font-size">Elige el plan que se adapta al tamaño y las necesidades de tu proyecto digital.</p>
+<p class="has-large-font-size">Potencia pura cimentada en almacenamiento NVMe Gen4 y blindaje perimetral constante. Nuestra arquitectura de élite garantiza la <strong>Soberanía Digital</strong> absoluta de tus activos institucionales.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":2} -->
-<h2>Hosting cPanel (Compartido)</h2>
+<h2>Arquitectura de Misión Crítica</h2>
 <!-- /wp:heading -->
-
-<!-- wp:paragraph -->
-<p>Ideal para sitios web personales, blogs y pequeñas empresas que están comenzando su presencia en línea.</p>
-<!-- /wp:paragraph -->
 
 <!-- wp:columns -->
 <div class="wp-block-columns">
   <!-- wp:column -->
   <div class="wp-block-column">
     <!-- wp:heading {"level":3} -->
-    <h3>Inicial</h3>
+    <h3>Núcleo Prime</h3>
     <!-- /wp:heading -->
     <!-- wp:list -->
     <ul>
-      <li>1 sitio web</li>
-      <li>10 GB almacenamiento SSD</li>
-      <li>Ancho de banda sin límite</li>
-      <li>5 cuentas de email</li>
-      <li>Certificado SSL gratis</li>
-      <li><strong>Desde $18.000 COP/mes</strong></li>
+      <li>Despliegue de Activo Digital Soberano</li>
+      <li>NVMe Ultra de Latencia Cero</li>
+      <li>Transferencia Ilimitada SOTA</li>
+      <li>Blindaje Zero-Trust Proactivo</li>
+      <li>Encriptación SSL de Grado Militar</li>
+      <li><em>Activación bajo Auditoría Estratégica</em></li>
     </ul>
     <!-- /wp:list -->
   </div>
@@ -512,16 +511,16 @@ function gano_p3_hosting_content() {
   <!-- wp:column -->
   <div class="wp-block-column">
     <!-- wp:heading {"level":3} -->
-    <h3>Económico</h3>
+    <h3>Fortaleza Delta</h3>
     <!-- /wp:heading -->
     <!-- wp:list -->
     <ul>
-      <li>Sitios web ilimitados</li>
-      <li>50 GB almacenamiento SSD</li>
-      <li>Ancho de banda sin límite</li>
-      <li>Emails ilimitados</li>
-      <li>Certificado SSL gratis</li>
-      <li><strong>Desde $35.000 COP/mes</strong></li>
+      <li>Ecosistemas Multi-Activos Ilimitados</li>
+      <li>Infraestructura NVMe de Alta Densidad</li>
+      <li>Capa de Inteligencia Predictiva SOTA</li>
+      <li>Cifrado de Datos en Reposo (AES-256)</li>
+      <li>Soporte de Ingeniería de Élite en Bogotá</li>
+      <li><em>Activación bajo Auditoría Estratégica</em></li>
     </ul>
     <!-- /wp:list -->
   </div>
@@ -529,16 +528,16 @@ function gano_p3_hosting_content() {
   <!-- wp:column -->
   <div class="wp-block-column">
     <!-- wp:heading {"level":3} -->
-    <h3>Deluxe</h3>
+    <h3>Bastión SOTA</h3>
     <!-- /wp:heading -->
     <!-- wp:list -->
     <ul>
-      <li>Sitios web ilimitados</li>
-      <li>100 GB almacenamiento SSD</li>
-      <li>Ancho de banda sin límite</li>
-      <li>Emails y bases de datos ilimitadas</li>
-      <li>SSL gratis + CDN</li>
-      <li><strong>Desde $65.000 COP/mes</strong></li>
+      <li>Escalabilidad Monolítica Infinita</li>
+      <li>Arquitectura NVMe Gen4 Enterprise</li>
+      <li>Red Global Anycast BGP Integrada</li>
+      <li>Auditoría de Vulnerabilidades SOTA</li>
+      <li>Inmunidad Digital Garantizada por SLA</li>
+      <li><em>Activación bajo Auditoría Estratégica</em></li>
     </ul>
     <!-- /wp:list -->
   </div>
@@ -547,34 +546,20 @@ function gano_p3_hosting_content() {
 <!-- /wp:columns -->
 
 <!-- wp:heading {"level":2} -->
-<h2>Hosting WordPress</h2>
-<!-- /wp:heading -->
-
-<!-- wp:paragraph -->
-<p>Optimizado exclusivamente para WordPress. Más velocidad, mejor rendimiento y actualizaciones automáticas.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":2} -->
-<h2>Servidores VPS</h2>
-<!-- /wp:heading -->
-
-<!-- wp:paragraph -->
-<p>Para proyectos que necesitan más control y recursos dedicados. Configura tu servidor según tus necesidades exactas.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":2} -->
-<h2>¿Por qué nuestro hosting?</h2>
+<h2>¿Por qué nuestra arquitectura es el Estado del Arte?</h2>
 <!-- /wp:heading -->
 
 <!-- wp:list -->
 <ul>
-  <li><strong>Uptime 99.9%</strong> — Tu sitio siempre disponible.</li>
-  <li><strong>Servidores SSD</strong> — Carga 3x más rápida que disco duro.</li>
-  <li><strong>cPanel</strong> — Panel de control líder en la industria.</li>
-  <li><strong>Backups diarios</strong> — Tu información siempre protegida.</li>
-  <li><strong>Soporte en español</strong> — Atención técnica 24/7.</li>
+  <li><strong>Ingeniería NVMe Gen4 Nativa</strong> — Latencia eliminada para siempre. Tu ecosistema responde a la velocidad de la luz.</li>
+  <li><strong>Blindaje Zero-Trust</strong> — Ningún acceso se concede sin verificación criptográfica. Seguridad absoluta por diseño.</li>
+  <li><strong>Soberanía de Datos en Colombia</strong> — Jurisdicción local soberana y tiempos de respuesta nacionales de élite.</li>
+  <li><strong>IA de Autocuración</strong> — Detectamos y remediamos anomalías antes de que el usuario note la degradación.</li>
 </ul>
 <!-- /wp:list -->
+
+<!-- wp:paragraph {"align":"center"} -->
+<p class="has-text-align-center"><em>Nuestros servicios se activan previa sesión de consultoría técnica para asegurar el alineamiento estratégico de tu infraestructura.</em></p>
 HTML;
 }
 
@@ -582,53 +567,46 @@ HTML;
 function gano_p3_services_content() {
     return <<<HTML
 <!-- wp:heading {"level":1} -->
-<h1>Servicios Digitales</h1>
+<h1>Blindaje y Optimización de Activos</h1>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"fontSize":"large"} -->
-<p class="has-large-font-size">Todo lo que tu empresa necesita para tener una presencia digital profesional, segura y visible.</p>
+<p class="has-large-font-size">Capas de seguridad avanzada e inteligencia aplicadas a tu presencia digital.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":2} -->
-<h2>🔒 Certificados SSL</h2>
+<h2>🛡️ Inmunidad Digital (SSL + WAF)</h2>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p>Protege la información de tus clientes y mejora tu posicionamiento en Google. Un candado verde que genera confianza. Disponible en DV (dominio), OV (organización) y EV (validación extendida).</p>
+<p>Más que un candado verde: implementamos encriptación de grado militar y firewalls de aplicación web (WAF) que aprenden y neutralizan amenazas antes de que toquen tu servidor.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":2} -->
-<h2>📈 SEO — Posicionamiento en Buscadores</h2>
+<h2>📐 SEO de Autoridad Monolítica</h2>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p>Aparece en los primeros resultados de Google cuando tus clientes te buscan. Auditoría SEO, optimización on-page, link building y reportes mensuales de rendimiento.</p>
+<p>No solo buscamos tráfico; buscamos relevancia absoluta. Estrategias de posicionamiento diseñadas para dominar las búsquedas más competitivas en el mercado colombiano.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":2} -->
-<h2>📧 Email Marketing</h2>
+<h2>⚡ Aceleración Anycast</h2>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p>Llega directamente a la bandeja de entrada de tus clientes con campañas de email marketing. Planes para principiantes hasta equipos profesionales con automatizaciones avanzadas.</p>
+<p>Distribución de contenido en el borde (Edge Computing). Tu sitio web se sirve desde el nodo más cercano a tu cliente, eliminando la distancia física.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":2} -->
-<h2>🛡️ Seguridad Web</h2>
+<h2>💾 Resiliencia y Backup SOTA</h2>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p>Protege tu sitio contra hackeos, malware y vulnerabilidades. Monitoreo 24/7, eliminación de malware, firewall WAF y reportes de seguridad detallados.</p>
+<p>Snapshotting continuo y backups granulares. En caso de desastre, tu infraestructura se reconstruye en segundos, garantizando la continuidad total de tu negocio.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":2} -->
-<h2>💾 Backups & Respaldo</h2>
+<h2>🌐 Elitismo en Conectividad</h2>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p>Copias de seguridad automáticas y diarias de todo tu sitio. Restauración en un clic ante cualquier incidente. Planes desde 5 GB hasta 50 GB.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":2} -->
-<h2>📧 Correo Profesional</h2>
-<!-- /wp:heading -->
-<!-- wp:paragraph -->
-<p>Correo con tu dominio (tú@tuempresa.com). Disponible con Microsoft 365 (Outlook, Teams, Office) o Google Workspace (Gmail, Drive, Meet).</p>
+<p>Correo profesional y herramientas de colaboración (GWS / M365) configuradas bajo estándares de seguridad Gano para evitar phishing y filtraciones.</p>
 <!-- /wp:paragraph -->
 HTML;
 }
@@ -856,117 +834,79 @@ HTML;
 function gano_p3_create_blog_posts() {
     $posts = [
         [
-            'title'   => '¿Por qué tu empresa necesita una página web en 2026?',
-            'slug'    => 'por-que-empresa-necesita-pagina-web',
-            'excerpt' => 'Si todavía no tienes presencia digital, estás perdiendo clientes cada día. Descubre por qué una página web es la inversión más rentable para tu negocio.',
+            'title'   => 'Soberanía Digital: El Derecho Humano a la Propiedad de los Datos',
+            'slug'    => 'soberania-digital-derecho-propiedad-datos',
+            'excerpt' => 'En la era de la IA, ceder el control de tus activos digitales es ceder el futuro de tu empresa. Conoce el Manifiesto de Soberanía de Gano Digital.',
             'content' => <<<HTML
 <!-- wp:paragraph {"fontSize":"large"} -->
-<p class="has-large-font-size">En Colombia, el 78% de los consumidores busca información en internet antes de hacer una compra. Si tu empresa no aparece en Google, estás cediendo esos clientes a tu competencia.</p>
+<p class="has-large-font-size">La infraestructura no es un commodity; es el sistema nervioso de tu soberanía. Gano Digital redefine el poder tecnológico en Colombia devolviendo el control total a las organizaciones.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":2} -->
-<h2>Tu vitrina abierta las 24 horas</h2>
+<h2>El Fin de la Dependencia Extranjera</h2>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p>A diferencia de un local físico, tu página web trabaja por ti mientras duermes. Un cliente en Cali puede conocer tu oferta a las 2 AM y hacer un pedido antes del amanecer. Sin horarios, sin intermediarios.</p>
+<p>Nuestra misión es asegurar que cada byte de tu información resida bajo tu jurisdicción y mando. Mediante el uso de tecnologías SOTA y cifrado de grado militar, blindamos tu libertad frente a ecosistemas opacos y centralizados.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":2} -->
-<h2>Credibilidad y confianza</h2>
+<h2>Inversión Estratégica en Autoridad</h2>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p>¿Cuántas veces has buscado una empresa y desconfiado porque no tenía página web? Tus clientes potenciales hacen lo mismo. Un sitio profesional con SSL (candado verde) genera la confianza necesaria para que decidan comprarte a ti y no a otro.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":2} -->
-<h2>¿Cuánto cuesta tener una página web?</h2>
-<!-- /wp:heading -->
-<!-- wp:paragraph -->
-<p>Con Gano Digital puedes tener tu sitio en funcionamiento desde <strong>$50.000 COP al mes</strong> (dominio + hosting + SSL). Menos que un almuerzo de negocios, con un impacto exponencialmente mayor.</p>
+<p>Un activo digital soberano no tiene "costo de hosting"; tiene una tasa de retorno sobre la seguridad institucional. En Gano Digital, cada solución se orquesta para maximizar tu independencia y autoridad en el mercado global.</p>
 <!-- /wp:paragraph -->
 HTML,
-            'category' => 'presencia-digital',
+            'category' => 'soberania-digital',
         ],
         [
-            'title'   => 'Guía completa: cómo elegir el mejor nombre de dominio para tu negocio',
-            'slug'    => 'como-elegir-nombre-dominio-negocio',
-            'excerpt' => 'El dominio es la primera impresión de tu negocio en internet. Aprende a elegir uno que sea memorable, profesional y fácil de posicionar en buscadores.',
+            'title'   => 'Manifiesto NVMe: Por qué la Velocidad es la Nueva Seguridad',
+            'slug'    => 'manifiesto-nvme-velocidad-nueva-seguridad',
+            'excerpt' => 'En el Estado del Arte, la latencia es una vulnerabilidad. Descubre cómo la arquitectura NVMe Gen4 de Gano Digital blinda tu rendimiento crítico.',
             'content' => <<<HTML
 <!-- wp:paragraph {"fontSize":"large"} -->
-<p class="has-large-font-size">Tu dominio es como la dirección de tu oficina, pero en internet. Elegirlo bien puede marcar la diferencia entre ser encontrado o quedar invisible.</p>
+<p class="has-large-font-size">Cada milisegundo de retraso es una oportunidad perdida para la conversión y un vector de ataque para la obsolescencia. La velocidad no es un lujo; es ingeniería de misión crítica.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":2} -->
-<h2>Reglas de oro para un buen dominio</h2>
-<!-- /wp:heading -->
-<!-- wp:list -->
-<ul>
-  <li><strong>Corto y memorable</strong>: máximo 2-3 palabras. Fácil de decir en voz alta.</li>
-  <li><strong>Sin guiones ni números</strong>: dificultan la memorización y la escritura.</li>
-  <li><strong>Incluye tu marca o servicio</strong>: si vendes zapatos en Colombia, algo como <em>zapatoscolombia.co</em> dice exactamente lo que eres.</li>
-  <li><strong>Evita marcas registradas</strong>: usar el nombre de otra empresa puede traerte problemas legales.</li>
-</ul>
-<!-- /wp:list -->
-
-<!-- wp:heading {"level":2} -->
-<h2>.com vs .co: ¿cuál elegir?</h2>
+<h2>Ingeniería de Latencia Cero</h2>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p>Si tu negocio opera principalmente en Colombia, el <strong>.co</strong> te da autoridad local y suele tener mejor posicionamiento para búsquedas desde Colombia. El <strong>.com</strong> es ideal si tienes o planeas tener clientes internacionales.</p>
+<p>Gano Digital implementa exclusivamente almacenamiento NVMe Gen4. Al eliminar los cuellos de botella del protocolo SATA heredado, permitimos que tu infraestructura WordPress se comunique directamente con el procesador, garantizando respuestas instantáneas a escala masiva.</p>
 <!-- /wp:paragraph -->
 
+<!-- wp:heading {"level":2} -->
+<h2>Resiliencia que se Siente</h2>
+<!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p><strong>Recomendación:</strong> Registra ambos si el presupuesto lo permite. Apunta el .co a tu sitio principal y el .com a una redirección.</p>
+<p>Nuestra malla de infraestructura está diseñada para soportar picos de carga imprevistos sin degradar la experiencia de usuario. La velocidad es el primer paso hacia la inmunidad digital absoluta.</p>
 <!-- /wp:paragraph -->
 HTML,
-            'category' => 'dominios',
+            'category' => 'infraestructura',
         ],
         [
-            'title'   => 'Hosting compartido vs VPS: ¿cuál necesita tu negocio?',
-            'slug'    => 'hosting-compartido-vs-vps',
-            'excerpt' => 'Entender la diferencia entre tipos de hosting puede ahorrarte dinero o evitar que tu sitio se caiga en el momento más crítico. Esta guía te ayuda a elegir.',
+            'title'   => 'Zero-Trust: Blindando el Perímetro en un Mundo sin Perímetro',
+            'category' => 'seguridad',
+            'slug'    => 'zero-trust-blindando-perimetro',
+            'excerpt' => 'Confianza Cero: La arquitectura de seguridad donde cada acceso se verifica. Conoce el blindaje fractal de Gano Digital.',
             'content' => <<<HTML
 <!-- wp:paragraph {"fontSize":"large"} -->
-<p class="has-large-font-size">Elegir el tipo de hosting equivocado es como alquilar una bodega para guardar una moto, o comprar una moto cuando necesitas una bodega.</p>
+<p class="has-large-font-size">El concepto tradicional de "firewall" ha muerto. En Gano Digital, implementamos inmunidad activa mediante verificación continua de identidad y permisos.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":2} -->
-<h2>Hosting compartido: económico y suficiente para empezar</h2>
+<h2>Micro-Segmentación por Diseño</h2>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p>En hosting compartido, tu sitio web "comparte" recursos del servidor (CPU, RAM, almacenamiento) con otros sitios. Es como vivir en un edificio de apartamentos: más económico, pero con recursos limitados.</p>
-<!-- /wp:paragraph -->
-<!-- wp:paragraph -->
-<p><strong>Ideal para:</strong> sitios nuevos, blogs, portafolios, pequeñas tiendas online con tráfico menor a 10.000 visitas/mes.</p>
+<p>Cada componente de tu ecosistema —desde la base de datos hasta los activos estáticos— vive en un entorno aislado y verificado. Si un componente se ve amenazado, el resto de la fortaleza permanece inexpugnable.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":2} -->
-<h2>VPS: tu propio espacio, más potencia</h2>
+<h2>Autoridad Criptográfica</h2>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
-<p>Un VPS (Servidor Privado Virtual) te da recursos dedicados dentro de un servidor físico. Es como tener tu propio apartamento: pagas más, pero nadie más afecta tu rendimiento.</p>
+<p>No esperamos a que ocurra el ataque. Nuestra IA predictiva analiza patrones de tráfico en tiempo real para neutralizar amenazas antes de que traspasen la primera capa de nuestra arquitectura soberana.</p>
 <!-- /wp:paragraph -->
-<!-- wp:paragraph -->
-<p><strong>Ideal para:</strong> tiendas online en crecimiento, plataformas SaaS, sitios con más de 20.000 visitas/mes, aplicaciones que requieren configuraciones personalizadas.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":2} -->
-<h2>Resumen rápido</h2>
-<!-- /wp:heading -->
-<!-- wp:table -->
-<figure class="wp-block-table"><table>
-  <thead><tr><th>Característica</th><th>Compartido</th><th>VPS</th></tr></thead>
-  <tbody>
-    <tr><td>Precio/mes</td><td>Desde $18.000 COP</td><td>Desde $85.000 COP</td></tr>
-    <tr><td>Recursos</td><td>Compartidos</td><td>Dedicados</td></tr>
-    <tr><td>Control del servidor</td><td>Limitado (cPanel)</td><td>Total (root access)</td></tr>
-    <tr><td>Escalabilidad</td><td>Limitada</td><td>Alta</td></tr>
-    <tr><td>Para sitios con</td><td>&lt; 10.000 visitas/mes</td><td>&gt; 20.000 visitas/mes</td></tr>
-  </tbody>
-</table></figure>
-<!-- /wp:table -->
 HTML,
-            'category' => 'hosting',
         ],
     ];
 

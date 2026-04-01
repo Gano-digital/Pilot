@@ -83,10 +83,29 @@ Los agentes GSD están disponibles para: planning, debugging, UI audit, verifica
 - `WP_DEBUG` debe estar en `false` en producción
 - Rate limiting en endpoints REST: máx 20 req/IP/60s
 
+## Narrativa y Marca (High-Ticket)
+
+Este proyecto ha evolucionado a un modelo de **Alta Autoridad (SOTA)** y comunicación **High-Ticket**. Copilot debe seguir estas reglas en cada generación de contenido:
+
+- **Tono**: "Manifiesto Técnico". Autoritario, visionario, sofisticado y soberano.
+- **Nomenclatura de Ecosistemas**:
+  - **Núcleo Prime**: Infraestructura base de alta velocidad.
+  - **Fortaleza Delta**: Blindaje avanzado e Inteligencia Predictiva.
+  - **Bastión SOTA**: El estado del arte. Alta disponibilidad y resiliencia total.
+- **Prohibiciones**:
+  - **NUNCA** usar lenguaje de "bajo costo", "barato", "económico" o "hosting compartido".
+  - **EVITAR** precios de entrada explícitos. El enfoque es la inversión estratégica en soberanía.
+  - **ELIMINAR** comparativas con hosting tradicional; Gano es un socio de infraestructura soberana.
+- **Conceptos Clave**:
+  - **Soberanía Digital**: Control total sobre datos y hardware bajo jurisdicción local.
+  - **Inmunidad Zero-Trust**: La seguridad no es un muro, es un sistema inmunológico.
+  - **Latencia Cero**: Optimización absoluta mediante NVMe Gen4 y Edge Computing.
+  - **IA Soberana**: Inteligencia artificial privada para la autocuración de sistemas.
+
 ## Contexto Colombiano
 
-- Moneda: COP (pesos colombianos)
-- Zona horaria: America/Bogota (UTC-5)
-- Cumplimiento: GDPR + normativa SIC Colombia + DIAN facturación
-- Idioma: es-CO (español colombiano formal)
-- Checkout: Wompi (no Stripe, no PayPal para Colombia)
+- **Moneda**: COP (pesos colombianos)
+- **Zona horaria**: America/Bogota (UTC-5)
+- **Cumplimiento**: GDPR + normativa SIC Colombia + DIAN facturación
+- **Idioma**: es-CO (español colombiano formal / ejecutivo)
+- **Checkout**: Wompi (integración Premium personalizada)

@@ -52,7 +52,7 @@ function gano_seo_config(): array {
         'hero_image_url'  => get_option( 'gano_seo_hero_image',   '' ),
         'founded_year'    => get_option( 'gano_seo_founded',      '2024' ),
         'site_url'        => get_site_url(),
-        'description'     => 'Hosting WordPress de alto rendimiento con seguridad empresarial, soporte 24/7 en español y facturación en pesos colombianos. Bogotá, Colombia.',
+        'description'     => 'Infraestructura soberana y misiones críticas en Colombia. Gano Digital orquesta ecosistemas WordPress de alta disponibilidad con ingeniería NVMe Gen4, seguridad Zero-Trust y soberanía de datos absoluta.',
     );
 }
 
@@ -104,7 +104,7 @@ function gano_output_base_schema(): void {
             array( '@type' => 'Country',  'name' => 'México' ),
             array( '@type' => 'Continent','name' => 'América Latina' ),
         ),
-        'priceRange'      => '$$',
+        'priceRange'      => '$$$',
         'currenciesAccepted' => 'COP',
         'paymentAccepted' => 'PSE, Tarjeta de Crédito, Tarjeta de Débito, Nequi, Daviplata',
     );
@@ -151,42 +151,42 @@ function gano_output_base_schema(): void {
             'mainEntity' => array(
                 array(
                     '@type'          => 'Question',
-                    'name'           => '¿Cuánto cuesta el hosting WordPress en Colombia?',
+                    'name'           => '¿Qué define la infraestructura SOTA de Gano Digital?',
                     'acceptedAnswer' => array(
                         '@type' => 'Answer',
-                        'text'  => 'Gano Digital ofrece planes desde $196.000 COP mensuales. El plan Startup Blueprint incluye hosting WordPress con NVMe Gen4, SSL, seguridad empresarial y soporte 24/7. Todos los precios en pesos colombianos sin conversiones.',
+                        'text'  => 'Definimos el Estado del Arte (SOTA) mediante la convergencia de latencia cero (NVMe Gen4), soberanía jurídica de datos en Colombia e inmunidad perimetral Zero-Trust. No somos hosting; somos tu socio de infraestructura soberana.',
                     ),
                 ),
                 array(
                     '@type'          => 'Question',
-                    'name'           => '¿Qué métodos de pago aceptan?',
+                    'name'           => '¿Cómo garantizan la soberanía de mis activos digitales?',
                     'acceptedAnswer' => array(
                         '@type' => 'Answer',
-                        'text'  => 'Aceptamos PSE, Nequi, Daviplata, tarjetas débito y crédito a través de Wompi Colombia. Facturación 100% en pesos colombianos (COP).',
+                        'text'  => 'Operamos bajo jurisdicción colombiana, asegurando que tus datos y hardware residan en bóvedas digitales locales, blindadas contra la dependencia de nubes públicas opacas y legislación extranjera.',
                     ),
                 ),
                 array(
                     '@type'          => 'Question',
-                    'name'           => '¿El hosting está en Colombia?',
+                    'name'           => '¿Qué ecosistemas de resiliencia ofrecen?',
                     'acceptedAnswer' => array(
                         '@type' => 'Answer',
-                        'text'  => 'Sí. Gano Digital opera desde Bogotá, Colombia. Soporte en español 24/7, facturación en COP y cumplimiento de la Ley 1581 de Protección de Datos colombiana.',
+                        'text'  => 'Orquestamos tres niveles de blindaje soberano: Núcleo Prime (Infraestructura base de alta velocidad), Fortaleza Delta (Seguridad predictiva avanzada) y Bastión SOTA (Resiliencia total y alta disponibilidad).',
                     ),
                 ),
                 array(
                     '@type'          => 'Question',
-                    'name'           => '¿Incluyen SSL gratuito?',
+                    'name'           => '¿Incluyen blindaje de seguridad avanzado?',
                     'acceptedAnswer' => array(
                         '@type' => 'Answer',
-                        'text'  => 'Todos los planes de Gano Digital incluyen certificado SSL/TLS gratuito con renovación automática. Además incluyen WAF, Wordfence y hardening WordPress sin costo adicional.',
+                        'text'  => 'Todos los ecosistemas incluyen certificación TLS avanzada, firewall de aplicación (WAF) activo y un sistema inmunológico digital basado en principios Zero-Trust para neutralizar amenazas en tiempo real.',
                     ),
                 ),
                 array(
                     '@type'          => 'Question',
-                    'name'           => '¿Puedo migrar mi sitio WordPress existente?',
+                    'name'           => '¿Realizan migraciones de infraestructura crítica?',
                     'acceptedAnswer' => array(
                         '@type' => 'Answer',
-                        'text'  => 'Sí, realizamos migraciones completas de WordPress sin tiempo de inactividad. El servicio de migración está incluido en todos los planes.',
+                        'text'  => 'Sí, orquestamos la migración completa de tus activos digitales hacia nuestra infraestructura soberana sin interrupciones de servicio, garantizando la integridad de cada byte durante el proceso.',
                     ),
                 ),
             ),
@@ -263,7 +263,7 @@ function gano_output_product_schema(): void {
                 array( '@type' => 'PaymentMethod', 'name' => 'Tarjeta de Débito' ),
             ),
         ),
-        'category'    => 'Hosting WordPress Colombia',
+        'category'    => 'Infraestructura Soberana SOTA',
         'inLanguage'  => 'es-CO',
     );
 
