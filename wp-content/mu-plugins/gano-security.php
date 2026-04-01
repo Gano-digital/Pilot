@@ -279,8 +279,6 @@ add_filter( 'rest_authentication_errors', function( $result ) {
         '/wp-json/wp/v2/pages',
         '/wp-json/wp/v2/categories',
         '/wp-json/contact-form-7',
-        // Webhook Wompi — verificación HMAC interna en el handler (gano-wompi-integration.php)
-        '/wp-json/gano-wompi/v1/webhook',
         // Reporte de violaciones CSP — solo acepta POST, sin datos sensibles
         '/wp-json/gano/v1/csp-report',
         // Chat IA — los endpoints de chat usan nonce, que WP valida como autenticación.
@@ -317,18 +315,15 @@ add_action( 'send_headers', function() {
         //   • 'unsafe-inline' en script-src: requerido por Elementor y WC.
         //     Migrar a nonces de CSP en Fase 3+ para eliminar este permiso.
         //   • 'unsafe-eval': requerido por Elementor Pro y algunos widgets.
-        //   • checkout.wompi.co/sandbox.wompi.co: frame-src para widget de pago.
         //   • upgrade-insecure-requests fuerza HTTPS en todos los sub-recursos.
         //
         $csp = implode( '; ', [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.wompi.co https://sandbox.wompi.co https://www.google-analytics.com https://www.googletagmanager.com https://ajax.googleapis.com",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com https://www.googletagmanager.com https://ajax.googleapis.com",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' data: https://fonts.gstatic.com",
             "img-src 'self' data: https:",
-            "connect-src 'self' https://checkout.wompi.co https://sandbox.wompi.co https://production.wompi.co https://www.google-analytics.com https://www.googletagmanager.com",
-            "frame-src https://checkout.wompi.co https://sandbox.wompi.co",
-            "form-action 'self' https://checkout.wompi.co https://sandbox.wompi.co",
+            "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com",
             "upgrade-insecure-requests",
             "report-uri /wp-json/gano/v1/csp-report",
         ] );

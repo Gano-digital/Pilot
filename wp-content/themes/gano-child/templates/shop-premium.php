@@ -1,251 +1,306 @@
 <?php
 /**
- * Template Name: Gano Premium Shop
+ * Template Name: Gano Premium Shop SOTA
+ * 
+ * Este template reemplaza los viejos bundles (Wompi)
+ * por el catálogo unificado SOTA conectado a GoDaddy Reseller.
  */
 
-get_header(); ?>
+get_header(); 
+?>
 
-<div class="gano-shop-header" style="text-align:center; padding: 100px 20px; background: #0f1115;">
-    <h1 style="font-size: 4rem; font-weight: 900; color: #D4AF37; margin-bottom: 10px;">Ecosistemas Digitales</h1>
-    <p style="color: #888; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">Infraestructura blindada de alto rendimiento para soberanía digital absoluta.</p>
+<!-- ========================================================= -->
+<!-- GSAP & SOTA DEPENDENCIES -->
+<!-- ========================================================= -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+
+<style>
+    /* DEFINITIVE CYBER-COLD PALETTE SOTA */
+    :root {
+        --gano-blue:         #1B4FD8;   
+        --gano-purple:       #8B5CF6;   
+        --gano-indigo:       #6366F1;   
+        --gano-dark:         #05080C;   
+        --gano-card:         #0B1118;   
+        --gano-border:       rgba(99, 102, 241, 0.2);
+        --gano-glow:         rgba(139, 92, 246, 0.5);
+        --font-main: 'Inter', sans-serif;
+        --font-head: 'Plus Jakarta Sans', sans-serif;
+        --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    /* Wrap inside a specific container to avoid breaking global WP styles */
+    .sota-wrapper {
+        background-color: var(--gano-dark); 
+        color: #94A3B8; 
+        font-family: var(--font-main); 
+        overflow-x: hidden; 
+        line-height: 1.6;
+    }
+
+    .sota-wrapper h1, .sota-wrapper h2, .sota-wrapper h3, .sota-wrapper h4 { 
+        color: #FFF; 
+        font-family: var(--font-head); 
+        letter-spacing: -0.04em; 
+    }
     
-    <div class="gano-price-toggle" style="margin-top: 50px;">
-        <span>Mensual</span>
-        <label class="toggle-switch">
-            <input type="checkbox" id="billing-toggle">
-            <span class="slider"></span>
-        </label>
-        <span>Anual (Ahorro 20%)</span>
-    </div>
-</div>
+    .sota-wrapper .accent { 
+        color: var(--gano-purple); 
+        font-weight: 800; 
+        text-transform: uppercase; 
+        font-size: 12px; 
+        letter-spacing: 4px; 
+        display: block; 
+        margin-bottom: 15px; 
+    }
 
-<div class="gano-shop-container">
-    <!-- Ecosystem Discovery Tool (Quiz) -->
-    <div class="gano-quiz-container">
-        <div id="gano-quiz-ui">
-            <h2 class="gano-quiz-title">Configurador de Ecosistema Gano</h2>
-            <p style="color: #888; margin-bottom: 40px;">Diseñemos la infraestructura ideal para tu visión digital.</p>
+    .mockup-status { position: fixed; top: 0; left: 0; width: 0%; height: 2px; background: var(--gano-purple); z-index: 10000; box-shadow: 0 0 15px var(--gano-purple); }
+    .badge-fixed { position: fixed; bottom: 20px; right: 20px; background: rgba(139, 92, 246, 0.1); border: 1px solid var(--gano-purple); color: #FFF; padding: 10px 20px; font-family: var(--font-mono); font-size: 10px; z-index: 1000; backdrop-filter: blur(10px); }
 
-            <!-- Step 1: Expertise -->
-            <div class="gano-quiz-step active" data-name="expertise">
-                <p class="gano-quiz-question">¿Cuál es tu nivel de gestión técnica deseado?</p>
-                <div class="gano-quiz-options">
-                    <div class="gano-quiz-option" data-value="managed">
-                        <i class="fas fa-magic"></i>
-                        <span>Experiencia Gestionada</span>
-                        <p>Nosotros nos encargamos del setup y tú solo de crecer.</p>
-                    </div>
-                    <div class="gano-quiz-option" data-value="expert">
-                        <i class="fas fa-terminal"></i>
-                        <span>Modo Experto</span>
-                        <p>Tú controlas cada aspecto; acceso root y configuración manual.</p>
-                    </div>
-                </div>
-            </div>
+    /* DECORATIVE DOODLES */
+    .doodle { position: absolute; pointer-events: none; opacity: 0.15; z-index: 0; }
+    .constellation { width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, var(--gano-indigo) 0%, transparent 70%); filter: blur(80px); }
 
-            <!-- Step 2: Scale -->
-            <div class="gano-quiz-step" data-name="scale">
-                <p class="gano-quiz-question">¿Cuál es la escala actual de tu proyecto?</p>
-                <div class="gano-quiz-options">
-                    <div class="gano-quiz-option" data-value="starter">
-                        <i class="fas fa-rocket"></i>
-                        <span>Lanzamiento</span>
-                        <p>Nueva marca o landing page de alto impacto.</p>
-                    </div>
-                    <div class="gano-quiz-option" data-value="growing">
-                        <i class="fas fa-chart-line"></i>
-                        <span>En Crecimiento</span>
-                        <p>PyME con tráfico constante y necesidades de seguridad.</p>
-                    </div>
-                    <div class="gano-quiz-option" data-value="enterprise">
-                        <i class="fas fa-building"></i>
-                        <span>Enterprise</span>
-                        <p>E-commerce masivo o infraestructura crítica corporativa.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Result Area -->
-        <div id="gano-quiz-result" style="display: none;">
-            <div class="gano-result-card">
-                <div class="result-info">
-                    <h3 id="result-title" style="color: var(--gano-gold); margin-bottom: 10px;">Recomendación</h3>
-                    <h4 id="result-bundle" style="color: #fff; font-size: 1.8rem; margin-bottom: 20px;">Bundle Name</h4>
-                    <p id="result-desc" style="color: #ccc; line-height: 1.6;">Descripción personalizada basada en tus necesidades.</p>
-                    <a href="#" id="result-buy-link" class="gano-buy-button" style="display: inline-block; margin-top: 30px;">Activar Ecosistema</a>
-                </div>
-                <div class="result-price">
-                    <span id="result-price-val">$ 0</span>
-                </div>
-            </div>
-            <button onclick="location.reload()" style="background:none; border:none; color:#555; cursor:pointer; margin-top:30px; text-decoration:underline;">Reiniciar Configurador</button>
-        </div>
-    </div>
-
-    <!-- 3-Year Business Bundles Section -->
-    <!-- Standard Technical Catalog -->
-    <h2 id="standard-catalog" style="grid-column: 1 / -1; text-align: center; color: #555; font-size: 2rem; margin: 80px 0 40px; text-transform: uppercase; letter-spacing: 2px;">Catálogo Técnico SOTA</h2>
+    /* HERO SECTION */
+    .sota-hero { height: 90vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding-top: 60px; }
+    .hero-bg-text { position: absolute; font-family: var(--font-mono); font-size: 15vw; font-weight: 900; color: rgba(255,255,255,0.02); white-space: nowrap; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 0; }
     
-    <?php
-    $products = array(
-        (object)[
-            'sku'   => 'GD-STARTUP-01',
-            'name'  => 'Startup Blueprint',
-            'price' => 1910000, // 3 Years (Discounted)
-            'setup' => 796000,
-            'badge' => '3 Años Incluidos',
-            'specs' => ['Storage' => '10GB NVMe', 'Security' => 'Blindaje Base', 'Cert' => 'SSL Gano'],
-            'url'   => '?gano_add_bundle=GD-STARTUP-01'
-        ],
-        (object)[
-            'sku'   => 'GD-BASIC-01',
-            'name'  => 'Ecosistema Básico',
-            'price' => 9600000, // 3 Years
-            'setup' => 4000000,
-            'badge' => 'Most Popular (3yr)',
-            'specs' => ['Storage' => '30GB NVMe', 'Optimization' => 'Premium', 'Security' => 'Zero-Trust'],
-            'url'   => '?gano_add_bundle=GD-BASIC-01'
-        ],
-        (object)[
-            'sku'   => 'GD-ADVANCED-01',
-            'name'  => 'Ecosistema Avanzado',
-            'price' => 24000000, // 3 Years
-            'setup' => 10000000,
-            'badge' => 'High Performance (3yr)',
-            'specs' => ['Storage' => '100GB NVMe', 'Elasticity' => 'High', 'Security' => 'Anti-DDoS'],
-            'url'   => '?gano_add_bundle=GD-ADVANCED-01'
-        ],
-        (object)[
-            'sku'   => 'GD-SOBERANIA-01',
-            'name'  => 'Soberanía Digital',
-            'price' => 48000000, // 3 Years
-            'setup' => 20000000,
-            'badge' => 'Maximum Security (3yr)',
-            'specs' => ['Storage' => '500GB NVMe', 'Sovereignty' => 'Absolute', 'Encryption' => 'Quantum Safe'],
-            'url'   => '?gano_add_bundle=GD-SOBERANIA-01'
-        ]
-    );
+    .monolith-wrap { perspective: 1500px; position: absolute; width: 400px; height: 600px; opacity: 0.8; z-index: 1; }
+    .monolith { width: 100%; height: 100%; background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(139,92,246,0.1)); border: 1px solid var(--gano-border); backdrop-filter: blur(40px); box-shadow: 0 50px 100px rgba(0,0,0,0.5); }
 
-    foreach ($products as $p): ?>
-        <div class="gano-product-card">
-            <?php if ($p->badge): ?>
-                <div class="gano-product-badge"><?php echo $p->badge; ?></div>
-            <?php endif; ?>
-            
-            <h2 class="gano-product-title"><?php echo $p->name; ?></h2>
-            
-            <div class="gano-product-price">
-                $ <span class="gano-price-value" data-setup="<?php echo $p->setup; ?>"><?php echo number_format($p->price, 0, ',', '.'); ?></span>
-                <span>COP / SETUP</span>
-            </div>
+    .hero-content { text-align: center; max-width: 900px; z-index: 10; position: relative; }
+    .sota-hero h1 { font-size: clamp(3rem, 7vw, 7rem); font-weight: 800; line-height: 0.85; margin-bottom: 30px; text-transform: lowercase; }
+    .sota-hero h1 span { color: var(--gano-purple); }
+    .sota-hero p { font-size: 1.4rem; font-weight: 300; margin-bottom: 50px; color: #FFF; opacity: 0.6; }
 
-            <ul class="gano-product-specs">
-                <?php foreach ($p->specs as $label => $val): ?>
-                    <li><?php echo $label; ?> <span><?php echo $val; ?></span></li>
-                <?php endforeach; ?>
-            </ul>
+    .btn-sota {
+        background: linear-gradient(90deg, var(--gano-blue), var(--gano-indigo));
+        color: #FFF; text-decoration: none; padding: 22px 60px; border-radius: 4px; font-weight: 900;
+        text-transform: uppercase; letter-spacing: 2px; font-size: 13px; display: inline-block;
+        transition: 0.4s; border: none; cursor: pointer; box-shadow: 0 10px 30px rgba(27, 79, 216, 0.3);
+    }
+    .btn-sota:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5); }
 
-            <a href="<?php echo $p->url; ?>" class="gano-buy-button">Adquirir Ecosistema</a>
-        </div>
-    <?php endforeach; ?>
-</div>
-
-<div class="gano-bundle-section" style="padding: 100px 20px; background: #0a0c10; text-align: center;">
-    <h2 style="color: var(--gano-gold); font-size: 2.5rem; margin-bottom: 50px;">Configurador de Ecosistema</h2>
+    /* CATALOG SECTION */
+    .sota-section { padding: 100px 5%; position: relative; z-index: 5; }
+    .sota-container { max-width: 1400px; margin: 0 auto; }
     
-    <div class="gano-bundle-builder" style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; max-width: 1200px; margin: 0 auto; text-align: left;">
-        <div class="builder-options" style="flex: 1; min-width: 300px; background: rgba(255,255,255,0.02); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);">
-            <h3 style="color: #fff; margin-bottom: 30px;">Selecciona Aditamentos</h3>
-            
-            <label style="display: block; margin-bottom: 20px; cursor: pointer;">
-                <input type="checkbox" class="bundle-addon" data-price="450000" checked> 
-                <span style="color: #fff; margin-left: 10px;">Cifrado Post-Cuántico (+ $450k)</span>
-            </label>
-            
-            <label style="display: block; margin-bottom: 20px; cursor: pointer;">
-                <input type="checkbox" class="bundle-addon" data-price="890000"> 
-                <span style="color: #fff; margin-left: 10px;">Agente IA Nivel 3 (Acciones Autónomas) (+ $890k)</span>
-            </label>
-            
-            <label style="display: block; margin-bottom: 20px; cursor: pointer;">
-                <input type="checkbox" class="bundle-addon" data-price="1200000"> 
-                <span style="color: #fff; margin-left: 10px;">Soporte White-Glove 24/7 (+ $1.2M)</span>
-            </label>
-        </div>
+    .section-header { margin-bottom: 80px; text-align: center; }
+    .section-header h2 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 20px; }
+
+    .catalog-nav { display: flex; justify-content: center; gap: 30px; margin-bottom: 80px; flex-wrap: wrap; }
+    .nav-item { cursor: pointer; font-family: var(--font-mono); font-size: 12px; font-weight: 700; text-transform: uppercase; color: #555; transition: 0.3s; padding: 10px 20px; border-bottom: 2px solid transparent; }
+    .nav-item.active, .nav-item:hover { color: var(--gano-purple); border-color: var(--gano-purple); }
+
+    .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; transition: 0.5s; }
+    
+    .product-card {
+        background: var(--gano-card); border: 1px solid var(--gano-border); padding: 40px 30px;
+        display: flex; flex-direction: column; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative; overflow: hidden; border-radius: 8px;
+    }
+    .product-card:hover { transform: translateY(-10px); border-color: var(--gano-purple); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+    .product-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: linear-gradient(0deg, rgba(139,92,246,0.05), transparent); transition: 0.6s; z-index: 0; }
+    .product-card:hover::after { height: 100%; }
+    
+    .product-card > * { position: relative; z-index: 2; }
+
+    .svg-container { position: relative; width: 60px; height: 60px; margin-bottom: 30px; }
+    .path-anim { stroke: var(--gano-purple); stroke-width: 1; fill: none; stroke-dasharray: 200; stroke-dashoffset: 200; transition: stroke-dashoffset 2s ease; }
+    .product-card:hover .path-anim { stroke-dashoffset: 0; }
+
+    .p-name { font-size: 1.4rem; margin-bottom: 15px; color: #FFF; }
+    .p-desc { font-size: 13px; opacity: 0.5; margin-bottom: 25px; min-height: 48px; }
+    .p-price { font-family: var(--font-mono); font-size: 1.6rem; color: #FFF; font-weight: 800; margin-top: auto; margin-bottom: 20px; }
+    .p-price span { font-size: 10px; color: var(--gano-purple); text-transform: uppercase; display: block; margin-bottom: 5px; }
+
+    .rstore-add-to-cart { width: 100%; text-align: center; padding: 12px; font-weight: bold; background: rgba(99, 102, 241, 0.1); color: var(--gano-purple); border: 1px solid var(--gano-border); cursor: pointer; transition: 0.3s; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+    .rstore-add-to-cart:hover { background: var(--gano-purple); color: #FFF; }
+</style>
+
+<div class="sota-wrapper">
+    <div class="mockup-status" id="scroll-progress"></div>
+    <div class="badge-fixed">SOTA v3.1 — RESELLER API SYNC</div>
+
+    <!-- BACKGROUND DOODLES -->
+    <div class="doodle constellation" style="top: 10%; right: -5%;"></div>
+    <div class="doodle constellation" style="bottom: 10%; left: -5%;"></div>
+
+    <!-- HERO -->
+    <section class="sota-hero">
+        <div class="hero-bg-text" style="color: rgba(99, 102, 241, 0.03);">ENGINEERING</div>
+        <div class="monolith-wrap"><div class="monolith" id="main-monolith"></div></div>
         
-        <div class="builder-result" style="flex: 1; min-width: 300px; background: var(--gano-gold-soft); padding: 40px; border-radius: 20px; border: 1px solid var(--gano-gold); display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-                <h3 style="color: var(--gano-gold);">Ecosistema Personalizado</h3>
-                <p style="color: #888;">Precio Final (Setup + Bundles)</p>
-                <div style="font-size: 3rem; font-weight: 900; color: #fff; margin: 20px 0;">
-                    $ <span id="bundle-total">1.246.000</span> COP
-                </div>
+        <div class="hero-content">
+            <span class="accent reveal">Omnipresencia de Datos</span>
+            <h1 class="reveal">gano.digital<span>/</span>sota</h1>
+            <p class="reveal">El fin de la infraestructura pasiva. Ecosistemas (Núcleo Prime, Fortaleza Delta, Bastión SOTA) resilientes y soberanos para activos de alta autoridad.</p>
+            <div class="reveal">
+                <button class="btn-sota" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">Explorar Nodos de Red</button>
             </div>
-            <a href="#" class="gano-buy-button" style="margin-top: 0;">Configurar e Iniciar</a>
         </div>
-    </div>
+    </section>
 
-    <!-- Comparison Table -->
-    <div class="gano-comparison" style="margin-top: 150px; text-align: left; max-width: 1000px; margin-left: auto; margin-right: auto;">
-        <h2 style="color: #fff; text-align: center; margin-bottom: 50px;">Gano Ecosistemas vs Hosting Tradicional</h2>
-        <table class="gano-table">
-            <thead>
-                <tr>
-                    <th>Característica</th>
-                    <th>Hosting Tradicional</th>
-                    <th>Gano Digital SOTA</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Infraestructura</td>
-                    <td>SSD Estándar (Shared)</td>
-                    <td><span class="gano-text-green">NVMe Gen4 Enterprise Dedicado</span></td>
-                </tr>
-                <tr>
-                    <td>Seguridad</td>
-                    <td>Plugins Pasivos</td>
-                    <td><span class="gano-text-green">Blindaje Gano + WAF Capa 7</span></td>
-                </tr>
-                <tr>
-                    <td>Gestión</td>
-                    <td>Soporte Humano (Tickets)</td>
-                    <td><span class="gano-text-green">Agente IA Autónomo 24/7</span></td>
-                </tr>
-                <tr>
-                    <td>Soberanía</td>
-                    <td>Propiedad del Proveedor</td>
-                    <td><span class="gano-text-green">Digital Sovereignty Guaranteed</span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <!-- PHP Rendered Catalog -->
+    <?php
+    // Data definition moved to server-side so we can theoretically wrap them with WordPress functions/shortcodes
+    // Using GoDaddy Product IDs or Placeholders.
+    $products = [
+        ['cat' => 'hosting', 'name' => 'Núcleo Prime', 'desc' => 'Soberanía inicial para marcas emergentes.', 'price' => '196.000', 'icon' => 'fa-rocket', 'id' => 'host-1'],
+        ['cat' => 'hosting', 'name' => 'Fortaleza Delta', 'desc' => 'Ecosistema administrado por ingenieros.', 'price' => '450.000', 'icon' => 'fa-microchip', 'id' => 'host-2'],
+        ['cat' => 'hosting', 'name' => 'Bastión SOTA', 'desc' => 'Velocidad crítica Gen4 para operaciones masivas.', 'price' => '890.000', 'icon' => 'fa-bolt', 'id' => 'host-3'],
+        ['cat' => 'hosting', 'name' => 'Ultimate WP', 'desc' => 'Inmunidad ante picos masivos de tráfico.', 'price' => '1.2M', 'icon' => 'fa-crown', 'id' => 'host-4'],
+        
+        ['cat' => 'security', 'name' => 'SSL Deluxe', 'desc' => 'Validación corporativa de alta confianza.', 'price' => '680.000', 'icon' => 'fa-shield-halved', 'id' => 'sec-1'],
+        ['cat' => 'security', 'name' => 'Security Ultimate', 'desc' => 'Blindaje Zero-Trust contra DDoS.', 'price' => '1.8M', 'icon' => 'fa-fire-extinguisher', 'id' => 'sec-2'],
+        
+        ['cat' => 'identity', 'name' => 'Dominio .CO', 'desc' => 'Presencia nacional de alta autoridad.', 'price' => '90.000', 'icon' => 'fa-globe', 'id' => 'dom-1'],
+        ['cat' => 'identity', 'name' => 'Dominio .COM', 'desc' => 'Estándar global de soberanía.', 'price' => '75.000', 'icon' => 'fa-earth-americas', 'id' => 'dom-2'],
+        
+        ['cat' => 'email', 'name' => 'M365 Premium', 'desc' => 'Máxima seguridad en colaboración corporativa.', 'price' => '98.000', 'icon' => 'fa-id-badge', 'id' => 'em-1'],
+        ['cat' => 'email', 'name' => 'Online Storage 1TB', 'desc' => 'Archivo Maestro Soberano.', 'price' => '120.000', 'icon' => 'fa-hard-drive', 'id' => 'em-2'],
+    ];
+
+    $sotaPillars = [
+        "NVMe Gen4", "Zero-Trust", "Predictive AI", "Digital Sovereignty", "Headless WP",
+        "DDoS Immunity", "Containers", "Edge Computing", "Sustainable", "Quantum-Safe",
+        "CI/CD Pipeline", "Real-Time Backup"
+    ];
+    ?>
+
+    <!-- CATALOG -->
+    <section class="sota-section" id="catalog">
+        <div class="sota-container">
+            <div class="section-header">
+                <span class="accent">Operatividad Total GoDaddy API</span>
+                <h2>Sincronización de Ecosistemas</h2>
+            </div>
+
+            <div class="catalog-nav">
+                <div class="nav-item active" data-filter="all">Todos</div>
+                <div class="nav-item" data-filter="hosting">Cómputo (Núcleo)</div>
+                <div class="nav-item" data-filter="security">Blindaje (Zero-Trust)</div>
+                <div class="nav-item" data-filter="identity">Identidad (.CO)</div>
+                <div class="nav-item" data-filter="email">Colaboración</div>
+            </div>
+
+            <div class="catalog-grid" id="catalog-container">
+                <?php foreach($products as $p): ?>
+                <div class="product-card reveal-item" data-category="<?php echo esc_attr($p['cat']); ?>">
+                    <div class="svg-container">
+                        <svg viewBox="0 0 100 100" style="width:100%; height:100%;">
+                            <rect class="path-anim" x="10" y="10" width="80" height="80" rx="4" />
+                            <foreignObject x="25" y="25" width="50" height="50">
+                                <i class="fa-solid <?php echo esc_attr($p['icon']); ?>" style="font-size:30px; color:var(--gano-purple);"></i>
+                            </foreignObject>
+                        </svg>
+                    </div>
+                    <h3 class="p-name"><?php echo esc_html($p['name']); ?></h3>
+                    <p class="p-desc"><?php echo esc_html($p['desc']); ?></p>
+                    <div class="p-price"><span>Inversión Mensual</span>$ <?php echo esc_html($p['price']); ?></div>
+                    
+                    <!-- REAL ADD TO CART INTEGRATION:
+                         Si tuvieramos el plugin activo aquí iría el shortcode de GoDaddy Reseller:
+                         echo do_shortcode('[rstore_cart_button product_id="' . $p['id'] . '"]'); 
+                         Por ahora, emulamos la visualización y funcionalidad.
+                    -->
+                    <button class="rstore-add-to-cart" onclick="alert('🛍️ Sincronizando con Reseller Cart (API GoDaddy) para el producto: <?php echo esc_attr($p['name']); ?>')">
+                        Adquirir Nodo
+                    </button>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+
+    <!-- PILLARS -->
+    <section class="sota-section" style="background: rgba(99,102,241,0.01);">
+        <div class="sota-container text-center">
+            <div class="section-header">
+                <span class="accent">Innovación Proactiva</span>
+                <h2 style="text-align: center;">Pivotes de Arquitectura</h2>
+            </div>
+            
+            <div id="pillars-preview" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:20px; text-align: center;">
+                <?php foreach($sotaPillars as $pillar): ?>
+                    <div class="reveal-pillar" style="background:rgba(255,255,255,0.02); border:1px solid var(--gano-border); padding:20px; font-family:var(--font-mono); font-size:11px; text-transform:uppercase;">
+                        <?php echo esc_html($pillar); ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const addons = document.querySelectorAll('.bundle-addon');
-    const totalDisplay = document.getElementById('bundle-total');
-    let basePrice = 796000; // Startup Blueprint base
-    
-    function updateTotal() {
-        let addonTotal = 0;
-        addons.forEach(addon => {
-            if (addon.checked) {
-                addonTotal += parseInt(addon.getAttribute('data-price'));
-            }
+    document.addEventListener('DOMContentLoaded', () => {
+        // Init GSAP
+        if (typeof gsap !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // SCROLL PROGRESS
+            gsap.to("#scroll-progress", {
+                width: "100%",
+                scrollTrigger: { scrub: 0.1, start: "top top", end: "bottom bottom" }
+            });
+
+            // HERO MONOLITH ROTATION
+            gsap.to("#main-monolith", {
+                rotateY: 360,
+                duration: 20,
+                repeat: -1,
+                ease: "none"
+            });
+
+            // REVEAL ANIMATIONS
+            const trigger = { trigger: ".sota-hero", start: "top 80%", toggleActions: "play none none none" };
+            gsap.from(".reveal", { opacity: 0, y: 50, duration: 1, stagger: 0.2, scrollTrigger: trigger });
+            
+            gsap.from(".reveal-pillar", { 
+                opacity: 0, scale: 0.9, duration: 0.8, stagger: 0.1, 
+                scrollTrigger: { trigger: "#pillars-preview", start: "top 80%" }
+            });
+        }
+
+        // Filtering Logic
+        const navItems = document.querySelectorAll('.nav-item');
+        const productCards = document.querySelectorAll('.product-card');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                // Update active state
+                navItems.forEach(nav => nav.classList.remove('active'));
+                e.target.classList.add('active');
+
+                const filter = e.target.getAttribute('data-filter');
+
+                // Animate out
+                if (typeof gsap !== 'undefined') {
+                    gsap.to(productCards, {
+                        opacity: 0, 
+                        y: 20, 
+                        duration: 0.3, 
+                        onComplete: () => {
+                            // Filter displays
+                            productCards.forEach(card => {
+                                if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                                    card.style.display = 'flex';
+                                } else {
+                                    card.style.display = 'none';
+                                }
+                            });
+                            // Animate in
+                            gsap.to(document.querySelectorAll('.product-card[style*="display: flex"]'), {
+                                opacity: 1, y: 0, duration: 0.4, stagger: 0.05
+                            });
+                        }
+                    });
+                }
+            });
         });
-        const final = basePrice + addonTotal;
-        totalDisplay.innerText = new Intl.NumberFormat('es-CO').format(final);
-    }
-    
-    addons.forEach(addon => {
-        addon.addEventListener('change', updateTotal);
     });
-    
-    updateTotal();
-});
 </script>
 
 <?php get_footer(); ?>
