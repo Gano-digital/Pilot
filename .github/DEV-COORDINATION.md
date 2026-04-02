@@ -53,7 +53,7 @@ Local (rama feature/ops) → PR → CI (TruffleHog Gano + php-lint) → merge ma
 | `secret-scan.yml` | Secretos solo en rutas Gano (Docker TruffleHog). |
 | `php-lint-gano.yml` | Sintaxis PHP en código propio. |
 | `seed-homepage-issues.yml` | Crea issues del fixplan homepage (manual). |
-| `setup-repo-labels.yml` | Crea etiquetas `area:*`, `coordination`, etc. Manual (**Run workflow**) o automático al hacer **push a `main`** que modifique [`.github/label-bootstrap`](../label-bootstrap). |
+| `setup-repo-labels.yml` | Crea etiquetas `area:*`, `coordination`, etc. Manual (**Run workflow**) o automático al hacer **push a `main`** que modifique [`label-bootstrap`](label-bootstrap). |
 
 Ejecuta **Setup repository labels** si faltan etiquetas; sin ellas el labeler y las plantillas no se ven completas.
 
