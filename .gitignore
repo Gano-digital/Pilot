@@ -17,9 +17,15 @@
 /wp-content/upgrade/
 
 # ─── Credenciales y Archivos Sensibles ────────────────────────────────────────
-# Estos archivos contienen credenciales del servidor — NUNCA en git
-ssh_cli.py
+# Credenciales locales — NUNCA en git
+.env
+.env.*
+!.env.example
 gano_sftp_manager.py
+# Scripts de operaciones destructivas / one-off (mantener solo en local)
+run_cleanup.py
+run_db_recovery.py
+run_local_*.py
 import_staging_db.py
 cleanup_staging_db.py
 wp-config-staging.php

@@ -120,6 +120,8 @@ Investigación actualizada en: `memory/research/fase4-plataforma.md`
 | `.gano-skills/gano-wp-security/` | Parches de seguridad WordPress/Wompi |
 | `.gano-skills/gano-wompi-fixer/` | Gateway de pago, webhooks, sandbox→producción |
 | `.gano-skills/gano-content-audit/` | Reemplazo de contenido placeholder, copy |
+| `.gano-skills/gano-fase4-plataforma/` | WHMCS/Blesta, billing, portal cliente, DIAN, investigación Fase 4 |
+| `.gano-skills/gano-multi-agent-local-workflow/` | Varios agentes (Cursor/Claude/Antigravity), ruta 1 vs backup, git sin secretos en URL |
 
 ## Archivos importantes
 | Archivo | Qué es |
@@ -134,6 +136,7 @@ Investigación actualizada en: `memory/research/fase4-plataforma.md`
 | `wp-content/themes/gano-child/templates/page-seo-landing.php` | **NUEVO** Template landing SEO (Fase 3) |
 | `wp-content/themes/gano-child/seo-pages/` | **NUEVO** Contenido landing pages keywords |
 | `memory/research/fase4-plataforma.md` | **NUEVO** Investigación completa Fase 4 |
+| `memory/sessions/2026-04-01-reporte-cursor-descargas-y-herramientas.md` | **2026-04-01** Reporte de sesión Cursor: Descargas, `EJECUTAR_ANALISIS.ps1`, organización de folios, seguridad (`id_rsa` → `.ssh`). Continuidad para Claude. |
 
 ## Preferencias de Diego
 - Comunicación en español

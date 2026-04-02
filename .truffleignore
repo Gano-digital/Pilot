@@ -1,0 +1,6 @@
+\.gsd/
+\.cursor/
+wp-content/uploads/
+node_modules/
+git-deployer-app/vendor/
+memory/sessions/
