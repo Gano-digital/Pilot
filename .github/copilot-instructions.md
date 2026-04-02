@@ -107,8 +107,9 @@ No eliminar ni desactivar de forma permanente los plugins `gano-phase*` hasta co
 
 ## Integración continua y agentes en GitHub
 
-- Workflows: `secret-scan.yml` (TruffleHog), `php-lint-gano.yml`, `seed-homepage-issues.yml` (crea issues del fixplan en bloque, manual).
-- Para delegar: plantilla de issue **Copilot task queue** y etiqueta `copilot`; divide el trabajo en issues pequeños y medibles.
+- Workflows: `secret-scan.yml` (TruffleHog), `php-lint-gano.yml`, `seed-homepage-issues.yml` (fixplan homepage), **`seed-copilot-queue.yml`** (cola masiva desde `agent-queue/tasks.json`).
+- **Offloading:** ejecuta **Seed Copilot task queue** en Actions (ámbito `all` o parcial), luego asigna **GitHub Copilot** en cada issue. Guía: [`.github/COPILOT-AGENT-QUEUE.md`](COPILOT-AGENT-QUEUE.md).
+- Plantilla **Copilot task queue** para tareas sueltas; la cola JSON para lotes versionados.
 
 ## Narrativa y marca (High-Ticket)
 

@@ -96,6 +96,7 @@ _Última actualización: Abril 2026_
 - [x] **Setup repository labels** — workflow disparado vía push de [`.github/label-bootstrap`](.github/label-bootstrap) (o manual en Actions)
 - [x] Fusionar PR #13 y verificar checks en `main` (squash merge 2026-04-02)
 - [ ] Actions → ejecutar **Seed homepage Fix issues** una vez (7 issues `homepage-fixplan`)
+- [ ] Actions → **Seed Copilot task queue** (`all` o por ámbito) → asignar Copilot coding agent en issues generados
 - [ ] Rotación de tokens y limpieza de remotes con credenciales (al cierre del workflow de despliegue)
 
 ### Contenido homepage (Elementor en servidor)

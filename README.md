@@ -18,6 +18,8 @@ El repositorio se integra con **producción** y con **máquinas locales** median
 Gano.digital-copia/
 ├── .github/
 │   ├── DEV-COORDINATION.md         ← GitHub ↔ servidor ↔ local (fuente operativa)
+│   ├── agent-queue/tasks.json      ← Cola de issues para Copilot agent (Actions)
+│   ├── COPILOT-AGENT-QUEUE.md      ← Cómo ejecutar el workflow de offloading
 │   ├── workflows/                  ← CI (TruffleHog, php-lint, seeds, labels)
 │   ├── copilot-instructions.md     ← Contexto para GitHub Copilot
 │   ├── ISSUE_TEMPLATE/             ← Incl. reportes de sincronización

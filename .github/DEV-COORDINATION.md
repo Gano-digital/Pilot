@@ -53,6 +53,7 @@ Local (rama feature/ops) → PR → CI (TruffleHog Gano + php-lint) → merge ma
 | `secret-scan.yml` | Secretos solo en rutas Gano (Docker TruffleHog). |
 | `php-lint-gano.yml` | Sintaxis PHP en código propio. |
 | `seed-homepage-issues.yml` | Crea issues del fixplan homepage (manual). |
+| `seed-copilot-queue.yml` | **Cola masiva** para Copilot agent: lee `agent-queue/tasks.json`, crea issues por ámbito, deduplicado por `agent-task-id`. |
 | `setup-repo-labels.yml` | Crea etiquetas `area:*`, `coordination`, etc. Manual (**Run workflow**) o automático al hacer **push a `main`** que modifique [`label-bootstrap`](label-bootstrap). |
 
 Ejecuta **Setup repository labels** si faltan etiquetas; sin ellas el labeler y las plantillas no se ven completas.
