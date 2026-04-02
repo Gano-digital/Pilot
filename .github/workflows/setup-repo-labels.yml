@@ -1,0 +1,36 @@
+# Crea etiquetas usadas por .github/labeler.yml (ejecutar una vez: Actions → Run workflow).
+name: Setup repository labels
+
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure area / workflow labels exist
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const specs = [
+              { name: "area:theme", color: "1D76DB", description: "Cambios en tema gano-child" },
+              { name: "area:mu-plugins", color: "5319E7", description: "MU-plugins / seguridad" },
+              { name: "area:plugins-gano", color: "0E8A16", description: "Plugins gano-*" },
+              { name: "area:ci", color: "FBCA04", description: "GitHub Actions / CI" },
+              { name: "dependencies", color: "EDEDED", description: "Dependabot / dependencias" },
+              { name: "copilot", color: "5319E7", description: "Delegable a Copilot" },
+              { name: "homepage-fixplan", color: "0E8A16", description: "Tareas homepage Elementor" },
+            ];
+            for (const s of specs) {
+              await github.rest.issues.createLabel({
+                owner, repo, name: s.name, color: s.color, description: s.description,
+              }).catch((e) => {
+                if (e.status !== 422) throw e;
+                core.info(`Label exists or conflict: ${s.name}`);
+              });
+            }
