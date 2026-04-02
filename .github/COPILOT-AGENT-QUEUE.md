@@ -11,7 +11,7 @@
 2. Elige **ámbito**:
    - `all` — las ~17 tareas (solo las que no tengan issue abierto equivalente).
    - `homepage` / `theme` / `content_seo` / `security` / `commerce` / `docs` — lote parcial.
-3. Abre **Issues**; en cada tarjeta, **Assignees → GitHub Copilot** (coding agent) para que proponga PRs.
+3. Abre **Issues** y asigna al agente (individual o masivo). En el modal, pega el **prompt adicional** desde [`.github/prompts/copilot-bulk-assign.md`](prompts/copilot-bulk-assign.md) para mínima supervisión.
 4. Revisa CI (`php-lint`, TruffleHog en rutas Gano) antes de fusionar.
 
 ## Requisitos
