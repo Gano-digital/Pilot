@@ -23,10 +23,10 @@ No usar estos IDs de marcador en campañas de rastreo ni en shortcodes de carrit
 
 | Plan | Promesa central | Audiencia objetivo | Objeción típica | Prueba verificable |
 |------|-----------------|--------------------|-----------------|-------------------|
-| **Núcleo Prime** | Infraestructura NVMe de entrada con soporte en español, activación rápida y operación sin sobresaltos para sitios en crecimiento. | Emprendedores, agencias boutique, negocios en etapa de lanzamiento o con tráfico moderado en Colombia/LATAM. | "Es caro para lo que necesito ahora." | Almacenamiento NVMe documentado · Stack WordPress + Elementor optimizado · Soporte en español por ticket [definir SLA real antes de publicar]. |
+| **Núcleo Prime** | Infraestructura NVMe de entrada con soporte en español, activación rápida y operación sin sobresaltos para sitios en crecimiento. | Emprendedores, agencias boutique, negocios en etapa de lanzamiento o con tráfico moderado en Colombia/LATAM. | "Es caro para lo que necesito ahora." | Almacenamiento NVMe documentado · Stack WordPress + Elementor optimizado · Soporte en español por ticket [SLA a definir — registrar en TASKS.md Fase 4 antes de publicar]. |
 | **Fortaleza Delta** | Entorno WordPress administrado con hardening activo, mayor asignación de recursos y visibilidad operativa para marcas que ya generan ingresos. | PYMES, tiendas WooCommerce medianas, agencias que alojan clientes de alto valor. | "¿Por qué pagar el doble si mi host actual 'funciona'?" | Mayor capacidad de cómputo y almacenamiento que Núcleo Prime (especificar cifras reales del catálogo RCC) · Hardening incluido · Respaldos automatizados [frecuencia real a confirmar]. |
 | **Bastión SOTA** | Rendimiento crítico Gen4 con seguridad de nivel empresarial, orientado a operaciones de alta autoridad que no toleran degradación ni incidentes visibles. | Tiendas con picos de tráfico, operaciones SaaS sobre WordPress, medios digitales, proyectos con SLA exigente. | "No veo qué me da que un VPS gestionado no dé." | Recursos dedicados o aislados (confirmar con RCC) · SLA objetivo ≥ 99,9 % de disponibilidad · Monitoreo proactivo documentado · Política de incidentes publicada [pendiente redactar]. |
-| **Ultimate WP** _(complementario)_ | Máxima capacidad y blindaje ante picos masivos; para organizaciones o agencias con portafolios de alto tráfico. | Agencias grandes, medios, plataformas con > N usuarios concurrentes [definir umbral real]. | "¿Por qué no un cloud propio?" | Especificaciones de recursos del plan RCC · Soporte prioritario documentado · Caso de uso real o testimonio verificable [pendiente]. |
+| **Ultimate WP** _(complementario)_ | Máxima capacidad y blindaje ante picos masivos; para organizaciones o agencias con portafolios de alto tráfico. | Agencias grandes, medios, plataformas con más de `[UMBRAL_USUARIOS_CONCURRENTES]` usuarios concurrentes. | "¿Por qué no un cloud propio?" | Especificaciones de recursos del plan RCC · Soporte prioritario documentado · Caso de uso real o testimonio verificable [pendiente]. |
 
 ---
 
@@ -86,7 +86,7 @@ Los nombres de plan en el PHP coinciden con esta matriz:
 - `[SLA Bastión SOTA]` — tiempo de respuesta y política de incidentes.
 - `[IDs RCC]` — `host-1` … `host-4` reemplazados por los IDs reales del catálogo GoDaddy.
 - `[testimonio verificable]` — caso de uso real para Ultimate WP.
-- `[umbral de tráfico]` — número de usuarios concurrentes para segmentar Ultimate WP.
+- `[UMBRAL_USUARIOS_CONCURRENTES]` — número de usuarios concurrentes para segmentar Ultimate WP.
 
 ---
 
