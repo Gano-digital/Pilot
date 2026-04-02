@@ -106,7 +106,7 @@ _Última actualización: Abril 2026_
 - [ ] Sustituir Lorem / placeholders usando `memory/content/homepage-copy-2026-04.md` como fuente
 - [ ] Hero: imagen + attachment coherente con diseño
 - [ ] Ajustes de layout: aplicar clases `gano-el-stack` / `gano-el-layer-*` + CTA final con iconos reales
-- [ ] Post “coming soon” u oculto según estrategia
+- [x] Post "coming soon" u oculto según estrategia — `dashboard-infraestructura` marcado como borrador (`_gano_coming_soon`); phase7 respeta la bandera.
 
 ### Referencia de copy
 
