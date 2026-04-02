@@ -7,7 +7,7 @@ En Elementor: selecciona el **contenedor / sección / columna** → **Avanzado**
 
 | Sección (según fixplan) | Clases sugeridas | Notas |
 |-------------------------|------------------|--------|
-| Hero (texto + ilustración) | `gano-el-stack` en el contenedor padre; `gano-el-layer-top` en columna de copy; `gano-el-layer-base` en columna de imagen/shape | Corrige solapamiento típico (z-index). Opcional: `gano-el-hero-readability` en el contenedor del título. |
+| Hero (texto + ilustración) | `gano-el-stack` en el contenedor padre; `gano-el-layer-top` en columna de copy; `gano-el-layer-base` en columna de imagen/shape | Corrige solapamiento típico (z-index). Opcional: `gano-el-hero-readability` en el contenedor del título; `gano-el-hero-microcopy` en el widget de texto con el microcopy bajo los CTAs ("NVMe · Monitoreo proactivo · Facturación en COP"). |
 | Pilares (4 cards) | `gano-el-pillar` en cada tarjeta/columna | Glass ligero, hover, tipografía alineada a tokens. |
 | Socio tecnológico | `gano-el-prose-narrow` en el contenedor del texto | Centra y limita ancho de párrafo. |
 | Métricas | `gano-el-metrics` en la fila; `gano-el-metric` en cada celda | Usa título + texto pequeño; no inventar cifras. |
