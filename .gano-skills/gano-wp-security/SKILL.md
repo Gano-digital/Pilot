@@ -14,7 +14,7 @@ description: >
 
 Este skill guía la implementación de los parches de seguridad críticos identificados en la
 Auditoría Integral de Gano Digital (Marzo 2026). Trabaja siempre sobre el directorio del
-proyecto: `/sessions/trusting-vibrant-newton/mnt/Gano.digital-copia/`.
+proyecto: repositorio `Gano-digital/Pilot` clonado localmente.
 
 ## Contexto del proyecto
 

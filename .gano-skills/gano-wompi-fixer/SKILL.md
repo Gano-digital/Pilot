@@ -13,7 +13,7 @@ description: >
 # Gano Wompi Fixer — Skill de Integración de Pago
 
 Skill para corregir y optimizar la integración Wompi Colombia en el stack WooCommerce
-de Gano Digital. Proyecto en: `/sessions/trusting-vibrant-newton/mnt/Gano.digital-copia/`
+de Gano Digital. Repositorio: `Gano-digital/Pilot`
 
 ## Estado actual de la integración
 

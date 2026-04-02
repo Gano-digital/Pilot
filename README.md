@@ -10,12 +10,14 @@
 
 El repositorio se integra con **producción** y con **máquinas locales** mediante un flujo explícito. Lee la guía **[`.github/DEV-COORDINATION.md`](.github/DEV-COORDINATION.md)** para saber qué archivos son fuente de verdad, cómo reportar cambios hechos solo en el servidor (Elementor, plugins) y cómo usar la plantilla de issue **Reporte de sincronización**.
 
+Para offloading masivo a Copilot (lotes de issues desde `agent-queue/tasks.json`) consulta **[`.github/COPILOT-AGENT-QUEUE.md`](.github/COPILOT-AGENT-QUEUE.md)**.
+
 ---
 
 ## 🗂️ Estructura del Proyecto
 
 ```
-Gano.digital-copia/
+Pilot/
 ├── .github/
 │   ├── DEV-COORDINATION.md         ← GitHub ↔ servidor ↔ local (fuente operativa)
 │   ├── agent-queue/tasks.json      ← Cola de issues para Copilot agent (Actions)
@@ -67,15 +69,15 @@ Gano.digital-copia/
 
 ```bash
 # 1. Clonar repositorio
-git clone git@github.com:TU_USUARIO/gano-digital-platform.git
+git clone git@github.com:Gano-digital/Pilot.git
 git submodule update --init  # Incluye .gsd
 
-# 2. Copiar wp-config (nunca en git)
-cp wp-config-staging.php wp-config.php
+# 2. Copiar wp-config de muestra (nunca commitear el real)
+cp wp-config-sample.php wp-config.php
 # Editar DB_NAME, DB_USER, DB_PASS para local
 
-# 3. Importar BD de staging
-python import_staging_db.py
+# 3. Seguir guía de staging para importar BD
+# Ver STAGING_DEPLOYMENT_GUIDE.md
 
 # 4. Activar plugins de fase en este orden:
 # WordPress Admin → Plugins → Activar:
@@ -89,7 +91,7 @@ python import_staging_db.py
 
 | Secret | Descripción |
 |--------|-------------|
-| `DEPLOY_SSH_KEY` | Clave privada SSH para rsync al servidor |
+| `SSH` | Clave privada SSH para rsync al servidor (usada en `deploy.yml`) |
 
 Para configurar: `GitHub Repo → Settings → Secrets and variables → Actions → New repository secret`
 
