@@ -163,7 +163,24 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
    - Checkmarks de características en tarjetas de plan.
    - Indicadores de estado en dashboard/portal cliente (my.gano.digital).
    - Loader de pago Wompi.
-   - **Dependencia:** `lottie-web` (~60 KB gzip) — cargar solo en páginas que lo usen vía `wp_enqueue_script` condicional.
+   - **Dependencia:** `lottie-web` (~60 KB gzip) — cargar solo en páginas que lo usen vía `wp_enqueue_script` condicional. Ejemplo en `functions.php`:
+
+```php
+// En wp-content/themes/gano-child/functions.php
+function gano_enqueue_lottie() {
+    // Cargar solo en la plantilla de planes o en páginas con shortcode Lottie
+    if ( is_page_template( 'templates/page-planes.php' ) || is_page( 'ecosistemas' ) ) {
+        wp_enqueue_script(
+            'lottie-web',
+            get_stylesheet_directory_uri() . '/assets/js/vendor/lottie.min.js',
+            [],
+            '5.12.2',
+            true // cargar en footer
+        );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_lottie' );
+```
 
 6. **Video loop** (< 1 MB WebM) para hero de landing de Bastión SOTA:
    - Solo desktop (media query `min-width: 1024px`).
