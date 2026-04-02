@@ -36,15 +36,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          lint_dir() {
-            local d="$1"
-            [ -d "$d" ] || return 0
-            find "$d" -name '*.php' -print0 | xargs -0 -r -n1 php -l
-          }
-          lint_dir wp-content/mu-plugins
-          lint_dir wp-content/themes/gano-child
-          shopt -s nullglob
-          for d in wp-content/plugins/gano-*; do
-            lint_dir "$d"
-          done
+          echo "Linting MU-plugins and gano-child..."
+          find wp-content/mu-plugins wp-content/themes/gano-child -name '*.php' -exec php -l {} \;
+          echo "Linting gano-* plugins..."
+          while IFS= read -r -d '' dir; do
+            find "$dir" -name '*.php' -exec php -l {} \;
+          done < <(find wp-content/plugins -maxdepth 1 -type d -name 'gano-*' -print0 2>/dev/null)
           echo "PHP lint completed."

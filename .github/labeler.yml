@@ -1,21 +1,21 @@
 # Etiquetas automáticas por ruta (actions/labeler).
-# Requiere que existan las etiquetas en el repo o permiso issues: write para crearlas.
+# Las claves con ":" deben ir entre comillas en YAML.
 
 changed-files-labels-limit: 8
 
-area:theme:
+"area:theme":
   - changed-files:
       - any-glob-to-any-file: "wp-content/themes/gano-child/**"
 
-area:mu-plugins:
+"area:mu-plugins":
   - changed-files:
       - any-glob-to-any-file: "wp-content/mu-plugins/**"
 
-area:plugins-gano:
+"area:plugins-gano":
   - changed-files:
       - any-glob-to-any-file: "wp-content/plugins/gano-*/**"
 
-area:ci:
+"area:ci":
   - changed-files:
       - any-glob-to-any-file: ".github/**"
 
