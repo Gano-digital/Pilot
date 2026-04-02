@@ -132,9 +132,10 @@ function gano_p3_activate() {
             }
         }
 
-        // Asignar menú a la ubicación del tema
+        // Asignar menú a las ubicaciones del tema (main = padre; primary = gano-child)
         $locations = get_theme_mod( 'nav_menu_locations', [] );
         $locations['main'] = $menu_id;
+        $locations['primary'] = $menu_id;
         set_theme_mod( 'nav_menu_locations', $locations );
 
         $log[] = '✅ Menú de navegación principal creado.';
