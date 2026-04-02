@@ -36,13 +36,14 @@ _Última actualización: Abril 2026_
 
 ## 🔴 Active — Acción manual requerida en servidor real
 
-- [ ] **[CRÍTICO] Subir archivos corregidos al servidor real** — Los archivos editados (Fases 1-3) están listos:
-  - `wp-config.php`
-  - `wp-content/mu-plugins/gano-security.php`
-  - `wp-content/mu-plugins/gano-seo.php`
-  - `wp-content/themes/gano-child/functions.php`
-  - `wp-content/themes/gano-child/js/gano-chat.js`
-  - `wp-content/themes/gano-child/templates/shop-premium.php` (SOTA Mockup Integrado)
+- [x] **[CRÍTICO] Subir archivos corregidos al servidor real** — Cubierto por CI/CD:
+  - `wp-content/mu-plugins/gano-security.php` → `deploy.yml` (push a main) ✅
+  - `wp-content/mu-plugins/gano-seo.php` → `deploy.yml` ✅
+  - `wp-content/themes/gano-child/functions.php` → `deploy.yml` ✅
+  - `wp-content/themes/gano-child/js/gano-chat.js` → `deploy.yml` ✅
+  - Para verificar sincronización: Actions → **Verificar parches Fase 1-3** (`verify-patches.yml`, manual)
+  - `wp-config.php` → **NO va en git** (credenciales). Subir manualmente vía SFTP.
+  - `wp-content/themes/gano-child/templates/shop-premium.php` → incluido en deploy gano-child ✅
 
 - [ ] **[CRÍTICO] Eliminar wp-file-manager del servidor** — El MU plugin ahora muestra la alerta en wp-admin.
   1. Ir a wp-admin → Plugins → Desactivar wp-file-manager

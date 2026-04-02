@@ -1,0 +1,159 @@
+name: 🔍 Verificar parches Fase 1-3 en servidor
+
+on:
+  workflow_dispatch:
+    inputs:
+      upload_missing:
+        description: 'Subir archivos faltantes/desactualizados al servidor'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: 🔍 Comparar repo vs servidor (Fase 1-3)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup SSH Agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH }}
+
+      - name: Add server to known_hosts
+        run: |
+          ssh-keyscan -H "${{ secrets.SERVER_HOST }}" >> ~/.ssh/known_hosts
+
+      # ─────────────────────────────────────────────────────────────────────
+      # Calcular MD5 de los archivos Fase 1-3 en el repo
+      # ─────────────────────────────────────────────────────────────────────
+      - name: 📋 Calcular checksums locales (repo)
+        id: local_checksums
+        run: |
+          echo "=== Checksums en repo (main) ===" | tee /tmp/local_checksums.txt
+          for f in \
+            wp-content/mu-plugins/gano-security.php \
+            wp-content/mu-plugins/gano-seo.php \
+            wp-content/themes/gano-child/functions.php \
+            wp-content/themes/gano-child/js/gano-chat.js \
+            wp-content/themes/gano-child/style.css; do
+            if [ -f "$f" ]; then
+              md5sum "$f" | tee -a /tmp/local_checksums.txt
+            else
+              echo "MISSING_IN_REPO $f" | tee -a /tmp/local_checksums.txt
+            fi
+          done
+
+      # ─────────────────────────────────────────────────────────────────────
+      # Calcular MD5 de los mismos archivos en el servidor
+      # ─────────────────────────────────────────────────────────────────────
+      - name: 📋 Calcular checksums remotos (servidor)
+        id: remote_checksums
+        run: |
+          echo "=== Checksums en servidor ===" | tee /tmp/remote_checksums.txt
+          ssh "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" bash <<'REMOTE_EOF' | tee -a /tmp/remote_checksums.txt
+            BASE="${{ secrets.DEPLOY_PATH }}"
+            for f in \
+              wp-content/mu-plugins/gano-security.php \
+              wp-content/mu-plugins/gano-seo.php \
+              wp-content/themes/gano-child/functions.php \
+              wp-content/themes/gano-child/js/gano-chat.js \
+              wp-content/themes/gano-child/style.css; do
+              FULL="$BASE/$f"
+              if [ -f "$FULL" ]; then
+                md5sum "$FULL" | sed "s|$BASE/||"
+              else
+                echo "MISSING_ON_SERVER $f"
+              fi
+            done
+          REMOTE_EOF
+
+      # ─────────────────────────────────────────────────────────────────────
+      # Comparar y reportar gaps
+      # ─────────────────────────────────────────────────────────────────────
+      - name: 🔎 Comparar checksums y reportar gaps
+        id: compare
+        run: |
+          echo "## 🔍 Verificación Parches Fase 1-3" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Archivo | Repo (main) | Servidor | Estado |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|-------------|----------|--------|" >> $GITHUB_STEP_SUMMARY
+
+          GAPS=0
+          for f in \
+            wp-content/mu-plugins/gano-security.php \
+            wp-content/mu-plugins/gano-seo.php \
+            wp-content/themes/gano-child/functions.php \
+            wp-content/themes/gano-child/js/gano-chat.js \
+            wp-content/themes/gano-child/style.css; do
+
+            LOCAL_HASH=$(grep " $f" /tmp/local_checksums.txt | awk '{print $1}')
+            REMOTE_HASH=$(grep " $f" /tmp/remote_checksums.txt | awk '{print $1}')
+
+            LOCAL_MISSING=$(grep "MISSING_IN_REPO $f" /tmp/local_checksums.txt || true)
+            REMOTE_MISSING=$(grep "MISSING_ON_SERVER $f" /tmp/remote_checksums.txt || true)
+
+            if [ -n "$LOCAL_MISSING" ]; then
+              STATUS="⚠️ Falta en repo"
+              GAPS=$((GAPS+1))
+            elif [ -n "$REMOTE_MISSING" ]; then
+              STATUS="🔴 Falta en servidor"
+              GAPS=$((GAPS+1))
+            elif [ "$LOCAL_HASH" = "$REMOTE_HASH" ]; then
+              STATUS="✅ Sincronizado"
+            else
+              STATUS="🟡 Desactualizado en servidor"
+              GAPS=$((GAPS+1))
+            fi
+
+            LOCAL_DISPLAY="${LOCAL_HASH:-N/A}"
+            REMOTE_DISPLAY="${REMOTE_HASH:-N/A}"
+            echo "| \`$f\` | \`${LOCAL_DISPLAY:0:8}...\` | \`${REMOTE_DISPLAY:0:8}...\` | $STATUS |" >> $GITHUB_STEP_SUMMARY
+          done
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "$GAPS" -gt 0 ]; then
+            echo "**❌ Se detectaron $GAPS gap(s). Ejecuta de nuevo con \`upload_missing=true\` para sincronizar.**" >> $GITHUB_STEP_SUMMARY
+            echo "gaps=$GAPS" >> $GITHUB_OUTPUT
+          else
+            echo "**✅ Todos los archivos Fase 1-3 están sincronizados con el servidor.**" >> $GITHUB_STEP_SUMMARY
+            echo "gaps=0" >> $GITHUB_OUTPUT
+          fi
+
+      # ─────────────────────────────────────────────────────────────────────
+      # (Opcional) Subir archivos faltantes/desactualizados
+      # ─────────────────────────────────────────────────────────────────────
+      - name: 📤 Subir parches Fase 1-3 al servidor
+        if: ${{ github.event.inputs.upload_missing == 'true' && steps.compare.outputs.gaps != '0' }}
+        run: |
+          echo "Sincronizando MU Plugins..."
+          rsync -avz \
+            wp-content/mu-plugins/gano-security.php \
+            wp-content/mu-plugins/gano-seo.php \
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.DEPLOY_PATH }}/wp-content/mu-plugins/"
+
+          echo "Sincronizando Child Theme..."
+          rsync -avz \
+            wp-content/themes/gano-child/functions.php \
+            wp-content/themes/gano-child/style.css \
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.DEPLOY_PATH }}/wp-content/themes/gano-child/"
+
+          rsync -avz \
+            wp-content/themes/gano-child/js/gano-chat.js \
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.DEPLOY_PATH }}/wp-content/themes/gano-child/js/"
+
+          echo "✅ Parches Fase 1-3 subidos al servidor." | tee -a $GITHUB_STEP_SUMMARY
+
+      - name: 🔄 Flush caché WordPress (post-upload)
+        if: ${{ github.event.inputs.upload_missing == 'true' && steps.compare.outputs.gaps != '0' }}
+        run: |
+          ssh "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" \
+            "cd ${{ secrets.DEPLOY_PATH }} && wp cache flush --allow-root 2>/dev/null || true"

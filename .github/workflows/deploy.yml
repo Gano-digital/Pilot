@@ -68,7 +68,7 @@ jobs:
 
       - name: Add server to known_hosts
         run: |
-          ssh-keyscan -H 72.167.102.145 >> ~/.ssh/known_hosts
+          ssh-keyscan -H "${{ secrets.SERVER_HOST }}" >> ~/.ssh/known_hosts
 
       - name: 📦 Deploy Child Theme
         run: |
@@ -76,42 +76,42 @@ jobs:
             --exclude='.git' \
             --exclude='*.map' \
             wp-content/themes/gano-child/ \
-            f1rml03th382@72.167.102.145:/home/f1rml03th382/public_html/wp-content/themes/gano-child/
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.DEPLOY_PATH }}/wp-content/themes/gano-child/"
 
       - name: 📦 Deploy Custom Plugins
         run: |
           rsync -avz --delete \
             --exclude='.git' \
             wp-content/plugins/gano-content-importer/ \
-            f1rml03th382@72.167.102.145:/home/f1rml03th382/public_html/wp-content/plugins/gano-content-importer/
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.DEPLOY_PATH }}/wp-content/plugins/gano-content-importer/"
 
           rsync -avz --delete \
             --exclude='.git' \
             wp-content/plugins/gano-phase3-content/ \
-            f1rml03th382@72.167.102.145:/home/f1rml03th382/public_html/wp-content/plugins/gano-phase3-content/
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.DEPLOY_PATH }}/wp-content/plugins/gano-phase3-content/"
 
           rsync -avz --delete \
             --exclude='.git' \
             wp-content/plugins/gano-wompi-integration/ \
-            f1rml03th382@72.167.102.145:/home/f1rml03th382/public_html/wp-content/plugins/gano-wompi-integration/
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.DEPLOY_PATH }}/wp-content/plugins/gano-wompi-integration/"
 
           rsync -avz --delete \
             --exclude='.git' \
             wp-content/plugins/gano-reseller-enhancements/ \
-            f1rml03th382@72.167.102.145:/home/f1rml03th382/public_html/wp-content/plugins/gano-reseller-enhancements/
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.DEPLOY_PATH }}/wp-content/plugins/gano-reseller-enhancements/"
 
-      - name: 📦 Deploy MU Plugins
+      - name: 📦 Deploy MU Plugins (Fase 1-3)
         run: |
           rsync -avz \
             wp-content/mu-plugins/gano-security.php \
             wp-content/mu-plugins/gano-seo.php \
             wp-content/mu-plugins/gano-agent-core.php \
-            f1rml03th382@72.167.102.145:/home/f1rml03th382/public_html/wp-content/mu-plugins/
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.DEPLOY_PATH }}/wp-content/mu-plugins/"
 
       - name: 🔄 Flush WordPress Cache
         run: |
-          ssh f1rml03th382@72.167.102.145 \
-            "cd /home/f1rml03th382/public_html && wp cache flush --allow-root 2>/dev/null || true"
+          ssh "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" \
+            "cd ${{ secrets.DEPLOY_PATH }} && wp cache flush --allow-root 2>/dev/null || true"
 
       - name: ✅ Verify Deployment
         run: |
@@ -127,7 +127,7 @@ jobs:
         if: always()
         run: |
           echo "## 🚀 Deployment Report" >> $GITHUB_STEP_SUMMARY
-          echo "- **Servidor**: 72.167.102.145 (gano.digital)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Servidor**: gano.digital" >> $GITHUB_STEP_SUMMARY
           echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Timestamp**: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_STEP_SUMMARY
