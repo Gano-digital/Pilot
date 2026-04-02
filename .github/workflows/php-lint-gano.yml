@@ -26,6 +26,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          coverage: none
+
       - name: Run php -l on custom PHP
         shell: bash
         run: |

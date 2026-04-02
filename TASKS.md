@@ -83,3 +83,27 @@ _Última actualización: Abril 2026_
 - [ ] StatusPage (Upptime o Cachet)
 - [ ] Conectar Chat IA a LLM real (n8n / Make / API propia)
 - [ ] Programa de afiliados / sub-resellers
+
+---
+
+## 🔄 Abril 2026 — Progreso (homepage + GitHub)
+
+### GitHub / automatización
+
+- [x] PR #13: CI TruffleHog + PHP lint + plantillas Copilot + `ssh_cli` sin credenciales en archivo
+- [x] Dependabot (GitHub Actions) + labeler por ruta + plantilla de PR
+- [ ] Fusionar PR #13 y verificar checks en `main`
+- [ ] Actions → ejecutar **Seed homepage Fix issues** una vez (7 issues `homepage-fixplan`)
+- [ ] Rotación de tokens y limpieza de remotes con credenciales (al cierre del workflow de despliegue)
+
+### Contenido homepage (Elementor en servidor)
+
+- [ ] Menú principal → ubicación `primary` (ver reporte 2026-04-02)
+- [ ] Sustituir Lorem / placeholders usando `memory/content/homepage-copy-2026-04.md` como fuente
+- [ ] Hero: imagen + attachment coherente con diseño
+- [ ] Ajustes de layout (z-index) y CTA final sin símbolos placeholder
+- [ ] Post “coming soon” u oculto según estrategia
+
+### Referencia de copy
+
+- `memory/content/homepage-copy-2026-04.md` — bloques listos para pegar en Elementor

@@ -1,4 +1,6 @@
-# Reduce ruido en escaneos locales/CI (no sustituye revisión manual).
+^\.gsd/
+^\.cursor/
 wp-content/uploads/
 node_modules/
 git-deployer-app/vendor/
+memory/sessions/
