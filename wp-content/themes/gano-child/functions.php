@@ -109,7 +109,7 @@ function gano_skip_link(): void {
  */
 add_action( 'wp_body_open', 'gano_main_content_anchor', 5 );
 function gano_main_content_anchor(): void {
-    echo '<span id="gano-main-content" tabindex="-1" aria-hidden="true" class="gano-a11y-anchor"></span>';
+    echo '<span id="gano-main-content" tabindex="-1" class="gano-a11y-anchor"></span>';
 }
 
 // =============================================================================
