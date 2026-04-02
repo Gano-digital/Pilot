@@ -10,6 +10,8 @@
 
 El repositorio se integra con **producción** y con **máquinas locales** mediante un flujo explícito. Lee la guía **[`.github/DEV-COORDINATION.md`](.github/DEV-COORDINATION.md)** para saber qué archivos son fuente de verdad, cómo reportar cambios hechos solo en el servidor (Elementor, plugins) y cómo usar la plantilla de issue **Reporte de sincronización**.
 
+Para offloading masivo de tareas a Copilot (cola de issues), consulta **[`.github/COPILOT-AGENT-QUEUE.md`](.github/COPILOT-AGENT-QUEUE.md)**.
+
 ---
 
 ## 🗂️ Estructura del Proyecto
@@ -67,17 +69,14 @@ Gano.digital-copia/
 
 ```bash
 # 1. Clonar repositorio
-git clone git@github.com:TU_USUARIO/gano-digital-platform.git
+git clone git@github.com:Gano-digital/Pilot.git
 git submodule update --init  # Incluye .gsd
 
 # 2. Copiar wp-config (nunca en git)
-cp wp-config-staging.php wp-config.php
+cp wp-config-sample.php wp-config.php
 # Editar DB_NAME, DB_USER, DB_PASS para local
 
-# 3. Importar BD de staging
-python import_staging_db.py
-
-# 4. Activar plugins de fase en este orden:
+# 3. Activar plugins de fase en este orden:
 # WordPress Admin → Plugins → Activar:
 # 1. gano-phase3-content (crea páginas principales)
 # 2. gano-content-importer (crea 20 páginas SOTA) → luego desactivar
@@ -89,7 +88,7 @@ python import_staging_db.py
 
 | Secret | Descripción |
 |--------|-------------|
-| `DEPLOY_SSH_KEY` | Clave privada SSH para rsync al servidor |
+| `SSH` | Clave privada SSH para rsync al servidor (requerida por `deploy.yml`) |
 
 Para configurar: `GitHub Repo → Settings → Secrets and variables → Actions → New repository secret`
 
