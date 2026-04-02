@@ -21,6 +21,7 @@
 
 - Plan / política org que permita **Copilot coding agent** en el repo.
 - Etiquetas creadas (workflow **Setup repository labels** ya ejecutado en `main`).
+- Al editar colas: el workflow **Validate agent queue JSON** comprueba `tasks.json` / `tasks-wave2.json` (ids únicos y marcador `agent-task-id`). Local: `python scripts/validate_agent_queue.py`.
 
 ## Añadir tareas
 

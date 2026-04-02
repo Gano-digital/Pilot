@@ -1,6 +1,12 @@
 # Tasks — Gano Digital
 _Última actualización: Abril 2026_
 
+## REGRESAR AQUÍ (pendiente tu acción en GitHub)
+
+Cuando vuelvas: **Actions → [Orchestrate Copilot waves](https://github.com/Gano-digital/Pilot/actions/workflows/orchestrate-copilot-waves.yml)** → primero `dry_run_merge: true`, luego ejecución real con `merge_wave1` + `seed_wave2`. Detalle: [`.github/MERGE-PLAYBOOK.md`](.github/MERGE-PLAYBOOK.md).
+
+---
+
 ## ✅ Fase 1 — Parches de código aplicados
 
 - [x] ~~**V-01**: WP_DEBUG=false + DISALLOW_FILE_EDIT/MODS~~ → `wp-config.php` ✅
@@ -92,6 +98,7 @@ _Última actualización: Abril 2026_
 
 - [x] **Auditoría oleada Copilot (2026-04):** issues #17–#33 siguen **abiertos**; hay **~17 PRs** abiertos (muchos draft) — los agentes **entregaron PRs**, falta **revisión CI + merge + cierre de issues**. Ver [`.github/MERGE-PLAYBOOK.md`](.github/MERGE-PLAYBOOK.md).
 - [x] **Oleada 2:** `agent-queue/tasks-wave2.json` + workflow **Seed Copilot task queue** con input `queue_file` (`tasks.json` | `tasks-wave2.json`).
+- [x] **Validación cola:** workflow **Validate agent queue JSON** + `scripts/validate_agent_queue.py` (CI al tocar `agent-queue/`).
 - [ ] **Consolidar oleada 1 + sembrar oleada 2:** Actions → **Orchestrate Copilot waves** — opcional `dry_run_merge` primero; luego ejecutar con merge + seed (requiere permisos del token sobre PRs).
 - [x] PR #13: CI TruffleHog + PHP lint + plantillas Copilot + `ssh_cli` sin credenciales en archivo
 - [x] Dependabot (GitHub Actions) + plantilla de PR; `labeler.yml` (workflow) retirado hasta crear etiquetas `area:*` en el repo o reactivar con permisos
