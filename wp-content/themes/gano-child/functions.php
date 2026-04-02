@@ -354,7 +354,85 @@ function gano_chat_response_callback( WP_REST_Request $request ): WP_REST_Respon
 }
 
 // =============================================================================
-// 4. WHITELIST: AGREGAR ENDPOINTS DEL CHAT A LA LISTA DEL MU PLUGIN
+// 4. SHORTCODE [gano_pilares] — Cuatro pilares de la homepage
+// Copy: memory/content/homepage-copy-2026-04.md — Sección "Cuatro pilares"
+// Uso en Elementor: insertar widget "Código corto" y escribir [gano_pilares]
+// =============================================================================
+
+add_shortcode( 'gano_pilares', 'gano_render_pilares' );
+
+/**
+ * Renderiza las cuatro tarjetas de pilares de la homepage.
+ * Cada tarjeta incluye un icono SVG accesible, título H3 y párrafo de copy.
+ *
+ * @return string HTML escapado de los cuatro pilares.
+ */
+function gano_render_pilares(): string {
+    $pilares = array(
+        array(
+            'titulo' => 'NVMe que se nota en Core Web Vitals, no solo en el folleto.',
+            'texto'  => 'Almacenamiento de nueva generación y stack optimizado para WordPress: menos espera, más conversión. Tu sitio carga cuando el cliente ya decidió quedarse.',
+            'icono'  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
+            'label'  => 'Icono de velocidad NVMe',
+        ),
+        array(
+            'titulo' => 'WordPress endurecida para el tráfico real de un negocio.',
+            'texto'  => 'Hardening continuo, controles de acceso y visibilidad sobre lo que ocurre en tu instalación. Menos superficie de ataque, más tranquilidad operativa.',
+            'icono'  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+            'label'  => 'Icono de escudo de seguridad WordPress',
+        ),
+        array(
+            'titulo' => 'Confianza cero por defecto: identidad, sesiones y permisos bajo control.',
+            'texto'  => 'La seguridad no es un cartel: es política aplicada en capas. Menos suposiciones, más trazabilidad cuando importa.',
+            'icono'  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+            'label'  => 'Icono de candado Zero-Trust',
+        ),
+        array(
+            'titulo' => 'Contenido más cerca del usuario, sin magia barata.',
+            'texto'  => 'Arquitectura pensada para entregar experiencias rápidas donde vive tu audiencia. Menos saltos innecesarios, más respuesta perceptible.',
+            'icono'  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+            'label'  => 'Icono de red Edge y latencia global',
+        ),
+    );
+
+    // Permitir solo las etiquetas SVG que usamos en los iconos
+    $kses_svg = array(
+        'svg'    => array(
+            'xmlns'            => true,
+            'viewbox'          => true,
+            'fill'             => true,
+            'stroke'           => true,
+            'stroke-width'     => true,
+            'stroke-linecap'   => true,
+            'stroke-linejoin'  => true,
+            'aria-hidden'      => true,
+            'focusable'        => true,
+        ),
+        'path'   => array( 'd' => true ),
+        'circle' => array( 'cx' => true, 'cy' => true, 'r' => true ),
+        'line'   => array( 'x1' => true, 'y1' => true, 'x2' => true, 'y2' => true ),
+        'rect'   => array( 'x' => true, 'y' => true, 'width' => true, 'height' => true, 'rx' => true, 'ry' => true ),
+    );
+
+    $html = '<div class="gano-pilares-grid">';
+
+    foreach ( $pilares as $pilar ) {
+        $html .= '<article class="gano-el-pillar">';
+        $html .= '<span class="gano-pillar-icon" role="img" aria-label="' . esc_attr( $pilar['label'] ) . '">';
+        $html .= wp_kses( $pilar['icono'], $kses_svg );
+        $html .= '</span>';
+        $html .= '<h3>' . esc_html( $pilar['titulo'] ) . '</h3>';
+        $html .= '<p>' . esc_html( $pilar['texto'] ) . '</p>';
+        $html .= '</article>';
+    }
+
+    $html .= '</div>';
+
+    return $html;
+}
+
+// =============================================================================
+// 4b. WHITELIST: AGREGAR ENDPOINTS DEL CHAT A LA LISTA DEL MU PLUGIN
 // =============================================================================
 
 /**

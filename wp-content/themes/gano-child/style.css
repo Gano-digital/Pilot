@@ -1102,6 +1102,13 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
 }
 
 /* Tarjeta tipo pilar (4 bloques homepage) */
+.gano-pilares-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: clamp(1rem, 3vw, 1.5rem);
+    width: 100%;
+}
+
 .gano-el-pillar {
     height: 100%;
     padding: clamp(1.25rem, 3vw, 1.75rem);
@@ -1120,15 +1127,28 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
 
 .gano-el-pillar h3,
 .gano-el-pillar .elementor-heading-title {
-    color: var(--gano-dark);
+    color: var(--gano-white);
     font-family: var(--gano-font-heading);
+    font-size: var(--gano-fs-lg);
+    margin-bottom: 0.5rem;
 }
 
 .gano-el-pillar p,
 .gano-el-pillar .elementor-widget-text-editor {
-    color: var(--gano-gray-700);
+    color: var(--gano-gray-300);
     font-size: var(--gano-fs-sm);
     line-height: 1.6;
+}
+
+.gano-el-pillar .gano-pillar-icon {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--gano-blue);
+    flex-shrink: 0;
 }
 
 /* Bloque “socio tecnológico”: lectura cómoda */
