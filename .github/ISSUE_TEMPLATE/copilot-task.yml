@@ -1,0 +1,48 @@
+name: Copilot task queue
+description: Tarea acotada para Copilot o revisión humana (homepage, Elementor, PHP).
+title: "[task] "
+labels: ["copilot"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Usa **una issue por tarea concreta** (p. ej. “asignar menú primary”, “reemplazar Lorem en pilares”). Así los agentes y el CI pueden cerrar hitos sin solaparse.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área
+      options:
+        - WordPress / Elementor (contenido y datos)
+        - Tema gano-child (PHP / templates)
+        - MU-plugins / seguridad
+        - WooCommerce / Wompi
+        - Repo / CI / GitHub Actions
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto y estado actual
+      description: Qué ves en el sitio o en el servidor, IDs de página/post si los tienes.
+    validations:
+      required: true
+
+  - type: textarea
+    id: done
+    attributes:
+      label: Definición de “hecho”
+      description: Cómo validar el resultado (URL, captura, curl, revisión en WP admin).
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: risks
+    attributes:
+      label: Checklist rápida
+      options:
+        - label: Esta tarea no requiere credenciales en el repo
+          required: true
+        - label: Si toca producción, tengo backup o staging listo
+          required: false

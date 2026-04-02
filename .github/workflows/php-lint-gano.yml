@@ -1,0 +1,44 @@
+# Sintaxis PHP en código propio (tema child, MU-plugins, plugins gano-*).
+name: PHP lint (Gano custom code)
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "wp-content/mu-plugins/**"
+      - "wp-content/themes/gano-child/**"
+      - "wp-content/plugins/gano-*/**"
+  pull_request:
+    branches: [main, master]
+    paths:
+      - "wp-content/mu-plugins/**"
+      - "wp-content/themes/gano-child/**"
+      - "wp-content/plugins/gano-*/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  php-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run php -l on custom PHP
+        shell: bash
+        run: |
+          set -euo pipefail
+          lint_dir() {
+            local d="$1"
+            [ -d "$d" ] || return 0
+            find "$d" -name '*.php' -print0 | xargs -0 -r -n1 php -l
+          }
+          lint_dir wp-content/mu-plugins
+          lint_dir wp-content/themes/gano-child
+          shopt -s nullglob
+          for d in wp-content/plugins/gano-*; do
+            lint_dir "$d"
+          done
+          echo "PHP lint completed."

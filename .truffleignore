@@ -1,0 +1,4 @@
+# Reduce ruido en escaneos locales/CI (no sustituye revisión manual).
+wp-content/uploads/
+node_modules/
+git-deployer-app/vendor/

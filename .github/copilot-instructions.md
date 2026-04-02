@@ -1,13 +1,16 @@
 # Gano Digital — GitHub Copilot Instructions
-# Este archivo da contexto a GitHub Copilot para todo el proyecto.
-# Ref: https://docs.github.com/en/copilot/customizing-copilot/adding-repository-instructions-for-github-copilot
+
+Este archivo da contexto a GitHub Copilot para todo el proyecto.
+
+Ref: https://docs.github.com/en/copilot/customizing-copilot/adding-repository-instructions-for-github-copilot
 
 ## Proyecto
 
 **Gano Digital** es una plataforma de hosting WordPress para el mercado colombiano.
-URL: https://gano.digital | Servidor: 72.167.102.145
 
-## Stack Tecnológico
+URL pública: https://gano.digital
+
+## Stack tecnológico
 
 - **CMS**: WordPress 6.x + Elementor Pro + Royal Elementor Addons
 - **E-commerce**: WooCommerce (moneda COP, zona Bogotá)
@@ -17,9 +20,10 @@ URL: https://gano.digital | Servidor: 72.167.102.145
 - **Tema**: Hello Elementor → `gano-child` (child theme)
 - **Animaciones**: GSAP 3 + ScrollTrigger + IntersectionObserver
 
-## Convenciones de Código
+## Convenciones de código
 
 ### PHP (WordPress)
+
 - Prefijo de función obligatorio: `gano_` (ej: `gano_enqueue_styles()`)
 - Sanitizar inputs: `sanitize_text_field()`, `wp_kses_post()`, `absint()`
 - Escapar outputs: `esc_html()`, `esc_url()`, `esc_attr()`
@@ -27,7 +31,8 @@ URL: https://gano.digital | Servidor: 72.167.102.145
 - Prepared queries: SIEMPRE `$wpdb->prepare()`, nunca SQL crudo
 - Idioma: comentarios y strings visibles en **es-CO**
 
-### CSS (Vanilla CSS + Variables)
+### CSS (Vanilla CSS + variables)
+
 - Variables de color ya definidas en `:root` de `style.css`:
   - `--gano-blue: #1B4FD8` — Azul corporativo
   - `--gano-green: #00C26B` — Verde digital
@@ -39,13 +44,14 @@ URL: https://gano.digital | Servidor: 72.167.102.145
 - Glassmorphism: `backdrop-filter: blur(24px) saturate(180%)`
 
 ### JavaScript
-- GSAP 3 ya cargado globalmente via `wp_enqueue_script('gsap-js')`
+
+- GSAP 3 ya cargado globalmente vía `wp_enqueue_script('gsap-js')`
 - ScrollTrigger registrado: `gsap.registerPlugin(ScrollTrigger)`
 - Respetar `prefers-reduced-motion` antes de animar
 - Vanilla JS preferido sobre jQuery para código nuevo
 - IntersectionObserver para scroll reveals (`scroll-reveal.js`)
 
-## Arquitectura de Archivos Clave
+## Arquitectura de archivos clave
 
 ```
 wp-content/
@@ -66,46 +72,52 @@ wp-content/
     └── gano-seo.php           ← Schema JSON-LD + Open Graph
 ```
 
-## Flujo de Desarrollo (GSD + Copilot)
+## Flujo de desarrollo (GSD + Copilot)
 
 Este proyecto usa **get-shit-done (GSD)** como sistema de workflow `.gsd/`.
 Los agentes GSD están disponibles para: planning, debugging, UI audit, verification.
 
-1. Cambios de desarrollo → rama `feature/nombre`
-2. PR a `main` → GitHub Actions ejecuta security scan
-3. Merge a `main` → Auto-deploy vía rsync al servidor
+1. Cambios de desarrollo → rama `feature/nombre` u `ops/...`
+2. PR a `main` → GitHub Actions ejecutan TruffleHog y `php -l` sobre código custom Gano
+3. Merge a `main` → despliegue según tu pipeline (no commitear credenciales de despliegue)
 
-## Reglas de Seguridad
+## Reglas de seguridad (refuerzo)
 
-- **NUNCA** dejar credenciales en texto plano en el código
-- Contraseñas y API keys → GitHub Secrets / `wp-options` cifradas
-- `wp-config.php` y `ssh_cli.py` están en `.gitignore`
-- `WP_DEBUG` debe estar en `false` en producción
-- Rate limiting en endpoints REST: máx 20 req/IP/60s
+- **NUNCA** commitear credenciales, tokens, claves API, contraseñas de BD ni rutas absolutas con usuario de hosting.
+- Scripts SSH o de despliegue: credenciales solo por variables de entorno o secretos de CI.
+- `wp-config.php` no va al repositorio. El helper `ssh_cli.py` en repo usa **solo variables de entorno** (`GANO_SSH_*`).
+- Revisar con especial cuidado cambios en `wp-content/mu-plugins/` y `gano-wompi-integration/`.
+- `WP_DEBUG` debe estar en `false` en producción.
+- Rate limiting en endpoints REST: máx 20 req/IP/60s (según hardening existente).
 
-## Narrativa y Marca (High-Ticket)
+## Plugins de fase (instaladores)
 
-Este proyecto ha evolucionado a un modelo de **Alta Autoridad (SOTA)** y comunicación **High-Ticket**. Copilot debe seguir estas reglas en cada generación de contenido:
+No eliminar ni desactivar de forma permanente los plugins `gano-phase*` hasta confirmar que su contenido ya está aplicado en WordPress. Son instaladores del sitio.
 
-- **Tono**: "Manifiesto Técnico". Autoritario, visionario, sofisticado y soberano.
-- **Nomenclatura de Ecosistemas**:
-  - **Núcleo Prime**: Infraestructura base de alta velocidad.
-  - **Fortaleza Delta**: Blindaje avanzado e Inteligencia Predictiva.
-  - **Bastión SOTA**: El estado del arte. Alta disponibilidad y resiliencia total.
-- **Prohibiciones**:
-  - **NUNCA** usar lenguaje de "bajo costo", "barato", "económico" o "hosting compartido".
-  - **EVITAR** precios de entrada explícitos. El enfoque es la inversión estratégica en soberanía.
-  - **ELIMINAR** comparativas con hosting tradicional; Gano es un socio de infraestructura soberana.
-- **Conceptos Clave**:
-  - **Soberanía Digital**: Control total sobre datos y hardware bajo jurisdicción local.
-  - **Inmunidad Zero-Trust**: La seguridad no es un muro, es un sistema inmunológico.
-  - **Latencia Cero**: Optimización absoluta mediante NVMe Gen4 y Edge Computing.
-  - **IA Soberana**: Inteligencia artificial privada para la autocuración de sistemas.
+## Prioridad homepage / Elementor (alineado al fixplan)
 
-## Contexto Colombiano
+1. Menú principal asignado a la ubicación `primary` (nav_menu_locations).
+2. Hero: imagen y textos enlazados correctamente en datos de Elementor.
+3. Pilares: sustituir Lorem y placeholders por copy e iconografía final.
+4. Ajustes de layout (z-index, CTA, páginas en borrador si aplica).
 
-- **Moneda**: COP (pesos colombianos)
+## Integración continua y agentes en GitHub
+
+- Workflows: `secret-scan.yml` (TruffleHog), `php-lint-gano.yml`, `seed-homepage-issues.yml` (crea issues del fixplan en bloque, manual).
+- Para delegar: plantilla de issue **Copilot task queue** y etiqueta `copilot`; divide el trabajo en issues pequeños y medibles.
+
+## Narrativa y marca (High-Ticket)
+
+Tono **"Manifiesto Técnico"** (autoritario, visionario, sofisticado y soberano).
+
+- **Nomenclatura de ecosistemas**: Núcleo Prime, Fortaleza Delta, Bastión SOTA.
+- **Prohibiciones**: evitar lenguaje de "barato", "hosting compartido" o comparativas de bajo costo; el foco es inversión en soberanía.
+- **Conceptos**: Soberanía digital, Zero-Trust, Edge/NVMe, IA soberana para operación.
+
+## Contexto colombiano
+
+- **Moneda**: COP
 - **Zona horaria**: America/Bogota (UTC-5)
-- **Cumplimiento**: GDPR + normativa SIC Colombia + DIAN facturación
-- **Idioma**: es-CO (español colombiano formal / ejecutivo)
-- **Checkout**: Wompi (integración Premium personalizada)
+- **Cumplimiento**: GDPR + normativa SIC Colombia + DIAN facturación (roadmap)
+- **Idioma**: es-CO
+- **Checkout**: Wompi (integración personalizada)
