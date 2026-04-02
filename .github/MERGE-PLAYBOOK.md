@@ -33,6 +33,8 @@ Cuando quieras **nuevas** tareas sin duplicar la oleada 1, usa una de estas opci
 
 Los IDs `w2-*` no chocan con `hp-*` / `theme-*` de `tasks.json`; la deduplicación es por `agent-task-id` en el cuerpo del issue.
 
+**Oleada 3 (marca/UX/comercial):** archivo `tasks-wave3.json` (`w3-*`). Seed con **Seed Copilot task queue** → `queue_file: tasks-wave3.json`. Brief: `memory/research/gano-wave3-brand-ux-master-brief.md`.
+
 ---
 
 _Ver también [COPILOT-AGENT-QUEUE.md](COPILOT-AGENT-QUEUE.md) y [DEV-COORDINATION.md](DEV-COORDINATION.md)._

@@ -11,6 +11,7 @@
 2. Elige **`queue_file`**:
    - `tasks.json` — oleada 1 (~17 tareas). No crea duplicados mientras el issue abierto tenga el mismo `agent-task-id`.
    - `tasks-wave2.json` — oleada 2 (8 tareas: merge playbook, SEO canonical, fuentes, Reseller doc, `.htaccess`, CI, a11y, post-Dependabot). Usar cuando quieras **nuevos** issues tras triage de la oleada 1.
+   - `tasks-wave3.json` — oleada 3 (**marca, UX, comercial, activos, IA, microcopy**). Brief maestro: [`memory/research/gano-wave3-brand-ux-master-brief.md`](../memory/research/gano-wave3-brand-ux-master-brief.md). Varias tareas usan `scope: coordination`; elige **`all`** o **`coordination`** según necesites.
 3. Elige **ámbito** (`scope`):
    - `all` — todas las tareas del archivo elegido que no tengan issue abierto con el mismo id.
    - `homepage` / `theme` / `content_seo` / `security` / `commerce` / `docs` — lote parcial (mismos nombres de `scope` en el JSON).

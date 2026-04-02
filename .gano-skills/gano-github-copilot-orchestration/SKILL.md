@@ -22,6 +22,7 @@ description: >
 |-----------|-----|
 | [`.github/agent-queue/tasks.json`](../../.github/agent-queue/tasks.json) | Oleada 1: `id`, `scope`, `title`, `body`, `labels` + `<!-- agent-task-id:... -->` para deduplicar. |
 | [`.github/agent-queue/tasks-wave2.json`](../../.github/agent-queue/tasks-wave2.json) | Oleada 2 (`w2-*`): consolidación SEO/CI/docs/Fase 4 tras triage de PRs de la oleada 1. |
+| [`.github/agent-queue/tasks-wave3.json`](../../.github/agent-queue/tasks-wave3.json) | Oleada 3 (`w3-*`): marca, UX, comercial, activos, IA, microcopy. Brief: [`memory/research/gano-wave3-brand-ux-master-brief.md`](../../memory/research/gano-wave3-brand-ux-master-brief.md). |
 | **Workflow `Seed Copilot task queue`** | **`workflow_dispatch`**: elige **`queue_file`** (`tasks.json` o `tasks-wave2.json`) y **ámbito** (`all`, `homepage`, `theme`, `content_seo`, `security`, `commerce`, `docs`). |
 | [`.github/MERGE-PLAYBOOK.md`](../../.github/MERGE-PLAYBOOK.md) | Orden sugerido de fusión de PRs Copilot y cierre de issues. |
 | Búsqueda de duplicados | Issues **abiertos** cuyo cuerpo contiene `agent-task-id:tu-id` → no se recrea. |

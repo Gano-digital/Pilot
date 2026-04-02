@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 QUEUE_DIR = ROOT / ".github" / "agent-queue"
-FILES = ["tasks.json", "tasks-wave2.json"]
+FILES = ["tasks.json", "tasks-wave2.json", "tasks-wave3.json"]
 
 
 def main() -> int:
@@ -59,7 +59,7 @@ def main() -> int:
             print(f"  - {e}", file=sys.stderr)
         return 1
 
-    print(f"validate_agent_queue: OK ({len(all_ids)} tareas en {len(FILES)} archivos)")
+    print(f"validate_agent_queue: OK ({len(all_ids)} tareas en {len(FILES)} colas)")
     return 0
 
 

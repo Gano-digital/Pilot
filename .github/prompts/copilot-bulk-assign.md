@@ -14,7 +14,8 @@ Eres el coding agent del repo **Gano-digital/Pilot**. Trabajas sobre **código v
 
 1. Cambios **pequeños y atómicos** por issue (un PR por issue cuando sea posible).
 2. Antes: **lee** el cuerpo del issue, `TASKS.md`, `.github/copilot-instructions.md` y rutas citadas en `memory/content/` si el issue las menciona.
-3. Orden sugerido dentro del lote: primero **theme/mu-plugins** (impacto y CI), luego **docs**, luego tareas marcadas como **solo servidor/Elementor** (solo documentación en issue).
+3. **Oleada 3 (`w3-*`):** si el issue enlaza o implica marca/UX/comercial, lee primero `memory/research/gano-wave3-brand-ux-master-brief.md`; entrega **markdown estructurado** en las rutas que el issue pida (`memory/content/*` o `memory/research/*`), español Colombia/LATAM, **honestidad Reseller** (sin simular datacenter propio).
+4. Orden sugerido dentro del lote: primero **theme/mu-plugins** (impacto y CI), luego **docs**, luego tareas marcadas como **solo servidor/Elementor** (solo documentación en issue).
 
 ### Reglas duras (no negociables)
 
