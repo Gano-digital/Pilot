@@ -19,6 +19,16 @@ billing panel, facturación DIAN, portal de cliente, soporte, dominios y VPS.
 
 ---
 
+## Pivot comercial (Abril 2026)
+
+La estrategia vigente en `memory/projects/gano-digital.md` prioriza **marca blanca GoDaddy Reseller**
+(checkout y facturación delegados). Esta skill sigue documentando **WHMCS + Wompi + DIAN** como
+**ruta de plataforma propia** cuando se reactive o se use en staging; no contradice el Reseller
+en producción. Antes de implementar billing propio, alinear con `TASKS.md` y decisión explícita
+del fundador.
+
+---
+
 ## Decisiones tomadas (Marzo 2026, datos frescos)
 
 ### Billing Panel: WHMCS (no Blesta)

@@ -13,8 +13,8 @@ description: >
 # Gano WP Security — Skill de Seguridad WordPress
 
 Este skill guía la implementación de los parches de seguridad críticos identificados en la
-Auditoría Integral de Gano Digital (Marzo 2026). Trabaja siempre sobre el directorio del
-proyecto: `/sessions/trusting-vibrant-newton/mnt/Gano.digital-copia/`.
+Auditoría Integral de Gano Digital (Marzo 2026). Trabaja sobre el **workspace del repo**
+(`Gano.digital-copia` / clon de `Gano-digital/Pilot`), no rutas absolutas de otra máquina.
 
 ## Contexto del proyecto
 
@@ -232,3 +232,10 @@ grep -n "WP_DEBUG" wp-config.php
 # Buscar debug.log accesible
 ls -la wp-content/debug.log 2>/dev/null
 ```
+
+## CI y secretos en el repo (Abril 2026)
+
+- **TruffleHog** en GitHub Actions escanea **solo rutas Gano** (MU-plugins, tema hijo, plugins `gano-*`); no sustituye auditoría manual de vendor de terceros.
+- **Scripts SSH locales:** usar variables de entorno (`GANO_SSH_*` u otras acordadas); **no** commitear contraseñas, claves privadas ni tokens en el repo.
+- **`.gitignore`:** mantener fuera `.env`, backups de BD y scripts personales destructivos.
+- Si el flujo comercial prioriza **GoDaddy Reseller** para pagos, los ítems de Wompi en checklist siguen siendo relevantes solo donde el plugin o webhooks locales sigan activos.

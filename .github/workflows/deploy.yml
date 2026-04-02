@@ -80,25 +80,23 @@ jobs:
 
       - name: 📦 Deploy Custom Plugins
         run: |
-          rsync -avz --delete \
-            --exclude='.git' \
-            wp-content/plugins/gano-content-importer/ \
-            f1rml03th382@72.167.102.145:/home/f1rml03th382/public_html/wp-content/plugins/gano-content-importer/
-
-          rsync -avz --delete \
-            --exclude='.git' \
-            wp-content/plugins/gano-phase3-content/ \
-            f1rml03th382@72.167.102.145:/home/f1rml03th382/public_html/wp-content/plugins/gano-phase3-content/
-
-          rsync -avz --delete \
-            --exclude='.git' \
-            wp-content/plugins/gano-wompi-integration/ \
-            f1rml03th382@72.167.102.145:/home/f1rml03th382/public_html/wp-content/plugins/gano-wompi-integration/
-
-          rsync -avz --delete \
-            --exclude='.git' \
-            wp-content/plugins/gano-reseller-enhancements/ \
-            f1rml03th382@72.167.102.145:/home/f1rml03th382/public_html/wp-content/plugins/gano-reseller-enhancements/
+          set -euo pipefail
+          REMOTE="f1rml03th382@72.167.102.145"
+          RPLUG="/home/f1rml03th382/public_html/wp-content/plugins"
+          sync_if_exists() {
+            local name="$1"
+            local src="wp-content/plugins/${name}"
+            if [ ! -d "$src" ]; then
+              echo "⏭️ Omitido (no existe en repo): ${name}"
+              return 0
+            fi
+            echo "📤 Sincronizando ${name}..."
+            rsync -avz --delete --exclude='.git' "${src}/" "${REMOTE}:${RPLUG}/${name}/"
+          }
+          sync_if_exists "gano-content-importer"
+          sync_if_exists "gano-phase3-content"
+          sync_if_exists "gano-wompi-integration"
+          sync_if_exists "gano-reseller-enhancements"
 
       - name: 📦 Deploy MU Plugins
         run: |
@@ -115,13 +113,19 @@ jobs:
 
       - name: ✅ Verify Deployment
         run: |
-          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://gano.digital)
-          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 400 ]; then
-            echo "✅ Sitio respondiendo: HTTP $HTTP_STATUS"
-          else
-            echo "❌ Sitio no responde correctamente: HTTP $HTTP_STATUS"
-            exit 1
-          fi
+          set -euo pipefail
+          HTTP_STATUS=""
+          for i in 1 2 3 4 5; do
+            HTTP_STATUS=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 25 https://gano.digital || echo "000")
+            if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 400 ]; then
+              echo "✅ Sitio respondiendo: HTTP $HTTP_STATUS"
+              exit 0
+            fi
+            echo "Reintento $i/5 — HTTP $HTTP_STATUS"
+            sleep 8
+          done
+          echo "❌ Sitio no responde correctamente tras reintentos: HTTP $HTTP_STATUS"
+          exit 1
 
       - name: 📊 Deployment Summary
         if: always()

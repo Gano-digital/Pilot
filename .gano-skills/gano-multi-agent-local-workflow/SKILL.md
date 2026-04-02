@@ -34,6 +34,13 @@ description: >
 
 - **Nunca** dejar PAT de GitHub en la URL de `origin` (`https://TOKEN@github.com/...`). Usar `https://github.com/org/repo.git` y credencial vía **Git Credential Manager**, PAT al prompt, o **SSH**.
 - Los tokens de GitHub (`ghp_`) no son GitLab; rotar en GitHub si hubo exposición.
+- **GitLab** como remoto adicional: opcional/exploratorio; la integración CI y la cola Copilot viven en **GitHub** (`Gano-digital/Pilot`). No mezclar credenciales de GitLab en URLs trackeadas.
+
+## GitHub como cola de trabajo (Abril 2026)
+
+- **Issues `[agent]`** generados por `Seed Copilot task queue` + asignación a **Copilot coding agent** para PRs.
+- **Documentación:** `.github/DEV-COORDINATION.md`, `.github/COPILOT-AGENT-QUEUE.md`, prompt masivo en `.github/prompts/copilot-bulk-assign.md`.
+- Skill dedicada: **`gano-github-copilot-orchestration`**.
 
 ## Aprovechar lo que ya produjo Claude (workflow local)
 
@@ -55,4 +62,5 @@ description: >
 
 ## Skills relacionadas
 
+- `gano-github-copilot-orchestration` — Actions, cola JSON, Copilot agent.
 - `gano-wp-security`, `gano-wompi-fixer`, `gano-content-audit`, `gano-fase4-plataforma` — alcance técnico; esta skill es **proceso y convivencia** entre herramientas.

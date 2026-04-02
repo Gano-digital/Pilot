@@ -122,6 +122,7 @@ Investigación actualizada en: `memory/research/fase4-plataforma.md`
 | `.gano-skills/gano-content-audit/` | Reemplazo de contenido placeholder, copy |
 | `.gano-skills/gano-fase4-plataforma/` | WHMCS/Blesta, billing, portal cliente, DIAN, investigación Fase 4 |
 | `.gano-skills/gano-multi-agent-local-workflow/` | Varios agentes (Cursor/Claude/Antigravity), ruta 1 vs backup, git sin secretos en URL |
+| `.gano-skills/gano-github-copilot-orchestration/` | GitHub Pilot: cola `agent-queue`, Seed Copilot, etiquetas, prompt masivo Copilot, `DEV-COORDINATION` |
 
 ## Archivos importantes
 | Archivo | Qué es |
