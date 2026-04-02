@@ -143,54 +143,71 @@ function gano_output_base_schema(): void {
     );
 
     // ── FAQ en homepage (mejora CTR en SERPs) ─────────────────────────────────
+    // Las preguntas base se pueden ampliar con el filtro 'gano_faq_questions'.
+    // Estructura de cada elemento: array( 'question' => '…', 'answer' => '…' ).
+    // Ejemplo de uso en functions.php del tema hijo:
+    //
+    //   add_filter( 'gano_faq_questions', function( array $q ): array {
+    //       $q[] = array( 'question' => '¿…?', 'answer' => '…' );
+    //       return $q;
+    //   } );
     $faq_schema = null;
     if ( is_front_page() ) {
-        $faq_schema = array(
-            '@type'     => 'FAQPage',
-            '@id'       => $url . '/#faqpage',
-            'mainEntity' => array(
-                array(
-                    '@type'          => 'Question',
-                    'name'           => '¿Qué define la infraestructura SOTA de Gano Digital?',
-                    'acceptedAnswer' => array(
-                        '@type' => 'Answer',
-                        'text'  => 'Definimos el Estado del Arte (SOTA) mediante la convergencia de latencia cero (NVMe Gen4), soberanía jurídica de datos en Colombia e inmunidad perimetral Zero-Trust. No somos hosting; somos tu socio de infraestructura soberana.',
-                    ),
-                ),
-                array(
-                    '@type'          => 'Question',
-                    'name'           => '¿Cómo garantizan la soberanía de mis activos digitales?',
-                    'acceptedAnswer' => array(
-                        '@type' => 'Answer',
-                        'text'  => 'Operamos bajo jurisdicción colombiana, asegurando que tus datos y hardware residan en bóvedas digitales locales, blindadas contra la dependencia de nubes públicas opacas y legislación extranjera.',
-                    ),
-                ),
-                array(
-                    '@type'          => 'Question',
-                    'name'           => '¿Qué ecosistemas de resiliencia ofrecen?',
-                    'acceptedAnswer' => array(
-                        '@type' => 'Answer',
-                        'text'  => 'Orquestamos tres niveles de blindaje soberano: Núcleo Prime (Infraestructura base de alta velocidad), Fortaleza Delta (Seguridad predictiva avanzada) y Bastión SOTA (Resiliencia total y alta disponibilidad).',
-                    ),
-                ),
-                array(
-                    '@type'          => 'Question',
-                    'name'           => '¿Incluyen blindaje de seguridad avanzado?',
-                    'acceptedAnswer' => array(
-                        '@type' => 'Answer',
-                        'text'  => 'Todos los ecosistemas incluyen certificación TLS avanzada, firewall de aplicación (WAF) activo y un sistema inmunológico digital basado en principios Zero-Trust para neutralizar amenazas en tiempo real.',
-                    ),
-                ),
-                array(
-                    '@type'          => 'Question',
-                    'name'           => '¿Realizan migraciones de infraestructura crítica?',
-                    'acceptedAnswer' => array(
-                        '@type' => 'Answer',
-                        'text'  => 'Sí, orquestamos la migración completa de tus activos digitales hacia nuestra infraestructura soberana sin interrupciones de servicio, garantizando la integridad de cada byte durante el proceso.',
-                    ),
-                ),
+        $faq_base = array(
+            array(
+                'question' => '¿Qué define la infraestructura SOTA de Gano Digital?',
+                'answer'   => 'Definimos el Estado del Arte (SOTA) mediante la convergencia de latencia cero (NVMe Gen4), soberanía jurídica de datos en Colombia e inmunidad perimetral Zero-Trust. No somos hosting; somos tu socio de infraestructura soberana.',
+            ),
+            array(
+                'question' => '¿Cómo garantizan la soberanía de mis activos digitales?',
+                'answer'   => 'Operamos bajo jurisdicción colombiana, asegurando que tus datos y hardware residan en bóvedas digitales locales, blindadas contra la dependencia de nubes públicas opacas y legislación extranjera.',
+            ),
+            array(
+                'question' => '¿Qué ecosistemas de resiliencia ofrecen?',
+                'answer'   => 'Orquestamos tres niveles de blindaje soberano: Núcleo Prime (Infraestructura base de alta velocidad), Fortaleza Delta (Seguridad predictiva avanzada) y Bastión SOTA (Resiliencia total y alta disponibilidad).',
+            ),
+            array(
+                'question' => '¿Incluyen blindaje de seguridad avanzado?',
+                'answer'   => 'Todos los ecosistemas incluyen certificación TLS avanzada, firewall de aplicación (WAF) activo y un sistema inmunológico digital basado en principios Zero-Trust para neutralizar amenazas en tiempo real.',
+            ),
+            array(
+                'question' => '¿Realizan migraciones de infraestructura crítica?',
+                'answer'   => 'Sí, orquestamos la migración completa de tus activos digitales hacia nuestra infraestructura soberana sin interrupciones de servicio, garantizando la integridad de cada byte durante el proceso.',
             ),
         );
+
+        /**
+         * Filtra las preguntas FAQ del schema homepage.
+         *
+         * Cada elemento debe ser: array( 'question' => string, 'answer' => string ).
+         * Ver candidatos en memory/content/faq-schema-candidates-wave3.md.
+         *
+         * @param array<int, array{question: string, answer: string}> $faq_base Preguntas base.
+         */
+        $faq_items = apply_filters( 'gano_faq_questions', $faq_base );
+
+        $main_entity = array();
+        foreach ( $faq_items as $item ) {
+            if ( empty( $item['question'] ) || empty( $item['answer'] ) ) {
+                continue;
+            }
+            $main_entity[] = array(
+                '@type'          => 'Question',
+                'name'           => sanitize_text_field( $item['question'] ),
+                'acceptedAnswer' => array(
+                    '@type' => 'Answer',
+                    'text'  => wp_strip_all_tags( $item['answer'] ),
+                ),
+            );
+        }
+
+        if ( ! empty( $main_entity ) ) {
+            $faq_schema = array(
+                '@type'      => 'FAQPage',
+                '@id'        => $url . '/#faqpage',
+                'mainEntity' => $main_entity,
+            );
+        }
     }
 
     // ── Compilar y emitir ──────────────────────────────────────────────────────
