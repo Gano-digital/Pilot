@@ -1,8 +1,17 @@
-# Crea etiquetas usadas por .github/labeler.yml (ejecutar una vez: Actions → Run workflow).
+# Crea etiquetas usadas por .github/labeler.yml y plantillas de issues.
+# Disparadores: manual (workflow_dispatch) o push a main que toque .github/label-bootstrap
 name: Setup repository labels
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/label-bootstrap"
+
+concurrency:
+  group: setup-repo-labels
+  cancel-in-progress: false
 
 permissions:
   issues: write

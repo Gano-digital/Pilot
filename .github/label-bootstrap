@@ -1,0 +1,2 @@
+# Al hacer push de este archivo a main se ejecuta el workflow "Setup repository labels"
+# (idempotente: las etiquetas ya existentes se omiten). Versión: 1
