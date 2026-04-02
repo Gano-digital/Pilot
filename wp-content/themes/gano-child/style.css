@@ -5,7 +5,7 @@ Description:  Child theme de Royal Elementor Kit para Gano Digital. Contiene la 
 Author:       Gano Digital
 Author URI:   https://gano.digital
 Template:     royal-elementor-kit
-Version:      1.0.0
+Version:      1.0.1
 License:      GNU General Public License v3 or later
 Text Domain:  gano-child
 Tags:         hosting, digital-services, colombia
@@ -1075,4 +1075,129 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
 
 .rstore-product-summary .gano-product-specs {
     margin: 20px 0 !important;
+}
+
+/* ============================================================
+   HOMEPAGE / ELEMENTOR — utilidades (Abril 2026)
+   Aplicar en Elementor: sección o contenedor → Avanzado → Clases CSS
+   Copy de referencia: memory/content/homepage-copy-2026-04.md
+   ============================================================ */
+
+/* Contenedor con contexto de apilamiento (evita que ilustración tape texto) */
+.gano-el-stack {
+    position: relative;
+    isolation: isolate;
+}
+
+/* Columna o bloque de texto por encima del fondo/ilustración */
+.gano-el-layer-top {
+    position: relative;
+    z-index: 2;
+}
+
+/* Ilustración, shape o fondo decorativo detrás del copy */
+.gano-el-layer-base {
+    position: relative;
+    z-index: 0;
+}
+
+/* Tarjeta tipo pilar (4 bloques homepage) */
+.gano-el-pillar {
+    height: 100%;
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    border-radius: var(--gano-radius-lg);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(27, 79, 216, 0.12);
+    box-shadow: var(--gano-shadow-md);
+    transition: var(--gano-transition);
+}
+
+.gano-el-pillar:hover {
+    border-color: rgba(27, 79, 216, 0.28);
+    box-shadow: var(--gano-shadow-lg);
+    transform: translateY(-2px);
+}
+
+.gano-el-pillar h3,
+.gano-el-pillar .elementor-heading-title {
+    color: var(--gano-dark);
+    font-family: var(--gano-font-heading);
+}
+
+.gano-el-pillar p,
+.gano-el-pillar .elementor-widget-text-editor {
+    color: var(--gano-gray-700);
+    font-size: var(--gano-fs-sm);
+    line-height: 1.6;
+}
+
+/* Bloque “socio tecnológico”: lectura cómoda */
+.gano-el-prose-narrow {
+    max-width: 42rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.gano-el-prose-narrow p {
+    line-height: 1.7;
+}
+
+/* Franja de métricas (números cortos, sin inflar cifras) */
+.gano-el-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: clamp(1rem, 4vw, 2.5rem);
+}
+
+.gano-el-metric {
+    text-align: center;
+    min-width: 7rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.gano-el-metric strong,
+.gano-el-metric .elementor-heading-title {
+    display: block;
+    font-family: var(--gano-font-heading);
+    color: var(--gano-blue);
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    letter-spacing: -0.02em;
+}
+
+.gano-el-metric span,
+.gano-el-metric .elementor-widget-text-editor {
+    font-size: var(--gano-fs-xs);
+    color: var(--gano-gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* CTA final: fila de ítems con icono (usar iconos Elementor/FA en cada columna) */
+.gano-el-cta-icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem 2rem;
+    align-items: flex-start;
+}
+
+.gano-el-cta-icons .elementor-icon,
+.gano-el-cta-icons i {
+    color: var(--gano-orange);
+}
+
+/* Hero: leve halo detrás del titular sobre fondos oscuros o busy */
+.gano-el-hero-readability .elementor-heading-title {
+    text-shadow: 0 1px 2px rgba(15, 25, 35, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gano-el-pillar {
+        transition: none;
+    }
+    .gano-el-pillar:hover {
+        transform: none;
+    }
 }

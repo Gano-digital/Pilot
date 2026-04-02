@@ -78,6 +78,19 @@ add_action( 'wp_footer', function() {
 } );
 
 // =============================================================================
+// 1b. MENÚS — ubicación 'primary' (Elementor / muchos kits); el padre solo registra 'main'
+// =============================================================================
+
+add_action( 'after_setup_theme', 'gano_child_register_nav_menus', 20 );
+function gano_child_register_nav_menus(): void {
+    register_nav_menus(
+        array(
+            'primary' => esc_html__( 'Menú principal (header / Elementor)', 'gano-child' ),
+        )
+    );
+}
+
+// =============================================================================
 // 2. CORE WEB VITALS & PERFORMANCE — Fase 3
 // =============================================================================
 

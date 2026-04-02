@@ -99,6 +99,6 @@ Elegir mi arquitectura
 
 ## Notas de implementación
 
-1. **Menú**: asignar menú principal a la ubicación `primary` antes de pulir textos finos.
+1. **Menú**: el child theme **Gano** registra la ubicación WordPress **`primary`** (el padre solo tenía `main`). En Apariencia → Menús asigna el menú a **“Menú principal (header / Elementor)”** y alinea con lo que pida tu plantilla de cabecera en Elementor. Ver [`elementor-home-classes.md`](elementor-home-classes.md).
 2. **Imágenes**: cada bloque con icono o ilustración debe tener `alt` descriptivo en español.
 3. **Coming soon / borradores**: cualquier página no lista debe quedar en borrador para no competir SEO con la home.

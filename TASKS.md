@@ -100,15 +100,17 @@ _Última actualización: Abril 2026_
 
 ### Contenido homepage (Elementor en servidor)
 
-- [ ] Menú principal → ubicación `primary` (ver reporte 2026-04-02)
+- [x] **Repo:** ubicación de menú `primary` registrada en `gano-child` + utilidades CSS Elementor (`gano-el-*`) — desplegar al servidor
+- [ ] Menú principal asignado en wp-admin (y/o header Elementor) tras despliegue
 - [ ] Sustituir Lorem / placeholders usando `memory/content/homepage-copy-2026-04.md` como fuente
 - [ ] Hero: imagen + attachment coherente con diseño
-- [ ] Ajustes de layout (z-index) y CTA final sin símbolos placeholder
+- [ ] Ajustes de layout: aplicar clases `gano-el-stack` / `gano-el-layer-*` + CTA final con iconos reales
 - [ ] Post “coming soon” u oculto según estrategia
 
 ### Referencia de copy
 
 - `memory/content/homepage-copy-2026-04.md` — bloques listos para pegar en Elementor
+- `memory/content/elementor-home-classes.md` — clases CSS, tabla por sección, auditoría breve
 
 ### Coordinación operativa (prioridad paralela)
 
