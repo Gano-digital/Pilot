@@ -93,7 +93,7 @@ _Última actualización: Abril 2026_
 - [x] PR #13: CI TruffleHog + PHP lint + plantillas Copilot + `ssh_cli` sin credenciales en archivo
 - [x] Dependabot (GitHub Actions) + plantilla de PR; `labeler.yml` (workflow) retirado hasta crear etiquetas `area:*` en el repo o reactivar con permisos
 - [x] `.github/labeler.yml` conserva reglas para cuando se reactive el workflow de labeler
-- [ ] Fusionar PR #13 y verificar checks en `main`
+- [x] Fusionar PR #13 y verificar checks en `main` (squash merge 2026-04-02)
 - [ ] Actions → ejecutar **Seed homepage Fix issues** una vez (7 issues `homepage-fixplan`)
 - [ ] Rotación de tokens y limpieza de remotes con credenciales (al cierre del workflow de despliegue)
 
