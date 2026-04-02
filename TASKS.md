@@ -92,6 +92,7 @@ _Última actualización: Abril 2026_
 
 - [x] **Auditoría oleada Copilot (2026-04):** issues #17–#33 siguen **abiertos**; hay **~17 PRs** abiertos (muchos draft) — los agentes **entregaron PRs**, falta **revisión CI + merge + cierre de issues**. Ver [`.github/MERGE-PLAYBOOK.md`](.github/MERGE-PLAYBOOK.md).
 - [x] **Oleada 2:** `agent-queue/tasks-wave2.json` + workflow **Seed Copilot task queue** con input `queue_file` (`tasks.json` | `tasks-wave2.json`).
+- [ ] **Consolidar oleada 1 + sembrar oleada 2:** Actions → **Orchestrate Copilot waves** — opcional `dry_run_merge` primero; luego ejecutar con merge + seed (requiere permisos del token sobre PRs).
 - [x] PR #13: CI TruffleHog + PHP lint + plantillas Copilot + `ssh_cli` sin credenciales en archivo
 - [x] Dependabot (GitHub Actions) + plantilla de PR; `labeler.yml` (workflow) retirado hasta crear etiquetas `area:*` en el repo o reactivar con permisos
 - [x] `.github/labeler.yml` conserva reglas; workflow `labeler.yml` restaurado tras ejecutar **Setup repository labels** en Actions

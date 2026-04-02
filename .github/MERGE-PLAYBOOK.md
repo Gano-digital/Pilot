@@ -26,7 +26,10 @@ Guía breve para cuando la **oleada 1** dejó muchos PRs en borrador (#34–#50 
 
 ## 5. Oleada 2 de issues
 
-Cuando quieras **nuevas** tareas sin duplicar la oleada 1, usa Actions → **Seed Copilot task queue** → `queue_file`: **`tasks-wave2.json`** → ámbito `all` o filtrado.
+Cuando quieras **nuevas** tareas sin duplicar la oleada 1, usa una de estas opciones:
+
+- **Todo en uno (recomendado tras revisar PRs):** Actions → **Orchestrate Copilot waves** → activa `merge_wave1` y `seed_wave2`; prueba primero con **`dry_run_merge: true`** para ver el plan sin fusionar.
+- **Solo issues:** Actions → **Seed Copilot task queue** → `queue_file`: **`tasks-wave2.json`** → ámbito `all` o filtrado.
 
 Los IDs `w2-*` no chocan con `hp-*` / `theme-*` de `tasks.json`; la deduplicación es por `agent-task-id` en el cuerpo del issue.
 
