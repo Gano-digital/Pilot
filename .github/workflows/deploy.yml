@@ -62,7 +62,7 @@ jobs:
           submodules: false  # .gsd no se despliega al servidor
 
       - name: Setup SSH Agent
-        uses: webfactory/ssh-agent@v0.9.0
+        uses: webfactory/ssh-agent@v0.10.0
         with:
           ssh-private-key: ${{ secrets.SSH }}
 
