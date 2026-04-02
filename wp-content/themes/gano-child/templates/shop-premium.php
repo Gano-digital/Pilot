@@ -1,12 +1,16 @@
 <?php
 /**
  * Template Name: Gano Premium Shop SOTA
- * 
+ *
  * Este template reemplaza los viejos bundles (Wompi)
  * por el catálogo unificado SOTA conectado a GoDaddy Reseller.
+ *
+ * Las constantes GANO_PFID_* y la función gano_rstore_cart_url() están
+ * definidas en functions.php. Ver sección "GANO RESELLER STORE" en ese archivo
+ * para instrucciones de cómo obtener los pfids reales desde el RCC.
  */
 
-get_header(); 
+get_header();
 ?>
 
 <!-- ========================================================= -->
@@ -145,23 +149,26 @@ get_header();
 
     <!-- PHP Rendered Catalog -->
     <?php
-    // Data definition moved to server-side so we can theoretically wrap them with WordPress functions/shortcodes
-    // Using GoDaddy Product IDs or Placeholders.
-    $products = [
-        ['cat' => 'hosting', 'name' => 'Núcleo Prime', 'desc' => 'Soberanía inicial para marcas emergentes.', 'price' => '196.000', 'icon' => 'fa-rocket', 'id' => 'host-1'],
-        ['cat' => 'hosting', 'name' => 'Fortaleza Delta', 'desc' => 'Ecosistema administrado por ingenieros.', 'price' => '450.000', 'icon' => 'fa-microchip', 'id' => 'host-2'],
-        ['cat' => 'hosting', 'name' => 'Bastión SOTA', 'desc' => 'Velocidad crítica Gen4 para operaciones masivas.', 'price' => '890.000', 'icon' => 'fa-bolt', 'id' => 'host-3'],
-        ['cat' => 'hosting', 'name' => 'Ultimate WP', 'desc' => 'Inmunidad ante picos masivos de tráfico.', 'price' => '1.2M', 'icon' => 'fa-crown', 'id' => 'host-4'],
-        
-        ['cat' => 'security', 'name' => 'SSL Deluxe', 'desc' => 'Validación corporativa de alta confianza.', 'price' => '680.000', 'icon' => 'fa-shield-halved', 'id' => 'sec-1'],
-        ['cat' => 'security', 'name' => 'Security Ultimate', 'desc' => 'Blindaje Zero-Trust contra DDoS.', 'price' => '1.8M', 'icon' => 'fa-fire-extinguisher', 'id' => 'sec-2'],
-        
-        ['cat' => 'identity', 'name' => 'Dominio .CO', 'desc' => 'Presencia nacional de alta autoridad.', 'price' => '90.000', 'icon' => 'fa-globe', 'id' => 'dom-1'],
-        ['cat' => 'identity', 'name' => 'Dominio .COM', 'desc' => 'Estándar global de soberanía.', 'price' => '75.000', 'icon' => 'fa-earth-americas', 'id' => 'dom-2'],
-        
-        ['cat' => 'email', 'name' => 'M365 Premium', 'desc' => 'Máxima seguridad en colaboración corporativa.', 'price' => '98.000', 'icon' => 'fa-id-badge', 'id' => 'em-1'],
-        ['cat' => 'email', 'name' => 'Online Storage 1TB', 'desc' => 'Archivo Maestro Soberano.', 'price' => '120.000', 'icon' => 'fa-hard-drive', 'id' => 'em-2'],
-    ];
+    // Catálogo de productos mapeados a los pfids del Reseller de GoDaddy.
+    // Los pfids se definen como constantes GANO_PFID_* al inicio del archivo.
+    // Los dominios (.CO / .COM) usan 'domain_search' como señal para
+    // redirigir al buscador de dominios en lugar del carrito directo.
+    $products = array(
+        array( 'cat' => 'hosting',  'name' => 'Núcleo Prime',       'desc' => 'Soberanía inicial para marcas emergentes.',        'price' => '196.000', 'icon' => 'fa-rocket',          'pfid' => GANO_PFID_HOSTING_ECONOMIA  ),
+        array( 'cat' => 'hosting',  'name' => 'Fortaleza Delta',     'desc' => 'Ecosistema administrado por ingenieros.',          'price' => '450.000', 'icon' => 'fa-microchip',        'pfid' => GANO_PFID_HOSTING_DELUXE    ),
+        array( 'cat' => 'hosting',  'name' => 'Bastión SOTA',        'desc' => 'Velocidad crítica Gen4 para operaciones masivas.', 'price' => '890.000', 'icon' => 'fa-bolt',             'pfid' => GANO_PFID_HOSTING_PREMIUM   ),
+        array( 'cat' => 'hosting',  'name' => 'Ultimate WP',         'desc' => 'Inmunidad ante picos masivos de tráfico.',         'price' => '1.2M',    'icon' => 'fa-crown',            'pfid' => GANO_PFID_HOSTING_ULTIMATE  ),
+
+        array( 'cat' => 'security', 'name' => 'SSL Deluxe',          'desc' => 'Validación corporativa de alta confianza.',        'price' => '680.000', 'icon' => 'fa-shield-halved',    'pfid' => GANO_PFID_SSL_DELUXE        ),
+        array( 'cat' => 'security', 'name' => 'Security Ultimate',   'desc' => 'Blindaje Zero-Trust contra DDoS.',                 'price' => '1.8M',    'icon' => 'fa-fire-extinguisher', 'pfid' => GANO_PFID_SECURITY_ULTIMATE ),
+
+        // Dominios: no tienen pfid directo; usar buscador de dominios.
+        array( 'cat' => 'identity', 'name' => 'Dominio .CO',         'desc' => 'Presencia nacional de alta autoridad.',           'price' => '90.000',  'icon' => 'fa-globe',            'pfid' => 'domain_search'             ),
+        array( 'cat' => 'identity', 'name' => 'Dominio .COM',        'desc' => 'Estándar global de soberanía.',                   'price' => '75.000',  'icon' => 'fa-earth-americas',   'pfid' => 'domain_search'             ),
+
+        array( 'cat' => 'email',    'name' => 'M365 Premium',        'desc' => 'Máxima seguridad en colaboración corporativa.',   'price' => '98.000',  'icon' => 'fa-id-badge',         'pfid' => GANO_PFID_M365_PREMIUM      ),
+        array( 'cat' => 'email',    'name' => 'Online Storage 1TB',  'desc' => 'Archivo Maestro Soberano.',                       'price' => '120.000', 'icon' => 'fa-hard-drive',       'pfid' => GANO_PFID_ONLINE_STORAGE    ),
+    );
 
     $sotaPillars = [
         "NVMe Gen4", "Zero-Trust", "Predictive AI", "Digital Sovereignty", "Headless WP",
@@ -201,14 +208,29 @@ get_header();
                     <p class="p-desc"><?php echo esc_html($p['desc']); ?></p>
                     <div class="p-price"><span>Inversión Mensual</span>$ <?php echo esc_html($p['price']); ?></div>
                     
-                    <!-- REAL ADD TO CART INTEGRATION:
-                         Si tuvieramos el plugin activo aquí iría el shortcode de GoDaddy Reseller:
-                         echo do_shortcode('[rstore_cart_button product_id="' . $p['id'] . '"]'); 
-                         Por ahora, emulamos la visualización y funcionalidad.
-                    -->
-                    <button class="rstore-add-to-cart" onclick="alert('🛍️ Sincronizando con Reseller Cart (API GoDaddy) para el producto: <?php echo esc_attr($p['name']); ?>')">
-                        Adquirir Nodo
-                    </button>
+                    <?php
+                    // Determinar URL y comportamiento del CTA según el tipo de producto.
+                    if ( 'domain_search' === $p['pfid'] ) {
+                        // Dominios: redirigir al buscador de dominios.
+                        $cta_url    = esc_url( home_url( '/dominios/' ) );
+                        $cta_label  = 'Buscar Dominio';
+                        $cta_target = '';
+                    } elseif ( 'PENDING_RCC' === $p['pfid'] ) {
+                        // pfid aún no configurado: desactivar botón hasta obtener el ID real.
+                        $cta_url    = esc_url( '#' );
+                        $cta_label  = 'Próximamente';
+                        $cta_target = '';
+                    } else {
+                        // pfid válido: enlazar al carrito GoDaddy Reseller.
+                        $cta_url    = gano_rstore_cart_url( $p['pfid'] );
+                        $cta_label  = 'Adquirir Nodo';
+                        $cta_target = 'target="_blank" rel="noopener noreferrer"';
+                    }
+                    ?>
+                    <a href="<?php echo $cta_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- all branches assign via esc_url() or gano_rstore_cart_url() ?>"
+                       class="rstore-add-to-cart"
+                       <?php echo $cta_target; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static string ?>
+                    ><?php echo esc_html( $cta_label ); ?></a>
                 </div>
                 <?php endforeach; ?>
             </div>
