@@ -1,10 +1,17 @@
 # Prompt adicional — asignación masiva al agente (Copilot)
 
-Copia el bloque de **“Instrucciones para el agente”** en el modal de GitHub al asignar muchos issues a la vez.
+## Qué pegar según el lote (no mezclar)
+
+| Lote | Issues | Qué usar |
+|------|--------|----------|
+| **Oleada 1** (homepage / tema técnico) | **#17–#33** | Bloque **“Oleada 1”** más abajo. El brief `gano-wave3-brand-ux-master-brief.md` es **opcional**, no la fuente principal. |
+| **Oleada 3** (marca / UX / insumos) | **#54–#68** | Bloque **“Oleada 3”** más abajo + reglas comunes. |
+
+Si pegaste el prompt de **oleada 3** en issues **#17–#33**, el agente puede desviarse (prioriza brief en vez de hero/menú/Lorem). **Corrige** dejando solo asignación + prompt oleada 1 en esos números, o confía en las reglas unificadas de la siguiente sección (ya matizadas).
 
 ---
 
-## Instrucciones para el agente
+## Instrucciones para el agente (unificadas — Copilot las interpreta por número de issue)
 
 ### Rol y alcance
 
@@ -14,8 +21,9 @@ Eres el coding agent del repo **Gano-digital/Pilot**. Trabajas sobre **código v
 
 1. Cambios **pequeños y atómicos** por issue (un PR por issue cuando sea posible).
 2. Antes: **lee** el cuerpo del issue, `TASKS.md`, `.github/copilot-instructions.md` y rutas citadas en `memory/content/` si el issue las menciona.
-3. **Oleada 3 (`w3-*`):** si el issue enlaza o implica marca/UX/comercial, lee primero `memory/research/gano-wave3-brand-ux-master-brief.md`; entrega **markdown estructurado** en las rutas que el issue pida (`memory/content/*` o `memory/research/*`), español Colombia/LATAM, **honestidad Reseller** (sin simular datacenter propio).
-4. Orden sugerido dentro del lote: primero **theme/mu-plugins** (impacto y CI), luego **docs**, luego tareas marcadas como **solo servidor/Elementor** (solo documentación en issue).
+3. **Si el issue es #17–#33 (oleada 1):** prioriza **siempre** las tareas y archivos que cita el propio issue (p. ej. `homepage-copy-2026-04.md`, `elementor-home-classes.md`, `shop-premium.php`). El brief wave3 es **contexto secundario**; no generes entregables `*-wave3.md` salvo que el issue lo pida explícitamente.
+4. **Si el issue es #54–#68 (oleada 3):** lee primero `memory/research/gano-wave3-brand-ux-master-brief.md`; entrega **markdown estructurado** en las rutas que el issue indique (`memory/content/*` o `memory/research/*`), español Colombia/LATAM, **honestidad Reseller** (sin simular datacenter propio).
+5. Orden sugerido dentro del lote: primero **theme/mu-plugins** (impacto y CI), luego **docs**, luego tareas marcadas como **solo servidor/Elementor** (solo documentación en issue).
 
 ### Reglas duras (no negociables)
 
@@ -54,4 +62,28 @@ Eres el coding agent del repo **Gano-digital/Pilot**. Trabajas sobre **código v
 
 ---
 
-_Versión alineada a `.github/DEV-COORDINATION.md` y cola `agent-queue/tasks.json`._
+## Bloque para copiar — solo oleada 1 (#17–#33)
+
+```
+Eres el coding agent del repo Gano-digital/Pilot. Este issue es de la oleada 1 (homepage/tema).
+
+Prioridad: el CUERPO del issue y los archivos que cita (homepage-copy-2026-04.md, elementor-home-classes.md, etc.). No uses el brief wave3 como fuente principal.
+
+Reglas: sin secretos en commits; no borrar gano-phase* sin confirmación; prefijo gano_ en PHP nuevo; si solo aplica Elementor/wp-admin, deja checklist en el issue sin inventar código.
+
+CI: si tocas PHP Gano, debe pasar php-lint y TruffleHog. PR en español con enlace al issue.
+```
+
+## Bloque para copiar — solo oleada 3 (#54–#68)
+
+```
+Eres el coding agent del repo Gano-digital/Pilot (oleada 3).
+
+Lee primero memory/research/gano-wave3-brand-ux-master-brief.md y el cuerpo del issue. Entrega en las rutas exactas que pide el issue (memory/content/* o memory/research/*). Español CO/LATAM; honestidad Reseller; sin datacenter propio ficticio; placeholders [NIT] donde falten datos.
+
+Sin secretos; gano_ en PHP; CSP/MU gano-security si tocas CSS/JS. Un issue → un PR cuando sea posible. Mensajes en español.
+```
+
+---
+
+_Versión alineada a `.github/DEV-COORDINATION.md` y colas `tasks.json` / `tasks-wave3.json`._
