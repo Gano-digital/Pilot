@@ -1,6 +1,7 @@
 <?php
 /**
  * Gano Digital Child Theme Functions
+ * Arquitectura Elementor: memory/content/elementor-architecture-wave3.md
  * V-05 Fix: Auditoria Gano Digital, Marzo 2026.
  *   — Nonce CSRF agregado al script del chat IA.
  *   — Endpoint REST del chat registrado con permission_callback de nonce.
