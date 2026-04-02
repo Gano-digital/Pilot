@@ -20,8 +20,10 @@ description: >
 
 | Artefacto | Rol |
 |-----------|-----|
-| [`.github/agent-queue/tasks.json`](../../.github/agent-queue/tasks.json) | Definición versionada: `id`, `scope`, `title`, `body`, `labels`. Marcador `<!-- agent-task-id:... -->` en el body para deduplicación lógica. |
-| **Workflow `Seed Copilot task queue`** | Solo **`workflow_dispatch`**. No corre al hacer push del JSON; hay que **Actions → Run workflow** y elegir ámbito (`all`, `homepage`, `theme`, `content_seo`, `security`, `commerce`, `docs`). |
+| [`.github/agent-queue/tasks.json`](../../.github/agent-queue/tasks.json) | Oleada 1: `id`, `scope`, `title`, `body`, `labels` + `<!-- agent-task-id:... -->` para deduplicar. |
+| [`.github/agent-queue/tasks-wave2.json`](../../.github/agent-queue/tasks-wave2.json) | Oleada 2 (`w2-*`): consolidación SEO/CI/docs/Fase 4 tras triage de PRs de la oleada 1. |
+| **Workflow `Seed Copilot task queue`** | **`workflow_dispatch`**: elige **`queue_file`** (`tasks.json` o `tasks-wave2.json`) y **ámbito** (`all`, `homepage`, `theme`, `content_seo`, `security`, `commerce`, `docs`). |
+| [`.github/MERGE-PLAYBOOK.md`](../../.github/MERGE-PLAYBOOK.md) | Orden sugerido de fusión de PRs Copilot y cierre de issues. |
 | Búsqueda de duplicados | Issues **abiertos** cuyo cuerpo contiene `agent-task-id:tu-id` → no se recrea. |
 
 **Workflow paralelo:** `Seed homepage Fix issues` — 7 issues del fixplan Elementor (etiqueta `homepage-fixplan`), también manual.

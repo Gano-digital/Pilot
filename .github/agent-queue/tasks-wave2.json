@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "description": "Oleada 2 — tras PRs de Copilot oleada 1: consolidación, calidad, SEO técnico y documentación de Fase 4. IDs únicos para no chocar con tasks.json (oleada 1 sigue bloqueando re-seed mientras issues #17–33 estén abiertos).",
+  "tasks": [
+    {
+      "id": "w2-merge-playbook",
+      "scope": "docs",
+      "title": "[agent] Documentar MERGE-PLAYBOOK: orden de fusión PRs Copilot + cierre de issues",
+      "labels": ["copilot", "area:ci", "coordination"],
+      "body": "## Contexto\nExiste `.github/MERGE-PLAYBOOK.md` (borrador). Ampliar según PRs abiertos reales.\n\n## Tareas\n1. Enriquecer el playbook: CI → Ready → squash/merge → **cerrar issue** (`Closes #`) o comentario [sync] → deploy.\n2. Tabla o lista de PRs por dependencia si se puede inferir del repo.\n3. Sin secretos.\n\n<!-- agent-task-id:w2-merge-playbook -->"
+    },
+    {
+      "id": "w2-canonical-dup",
+      "scope": "content_seo",
+      "title": "[agent] SEO técnico: canonical — Rank Math vs gano-seo.php (evitar duplicados)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\n`gano-seo.php` y Rank Math pueden solaparse en meta canonical/OG.\n\n## Tareas\n1. Revisar salida en front (solo análisis de código + recomendación en MD en `memory/content/` o comentarios PHP documentados).\n2. PR pequeño: desactivar duplicado en un solo lugar o filtro `rank_math` si aplica.\n3. No commitear credenciales.\n\n<!-- agent-task-id:w2-canonical-dup -->"
+    },
+    {
+      "id": "w2-fonts-hints",
+      "scope": "theme",
+      "title": "[agent] Rendimiento: preconnect/preload fuentes (gano-child vs Elementor)",
+      "labels": ["copilot", "area:theme"],
+      "body": "## Tareas\n1. Auditar `functions.php` / `gano-seo.php` resource hints vs fuentes reales del kit.\n2. PR mínimo: quitar hints huérfanos o añadir los que falten para LCP.\n3. `php -l` en archivos tocados.\n\n<!-- agent-task-id:w2-fonts-hints -->"
+    },
+    {
+      "id": "w2-reseller-doc",
+      "scope": "commerce",
+      "title": "[agent] Fase 4: documentar flujo smoke carrito Reseller (pasos reproducibles)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\n`TASKS.md` pide prueba de checkout; el agente no paga en prod.\n\n## Tareas\n1. Añadir `memory/research/reseller-smoke-test.md` con pasos: desde qué URL, qué CTA, qué esperar en carrito marca blanca, sandbox si existe.\n2. Enlazar desde `TASKS.md` o `DEV-COORDINATION.md` en una línea.\n3. Sin API keys.\n\n<!-- agent-task-id:w2-reseller-doc -->"
+    },
+    {
+      "id": "w2-htaccess-csp",
+      "scope": "security",
+      "title": "[agent] Revisar .htaccess vs headers CSP (gano-security.php)",
+      "labels": ["copilot", "area:mu-plugins"],
+      "body": "## Tareas\n1. Si existe `.htaccess` en repo con headers de seguridad, comparar con MU plugin CSP.\n2. PR: evitar duplicación conflictiva o documentar que solo uno aplica en este hosting.\n3. No tocar reglas de WordPress core salvo necesidad justificada.\n\n<!-- agent-task-id:w2-htaccess-csp -->"
+    },
+    {
+      "id": "w2-php-lint-paths",
+      "scope": "docs",
+      "title": "[agent] CI: auditar si php-lint debe incluir más rutas PHP custom",
+      "labels": ["copilot", "area:ci"],
+      "body": "## Tareas\n1. Revisar `php-lint-gano.yml` y árbol `wp-content` por PHP propio fuera de mu-plugins/gano-child/gano-*.\n2. PR solo si hay omisión clara y segura (no vendor/elementor).\n3. Documentar decisión en comentario YAML.\n\n<!-- agent-task-id:w2-php-lint-paths -->"
+    },
+    {
+      "id": "w2-a11y-cta",
+      "scope": "theme",
+      "title": "[agent] Accesibilidad: foco y aria en CTAs críticos (tema / shortcodes Gano)",
+      "labels": ["copilot", "area:theme"],
+      "body": "## Tareas\n1. Revisar shortcodes o bloques documentados en `elementor-home-classes.md` + `functions.php`.\n2. PR pequeño: `aria-label`, orden de foco, contraste si hay regresión obvia.\n3. Sin cambios masivos de diseño.\n\n<!-- agent-task-id:w2-a11y-cta -->"
+    },
+    {
+      "id": "w2-dependabot-post-merge",
+      "scope": "docs",
+      "title": "[agent] Post-Dependabot: verificar workflows tras checkout v6 / github-script v8",
+      "labels": ["copilot", "area:ci"],
+      "body": "## Contexto\nPRs #14–#16 ya fusionados; conviene confirmar que no quedaron referencias rotas.\n\n## Tareas\n1. Grep en `.github/workflows` por `@v4` obsoleto donde debiera ser `@v6` solo si aplica.\n2. PR de consistencia o issue comentando \"sin acción\" con evidencia.\n3. No subir secretos.\n\n<!-- agent-task-id:w2-dependabot-post-merge -->"
+    }
+  ]
+}
