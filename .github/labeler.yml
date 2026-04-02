@@ -1,5 +1,4 @@
-# Etiquetas automáticas por ruta (actions/labeler).
-# Las claves con ":" deben ir entre comillas en YAML.
+# Etiquetas por ruta. Las claves con ":" van entre comillas.
 
 changed-files-labels-limit: 8
 
@@ -18,9 +17,3 @@ changed-files-labels-limit: 8
 "area:ci":
   - changed-files:
       - any-glob-to-any-file: ".github/**"
-
-ops-branch:
-  - head-branch: ["^ops/"]
-
-feature-branch:
-  - head-branch: ["^feature/"]
