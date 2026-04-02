@@ -10,6 +10,10 @@ Ref: https://docs.github.com/en/copilot/customizing-copilot/adding-repository-in
 
 URL pública: https://gano.digital
 
+## Coordinación GitHub ↔ servidor ↔ local
+
+Antes de asumir que el repo es idéntico a producción, lee **[`.github/DEV-COORDINATION.md`](DEV-COORDINATION.md)**: fuentes de verdad (`TASKS.md`, `memory/`), qué vive en el servidor (BD Elementor, uploads) frente a git, y cómo reportar drift con la plantilla **Reporte de sincronización**. No inventes estado de servidor si no está documentado en issues o en `TASKS.md`.
+
 ## Stack tecnológico
 
 - **CMS**: WordPress 6.x + Elementor Pro + Royal Elementor Addons

@@ -1,0 +1,57 @@
+name: Reporte de sincronización (servidor / local)
+description: Alinea GitHub con lo que ocurrió en el servidor o en el entorno local (sin pegar secretos).
+title: "[sync] "
+labels: ["coordination"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Usa esta plantilla cuando haya **drift** entre repo y realidad (Elementor solo en prod, plugin activado en panel, cambio de SSL, etc.).
+        **No pegues** contraseñas, tokens ni claves.
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Ámbito
+      options:
+        - Servidor / producción (gano.digital)
+        - Staging / subcuenta
+        - Solo local (dev)
+        - GitHub (workflows, permisos, etiquetas)
+        - Varios
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: Qué cambió (hechos)
+      description: Ej. "Menú primary asignado", "Hero actualizado en Elementor", "Plugin X activado".
+    validations:
+      required: true
+
+  - type: textarea
+    id: repo_impact
+    attributes:
+      label: Impacto en el repositorio
+      description: ¿Hace falta PR, export JSON, actualizar TASKS.md o solo referencia?
+    validations:
+      required: true
+
+  - type: textarea
+    id: verify
+    attributes:
+      label: Cómo verificar
+      description: URL pública, pasos en wp-admin, o "N/A".
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: followup
+    attributes:
+      label: Seguimiento
+      options:
+        - label: Actualizaré TASKS.md en un PR
+          required: false
+        - label: Abriré PR con cambios de código relacionados
+          required: false

@@ -2,7 +2,13 @@
 
 > **Plataforma de hosting WordPress profesional para empresas colombianas**
 > Stack: WordPress 6.x · Elementor · WooCommerce · Wompi · GSAP 3
-> Servidor: `72.167.102.145` · URL: https://gano.digital
+> URL: https://gano.digital · Hosting: GoDaddy Managed WordPress (detalles de infra en panel del proveedor, no en el repo)
+
+---
+
+## 🔁 Coordinación del equipo (GitHub ↔ servidor ↔ local)
+
+El repositorio se integra con **producción** y con **máquinas locales** mediante un flujo explícito. Lee la guía **[`.github/DEV-COORDINATION.md`](.github/DEV-COORDINATION.md)** para saber qué archivos son fuente de verdad, cómo reportar cambios hechos solo en el servidor (Elementor, plugins) y cómo usar la plantilla de issue **Reporte de sincronización**.
 
 ---
 
@@ -11,8 +17,10 @@
 ```
 Gano.digital-copia/
 ├── .github/
-│   ├── workflows/deploy.yml        ← CI/CD → auto-deploy en push a main
+│   ├── DEV-COORDINATION.md         ← GitHub ↔ servidor ↔ local (fuente operativa)
+│   ├── workflows/                  ← CI (TruffleHog, php-lint, seeds, labels)
 │   ├── copilot-instructions.md     ← Contexto para GitHub Copilot
+│   ├── ISSUE_TEMPLATE/             ← Incl. reportes de sincronización
 │   └── agents/                     ← Agentes GSD exportados
 ├── .gsd/                           ← get-shit-done workflow system (submodule)
 ├── wp-content/

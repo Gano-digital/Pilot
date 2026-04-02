@@ -109,3 +109,8 @@ _Última actualización: Abril 2026_
 ### Referencia de copy
 
 - `memory/content/homepage-copy-2026-04.md` — bloques listos para pegar en Elementor
+
+### Coordinación operativa (prioridad paralela)
+
+- **Guía canónica:** [`.github/DEV-COORDINATION.md`](.github/DEV-COORDINATION.md) — qué vive en Git vs servidor vs local; cómo mantener a GitHub “enterado” sin filtrar secretos.
+- **Issues:** plantilla *Reporte de sincronización* + etiqueta `coordination` (crear etiquetas con workflow **Setup repository labels** si faltan).
