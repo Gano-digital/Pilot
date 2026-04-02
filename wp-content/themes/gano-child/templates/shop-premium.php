@@ -118,6 +118,7 @@ get_header();
 
     .rstore-add-to-cart { width: 100%; text-align: center; padding: 12px; font-weight: bold; background: rgba(99, 102, 241, 0.1); color: var(--gano-purple); border: 1px solid var(--gano-border); cursor: pointer; transition: 0.3s; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
     .rstore-add-to-cart:hover { background: var(--gano-purple); color: #FFF; }
+    .rstore-add-to-cart--pending { opacity: 0.4; cursor: not-allowed; }
 </style>
 
 <div class="sota-wrapper">
@@ -145,22 +146,31 @@ get_header();
 
     <!-- PHP Rendered Catalog -->
     <?php
-    // Data definition moved to server-side so we can theoretically wrap them with WordPress functions/shortcodes
-    // Using GoDaddy Product IDs or Placeholders.
+    /*
+     * IDs de producto GoDaddy Reseller.
+     *
+     * ACCIÓN PENDIENTE (Diego): reemplazar cada valor de 'rstore_id' con el ID
+     * numérico real obtenido desde el Reseller Control Center (RCC) de GoDaddy.
+     * Mientras sean '0', el shortcode [rstore_cart_button] no generará un enlace
+     * funcional y el botón fallará silenciosamente.
+     *
+     * Para obtener los IDs: RCC → Products & Pricing → selecciona cada producto →
+     * toma el "Product ID" o revisa la URL del producto (p. ej. ...product_id=12345).
+     */
     $products = [
-        ['cat' => 'hosting', 'name' => 'Núcleo Prime', 'desc' => 'Soberanía inicial para marcas emergentes.', 'price' => '196.000', 'icon' => 'fa-rocket', 'id' => 'host-1'],
-        ['cat' => 'hosting', 'name' => 'Fortaleza Delta', 'desc' => 'Ecosistema administrado por ingenieros.', 'price' => '450.000', 'icon' => 'fa-microchip', 'id' => 'host-2'],
-        ['cat' => 'hosting', 'name' => 'Bastión SOTA', 'desc' => 'Velocidad crítica Gen4 para operaciones masivas.', 'price' => '890.000', 'icon' => 'fa-bolt', 'id' => 'host-3'],
-        ['cat' => 'hosting', 'name' => 'Ultimate WP', 'desc' => 'Inmunidad ante picos masivos de tráfico.', 'price' => '1.2M', 'icon' => 'fa-crown', 'id' => 'host-4'],
-        
-        ['cat' => 'security', 'name' => 'SSL Deluxe', 'desc' => 'Validación corporativa de alta confianza.', 'price' => '680.000', 'icon' => 'fa-shield-halved', 'id' => 'sec-1'],
-        ['cat' => 'security', 'name' => 'Security Ultimate', 'desc' => 'Blindaje Zero-Trust contra DDoS.', 'price' => '1.8M', 'icon' => 'fa-fire-extinguisher', 'id' => 'sec-2'],
-        
-        ['cat' => 'identity', 'name' => 'Dominio .CO', 'desc' => 'Presencia nacional de alta autoridad.', 'price' => '90.000', 'icon' => 'fa-globe', 'id' => 'dom-1'],
-        ['cat' => 'identity', 'name' => 'Dominio .COM', 'desc' => 'Estándar global de soberanía.', 'price' => '75.000', 'icon' => 'fa-earth-americas', 'id' => 'dom-2'],
-        
-        ['cat' => 'email', 'name' => 'M365 Premium', 'desc' => 'Máxima seguridad en colaboración corporativa.', 'price' => '98.000', 'icon' => 'fa-id-badge', 'id' => 'em-1'],
-        ['cat' => 'email', 'name' => 'Online Storage 1TB', 'desc' => 'Archivo Maestro Soberano.', 'price' => '120.000', 'icon' => 'fa-hard-drive', 'id' => 'em-2'],
+        ['cat' => 'hosting', 'name' => 'Núcleo Prime',    'desc' => 'Soberanía inicial para marcas emergentes.',          'price' => '196.000', 'icon' => 'fa-rocket',          'rstore_id' => 0 /* TODO: ID real RCC */],
+        ['cat' => 'hosting', 'name' => 'Fortaleza Delta', 'desc' => 'Ecosistema administrado por ingenieros.',              'price' => '450.000', 'icon' => 'fa-microchip',        'rstore_id' => 0 /* TODO: ID real RCC */],
+        ['cat' => 'hosting', 'name' => 'Bastión SOTA',    'desc' => 'Velocidad crítica Gen4 para operaciones masivas.',    'price' => '890.000', 'icon' => 'fa-bolt',             'rstore_id' => 0 /* TODO: ID real RCC */],
+        ['cat' => 'hosting', 'name' => 'Ultimate WP',     'desc' => 'Inmunidad ante picos masivos de tráfico.',           'price' => '1.200.000', 'icon' => 'fa-crown',            'rstore_id' => 0 /* TODO: ID real RCC */],
+
+        ['cat' => 'security', 'name' => 'SSL Deluxe',         'desc' => 'Validación corporativa de alta confianza.',  'price' => '680.000', 'icon' => 'fa-shield-halved',     'rstore_id' => 0 /* TODO: ID real RCC */],
+        ['cat' => 'security', 'name' => 'Security Ultimate',  'desc' => 'Blindaje Zero-Trust contra DDoS.',           'price' => '1.800.000', 'icon' => 'fa-fire-extinguisher', 'rstore_id' => 0 /* TODO: ID real RCC */],
+
+        ['cat' => 'identity', 'name' => 'Dominio .CO',  'desc' => 'Presencia nacional de alta autoridad.', 'price' => '90.000', 'icon' => 'fa-globe',          'rstore_id' => 0 /* TODO: ID real RCC */],
+        ['cat' => 'identity', 'name' => 'Dominio .COM', 'desc' => 'Estándar global de soberanía.',         'price' => '75.000', 'icon' => 'fa-earth-americas', 'rstore_id' => 0 /* TODO: ID real RCC */],
+
+        ['cat' => 'email', 'name' => 'M365 Premium',      'desc' => 'Máxima seguridad en colaboración corporativa.', 'price' => '98.000',  'icon' => 'fa-id-badge',  'rstore_id' => 0 /* TODO: ID real RCC */],
+        ['cat' => 'email', 'name' => 'Online Storage 1TB','desc' => 'Archivo Maestro Soberano.',                     'price' => '120.000', 'icon' => 'fa-hard-drive', 'rstore_id' => 0 /* TODO: ID real RCC */],
     ];
 
     $sotaPillars = [
@@ -200,15 +210,21 @@ get_header();
                     <h3 class="p-name"><?php echo esc_html($p['name']); ?></h3>
                     <p class="p-desc"><?php echo esc_html($p['desc']); ?></p>
                     <div class="p-price"><span>Inversión Mensual</span>$ <?php echo esc_html($p['price']); ?></div>
-                    
-                    <!-- REAL ADD TO CART INTEGRATION:
-                         Si tuvieramos el plugin activo aquí iría el shortcode de GoDaddy Reseller:
-                         echo do_shortcode('[rstore_cart_button product_id="' . $p['id'] . '"]'); 
-                         Por ahora, emulamos la visualización y funcionalidad.
-                    -->
-                    <button class="rstore-add-to-cart" onclick="alert('🛍️ Sincronizando con Reseller Cart (API GoDaddy) para el producto: <?php echo esc_attr($p['name']); ?>')">
-                        Adquirir Nodo
-                    </button>
+
+                    <?php
+                    if ( $p['rstore_id'] > 0 && shortcode_exists( 'rstore_cart_button' ) ) {
+                        // Integración real con el carrito GoDaddy Reseller.
+                        echo do_shortcode( '[rstore_cart_button product_id="' . absint( $p['rstore_id'] ) . '"]' );
+                    } else {
+                        // IDs de producto pendientes de configurar en el Reseller Control Center.
+                        ?>
+                        <button class="rstore-add-to-cart rstore-add-to-cart--pending" disabled
+                                title="ID de producto Reseller no configurado. Ver TASKS.md Fase 4.">
+                            Configuración pendiente
+                        </button>
+                        <?php
+                    }
+                    ?>
                 </div>
                 <?php endforeach; ?>
             </div>
