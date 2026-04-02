@@ -11,7 +11,7 @@ En Elementor: selecciona el **contenedor / sección / columna** → **Avanzado**
 | Pilares (4 cards) | `gano-el-pillar` en cada tarjeta/columna | Glass ligero, hover, tipografía alineada a tokens. |
 | Socio tecnológico | `gano-el-prose-narrow` en el contenedor del texto | Centra y limita ancho de párrafo. |
 | Métricas | `gano-el-metrics` en la fila; `gano-el-metric` en cada celda | Usa título + texto pequeño; no inventar cifras. |
-| CTA final (iconos) | `gano-el-cta-icons` en la fila | Sustituye ★ por iconos Elementor/Font Awesome por columna. |
+| CTA final (iconos) | `gano-el-cta-icons` en la fila | Usa el shortcode `[gano_cta_icons]` en un widget Shortcode de Elementor: inserta los 5 iconos Font Awesome (bolt, shield-halved, circle-check, headset, coins) con etiquetas y foco accesible. |
 
 ## Menú WordPress
 
