@@ -1142,6 +1142,48 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
     line-height: 1.7;
 }
 
+/* Estilos para el shortcode [gano_socio_tecnologico] */
+.gano-socio-block__titulo {
+    font-family: var(--gano-font-heading);
+    color: var(--gano-dark);
+    font-size: clamp(var(--gano-fs-2xl), 3vw, var(--gano-fs-4xl));
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.gano-socio-block__parrafo {
+    color: var(--gano-gray-700);
+    font-size: var(--gano-fs-lg);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+}
+
+.gano-socio-block__bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.gano-socio-block__bullets li {
+    position: relative;
+    padding-left: 1.5rem;
+    color: var(--gano-gray-700);
+    font-size: var(--gano-fs-base);
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+
+.gano-socio-block__bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: var(--gano-blue);
+}
+
 /* Franja de métricas (números cortos, sin inflar cifras) */
 .gano-el-metrics {
     display: flex;
@@ -1157,6 +1199,14 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
     padding: 0.5rem 0.75rem;
 }
 
+/* Separador visual entre métricas en pantallas anchas */
+@media (min-width: 640px) {
+    .gano-el-metric + .gano-el-metric {
+        border-left: 1px solid var(--gano-gray-300);
+        padding-left: clamp(1rem, 4vw, 2.5rem);
+    }
+}
+
 .gano-el-metric strong,
 .gano-el-metric .elementor-heading-title {
     display: block;
@@ -1168,10 +1218,12 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
 
 .gano-el-metric span,
 .gano-el-metric .elementor-widget-text-editor {
+    display: block;
     font-size: var(--gano-fs-xs);
     color: var(--gano-gray-500);
     text-transform: uppercase;
     letter-spacing: 0.06em;
+    margin-top: 0.25rem;
 }
 
 /* CTA final: fila de ítems con icono (usar iconos Elementor/FA en cada columna) */
