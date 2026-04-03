@@ -1,7 +1,7 @@
 # Consolida PRs Copilot oleada 1 (orden MERGE-PLAYBOOK) y opcionalmente crea issues oleada 2.
-# Ejecutar: Actions → Orchestrate Copilot waves → Run workflow.
+# Ejecutar: Actions → 10 · Agentes · Orquestar oleadas → Run workflow.
 # Requiere que los PRs pasen reglas de rama (si hay revisión obligatoria, fusiona manualmente).
-name: Orchestrate Copilot waves
+name: "10 · Agentes · Orquestar oleadas"
 
 on:
   workflow_dispatch:
@@ -177,6 +177,6 @@ jobs:
 
             core.info(summary.join('\n'));
             await core.summary
-              .addHeading('Orchestrate Copilot waves', 2)
+              .addHeading('10 · Agentes · Orquestar oleadas', 2)
               .addCodeBlock(summary.join('\n'))
               .write();

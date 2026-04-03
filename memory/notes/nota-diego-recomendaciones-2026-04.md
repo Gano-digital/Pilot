@@ -7,6 +7,7 @@ _Documento de recordatorio operativo. Última revisión: abril 2026._
 | Qué | Dónde |
 |-----|--------|
 | Checklist estricta antes de merge PR | [`.github/AGENT-REVIEW-CHECKLIST.md`](../../.github/AGENT-REVIEW-CHECKLIST.md) |
+| Nombres y orden de workflows en Actions | [`.github/workflows/README.md`](../../.github/workflows/README.md) |
 | DoD para agentes / revisores | [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md) (sección *Definition of Done*) |
 | Orden y criterio de merge | [`.github/MERGE-PLAYBOOK.md`](../../.github/MERGE-PLAYBOOK.md) |
 | Coordinación GitHub ↔ servidor | [`.github/DEV-COORDINATION.md`](../../.github/DEV-COORDINATION.md) |
@@ -21,13 +22,13 @@ En **Settings → Secrets and variables → Actions** deben existir:
 - `SERVER_USER` — usuario SSH/SFTP
 - `DEPLOY_PATH` — ruta absoluta a la raíz WP (coherente al unir con `/wp-content/...`; evita doble barra)
 
-Sin estos cuatro, **no funcionan** `deploy.yml` ni **Verificar parches Fase 1-3** (`verify-patches.yml`).
+Sin estos cuatro, **no funcionan** **04 · Deploy** ni **05 · Verificar parches** (`deploy.yml` / `verify-patches.yml`).
 
 ## 2. Oleadas Copilot (orden seguro)
 
-1. **Orchestrate Copilot waves** — primero `dry_run_merge: true`, revisar el log, luego ejecución real con `merge_wave1` + `seed_wave2` si aplica.
-2. **Seed Copilot task queue** — colas en [`.github/agent-queue/`](../../.github/agent-queue/) (`tasks.json`, `tasks-wave2.json`, `tasks-wave3.json`). El workflow usa el prefijo `.github/agent-queue/`.
-3. **Seed homepage Fix issues** — una vez, si faltan los 7 issues del fixplan.
+1. **10 · Orquestar oleadas** — primero `dry_run_merge: true`, revisar el log, luego ejecución real con `merge_wave1` + `seed_wave2` si aplica.
+2. **08 · Sembrar cola Copilot** — colas en [`.github/agent-queue/`](../../.github/agent-queue/) (`tasks.json`, `tasks-wave2.json`, `tasks-wave3.json`).
+3. **09 · Sembrar issues homepage** — una vez, si faltan los 7 issues del fixplan.
 4. **Prompt correcto por número de issue:** oleada 1 (#17–#33) vs oleada 3 (#54–#68) según `copilot-bulk-assign.md`.
 
 ## 3. PRs y retrabajo (cómo no dar vueltas)
