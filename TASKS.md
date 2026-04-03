@@ -125,6 +125,12 @@ Cuando vuelvas: **Actions → [Orchestrate Copilot waves](https://github.com/Gan
 - `memory/content/homepage-copy-2026-04.md` — bloques listos para pegar en Elementor
 - `memory/content/elementor-home-classes.md` — clases CSS, tabla por sección, auditoría breve
 
+### Oleada 3 — marca/UX/comercial
+
+- **Brief maestro:** [`memory/research/gano-wave3-brand-ux-master-brief.md`](memory/research/gano-wave3-brand-ux-master-brief.md)
+- **Cola de tareas:** [`agent-queue/tasks-wave3.json`](agent-queue/tasks-wave3.json)
+- Activar: Actions → **Seed Copilot task queue** → `queue_file: tasks-wave3.json` → `scope: all` (o por ámbito: `theme` / `content_seo` / `commerce` / `docs` / `coordination`). Luego asignar Copilot en los issues generados.
+
 ### Coordinación operativa (prioridad paralela)
 
 - **Guía canónica:** [`.github/DEV-COORDINATION.md`](.github/DEV-COORDINATION.md) — qué vive en Git vs servidor vs local; cómo mantener a GitHub “enterado” sin filtrar secretos.
