@@ -65,15 +65,41 @@ Tags:         hosting, digital-services, colombia
     --gano-font-mono:    'JetBrains Mono', 'Fira Code', monospace;
 
     /* Tamaños de fuente */
-    --gano-fs-xs:   0.75rem;    /* 12px */
-    --gano-fs-sm:   0.875rem;   /* 14px */
-    --gano-fs-base: 1rem;       /* 16px */
-    --gano-fs-lg:   1.125rem;   /* 18px */
-    --gano-fs-xl:   1.25rem;    /* 20px */
-    --gano-fs-2xl:  1.5rem;     /* 24px */
-    --gano-fs-3xl:  1.875rem;   /* 30px */
-    --gano-fs-4xl:  2.25rem;    /* 36px */
-    --gano-fs-5xl:  3rem;       /* 48px */
+    --gano-fs-xs:      0.75rem;              /* 12px — meta, badges */
+    --gano-fs-sm:      0.875rem;             /* 14px — small / label */
+    --gano-fs-base:    1rem;                 /* 16px — body */
+    --gano-fs-lg:      1.125rem;             /* 18px — lead text */
+    --gano-fs-xl:      1.25rem;              /* 20px — H4 */
+    --gano-fs-2xl:     1.5rem;               /* 24px — H3 mín */
+    --gano-fs-3xl:     1.875rem;             /* 30px — H3 máx / H2 mín */
+    --gano-fs-4xl:     2.25rem;              /* 36px — H2 */
+    --gano-fs-5xl:     3rem;                 /* 48px — H1 */
+    --gano-fs-display: clamp(3rem, 6vw, 4.5rem); /* 48–72px — hero display */
+
+    /* Line-heights */
+    --gano-lh-tight:   1.1;     /* titulares grandes, display */
+    --gano-lh-snug:    1.25;    /* H2, H3 */
+    --gano-lh-base:    1.5;     /* H4, labels, small */
+    --gano-lh-relaxed: 1.65;    /* body — legibilidad óptima */
+    --gano-lh-loose:   1.85;    /* texto muy largo, FAQ */
+
+    /* Font-weights */
+    --gano-fw-normal:    400;
+    --gano-fw-medium:    500;
+    --gano-fw-semibold:  600;
+    --gano-fw-bold:      700;
+    --gano-fw-extrabold: 800;   /* display / hero */
+
+    /* Letter-spacing */
+    --gano-ls-tight:  -0.03em;  /* titulares grandes */
+    --gano-ls-normal:  0em;
+    --gano-ls-wide:    0.04em;  /* badges, etiquetas */
+    --gano-ls-wider:   0.08em;  /* all-caps, overline */
+
+    /* Oro — disponible globalmente (ver también Phase 6) */
+    --gano-gold:      #D4AF37;            /* Acento SOTA — ratio ≥ 7:1 sobre dark-bg */
+    --gano-gold-soft: rgba(212, 175, 55, 0.10); /* Fondo sutil tarjetas premium */
+    --gano-gold-glow: rgba(212, 175, 55, 0.20); /* Sombra hover cards premium */
 
     /* Espaciado */
     --gano-radius-sm:  4px;
@@ -138,6 +164,28 @@ code, pre, kbd {
     border-radius: var(--gano-radius-sm);
     padding: 0.15em 0.4em;
     font-size: 0.9em;
+}
+
+/* ============================================================
+   ACCESIBILIDAD — FOCUS VISIBLE
+   Anillo de foco dorado sobre fondos oscuros (WCAG 2.4.7 / 2.4.11).
+   Ratio: --gano-gold (#D4AF37) sobre --gano-dark-bg (#0F1115) ≈ 7.5:1.
+   ============================================================ */
+:focus-visible {
+    outline: 3px solid var(--gano-gold);
+    outline-offset: 3px;
+    border-radius: var(--gano-radius-sm);
+}
+
+/* Suprime el outline de :focus por defecto solo donde :focus-visible existe */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Sobre fondos claros: anillo azul corporativo (contraste AA sobre blanco) */
+.gano-bg-light :focus-visible,
+.elementor-section.bg-light :focus-visible {
+    outline-color: var(--gano-blue);
 }
 
 /* ============================================================
@@ -860,7 +908,7 @@ body.woocommerce-checkout #customer_details {
    ========================================================================== */
 
 :root {
-    /* Variables específicas del bloque shop (los tokens de oro vienen del :root global) */
+    /* Variables shop; tokens de oro en :root global */
     --gano-dark-bg: #0f1115;
     --gano-glass: rgba(255, 255, 255, 0.05);
     --gano-glass-border: rgba(255, 255, 255, 0.1);
@@ -1352,10 +1400,55 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
 }
 
 /* ============================================================
+   ESCALA TIPOGRÁFICA — CLASES UTILITARIAS (oleada 3)
+   Usar en Elementor → Avanzado → Clases CSS.
+   Documentadas en memory/content/visual-tokens-wave3.md.
+   ============================================================ */
+
+/* Display: hero principal, secciones de impacto máximo */
+.gano-text-display {
+    font-family: var(--gano-font-heading);
+    font-size: var(--gano-fs-display);
+    line-height: var(--gano-lh-tight);
+    font-weight: var(--gano-fw-extrabold);
+    letter-spacing: var(--gano-ls-tight);
+}
+
+/* H1 semántico para widgets Heading de Elementor */
+.gano-text-h1 {
+    font-family: var(--gano-font-heading);
+    font-size: clamp(var(--gano-fs-3xl), 5vw, var(--gano-fs-5xl));
+    line-height: var(--gano-lh-tight);
+    font-weight: var(--gano-fw-bold);
+    letter-spacing: var(--gano-ls-tight);
+}
+
+/* Acento dorado — solo texto corto de énfasis; no usar para párrafos */
+.gano-text-gold {
+    color: var(--gano-gold);
+}
+
+/* Sección oscura tipo SOTA/Bastión */
+.gano-dark-section {
+    background: var(--gano-dark-bg, #0F1115);
+    color: #FFFFFF;
+}
+
+/* Asegurar que los titulares dentro de secciones oscuras usen dorado como acento */
+.gano-dark-section h1,
+.gano-dark-section h2,
+.gano-dark-section h3 {
+    color: #FFFFFF;
+}
+
+.gano-dark-section .gano-text-gold {
+    color: var(--gano-gold);
+}
+
+/* ============================================================
    ACCESIBILIDAD — WCAG 2.1 AA
    Focus-visible, skip link y contraste de enlace.
    Compatible con CSP del MU plugin gano-security.php
-   (no se usan estilos inline; todo va en esta hoja de estilos).
    ============================================================ */
 
 /* Skip-to-content: visible solo al enfocar con teclado (WCAG 2.4.1) */
@@ -1416,8 +1509,7 @@ select:focus-visible {
     box-shadow: 0 0 0 3px rgba(27, 79, 216, 0.18);
 }
 
-/* Contraste de enlaces: azul #1B4FD8 sobre blanco = 10.2:1 ✓ WCAG AA
-   En contextos oscuros se usa --gano-blue-light para garantizar contraste */
+/* Contraste de enlaces */
 .gano-bg-dark a,
 .elementor-section.e-con--dark a {
     color: var(--gano-blue-light, #E8EEFB);
@@ -1428,7 +1520,6 @@ select:focus-visible {
     outline-color: var(--gano-gold, #D4AF37);
 }
 
-/* Ancla receptora del skip link: queda invisible pero recibe el foco (WCAG 2.4.1) */
 #gano-main-content {
     outline: none;
 }
