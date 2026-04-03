@@ -1,5 +1,5 @@
 # Falla el CI si tasks.json / tasks-wave2.json están mal formados o rompen deduplicación.
-name: Validate agent queue JSON
+name: "07 · Agentes · Validar cola JSON"
 
 on:
   push:
