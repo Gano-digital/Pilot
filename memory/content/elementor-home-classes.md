@@ -1,7 +1,8 @@
 # Elementor homepage — clases CSS Gano (child theme)
 
 **Versión tema:** `gano-child` 1.0.1+  
-**Copy:** [`homepage-copy-2026-04.md`](homepage-copy-2026-04.md)
+**Copy:** [`homepage-copy-2026-04.md`](homepage-copy-2026-04.md)  
+**Arquitectura completa:** [`elementor-architecture-wave3.md`](elementor-architecture-wave3.md)
 
 En Elementor: selecciona el **contenedor / sección / columna** → **Avanzado** → **Clases CSS** (añade una o varias separadas por espacio).
 
