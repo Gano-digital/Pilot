@@ -424,7 +424,32 @@ function gano_resource_hints(): void {
 }
 
 // =============================================================================
-// 6. OPEN GRAPH + TWITTER CARD FALLBACK
+// 6. GOOGLE SEARCH CONSOLE — Verification meta tag
+//    Configura el código en: wp-admin → Ajustes → Gano SEO → Código GSC
+// =============================================================================
+
+/**
+ * Sanitiza el token de verificación de Google Search Console.
+ * Los tokens GSC son cadenas alfanuméricas (base64url sin padding).
+ *
+ * @param string $value Token crudo ingresado por el usuario.
+ * @return string Token limpio (solo [A-Za-z0-9]).
+ */
+function gano_sanitize_gsc_token( string $value ): string {
+    return (string) preg_replace( '/[^A-Za-z0-9]/', '', $value );
+}
+
+add_action( 'wp_head', 'gano_gsc_verification_meta', 2 );
+function gano_gsc_verification_meta(): void {
+    $code = gano_sanitize_gsc_token( get_option( 'gano_seo_gsc_verification', '' ) );
+    if ( empty( $code ) ) {
+        return;
+    }
+    echo '<meta name="google-site-verification" content="' . esc_attr( $code ) . '">' . "\n";
+}
+
+// =============================================================================
+// 7. OPEN GRAPH + TWITTER CARD FALLBACK
 //    Solo emite si Rank Math NO está activo (para no duplicar meta tags).
 // =============================================================================
 
@@ -458,7 +483,7 @@ function gano_og_fallback(): void {
 }
 
 // =============================================================================
-// 7. PÁGINA DE AJUSTES SEO en wp-admin (para que Diego configure los datos)
+// 8. PÁGINA DE AJUSTES SEO en wp-admin (para que Diego configure los datos)
 // =============================================================================
 
 add_action( 'admin_menu', 'gano_seo_settings_menu' );
@@ -486,11 +511,15 @@ function gano_seo_register_settings(): void {
         'gano_seo_region'     => 'Departamento',
         'gano_seo_postal'     => 'Código postal',
         'gano_seo_logo'       => 'URL del logo (ruta completa)',
-        'gano_seo_hero_image' => 'URL del hero image (para preload LCP)',
-        'gano_seo_founded'    => 'Año de fundación',
+        'gano_seo_hero_image'        => 'URL del hero image (para preload LCP)',
+        'gano_seo_founded'           => 'Año de fundación',
+        'gano_seo_gsc_verification'  => 'Google Search Console — código de verificación',
     );
     foreach ( $fields as $option_name => $label ) {
-        register_setting( 'gano_seo_settings', $option_name, array( 'sanitize_callback' => 'sanitize_text_field' ) );
+        $callback = ( 'gano_seo_gsc_verification' === $option_name )
+            ? 'gano_sanitize_gsc_token'
+            : 'sanitize_text_field';
+        register_setting( 'gano_seo_settings', $option_name, array( 'sanitize_callback' => $callback ) );
     }
 }
 
@@ -504,9 +533,13 @@ function gano_seo_settings_page(): void {
             'gano_seo_business_type', 'gano_seo_legal_name', 'gano_seo_nit', 'gano_seo_phone', 'gano_seo_whatsapp',
             'gano_seo_email', 'gano_seo_street', 'gano_seo_city', 'gano_seo_region',
             'gano_seo_postal', 'gano_seo_logo', 'gano_seo_hero_image', 'gano_seo_founded',
+            'gano_seo_gsc_verification',
         );
         foreach ( $fields as $f ) {
-            update_option( $f, sanitize_text_field( $_POST[ $f ] ?? '' ) );
+            $value = $f === 'gano_seo_gsc_verification'
+                ? gano_sanitize_gsc_token( $_POST[ $f ] ?? '' )
+                : sanitize_text_field( $_POST[ $f ] ?? '' );
+            update_option( $f, $value );
         }
         echo '<div class="notice notice-success"><p>¡Ajustes guardados!</p></div>';
     }
@@ -572,6 +605,20 @@ function gano_seo_settings_page(): void {
                     </td>
                 </tr>
                 <?php endforeach; ?>
+                <tr>
+                    <th><label for="gano_seo_gsc_verification">Google Search Console</label></th>
+                    <td>
+                        <input
+                            type="text"
+                            id="gano_seo_gsc_verification"
+                            name="gano_seo_gsc_verification"
+                            value="<?php echo esc_attr( get_option( 'gano_seo_gsc_verification', '' ) ); ?>"
+                            placeholder="Token de verificación (43–44 caracteres, p.ej. AbCdEfGhIj1234567890AbCdEfGhIj1234567890abc)"
+                            class="regular-text"
+                        >
+                        <p class="description">Solo el token (sin etiqueta HTML). Se emite como <code>&lt;meta name="google-site-verification"&gt;</code> en el <code>&lt;head&gt;</code>. Obtenerlo en: Search Console → Añadir propiedad → Etiqueta HTML.</p>
+                    </td>
+                </tr>
             </table>
             <?php submit_button( 'Guardar ajustes SEO', 'primary', 'submit' ); ?>
         </form>
