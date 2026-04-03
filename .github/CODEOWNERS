@@ -1,0 +1,24 @@
+# CODEOWNERS — Gano Digital
+# Todos los PRs (incluidos los de Copilot) requieren revision de Diego
+
+# Default: Diego revisa todo
+* @Ouroboros1984
+
+# Seguridad — revision obligatoria
+wp-content/mu-plugins/gano-security.php @Ouroboros1984
+wp-content/mu-plugins/gano-seo.php @Ouroboros1984
+.github/workflows/ @Ouroboros1984
+.github/copilot-instructions.md @Ouroboros1984
+.github/agents/ @Ouroboros1984
+AGENTS.md @Ouroboros1984
+CLAUDE.md @Ouroboros1984
+
+# Pagos — revision critica
+wp-content/plugins/gano-wompi-integration/ @Ouroboros1984
+
+# Tema — base visual
+wp-content/themes/gano-child/ @Ouroboros1984
+
+# Config de agentes
+.cursor/rules/ @Ouroboros1984
+.gano-skills/ @Ouroboros1984
