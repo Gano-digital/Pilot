@@ -1,4 +1,5 @@
-name: 🚀 Deploy Gano Digital → Production
+# UI Actions: 04 · Deploy · Producción (rsync)
+name: "04 · Deploy · Producción (rsync)"
 
 on:
   push:

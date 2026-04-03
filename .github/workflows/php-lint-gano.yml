@@ -1,5 +1,5 @@
 # Sintaxis PHP en código propio (tema child, MU-plugins, plugins gano-*).
-name: PHP lint (Gano custom code)
+name: "01 · CI · Sintaxis PHP (Gano)"
 
 on:
   push:
