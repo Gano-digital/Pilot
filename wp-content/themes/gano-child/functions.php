@@ -17,6 +17,9 @@ function gano_child_enqueue_styles() {
     wp_enqueue_style( 'hello-elementor-parent-style', get_template_directory_uri() . '/style.css' );
     wp_enqueue_style( 'gano-child-style', get_stylesheet_uri(), array( 'hello-elementor-parent-style' ), wp_get_theme()->get( 'Version' ) );
 
+    // Accesibilidad WCAG 2.1 AA — :focus-visible, skip-link, sr-only
+    wp_enqueue_style( 'gano-a11y', get_stylesheet_directory_uri() . '/css/gano-a11y.css', array( 'gano-child-style' ), '1.0.0' );
+
     // Chat IA — se carga con nonce CSRF (V-05 Fix)
     wp_enqueue_style( 'gano-chat-css', get_stylesheet_directory_uri() . '/css/gano-chat.css', array(), '1.2.0' );
     wp_enqueue_script( 'gano-chat-js', get_stylesheet_directory_uri() . '/js/gano-chat.js', array(), '1.4.0', true );
@@ -78,7 +81,23 @@ add_action( 'wp_footer', function() {
 } );
 
 // =============================================================================
-// 1b. MENÚS — ubicación 'primary' (Elementor / muchos kits); el padre solo registra 'main'
+// 1b. ACCESIBILIDAD — Skip-to-content link (WCAG 2.1 — Criterio 2.4.1)
+// =============================================================================
+
+/**
+ * Inyecta el enlace "Saltar al contenido" al inicio del <body>.
+ * Compatible con Elementor: el hook wp_body_open es el estándar WP 5.2+.
+ * Requiere que el template del tema llame a wp_body_open() tras <body>.
+ */
+add_action( 'wp_body_open', 'gano_skip_link' );
+function gano_skip_link(): void {
+    echo '<a class="gano-skip-link" href="#content">'
+        . esc_html__( 'Saltar al contenido', 'gano-child' )
+        . '</a>';
+}
+
+// =============================================================================
+// 1c. MENÚS — ubicación 'primary' (Elementor / muchos kits); el padre solo registra 'main'
 // =============================================================================
 
 add_action( 'after_setup_theme', 'gano_child_register_nav_menus', 20 );

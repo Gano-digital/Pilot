@@ -1,0 +1,117 @@
+/* ==========================================================================
+   ACCESIBILIDAD — GANO DIGITAL
+   Utilidades: :focus-visible, skip-to-content, screen-reader text.
+   WCAG 2.1 AA — Wave 3 — Abril 2026
+   ========================================================================== */
+
+/* --- Enlace "saltar al contenido" (skip-to-content) ---------------------- */
+/* Oculto por defecto; se revela al recibir :focus para usuarios de teclado. */
+.gano-skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 99999;
+    padding: 0.75rem 1.5rem;
+    background: var(--gano-blue);
+    color: var(--gano-white) !important;
+    font-family: var(--gano-font-heading);
+    font-weight: 600;
+    font-size: var(--gano-fs-sm);
+    border-radius: var(--gano-radius-md);
+    text-decoration: none !important;
+    transition: top 0.15s ease;
+    outline: none;
+}
+.gano-skip-link:focus,
+.gano-skip-link:focus-visible {
+    top: 1rem;
+    outline: 3px solid var(--gano-white);
+    outline-offset: 3px;
+}
+
+/* --- :focus-visible global ----------------------------------------------- */
+/* Muestra contorno SOLO para navegación por teclado (no en clics de ratón).  */
+*:focus {
+    outline: none; /* Quita el outline por defecto en todos los browsers */
+}
+*:focus-visible {
+    outline: 3px solid var(--gano-blue);
+    outline-offset: 3px;
+    border-radius: 3px;
+}
+
+/* Campos de formulario: el contorno se reemplaza por sombra + borde de color */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: none;
+    border-color: var(--gano-blue) !important;
+    box-shadow: 0 0 0 3px rgba(27, 79, 216, 0.25) !important;
+}
+
+/* Botones del sistema de diseño */
+.btn-primary:focus-visible,
+.gano-btn:focus-visible,
+.btn-cta:focus-visible,
+.gano-btn-cta:focus-visible,
+.btn-outline:focus-visible,
+.elementor-button:focus-visible {
+    outline: 3px solid var(--gano-blue);
+    outline-offset: 4px;
+    border-radius: var(--gano-radius-md);
+}
+
+/* Elementos interactivos de Elementor */
+.elementor-nav-menu a:focus-visible,
+.elementor-widget-image-box a:focus-visible,
+.elementor-widget-button a:focus-visible,
+.elementor-icon-list-item a:focus-visible {
+    outline: 3px solid var(--gano-blue);
+    outline-offset: 3px;
+    border-radius: 3px;
+}
+
+/* --- Texto solo para lectores de pantalla (.gano-sr-only) ---------------- */
+/* Uso: <span class="gano-sr-only">Texto para AT</span>                       */
+.gano-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+/* Variante que aparece en foco (para skip links adicionales) */
+.gano-sr-only-focusable:focus,
+.gano-sr-only-focusable:focus-within {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+}
+
+/* --- Modo de alto contraste forzado (Windows High Contrast / forced-colors) */
+@media (forced-colors: active) {
+    *:focus-visible {
+        outline: 3px solid ButtonText;
+        outline-offset: 3px;
+    }
+    .gano-skip-link {
+        background: ButtonFace;
+        color: ButtonText !important;
+        border: 2px solid ButtonText;
+    }
+}
+
+/* --- Deshabilitar animaciones para prefers-reduced-motion ---------------- */
+/* (refuerza la regla ya presente en style.css) */
+@media (prefers-reduced-motion: reduce) {
+    .gano-skip-link {
+        transition: none;
+    }
+}
