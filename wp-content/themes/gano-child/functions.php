@@ -189,20 +189,47 @@ add_action( 'wp_head', function() {
     // echo '<link rel="preload" href="' . esc_url( $font_url ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
 
     // fetchpriority en img hero via JavaScript inline mínimo (Elementor no expone PHP hook para esto)
-    // Solo se aplica en homepage para no afectar otras páginas
+    // Solo se aplica en homepage para no afectar otras páginas ni el admin
     if ( is_front_page() ) {
         ?>
         <script>
-        // Gano: LCP Optimization — marcar la primera imagen visible como fetchpriority="high"
-        // Ejecuta inmediatamente antes de que el parser llegue al body
+        // Gano: LCP Optimization — marcar la primera imagen del hero como fetchpriority="high"
+        // Compatible con Elementor Containers (e-con) y secciones clásicas (elementor-section)
         (function(){
-            var obs = new MutationObserver(function(mutations, o){
-                var img = document.querySelector('.elementor-section:first-of-type img, .e-con img:first-of-type, section img:first-of-type');
-                if(img){ img.fetchPriority = 'high'; img.loading = 'eager'; o.disconnect(); }
+            // Selectores en orden de especificidad: Containers primero, luego classic, luego fallback
+            var HERO_SEL = [
+                '.e-con .elementor-widget-image img',
+                '.e-con-full .elementor-widget-image img',
+                '.elementor-top-section .elementor-widget-image img',
+                '.elementor-section .elementor-widget-image img',
+                '.elementor-widget-image img'
+            ].join(',');
+
+            var found = false;
+            function markHero() {
+                var img = document.querySelector(HERO_SEL);
+                if (img) {
+                    img.setAttribute('fetchpriority', 'high');
+                    img.loading = 'eager';
+                    found = true;
+                    return true;
+                }
+                return false;
+            }
+
+            // Intentar inmediatamente (imagen ya en DOM en carga parcial del parser)
+            if (markHero()) return;
+
+            var obs = new MutationObserver(function(_, o) {
+                if (markHero()) { o.disconnect(); }
             });
             obs.observe(document.documentElement, {childList:true, subtree:true});
-            // Timeout de seguridad
-            setTimeout(function(){ obs.disconnect(); }, 3000);
+
+            // Desconectar al terminar de parsear el DOM o a los 2500ms (lo que ocurra primero)
+            // Solo invocar markHero() si el observer nunca encontró la imagen
+            function cleanup() { obs.disconnect(); if (!found) { markHero(); } }
+            document.addEventListener('DOMContentLoaded', cleanup, {once:true});
+            setTimeout(cleanup, 2500);
         })();
         </script>
         <?php
