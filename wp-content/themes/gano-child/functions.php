@@ -90,6 +90,36 @@ function gano_child_register_nav_menus(): void {
     );
 }
 
+/**
+ * Fallback: si 'primary' no tiene menú asignado, copia desde 'main' o usa
+ * el primer menú disponible. Cubre instalaciones donde gano-phase3-content
+ * fue activado antes de que esta lógica existiera.
+ * get_theme_mod() usa el caché de opciones de WP, así que el early-return
+ * (caso ya configurado) no implica consulta a la BD.
+ */
+add_action( 'init', 'gano_child_assign_primary_menu_fallback' );
+function gano_child_assign_primary_menu_fallback(): void {
+    $locations = get_theme_mod( 'nav_menu_locations', [] );
+
+    if ( ! empty( $locations['primary'] ) ) {
+        return; // Ya está configurado — no hacer nada.
+    }
+
+    // Copiar desde 'main' si existe.
+    if ( ! empty( $locations['main'] ) ) {
+        $locations['primary'] = $locations['main'];
+        set_theme_mod( 'nav_menu_locations', $locations );
+        return;
+    }
+
+    // Último recurso: usar el primer menú registrado.
+    $menus = wp_get_nav_menus();
+    if ( ! empty( $menus ) ) {
+        $locations['primary'] = $menus[0]->term_id;
+        set_theme_mod( 'nav_menu_locations', $locations );
+    }
+}
+
 // =============================================================================
 // 2. CORE WEB VITALS & PERFORMANCE — Fase 3
 // =============================================================================
