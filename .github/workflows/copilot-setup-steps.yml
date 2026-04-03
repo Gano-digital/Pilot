@@ -1,0 +1,59 @@
+name: "Copilot Setup Steps"
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mysql, xml, curl, mbstring, zip, gd, intl
+          tools: composer, wp-cli
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install system tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq jq
+
+      - name: Verify environment
+        run: |
+          echo "PHP version:"
+          php -v
+          echo "WP-CLI version:"
+          wp --version || echo "wp-cli not in PATH"
+          echo "Node version:"
+          node -v
+          echo "jq version:"
+          jq --version
+
+      - name: PHP lint on Gano custom code
+        run: |
+          echo "Linting Gano custom PHP files..."
+          find wp-content/themes/gano-child -name "*.php" -exec php -l {} \; 2>&1 | grep -v "No syntax errors"
+          find wp-content/plugins/gano-* -name "*.php" -exec php -l {} \; 2>&1 | grep -v "No syntax errors"
+          find wp-content/mu-plugins -name "gano-*.php" -exec php -l {} \; 2>&1 | grep -v "No syntax errors"
+          echo "PHP lint complete."
