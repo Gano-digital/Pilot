@@ -133,6 +133,22 @@ def build_pdf() -> Path:
     pdf.add_font("GanoReport", "I", oblique)
 
     today = date.today()
+    meses_es = (
+        "",
+        "enero",
+        "febrero",
+        "marzo",
+        "abril",
+        "mayo",
+        "junio",
+        "julio",
+        "agosto",
+        "septiembre",
+        "octubre",
+        "noviembre",
+        "diciembre",
+    )
+    fecha_es = f"{today.day} de {meses_es[today.month]} de {today.year}"
 
     # — Portada (multi_cell + align C deja x al margen derecho; resetear x cada vez)
     pdf.add_page()
@@ -156,7 +172,7 @@ def build_pdf() -> Path:
     pdf.ln(20)
     pdf.set_font("GanoReport", "", 10)
     pdf.set_text_color(0, 0, 0)
-    cover_line(6, f"Fecha del reporte: {today.strftime('%d de abril de %Y')}")
+    cover_line(6, f"Fecha del reporte: {fecha_es}")
     cover_line(6, "Alcance: proyecto gano.digital (WordPress, marca blanca Reseller GoDaddy)")
     pdf.ln(30)
     pdf.set_font("GanoReport", "", 9)
@@ -164,7 +180,7 @@ def build_pdf() -> Path:
     cover_line(
         5,
         "Documento elaborado a partir de TASKS.md, memoria de proyecto (memory/projects/) "
-        "y roadmap acordado. Las cifras de GitHub reflejan el estado documentado en abril de 2026.",
+        "y roadmap acordado. Texto alineado a consolidación de abril 2026 (oleadas GitHub + CI).",
     )
 
     # — Contenido
@@ -222,9 +238,20 @@ def build_pdf() -> Path:
     pdf.ln(3)
 
     pdf.section_title("6. En desarrollo ahora (abril 2026)")
-    pdf.bullet("Oleada 1 — issues #17–#33: homepage y fixplan técnico; numerosos PRs abiertos (muchos borrador) a la espera de revisión y merge.")
-    pdf.bullet("Oleada 3 — issues #54–#68: marca, UX, comercial y activos (15 tareas) alineadas con brief maestro wave3 y tasks-wave3.json.")
-    pdf.bullet("Workflows: Orchestrate Copilot waves (merge + seed), Seed homepage fixplan, validación JSON de colas — ejecución según permisos y dry-run.")
+    pdf.bullet(
+        "Oleadas 4 e infra (Copilot): entregas markdown fusionadas en main (plan contenido, DNS/HTTPS, runbooks). "
+        "Pendiente humano: aplicar en Elementor/wp-admin y ejecutar cambios DNS en GoDaddy según TASKS.md."
+    )
+    pdf.bullet(
+        "Cola API (investigación): informe SOTA Mercado Libre + GoDaddy y tasks-api-integrations-research.json — "
+        "sembrar issues con workflow 08 cuando se quiera profundizar (sin credenciales en repo)."
+    )
+    pdf.bullet(
+        "CI GitHub: se corrigió el labeler (workflow 03) y el PHP lint del workflow 11; ver memory/ops/github-actions-audit-2026-04.md."
+    )
+    pdf.bullet(
+        "Issues históricos oleada 1 (#17–#33) y oleada 3 (#54–#68): revisar cierre en GitHub si el trabajo ya está en main."
+    )
     pdf.bullet("Servidor: despliegue de child theme y MU plugins; menú primary; sustitución de Lorem según homepage-copy y clases Elementor documentadas.")
     pdf.ln(3)
 
@@ -241,7 +268,7 @@ def build_pdf() -> Path:
         ("Alta", "Sustituir Lorem y placeholders; retirar testimonios o métricas no verificables."),
         ("Alta", "Depurar catálogo RCC; mapear CTAs del mockup al carrito Reseller; prueba de checkout."),
         ("Media", "2FA en wp-admin; ejecutar y archivar plugins de fase cuando el sitio refleje el contenido."),
-        ("Operación", "Revisar y fusionar PRs oleada 1; usar prompts Copilot correctos por rango de issues; higiene de tokens/remotes."),
+        ("Operación", "Sembrar cola API (workflow 08) si aplica; higiene de tokens/remotes; cerrar issues GitHub obsoletos."),
     ]:
         pdf.table_row(pr, tx)
 
@@ -263,21 +290,22 @@ def build_pdf() -> Path:
 
     pdf.section_title("10. Indicadores GitHub (referencia abril 2026)")
     pdf.body_text(
-        "Aproximadamente 17 issues oleada 1 abiertos; ~17 PRs abiertos (muchos draft); 15 issues oleada 3 (#54–#68). "
-        "Actualizar estas cifras tras cada ciclo de merge y cierre."
+        "Tras consolidación 2026-04-03: gran parte de PRs oleada 4 e infra fusionados en main; cola de PRs abierta "
+        "debería estar baja. Seis archivos JSON de cola validados en CI (incl. tasks-api-integrations-research.json). "
+        "Actualizar cifras en GitHub tras cada ciclo."
     )
-    pdf.bar_h("Normalización: oleada 1 pendiente de cierre", 100)
-    pdf.bar_h("Oleada 3: progreso relativo del lote (inicio de ciclo)", 20)
+    pdf.bar_h("Repo: documentación oleada 4 + infra en main", 95)
+    pdf.bar_h("Producción: Elementor + DNS + deploy al día con Git", 40)
     pdf.body_text(
-        "La segunda barra es ilustrativa (20 %) para señalar que la oleada 3 está en fase inicial de ejecución en el equipo."
+        "La segunda barra refleja la brecha típica entre código/docs en Git y sitio en vivo."
     )
 
     pdf.section_title("11. Próximos pasos recomendados (ventana ~30 días)")
     pdf.bullet("1) Despliegue a staging o producción con checklist de archivos críticos y smoke test.")
-    pdf.bullet("2) Sesión dedicada de revisión de PRs (criterios en MERGE-PLAYBOOK) para destrabar oleada 1.")
-    pdf.bullet("3) Completar acciones de panel: SEO, menús, copy real, eliminación de plugin de riesgo.")
-    pdf.bullet("4) Una prueba punta a punta de compra desde la vitrina hasta confirmación en flujo Reseller.")
-    pdf.bullet("5) Mantener prompts y asignaciones Copilot alineados con el rango de issues (oleada 1 vs 3).")
+    pdf.bullet("2) Aplicar en servidor/homepage lo documentado en memory/content/ (menú, copy, pilares) según TASKS.md.")
+    pdf.bullet("3) Completar acciones de panel: SEO, Rank Math, GSC; eliminación de wp-file-manager en producción si aplica.")
+    pdf.bullet("4) Prueba punta a punta de compra desde la vitrina hasta confirmación en flujo Reseller (RCC).")
+    pdf.bullet("5) Opcional: workflow 08 con cola API + Copilot para anexos de investigación ML/GoDaddy.")
 
     pdf.ln(8)
     pdf.set_font("GanoReport", "I", 8)
@@ -285,8 +313,8 @@ def build_pdf() -> Path:
     pdf.multi_cell(
         0,
         4,
-        "Referencias: TASKS.md; memory/projects/gano-digital.md; .github/DEV-COORDINATION.md; "
-        ".github/MERGE-PLAYBOOK.md; memory/research/gano-wave3-brand-ux-master-brief.md. "
+        "Referencias: TASKS.md; memory/sessions/2026-04-02-progreso-consolidado.md; memory/projects/gano-digital.md; "
+        ".github/DEV-COORDINATION.md; .github/MERGE-PLAYBOOK.md; memory/ops/github-actions-audit-2026-04.md. "
         "Regenerar PDF: python scripts/generate_board_report_pdf.py",
     )
 
