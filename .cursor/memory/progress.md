@@ -1,0 +1,45 @@
+# Progress Tracker
+
+## 2026-04-02 — Setup entorno y gobernanza (cerrado)
+
+### Completado
+
+- [x] VS Code instalado y configurado (extensiones según sesión)
+- [x] Cursor: **9** rules `.mdc` (contexto, boundaries, security, error handling, copilot oversight, memory protocol, PHP/WP, CSS/JS, git workflow)
+- [x] Cursor hooks configurados
+- [x] Cursor memory bank inicializado (`projectBrief`, `techContext`, `activeContext`, `progress`, `deferredItems`)
+- [x] `AGENTS.md` (estándar cross-tool)
+- [x] Workflows / repo: `copilot-setup-steps.yml`, `CODEOWNERS` (según sesión de setup)
+- [x] Documentación Copilot repo: `copilot-instructions.md`, cola `.github/agent-queue/`, playbooks merge/coordinación
+
+### Cierre explícito
+
+- [x] **“Setup Cursor rules + memory protocol”** — considerado **completado**; el foco del equipo pasa a **entrega en producción + triage GitHub**.
+
+---
+
+## 2026-04-02 — Post-actualización (memory bank alineado)
+
+### Estado operativo (referencia `TASKS.md`)
+
+- Código **Fases 1–3** sólido en repo; pendiente **deploy** y tareas de **panel/servidor**.
+- GitHub: cola de agentes **~32 issues** (#17–33, #54–68); **~35 PRs abiertos**, mayoría **draft** — siguiente esfuerzo: **revisión humana + CI + merge**.
+
+### En progreso
+
+- [ ] SSH/SFTP GoDaddy (según lo que permita el plan)
+- [ ] Revisión y merge de PRs Copilot
+- [ ] Deploy F1–3 + eliminación `wp-file-manager` + SEO/GSC/Rank Math
+- [ ] Homepage Elementor + Fase 4 Reseller
+
+### Backlog
+
+- [ ] Migrar / alinear contenido staging si aplica
+- [ ] MCPs adicionales (Figma, Dataplex, etc.) si se priorizan
+- [ ] Rotación de tokens y limpieza de remotes con credenciales (cuando toque despliegue masivo)
+
+---
+
+## Cómo usar este archivo
+
+Tras hitos importantes, añadir una sección con fecha o actualizar la sección **Post-actualización** para que nuevas sesiones de Cursor lean el estado en `.cursor/memory/activeContext.md` y aquí.
