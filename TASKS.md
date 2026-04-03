@@ -3,6 +3,8 @@ _Última actualización: Abril 2026_
 
 ## REGRESAR AQUÍ (pendiente tu acción en GitHub)
 
+**Nota personal (checklist completa):** [`memory/notes/nota-diego-recomendaciones-2026-04.md`](memory/notes/nota-diego-recomendaciones-2026-04.md)
+
 Cuando vuelvas: **Actions → [Orchestrate Copilot waves](https://github.com/Gano-digital/Pilot/actions/workflows/orchestrate-copilot-waves.yml)** → primero `dry_run_merge: true`, luego ejecución real con `merge_wave1` + `seed_wave2`. Detalle: [`.github/MERGE-PLAYBOOK.md`](.github/MERGE-PLAYBOOK.md). Antes de fusionar PRs de agentes: [`.github/AGENT-REVIEW-CHECKLIST.md`](.github/AGENT-REVIEW-CHECKLIST.md) + *Definition of Done* en [`.github/prompts/copilot-bulk-assign.md`](.github/prompts/copilot-bulk-assign.md).
 
 ---
@@ -96,8 +98,8 @@ Cuando vuelvas: **Actions → [Orchestrate Copilot waves](https://github.com/Gan
 ### GitHub / automatización
 
 - [x] **Auditoría oleada Copilot (2026-04):** cola de agentes **~32 issues** abiertos (#17–#33 + #54–#68); **~35 PRs** abiertos en GitHub — **todos en borrador** a fecha de revisión: los agentes **sí entregan ramas**, falta **marcar listos, CI verde, revisión humana, merge y cierre de issues**. Ver [`.github/MERGE-PLAYBOOK.md`](.github/MERGE-PLAYBOOK.md).
-- [x] **Oleada 2:** `agent-queue/tasks-wave2.json` + workflow **Seed Copilot task queue** con input `queue_file` (`tasks.json` | `tasks-wave2.json`).
-- [x] **Validación cola:** workflow **Validate agent queue JSON** + `scripts/validate_agent_queue.py` (CI al tocar `agent-queue/`).
+- [x] **Oleada 2:** `.github/agent-queue/tasks-wave2.json` + workflow **Seed Copilot task queue** con input `queue_file` (`tasks.json` | `tasks-wave2.json` | `tasks-wave3.json`).
+- [x] **Validación cola:** workflow **Validate agent queue JSON** + `scripts/validate_agent_queue.py` (CI al tocar `.github/agent-queue/`).
 - [x] **Oleada 3 — issues creados en GitHub (#54–#68)** — Seed con `tasks-wave3.json` ejecutado.
 - [ ] **Prompt Copilot:** en **#54–#68** usa el bloque **“oleada 3”** en [`.github/prompts/copilot-bulk-assign.md`](.github/prompts/copilot-bulk-assign.md); en **#17–#33** usa el bloque **“oleada 1”** (no priorizar brief wave3 en hero/menú/Lorem). Si ya asignaste con el prompt largo mezclado, no pasa nada grave: el prompt unificado ahora lo matiza por número de issue.
 - [ ] **Consolidar oleada 1 + sembrar oleada 2:** Actions → **Orchestrate Copilot waves** — opcional `dry_run_merge` primero; luego ejecutar con merge + seed (requiere permisos del token sobre PRs).
@@ -127,7 +129,7 @@ Cuando vuelvas: **Actions → [Orchestrate Copilot waves](https://github.com/Gan
 ### Oleada 3 — marca/UX/comercial
 
 - **Brief maestro:** [`memory/research/gano-wave3-brand-ux-master-brief.md`](memory/research/gano-wave3-brand-ux-master-brief.md)
-- **Cola de tareas:** [`agent-queue/tasks-wave3.json`](agent-queue/tasks-wave3.json)
+- **Cola de tareas:** [`.github/agent-queue/tasks-wave3.json`](.github/agent-queue/tasks-wave3.json)
 - Activar: Actions → **Seed Copilot task queue** → `queue_file: tasks-wave3.json` → `scope: all` (o por ámbito: `theme` / `content_seo` / `commerce` / `docs` / `coordination`). Luego asignar Copilot en los issues generados.
 
 ### Coordinación operativa (prioridad paralela)
