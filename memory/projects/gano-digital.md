@@ -50,3 +50,9 @@ Proveedor de ecosistemas de hosting de alto rendimiento (SOTA - State of the Art
 - **No se usará Wompi ni MercadoPago** locales. El Reseller Store gestiona y procesa todos los pagos y facturas a nivel sistémico para las suscripciones de los ecosistemas. Se eliminaron los plugins y repos integrados para Wompi.
 - El sitio mantendrá perfil 100% digital (sin direcciones proxy) para el SEO local.
 - Se unificó el catálogo en 48 verticales utilizando la plantilla `GANO-SOTA-MOCKUP.html` directamente en la vista `shop-premium.php`.
+
+## Operación del código (GitHub Pilot, Abril 2026)
+
+- Repositorio de integración: **GitHub** `Gano-digital/Pilot` (`main`), con Actions (lint PHP Gano, TruffleHog acotado, workflows de etiquetas y cola de issues).
+- Cola de trabajo delegable a **Copilot coding agent**: `.github/agent-queue/tasks.json` + workflow manual *Seed Copilot task queue*; documentación en `.github/DEV-COORDINATION.md` y skill `.gano-skills/gano-github-copilot-orchestration/`.
+- Resumen “SOTA operativo”: `memory/research/sota-operativo-2026-04.md`.
