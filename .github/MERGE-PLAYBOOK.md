@@ -2,6 +2,8 @@
 
 Guía breve para cuando la **oleada 1** dejó muchos PRs en borrador (#34–#50 aprox.) e **issues** #17–#33 abiertos.
 
+En **Actions**, los workflows del repo usan prefijos `01`…`11` (CI → PR → Deploy → Agentes). Ver [`.github/workflows/README.md`](workflows/README.md).
+
 ## 1. Antes de fusionar
 
 - Revisar **Checks** del PR: **PHP lint (Gano)** y **TruffleHog** en verde.
@@ -28,12 +30,12 @@ Guía breve para cuando la **oleada 1** dejó muchos PRs en borrador (#34–#50 
 
 Cuando quieras **nuevas** tareas sin duplicar la oleada 1, usa una de estas opciones:
 
-- **Todo en uno (recomendado tras revisar PRs):** Actions → **Orchestrate Copilot waves** → activa `merge_wave1` y `seed_wave2`; prueba primero con **`dry_run_merge: true`** para ver el plan sin fusionar.
-- **Solo issues:** Actions → **Seed Copilot task queue** → `queue_file`: **`tasks-wave2.json`** → ámbito `all` o filtrado.
+- **Todo en uno (recomendado tras revisar PRs):** Actions → **10 · Orquestar oleadas** → activa `merge_wave1` y `seed_wave2`; prueba primero con **`dry_run_merge: true`** para ver el plan sin fusionar.
+- **Solo issues:** Actions → **08 · Sembrar cola Copilot** → `queue_file`: **`tasks-wave2.json`** → ámbito `all` o filtrado.
 
 Los IDs `w2-*` no chocan con `hp-*` / `theme-*` de `tasks.json`; la deduplicación es por `agent-task-id` en el cuerpo del issue.
 
-**Oleada 3 (marca/UX/comercial):** archivo `tasks-wave3.json` (`w3-*`). Seed con **Seed Copilot task queue** → `queue_file: tasks-wave3.json`. Brief: `memory/research/gano-wave3-brand-ux-master-brief.md`.
+**Oleada 3 (marca/UX/comercial):** archivo `tasks-wave3.json` (`w3-*`). Seed con **08 · Sembrar cola Copilot** → `queue_file: tasks-wave3.json`. Brief: `memory/research/gano-wave3-brand-ux-master-brief.md`.
 
 ---
 
