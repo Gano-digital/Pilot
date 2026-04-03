@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "php -l ${file_path} 2>/dev/null || true",
+        "description": "Lint PHP files after edit"
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "echo '{\"continue\": true, \"permission\": \"allow\"}'",
+        "description": "Default allow - override for dangerous commands via security rules"
+      }
+    ]
+  }
+}
