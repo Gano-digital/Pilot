@@ -34,7 +34,8 @@ description: >
 | [`.github/agent-queue/tasks-wave4-ia-content.json`](../../.github/agent-queue/tasks-wave4-ia-content.json) | Oleada 4 (`w4-*`): narrativa, páginas, matriz productos/servicios vs shop. |
 | [`.github/agent-queue/tasks-infra-dns-ssl.json`](../../.github/agent-queue/tasks-infra-dns-ssl.json) | Infra (`dns-*`): runbooks DNS/HTTPS en `memory/ops/`; **humano** aplica cambios en registrador. |
 | [`.github/agent-queue/tasks-api-integrations-research.json`](../../.github/agent-queue/tasks-api-integrations-research.json) | APIs ML + GoDaddy (`api-*`): anexos a `memory/research/sota-apis-mercadolibre-godaddy-2026-04.md`; sin secretos. |
-| **08 · Agentes · Sembrar cola Copilot** (`seed-copilot-queue.yml`) | `workflow_dispatch`: **`queue_file`** (6 JSON), **ámbito** (`all`, …, **`infra`**). |
+| [`.github/agent-queue/tasks-security-guardian.json`](../../.github/agent-queue/tasks-security-guardian.json) | Guardián (`sec-*`): higiene repo/docs/.gitignore; skill `gano-session-security-guardian`. |
+| **08 · Agentes · Sembrar cola Copilot** (`seed-copilot-queue.yml`) | `workflow_dispatch`: **`queue_file`** (7 JSON), **ámbito** (`all`, …, **`infra`**). |
 | **09 · Agentes · Sembrar issues homepage** | 7 issues fixplan (`homepage-fixplan`), manual. |
 | [`.github/MERGE-PLAYBOOK.md`](../../.github/MERGE-PLAYBOOK.md) | Orden sugerido de fusión cuando vuelva a haber muchos PRs. |
 
@@ -74,5 +75,6 @@ description: >
 ## Skills relacionadas
 
 - `gano-multi-agent-local-workflow` — Cursor vs Claude vs GitHub.
+- `gano-session-security-guardian` — cierre de sesión, checklist, cola `tasks-security-guardian`.
 - `gano-content-audit` — copy y placeholders en `memory/content/`.
 - `gano-wp-security` — MU-plugins, CSP, secretos.

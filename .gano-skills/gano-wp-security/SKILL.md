@@ -22,6 +22,7 @@ Auditoría Integral de Gano Digital (Marzo 2026). Trabaja sobre el **workspace d
 - **MU Plugin de seguridad**: `wp-content/mu-plugins/gano-security.php` — YA implementado, no modificar sin auditar
 - **Plugins de pasarela locales** (si existen en el clon): solo auditoría legacy; **no** son el eje del roadmap actual
 - **Tema hijo**: `wp-content/themes/gano-child/` — chat IA sin nonce CSRF
+- **Cierre de sesión / higiene repo:** skill complementaria `gano-session-security-guardian` (checklist, cola `tasks-security-guardian`) — no duplica parches PHP.
 
 ---
 

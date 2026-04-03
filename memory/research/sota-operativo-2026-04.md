@@ -13,7 +13,7 @@ Nota breve para agentes y humanos: qué es “SOTA” en este proyecto y qué pr
 |------|-----------|
 | **Integración** | Rama `main` en `Gano-digital/Pilot`; PRs revisables con plantilla y etiquetas. |
 | **Seguridad en CI** | TruffleHog acotado a código Gano; PHP lint en MU-plugins, tema hijo y plugins `gano-*`. |
-| **Orquestación de trabajo** | Seis colas JSON en `.github/agent-queue/` + workflow **08 · Sembrar cola Copilot**; deduplicación por `agent-task-id` en el cuerpo del issue. |
+| **Orquestación de trabajo** | Siete colas JSON en `.github/agent-queue/` (incl. guardián seguridad) + workflow **08 · Sembrar cola Copilot**; deduplicación por `agent-task-id` en el cuerpo del issue. |
 | **Coordinación humano–agente** | `.github/DEV-COORDINATION.md`, prompt `.github/prompts/copilot-bulk-assign.md`, guía `.github/COPILOT-AGENT-QUEUE.md`. |
 | **Contenido / UI** | Documentación en `memory/content/` (clases Elementor, copy homepage); código de estilos en `gano-child`. |
 

@@ -32,3 +32,5 @@ Archivo | Nombre en UI
 `orchestrate-copilot-waves.yml` | 10 · Agentes · Orquestar oleadas
 `copilot-setup-steps.yml` | 11 · Agentes · Setup pasos Copilot
 `verify-remove-wp-file-manager.yml` | 12 · Ops · Eliminar wp-file-manager (SSH)
+
+Cola **tasks-security-guardian.json** (guardián de seguridad): sembrar con **08**; scope `security` o `all`.

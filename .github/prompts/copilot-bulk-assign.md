@@ -9,6 +9,7 @@
 | **Oleada 4** (narrativa / páginas / comercio coherente) | *nuevos tras seed* | Bloque **“Oleada 4”** + `site-ia-wave3-proposed.md`, `shop-premium.php`, `TASKS.md`. |
 | **Infra DNS/HTTPS** | *nuevos tras seed* | Bloque **“Infra”**: solo docs en `memory/ops/` y script; **no** credenciales ni IPs reales en issues. |
 | **API ML + GoDaddy (research)** | *tasks-api-integrations-research.json* | Bloque **“API integrations”**: solo `memory/research/*`; ampliar `sota-apis-mercadolibre-godaddy-2026-04.md`; **nunca** keys/tokens en commits. |
+| **Guardián seguridad** | *tasks-security-guardian.json* | Bloque **“Guardián seguridad”**: higiene repo/docs/.gitignore; **no** revocar tokens ni tocar secretos de GitHub.org. |
 
 Si pegaste el prompt de **oleada 3** en issues **#17–#33**, el agente puede desviarse (prioriza brief en vez de hero/menú/Lorem). **Corrige** dejando solo asignación + prompt oleada 1 en esos números, o confía en las reglas unificadas de la siguiente sección (ya matizadas).
 
@@ -165,6 +166,20 @@ GoDaddy: respetar ToU (rate 60/min, OTE vs prod, elegibilidad dominios, Self-Ser
 Un issue → un PR cuando sea posible. Mensajes en español (Colombia). Sin refactors fuera de memory/research salvo que el issue lo exija.
 ```
 
+## Bloque para copiar — Guardián seguridad (oleada `sec-*`)
+
+```
+Eres el coding agent del repo Gano-digital/Pilot (guardián de seguridad — higiene de exposición).
+
+Rol: cerrar puertas documentales y de convención; NO sustituyes a TruffleHog ni revocas secretos en GitHub. NO pidas ni pegues PAT, contraseñas, ni claves SSH reales.
+
+Prioridad: el cuerpo del issue. Alcance típico: memory/ops/, .gitignore, .github/copilot-instructions.md, ISSUE_TEMPLATE, agents/*.md — solo lo que el issue cite.
+
+Reglas: si encuentras texto que parezca un secreto real, sustituir por [REDACTED] o placeholder; si es duda, comentar en el PR para revisión humana. PRs mínimos; un issue → un PR cuando sea posible. Español Colombia.
+
+Prohibido: workflows que borren historial git, scripts que envíen datos a terceros, o cambios que expongan más superficie (p. ej. credenciales en workflow_dispatch).
+```
+
 ---
 
 ## Definition of Done (revisor humano — obligatorio antes de merge)
@@ -179,4 +194,4 @@ Un issue → un PR cuando sea posible. Mensajes en español (Colombia). Sin refa
 
 ---
 
-_Versión alineada a `.github/DEV-COORDINATION.md` y colas `tasks.json` … `tasks-api-integrations-research.json`._
+_Versión alineada a `.github/DEV-COORDINATION.md` y colas `tasks.json` … `tasks-security-guardian.json`._

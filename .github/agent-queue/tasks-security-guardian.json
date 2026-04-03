@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "description": "Guardián de seguridad — higiene de exposición, purga documental y cierre de puertas (no sustituye TruffleHog ni rotación de secretos en GitHub).",
+  "tasks": [
+    {
+      "id": "sec-playbook-verify-links-2026",
+      "scope": "coordination",
+      "title": "[agent] Verificar playbook guardián y enlaces (memory/ops)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nExisten `memory/ops/security-guardian-playbook-2026.md` y `security-end-session-checklist.md`.\n\n## Tareas\n1. Revisar que las rutas citadas existan; corregir enlaces rotos.\n2. Añadir subsección **«Qué NO hace el agente»** (2–3 bullets) si falta claridad.\n3. Sin pegar tokens ni claves reales en el PR.\n\n<!-- agent-task-id:sec-playbook-verify-links-2026 -->"
+    },
+    {
+      "id": "sec-gitignore-and-paths-audit-2026",
+      "scope": "security",
+      "title": "[agent] Auditoría .gitignore y rutas sensibles comunes",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nEvitar que archivos no esenciales o sensibles entren al repo.\n\n## Tareas\n1. Revisar `.gitignore` raíz: proponer entradas faltantes típicas (`.env`, `*.pem`, `*.key`, `local.settings.json`, `*.sqlite`, backups SQL).\n2. `git check-ignore -v` o nota para rutas que **deben** estar ignoradas pero aparecen en issues de usuarios.\n3. Si hay cambios, un PR **mínimo** solo con `.gitignore`/`docs` (sin tocar WP salvo que el issue sea explícito).\n4. No commitear secretos reales para «probar».\n\n<!-- agent-task-id:sec-gitignore-and-paths-audit-2026 -->"
+    },
+    {
+      "id": "sec-copilot-instructions-sanitize-2026",
+      "scope": "security",
+      "title": "[agent] Revisar instrucciones Copilot y plantillas — ejemplos sin datos reales",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\n`.github/copilot-instructions.md`, plantillas en `.github/ISSUE_TEMPLATE/`, y `.github/agents/*.md` no deben incentivar pegar tokens.\n\n## Tareas\n1. Buscar patrones tipo `ghp_`, `sk_live`, `APP_USR-` largos sin placeholder.\n2. Sustituir por `[REDACTED]` o variables de entorno documentadas.\n3. Añadir una línea en plantilla de issue sensible: *No pegar contraseñas ni tokens*.\n4. PR atómico; mensaje en español.\n\n<!-- agent-task-id:sec-copilot-instructions-sanitize-2026 -->"
+    },
+    {
+      "id": "sec-session-close-script-hint-2026",
+      "scope": "docs",
+      "title": "[agent] Script o sección README: recordatorio cierre de sesión (opcional)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nYa existe `scripts/security_session_reminder.py` (solo impresión; sin red ni borrado).\n\n## Tareas\n1. Verificar que el texto del script coincide con `memory/ops/security-end-session-checklist.md` (actualizar uno u otro si hay drift).\n2. Opcional: ampliar checklist con **Atajos** (PowerShell, advertencias) en el mismo PR.\n3. Enlazar el script desde `security-guardian-playbook-2026.md` si falta.\n\n<!-- agent-task-id:sec-session-close-script-hint-2026 -->"
+    },
+    {
+      "id": "sec-workflows-permissions-note-2026",
+      "scope": "security",
+      "title": "[agent] Nota: permisos mínimos en workflows y forks (documentación)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\n`memory/ops/github-actions-audit-2026-04.md` ya existe.\n\n## Tareas\n1. Crear `memory/ops/security-workflows-permissions-note-2026.md` (1–2 páginas): `permissions:` en workflows, riesgo de `pull_request_target`, recomendación de no pegar secrets en `workflow_dispatch` inputs.\n2. Enlazar auditoría de Actions y playbook del guardián.\n3. Sin cambiar YAML de workflows a menos que el issue detecte un bug concreto y documentado.\n\n<!-- agent-task-id:sec-workflows-permissions-note-2026 -->"
+    }
+  ]
+}
