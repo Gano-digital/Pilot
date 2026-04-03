@@ -14,6 +14,8 @@ billing panel, facturación DIAN, portal de cliente, soporte, dominios y VPS.
 
 **Investigación completa**: `memory/research/fase4-plataforma.md`
 
+**APIs externas (GoDaddy Developer, Mercado Libre) — resumen SOTA y cola de anexos:** [`memory/research/sota-apis-mercadolibre-godaddy-2026-04.md`](../../memory/research/sota-apis-mercadolibre-godaddy-2026-04.md) · cola Copilot opcional `.github/agent-queue/tasks-api-integrations-research.json`.
+
 ---
 
 ## Pivot comercial (Abril 2026)

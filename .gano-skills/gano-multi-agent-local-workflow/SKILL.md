@@ -38,10 +38,12 @@ description: >
 
 ## GitHub como cola de trabajo (Abril 2026)
 
-- **Issues `[agent]`** generados por `Seed Copilot task queue` + asignación a **Copilot coding agent** para PRs.
-- **Backlog típico:** muchos PRs en **draft** — el agente entrega código/docs pero **no** fusiona; hace falta revisión humana y marcar listos para revisión. No confundir “mucho draft” con fallo del bot: suele ser **falta de triage**.
-- **Documentación:** `.github/DEV-COORDINATION.md`, `.github/COPILOT-AGENT-QUEUE.md`, prompt masivo en `.github/prompts/copilot-bulk-assign.md` (dos bloques: oleada 1 vs oleada 3).
-- Skill dedicada: **`gano-github-copilot-orchestration`** (incluye tabla de estado de outputs y prompts).
+- **Issues `[agent]`** generados por workflow **08 · Sembrar cola Copilot** (`seed-copilot-queue.yml`) + asignación a **Copilot coding agent** para PRs.
+- **Seis archivos de cola** (`tasks.json` … `tasks-api-integrations-research.json`): validados con `python scripts/validate_agent_queue.py` y workflow **07**.
+- **CLI:** `gh` autenticado en la máquina del desarrollador puede disparar workflows (`gh workflow run "08 · Agentes · Sembrar cola Copilot" -f queue_file=… -f scope=…`); no sustituye el token de Actions en la nube.
+- **PRs:** el agente suele abrir **draft**; hace falta **Ready for review**, CI razonable y **merge** humano (squash). Tras consolidación 2026-04-03 el objetivo es cola baja o cero en `main`.
+- **Documentación:** `.github/DEV-COORDINATION.md`, `.github/COPILOT-AGENT-QUEUE.md`, prompts por lote en `.github/prompts/copilot-bulk-assign.md` (oleadas 1, 3, 4, infra, API).
+- Skill dedicada: **`gano-github-copilot-orchestration`** (tabla de colas, workflows, CI).
 
 ## Aprovechar lo que ya produjo Claude (workflow local)
 

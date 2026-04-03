@@ -54,8 +54,9 @@ description: >
 ## Prompt adicional para asignación masiva al agente
 
 - Archivo canónico: [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md).
-- Incluye **bloque maestro (bulk)**, bloques por oleada (#17–#33 vs #54–#68), *Definition of Done*.
+- Incluye **bloque maestro (bulk)**, bloques por lote: oleada **1** (#17–#33), oleada **3** (#54–#68), oleada **4** (contenido/narrativa), **infra** DNS/HTTPS, **API** ML+GoDaddy (research), y *Definition of Done*.
 - Guía: [`.github/COPILOT-AGENT-QUEUE.md`](../../.github/COPILOT-AGENT-QUEUE.md).
+- Marco “SOTA” operativo (prácticas repo + enlaces oficiales GitHub sobre Copilot agent): [`memory/research/sota-operativo-2026-04.md`](../../memory/research/sota-operativo-2026-04.md).
 
 ## Límites (honestidad SOTA)
 

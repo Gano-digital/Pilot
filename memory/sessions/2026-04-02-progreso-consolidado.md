@@ -1,6 +1,6 @@
 # Gano Digital — Progreso consolidado
 
-_Documento de síntesis para equipo y continuidad. Última revisión: 2 de abril de 2026._
+_Documento de síntesis para equipo y continuidad. Última revisión: **3 de abril de 2026**._
 
 La fuente operativa detallada sigue siendo [`TASKS.md`](../../TASKS.md) en la raíz del repo. Este archivo resume **logros**, **estado actual**, **pendientes** y **dónde seguir**.
 
@@ -38,18 +38,20 @@ El código de las fases 1–3 está **listo en el repositorio** pero **no genera
 
 ### 3.2 GitHub `Gano-digital/Pilot`
 
-| Concepto | Situación |
-|----------|-----------|
-| **Rama de integración** | `main` con CI (PHP lint Gano, TruffleHog acotado). |
-| **Colas de agentes** | `tasks.json` (oleada 1), `tasks-wave2.json`, `tasks-wave3.json` en `.github/agent-queue/`. |
-| **Issues abiertos (cola)** | ~**32** en rangos **#17–#33** (homepage + fixplan + sync) y **#54–#68** (marca/UX/comercial wave3). |
-| **PRs abiertos** | ~**35**; a fecha de última revisión **todos en borrador** → los agentes **entregan ramas**; falta **triage**, marcar listos, CI verde y **merge**. |
-| **Prompts Copilot** | Dos bloques en `.github/prompts/copilot-bulk-assign.md`: **oleada 1** (#17–33) vs **oleada 3** (#54–68). |
+| Concepto | Situación (2026-04-03) |
+|----------|-------------------------|
+| **Rama de integración** | `main` con CI (PHP lint Gano, TruffleHog acotado, validación cola JSON, CodeQL). |
+| **Colas de agentes** | **Seis** JSON en `.github/agent-queue/`: `tasks.json`, `tasks-wave2.json`, `tasks-wave3.json`, `tasks-wave4-ia-content.json`, `tasks-infra-dns-ssl.json`, `tasks-api-integrations-research.json`. |
+| **Oleada 4 + infra (docs)** | Entregas markdown fusionadas en `main` (PRs #100–#113, abril 2026). *Pendiente humano:* Elementor, DNS en GoDaddy, cierre de issues en GitHub si aplica. |
+| **Cola API (ML + GoDaddy)** | Informe base [`memory/research/sota-apis-mercadolibre-godaddy-2026-04.md`](../research/sota-apis-mercadolibre-godaddy-2026-04.md) + cola `tasks-api-integrations-research.json`; **sembrar con workflow 08** cuando se quieran issues `api-*`. |
+| **PRs abiertos** | Tras consolidación, **revisar en GitHub**; el objetivo es cola baja o cero. Vercel puede marcar fallo en contexto sin bloquear merge. |
+| **Prompts Copilot** | Bloques por oleada en [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md): oleada 1, 3, 4, infra, **API integrations**. |
 | **Playbooks** | Merge: `.github/MERGE-PLAYBOOK.md` · Coordinación: `.github/DEV-COORDINATION.md`. |
+| **SOTA operativo** | [`memory/research/sota-operativo-2026-04.md`](../research/sota-operativo-2026-04.md) (incluye referencias oficiales GitHub sobre Copilot coding agent). |
 
 ### 3.3 Skills del proyecto (orientación para agentes)
 
-- **Orquestación GitHub/Copilot:** `.gano-skills/gano-github-copilot-orchestration/SKILL.md` (incluye interpretación de PRs draft e issues).
+- **Orquestación GitHub/Copilot:** `.gano-skills/gano-github-copilot-orchestration/SKILL.md`.
 - **Multi-agente local:** `.gano-skills/gano-multi-agent-local-workflow/SKILL.md`.
 - Otras: seguridad WP, contenido, fase 4 plataforma, etc., en `.gano-skills/`.
 
@@ -62,10 +64,11 @@ El código de las fases 1–3 está **listo en el repositorio** pero **no genera
 ## 4. Próximos hitos (orden sugerido)
 
 1. **Deploy** de Fases 1–3 al servidor + eliminación de `wp-file-manager`.
-2. **Triage de PRs en GitHub:** priorizar merges de bajo riesgo (solo `memory/**/*.md` wave3), luego tema/MU según `MERGE-PLAYBOOK`.
-3. **Homepage en Elementor:** menú primary, copy real, hero, pilares, CTAs (issues #17–#22 y guías en `memory/content/`).
-4. **Fase 4 Reseller:** catálogo RCC, mapeo de CTAs a IDs reales, smoke test checkout.
-5. **Opcional:** Actions → **Orchestrate Copilot waves** con `dry_run_merge: true` antes de merges masivos; **Seed homepage Fix issues** si aún no se ejecutó.
+2. **Homepage en Elementor:** menú primary, copy real, hero, pilares, CTAs (guías en `memory/content/`).
+3. **Fase 4 Reseller:** catálogo RCC, mapeo de CTAs a IDs reales, smoke test checkout.
+4. **Opcional — cola API:** Actions → **08** → `tasks-api-integrations-research.json` → asignar Copilot con prompt **API integrations**.
+5. **Issues en GitHub:** cerrar o comentar los que ya estén cubiertos por `main` después de la oleada de merges.
+6. **Rotación de tokens** y limpieza de remotes con credenciales (al cierre del workflow de despliegue).
 
 ---
 
@@ -77,8 +80,9 @@ El código de las fases 1–3 está **listo en el repositorio** pero **no genera
 | Brief oleada 3 | `memory/research/gano-wave3-brand-ux-master-brief.md` |
 | Memoria de proyecto | `memory/projects/gano-digital.md` |
 | Cola Copilot | `.github/COPILOT-AGENT-QUEUE.md` |
-| Reporte sesión Cursor (descargas/herramientas) | `memory/sessions/2026-04-01-reporte-cursor-descargas-y-herramientas.md` |
+| Recordatorio API + cierre PRs | [`2026-04-03-recordatorio-api-integrations-y-prs.md`](2026-04-03-recordatorio-api-integrations-y-prs.md) |
+| Consolidación PRs Copilot | [`2026-04-03-consolidacion-prs-copilot.md`](2026-04-03-consolidacion-prs-copilot.md) |
 
 ---
 
-_Cierre: el progreso técnico en **Git** es sólido; el foco del siguiente ciclo es **producción + revisión de PRs + contenido en vivo**._
+_Cierre: el **repo** refleja oleada 4, infra y cableado de la cola API; el siguiente ciclo sigue siendo **producción**, **Elementor en vivo** y **decisión** sobre issues/sembrar API._
