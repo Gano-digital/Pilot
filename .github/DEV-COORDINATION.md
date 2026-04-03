@@ -49,17 +49,25 @@ Local (rama feature/ops) → PR → CI (TruffleHog Gano + php-lint) → merge ma
 
 ## 4. GitHub Actions que dan contexto al proceso
 
-| Workflow | Rol |
-|----------|-----|
-| `secret-scan.yml` | Secretos solo en rutas Gano (Docker TruffleHog). |
-| `php-lint-gano.yml` | Sintaxis PHP en código propio. |
-| `seed-homepage-issues.yml` | Crea issues del fixplan homepage (manual). |
-| `seed-copilot-queue.yml` | **Cola masiva** para Copilot agent: lee `agent-queue/tasks.json`, crea issues por ámbito, deduplicado por `agent-task-id`. |
-| `setup-repo-labels.yml` | Crea etiquetas `area:*`, `coordination`, etc. Manual (**Run workflow**) o automático al hacer **push a `main`** que modifique [`label-bootstrap`](label-bootstrap). |
-| `deploy.yml` | Push a `main` en rutas `gano-child` / `gano-*` / `mu-plugins` → rsync por SSH. **Secrets obligatorios:** `SSH`, `SERVER_HOST`, `SERVER_USER`, `DEPLOY_PATH`. |
-| `verify-patches.yml` | **Manual** — compara MD5 repo vs servidor (Fase 1–3); opción `upload_missing`. Mismos secrets que `deploy.yml`. |
+En **Actions**, los workflows del repo se listan con un **prefijo numérico** (`01` … `11`) para ordenar la barra lateral y agrupar por fase. Leyenda: **CI** (calidad) → **PR** → **Deploy/Ops** → **Repo** (setup) → **Agentes** (Copilot). Detalle en [`.github/workflows/README.md`](workflows/README.md).
 
-Ejecuta **Setup repository labels** si faltan etiquetas; sin ellas el labeler y las plantillas no se ven completas.
+| # | Nombre en UI (sidebar) | Archivo | Rol |
+|---|------------------------|---------|-----|
+| 01 | CI · Sintaxis PHP (Gano) | `php-lint-gano.yml` | Sintaxis PHP en código propio. |
+| 02 | CI · Escaneo secretos (TruffleHog) | `secret-scan.yml` | Secretos solo en rutas Gano (Docker TruffleHog). |
+| 03 | PR · Etiquetas automáticas | `labeler.yml` | Etiquetas por rutas en PRs. |
+| 04 | Deploy · Producción (rsync) | `deploy.yml` | Push a `main` en rutas `gano-child` / `gano-*` / `mu-plugins` → rsync por SSH. **Secrets:** `SSH`, `SERVER_HOST`, `SERVER_USER`, `DEPLOY_PATH`. |
+| 05 | Ops · Verificar parches en servidor | `verify-patches.yml` | **Manual** — compara MD5 repo vs servidor (Fase 1–3); opción `upload_missing`. Mismos secrets que `deploy.yml`. |
+| 06 | Repo · Crear etiquetas GitHub | `setup-repo-labels.yml` | Crea etiquetas `area:*`, `coordination`, etc. Manual (**Run workflow**) o automático al hacer **push a `main`** que modifique [`label-bootstrap`](label-bootstrap). |
+| 07 | Agentes · Validar cola JSON | `validate-agent-queue.yml` | Valida `.github/agent-queue/*.json` en CI. |
+| 08 | Agentes · Sembrar cola Copilot | `seed-copilot-queue.yml` | **Cola masiva** para Copilot: lee `.github/agent-queue/tasks*.json`, crea issues por ámbito, deduplicado por `agent-task-id`. |
+| 09 | Agentes · Sembrar issues homepage | `seed-homepage-issues.yml` | Crea issues del fixplan homepage (manual). |
+| 10 | Agentes · Orquestar oleadas | `orchestrate-copilot-waves.yml` | Merge ordenado oleada 1 + seed oleada 2 (inputs). |
+| 11 | Agentes · Setup pasos Copilot | `copilot-setup-steps.yml` | Pasos de configuración Copilot en el repo. |
+
+**Otros** (no viven en `.github/workflows/` del repo): *Copilot coding agent*, *Dependabot Updates* — nombres fijos por GitHub.
+
+Ejecuta **06 · Repo · Crear etiquetas** si faltan etiquetas; sin ellas el labeler y las plantillas no se ven completas.
 
 **Secrets de deploy (Settings → Secrets and variables → Actions):** además de `SSH` (clave privada), define `SERVER_HOST` (hostname o IP para `ssh-keyscan`), `SERVER_USER` (usuario SSH/SFTP) y `DEPLOY_PATH` (ruta absoluta al `public_html` o raíz WP, **sin** barra final inconsistente). Sin estos cuatro, el job de deploy fallará al expandir rutas.
 
