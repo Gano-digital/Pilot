@@ -1,0 +1,39 @@
+---
+description: "USE WHEN encountering errors, loops, or debugging issues"
+globs:
+alwaysApply: false
+---
+
+# Error Handling y Anti-Recursion
+
+## Protocolo de Errores
+1. **Primer intento**: diagnosticar causa raiz, aplicar fix
+2. **Segundo intento**: cambiar estrategia si el mismo error persiste
+3. **Tercer intento**: PARAR — documentar el error y pedir ayuda a Diego
+4. NUNCA hacer un cuarto intento con la misma estrategia
+
+## Analisis-Paralisis Guard
+Si llevas 5+ lecturas consecutivas (Read/Grep/Glob) sin escribir nada:
+1. PARAR
+2. Declarar en una oracion por que no has escrito nada
+3. Escribir codigo (tienes suficiente contexto) O reportar "bloqueado" con info faltante
+
+## Limpieza de Contexto
+- Iniciar conversaciones nuevas al cambiar de tarea
+- Si el contexto se siente ruidoso despues de muchos turnos: resumir y empezar fresco
+- No acumular logs de error — extraer la leccion y seguir
+
+## Verificacion Post-Cambio
+- Despues de CADA cambio: ejecutar lint/test/build relevante
+- Confirmar que el cambio funciona ANTES de pasar al siguiente
+- Si un test falla: entender POR QUE antes de intentar fix
+
+## Rate Limiting de Herramientas
+- Maximo 10 tool calls por iteracion
+- Maximo 50 tool calls por sesion
+- Si alcanzas el limite: hacer checkpoint, resumir progreso
+
+## Recovery de Estado
+- Si algo se rompe: `git stash` primero, investigar, luego decidir
+- NUNCA `git reset --hard` sin permiso explicito
+- Preferir `git revert` sobre reset para mantener historial
