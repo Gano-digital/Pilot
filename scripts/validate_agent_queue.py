@@ -9,7 +9,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 QUEUE_DIR = ROOT / ".github" / "agent-queue"
-FILES = ["tasks.json", "tasks-wave2.json", "tasks-wave3.json"]
+FILES = [
+    "tasks.json",
+    "tasks-wave2.json",
+    "tasks-wave3.json",
+    "tasks-wave4-ia-content.json",
+    "tasks-infra-dns-ssl.json",
+]
 
 
 def main() -> int:

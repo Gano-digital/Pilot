@@ -1,0 +1,62 @@
+{
+  "version": 4,
+  "description": "Oleada 4 — coherencia narrativa, orden de contenidos, productos/servicios y páginas (alinear vitrina con IA propuesta y shop Reseller). No sustituye trabajo en Elementor: produce documentación maestra y matrices en memory/.",
+  "tasks": [
+    {
+      "id": "w4-content-master-plan",
+      "scope": "docs",
+      "title": "[agent] Plan maestro de contenidos: narrativa, capas y orden de lectura (2026)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nHace falta **una propuesta única** que una historia de marca, orden de secciones, hubs y prioridad de páginas. Debe ser coherente con `memory/content/site-ia-wave3-proposed.md`, `homepage-story-arc-wave3.md` y `TASKS.md` (Fase 4 Reseller).\n\n## Tareas\n1. Crear `memory/content/content-master-plan-2026.md` con: (a) resumen ejecutivo 1 página; (b) **capas** (Home → Ecosistemas → Pilares SEO → Confianza legal/contacto); (c) reglas de voz breves (enlace a microcopy kit si existe); (d) qué está **hecho en repo** vs **pendiente Elementor/wp-admin**.\n2. Tabla final: *Página / rol narrativo / prioridad P0–P3 / depende de*.\n3. Sin inventar datos legales; placeholders `[NIT]` etc.\n\n<!-- agent-task-id:w4-content-master-plan -->"
+    },
+    {
+      "id": "w4-products-services-matrix",
+      "scope": "commerce",
+      "title": "[agent] Matriz productos/servicios: vitrina, slugs, CTAs y GANO_PFID (coherencia comercial)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nEl mockup `gano-child/templates/shop-premium.php` usa constantes `GANO_PFID_*` definidas en `functions.php` (valores `PENDING_RCC` hasta RCC). La vitrina debe alinearse con nombres comerciales y rutas.\n\n## Tareas\n1. Crear `memory/content/products-services-pages-matrix-2026.md` con tabla: *Nombre en vitrina | slug WP sugerido | fila shop-premium | constante GANO_PFID | nota RCC*.\n2. Cruzar con filas del catálogo en `shop-premium.php` (hosting, security, email).\n3. Sección **huecos**: qué página falta o está solo como idea en IA.\n4. No escribir pfids reales; marcar *rellenar en RCC*.\n\n<!-- agent-task-id:w4-products-services-matrix -->"
+    },
+    {
+      "id": "w4-gap-ia-vs-inventory",
+      "scope": "content_seo",
+      "title": "[agent] Brecha IA propuesta vs inventario de páginas (plantilla + primer paso)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\n`site-ia-wave3-proposed.md` define rutas ideales. En producción puede haber drift (slugs distintos, páginas borrador).\n\n## Tareas\n1. Crear `memory/content/gap-ia-vs-live-inventory-2026.md` con columnas: *Ruta IA | Estado (desconocido/existe/borrador/falta) | Fuente de verdad | Acción sugerida*.\n2. Para **estado** usar *desconocido* salvo que el repo tenga evidencia (p. ej. plantillas PHP, menciones en TASKS); no afirmar lo que no está en git.\n3. Instrucciones para Diego: cómo completar la tabla desde wp-admin (lista páginas) sin pegar credenciales en GitHub.\n\n<!-- agent-task-id:w4-gap-ia-vs-inventory -->"
+    },
+    {
+      "id": "w4-homepage-section-order",
+      "scope": "content_seo",
+      "title": "[agent] Especificación orden de bloques homepage (AIDA + CTA a ecosistemas)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\n`memory/content/homepage-story-arc-wave3.md` y `homepage-copy-2026-04.md` deben converger en **un orden de secciones** ejecutable en Elementor.\n\n## Tareas\n1. Crear `memory/content/homepage-section-order-spec-2026.md`: lista numerada de bloques (Hero, prueba social, pilares, …) con *objetivo de conversión* y *copy fuente* (archivo + ancla sección).\n2. Mapa *bloque → clase CSS gano-el-* si aplica (`elementor-home-classes.md`).\n3. Nota de accesibilidad (skip link, jerarquía H1–H2).\n\n<!-- agent-task-id:w4-homepage-section-order -->"
+    },
+    {
+      "id": "w4-pilares-narrative-clusters",
+      "scope": "content_seo",
+      "title": "[agent] Pilares SEO: clusters narrativos y orden de publicación sugerido",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nVeinte páginas SOTA (importer / pilares) deben integrarse en la historia sin competir entre sí.\n\n## Tareas\n1. Crear `memory/content/pilares-seo-narrative-clusters-2026.md`: agrupar pilares en 4–5 **clusters** (infra, seguridad, rendimiento, IA, estrategia) con *página pilar* sugerida por cluster si aplica.\n2. **Orden de publicación** sugerido (P0 primero) con una frase de propósito por artículo.\n3. Enlaces internos sugeridos (*desde* → *hacia*) sin duplicar el árbol completo de `site-ia-wave3-proposed.md` (referenciarlo).\n\n<!-- agent-task-id:w4-pilares-narrative-clusters -->"
+    },
+    {
+      "id": "w4-primary-nav-spec",
+      "scope": "docs",
+      "title": "[agent] Especificación menú primary: orden, etiquetas ES-CO y destinos",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nEl tema registra ubicación `primary`; falta alinear **etiquetas y orden** con la IA y el shop.\n\n## Tareas\n1. Crear `memory/content/navigation-primary-spec-2026.md`: tabla *Orden | Etiqueta menú | URL o página | Notas (mega menú, externo Reseller)*.\n2. Diferenciar ítems **P0** (siempre visibles) vs secundarios.\n3. Checklist para aplicar en Elementor Theme Builder / wp-admin (humano).\n\n<!-- agent-task-id:w4-primary-nav-spec -->"
+    },
+    {
+      "id": "w4-trust-pages-bundle",
+      "scope": "content_seo",
+      "title": "[agent] Paquete coherencia Nosotros + Contacto + Legal (copy y enlaces cruzados)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nConfianza y cumplimiento deben sonar **una sola marca**; alinear con `trust-and-reseller-copy-wave3.md` si existe.\n\n## Tareas\n1. Crear `memory/content/trust-pages-bundle-2026.md`: bullets de mensajes clave por página (/nosotros, /contacto, /legal/*).\n2. Enlaces cruzados sugeridos (footer ↔ legal ↔ contacto).\n3. Disclaimer Reseller honesto (sin datacenter ficticio); placeholders datos reales.\n\n<!-- agent-task-id:w4-trust-pages-bundle -->"
+    },
+    {
+      "id": "w4-content-docs-index",
+      "scope": "docs",
+      "title": "[agent] Índice maestro memory/content/ — capas oleada 3 + 4 y lectura recomendada",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nMuchos markdown en `memory/content/`; hace falta **mapa de lectura** para humanos y agentes.\n\n## Tareas\n1. Crear o actualizar `memory/content/README-CONTENT-INDEX-2026.md` con secciones: *Estrategia*, *Homepage*, *IA/rutas*, *Comercio/Reseller*, *SEO pilares*, *Operación*.\n2. Cada entrada: ruta + una línea de propósito + **léelo antes de** (dependencias).\n3. Enlace a oleada 4 en `TASKS.md` (subsección corta) en el mismo PR si aplica.\n\n<!-- agent-task-id:w4-content-docs-index -->"
+    }
+  ]
+}

@@ -37,6 +37,10 @@ Los IDs `w2-*` no chocan con `hp-*` / `theme-*` de `tasks.json`; la deduplicaci�
 
 **Oleada 3 (marca/UX/comercial):** archivo `tasks-wave3.json` (`w3-*`). Seed con **08 · Sembrar cola Copilot** → `queue_file: tasks-wave3.json`. Brief: `memory/research/gano-wave3-brand-ux-master-brief.md`.
 
+**Oleada 4 (narrativa / páginas / matriz comercial):** `tasks-wave4-ia-content.json` (`w4-*`). Prompt: bloque **Oleada 4** en `copilot-bulk-assign.md`.
+
+**Infra DNS/HTTPS:** `tasks-infra-dns-ssl.json` (`dns-*`). Scope **`infra`**. El agente solo documenta; Diego/soporte aplican DNS/SSL. Script local: `scripts/check_dns_https_gano.py`.
+
 ---
 
 _Ver también [COPILOT-AGENT-QUEUE.md](COPILOT-AGENT-QUEUE.md) y [DEV-COORDINATION.md](DEV-COORDINATION.md)._

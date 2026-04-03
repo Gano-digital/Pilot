@@ -44,6 +44,7 @@ _Documento de recordatorio operativo. Última revisión: **2026-04-03** (post-co
 | Tareas globales | [`TASKS.md`](../../TASKS.md) |
 | Contexto extenso para Claude (historial + pendientes + FAQ) | [`../claude/README.md`](../claude/README.md) |
 | Cola **dispatch** (tareas que Claude hace en el repo + `claude_dispatch.py next`) | [`../claude/dispatch-prompt.md`](../claude/dispatch-prompt.md) |
+| Oleada 4 Copilot (narrativa/páginas) + infra DNS | `tasks-wave4-ia-content.json`, `tasks-infra-dns-ssl.json` — **08 · Sembrar cola**; script `python scripts/check_dns_https_gano.py` |
 | Prompt bulk / DoD | [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md) |
 
 ## Historial (archivo — ya resuelto)

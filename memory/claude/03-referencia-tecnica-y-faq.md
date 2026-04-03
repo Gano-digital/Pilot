@@ -86,6 +86,10 @@ Consolidación masiva con squash; detalle y conflictos #52/#76 en [`../sessions/
 
 Archivo [`dispatch-queue.json`](dispatch-queue.json) + scripts `claude_dispatch.py` / `validate_claude_dispatch.py`. Sirve para **ordenar trabajo que Claude puede hacer en el repo** (docs, auditorías, validación). No sustituye GitHub Actions ni Copilot. Detalle: [`dispatch-prompt.md`](dispatch-prompt.md).
 
+### HTTPS o DNS de gano.digital no propagan — ¿qué hace el repo?
+
+Los agentes en GitHub **no cambian DNS**. Sembrá la cola **`tasks-infra-dns-ssl.json`** (scope **`infra`**) para generar runbooks en `memory/ops/`; ejecutá **`python scripts/check_dns_https_gano.py`** en tu PC y abrí un issue con la plantilla **DNS / HTTPS — gano.digital** si hace falta seguimiento.
+
 ### ¿Puedo programar tareas en la app de Claude desde este repo?
 
 **No de forma automática:** aquí no hay API ni token hacia Anthropic. Sí puedes **copiar** la salida de `python scripts/claude_dispatch.py show <id>` en tareas programadas o instrucciones de proyecto en claude.ai, manteniendo el JSON en git como fuente de verdad.

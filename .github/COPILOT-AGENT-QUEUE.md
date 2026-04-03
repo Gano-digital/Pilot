@@ -12,17 +12,19 @@
    - `tasks.json` — oleada 1 (~17 tareas). No crea duplicados mientras el issue abierto tenga el mismo `agent-task-id`.
    - `tasks-wave2.json` — oleada 2 (8 tareas: merge playbook, SEO canonical, fuentes, Reseller doc, `.htaccess`, CI, a11y, post-Dependabot). Usar cuando quieras **nuevos** issues tras triage de la oleada 1.
    - `tasks-wave3.json` — oleada 3 (**marca, UX, comercial, activos, IA, microcopy**). Brief maestro: [`memory/research/gano-wave3-brand-ux-master-brief.md`](../memory/research/gano-wave3-brand-ux-master-brief.md). Varias tareas usan `scope: coordination`; elige **`all`** o **`coordination`** según necesites.
+   - `tasks-wave4-ia-content.json` — oleada 4 (**narrativa única, orden de contenidos, productos/servicios/páginas**, coherencia con IA y shop Reseller). Salida esperada: `memory/content/*-2026.md` y enlaces en `TASKS.md`.
+   - `tasks-infra-dns-ssl.json` — **DNS / HTTPS / dominio**: runbooks en `memory/ops/`, uso de `scripts/check_dns_https_gano.py`. El agente **documenta**; Diego o soporte aplican cambios en GoDaddy/hosting.
 3. Elige **ámbito** (`scope`):
    - `all` — todas las tareas del archivo elegido que no tengan issue abierto con el mismo id.
-   - `homepage` / `theme` / `content_seo` / `security` / `commerce` / `docs` — lote parcial (mismos nombres de `scope` en el JSON).
-4. Abre **Issues** y asigna al agente (individual o masivo). En el modal, pega el **prompt adicional** desde [`.github/prompts/copilot-bulk-assign.md`](prompts/copilot-bulk-assign.md): hay bloques distintos para **oleada 1 (#17–33)** vs **oleada 3 (#54–68)** — no uses el mismo texto para ambos lotes.
+   - `homepage` / `theme` / `content_seo` / `security` / `commerce` / `docs` / `coordination` / `infra` — lote parcial (`infra` solo aplica a `tasks-infra-dns-ssl.json`).
+4. Abre **Issues** y asigna al agente (individual o masivo). En el modal, pega el **prompt adicional** desde [`.github/prompts/copilot-bulk-assign.md`](prompts/copilot-bulk-assign.md): hay bloques para **oleada 1**, **oleada 3**, **oleada 4** e **infra** — usa el que corresponda al lote.
 5. Revisa CI (`php-lint`, TruffleHog en rutas Gano) antes de fusionar. Orden sugerido de fusión: [MERGE-PLAYBOOK.md](MERGE-PLAYBOOK.md).
 
 ## Requisitos
 
 - Plan / política org que permita **Copilot coding agent** en el repo.
 - Etiquetas creadas (workflow **06 · Repo · Crear etiquetas** ya ejecutado en `main`).
-- Al editar colas: el workflow **07 · Validar cola JSON** comprueba `tasks.json` / `tasks-wave2.json` (ids únicos y marcador `agent-task-id`). Local: `python scripts/validate_agent_queue.py`.
+- Al editar colas: el workflow **07 · Validar cola JSON** comprueba los cinco archivos en `agent-queue/` (ids únicos y marcador `agent-task-id`). Local: `python scripts/validate_agent_queue.py`.
 
 ## Añadir tareas
 
@@ -33,3 +35,4 @@
 
 - **Actions no sustituye** a Copilot: solo **crea y organiza** issues.
 - Tareas que son **100 % wp-admin/Elementor** las ejecuta el agente con limitaciones; el cuerpo del issue ya separa “en servidor” vs “en repo”.
+- **DNS/registrador:** ningún agente puede modificar registros en GoDaddy desde GitHub; la cola `tasks-infra-dns-ssl.json` genera **documentación y checklists** para que un humano ejecute el fix.

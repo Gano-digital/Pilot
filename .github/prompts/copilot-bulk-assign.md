@@ -6,6 +6,8 @@
 |------|--------|----------|
 | **Oleada 1** (homepage / tema técnico) | **#17–#33** | Bloque **“Oleada 1”** más abajo. El brief `gano-wave3-brand-ux-master-brief.md` es **opcional**, no la fuente principal. |
 | **Oleada 3** (marca / UX / insumos) | **#54–#68** | Bloque **“Oleada 3”** más abajo + reglas comunes. |
+| **Oleada 4** (narrativa / páginas / comercio coherente) | *nuevos tras seed* | Bloque **“Oleada 4”** + `site-ia-wave3-proposed.md`, `shop-premium.php`, `TASKS.md`. |
+| **Infra DNS/HTTPS** | *nuevos tras seed* | Bloque **“Infra”**: solo docs en `memory/ops/` y script; **no** credenciales ni IPs reales en issues. |
 
 Si pegaste el prompt de **oleada 3** en issues **#17–#33**, el agente puede desviarse (prioriza brief en vez de hero/menú/Lorem). **Corrige** dejando solo asignación + prompt oleada 1 en esos números, o confía en las reglas unificadas de la siguiente sección (ya matizadas).
 
@@ -122,6 +124,30 @@ Lee primero memory/research/gano-wave3-brand-ux-master-brief.md y el cuerpo del 
 Sin secretos; gano_ en PHP; CSP/MU gano-security si tocas CSS/JS. Un issue → un PR cuando sea posible. Mensajes en español.
 ```
 
+## Bloque para copiar — oleada 4 (contenido / narrativa / matriz páginas)
+
+```
+Eres el coding agent del repo Gano-digital/Pilot (oleada 4 — coherencia de contenidos).
+
+Prioridad: el cuerpo del issue y las rutas que pide (memory/content/*-2026.md). Lee como contexto memory/content/site-ia-wave3-proposed.md y, si el issue es comercial, gano-child/templates/shop-premium.php + functions.php (GANO_PFID_*).
+
+Objetivo: una propuesta coherente de narrativa, orden de páginas/secciones y alineación productos-servicios sin inventar pfids ni datos legales. Placeholders claros para Diego.
+
+Sin secretos; no borrar gano-phase*. Si el issue pide solo inventario “vivo” y no hay datos en git, documenta *desconocido* y pasos para completar desde wp-admin. PR en español, un issue → un PR cuando sea posible.
+```
+
+## Bloque para copiar — infra DNS / HTTPS
+
+```
+Eres el coding agent del repo Gano-digital/Pilot (infra DNS/HTTPS).
+
+NO puedes cambiar DNS ni certificados: solo entregas markdown en memory/ops/, mejoras a scripts/check_dns_https_gano.py (stdlib), y enlaces en TASKS/FAQ. Prohibido pegar en commits o issues: contraseñas, tokens, API keys, ni valores definitivos de registros DNS si Diego no quiere públicos.
+
+Si hace falta tabla de registros, usa placeholders (ej. [IP_HOSTING]) y explica que Diego rellena en panel. Enlaza scripts/check_dns_https_gano.py para verificación local.
+
+PR mínimo, español Colombia; un issue → un PR cuando sea posible.
+```
+
 ---
 
 ## Definition of Done (revisor humano — obligatorio antes de merge)
@@ -136,4 +162,4 @@ Sin secretos; gano_ en PHP; CSP/MU gano-security si tocas CSS/JS. Un issue → u
 
 ---
 
-_Versión alineada a `.github/DEV-COORDINATION.md` y colas `tasks.json` / `tasks-wave3.json`._
+_Versión alineada a `.github/DEV-COORDINATION.md` y colas `tasks.json` … `tasks-infra-dns-ssl.json`._

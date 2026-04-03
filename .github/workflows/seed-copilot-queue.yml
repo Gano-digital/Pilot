@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       queue_file:
-        description: "Archivo de cola (oleada 1/2/3 — ver COPILOT-AGENT-QUEUE.md)"
+        description: "Archivo de cola (oleadas 1–4 + infra — ver COPILOT-AGENT-QUEUE.md)"
         required: true
         default: tasks.json
         type: choice
@@ -15,6 +15,8 @@ on:
           - tasks.json
           - tasks-wave2.json
           - tasks-wave3.json
+          - tasks-wave4-ia-content.json
+          - tasks-infra-dns-ssl.json
       scope:
         description: "Ámbito de tareas a generar"
         required: true
@@ -29,6 +31,7 @@ on:
           - commerce
           - docs
           - coordination
+          - infra
 
 permissions:
   contents: read
@@ -49,7 +52,13 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const allowed = ['tasks.json', 'tasks-wave2.json', 'tasks-wave3.json'];
+            const allowed = [
+              'tasks.json',
+              'tasks-wave2.json',
+              'tasks-wave3.json',
+              'tasks-wave4-ia-content.json',
+              'tasks-infra-dns-ssl.json',
+            ];
             const qf = process.env.SEED_QUEUE_FILE || 'tasks.json';
             if (!allowed.includes(qf)) {
               core.setFailed('queue_file no permitido: ' + qf);

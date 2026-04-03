@@ -68,7 +68,9 @@ En **Actions**, los workflows del repo se listan con un **prefijo numérico** (`
 
 **Otros** (no viven en `.github/workflows/` del repo): *Copilot coding agent*, *Dependabot Updates* — nombres fijos por GitHub.
 
-Ejecuta **06 · Repo · Crear etiquetas** si faltan etiquetas; sin ellas el labeler y las plantillas no se ven completas.
+Ejecuta **06 · Repo · Crear etiquetas** si faltan etiquetas; sin ellas el labeler y las plantillas no se ven completas. Tras abril 2026 el set incluye **`infra`** (DNS/SSL/runbooks).
+
+**DNS y dominio:** GitHub y Copilot **no** modifican registros en GoDaddy. Usa la cola `tasks-infra-dns-ssl.json` + plantilla de issue *DNS / HTTPS — gano.digital* y el script `scripts/check_dns_https_gano.py` para diagnóstico local.
 
 **Secrets de deploy (Settings → Secrets and variables → Actions):** además de `SSH` (clave privada), define `SERVER_HOST` (hostname o IP para `ssh-keyscan`), `SERVER_USER` (usuario SSH/SFTP) y `DEPLOY_PATH` (ruta absoluta al `public_html` o raíz WP, **sin** barra final inconsistente). Sin estos cuatro, el job de deploy fallará al expandir rutas.
 

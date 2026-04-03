@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "description": "Infra DNS/HTTPS — documentación, checklists y verificación local. Copilot NO puede cambiar DNS en GoDaddy: los issues producen runbooks, plantillas y scripts para Diego/soporte. scope: infra",
+  "tasks": [
+    {
+      "id": "dns-runbook-godaddy",
+      "scope": "infra",
+      "title": "[agent] Runbook DNS + HTTPS: gano.digital en GoDaddy (Managed WP / dominio)",
+      "labels": ["copilot", "coordination", "infra"],
+      "body": "## Contexto\n**gano.digital** debe resolver y servir **HTTPS** de forma estable (apex y opcionalmente www). Propagación incorrecta suele ser registros A/CNAME, SSL pendiente o conflicto www/apex.\n\n## Alcance\n**Solo repositorio:** markdown y referencias. **No** pegar contraseñas ni API keys.\n\n## Tareas\n1. Crear `memory/ops/dns-https-godaddy-runbook-2026.md` con secciones: *Síntomas*, *Qué verificar en orden* (registrador DNS, panel hosting, certificado), *TTL y propagación*, *Rollback*, *Escalación a soporte GoDaddy*.\n2. Incluir tabla *Herramienta | Comando o URL | Qué esperar* (dig/nslookup desde máquina local; enlaces a documentación pública GoDaddy sin credenciales).\n3. Aclarar diferencia **DNS del dominio** vs **SSL en el hosting** Managed WordPress.\n\n<!-- agent-task-id:dns-runbook-godaddy -->"
+    },
+    {
+      "id": "dns-expected-records",
+      "scope": "infra",
+      "title": "[agent] Plantilla registros DNS esperados (apex + www) — rellenar con valores reales offline",
+      "labels": ["copilot", "coordination", "infra"],
+      "body": "## Contexto\nSin publicar IPs reales en el issue: la plantilla vive en git con **placeholders**.\n\n## Tareas\n1. Crear `memory/ops/dns-expected-records-template-2026.md` con tablas separadas para `@` (apex) y `www`: *Tipo | Nombre | Valor | TTL | Notas*.\n2. Filas típicas: A/AAAA/CNAME según estrategia GoDaddy; fila TXT si aplica verificación.\n3. Instrucción: Diego copia valores reales desde el panel **solo en copia local** o documentación interna, no en issue público con secretos.\n4. Enlace al runbook `dns-https-godaddy-runbook-2026.md`.\n\n<!-- agent-task-id:dns-expected-records -->"
+    },
+    {
+      "id": "dns-verify-script-docs",
+      "scope": "infra",
+      "title": "[agent] Documentar script check_dns_https_gano.py y ampliar chequeos si faltan",
+      "labels": ["copilot", "coordination", "infra"],
+      "body": "## Contexto\nExiste `scripts/check_dns_https_gano.py` (stdlib) para prueba local.\n\n## Tareas\n1. Leer el script; documentar en `memory/ops/dns-verify-script-usage-2026.md`: requisitos (Python 3), salida esperada, interpretación de errores comunes (timeout, SSL, NXDOMAIN).\n2. Si el script carece de chequeo útil (p. ej. solo www o solo apex), **ampliar el script** con cuidado (sin dependencias nuevas) y mantener salida legible.\n3. `python scripts/check_dns_https_gano.py` debe ejecutarse sin argumentos y documentar exit codes si los añades.\n\n<!-- agent-task-id:dns-verify-script-docs -->"
+    },
+    {
+      "id": "https-wordpress-managed-checklist",
+      "scope": "infra",
+      "title": "[agent] Checklist HTTPS en WordPress administrado (mixed content, Really Simple SSL, redirecciones)",
+      "labels": ["copilot", "coordination", "infra"],
+      "body": "## Contexto\nTras DNS correcto, el sitio puede fallar por **URL de WordPress** (http vs https), redirecciones o mixed content.\n\n## Tareas\n1. Crear `memory/ops/https-wordpress-managed-checklist-2026.md` checklist ordenado: *Ajustes → Generales (URL)*, *plugins SSL comunes*, *.htaccess / reglas hosting*, *buscar/reemplazar en BD* (advertir backup y riesgo).\n2. Referencia a `wp-config.php` solo como patrones **sin** credenciales.\n3. Sección *No hacer en producción sin backup* en negritas.\n\n<!-- agent-task-id:https-wordpress-managed-checklist -->"
+    },
+    {
+      "id": "dns-canonical-www-hsts",
+      "scope": "infra",
+      "title": "[agent] Documento canónico: apex vs www, redirecciones y HSTS (recomendaciones)",
+      "labels": ["copilot", "coordination", "infra"],
+      "body": "## Contexto\nElegir **una** URL canónica (https://gano.digital vs https://www.gano.digital) evita duplicados SEO y cookies rotas.\n\n## Tareas\n1. Crear `memory/ops/url-canonical-gano-digital-2026.md`: pros/contras apex vs www en Managed WP; patrón recomendado para Gano (una recomendación clara + alternativa).\n2. Notas sobre **HSTS**: cuándo activar (solo tras estabilizar HTTPS).\n3. Enlaces internos a runbook DNS y checklist HTTPS.\n\n<!-- agent-task-id:dns-canonical-www-hsts -->"
+    },
+    {
+      "id": "dns-task-link-index",
+      "scope": "infra",
+      "title": "[agent] Índice ops: enlazar DNS/HTTPS docs en TASKS y memory/claude FAQ",
+      "labels": ["copilot", "coordination", "infra"],
+      "body": "## Contexto\nLos entregables infra deben ser **encontrables**.\n\n## Tareas\n1. Añadir en `TASKS.md` bajo *Active* o *Abril 2026* un sub-bloque **Infra DNS/HTTPS** con enlaces a `memory/ops/dns-https-godaddy-runbook-2026.md` y al script (tras existir).\n2. Añadir 2–3 líneas en `memory/claude/03-referencia-tecnica-y-faq.md` (FAQ: *HTTPS no carga / propagación*) apuntando al runbook.\n3. PR único y mínimo; si los archivos aún no existen por orden de merges, dejar rutas planificadas y TODO visible.\n\n<!-- agent-task-id:dns-task-link-index -->"
+    }
+  ]
+}

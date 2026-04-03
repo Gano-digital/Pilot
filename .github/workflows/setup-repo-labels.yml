@@ -35,6 +35,7 @@ jobs:
               { name: "copilot", color: "5319E7", description: "Delegable a Copilot" },
               { name: "homepage-fixplan", color: "0E8A16", description: "Tareas homepage Elementor" },
               { name: "coordination", color: "C5DEF5", description: "Sincronización servidor/local/GitHub" },
+              { name: "infra", color: "B60205", description: "DNS, SSL, dominio, hosting (runbooks)" },
             ];
             for (const s of specs) {
               await github.rest.issues.createLabel({

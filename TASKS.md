@@ -100,6 +100,8 @@ _Última actualización: Abril 2026_
 
 ### GitHub / automatización
 
+- [ ] **Oleada 4 — narrativa y páginas (Copilot):** cola [`.github/agent-queue/tasks-wave4-ia-content.json`](.github/agent-queue/tasks-wave4-ia-content.json) — plan maestro de contenidos, matriz productos/servicios, brecha IA vs inventario, orden homepage, pilares, menú, legal/contacto, índice. Sembrar: Actions → **08 · Sembrar cola Copilot** → `queue_file: tasks-wave4-ia-content.json` → `scope: all` (o `docs` / `content_seo` / `commerce`). Luego asignar Copilot.
+- [ ] **Cola infra DNS/HTTPS (Copilot + humano):** [`.github/agent-queue/tasks-infra-dns-ssl.json`](.github/agent-queue/tasks-infra-dns-ssl.json) — runbooks y checklists (Copilot **no** cambia DNS en GoDaddy). Sembrar con `queue_file: tasks-infra-dns-ssl.json` y `scope: infra` o `all`. Etiqueta **`infra`** (crear con **06 · Crear etiquetas** si no existe). Verificación local: `python scripts/check_dns_https_gano.py`.
 - [x] **Consolidación PRs Copilot (2026-04-03):** cola de PRs vaciada en `main` (squash + cierre duplicados). Detalle: [`memory/sessions/2026-04-03-consolidacion-prs-copilot.md`](memory/sessions/2026-04-03-consolidacion-prs-copilot.md). Revisar en GitHub **issues** aún abiertos y cerrarlos con comentario si el trabajo ya está en `main`.
 - [x] **Oleada 2:** `.github/agent-queue/tasks-wave2.json` + workflow **08 · Sembrar cola Copilot** con input `queue_file` (`tasks.json` | `tasks-wave2.json` | `tasks-wave3.json`).
 - [x] **Validación cola:** workflow **Validate agent queue JSON** + `scripts/validate_agent_queue.py` (CI al tocar `.github/agent-queue/`).
