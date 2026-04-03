@@ -135,6 +135,7 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `memory/sessions/2026-04-01-reporte-cursor-descargas-y-herramientas.md` | **2026-04-01** Reporte de sesión Cursor: Descargas, `EJECUTAR_ANALISIS.ps1`, organización de folios, seguridad (`id_rsa` → `.ssh`). Continuidad para Claude. |
 | `memory/claude/README.md` | **Contexto para Claude** — historial abril 2026, pendientes, FAQ; [`memory/claude/dispatch-queue.json`](memory/claude/dispatch-queue.json) + [`dispatch-prompt.md`](memory/claude/dispatch-prompt.md) cola ejecutable con `scripts/claude_dispatch.py`. |
 | `.vscode/tasks.json` | Tareas **Run Task** para dispatch (`next`, `list`, `validate`, `show`, `complete`) y validación cola Copilot. |
+| `scripts/generate_claude_audit_report_pdf.py` | **Informe PDF** de auditoría de desarrollo (estado repo, workflows, dispatch, PRs, riesgos). Salida: `reports/Gano-Digital-Auditoria-Desarrollo-YYYY-MM-DD.pdf` (`*.pdf` en gitignore). |
 
 ## Preferencias de Diego
 - Comunicación en español

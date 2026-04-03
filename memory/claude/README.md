@@ -37,6 +37,14 @@ Esto es **independiente** de la cola Copilot (`.github/agent-queue/*.json` → i
 - **“Hecho en repo”** no implica **desplegado en producción** salvo que se diga explícitamente.
 - Los números de **issue/PR** de GitHub pueden cambiar en forks; la fuente de verdad es el remoto **Gano-digital/Pilot** en GitHub.
 
+## Informe PDF para handoff (Claude / junta)
+
+Regenerar antes de una sesión importante:
+
+`python scripts/generate_claude_audit_report_pdf.py`
+
+→ `reports/Gano-Digital-Auditoria-Desarrollo-YYYY-MM-DD.pdf` (tablas, barras de progreso, diagramas ASCII, cola dispatch completa, consolidación PRs).
+
 ## Mantenimiento
 
 Cuando se cierre un bloque grande (deploy, RCC, eliminación de wp-file-manager, cierre masivo de issues), actualizar:
