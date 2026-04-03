@@ -3,7 +3,7 @@ _Última actualización: Abril 2026_
 
 ## REGRESAR AQUÍ (pendiente tu acción)
 
-**Recordatorio personal (prioridades y workflows):** [`memory/notes/nota-diego-recomendaciones-2026-04.md`](memory/notes/nota-diego-recomendaciones-2026-04.md) · **Contexto para Claude (carpeta dedicada):** [`memory/claude/README.md`](memory/claude/README.md)
+**Recordatorio personal (prioridades y workflows):** [`memory/notes/nota-diego-recomendaciones-2026-04.md`](memory/notes/nota-diego-recomendaciones-2026-04.md) · **Contexto para Claude (carpeta dedicada):** [`memory/claude/README.md`](memory/claude/README.md) · **Playbook agentes + asistentes (arranque, troubleshooting, offloading):** [`memory/ops/agent-playbook-asistentes-2026-04.md`](memory/ops/agent-playbook-asistentes-2026-04.md)
 
 **Estado abril 2026:** la cola de **PRs Copilot** se consolidó en `main` (ver [`memory/sessions/2026-04-03-consolidacion-prs-copilot.md`](memory/sessions/2026-04-03-consolidacion-prs-copilot.md)). **Ya no hace falta** ejecutar **10 · Orquestar oleadas** para fusionar esa oleada.
 
@@ -157,12 +157,14 @@ _Última actualización: Abril 2026_
 
 ### Infra DNS/HTTPS
 
-> **Nota:** los archivos de runbook se crean desde la cola `tasks-infra-dns-ssl.json` (scope `infra`). Si aún no existen en el repo, las rutas abajo son **planificadas** — TODO: verificar tras merge de esos PRs.
+> **Repo:** documentación y script **ya están en `main`**. Pendiente operativo: aplicar cambios en GoDaddy/hosting y validar con el script local.
 
-- [ ] **Runbook DNS + HTTPS GoDaddy:** [`memory/ops/dns-https-godaddy-runbook-2026.md`](memory/ops/dns-https-godaddy-runbook-2026.md) ← _TODO: crear vía issue `dns-runbook-godaddy`_
-- [ ] **Plantilla registros DNS (apex + www):** [`memory/ops/dns-expected-records-template-2026.md`](memory/ops/dns-expected-records-template-2026.md) ← _TODO: crear vía issue `dns-expected-records`_
-- [ ] **Checklist HTTPS Managed WP:** [`memory/ops/https-wordpress-managed-checklist-2026.md`](memory/ops/https-wordpress-managed-checklist-2026.md) ← _TODO: crear vía issue `https-wordpress-managed-checklist`_
-- [ ] **URL canónica (apex vs www) + HSTS:** [`memory/ops/url-canonical-gano-digital-2026.md`](memory/ops/url-canonical-gano-digital-2026.md) ← _TODO: crear vía issue `dns-canonical-www-hsts`_
-- [ ] **Script verificación local (stdlib, sin deps):** [`scripts/check_dns_https_gano.py`](scripts/check_dns_https_gano.py) — ejecutar con `python scripts/check_dns_https_gano.py`
-- [ ] **Docs de uso del script:** [`memory/ops/dns-verify-script-usage-2026.md`](memory/ops/dns-verify-script-usage-2026.md) ← _TODO: crear vía issue `dns-verify-script-docs`_
-- Sembrar cola completa: Actions → **08 · Sembrar cola Copilot** → `queue_file: tasks-infra-dns-ssl.json` → `scope: infra`
+- [x] **Runbook DNS + HTTPS GoDaddy:** [`memory/ops/dns-https-godaddy-runbook-2026.md`](memory/ops/dns-https-godaddy-runbook-2026.md)
+- [x] **Plantilla registros DNS (apex + www):** [`memory/ops/dns-expected-records-template-2026.md`](memory/ops/dns-expected-records-template-2026.md)
+- [x] **Checklist HTTPS Managed WP:** [`memory/ops/https-wordpress-managed-checklist-2026.md`](memory/ops/https-wordpress-managed-checklist-2026.md)
+- [x] **URL canónica (apex vs www) + HSTS:** [`memory/ops/url-canonical-gano-digital-2026.md`](memory/ops/url-canonical-gano-digital-2026.md)
+- [x] **Script verificación local (stdlib, sin deps):** [`scripts/check_dns_https_gano.py`](scripts/check_dns_https_gano.py)
+- [x] **Docs de uso del script:** [`memory/ops/dns-verify-script-usage-2026.md`](memory/ops/dns-verify-script-usage-2026.md)
+- [ ] **Ejecutar** en tu PC: `python scripts/check_dns_https_gano.py` y comparar con plantilla/runbook tras cualquier cambio DNS.
+- [ ] **Aplicar** registros y SSL en panel (humano) — la cola `tasks-infra-dns-ssl.json` sirve para issues Copilot que **documenten**; el cambio en DNS no lo hace GitHub.
+- Opcional — sembrar issues desde cola: Actions → **08** → `queue_file: tasks-infra-dns-ssl.json` → `scope: infra`

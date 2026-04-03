@@ -12,7 +12,7 @@ Los **nombres mostrados en la barra lateral** siguen el patrón:
 | **06** | Repo | Configuración puntual del repositorio |
 | **07–11** | Agentes | Cola Copilot, semillas y orquestación |
 
-**Orden sugerido al operar (manual):** `06` una vez si faltan etiquetas → `07` al editar colas → `08`/`09` para crear issues → `10` para merges/oleadas → `04`/`05` cuando toque servidor.
+**Orden sugerido al operar (manual):** `06` una vez si faltan etiquetas → `07` al editar colas → `08`/`09` para crear issues → `10` solo si aplica oleada histórica → `04`/`05` cuando toque servidor. **Guía ampliada:** [`memory/ops/agent-playbook-asistentes-2026-04.md`](../../memory/ops/agent-playbook-asistentes-2026-04.md).
 
 **Workflows que no están en esta carpeta** (los gestiona GitHub): *Copilot coding agent*, *Dependabot Updates* — no usan este esquema de nombres.
 

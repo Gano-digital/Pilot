@@ -24,6 +24,8 @@ Esto es **independiente** de la cola Copilot (`.github/agent-queue/*.json` — *
 
 ## Documentos “oficiales” fuera de esta carpeta
 
+- **Playbook agentes + asistentes (arranque, troubleshooting, cerrar issues, offloading):** [`../ops/agent-playbook-asistentes-2026-04.md`](../ops/agent-playbook-asistentes-2026-04.md)
+- **Plantillas para cerrar issues en GitHub:** [`gh-issue-close-guide.md`](gh-issue-close-guide.md)
 - **Memoria del proyecto y stack:** [`CLAUDE.md`](../../CLAUDE.md) en la raíz del workspace.
 - **Lista maestra de tareas:** [`TASKS.md`](../../TASKS.md).
 - **Recordatorio operativo de Diego (prioridades + cuándo correr Actions):** [`../notes/nota-diego-recomendaciones-2026-04.md`](../notes/nota-diego-recomendaciones-2026-04.md).

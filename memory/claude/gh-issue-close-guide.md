@@ -1,53 +1,43 @@
-# Guía: cerrar issues en GitHub tras merge en `main`
+# Cerrar issues en GitHub tras trabajo en `main`
 
-**Quién cierra:** humano con permisos en `Gano-digital/Pilot`. Los agentes preparan PRs; el cierre del issue es decisión humana salvo automatización explícita.
+Guía para **humanos** con permisos en `Gano-digital/Pilot`. Los agentes en el repo preparan texto; el cierre y la verificación de estado en GitHub los hace quien tenga acceso.
 
-## 1. Antes de cerrar
+## Antes de cerrar
 
-1. Buscar el issue en GitHub y localizar el marcador `<!-- agent-task-id:... -->` si existe.
-2. En la rama `main`, confirmar que el cambio está fusionado (`git pull`, o revisar el PR vinculado).
-3. Si el issue mezcla “solo Elementor” y “repo”, cerrar solo cuando **ambas** partes estén resueltas o dejar comentario de lo que queda en wp-admin.
+1. Buscar el issue abierto (por número o por etiqueta).
+2. Confirmar en `main` que el cambio existe (diff, PR fusionado, o ruta citada en el issue).
+3. Si el issue mezcla “solo servidor” y “repo”, cerrar solo el parte **repo** si aplica; dejar checklist en comentario para el resto.
 
-## 2. Cómo buscar candidatos
+## Plantillas de comentario (copiar/pegar)
 
-- Filtros útiles: `is:open label:copilot`, `is:open label:homepage-fixplan`, `is:open label:coordination`.
-- Revisar issues del rango **#17–#33** (oleada 1) y **#54–#68** (oleada 3) si siguen abiertos tras la consolidación 2026-04-03.
+### Genérico — resuelto en código
 
-## 3. Plantillas de comentario (copiar / adaptar)
-
-### Homepage / fixplan
-
-```
-Cerrando: el trabajo de este issue ya está integrado en `main` (fecha: YYYY-MM-DD).
-Archivos / PR de referencia: #NNN
-Queda acción manual en Elementor: [sí/no — detallar si aplica].
+```text
+Cerrado: el trabajo solicitado ya está integrado en `main` (fecha: YYYY-MM-DD).
+Archivos / PRs relevantes: …
+Si aún falta algo en producción, depende de deploy / wp-admin (ver issue o TASKS.md).
 ```
 
-### Oleada 3 / marca / docs
+### Etiqueta `homepage-fixplan` / Elementor
 
-```
-Cerrando: entregables en `memory/content/` o `memory/research/` fusionados en `main` vía PR #NNN.
-Si falta aplicación en Elementor, abrir issue `[sync]` con plantilla de coordinación.
-```
-
-### Tema / PHP
-
-```
-Cerrando: cambios en `gano-child` (o MU-plugins) en `main`. CI verde en el PR #NNN.
+```text
+Cerrado en repo: … (si aplica).
+Pendiente en producción: ajustes en Elementor/wp-admin — ver `TASKS.md` § Contenido homepage.
 ```
 
-### Coordinación / sync
+### Oleada 3 / marca / copy en `memory/content/`
 
+```text
+Entregables en `main` bajo `memory/content/` o `memory/research/`. Cierre por consolidación; revisar aplicación en sitio si el issue lo pedía explícitamente.
 ```
-Cerrando: el drift descrito quedó alineado según comentario en PR #NNN; servidor verificado el YYYY-MM-DD.
+
+### `coordination` / sync
+
+```text
+Estado sincronizado en git. Deploy/validación en servidor: seguir `DEV-COORDINATION.md` o checklist del issue.
 ```
 
-## 4. Si **no** debes cerrar
+## Búsqueda útil en GitHub
 
-- El issue pide algo que solo ocurre en producción y no hay evidencia en repo: deja comentario y etiqueta `coordination`.
-- Duplicado: cierra con “Duplicate of #NN”.
-
-## Referencias
-
-- `.github/MERGE-PLAYBOOK.md`
-- `memory/sessions/2026-04-03-consolidacion-prs-copilot.md`
+- Issues abiertos con label `copilot` o `agent-dispatch` (según política del repo).
+- Filtro por texto: `agent-task-id:tu-id` en el cuerpo (si el issue viene de la cola **08**).

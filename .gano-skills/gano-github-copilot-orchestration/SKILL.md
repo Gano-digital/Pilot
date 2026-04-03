@@ -8,7 +8,9 @@ description: >
   "label-bootstrap", "assign copilot", "offloading issues", "PRs del agente", "orchestrate waves".
 ---
 
-# Gano — GitHub, Actions y Copilot coding agent (actualizado **2026-04-03**)
+# Gano — GitHub, Actions y Copilot coding agent (actualizado **2026-04**)
+
+**Playbook asistentes:** [`memory/ops/agent-playbook-asistentes-2026-04.md`](../../memory/ops/agent-playbook-asistentes-2026-04.md)
 
 ## Fuente de verdad en GitHub
 
