@@ -1,0 +1,111 @@
+{
+  "version": 3,
+  "description": "Oleada 3 — marca, UX, comercial, activos y arquitectura de contenido para gano.digital. Brief: memory/research/gano-wave3-brand-ux-master-brief.md",
+  "tasks": [
+    {
+      "id": "w3-brief-index",
+      "scope": "docs",
+      "title": "[agent] Oleada 3: índice en TASKS + enlace al brief maestro marca/UX",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\n`memory/research/gano-wave3-brand-ux-master-brief.md` es la fuente maestra oleada 3.\n\n## Tareas\n1. Añadir en `TASKS.md` (sección Abril 2026) un bloque corto **Oleada 3 — marca/UX/comercial** con enlace al brief y a `tasks-wave3.json`.\n2. Una línea en `.github/COPILOT-AGENT-QUEUE.md` mencionando `tasks-wave3.json`.\n3. PR mínimo sin duplicar el contenido del brief.\n\n<!-- agent-task-id:w3-brief-index -->"
+    },
+    {
+      "id": "w3-voice-microcopy",
+      "scope": "content_seo",
+      "title": "[agent] Kit microcopy + voz: CTAs, errores, vacíos, formularios (ES-CO)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nBrief §2 voz y tono.\n\n## Tareas\n1. Crear `memory/content/microcopy-wave3-kit.md` con tablas: CTA primario/secundario, mensajes de error genéricos, estados vacíos (sin carrito, sin resultados), pie de formulario consentimiento.\n2. Regla explícita tú/usted por contexto.\n3. Sin datos legales inventados (placeholders claros para abogado/Diego).\n\n<!-- agent-task-id:w3-voice-microcopy -->"
+    },
+    {
+      "id": "w3-ia-sitemap",
+      "scope": "docs",
+      "title": "[agent] Propuesta IA + mapa del sitio (rutas, hubs, profundidad ≤3 clics)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nBrief §4 arquitectura información.\n\n## Tareas\n1. Crear `memory/content/site-ia-wave3-proposed.md` con árbol de rutas sugerido, hubs (home, shop/ecosistemas, nosotros, legal, contacto, pilares SEO).\n2. Nota de qué páginas son **Elementor** vs plantilla PHP.\n3. Enlaces internos sugeridos entre pilares y planes.\n\n<!-- agent-task-id:w3-ia-sitemap -->"
+    },
+    {
+      "id": "w3-ux-checklist",
+      "scope": "docs",
+      "title": "[agent] Checklist UX mastery (heurísticas + CWV percibidos + móvil)",
+      "labels": ["copilot", "area:ci"],
+      "body": "## Contexto\nBrief §5 UX.\n\n## Tareas\n1. Crear `memory/research/ux-heuristics-checklist-gano.md` checklist verificable (checkboxes) alineado Nielsen + items CWV percibidos + móvil.\n2. Referencia a `prefers-reduced-motion`.\n3. PR que solo añade el archivo (o más si el agente detecta gaps en docs existentes).\n\n<!-- agent-task-id:w3-ux-checklist -->"
+    },
+    {
+      "id": "w3-trust-copy-blocks",
+      "scope": "content_seo",
+      "title": "[agent] Bloques copy confianza: footer, nosotros, reseller honesto",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nBrief §1 honestidad Reseller + §6 narrativa.\n\n## Tareas\n1. `memory/content/trust-and-reseller-copy-wave3.md` — párrafos listos para pegar (footer corto, disclaimer reseller, “por qué Gano”).\n2. Sin afirmar data center propio.\n3. Placeholders `[NIT]`, `[teléfono]` donde falten datos reales.\n\n<!-- agent-task-id:w3-trust-copy-blocks -->"
+    },
+    {
+      "id": "w3-competitive-framework",
+      "scope": "coordination",
+      "title": "[agent] Marco competencia CO/LATAM (categorías, sin nombres hasta investigación)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Tareas\n1. `memory/research/competitive-framework-colombia-hosting.md` — dimensiones comparables (precio, soporte, WordPress managed, facturación local, rendimiento declarado).\n2. Tabla plantilla para que Diego rellene competidores cuando quiera.\n3. Prohibido inventar precios o features de terceros.\n\n<!-- agent-task-id:w3-competitive-framework -->"
+    },
+    {
+      "id": "w3-elementor-architecture",
+      "scope": "theme",
+      "title": "[agent] Guía arquitectura Elementor: contenedores, kit, Theme Builder",
+      "labels": ["copilot", "area:theme"],
+      "body": "## Contexto\nBrief §8 Elementor.\n\n## Tareas\n1. Ampliar `memory/content/elementor-home-classes.md` o crear `memory/content/elementor-architecture-wave3.md` con reglas: 1 contenedor = 1 intención, orden header/footer/404, cuándo plantilla home dedicada.\n2. Referencias cruzadas con clases `gano-el-*`.\n3. Sin cambios PHP salvo que sea una sola línea de comentario docblock en `functions.php` enlazando el MD.\n\n<!-- agent-task-id:w3-elementor-architecture -->"
+    },
+    {
+      "id": "w3-visual-tokens-doc",
+      "scope": "theme",
+      "title": "[agent] Documentar escala tipográfica + contraste (extensión tokens marca)",
+      "labels": ["copilot", "area:theme"],
+      "body": "## Contexto\nBrief §3 sistema visual.\n\n## Tareas\n1. `memory/content/visual-tokens-wave3.md` — escala display/H1–H3/body/small, uso de oro sobre oscuro, focus visible.\n2. Si aplica, PR pequeño en `gano-child/style.css` añadiendo **solo** custom properties comentadas o `:root` documentado (sin rediseño completo).\n3. `php -l` si toca PHP.\n\n<!-- agent-task-id:w3-visual-tokens-doc -->"
+    },
+    {
+      "id": "w3-motion-3d-policy",
+      "scope": "docs",
+      "title": "[agent] Política motion/3D: Lottie, video loop, Spline, reduced-motion",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nBrief §3 motion y 3D.\n\n## Tareas\n1. `memory/research/motion-and-3d-policy-gano.md` — cuándo usar cada medio, pesos orientativos, LCP, fallback estático, accesibilidad.\n2. Recomendación MVP: priorizar estático + micro motion CSS/GSAP existente.\n3. Sin dependencias npm nuevas en el PR salvo justificación en el issue.\n\n<!-- agent-task-id:w3-motion-3d-policy -->"
+    },
+    {
+      "id": "w3-raster-asset-spec",
+      "scope": "docs",
+      "title": "[agent] Especificación activos raster: WebP, nombres, OG, dimensiones CLS",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nBrief §7 activos.\n\n## Tareas\n1. `memory/content/raster-asset-spec-wave3.md` — convención nombres, tamaños sugeridos hero/pilar/OG, `width`/`height`, `fetchpriority`.\n2. Enlace a configuración LCP en `gano-seo.php` si documentado en código.\n\n<!-- agent-task-id:w3-raster-asset-spec -->"
+    },
+    {
+      "id": "w3-homepage-story-arc",
+      "scope": "content_seo",
+      "title": "[agent] Arco narrativo homepage (orden secciones AIDA / story)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Tareas\n1. `memory/content/homepage-story-arc-wave3.md` — orden sugerido de secciones con justificación (atención → interés → prueba social real → deseo → acción).\n2. Mapeo a bloques existentes del mockup / Elementor.\n3. Integrar referencia a `homepage-copy-2026-04.md` sin duplicar texto largo.\n\n<!-- agent-task-id:w3-homepage-story-arc -->"
+    },
+    {
+      "id": "w3-schema-faq-expansion",
+      "scope": "content_seo",
+      "title": "[agent] Propuesta ampliación FAQ/schema alineada marca (ideas, no spam)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\n`gano-seo.php` ya tiene FAQ; proponer **ideas** nuevas preguntas/respuestas cortas alineadas Reseller honesto.\n\n## Tareas\n1. `memory/content/faq-schema-candidates-wave3.md` lista Q/R borrador.\n2. PR opcional: solo si el agente integra vía filtro PHP **mínimo** y documentado; preferir dejar como insumo para edición humana.\n\n<!-- agent-task-id:w3-schema-faq-expansion -->"
+    },
+    {
+      "id": "w3-ecosystems-copy-matrix",
+      "scope": "commerce",
+      "title": "[agent] Matriz comercial Núcleo Prime / Fortaleza Delta / Bastión SOTA (beneficios reales)",
+      "labels": ["copilot", "area:theme"],
+      "body": "## Tareas\n1. `memory/content/ecosystems-copy-matrix-wave3.md` tabla: plan → promesa → audiencia → objeción típica → prueba (solo verificable).\n2. Coherencia con `shop-premium.php` / Reseller; sin IDs de producto inventados.\n3. Enlazar `TASKS.md` Fase 4.\n\n<!-- agent-task-id:w3-ecosystems-copy-matrix -->"
+    },
+    {
+      "id": "w3-wcag-priority-theme",
+      "scope": "theme",
+      "title": "[agent] Utilidades accesibilidad: focus-visible, skip link doc o CSS mínimo",
+      "labels": ["copilot", "area:theme"],
+      "body": "## Tareas\n1. Revisar `gano-child` para `:focus-visible`, contraste enlaces, skip-to-content si el tema lo permite sin romper Elementor.\n2. PR pequeño + nota en `memory/content/ux-a11y-wave3-notes.md`.\n3. Probar que no rompe CSP en `gano-security.php`.\n\n<!-- agent-task-id:w3-wcag-priority-theme -->"
+    },
+    {
+      "id": "w3-og-social-preview",
+      "scope": "content_seo",
+      "title": "[agent] Guía previews sociales (OG/Twitter) + dimensiones recomendadas",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nRank Math + `gano-seo.php` fallback.\n\n## Tareas\n1. `memory/content/social-preview-spec-wave3.md` — tamaños, texto seguro en imagen, qué páginas priorizar.\n2. Sin binarios en el repo; solo especificación.\n\n<!-- agent-task-id:w3-og-social-preview -->"
+    }
+  ]
+}

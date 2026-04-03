@@ -1,0 +1,31 @@
+---
+description: "USE WHEN writing or modifying CSS or JavaScript files"
+globs: "**/*.css,**/*.js"
+alwaysApply: false
+---
+
+# CSS & JavaScript Conventions
+
+## CSS
+- Variables ya definidas en `:root` de `style.css`:
+  - `--gano-blue: #1B4FD8` (corporativo)
+  - `--gano-green: #00C26B` (digital)
+  - `--gano-orange: #FF6B35` (CTA)
+  - `--gano-gold: #D4AF37` (SOTA/premium)
+  - `--gano-dark: #0F1923` (fondo nocturno)
+- Tipografia: `'Plus Jakarta Sans'` (headings), `'Inter'` (body)
+- NO usar Tailwind CSS — solo Vanilla CSS + custom properties
+- Glassmorphism: `backdrop-filter: blur(24px) saturate(180%)`
+
+## JavaScript
+- GSAP 3 cargado globalmente via `wp_enqueue_script('gsap-js')`
+- ScrollTrigger registrado: `gsap.registerPlugin(ScrollTrigger)`
+- SIEMPRE respetar `prefers-reduced-motion` antes de animar
+- Vanilla JS preferido sobre jQuery para codigo nuevo
+- IntersectionObserver para scroll reveals (`scroll-reveal.js`)
+- NO usar frameworks JS (React/Vue) — Elementor maneja el frontend
+
+## Rendimiento
+- Lazy load imagenes con `loading="lazy"`
+- Defer scripts no criticos
+- CSS critico inline, resto diferido
