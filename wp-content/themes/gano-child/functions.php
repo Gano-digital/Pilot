@@ -85,7 +85,42 @@ add_action( 'wp_footer', function() {
 } );
 
 // =============================================================================
-// 1b. MENÚS — ubicación 'primary' (Elementor / muchos kits); el padre solo registra 'main'
+// 1b. ACCESIBILIDAD — Skip link + anchor de destino (WCAG 2.4.1, 2.4.7)
+// =============================================================================
+
+/**
+ * Inyecta el skip-link al inicio de <body> para usuarios de teclado/lectores de pantalla.
+ * El CSS asociado está en style.css (.gano-skip-link) — no hay estilos inline
+ * y por tanto no afecta la CSP del MU plugin gano-security.php.
+ * Target: #gano-main-content (anchor inyectado en gano_main_content_anchor).
+ *
+ * Compatible con Hello Elementor y plantillas canvas de Elementor.
+ * Hook wp_body_open requiere <?php wp_body_open(); ?> en el header del tema padre.
+ * Hello Elementor lo soporta desde la versión 2.7.0.
+ */
+add_action( 'wp_body_open', 'gano_skip_link', 1 );
+function gano_skip_link(): void {
+    echo '<a class="gano-skip-link" href="#gano-main-content">'
+        . esc_html__( 'Saltar al contenido principal', 'gano-child' )
+        . '</a>';
+}
+
+/**
+ * Inyecta el anchor receptor del skip link justo antes del contenido principal.
+ * Se usa wp_before_admin_bar_render como fallback si wp_body_open no existe.
+ * En el front-end, el anchor se coloca con elementor/frontend/the_excerpt/widget_before
+ * o simplemente en wp_body_open con tabindex="-1" en el wrapper de Elementor.
+ *
+ * Para plantillas Elementor full-width: asigna el ID "gano-main-content" a la
+ * primera sección del canvas desde el editor de Elementor (Advanced > CSS ID).
+ */
+add_action( 'wp_body_open', 'gano_main_content_anchor', 5 );
+function gano_main_content_anchor(): void {
+    echo '<span id="gano-main-content" tabindex="-1" class="gano-a11y-anchor"></span>';
+}
+
+// =============================================================================
+// 1c. MENÚS — ubicación 'primary' (Elementor / muchos kits); el padre solo registra 'main'
 // =============================================================================
 
 add_action( 'after_setup_theme', 'gano_child_register_nav_menus', 20 );

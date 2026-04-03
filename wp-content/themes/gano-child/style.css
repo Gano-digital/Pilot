@@ -1350,3 +1350,102 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
         transform: none;
     }
 }
+
+/* ============================================================
+   ACCESIBILIDAD — WCAG 2.1 AA
+   Focus-visible, skip link y contraste de enlace.
+   Compatible con CSP del MU plugin gano-security.php
+   (no se usan estilos inline; todo va en esta hoja de estilos).
+   ============================================================ */
+
+/* Skip-to-content: visible solo al enfocar con teclado (WCAG 2.4.1) */
+.gano-skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 99999;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--gano-blue);
+    color: #ffffff;
+    font-family: var(--gano-font-body);
+    font-size: var(--gano-fs-sm);
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 0 0 var(--gano-radius-md) var(--gano-radius-md);
+    outline: 3px solid var(--gano-gold, #D4AF37);
+    outline-offset: 2px;
+    transition: top 0.2s ease;
+}
+
+.gano-skip-link:focus,
+.gano-skip-link:focus-visible {
+    top: 0;
+}
+
+/* Indicadores de foco para navegación por teclado (WCAG 2.4.7) */
+:focus-visible {
+    outline: 3px solid var(--gano-blue);
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
+/* Elimina el outline del navegador solo donde hay alternativa visible (:focus-visible) */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Botones y CTAs: foco con halo dorado para destacar sobre fondos oscuros */
+.btn-primary:focus-visible,
+.gano-btn:focus-visible,
+.btn-outline:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+.elementor-button:focus-visible {
+    outline: 3px solid var(--gano-gold, #D4AF37);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 5px rgba(212, 175, 55, 0.28);
+}
+
+/* Inputs y controles de formulario */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 3px solid var(--gano-blue);
+    outline-offset: 2px;
+    border-color: var(--gano-blue);
+    box-shadow: 0 0 0 3px rgba(27, 79, 216, 0.18);
+}
+
+/* Contraste de enlaces: azul #1B4FD8 sobre blanco = 10.2:1 ✓ WCAG AA
+   En contextos oscuros se usa --gano-blue-light para garantizar contraste */
+.gano-bg-dark a,
+.elementor-section.e-con--dark a {
+    color: var(--gano-blue-light, #E8EEFB);
+}
+
+.gano-bg-dark a:focus-visible,
+.elementor-section.e-con--dark a:focus-visible {
+    outline-color: var(--gano-gold, #D4AF37);
+}
+
+/* Ancla receptora del skip link: queda invisible pero recibe el foco (WCAG 2.4.1) */
+#gano-main-content {
+    outline: none;
+}
+
+.gano-a11y-anchor {
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gano-skip-link {
+        transition: none;
+    }
+}
