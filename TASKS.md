@@ -3,7 +3,7 @@ _Última actualización: Abril 2026_
 
 ## REGRESAR AQUÍ (pendiente tu acción en GitHub)
 
-Cuando vuelvas: **Actions → [Orchestrate Copilot waves](https://github.com/Gano-digital/Pilot/actions/workflows/orchestrate-copilot-waves.yml)** → primero `dry_run_merge: true`, luego ejecución real con `merge_wave1` + `seed_wave2`. Detalle: [`.github/MERGE-PLAYBOOK.md`](.github/MERGE-PLAYBOOK.md).
+Cuando vuelvas: **Actions → [Orchestrate Copilot waves](https://github.com/Gano-digital/Pilot/actions/workflows/orchestrate-copilot-waves.yml)** → primero `dry_run_merge: true`, luego ejecución real con `merge_wave1` + `seed_wave2`. Detalle: [`.github/MERGE-PLAYBOOK.md`](.github/MERGE-PLAYBOOK.md). Antes de fusionar PRs de agentes: [`.github/AGENT-REVIEW-CHECKLIST.md`](.github/AGENT-REVIEW-CHECKLIST.md) + *Definition of Done* en [`.github/prompts/copilot-bulk-assign.md`](.github/prompts/copilot-bulk-assign.md).
 
 ---
 
@@ -42,13 +42,12 @@ Cuando vuelvas: **Actions → [Orchestrate Copilot waves](https://github.com/Gan
 
 ## 🔴 Active — Acción manual requerida en servidor real
 
-- [ ] **[CRÍTICO] Subir archivos corregidos al servidor real** — Los archivos editados (Fases 1-3) están listos:
-  - `wp-config.php`
-  - `wp-content/mu-plugins/gano-security.php`
-  - `wp-content/mu-plugins/gano-seo.php`
-  - `wp-content/themes/gano-child/functions.php`
-  - `wp-content/themes/gano-child/js/gano-chat.js`
-  - `wp-content/themes/gano-child/templates/shop-premium.php` (SOTA Mockup Integrado)
+- [ ] **[CRÍTICO] Sincronizar parches Fases 1–3 con el servidor** — Opciones:
+  1. **CI:** configurar secrets `SSH`, `SERVER_HOST`, `SERVER_USER`, `DEPLOY_PATH` (ver [`.github/DEV-COORDINATION.md`](.github/DEV-COORDINATION.md)); un push a `main` que toque `gano-child` / `gano-*` / `mu-plugins` dispara [`deploy.yml`](.github/workflows/deploy.yml).
+  2. **Verificación:** Actions → **Verificar parches Fase 1-3** ([`verify-patches.yml`](.github/workflows/verify-patches.yml)) — compara checksums; opcional subir diferencias.
+  3. **Manual:** SFTP/rsync si no usas Actions.
+  - `wp-config.php` — **no** va en git; subir solo por SFTP seguro.
+  - `wp-content/themes/gano-child/templates/shop-premium.php` — va dentro del deploy del child theme cuando exista en repo.
 
 - [ ] **[CRÍTICO] Eliminar wp-file-manager del servidor** — El MU plugin ahora muestra la alerta en wp-admin.
   1. Ir a wp-admin → Plugins → Desactivar wp-file-manager

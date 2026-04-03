@@ -86,4 +86,16 @@ Sin secretos; gano_ en PHP; CSP/MU gano-security si tocas CSS/JS. Un issue → u
 
 ---
 
+## Definition of Done (revisor humano — obligatorio antes de merge)
+
+1. **Un issue, un propósito:** el PR resuelve **solo** lo que pide el issue; sin refactors colaterales.
+2. **CI:** `php-lint-gano` + `secret-scan` (TruffleHog) en verde para rutas tocadas.
+3. **Sin secretos:** ningún token, password, IP+usuario de panel, ni clave Reseller en el diff.
+4. **Base actualizada:** sin conflictos con `main`; si el agente dejó la rama **dirty**, `Update branch` o rebase antes de fusionar.
+5. **Issues solo servidor/Elementor:** si el trabajo es 100 % wp-admin, el PR no debe inventar archivos; cerrar con comentario + checklist en el issue.
+6. **Comercio:** alineado a **GoDaddy Reseller** (`TASKS.md`); no reintroducir Wompi como camino activo salvo código legacy explícito.
+7. **Cierre:** cuerpo de merge con `Closes #NN` cuando corresponda.
+
+---
+
 _Versión alineada a `.github/DEV-COORDINATION.md` y colas `tasks.json` / `tasks-wave3.json`._

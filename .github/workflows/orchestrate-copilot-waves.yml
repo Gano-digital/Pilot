@@ -47,6 +47,8 @@ jobs:
 
             // Orden MERGE-PLAYBOOK: CI crítico → tema → SEO/MU → docs → commerce
             // PR → issue para Closes # (solo si el PR cubre el trabajo en repo)
+            // Orden MERGE-PLAYBOOK. PRs ya fusionadas se omiten (state !== open).
+            // #51 README → #32 cubierto; #69 oleada 3 TASKS no estaba en lista.
             const wave1 = [
               { pr: 47, closes: 29 },
               { pr: 34, closes: 17 },
@@ -61,7 +63,6 @@ jobs:
               { pr: 42, closes: 26 },
               { pr: 43, closes: 28 },
               { pr: 44, closes: 27 },
-              { pr: 49, closes: 32 },
               { pr: 50, closes: 33 },
               { pr: 46, closes: 30 },
               { pr: 48, closes: 31 },

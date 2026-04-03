@@ -4,6 +4,12 @@
 
 Este documento asiste la revisión humana y el orden de merge. Actualizar tras cada merge a `main`.
 
+### Actualización 2026-04-02 (post-integración local CI)
+
+- **`main` (repo):** `deploy.yml` usa secrets `SSH`, `SERVER_HOST`, `SERVER_USER`, `DEPLOY_PATH` (sin host/usuario en claro). Nuevo `verify-patches.yml` (comparación MD5 Fase 1–3). `orchestrate-copilot-waves.yml` sin `{ pr: 49 }` en wave1 (README cubierto por #51).
+- **Revisión:** añadidos [`.github/AGENT-REVIEW-CHECKLIST.md`](../../.github/AGENT-REVIEW-CHECKLIST.md) y *Definition of Done* en `copilot-bulk-assign.md`.
+- **PR #47:** si el contenido ya está en `main`, cerrar la PR y enlazar el commit; evitar merge duplicado.
+
 ---
 
 ## 1. Estado global (proceso)
