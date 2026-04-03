@@ -134,6 +134,7 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `memory/research/fase4-plataforma.md` | **NUEVO** Investigación completa Fase 4 |
 | `memory/sessions/2026-04-01-reporte-cursor-descargas-y-herramientas.md` | **2026-04-01** Reporte de sesión Cursor: Descargas, `EJECUTAR_ANALISIS.ps1`, organización de folios, seguridad (`id_rsa` → `.ssh`). Continuidad para Claude. |
 | `memory/claude/README.md` | **Contexto para Claude** — historial abril 2026, pendientes, FAQ; [`memory/claude/dispatch-queue.json`](memory/claude/dispatch-queue.json) + [`dispatch-prompt.md`](memory/claude/dispatch-prompt.md) cola ejecutable con `scripts/claude_dispatch.py`. |
+| `.vscode/tasks.json` | Tareas **Run Task** para dispatch (`next`, `list`, `validate`, `show`, `complete`) y validación cola Copilot. |
 
 ## Preferencias de Diego
 - Comunicación en español

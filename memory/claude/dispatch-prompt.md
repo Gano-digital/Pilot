@@ -10,6 +10,22 @@ Todo lo que requiere **wp-admin, RCC de GoDaddy, secrets de GitHub o Elementor e
 
 ---
 
+## VS Code / Cursor (tareas del workspace)
+
+Con la carpeta del repo abierta como **workspace root**:
+
+1. **Terminal → Run Task…** (`Ctrl+Shift+B` no aplica por defecto; usa la paleta) o **Ctrl+Shift+P** → `Tasks: Run Task`.
+2. Elige por ejemplo:
+   - **Gano: Claude dispatch — siguiente tarea (next)**
+   - **Gano: Claude dispatch — listar**
+   - **Gano: validar cola Claude dispatch**
+   - **Gano: Claude dispatch — mostrar tarea** / **marcar completa** (pide el id `cd-repo-XXX`).
+3. Atajos en **Cursor** (configurados en tu perfil local): **Ctrl+Shift+Alt+N** = next, **Ctrl+Shift+Alt+L** = listar, **Ctrl+Shift+Alt+V** = validar cola dispatch. Si chocan con otra extensión, cambiálos en *Keyboard Shortcuts* buscando `Run Task`.
+
+Los archivos viven en **`.vscode/tasks.json`** (versionados en git). Si usás **VS Code** en lugar de Cursor, copiá la misma carpeta `.vscode` o sincronizá settings; los atajos van en `%APPDATA%\Code\User\keybindings.json` con las mismas entradas.
+
+---
+
 ## Flujo rápido (Cursor o Claude Code)
 
 1. Desde la raíz del repo:

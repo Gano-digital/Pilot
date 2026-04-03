@@ -17,6 +17,7 @@ Esta carpeta concentra **registros estructurados** para que cualquier instancia 
 - **Definición de tareas:** [`dispatch-queue.json`](dispatch-queue.json) — 12 ítems (`cd-repo-001` … `cd-repo-012`) con instrucciones, paths y *definition of done*.
 - **Cómo usarlo:** [`dispatch-prompt.md`](dispatch-prompt.md) — flujo `next` / `complete`, prompt maestro para Claude Projects, y límites (no se puede “programar” la nube Anthropic desde git).
 - **Scripts:** `python scripts/claude_dispatch.py list|next|show <id>|complete <id>` · `python scripts/validate_claude_dispatch.py`
+- **Cursor/VS Code:** tareas en [`.vscode/tasks.json`](../../.vscode/tasks.json) (`Tasks: Run Task`); atajos globales en perfil Cursor (ver [`dispatch-prompt.md`](dispatch-prompt.md)).
 - **Progreso local:** `memory/claude/dispatch-state.json` (gitignored; se crea al primer `complete`).
 
 Esto es **independiente** de la cola Copilot (`.github/agent-queue/*.json` → issues en GitHub).
