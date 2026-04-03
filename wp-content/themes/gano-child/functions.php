@@ -498,6 +498,83 @@ function gano_render_pilares(): string {
 // 4b. WHITELIST: AGREGAR ENDPOINTS DEL CHAT A LA LISTA DEL MU PLUGIN
 // =============================================================================
 
+// =============================================================================
+// 5. SHORTCODE: [gano_cta_icons] — iconos reales del CTA final
+// =============================================================================
+
+/**
+ * Renderiza la fila de iconos del bloque CTA final con Font Awesome 5/6.
+ * Uso: inserta el shortcode [gano_cta_icons] en un widget Shortcode de Elementor
+ * sobre el contenedor con clase gano-el-cta-icons o directamente como shortcode.
+ *
+ * Dependencia de iconos: Font Awesome es cargado por Elementor / Essential Addons.
+ */
+add_shortcode( 'gano_cta_icons', 'gano_render_cta_icons' );
+function gano_render_cta_icons() {
+    $items = array(
+        array(
+            'icon'  => 'fa-bolt',
+            'label' => 'Velocidad NVMe',
+            'url'   => home_url( '/arquitecturas/' ),
+            'title' => 'Ver arquitecturas NVMe',
+        ),
+        array(
+            'icon'  => 'fa-shield-halved',
+            'label' => 'Zero-Trust',
+            'url'   => home_url( '/seguridad/' ),
+            'title' => 'Conocer el hardening de seguridad',
+        ),
+        array(
+            'icon'  => 'fa-circle-check',
+            'label' => 'Uptime 99,9 %',
+            'url'   => '',
+            'title' => '',
+        ),
+        array(
+            'icon'  => 'fa-headset',
+            'label' => 'Soporte en español',
+            'url'   => home_url( '/contacto/' ),
+            'title' => 'Hablar con el equipo de soporte',
+        ),
+        array(
+            'icon'  => 'fa-coins',
+            'label' => 'Facturación en COP',
+            'url'   => '',
+            'title' => '',
+        ),
+    );
+
+    ob_start();
+    echo '<ul class="gano-el-cta-icons">';
+    foreach ( $items as $item ) {
+        $has_link = ! empty( $item['url'] );
+        echo '<li class="gano-el-cta-icons__item">';
+        if ( $has_link ) {
+            printf(
+                '<a href="%s" title="%s" aria-label="%s">',
+                esc_url( $item['url'] ),
+                esc_attr( $item['title'] ),
+                esc_attr( $item['label'] . ': ' . $item['title'] )
+            );
+        }
+        printf(
+            '<i class="fa-solid %s" aria-hidden="true"></i>',
+            esc_attr( $item['icon'] )
+        );
+        printf(
+            '<span class="gano-el-cta-icons__label">%s</span>',
+            esc_html( $item['label'] )
+        );
+        if ( $has_link ) {
+            echo '</a>';
+        }
+        echo '</li>';
+    }
+    echo '</ul>';
+    return ob_get_clean();
+}
+
+
 /**
  * El MU plugin gano-security.php bloquea la REST API para no autenticados.
  * Los endpoints del chat usan nonce, que WordPress valida como autenticación,
