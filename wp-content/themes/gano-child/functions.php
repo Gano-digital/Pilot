@@ -14,8 +14,8 @@
 add_action( 'wp_enqueue_scripts', 'gano_child_enqueue_styles' );
 function gano_child_enqueue_styles() {
     // Estilos del tema padre y hijo
-    wp_enqueue_style( 'hello-elementor-parent-style', get_template_directory_uri() . '/style.css' );
-    wp_enqueue_style( 'gano-child-style', get_stylesheet_uri(), array( 'hello-elementor-parent-style' ), wp_get_theme()->get( 'Version' ) );
+    wp_enqueue_style( 'royal-elementor-kit-parent', get_template_directory_uri() . '/style.css' );
+    wp_enqueue_style( 'gano-child-style', get_stylesheet_uri(), array( 'royal-elementor-kit-parent' ), wp_get_theme()->get( 'Version' ) );
 
     // Chat IA — se carga con nonce CSRF (V-05 Fix)
     wp_enqueue_style( 'gano-chat-css', get_stylesheet_directory_uri() . '/css/gano-chat.css', array(), '1.2.0' );
