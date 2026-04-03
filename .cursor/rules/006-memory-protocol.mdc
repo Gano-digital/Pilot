@@ -1,0 +1,35 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+# Memory Protocol — Persistencia entre Sesiones
+
+Cursor no tiene memoria persistente nativa. Usamos archivos en `.cursor/memory/` como banco de memoria.
+
+## Antes de empezar cualquier tarea
+1. Leer `.cursor/memory/activeContext.md` — que se esta haciendo ahora
+2. Leer `.cursor/memory/techContext.md` — decisiones tecnicas
+3. Si necesitas contexto del proyecto: leer `.cursor/memory/projectBrief.md`
+
+## Despues de completar trabajo significativo
+1. Actualizar `.cursor/memory/activeContext.md` con lo que se hizo
+2. Actualizar `.cursor/memory/progress.md` con estado de completitud
+3. Si aprendiste un patron nuevo: actualizar `techContext.md`
+4. Si encontraste bugs fuera de scope: agregar a `deferredItems.md`
+
+## Archivos del Memory Bank
+| Archivo | Contenido |
+|---------|-----------|
+| `projectBrief.md` | Vision, features core, target, URLs |
+| `techContext.md` | Stack, decisiones arquitecturales, servidor |
+| `activeContext.md` | Foco actual, bloqueadores, proximos pasos |
+| `progress.md` | Tracker de completitud por fecha |
+| `deferredItems.md` | Bugs/issues descubiertos fuera de scope |
+
+## Cross-Reference
+- Proyecto completo: `CLAUDE.md` (raiz)
+- Tareas: `TASKS.md` (raiz)
+- Copilot: `.github/copilot-instructions.md`
+- Coordinacion: `.github/DEV-COORDINATION.md`
