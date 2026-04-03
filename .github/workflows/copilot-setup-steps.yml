@@ -18,14 +18,14 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - name: Set up PHP 8.3
+      - name: Set up PHP 8.2
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.3"
+          php-version: "8.2"
           extensions: mysql, xml, curl, mbstring, zip, gd, intl
           tools: composer, wp-cli
 
@@ -51,9 +51,13 @@ jobs:
           jq --version
 
       - name: PHP lint on Gano custom code
+        shell: bash
         run: |
-          echo "Linting Gano custom PHP files..."
-          find wp-content/themes/gano-child -name "*.php" -exec php -l {} \; 2>&1 | grep -v "No syntax errors"
-          find wp-content/plugins/gano-* -name "*.php" -exec php -l {} \; 2>&1 | grep -v "No syntax errors"
-          find wp-content/mu-plugins -name "gano-*.php" -exec php -l {} \; 2>&1 | grep -v "No syntax errors"
+          set -euo pipefail
+          echo "Linting Gano custom PHP (falla si hay error de sintaxis)..."
+          find wp-content/themes/gano-child -name "*.php" -exec php -l {} \;
+          while IFS= read -r -d '' dir; do
+            find "$dir" -name "*.php" -exec php -l {} \;
+          done < <(find wp-content/plugins -maxdepth 1 -type d -name 'gano-*' -print0 2>/dev/null || true)
+          find wp-content/mu-plugins -maxdepth 1 -name "gano-*.php" -exec php -l {} \;
           echo "PHP lint complete."

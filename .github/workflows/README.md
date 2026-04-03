@@ -16,6 +16,8 @@ Los **nombres mostrados en la barra lateral** siguen el patrón:
 
 **Workflows que no están en esta carpeta** (los gestiona GitHub): *Copilot coding agent*, *Dependabot Updates* — no usan este esquema de nombres.
 
+**Auditoría y troubleshooting:** [`memory/ops/github-actions-audit-2026-04.md`](../../memory/ops/github-actions-audit-2026-04.md) (fallos conocidos, riesgos, parches).
+
 Archivo | Nombre en UI
 --------|----------------
 `php-lint-gano.yml` | 01 · CI · Sintaxis PHP (Gano)

@@ -43,7 +43,7 @@ description: >
 ## Etiquetas y labeler
 
 - **06 · Repo · Crear etiquetas:** manual **o** push a [`.github/label-bootstrap`](../../.github/label-bootstrap) en `main`.
-- **03 · PR · Etiquetas automáticas** (`labeler.yml`) requiere etiquetas existentes.
+- **03 · PR · Etiquetas automáticas** (`labeler.yml`) usa [`.github/labeler.yml`](../../.github/labeler.yml) + `actions/checkout` antes del labeler; **no** usar `changed-files-labels-limit` en el mismo archivo si el parser v6 lo rechaza (ver [`memory/ops/github-actions-audit-2026-04.md`](../../memory/ops/github-actions-audit-2026-04.md)).
 
 ## CI que deben pasar los PRs (código Gano)
 

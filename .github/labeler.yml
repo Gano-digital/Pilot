@@ -1,6 +1,6 @@
 # Etiquetas por ruta. Las claves con ":" van entre comillas.
-
-changed-files-labels-limit: 8
+# Nota: `changed-files-labels-limit` se omitió — en labeler v6 el parser puede tratarlo
+# como nombre de etiqueta si el esquema no coincide; con pocas reglas no hace falta.
 
 "area:theme":
   - changed-files:

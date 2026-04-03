@@ -47,7 +47,7 @@ jobs:
 
             // Orden MERGE-PLAYBOOK: CI crítico → tema → SEO/MU → docs → commerce
             // PR → issue para Closes # (solo si el PR cubre el trabajo en repo)
-            // Orden MERGE-PLAYBOOK. PRs ya fusionadas se omiten (state !== open).
+            // Lista wave1 histórica (oleada 1); PRs ya fusionados se omiten (state !== open).
             // #47 (CI deploy/verify) integrado en main (acfb51b5), no listar aquí.
             // #51 README → #32 cubierto; #69 oleada 3 TASKS no estaba en lista.
             const wave1 = [
