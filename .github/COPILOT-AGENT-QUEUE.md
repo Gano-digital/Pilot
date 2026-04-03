@@ -15,7 +15,7 @@
 3. Elige **ámbito** (`scope`):
    - `all` — todas las tareas del archivo elegido que no tengan issue abierto con el mismo id.
    - `homepage` / `theme` / `content_seo` / `security` / `commerce` / `docs` — lote parcial (mismos nombres de `scope` en el JSON).
-4. Abre **Issues** y asigna al agente (individual o masivo). En el modal, pega el **prompt adicional** desde [`.github/prompts/copilot-bulk-assign.md`](prompts/copilot-bulk-assign.md) para mínima supervisión.
+4. Abre **Issues** y asigna al agente (individual o masivo). En el modal, pega el **prompt adicional** desde [`.github/prompts/copilot-bulk-assign.md`](prompts/copilot-bulk-assign.md): hay bloques distintos para **oleada 1 (#17–33)** vs **oleada 3 (#54–68)** — no uses el mismo texto para ambos lotes.
 5. Revisa CI (`php-lint`, TruffleHog en rutas Gano) antes de fusionar. Orden sugerido de fusión: [MERGE-PLAYBOOK.md](MERGE-PLAYBOOK.md).
 
 ## Requisitos
