@@ -1,7 +1,7 @@
 # Crea issues listos para el Copilot coding agent (cola versionada en agent-queue/tasks.json).
-# Ejecutar: Actions → Seed Copilot task queue → elegir ámbito → Run workflow.
+# Ejecutar: Actions → 08 · Agentes · Sembrar cola Copilot → elegir ámbito → Run workflow.
 # Idempotencia: no duplica si ya existe un issue abierto con el mismo <!-- agent-task-id:... -->.
-name: Seed Copilot task queue
+name: "08 · Agentes · Sembrar cola Copilot"
 
 on:
   workflow_dispatch:
