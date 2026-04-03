@@ -27,6 +27,12 @@ function gano_p7_activate_hub() {
         $is_sota = get_post_meta($page->ID, '_gano_sota_category', true);
         
         if ($is_sota) {
+            // No publicar páginas marcadas como "coming soon"
+            $is_coming_soon = get_post_meta($page->ID, '_gano_coming_soon', true);
+            if ($is_coming_soon === '1') {
+                continue;
+            }
+
             // Update to Published if it was draft
             if ($page->post_status !== 'publish') {
                 wp_update_post(array(
