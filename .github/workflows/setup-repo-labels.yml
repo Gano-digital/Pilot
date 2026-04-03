@@ -1,6 +1,6 @@
 # Crea etiquetas usadas por .github/labeler.yml y plantillas de issues.
 # Disparadores: manual (workflow_dispatch) o push a main que toque .github/label-bootstrap
-name: Setup repository labels
+name: "06 · Repo · Crear etiquetas GitHub"
 
 on:
   workflow_dispatch:

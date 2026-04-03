@@ -1,4 +1,4 @@
-name: "Copilot Setup Steps"
+name: "11 · Agentes · Setup pasos Copilot"
 
 on:
   workflow_dispatch:
