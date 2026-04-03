@@ -18,7 +18,7 @@ Antes de asumir que el repo es idéntico a producción, lee **[`.github/DEV-COOR
 
 - **CMS**: WordPress 6.x + Elementor Pro + Royal Elementor Addons
 - **E-commerce**: WooCommerce (moneda COP, zona Bogotá)
-- **Pagos**: Wompi Colombia (PSE, Nequi, Daviplata, Tarjetas)
+- **Pagos / checkout**: **GoDaddy Reseller Store** (marca blanca). No priorizar Wompi ni pasarelas locales salvo código legacy explícito en el repo.
 - **Seguridad**: Wordfence + MU Plugin `gano-security.php`
 - **SEO**: Rank Math + MU Plugin `gano-seo.php`
 - **Tema**: Hello Elementor → `gano-child` (child theme)
@@ -70,7 +70,7 @@ wp-content/
 ├── plugins/
 │   ├── gano-content-importer/ ← 20 páginas SOTA (activar 1 vez)
 │   ├── gano-phase3-content/   ← Builder de páginas principales
-│   └── gano-wompi-integration/← Gateway de pago Wompi
+│   └── (opcional/legacy) plugins de pasarela local solo si existen en el deploy — **comercio objetivo = Reseller**
 └── mu-plugins/
     ├── gano-security.php      ← CSP + headers + rate limiting
     └── gano-seo.php           ← Schema JSON-LD + Open Graph
@@ -90,7 +90,7 @@ Los agentes GSD están disponibles para: planning, debugging, UI audit, verifica
 - **NUNCA** commitear credenciales, tokens, claves API, contraseñas de BD ni rutas absolutas con usuario de hosting.
 - Scripts SSH o de despliegue: credenciales solo por variables de entorno o secretos de CI.
 - `wp-config.php` no va al repositorio. El helper `ssh_cli.py` en repo usa **solo variables de entorno** (`GANO_SSH_*`).
-- Revisar con especial cuidado cambios en `wp-content/mu-plugins/` y `gano-wompi-integration/`.
+- Revisar con especial cuidado cambios en `wp-content/mu-plugins/` y en plugins de checkout si existen en el árbol.
 - `WP_DEBUG` debe estar en `false` en producción.
 - Rate limiting en endpoints REST: máx 20 req/IP/60s (según hardening existente).
 
@@ -125,4 +125,4 @@ Tono **"Manifiesto Técnico"** (autoritario, visionario, sofisticado y soberano)
 - **Zona horaria**: America/Bogota (UTC-5)
 - **Cumplimiento**: GDPR + normativa SIC Colombia + DIAN facturación (roadmap)
 - **Idioma**: es-CO
-- **Checkout**: Wompi (integración personalizada)
+- **Checkout**: **GoDaddy Reseller** (vitrina gano.digital → carrito marca blanca según `TASKS.md` Fase 4)
