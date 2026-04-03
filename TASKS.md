@@ -1,11 +1,13 @@
 # Tasks — Gano Digital
 _Última actualización: Abril 2026_
 
-## REGRESAR AQUÍ (pendiente tu acción en GitHub)
+## REGRESAR AQUÍ (pendiente tu acción)
 
-**Nota personal (checklist completa):** [`memory/notes/nota-diego-recomendaciones-2026-04.md`](memory/notes/nota-diego-recomendaciones-2026-04.md)
+**Recordatorio personal (prioridades y workflows):** [`memory/notes/nota-diego-recomendaciones-2026-04.md`](memory/notes/nota-diego-recomendaciones-2026-04.md)
 
-Cuando vuelvas: **Actions → [10 · Orquestar oleadas](https://github.com/Gano-digital/Pilot/actions/workflows/orchestrate-copilot-waves.yml)** (sidebar) → primero `dry_run_merge: true`, luego ejecución real con `merge_wave1` + `seed_wave2`. Guía de nombres en Actions: [`.github/workflows/README.md`](.github/workflows/README.md). Detalle: [`.github/MERGE-PLAYBOOK.md`](.github/MERGE-PLAYBOOK.md). Antes de fusionar PRs de agentes: [`.github/AGENT-REVIEW-CHECKLIST.md`](.github/AGENT-REVIEW-CHECKLIST.md) + *Definition of Done* en [`.github/prompts/copilot-bulk-assign.md`](.github/prompts/copilot-bulk-assign.md).
+**Estado abril 2026:** la cola de **PRs Copilot** se consolidó en `main` (ver [`memory/sessions/2026-04-03-consolidacion-prs-copilot.md`](memory/sessions/2026-04-03-consolidacion-prs-copilot.md)). **Ya no hace falta** ejecutar **10 · Orquestar oleadas** para fusionar esa oleada.
+
+**Siguiente foco:** secrets → **04 · Deploy** / **05 · Verificar parches** → **12 · Eliminar wp-file-manager** (si aún está en servidor) → RCC / Elementor según `TASKS.md` abajo. Guía de nombres en Actions: [`.github/workflows/README.md`](.github/workflows/README.md).
 
 ---
 
@@ -52,7 +54,7 @@ Cuando vuelvas: **Actions → [10 · Orquestar oleadas](https://github.com/Gano-
   - `wp-content/themes/gano-child/templates/shop-premium.php` — va dentro del deploy del child theme cuando exista en repo.
 
 - [ ] **[CRÍTICO] Eliminar wp-file-manager del servidor** — Ejecutar workflow automatizado:
-  - **Opción A (recomendada)**: GitHub Actions → `🔒 Verificar y eliminar wp-file-manager` → `Run workflow` → `force_remove: true`
+  - **Opción A (recomendada)**: GitHub Actions → **12 · Ops · Eliminar wp-file-manager (SSH)** → `Run workflow` → `force_remove: true` (requiere mismos secrets que deploy)
   - **Opción B (manual)**: wp-admin → Plugins → Desactivar → SFTP eliminar `wp-content/plugins/wp-file-manager/`
   - Post-eliminación: verificar en wp-admin que la alerta de `gano-security.php` desapareció.
 
@@ -98,12 +100,12 @@ Cuando vuelvas: **Actions → [10 · Orquestar oleadas](https://github.com/Gano-
 
 ### GitHub / automatización
 
-- [x] **Auditoría oleada Copilot (2026-04):** cola de agentes **~32 issues** abiertos (#17–#33 + #54–#68); **~35 PRs** abiertos en GitHub — **todos en borrador** a fecha de revisión: los agentes **sí entregan ramas**, falta **marcar listos, CI verde, revisión humana, merge y cierre de issues**. Ver [`.github/MERGE-PLAYBOOK.md`](.github/MERGE-PLAYBOOK.md).
+- [x] **Consolidación PRs Copilot (2026-04-03):** cola de PRs vaciada en `main` (squash + cierre duplicados). Detalle: [`memory/sessions/2026-04-03-consolidacion-prs-copilot.md`](memory/sessions/2026-04-03-consolidacion-prs-copilot.md). Revisar en GitHub **issues** aún abiertos y cerrarlos con comentario si el trabajo ya está en `main`.
 - [x] **Oleada 2:** `.github/agent-queue/tasks-wave2.json` + workflow **08 · Sembrar cola Copilot** con input `queue_file` (`tasks.json` | `tasks-wave2.json` | `tasks-wave3.json`).
 - [x] **Validación cola:** workflow **Validate agent queue JSON** + `scripts/validate_agent_queue.py` (CI al tocar `.github/agent-queue/`).
 - [x] **Oleada 3 — issues creados en GitHub (#54–#68)** — Seed con `tasks-wave3.json` ejecutado.
 - [ ] **Prompt Copilot:** en **#54–#68** usa el bloque **“oleada 3”** en [`.github/prompts/copilot-bulk-assign.md`](.github/prompts/copilot-bulk-assign.md); en **#17–#33** usa el bloque **“oleada 1”** (no priorizar brief wave3 en hero/menú/Lorem). Si ya asignaste con el prompt largo mezclado, no pasa nada grave: el prompt unificado ahora lo matiza por número de issue.
-- [ ] **Consolidar oleada 1 + sembrar oleada 2:** Actions → **10 · Orquestar oleadas** — opcional `dry_run_merge` primero; luego ejecutar con merge + seed (requiere permisos del token sobre PRs).
+- [x] ~~**Consolidar oleada 1 (merge PRs)**~~ — hecho 2026-04-03. **10 · Orquestar oleadas** solo si en el futuro vuelves a tener un lote de PRs oleada 1 y quieres automatizar merge + **seed oleada 2**.
 - [x] PR #13: CI TruffleHog + PHP lint + plantillas Copilot + `ssh_cli` sin credenciales en archivo
 - [x] Dependabot (GitHub Actions) + plantilla de PR; `labeler.yml` (workflow) retirado hasta crear etiquetas `area:*` en el repo o reactivar con permisos
 - [x] `.github/labeler.yml` conserva reglas; workflow `labeler.yml` restaurado tras ejecutar **06 · Repo · Crear etiquetas** en Actions

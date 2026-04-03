@@ -1,4 +1,4 @@
-name: 🔒 Verificar y eliminar wp-file-manager
+name: "12 · Ops · Eliminar wp-file-manager (SSH)"
 
 on:
   workflow_dispatch:

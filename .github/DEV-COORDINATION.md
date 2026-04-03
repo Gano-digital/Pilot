@@ -49,7 +49,7 @@ Local (rama feature/ops) → PR → CI (TruffleHog Gano + php-lint) → merge ma
 
 ## 4. GitHub Actions que dan contexto al proceso
 
-En **Actions**, los workflows del repo se listan con un **prefijo numérico** (`01` … `11`) para ordenar la barra lateral y agrupar por fase. Leyenda: **CI** (calidad) → **PR** → **Deploy/Ops** → **Repo** (setup) → **Agentes** (Copilot). Detalle en [`.github/workflows/README.md`](workflows/README.md).
+En **Actions**, los workflows del repo se listan con un **prefijo numérico** (`01` … `12`) para ordenar la barra lateral y agrupar por fase. Leyenda: **CI** (calidad) → **PR** → **Deploy/Ops** → **Repo** (setup) → **Agentes** (Copilot). Detalle en [`.github/workflows/README.md`](workflows/README.md).
 
 | # | Nombre en UI (sidebar) | Archivo | Rol |
 |---|------------------------|---------|-----|
@@ -64,6 +64,7 @@ En **Actions**, los workflows del repo se listan con un **prefijo numérico** (`
 | 09 | Agentes · Sembrar issues homepage | `seed-homepage-issues.yml` | Crea issues del fixplan homepage (manual). |
 | 10 | Agentes · Orquestar oleadas | `orchestrate-copilot-waves.yml` | Merge ordenado oleada 1 + seed oleada 2 (inputs). |
 | 11 | Agentes · Setup pasos Copilot | `copilot-setup-steps.yml` | Pasos de configuración Copilot en el repo. |
+| 12 | Ops · Eliminar wp-file-manager (SSH) | `verify-remove-wp-file-manager.yml` | **Manual** — verifica y opcionalmente elimina el plugin vía SSH/WP-CLI. Mismos secrets que `deploy.yml`. |
 
 **Otros** (no viven en `.github/workflows/` del repo): *Copilot coding agent*, *Dependabot Updates* — nombres fijos por GitHub.
 

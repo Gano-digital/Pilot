@@ -117,7 +117,7 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `.gano-skills/gano-content-audit/` | Reemplazo de contenido placeholder, copy |
 | `.gano-skills/gano-fase4-plataforma/` | WHMCS/Blesta, billing, portal cliente, DIAN, investigación Fase 4 |
 | `.gano-skills/gano-multi-agent-local-workflow/` | Varios agentes (Cursor/Claude/Antigravity), ruta 1 vs backup, git sin secretos en URL |
-| `.gano-skills/gano-github-copilot-orchestration/` | GitHub Pilot: cola `agent-queue`, Seed Copilot, etiquetas, prompt masivo Copilot, `DEV-COORDINATION` |
+| `.gano-skills/gano-github-copilot-orchestration/` | GitHub Pilot: workflows 01–12, cola `.github/agent-queue/`, **08/09/10** (semillas/orquestar), prompt bulk, estado post-merge abril 2026 en la skill |
 
 ## Archivos importantes
 | Archivo | Qué es |

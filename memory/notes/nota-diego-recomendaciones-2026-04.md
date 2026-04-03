@@ -1,58 +1,62 @@
 # Nota personal — Diego (no olvidar)
 
-_Documento de recordatorio operativo. Última revisión: abril 2026._
+_Documento de recordatorio operativo. Última revisión: **2026-04-03** (post-consolidación PRs)._
 
-## Enlaces rápidos
+## Recordatorio rápido — qué te toca a ti
+
+| Prioridad | Acción |
+|-----------|--------|
+| **Crítico** | Configurar secrets **SSH**, **SERVER_HOST**, **SERVER_USER**, **DEPLOY_PATH** en GitHub → luego **04 · Deploy** o **05 · Verificar parches**. |
+| **Crítico** | Quitar **wp-file-manager** del servidor: **12 · Ops · Eliminar wp-file-manager** (Actions) o manual en wp-admin/SFTP. |
+| **Alta** | **RCC:** reemplazar `PENDING_RCC` / pfids en `functions.php` y validar **Private Label ID** del Reseller para checkout real. |
+| **Alta** | **Elementor / wp-admin:** menú `primary`, Lorem → copy (`memory/content/homepage-copy-2026-04.md`), datos reales footer/contacto (auditorías en `memory/content/`). |
+| **Alta** | **Gano SEO**, **Rank Math**, **Google Search Console** según `TASKS.md` (Fase 3 operativa). |
+| **Media** | Cerrar **issues** en GitHub que sigan abiertos pero ya cubiertos por merges a `main` (revisión manual en lista de issues). |
+
+## ¿Faltan agentes y workflows por lanzar?
+
+### Workflows (Actions) — cuándo ejecutarlos
+
+| Workflow | ¿Hace falta ahora? | Notas |
+|----------|-------------------|--------|
+| **04 · Deploy** | **Sí**, cuando tengas secrets y quieras subir `main` al servidor. | Se dispara también por push a rutas cubiertas si ya configuraste secrets. |
+| **05 · Verificar parches** | **Sí** (recomendado), para comprobar MD5 repo vs servidor antes/después del deploy. | Manual. |
+| **12 · Eliminar wp-file-manager** | **Sí** si el plugin sigue en producción. | Mismos secrets que deploy. |
+| **08 · Sembrar cola Copilot** | **Solo si** quieres **nuevos** issues desde `tasks.json` / `tasks-wave2.json` / `tasks-wave3.json` y no existen ya (deduplicación por `agent-task-id`). | No obligatorio tras consolidar PRs. |
+| **09 · Sembrar issues homepage** | **Solo si** los 7 issues `homepage-fixplan` **no** están creados en el repo. | Ejecutar una vez y revisar duplicados. |
+| **10 · Orquestar oleadas** | **No** para la oleada ya fusionada (2026-04-03). | Úsalo **solo** si vuelves a tener un lote de PRs oleada 1 y quieres merge automático + seed oleada 2. |
+| **06 · Crear etiquetas** | **Solo si** faltan etiquetas `area:*` (labeler roto). | |
+| **07 · Validar cola JSON** | Automático al tocar `.github/agent-queue/`; local: `python scripts/validate_agent_queue.py`. | |
+| **11 · Setup Copilot** | Opcional; al configurar el repo o nuevos pasos Copilot. | |
+
+### Agentes (Copilot coding agent)
+
+- **No** hay que “lanzar” un agente global: se asigna **por issue** o en bulk desde la UI de GitHub.
+- Tras consolidar código en `main`, el siguiente uso típico del agente es: **08** (nuevos issues) → asignar Copilot → prompt desde [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md) (incluye **bloque maestro** para bulk).
+
+## Enlaces útiles
 
 | Qué | Dónde |
 |-----|--------|
-| Checklist estricta antes de merge PR | [`.github/AGENT-REVIEW-CHECKLIST.md`](../../.github/AGENT-REVIEW-CHECKLIST.md) |
-| Nombres y orden de workflows en Actions | [`.github/workflows/README.md`](../../.github/workflows/README.md) |
-| DoD para agentes / revisores | [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md) (sección *Definition of Done*) |
-| Orden y criterio de merge | [`.github/MERGE-PLAYBOOK.md`](../../.github/MERGE-PLAYBOOK.md) |
-| Coordinación GitHub ↔ servidor | [`.github/DEV-COORDINATION.md`](../../.github/DEV-COORDINATION.md) |
+| Guía workflows (01–12) | [`.github/workflows/README.md`](../../.github/workflows/README.md) |
+| Consolidación PRs | [`../sessions/2026-04-03-consolidacion-prs-copilot.md`](../sessions/2026-04-03-consolidacion-prs-copilot.md) |
+| Coordinación git ↔ servidor | [`.github/DEV-COORDINATION.md`](../../.github/DEV-COORDINATION.md) |
 | Tareas globales | [`TASKS.md`](../../TASKS.md) |
+| Prompt bulk / DoD | [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md) |
 
-## 1. Secrets de GitHub (bloqueante para CI)
+## Historial (archivo — ya resuelto)
 
-En **Settings → Secrets and variables → Actions** deben existir:
+- ~~#47, #49, #84, #85~~ cerrados; oleada de PRs fusionada en `main` el 2026-04-03.
+- **Orchestrate oleadas** ya no es el siguiente paso obligatorio para esa oleada.
 
-- `SSH` — clave privada (para `webfactory/ssh-agent`)
-- `SERVER_HOST` — host o IP del servidor
-- `SERVER_USER` — usuario SSH/SFTP
-- `DEPLOY_PATH` — ruta absoluta a la raíz WP (coherente al unir con `/wp-content/...`; evita doble barra)
+## Validación local
 
-Sin estos cuatro, **no funcionan** **04 · Deploy** ni **05 · Verificar parches** (`deploy.yml` / `verify-patches.yml`).
+```bash
+python scripts/validate_agent_queue.py
+```
 
-## 2. Oleadas Copilot (orden seguro)
-
-1. **10 · Orquestar oleadas** — primero `dry_run_merge: true`, revisar el log, luego ejecución real con `merge_wave1` + `seed_wave2` si aplica.
-2. **08 · Sembrar cola Copilot** — colas en [`.github/agent-queue/`](../../.github/agent-queue/) (`tasks.json`, `tasks-wave2.json`, `tasks-wave3.json`).
-3. **09 · Sembrar issues homepage** — una vez, si faltan los 7 issues del fixplan.
-4. **Prompt correcto por número de issue:** oleada 1 (#17–#33) vs oleada 3 (#54–#68) según `copilot-bulk-assign.md`.
-
-## 3. PRs y retrabajo (cómo no dar vueltas)
-
-- Marcar **Ready for review** solo cuando **Checks** objetivo estén verdes (PHP lint Gano, TruffleHog en rutas tocadas).
-- **Update branch** desde `main` en PRs abiertas antes de merge (o dejar que el bot actualice; si falla, conflicto real).
-- **#47** ya cerrada: el CI deploy/verify quedó en `main`; no reabrir merge duplicado.
-- **#49 vs #51:** si README ya está alineado en `main` vía #51, **cerrar #49** o fusionar solo el valor residual (p. ej. `.gano-skills/`) en un PR mínimo. **Update branch** desde GitHub puede fallar con **conflicto** en #49: resolver en local o cerrar la PR si el contenido ya está cubierto.
-- Issues solo **servidor/Elementor:** no exigir código inventado en repo; cerrar con comentario + checklist manual.
-
-## 4. Servidor y parches
-
-- Tras configurar secrets: ejecutar **Verificar parches** (MD5) o dejar que un push a rutas cubiertas dispare **Deploy**.
-- `wp-config.php` **no** va en git; subir solo por canal seguro.
-- Quitar **wp-file-manager** en producción (TASKS — crítico).
-
-## 5. Modelo comercial
-
-- Checkout canónico: **GoDaddy Reseller**; Wompi como legacy/archivo según `TASKS.md` y `memory/archive/README-ARCHIVO-WOMPI-Y-PASARELAS-LEGACY.md`.
-
-## 6. Validación local (repo)
-
-- `python scripts/validate_agent_queue.py` — debe imprimir `OK` (colas JSON en `.github/agent-queue/`).
+Debe imprimir `OK` si las colas en `.github/agent-queue/` son válidas.
 
 ---
 
-_Si movés algo de esta lista, actualizá una línea en `TASKS.md` o en el issue correspondiente para que los agentes no contradigan el estado real._
+_Actualizá esta nota o `TASKS.md` cuando cierres un bloque (deploy, RCC, Elementor)._

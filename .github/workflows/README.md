@@ -8,7 +8,7 @@ Los **nombres mostrados en la barra lateral** siguen el patrón:
 |--------:|------|-------------|
 | **01–02** | CI | Calidad en cada PR/push (PHP, secretos) |
 | **03** | PR | Automatización sobre pull requests |
-| **04–05** | Deploy / Ops | Producción y verificación frente al servidor |
+| **04–05, 12** | Deploy / Ops | Producción, verificación parches, eliminación remota wp-file-manager |
 | **06** | Repo | Configuración puntual del repositorio |
 | **07–11** | Agentes | Cola Copilot, semillas y orquestación |
 
@@ -29,3 +29,4 @@ Archivo | Nombre en UI
 `seed-homepage-issues.yml` | 09 · Agentes · Sembrar issues homepage
 `orchestrate-copilot-waves.yml` | 10 · Agentes · Orquestar oleadas
 `copilot-setup-steps.yml` | 11 · Agentes · Setup pasos Copilot
+`verify-remove-wp-file-manager.yml` | 12 · Ops · Eliminar wp-file-manager (SSH)
