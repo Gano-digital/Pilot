@@ -140,6 +140,14 @@ _Última actualización: Abril 2026_
 - **Cola de tareas:** [`.github/agent-queue/tasks-wave3.json`](.github/agent-queue/tasks-wave3.json)
 - Activar: Actions → **08 · Sembrar cola Copilot** → `queue_file: tasks-wave3.json` → `scope: all` (o por ámbito: `theme` / `content_seo` / `commerce` / `docs` / `coordination`). Luego asignar Copilot en los issues generados.
 
+### Oleada 4 — narrativa, páginas y comercio
+
+- **Índice de documentos:** [`memory/content/README-CONTENT-INDEX-2026.md`](memory/content/README-CONTENT-INDEX-2026.md) — mapa de lectura de todos los markdown en `memory/content/` con dependencias entre archivos.
+- **Cola de tareas:** [`.github/agent-queue/tasks-wave4-ia-content.json`](.github/agent-queue/tasks-wave4-ia-content.json)
+- **Áreas principales:** plan maestro de contenidos, brecha IA vs inventario real, narrativa de páginas SOTA, copy legal/contacto, pilares (20 páginas).
+- Activar: Actions → **08 · Sembrar cola Copilot** → `queue_file: tasks-wave4-ia-content.json` → `scope: all` (o `docs` / `content_seo` / `commerce`). Luego asignar Copilot en los issues generados.
+- **Documentos oleada 4** se añaden al índice anterior (`README-CONTENT-INDEX-2026.md`) a medida que se crean.
+
 ### Coordinación operativa (prioridad paralela)
 
 - **Guía canónica:** [`.github/DEV-COORDINATION.md`](.github/DEV-COORDINATION.md) — qué vive en Git vs servidor vs local; cómo mantener a GitHub “enterado” sin filtrar secretos.
