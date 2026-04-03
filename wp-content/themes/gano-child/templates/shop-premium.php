@@ -1,12 +1,16 @@
 <?php
 /**
  * Template Name: Gano Premium Shop SOTA
- * 
+ *
  * Este template reemplaza los viejos bundles (Wompi)
  * por el catálogo unificado SOTA conectado a GoDaddy Reseller.
+ *
+ * Las constantes GANO_PFID_* y la función gano_rstore_cart_url() están
+ * definidas en functions.php. Ver sección "GANO RESELLER STORE" en ese archivo
+ * para instrucciones de cómo obtener los pfids reales desde el RCC.
  */
 
-get_header(); 
+get_header();
 ?>
 
 <!-- ========================================================= -->
@@ -146,32 +150,22 @@ get_header();
 
     <!-- PHP Rendered Catalog -->
     <?php
-    /*
-     * IDs de producto GoDaddy Reseller.
-     *
-     * ACCIÓN PENDIENTE (Diego): reemplazar cada valor de 'rstore_id' con el ID
-     * numérico real obtenido desde el Reseller Control Center (RCC) de GoDaddy.
-     * Mientras sean '0', el shortcode [rstore_cart_button] no generará un enlace
-     * funcional y el botón fallará silenciosamente.
-     *
-     * Para obtener los IDs: RCC → Products & Pricing → selecciona cada producto →
-     * toma el "Product ID" o revisa la URL del producto (p. ej. ...product_id=12345).
-     */
-    $products = [
-        ['cat' => 'hosting', 'name' => 'Núcleo Prime',    'desc' => 'Soberanía inicial para marcas emergentes.',          'price' => '196.000', 'icon' => 'fa-rocket',          'rstore_id' => 0 /* TODO: ID real RCC */],
-        ['cat' => 'hosting', 'name' => 'Fortaleza Delta', 'desc' => 'Ecosistema administrado por ingenieros.',              'price' => '450.000', 'icon' => 'fa-microchip',        'rstore_id' => 0 /* TODO: ID real RCC */],
-        ['cat' => 'hosting', 'name' => 'Bastión SOTA',    'desc' => 'Velocidad crítica Gen4 para operaciones masivas.',    'price' => '890.000', 'icon' => 'fa-bolt',             'rstore_id' => 0 /* TODO: ID real RCC */],
-        ['cat' => 'hosting', 'name' => 'Ultimate WP',     'desc' => 'Inmunidad ante picos masivos de tráfico.',           'price' => '1.200.000', 'icon' => 'fa-crown',            'rstore_id' => 0 /* TODO: ID real RCC */],
+    // Catálogo mapeado a constantes GANO_PFID_* (functions.php). Dominios → domain_search.
+    $products = array(
+        array( 'cat' => 'hosting',  'name' => 'Núcleo Prime',       'desc' => 'Soberanía inicial para marcas emergentes.',        'price' => '196.000', 'icon' => 'fa-rocket',          'pfid' => GANO_PFID_HOSTING_ECONOMIA ),
+        array( 'cat' => 'hosting',  'name' => 'Fortaleza Delta',     'desc' => 'Ecosistema administrado por ingenieros.',          'price' => '450.000', 'icon' => 'fa-microchip',        'pfid' => GANO_PFID_HOSTING_DELUXE ),
+        array( 'cat' => 'hosting',  'name' => 'Bastión SOTA',        'desc' => 'Velocidad crítica Gen4 para operaciones masivas.', 'price' => '890.000', 'icon' => 'fa-bolt',             'pfid' => GANO_PFID_HOSTING_PREMIUM ),
+        array( 'cat' => 'hosting',  'name' => 'Ultimate WP',         'desc' => 'Inmunidad ante picos masivos de tráfico.',         'price' => '1.200.000', 'icon' => 'fa-crown',            'pfid' => GANO_PFID_HOSTING_ULTIMATE ),
 
-        ['cat' => 'security', 'name' => 'SSL Deluxe',         'desc' => 'Validación corporativa de alta confianza.',  'price' => '680.000', 'icon' => 'fa-shield-halved',     'rstore_id' => 0 /* TODO: ID real RCC */],
-        ['cat' => 'security', 'name' => 'Security Ultimate',  'desc' => 'Blindaje Zero-Trust contra DDoS.',           'price' => '1.800.000', 'icon' => 'fa-fire-extinguisher', 'rstore_id' => 0 /* TODO: ID real RCC */],
+        array( 'cat' => 'security', 'name' => 'SSL Deluxe',          'desc' => 'Validación corporativa de alta confianza.',        'price' => '680.000', 'icon' => 'fa-shield-halved',    'pfid' => GANO_PFID_SSL_DELUXE ),
+        array( 'cat' => 'security', 'name' => 'Security Ultimate',   'desc' => 'Blindaje Zero-Trust contra DDoS.',                 'price' => '1.800.000', 'icon' => 'fa-fire-extinguisher', 'pfid' => GANO_PFID_SECURITY_ULTIMATE ),
 
-        ['cat' => 'identity', 'name' => 'Dominio .CO',  'desc' => 'Presencia nacional de alta autoridad.', 'price' => '90.000', 'icon' => 'fa-globe',          'rstore_id' => 0 /* TODO: ID real RCC */],
-        ['cat' => 'identity', 'name' => 'Dominio .COM', 'desc' => 'Estándar global de soberanía.',         'price' => '75.000', 'icon' => 'fa-earth-americas', 'rstore_id' => 0 /* TODO: ID real RCC */],
+        array( 'cat' => 'identity', 'name' => 'Dominio .CO',         'desc' => 'Presencia nacional de alta autoridad.',           'price' => '90.000',  'icon' => 'fa-globe',            'pfid' => 'domain_search' ),
+        array( 'cat' => 'identity', 'name' => 'Dominio .COM',        'desc' => 'Estándar global de soberanía.',                   'price' => '75.000',  'icon' => 'fa-earth-americas',   'pfid' => 'domain_search' ),
 
-        ['cat' => 'email', 'name' => 'M365 Premium',      'desc' => 'Máxima seguridad en colaboración corporativa.', 'price' => '98.000',  'icon' => 'fa-id-badge',  'rstore_id' => 0 /* TODO: ID real RCC */],
-        ['cat' => 'email', 'name' => 'Online Storage 1TB','desc' => 'Archivo Maestro Soberano.',                     'price' => '120.000', 'icon' => 'fa-hard-drive', 'rstore_id' => 0 /* TODO: ID real RCC */],
-    ];
+        array( 'cat' => 'email',    'name' => 'M365 Premium',        'desc' => 'Máxima seguridad en colaboración corporativa.',   'price' => '98.000',  'icon' => 'fa-id-badge',         'pfid' => GANO_PFID_M365_PREMIUM ),
+        array( 'cat' => 'email',    'name' => 'Online Storage 1TB',  'desc' => 'Archivo Maestro Soberano.',                       'price' => '120.000', 'icon' => 'fa-hard-drive',       'pfid' => GANO_PFID_ONLINE_STORAGE ),
+    );
 
     $sotaPillars = [
         "NVMe Gen4", "Zero-Trust", "Predictive AI", "Digital Sovereignty", "Headless WP",
@@ -212,19 +206,24 @@ get_header();
                     <div class="p-price"><span>Inversión Mensual</span>$ <?php echo esc_html($p['price']); ?></div>
 
                     <?php
-                    if ( $p['rstore_id'] > 0 && shortcode_exists( 'rstore_cart_button' ) ) {
-                        // Integración real con el carrito GoDaddy Reseller.
-                        echo do_shortcode( '[rstore_cart_button product_id="' . absint( $p['rstore_id'] ) . '"]' );
+                    if ( 'domain_search' === $p['pfid'] ) {
+                        $cta_url    = esc_url( home_url( '/dominios/' ) );
+                        $cta_label  = 'Buscar Dominio';
+                        $cta_target = '';
+                    } elseif ( 'PENDING_RCC' === $p['pfid'] ) {
+                        $cta_url    = esc_url( '#' );
+                        $cta_label  = 'Próximamente';
+                        $cta_target = '';
                     } else {
-                        // IDs de producto pendientes de configurar en el Reseller Control Center.
-                        ?>
-                        <button class="rstore-add-to-cart rstore-add-to-cart--pending" disabled
-                                title="ID de producto Reseller no configurado. Ver TASKS.md Fase 4.">
-                            Configuración pendiente
-                        </button>
-                        <?php
+                        $cta_url    = gano_rstore_cart_url( $p['pfid'] );
+                        $cta_label  = 'Adquirir Nodo';
+                        $cta_target = 'target="_blank" rel="noopener noreferrer"';
                     }
                     ?>
+                    <a href="<?php echo $cta_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"
+                       class="rstore-add-to-cart"
+                       <?php echo $cta_target; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                    ><?php echo esc_html( $cta_label ); ?></a>
                 </div>
                 <?php endforeach; ?>
             </div>

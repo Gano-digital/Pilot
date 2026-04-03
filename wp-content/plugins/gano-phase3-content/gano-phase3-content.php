@@ -20,17 +20,23 @@ function gano_p3_activate() {
     $pages = gano_p3_pages();
 
     foreach ( $pages as $slug => $data ) {
-        $existing = get_page_by_path( $slug );
+        $existing    = get_page_by_path( $slug );
+        $page_status = ! empty( $data['coming_soon'] ) ? 'draft' : 'publish';
 
         if ( $existing ) {
-            // Actualizar contenido si la página ya existe
+            // Mantener borrador si coming_soon; nunca re-publicar una coming-soon
             wp_update_post( [
                 'ID'           => $existing->ID,
                 'post_title'   => $data['title'],
                 'post_content' => $data['content'],
-                'post_status'  => 'publish',
+                'post_status'  => $page_status,
                 'post_excerpt' => $data['excerpt'] ?? '',
             ] );
+
+            // Meta coming-soon para que gano-phase7 la respete
+            if ( ! empty( $data['coming_soon'] ) ) {
+                update_post_meta( $existing->ID, '_gano_coming_soon', '1' );
+            }
 
             // SEO meta
             if ( ! empty( $data['seo'] ) ) {
@@ -45,7 +51,7 @@ function gano_p3_activate() {
                 'post_title'   => $data['title'],
                 'post_name'    => $slug,
                 'post_content' => $data['content'],
-                'post_status'  => 'publish',
+                'post_status'  => $page_status,
                 'post_excerpt' => $data['excerpt'] ?? '',
                 'post_author'  => 1,
             ] );
@@ -55,6 +61,11 @@ function gano_p3_activate() {
                 $is_sota = !empty($data['category']) && $data['category'] === 'sota';
                 $template = $is_sota ? 'templates/sota-single-template.php' : 'elementor_canvas';
                 update_post_meta( $id, '_wp_page_template', $template );
+
+                // Marcar coming-soon para que gano-phase7 la respete
+                if ( ! empty( $data['coming_soon'] ) ) {
+                    update_post_meta( $id, '_gano_coming_soon', '1' );
+                }
 
                 // SEO
                 if ( ! empty( $data['seo'] ) ) {
@@ -132,9 +143,10 @@ function gano_p3_activate() {
             }
         }
 
-        // Asignar menú a la ubicación del tema
+        // Asignar menú a las ubicaciones del tema (main = padre; primary = gano-child)
         $locations = get_theme_mod( 'nav_menu_locations', [] );
         $locations['main'] = $menu_id;
+        $locations['primary'] = $menu_id;
         set_theme_mod( 'nav_menu_locations', $locations );
 
         $log[] = '✅ Menú de navegación principal creado.';
@@ -362,11 +374,12 @@ function gano_p3_pages() {
         ],
 
         'dashboard-infraestructura' => [
-            'title'    => 'Panel de Control Soberano',
-            'excerpt'  => 'Soberanía Visual: Monitoreo en tiempo real de tu activo digital.',
-            'content'  => '<!-- SOTA Dashboard -->',
-            'category' => 'sota',
-            'seo'      => [ 'title' => 'Dashboard SOTA | Gestión Total', 'description' => 'Control absoluto de red e infraestructura.', 'keywords' => 'panel hosting colombia' ],
+            'title'       => 'Panel de Control Soberano',
+            'excerpt'     => 'Soberanía Visual: Monitoreo en tiempo real de tu activo digital.',
+            'content'     => '<!-- SOTA Dashboard — próximamente -->',
+            'category'    => 'sota',
+            'coming_soon' => true,
+            'seo'         => [ 'title' => 'Dashboard SOTA | Gestión Total', 'description' => 'Control absoluto de red e infraestructura.', 'keywords' => 'panel hosting colombia' ],
         ],
 
         'arquitectura-cloud' => [

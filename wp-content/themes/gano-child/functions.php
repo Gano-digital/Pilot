@@ -1,11 +1,18 @@
 <?php
 /**
  * Gano Digital Child Theme Functions
+ * Arquitectura Elementor: memory/content/elementor-architecture-wave3.md
  * V-05 Fix: Auditoria Gano Digital, Marzo 2026.
  *   — Nonce CSRF agregado al script del chat IA.
  *   — Endpoint REST del chat registrado con permission_callback de nonce.
  *   — Endpoint del chat añadido a lista blanca del MU plugin de seguridad.
  */
+
+// =============================================================================
+// 0. INCLUDES — bloques de homepage (shortcodes)
+// =============================================================================
+
+require_once get_stylesheet_directory() . '/inc/homepage-blocks.php';
 
 // =============================================================================
 // 1. ENQUEUE DE ESTILOS Y SCRIPTS
@@ -14,8 +21,8 @@
 add_action( 'wp_enqueue_scripts', 'gano_child_enqueue_styles' );
 function gano_child_enqueue_styles() {
     // Estilos del tema padre y hijo
-    wp_enqueue_style( 'hello-elementor-parent-style', get_template_directory_uri() . '/style.css' );
-    wp_enqueue_style( 'gano-child-style', get_stylesheet_uri(), array( 'hello-elementor-parent-style' ), wp_get_theme()->get( 'Version' ) );
+    wp_enqueue_style( 'royal-elementor-kit-parent', get_template_directory_uri() . '/style.css' );
+    wp_enqueue_style( 'gano-child-style', get_stylesheet_uri(), array( 'royal-elementor-kit-parent' ), wp_get_theme()->get( 'Version' ) );
 
     // Chat IA — se carga con nonce CSRF (V-05 Fix)
     wp_enqueue_style( 'gano-chat-css', get_stylesheet_directory_uri() . '/css/gano-chat.css', array(), '1.2.0' );
@@ -78,7 +85,42 @@ add_action( 'wp_footer', function() {
 } );
 
 // =============================================================================
-// 1b. MENÚS — ubicación 'primary' (Elementor / muchos kits); el padre solo registra 'main'
+// 1b. ACCESIBILIDAD — Skip link + anchor de destino (WCAG 2.4.1, 2.4.7)
+// =============================================================================
+
+/**
+ * Inyecta el skip-link al inicio de <body> para usuarios de teclado/lectores de pantalla.
+ * El CSS asociado está en style.css (.gano-skip-link) — no hay estilos inline
+ * y por tanto no afecta la CSP del MU plugin gano-security.php.
+ * Target: #gano-main-content (anchor inyectado en gano_main_content_anchor).
+ *
+ * Compatible con Hello Elementor y plantillas canvas de Elementor.
+ * Hook wp_body_open requiere <?php wp_body_open(); ?> en el header del tema padre.
+ * Hello Elementor lo soporta desde la versión 2.7.0.
+ */
+add_action( 'wp_body_open', 'gano_skip_link', 1 );
+function gano_skip_link(): void {
+    echo '<a class="gano-skip-link" href="#gano-main-content">'
+        . esc_html__( 'Saltar al contenido principal', 'gano-child' )
+        . '</a>';
+}
+
+/**
+ * Inyecta el anchor receptor del skip link justo antes del contenido principal.
+ * Se usa wp_before_admin_bar_render como fallback si wp_body_open no existe.
+ * En el front-end, el anchor se coloca con elementor/frontend/the_excerpt/widget_before
+ * o simplemente en wp_body_open con tabindex="-1" en el wrapper de Elementor.
+ *
+ * Para plantillas Elementor full-width: asigna el ID "gano-main-content" a la
+ * primera sección del canvas desde el editor de Elementor (Advanced > CSS ID).
+ */
+add_action( 'wp_body_open', 'gano_main_content_anchor', 5 );
+function gano_main_content_anchor(): void {
+    echo '<span id="gano-main-content" tabindex="-1" class="gano-a11y-anchor"></span>';
+}
+
+// =============================================================================
+// 1c. MENÚS — ubicación 'primary' (Elementor / muchos kits); el padre solo registra 'main'
 // =============================================================================
 
 add_action( 'after_setup_theme', 'gano_child_register_nav_menus', 20 );
@@ -88,6 +130,36 @@ function gano_child_register_nav_menus(): void {
             'primary' => esc_html__( 'Menú principal (header / Elementor)', 'gano-child' ),
         )
     );
+}
+
+/**
+ * Fallback: si 'primary' no tiene menú asignado, copia desde 'main' o usa
+ * el primer menú disponible. Cubre instalaciones donde gano-phase3-content
+ * fue activado antes de que esta lógica existiera.
+ * get_theme_mod() usa el caché de opciones de WP, así que el early-return
+ * (caso ya configurado) no implica consulta a la BD.
+ */
+add_action( 'init', 'gano_child_assign_primary_menu_fallback' );
+function gano_child_assign_primary_menu_fallback(): void {
+    $locations = get_theme_mod( 'nav_menu_locations', [] );
+
+    if ( ! empty( $locations['primary'] ) ) {
+        return; // Ya está configurado — no hacer nada.
+    }
+
+    // Copiar desde 'main' si existe.
+    if ( ! empty( $locations['main'] ) ) {
+        $locations['primary'] = $locations['main'];
+        set_theme_mod( 'nav_menu_locations', $locations );
+        return;
+    }
+
+    // Último recurso: usar el primer menú registrado.
+    $menus = wp_get_nav_menus();
+    if ( ! empty( $menus ) ) {
+        $locations['primary'] = $menus[0]->term_id;
+        set_theme_mod( 'nav_menu_locations', $locations );
+    }
 }
 
 // =============================================================================
@@ -159,20 +231,47 @@ add_action( 'wp_head', function() {
     // echo '<link rel="preload" href="' . esc_url( $font_url ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
 
     // fetchpriority en img hero via JavaScript inline mínimo (Elementor no expone PHP hook para esto)
-    // Solo se aplica en homepage para no afectar otras páginas
+    // Solo se aplica en homepage para no afectar otras páginas ni el admin
     if ( is_front_page() ) {
         ?>
         <script>
-        // Gano: LCP Optimization — marcar la primera imagen visible como fetchpriority="high"
-        // Ejecuta inmediatamente antes de que el parser llegue al body
+        // Gano: LCP Optimization — marcar la primera imagen del hero como fetchpriority="high"
+        // Compatible con Elementor Containers (e-con) y secciones clásicas (elementor-section)
         (function(){
-            var obs = new MutationObserver(function(mutations, o){
-                var img = document.querySelector('.elementor-section:first-of-type img, .e-con img:first-of-type, section img:first-of-type');
-                if(img){ img.fetchPriority = 'high'; img.loading = 'eager'; o.disconnect(); }
+            // Selectores en orden de especificidad: Containers primero, luego classic, luego fallback
+            var HERO_SEL = [
+                '.e-con .elementor-widget-image img',
+                '.e-con-full .elementor-widget-image img',
+                '.elementor-top-section .elementor-widget-image img',
+                '.elementor-section .elementor-widget-image img',
+                '.elementor-widget-image img'
+            ].join(',');
+
+            var found = false;
+            function markHero() {
+                var img = document.querySelector(HERO_SEL);
+                if (img) {
+                    img.setAttribute('fetchpriority', 'high');
+                    img.loading = 'eager';
+                    found = true;
+                    return true;
+                }
+                return false;
+            }
+
+            // Intentar inmediatamente (imagen ya en DOM en carga parcial del parser)
+            if (markHero()) return;
+
+            var obs = new MutationObserver(function(_, o) {
+                if (markHero()) { o.disconnect(); }
             });
             obs.observe(document.documentElement, {childList:true, subtree:true});
-            // Timeout de seguridad
-            setTimeout(function(){ obs.disconnect(); }, 3000);
+
+            // Desconectar al terminar de parsear el DOM o a los 2500ms (lo que ocurra primero)
+            // Solo invocar markHero() si el observer nunca encontró la imagen
+            function cleanup() { obs.disconnect(); if (!found) { markHero(); } }
+            document.addEventListener('DOMContentLoaded', cleanup, {once:true});
+            setTimeout(cleanup, 2500);
         })();
         </script>
         <?php
@@ -354,8 +453,163 @@ function gano_chat_response_callback( WP_REST_Request $request ): WP_REST_Respon
 }
 
 // =============================================================================
-// 4. WHITELIST: AGREGAR ENDPOINTS DEL CHAT A LA LISTA DEL MU PLUGIN
+// 4. SHORTCODE [gano_pilares] — Cuatro pilares de la homepage
+// Copy: memory/content/homepage-copy-2026-04.md — Sección "Cuatro pilares"
+// Uso en Elementor: insertar widget "Código corto" y escribir [gano_pilares]
 // =============================================================================
+
+add_shortcode( 'gano_pilares', 'gano_render_pilares' );
+
+/**
+ * Renderiza las cuatro tarjetas de pilares de la homepage.
+ * Cada tarjeta incluye un icono SVG accesible, título H3 y párrafo de copy.
+ *
+ * @return string HTML escapado de los cuatro pilares.
+ */
+function gano_render_pilares(): string {
+    $pilares = array(
+        array(
+            'titulo' => 'NVMe que se nota en Core Web Vitals, no solo en el folleto.',
+            'texto'  => 'Almacenamiento de nueva generación y stack optimizado para WordPress: menos espera, más conversión. Tu sitio carga cuando el cliente ya decidió quedarse.',
+            'icono'  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
+            'label'  => 'Icono de velocidad NVMe',
+        ),
+        array(
+            'titulo' => 'WordPress endurecida para el tráfico real de un negocio.',
+            'texto'  => 'Hardening continuo, controles de acceso y visibilidad sobre lo que ocurre en tu instalación. Menos superficie de ataque, más tranquilidad operativa.',
+            'icono'  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+            'label'  => 'Icono de escudo de seguridad WordPress',
+        ),
+        array(
+            'titulo' => 'Confianza cero por defecto: identidad, sesiones y permisos bajo control.',
+            'texto'  => 'La seguridad no es un cartel: es política aplicada en capas. Menos suposiciones, más trazabilidad cuando importa.',
+            'icono'  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+            'label'  => 'Icono de candado Zero-Trust',
+        ),
+        array(
+            'titulo' => 'Contenido más cerca del usuario, sin magia barata.',
+            'texto'  => 'Arquitectura pensada para entregar experiencias rápidas donde vive tu audiencia. Menos saltos innecesarios, más respuesta perceptible.',
+            'icono'  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+            'label'  => 'Icono de red Edge y latencia global',
+        ),
+    );
+
+    // Permitir solo las etiquetas SVG que usamos en los iconos
+    $kses_svg = array(
+        'svg'    => array(
+            'xmlns'            => true,
+            'viewbox'          => true,
+            'fill'             => true,
+            'stroke'           => true,
+            'stroke-width'     => true,
+            'stroke-linecap'   => true,
+            'stroke-linejoin'  => true,
+            'aria-hidden'      => true,
+            'focusable'        => true,
+        ),
+        'path'   => array( 'd' => true ),
+        'circle' => array( 'cx' => true, 'cy' => true, 'r' => true ),
+        'line'   => array( 'x1' => true, 'y1' => true, 'x2' => true, 'y2' => true ),
+        'rect'   => array( 'x' => true, 'y' => true, 'width' => true, 'height' => true, 'rx' => true, 'ry' => true ),
+    );
+
+    $html = '<div class="gano-pilares-grid">';
+
+    foreach ( $pilares as $pilar ) {
+        $html .= '<article class="gano-el-pillar">';
+        $html .= '<span class="gano-pillar-icon" role="img" aria-label="' . esc_attr( $pilar['label'] ) . '">';
+        $html .= wp_kses( $pilar['icono'], $kses_svg );
+        $html .= '</span>';
+        $html .= '<h3>' . esc_html( $pilar['titulo'] ) . '</h3>';
+        $html .= '<p>' . esc_html( $pilar['texto'] ) . '</p>';
+        $html .= '</article>';
+    }
+
+    $html .= '</div>';
+
+    return $html;
+}
+
+// =============================================================================
+// 4b. WHITELIST: AGREGAR ENDPOINTS DEL CHAT A LA LISTA DEL MU PLUGIN
+// =============================================================================
+
+// =============================================================================
+// 5. SHORTCODE: [gano_cta_icons] — iconos reales del CTA final
+// =============================================================================
+
+/**
+ * Renderiza la fila de iconos del bloque CTA final con Font Awesome 5/6.
+ * Uso: inserta el shortcode [gano_cta_icons] en un widget Shortcode de Elementor
+ * sobre el contenedor con clase gano-el-cta-icons o directamente como shortcode.
+ *
+ * Dependencia de iconos: Font Awesome es cargado por Elementor / Essential Addons.
+ */
+add_shortcode( 'gano_cta_icons', 'gano_render_cta_icons' );
+function gano_render_cta_icons() {
+    $items = array(
+        array(
+            'icon'  => 'fa-bolt',
+            'label' => 'Velocidad NVMe',
+            'url'   => home_url( '/arquitecturas/' ),
+            'title' => 'Ver arquitecturas NVMe',
+        ),
+        array(
+            'icon'  => 'fa-shield-halved',
+            'label' => 'Zero-Trust',
+            'url'   => home_url( '/seguridad/' ),
+            'title' => 'Conocer el hardening de seguridad',
+        ),
+        array(
+            'icon'  => 'fa-circle-check',
+            'label' => 'Uptime 99,9 %',
+            'url'   => '',
+            'title' => '',
+        ),
+        array(
+            'icon'  => 'fa-headset',
+            'label' => 'Soporte en español',
+            'url'   => home_url( '/contacto/' ),
+            'title' => 'Hablar con el equipo de soporte',
+        ),
+        array(
+            'icon'  => 'fa-coins',
+            'label' => 'Facturación en COP',
+            'url'   => '',
+            'title' => '',
+        ),
+    );
+
+    ob_start();
+    echo '<ul class="gano-el-cta-icons">';
+    foreach ( $items as $item ) {
+        $has_link = ! empty( $item['url'] );
+        echo '<li class="gano-el-cta-icons__item">';
+        if ( $has_link ) {
+            printf(
+                '<a href="%s" title="%s" aria-label="%s">',
+                esc_url( $item['url'] ),
+                esc_attr( $item['title'] ),
+                esc_attr( $item['label'] . ': ' . $item['title'] )
+            );
+        }
+        printf(
+            '<i class="fa-solid %s" aria-hidden="true"></i>',
+            esc_attr( $item['icon'] )
+        );
+        printf(
+            '<span class="gano-el-cta-icons__label">%s</span>',
+            esc_html( $item['label'] )
+        );
+        if ( $has_link ) {
+            echo '</a>';
+        }
+        echo '</li>';
+    }
+    echo '</ul>';
+    return ob_get_clean();
+}
+
 
 /**
  * El MU plugin gano-security.php bloquea la REST API para no autenticados.
@@ -380,3 +634,107 @@ add_filter( 'rest_authentication_errors', function ( $result ) {
     }
     return $result;
 }, 5 );
+
+// =============================================================================
+// GANO RESELLER STORE — Constantes de mapeo de productos (pfids)
+// =============================================================================
+//
+// Qué es un pfid: "Product Family ID" del catálogo GoDaddy Reseller.
+// Es el identificador único que GoDaddy asigna a cada producto en el RCC.
+//
+// CÓMO OBTENER LOS pfids REALES:
+//   1. Iniciar sesión en el Reseller Control Center (RCC):
+//      https://www.godaddy.com/reseller/program/affiliate
+//   2. Ir a: Productos → Catálogo de productos.
+//   3. En cada producto, el "Product Family ID" es el pfid.
+//   4. Alternativa rápida (WP-CLI, después de sincronizar):
+//      wp reseller sync
+//      wp post list --post_type=reseller_product --fields=ID,post_title
+//      wp post meta get <POST_ID> rstore_id
+//
+// ESTRUCTURA DE URL DEL CARRITO:
+//   https://cart.secureserver.net/?plid={PLID}&items=[{"id":"{PFID}","quantity":1}]
+//   El PLID se configura en: wp-admin → Ajustes → Reseller Store → Private Label ID.
+//
+// NOTA: Los dominios (.CO / .COM) NO tienen pfid de carrito directo.
+//   Para dominios usar el shortcode [rstore-domain-search].
+//
+// TODO: Reemplazar los valores 'PENDING_RCC' con los pfids reales desde el RCC
+//       antes de activar el flujo de checkout en producción.
+// =============================================================================
+
+// --- Hosting WordPress ---
+// Fuente: RCC → Productos → Web Hosting → WordPress Hosting
+if ( ! defined( 'GANO_PFID_HOSTING_ECONOMIA' ) ) {
+	define( 'GANO_PFID_HOSTING_ECONOMIA', 'PENDING_RCC' ); // WordPress Hosting Economy  — Núcleo Prime
+}
+if ( ! defined( 'GANO_PFID_HOSTING_DELUXE' ) ) {
+	define( 'GANO_PFID_HOSTING_DELUXE', 'PENDING_RCC' );   // WordPress Hosting Deluxe   — Fortaleza Delta
+}
+if ( ! defined( 'GANO_PFID_HOSTING_PREMIUM' ) ) {
+	define( 'GANO_PFID_HOSTING_PREMIUM', 'PENDING_RCC' );  // WordPress Hosting Premium  — Bastión SOTA
+}
+if ( ! defined( 'GANO_PFID_HOSTING_ULTIMATE' ) ) {
+	define( 'GANO_PFID_HOSTING_ULTIMATE', 'PENDING_RCC' ); // WordPress Hosting Ultimate — Ultimate WP
+}
+
+// --- Seguridad / SSL ---
+// Fuente: RCC → Productos → SSL & Seguridad
+if ( ! defined( 'GANO_PFID_SSL_DELUXE' ) ) {
+	define( 'GANO_PFID_SSL_DELUXE', 'PENDING_RCC' );        // SSL DV Deluxe              — SSL Deluxe
+}
+if ( ! defined( 'GANO_PFID_SECURITY_ULTIMATE' ) ) {
+	define( 'GANO_PFID_SECURITY_ULTIMATE', 'PENDING_RCC' ); // Website Security Premium   — Security Ultimate
+}
+
+// --- Email / Colaboración ---
+// Fuente: RCC → Productos → Email & Office
+if ( ! defined( 'GANO_PFID_M365_PREMIUM' ) ) {
+	define( 'GANO_PFID_M365_PREMIUM', 'PENDING_RCC' );   // Microsoft 365 Business Premium — M365 Premium
+}
+if ( ! defined( 'GANO_PFID_ONLINE_STORAGE' ) ) {
+	define( 'GANO_PFID_ONLINE_STORAGE', 'PENDING_RCC' ); // Online Storage 1 TB            — Online Storage
+}
+
+/**
+ * Genera la URL del carrito de GoDaddy Reseller para un pfid dado.
+ *
+ * Usa el pl_id configurado en el plugin Reseller Store (wp-admin → Ajustes →
+ * Reseller Store → Private Label ID). Devuelve '#' cuando el pfid aún no está
+ * configurado (valor 'PENDING_RCC') o cuando el plugin no está activo.
+ *
+ * @param string $pfid     Product Family ID del catálogo GoDaddy Reseller.
+ * @param int    $duration Duración en meses (por defecto 12 = 1 año).
+ * @return string URL escapada lista para usar en href.
+ */
+function gano_rstore_cart_url( $pfid, $duration = 12 ) {
+	if ( empty( $pfid ) || 'PENDING_RCC' === $pfid ) {
+		return '#';
+	}
+
+	$pl_id = function_exists( 'rstore_get_option' ) ? (int) rstore_get_option( 'pl_id' ) : 0;
+
+	if ( empty( $pl_id ) ) {
+		return '#';
+	}
+
+	$items = wp_json_encode(
+		array(
+			array(
+				'id'       => $pfid,
+				'quantity' => 1,
+				'duration' => absint( $duration ),
+			),
+		)
+	);
+
+	return esc_url(
+		add_query_arg(
+			array(
+				'plid'  => $pl_id,
+				'items' => $items,
+			),
+			'https://cart.secureserver.net/'
+		)
+	);
+}

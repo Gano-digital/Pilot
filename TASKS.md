@@ -51,9 +51,10 @@ Cuando vuelvas: **Actions → [10 · Orquestar oleadas](https://github.com/Gano-
   - `wp-config.php` — **no** va en git; subir solo por SFTP seguro.
   - `wp-content/themes/gano-child/templates/shop-premium.php` — va dentro del deploy del child theme cuando exista en repo.
 
-- [ ] **[CRÍTICO] Eliminar wp-file-manager del servidor** — El MU plugin ahora muestra la alerta en wp-admin.
-  1. Ir a wp-admin → Plugins → Desactivar wp-file-manager
-  2. Eliminar vía SFTP: `wp-content/plugins/wp-file-manager/`
+- [ ] **[CRÍTICO] Eliminar wp-file-manager del servidor** — Ejecutar workflow automatizado:
+  - **Opción A (recomendada)**: GitHub Actions → `🔒 Verificar y eliminar wp-file-manager` → `Run workflow` → `force_remove: true`
+  - **Opción B (manual)**: wp-admin → Plugins → Desactivar → SFTP eliminar `wp-content/plugins/wp-file-manager/`
+  - Post-eliminación: verificar en wp-admin que la alerta de `gano-security.php` desapareció.
 
 - [ ] **[ALTA] Configurar datos SEO (Empresa Digital)** en wp-admin → Ajustes → Gano SEO:
   - Definir área de cobertura (Colombia) sin dirección física local obligatoria.
@@ -119,7 +120,7 @@ Cuando vuelvas: **Actions → [10 · Orquestar oleadas](https://github.com/Gano-
 - [ ] Sustituir Lorem / placeholders usando `memory/content/homepage-copy-2026-04.md` como fuente
 - [ ] Hero: imagen + attachment coherente con diseño
 - [ ] Ajustes de layout: aplicar clases `gano-el-stack` / `gano-el-layer-*` + CTA final con iconos reales
-- [ ] Post “coming soon” u oculto según estrategia
+- [x] Post "coming soon" u oculto según estrategia — `dashboard-infraestructura` marcado como borrador (`_gano_coming_soon`); phase7 respeta la bandera.
 
 ### Referencia de copy
 
