@@ -224,3 +224,11 @@ Conectar sus resultados a recomendación de plan específico.
 El chat (`gano-chat.js`) capta leads (nombre + WhatsApp). El texto del nudge automático
 "detecté una vulnerabilidad en tu sitio" puede ser alarmista. Evaluar cambio a algo
 más empático: "¿Cómo podemos ayudarte con tu proyecto digital?"
+
+### Homepage Elementor y clases SOTA (Abril 2026)
+
+- **Clases y mapeo** (repo): `memory/content/elementor-home-classes.md` — qué clase CSS va en cada widget; alinear con `gano-child` (`style.css` v1.0.1+).
+- **Copy de referencia:** `memory/content/homepage-copy-2026-04.md`.
+- **Menú:** el tema hijo registra `primary` además de `main` (Hello/Royal); en Elementor asignar el menú correcto al **Header** si el sitio no muestra navegación.
+- **Git vs servidor:** cambios en Elementor viven en **BD**; el agente en GitHub solo puede preparar **código** (tema, MU-plugins, docs). Issues `[sync]` o solo servidor: dejar checklist en el issue o en `DEV-COORDINATION.md`.
+- Orquestación masiva de issues: skill **`gano-github-copilot-orchestration`**.
