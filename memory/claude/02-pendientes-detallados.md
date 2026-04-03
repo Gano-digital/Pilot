@@ -65,10 +65,11 @@ Este documento **complementa** [`TASKS.md`](../../TASKS.md) y [`../notes/nota-di
 | E1 | **Cerrar issues** ya cubiertos por `main` | **GH** | Tras consolidación 2026-04-03, muchos issues pueden cerrarse con comentario “resuelto en main”. Revisión **manual** lista por lista. |
 | E2 | **09 · Sembrar issues homepage** | **GH** | En `TASKS.md` sigue como checkbox: ejecutar **solo si** los 7 issues `homepage-fixplan` **no** existen. Si ya se crearon, marcar hecho en TASKS al confirmar. |
 | E3 | **08 · Sembrar cola Copilot** | **GH** | Solo para **nuevos** issues desde JSON; deduplicación por `agent-task-id`. Oleadas 2/3 ya sembradas históricamente — no re-sembrar sin revisar duplicados. |
-| E4 | Prompt Copilot por rango de issue | **GH** | [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md) — oleada 1, 3, **4** (contenido/narrativa) e **infra** (DNS/HTTPS). |
+| E4 | Prompt Copilot por lote | **GH** | Un solo archivo: [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md) — tablas y bloques para oleadas **1, 2, 3, 4**, **infra** DNS/HTTPS, **API** (ML + GoDaddy research) y **guardián seguridad**. Índice de colas: [`.github/COPILOT-AGENT-QUEUE.md`](../../.github/COPILOT-AGENT-QUEUE.md). |
 | E5 | **10 · Orquestar oleadas** | **GH** | **No** requerido para la oleada ya fusionada. Solo si reaparece un lote “oleada 1” y se desea automatizar. |
 | E6 | Rotación de tokens / remotes sin credenciales en URL | **GH** + local | Buena práctica post-deploy. |
-| E7 | Sembrar **oleada 4** + **cola infra** | **GH** | **08** con `tasks-wave4-ia-content.json` y `tasks-infra-dns-ssl.json`; luego asignar Copilot con el prompt correcto. |
+| E7 | Sembrar colas **oleada 4**, **infra**, **API** o **guardián** (opcional) | **GH** | Oleadas 1–3 y muchas tareas 4/infra ya pueden estar **sembradas** o resueltas en `main`. Ejecutar **08** solo si necesitas **nuevos** issues desde los JSON (sin duplicar `agent-task-id`). Archivos válidos: `tasks.json`, `tasks-wave2.json`, `tasks-wave3.json`, `tasks-wave4-ia-content.json`, `tasks-infra-dns-ssl.json`, `tasks-api-integrations-research.json`, `tasks-security-guardian.json` — ver [`.github/COPILOT-AGENT-QUEUE.md`](../../.github/COPILOT-AGENT-QUEUE.md). |
+| E8 | **CI** estable (labeler **03**, setup **11**) | **GH** | Si un PR falla en etiquetas o PHP lint, revisar `memory/ops/github-actions-audit-2026-04.md` antes de “arreglar” a ciegas. |
 
 ---
 
@@ -88,6 +89,8 @@ Este documento **complementa** [`TASKS.md`](../../TASKS.md) y [`../notes/nota-di
 |---------|-----|
 | [`../research/fase4-plataforma.md`](../research/fase4-plataforma.md) | WHMCS, Blesta, DIAN, portal — **referencia** mientras el modelo activo sea Reseller GoDaddy. |
 | [`../research/gano-wave3-brand-ux-master-brief.md`](../research/gano-wave3-brand-ux-master-brief.md) | Brief oleada 3 / marca y UX. |
+| [`../research/sota-apis-mercadolibre-godaddy-2026-04.md`](../research/sota-apis-mercadolibre-godaddy-2026-04.md) | Mapa APIs ML + GoDaddy Reseller; ampliar vía cola `tasks-api-integrations-research.json`. |
+| [`../ops/security-guardian-playbook-2026.md`](../ops/security-guardian-playbook-2026.md) | Sesiones sin filtrar secretos; alineado con cola `tasks-security-guardian.json`. |
 | [`2026-04-02-progreso-consolidado.md`](../sessions/2026-04-02-progreso-consolidado.md) | Buen resumen de fases 1–3; **ignorar** conteos obsoletos de PRs abiertos (sustituir por sesión 2026-04-03). |
 
 ---
@@ -101,7 +104,7 @@ Este documento **complementa** [`TASKS.md`](../../TASKS.md) y [`../notes/nota-di
 5. **D1–D2** RCC + pfids.  
 6. **C1–C7** Elementor y copy.  
 7. **E1** limpieza de issues en GitHub en paralelo cuando haya tiempo.  
-8. **E7** sembrar oleada 4 e infra y dejar Copilot trabajando en issues nuevos.
+8. **E7** solo si hace falta **nueva** semilla de issues (oleada 4, infra, API o guardián); si no, priorizar **Fase 4** según `TASKS.md` y research de plataforma.
 
 ---
 
@@ -115,4 +118,4 @@ Debe imprimir `OK` si las colas en `.github/agent-queue/` son JSON válido segú
 
 ---
 
-_Ultima revisión: **2026-04-03** (noche: dispatch local + guías ops/commerce)._
+_Ultima revisión: **2026-04-04** — 7 colas `agent-queue`, prompts API/guardián en `copilot-bulk-assign.md`, auditoría Actions y playbook guardián._

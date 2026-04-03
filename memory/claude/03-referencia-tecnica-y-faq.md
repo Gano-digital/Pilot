@@ -10,7 +10,7 @@ Tablas y respuestas cortas para **no redescubrir** convenciones del repo Pilot.
 |---|------------------------|--------------|--------------|
 | 01 | CI · Sintaxis PHP (Gano) | `php-lint-gano.yml` | Lint PHP en rutas Gano. |
 | 02 | CI · Escaneo secretos | `secret-scan.yml` | TruffleHog acotado. |
-| 03 | PR · Etiquetas automáticas | `labeler.yml` | Requiere etiquetas existentes (**06**). |
+| 03 | PR · Etiquetas automáticas | `labeler.yml` | Requiere etiquetas existentes (**06**). Con `actions/labeler@v6` el job debe hacer **checkout** del repo antes del labeler; ver auditoría abril 2026. |
 | 04 | Deploy · Producción | `deploy.yml` | rsync SSH al push en rutas cubiertas. |
 | 05 | Ops · Verificar parches | `verify-patches.yml` | MD5 repo vs servidor; manual. |
 | 06 | Repo · Crear etiquetas | `setup-repo-labels.yml` | Manual o vía `label-bootstrap`. |
@@ -32,12 +32,19 @@ Guía con más detalle: [`.github/workflows/README.md`](../../.github/workflows/
 | Cola oleada 1 | `.github/agent-queue/tasks.json` |
 | Cola oleada 2 | `.github/agent-queue/tasks-wave2.json` |
 | Cola oleada 3 | `.github/agent-queue/tasks-wave3.json` |
-| Prompt bulk Copilot | `.github/prompts/copilot-bulk-assign.md` |
+| Cola oleada 4 (narrativa / contenido) | `.github/agent-queue/tasks-wave4-ia-content.json` |
+| Cola infra DNS/HTTPS | `.github/agent-queue/tasks-infra-dns-ssl.json` |
+| Cola API (research ML + GoDaddy) | `.github/agent-queue/tasks-api-integrations-research.json` |
+| Cola guardián seguridad | `.github/agent-queue/tasks-security-guardian.json` |
+| Índice de las 7 colas + uso workflow **08** | `.github/COPILOT-AGENT-QUEUE.md` |
+| Prompt único (bloques por lote) | `.github/prompts/copilot-bulk-assign.md` |
 | Checklist revisión PR agente | `.github/AGENT-REVIEW-CHECKLIST.md` |
 | Merge de muchos PRs | `.github/MERGE-PLAYBOOK.md` |
 | Coordinación sync | `.github/DEV-COORDINATION.md` |
 | Skill orquestación | `.gano-skills/gano-github-copilot-orchestration/SKILL.md` |
-| Validador local cola | `scripts/validate_agent_queue.py` |
+| Skill cierre de sesión / no secretos | `.gano-skills/gano-session-security-guardian/SKILL.md` |
+| Auditoría CI (labeler, workflow 11) | `memory/ops/github-actions-audit-2026-04.md` |
+| Validador local cola (los 7 JSON) | `scripts/validate_agent_queue.py` |
 
 ---
 
@@ -60,7 +67,11 @@ Documentado en [`.github/DEV-COORDINATION.md`](../../.github/DEV-COORDINATION.md
 
 ### ¿Hay que ejecutar 08 de nuevo?
 
-Solo si necesitas **nuevos** issues desde los JSON y has comprobado que no duplican `agent-task-id` existentes.
+Solo si necesitas **nuevos** issues desde los JSON y has comprobado que no duplican `agent-task-id` existentes. Hay **siete** archivos en `.github/agent-queue/`; el workflow **07** y `validate_agent_queue.py` validan ids únicos.
+
+### ¿El workflow 03 (labeler) falla en PRs?
+
+Revisar que el job haga **checkout** antes de `actions/labeler@v6` y que `changed-files-labels` no exceda límites del action. Detalle: [`../ops/github-actions-audit-2026-04.md`](../ops/github-actions-audit-2026-04.md).
 
 ### ¿Dónde está el recordatorio corto para Diego?
 
@@ -94,8 +105,9 @@ En `memory/ops/` y `memory/commerce/`: por ejemplo `gano-seo-rankmath-gsc-checkl
 
 Los agentes en GitHub **no cambian DNS**. Sembrá la cola **`tasks-infra-dns-ssl.json`** (scope **`infra`**) para generar runbooks en `memory/ops/`; ejecutá **`python scripts/check_dns_https_gano.py`** en tu PC y abrí un issue con la plantilla **DNS / HTTPS — gano.digital** si hace falta seguimiento.
 
-Recursos infra disponibles (o planificados — ver TASKS.md § *Infra DNS/HTTPS*):
-- **Runbook paso a paso:** [`memory/ops/dns-https-godaddy-runbook-2026.md`](../ops/dns-https-godaddy-runbook-2026.md) ← _TODO: se crea con issue `dns-runbook-godaddy`_
+Recursos infra (ver también TASKS.md § *Infra DNS/HTTPS*):
+- **Runbook paso a paso:** [`memory/ops/dns-https-godaddy-runbook-2026.md`](../ops/dns-https-godaddy-runbook-2026.md)
+- **Plantilla registros esperados:** [`memory/ops/dns-expected-records-template-2026.md`](../ops/dns-expected-records-template-2026.md)
 - **Script de verificación local:** [`scripts/check_dns_https_gano.py`](../../scripts/check_dns_https_gano.py) — sin dependencias externas, ejecutar en la máquina de Diego
 
 ### ¿Puedo programar tareas en la app de Claude desde este repo?
@@ -104,4 +116,4 @@ Recursos infra disponibles (o planificados — ver TASKS.md § *Infra DNS/HTTPS*
 
 ---
 
-_Ultima revisión: **2026-04-03**._
+_Ultima revisión: **2026-04-04**._

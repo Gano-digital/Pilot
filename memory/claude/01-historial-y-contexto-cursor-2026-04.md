@@ -71,6 +71,20 @@ Tras vaciar PRs, se alineó la **documentación operativa** para que Cursor, Cla
 
 **Entrega:** `memory/claude/README.md` + tres documentos de apoyo (`01`–`03`) + enlace desde `CLAUDE.md`.
 
+### 2.5 Post-consolidación — investigación APIs, CI y guardián (2026-04-04)
+
+Tras el merge masivo del **2026-04-03**, el equipo siguió en `main` con trabajo **documentación + colas Copilot + CI** (referencia de commits recientes en el remoto):
+
+| Tema | Commit (corto) | Notas |
+|------|------------------|--------|
+| Cola Copilot **API** (ML + GoDaddy) + informe SOTA | `58d3d626` | `tasks-api-integrations-research.json`, `memory/research/sota-apis-mercadolibre-godaddy-2026-04.md`, cableado en docs/skills. |
+| SOTA operativo y progreso consolidado | `076ef8bf` | Alineación narrativa GitHub/Copilot con el estado del repo. |
+| **Labeler v6**, PHP lint en workflow **11**, auditoría Actions | `a34e4a13` | `memory/ops/github-actions-audit-2026-04.md` — checkout antes de `actions/labeler@v6`, rutas de labels. |
+| PDF junta (`generate_board_report_pdf`) | `f8f3ddfc` | Contenido abril 2026 embebido en script; regenerar para handoff ejecutivo. |
+| **Guardián seguridad** — cola, skill, playbook | `a7a1e353` | `tasks-security-guardian.json`, `.gano-skills/gano-session-security-guardian/SKILL.md`, `memory/ops/security-guardian-playbook-2026.md`. |
+
+Issues/PRs posteriores en la serie **#108–#113** cubrieron copy coherencia, índice `memory/content/`, DNS/HTTPS y enlaces en `TASKS` / FAQ según el historial de merge.
+
 ---
 
 ## 3. Implicaciones para el trabajo futuro de un agente
@@ -95,4 +109,4 @@ Tras vaciar PRs, se alineó la **documentación operativa** para que Cursor, Cla
 
 ---
 
-_Ultima actualización del contenido de este archivo: **2026-04-03**._
+_Ultima actualización del contenido de este archivo: **2026-04-04**._
