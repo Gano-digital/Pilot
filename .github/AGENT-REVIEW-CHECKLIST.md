@@ -20,8 +20,8 @@ Usar **antes de aprobar o fusionar**. Objetivo: código mantenible, sin retrabaj
 
 | Momento | Acción |
 |---------|--------|
-| Antes de orchestrate | `dry_run_merge: true` en **Orchestrate Copilot waves** (ver `.github/MERGE-PLAYBOOK.md`). |
-| Issues nuevos oleada 2 | `Seed Copilot task queue` → `tasks-wave2.json` (deduplicado por `agent-task-id`). |
+| Antes de orchestrate | `dry_run_merge: true` en **10 · Orquestar oleadas** (ver `.github/MERGE-PLAYBOOK.md`). |
+| Issues nuevos oleada 2 | **08 · Sembrar cola Copilot** → `tasks-wave2.json` (deduplicado por `agent-task-id`). |
 | Homepage fixplan | **Seed homepage Fix issues** si faltan los 7 issues. |
 | Asignación Copilot | Prompt correcto: oleada 1 **#17–33** vs oleada 3 **#54–68** (`.github/prompts/copilot-bulk-assign.md`). |
 
