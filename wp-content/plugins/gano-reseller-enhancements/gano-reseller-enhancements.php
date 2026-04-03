@@ -51,9 +51,9 @@ function gano_reseller_filter_sync_properties( $properties, $post_id ) {
 add_filter( 'rstore_api_query_args', 'gano_reseller_filter_api_args' );
 
 function gano_reseller_filter_api_args( $args ) {
-    // Default to es-MX and USD for international consistency
-    $args['marketId'] = 'es-MX';
-    $args['currencyType'] = 'USD'; 
-    
+    // Mercado colombiano: es-CO y COP
+    $args['marketId']     = 'es-CO';
+    $args['currencyType'] = 'COP';
+
     return $args;
 }
