@@ -1,0 +1,37 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+# Gano Digital — Contexto del Proyecto
+
+**Gano Digital** es una plataforma de hosting WordPress para el mercado colombiano.
+Fundador: Diego. URL: https://gano.digital
+
+## Stack
+- CMS: WordPress 6.x + Elementor Pro + Royal Elementor Addons
+- E-commerce: WooCommerce (COP, Bogotá)
+- Checkout cliente: **GoDaddy Reseller Store** (no priorizar Wompi ni pasarelas fuera del ecosistema GoDaddy)
+- Seguridad: Wordfence + MU Plugin `gano-security.php`
+- SEO: Rank Math + MU Plugin `gano-seo.php`
+- Tema: Hello Elementor → `gano-child` (child theme)
+- Animaciones: GSAP 3 + ScrollTrigger
+- Hosting: GoDaddy Managed WordPress Deluxe
+
+## Fuentes de verdad (leer ANTES de cambios grandes)
+1. `TASKS.md` — Estado por fases, pendientes
+2. `CLAUDE.md` — Contexto proyecto, reglas de no borrar instaladores
+3. `memory/content/` — Copy listo para Elementor
+4. `memory/research/` — Investigación
+5. `memory/sessions/` — Reportes de sesión
+6. `.github/copilot-instructions.md` — Instrucciones GitHub Copilot
+7. `.github/DEV-COORDINATION.md` — Brújula operativa
+
+## Idioma
+- Código: comentarios y strings en **es-CO**
+- Comunicación con Diego: **siempre en español**
+- Commits y PRs: español o inglés (convencional)
+
+## Plugins de fase (NO ELIMINAR)
+Los plugins `gano-phase*` son instaladores. NO desactivar/eliminar hasta confirmar que su contenido ya está aplicado en WordPress.

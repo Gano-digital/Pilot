@@ -1,13 +1,10 @@
 ---
 name: gano-fase4-plataforma
 description: >
-  Skill de implementación de Fase 4 para Gano Digital. Úsalo cuando necesites:
-  instalar o configurar WHMCS, integrar módulo Wompi en WHMCS, configurar facturación
-  DIAN con ESTUPENDO, instalar FreeScout para soporte, desplegar Upptime como status page,
-  configurar ResellerClub para dominios, integrar WhatsApp Business API con CloudLinkd,
-  configurar servidores VPS Hetzner/DigitalOcean, o cuando el usuario mencione
-  "fase 4", "WHMCS", "billing", "panel de hosting", "portal de cliente", "DIAN",
-  "facturación electrónica", "tickets de soporte", "status page", "dominios", "WhatsApp".
+  Investigación y opciones avanzadas de plataforma (WHMCS, DIAN, soporte, etc.). La línea
+  operativa actual del proyecto es GoDaddy Reseller + Managed WordPress (ver TASKS.md).
+  Usa esta skill para exploración o staging de billing propio solo si Diego lo pide; no
+  asumir Wompi ni WHMCS como camino por defecto.
 ---
 
 # Gano Fase 4 — Plataforma Real de Hosting
@@ -21,11 +18,10 @@ billing panel, facturación DIAN, portal de cliente, soporte, dominios y VPS.
 
 ## Pivot comercial (Abril 2026)
 
-La estrategia vigente en `memory/projects/gano-digital.md` prioriza **marca blanca GoDaddy Reseller**
-(checkout y facturación delegados). Esta skill sigue documentando **WHMCS + Wompi + DIAN** como
-**ruta de plataforma propia** cuando se reactive o se use en staging; no contradice el Reseller
-en producción. Antes de implementar billing propio, alinear con `TASKS.md` y decisión explícita
-del fundador.
+La estrategia vigente en `memory/projects/gano-digital.md` y **`TASKS.md`** prioriza **marca blanca GoDaddy Reseller**
+(checkout y facturación delegados dentro del ecosistema GoDaddy). El cuerpo de esta skill sigue siendo **material de referencia**
+(WHMCS, DIAN, etc.) por si en el futuro se evalúa plataforma propia; **no** es la prioridad mientras Reseller cubra el negocio.
+**No** priorizar Wompi ni pasarelas locales salvo decisión explícita del fundador.
 
 ---
 
