@@ -42,6 +42,7 @@ _Documento de recordatorio operativo. Última revisión: **2026-04-03** (post-co
 | Consolidación PRs | [`../sessions/2026-04-03-consolidacion-prs-copilot.md`](../sessions/2026-04-03-consolidacion-prs-copilot.md) |
 | Coordinación git ↔ servidor | [`.github/DEV-COORDINATION.md`](../../.github/DEV-COORDINATION.md) |
 | Tareas globales | [`TASKS.md`](../../TASKS.md) |
+| Continuidad **mañana** (qué quedó hecho esta noche + qué hacer en GitHub) | [`../sessions/2026-04-03-noche-continuidad-manana.md`](../sessions/2026-04-03-noche-continuidad-manana.md) |
 | Contexto extenso para Claude (historial + pendientes + FAQ) | [`../claude/README.md`](../claude/README.md) |
 | Cola **dispatch** (tareas que Claude hace en el repo + `claude_dispatch.py next`) | [`../claude/dispatch-prompt.md`](../claude/dispatch-prompt.md) |
 | Oleada 4 Copilot (narrativa/páginas) + infra DNS | `tasks-wave4-ia-content.json`, `tasks-infra-dns-ssl.json` — **08 · Sembrar cola**; script `python scripts/check_dns_https_gano.py` |

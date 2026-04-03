@@ -65,9 +65,10 @@ Este documento **complementa** [`TASKS.md`](../../TASKS.md) y [`../notes/nota-di
 | E1 | **Cerrar issues** ya cubiertos por `main` | **GH** | Tras consolidación 2026-04-03, muchos issues pueden cerrarse con comentario “resuelto en main”. Revisión **manual** lista por lista. |
 | E2 | **09 · Sembrar issues homepage** | **GH** | En `TASKS.md` sigue como checkbox: ejecutar **solo si** los 7 issues `homepage-fixplan` **no** existen. Si ya se crearon, marcar hecho en TASKS al confirmar. |
 | E3 | **08 · Sembrar cola Copilot** | **GH** | Solo para **nuevos** issues desde JSON; deduplicación por `agent-task-id`. Oleadas 2/3 ya sembradas históricamente — no re-sembrar sin revisar duplicados. |
-| E4 | Prompt Copilot por rango de issue | **GH** | [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md) — bloques oleada 1 (#17–33) vs oleada 3 (#54–68). |
+| E4 | Prompt Copilot por rango de issue | **GH** | [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md) — oleada 1, 3, **4** (contenido/narrativa) e **infra** (DNS/HTTPS). |
 | E5 | **10 · Orquestar oleadas** | **GH** | **No** requerido para la oleada ya fusionada. Solo si reaparece un lote “oleada 1” y se desea automatizar. |
 | E6 | Rotación de tokens / remotes sin credenciales en URL | **GH** + local | Buena práctica post-deploy. |
+| E7 | Sembrar **oleada 4** + **cola infra** | **GH** | **08** con `tasks-wave4-ia-content.json` y `tasks-infra-dns-ssl.json`; luego asignar Copilot con el prompt correcto. |
 
 ---
 
@@ -99,7 +100,8 @@ Este documento **complementa** [`TASKS.md`](../../TASKS.md) y [`../notes/nota-di
 4. **B1–B3** SEO en panel.  
 5. **D1–D2** RCC + pfids.  
 6. **C1–C7** Elementor y copy.  
-7. **E1** limpieza de issues en GitHub en paralelo cuando haya tiempo.
+7. **E1** limpieza de issues en GitHub en paralelo cuando haya tiempo.  
+8. **E7** sembrar oleada 4 e infra y dejar Copilot trabajando en issues nuevos.
 
 ---
 
@@ -113,4 +115,4 @@ Debe imprimir `OK` si las colas en `.github/agent-queue/` son JSON válido segú
 
 ---
 
-_Ultima revisión: **2026-04-03**._
+_Ultima revisión: **2026-04-03** (noche: dispatch local + guías ops/commerce)._

@@ -84,6 +84,7 @@ _Última actualización: Abril 2026_
   - Asegurar que los productos (Hosting, VPS, SSL) tengan el precio base en el RCC (Reseller Control Center).
 - [ ] **Mapeo de UI SOTA -> Reseller**:
   - Conectar los ID de productos requeridos en los CTAs de `shop-premium.php` con el carrito de compra GoDaddy.
+  - Guía paso a paso RCC → pfid: [`memory/commerce/rcc-pfid-checklist.md`](memory/commerce/rcc-pfid-checklist.md).
 - [ ] **Prueba de Flujo de Checkout**:
   - Presionar "Comprar" en el SOTA Mockup de Gano -> Verificar que mande al carrito marca blanca -> Cierre.
 - [ ] **Instalar soporte/chat**: FreeScout o similar para atención a cliente, ya que el soporte inicial lo da el reseller (vos).
@@ -103,18 +104,20 @@ _Última actualización: Abril 2026_
 - [ ] **Oleada 4 — narrativa y páginas (Copilot):** cola [`.github/agent-queue/tasks-wave4-ia-content.json`](.github/agent-queue/tasks-wave4-ia-content.json) — plan maestro de contenidos, matriz productos/servicios, brecha IA vs inventario, orden homepage, pilares, menú, legal/contacto, índice. Sembrar: Actions → **08 · Sembrar cola Copilot** → `queue_file: tasks-wave4-ia-content.json` → `scope: all` (o `docs` / `content_seo` / `commerce`). Luego asignar Copilot.
 - [ ] **Cola infra DNS/HTTPS (Copilot + humano):** [`.github/agent-queue/tasks-infra-dns-ssl.json`](.github/agent-queue/tasks-infra-dns-ssl.json) — runbooks y checklists (Copilot **no** cambia DNS en GoDaddy). Sembrar con `queue_file: tasks-infra-dns-ssl.json` y `scope: infra` o `all`. Etiqueta **`infra`** (crear con **06 · Crear etiquetas** si no existe). Verificación local: `python scripts/check_dns_https_gano.py`.
 - [x] **Consolidación PRs Copilot (2026-04-03):** cola de PRs vaciada en `main` (squash + cierre duplicados). Detalle: [`memory/sessions/2026-04-03-consolidacion-prs-copilot.md`](memory/sessions/2026-04-03-consolidacion-prs-copilot.md). Revisar en GitHub **issues** aún abiertos y cerrarlos con comentario si el trabajo ya está en `main`.
-- [x] **Oleada 2:** `.github/agent-queue/tasks-wave2.json` + workflow **08 · Sembrar cola Copilot** con input `queue_file` (`tasks.json` | `tasks-wave2.json` | `tasks-wave3.json`).
+- [x] **Oleada 2:** `.github/agent-queue/tasks-wave2.json` + workflow **08 · Sembrar cola Copilot** con input `queue_file`: `tasks.json` | `tasks-wave2.json` | `tasks-wave3.json` | `tasks-wave4-ia-content.json` | `tasks-infra-dns-ssl.json` (cinco archivos validados en CI).
 - [x] **Validación cola:** workflow **Validate agent queue JSON** + `scripts/validate_agent_queue.py` (CI al tocar `.github/agent-queue/`).
 - [x] **Oleada 3 — issues creados en GitHub (#54–#68)** — Seed con `tasks-wave3.json` ejecutado.
 - [ ] **Prompt Copilot:** en **#54–#68** usa el bloque **“oleada 3”** en [`.github/prompts/copilot-bulk-assign.md`](.github/prompts/copilot-bulk-assign.md); en **#17–#33** usa el bloque **“oleada 1”** (no priorizar brief wave3 en hero/menú/Lorem). Si ya asignaste con el prompt largo mezclado, no pasa nada grave: el prompt unificado ahora lo matiza por número de issue.
-- [x] ~~**Consolidar oleada 1 (merge PRs)**~~ — hecho 2026-04-03. **10 · Orquestar oleadas** solo si en el futuro vuelves a tener un lote de PRs oleada 1 y quieres automatizar merge + **seed oleada 2**.
+- [x] ~~**Consolidar oleada 1 (merge PRs)**~~ — hecho 2026-04-03. **10 · Orquestar oleadas** solo si en el futuro vuelves a tener un lote de PRs oleada 1 y quieres automatizar merge + **seed oleada 2**. *Trabajo repetible en repo sin GitHub: cola Claude* [`memory/claude/dispatch-queue.json`](memory/claude/dispatch-queue.json) *+ `python scripts/claude_dispatch.py next`.*
 - [x] PR #13: CI TruffleHog + PHP lint + plantillas Copilot + `ssh_cli` sin credenciales en archivo
 - [x] Dependabot (GitHub Actions) + plantilla de PR; `labeler.yml` (workflow) retirado hasta crear etiquetas `area:*` en el repo o reactivar con permisos
 - [x] `.github/labeler.yml` conserva reglas; workflow `labeler.yml` restaurado tras ejecutar **06 · Repo · Crear etiquetas** en Actions
 - [x] **06 · Repo · Crear etiquetas** — workflow disparado vía push de [`.github/label-bootstrap`](.github/label-bootstrap) (o manual en Actions)
 - [x] Fusionar PR #13 y verificar checks en `main` (squash merge 2026-04-02)
-- [ ] Actions → ejecutar **09 · Sembrar issues homepage** una vez (7 issues `homepage-fixplan`)
-- [ ] Actions → **08 · Sembrar cola Copilot** (`all` o por ámbito) → asignar Copilot coding agent en issues generados
+- [ ] Actions → ejecutar **09 · Sembrar issues homepage** una vez (7 issues `homepage-fixplan`)  
+  - *Nota: marcar este ítem `[x]` solo después de verificar en github.com que esos 7 issues existen; si ya están creados, marcá hecho y fecha.*
+- [ ] Actions → **08 · Sembrar cola Copilot** (`all` o por ámbito) → asignar Copilot coding agent en issues generados  
+  - *Nota: no re-ejecutar sin revisar duplicados — el workflow omite si el cuerpo ya tiene el mismo `<!-- agent-task-id:... -->`. Para nuevas oleadas: `tasks-wave4-ia-content.json` (narrativa/páginas) y `tasks-infra-dns-ssl.json` (DNS/HTTPS, scope `infra`).*
 - [ ] Rotación de tokens y limpieza de remotes con credenciales (al cierre del workflow de despliegue)
 
 ### Contenido homepage (Elementor en servidor)

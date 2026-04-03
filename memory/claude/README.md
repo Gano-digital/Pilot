@@ -37,6 +37,10 @@ Esto es **independiente** de la cola Copilot (`.github/agent-queue/*.json` → i
 - **“Hecho en repo”** no implica **desplegado en producción** salvo que se diga explícitamente.
 - Los números de **issue/PR** de GitHub pueden cambiar en forks; la fuente de verdad es el remoto **Gano-digital/Pilot** en GitHub.
 
+## Continuidad día a día
+
+- [`../sessions/2026-04-03-noche-continuidad-manana.md`](../sessions/2026-04-03-noche-continuidad-manana.md) — ejemplo: qué se hizo en repo vs qué queda en GitHub (Copilot/Actions).
+
 ## Informe PDF para handoff (Claude / junta)
 
 Regenerar antes de una sesión importante:
