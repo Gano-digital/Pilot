@@ -43,6 +43,7 @@ _Documento de recordatorio operativo. Última revisión: **2026-04-03** (post-co
 | Coordinación git ↔ servidor | [`.github/DEV-COORDINATION.md`](../../.github/DEV-COORDINATION.md) |
 | Tareas globales | [`TASKS.md`](../../TASKS.md) |
 | Contexto extenso para Claude (historial + pendientes + FAQ) | [`../claude/README.md`](../claude/README.md) |
+| Cola **dispatch** (tareas que Claude hace en el repo + `claude_dispatch.py next`) | [`../claude/dispatch-prompt.md`](../claude/dispatch-prompt.md) |
 | Prompt bulk / DoD | [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md) |
 
 ## Historial (archivo — ya resuelto)

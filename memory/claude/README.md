@@ -10,6 +10,16 @@ Esta carpeta concentra **registros estructurados** para que cualquier instancia 
 | 2 | [01-historial-y-contexto-cursor-2026-04.md](01-historial-y-contexto-cursor-2026-04.md) | Línea de tiempo, decisiones, consolidación de PRs, paso de documentación. |
 | 3 | [02-pendientes-detallados.md](02-pendientes-detallados.md) | Inventario exhaustivo de pendientes por área y prioridad. |
 | 4 | [03-referencia-tecnica-y-faq.md](03-referencia-tecnica-y-faq.md) | Workflows, rutas canónicas, respuestas cortas a dudas recurrentes. |
+| 5 | [dispatch-prompt.md](dispatch-prompt.md) + [dispatch-queue.json](dispatch-queue.json) | **Cola programable para Claude** en el repo: qué puede hacer el agente sin wp-admin ni secrets; scripts en `scripts/claude_dispatch.py`. |
+
+## Cola dispatch (Claude en el workspace)
+
+- **Definición de tareas:** [`dispatch-queue.json`](dispatch-queue.json) — 12 ítems (`cd-repo-001` … `cd-repo-012`) con instrucciones, paths y *definition of done*.
+- **Cómo usarlo:** [`dispatch-prompt.md`](dispatch-prompt.md) — flujo `next` / `complete`, prompt maestro para Claude Projects, y límites (no se puede “programar” la nube Anthropic desde git).
+- **Scripts:** `python scripts/claude_dispatch.py list|next|show <id>|complete <id>` · `python scripts/validate_claude_dispatch.py`
+- **Progreso local:** `memory/claude/dispatch-state.json` (gitignored; se crea al primer `complete`).
+
+Esto es **independiente** de la cola Copilot (`.github/agent-queue/*.json` → issues en GitHub).
 
 ## Documentos “oficiales” fuera de esta carpeta
 

@@ -64,3 +64,6 @@ wp-content/debug.log
 ../configs/
 *.bak
 *.backup
+
+# Progreso local cola Claude dispatch (no commitear)
+memory/claude/dispatch-state.json

@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "meta": {
+    "description": "Cola de tareas pensadas para ejecutarlas con Claude (Cursor, Claude Code o claude.ai con el repo). Solo trabajo en el repositorio o documentación operativa; sin wp-admin, sin secrets de GitHub, sin RCC en vivo.",
+    "repo_root": "Gano.digital-copia / Pilot en GitHub",
+    "scripts": {
+      "next": "python scripts/claude_dispatch.py next",
+      "complete": "python scripts/claude_dispatch.py complete <id>",
+      "list": "python scripts/claude_dispatch.py list",
+      "validate": "python scripts/validate_claude_dispatch.py"
+    }
+  },
+  "tasks": [
+    {
+      "id": "cd-repo-001",
+      "title": "Alinear checkboxes GitHub en TASKS.md (08/09/10) con criterios condicionales",
+      "priority": 1,
+      "requires_human_after": false,
+      "paths": ["TASKS.md", "memory/claude/02-pendientes-detallados.md"],
+      "definition_of_done": [
+        "La sección Abril 2026 / GitHub explica cuándo 09 y 08 siguen en [ ] vs hecho.",
+        "No se marca [x] sin criterio verificable (ej. issues existentes en GitHub).",
+        "Una línea remite a memory/claude/dispatch-queue.json para trabajo automatizable."
+      ],
+      "instructions": [
+        "Abre TASKS.md y localiza la subsección GitHub / automatización (oleadas, 08, 09, 10).",
+        "Para 09 · Sembrar issues homepage: deja checkbox [ ] pero añade nota al pie 'Marcar [x] solo tras confirmar en github.com que los 7 issues homepage-fixplan existen'.",
+        "Para 08: aclara que no debe re-ejecutarse sin revisar duplicados por agent-task-id.",
+        "Para 10: mantén tachado/hecho según estado actual; una frase 'dispatch Claude: ver dispatch-queue.json'.",
+        "Si cambias criterios, actualiza una sola viñeta en memory/claude/02-pendientes-detallados.md sección E para coherencia."
+      ]
+    },
+    {
+      "id": "cd-repo-002",
+      "title": "Crear guía RCC → PFID (checklist para Diego)",
+      "priority": 1,
+      "requires_human_after": true,
+      "paths": ["memory/commerce/rcc-pfid-checklist.md", "wp-content/themes/gano-child/functions.php"],
+      "definition_of_done": [
+        "Existe memory/commerce/rcc-pfid-checklist.md con pasos en Reseller Control Center (sin credenciales).",
+        "Tabla que mapea cada constante GANO_PFID_* del functions.php a nombre comercial del catálogo y columna 'pfid RCC'.",
+        "Enlace a shop-premium.php y a TASKS.md Fase 4."
+      ],
+      "instructions": [
+        "Crea el directorio memory/commerce/ si no existe.",
+        "Redacta rcc-pfid-checklist.md en español: cómo localizar Private Label / productos, copiar pfid, pegar en define() de functions.php (nunca en chat público).",
+        "Lista todas las constantes definidas con PENDING_RCC en functions.php (~líneas 662–696) con el comentario de producto que ya tiene cada define.",
+        "Indica validación: tras cambiar, probar un CTA del shop en staging o producción sin commitear pfids reales si Diego prefiere definirlos solo en servidor (opcional: mencionar wp-config o must-use pattern sin implementar secretos)."
+      ]
+    },
+    {
+      "id": "cd-repo-003",
+      "title": "Plantilla para cerrar issues de GitHub tras merge en main",
+      "priority": 2,
+      "requires_human_after": true,
+      "paths": ["memory/claude/gh-issue-close-guide.md"],
+      "definition_of_done": [
+        "Archivo gh-issue-close-guide.md con plantillas de comentario por categoría (homepage-fixplan, wave3, theme, coordination).",
+        "Instrucciones para buscar en GitHub issues abiertos con label y verificar diff en main antes de cerrar."
+      ],
+      "instructions": [
+        "Crea memory/claude/gh-issue-close-guide.md.",
+        "Incluye 3–4 plantillas cortas en español: 'Cerrando: resuelto en main (fecha). Archivos: …'.",
+        "Avisa que el cierre lo hace un humano con permisos en el repo; Claude solo prepara texto y lista sugerida de labels a filtrar."
+      ]
+    },
+    {
+      "id": "cd-repo-004",
+      "title": "Checklist wp-admin: Gano SEO, Rank Math, Google Search Console",
+      "priority": 2,
+      "requires_human_after": true,
+      "paths": ["memory/ops/gano-seo-rankmath-gsc-checklist.md", "TASKS.md"],
+      "definition_of_done": [
+        "memory/ops/gano-seo-rankmath-gsc-checklist.md existe con pasos en orden.",
+        "Cada paso indica menú wp-admin aproximado y qué validar (sin capturas con tokens)."
+      ],
+      "instructions": [
+        "Crea memory/ops/ si hace falta.",
+        "Sintetiza TASKS.md secciones Active (Gano SEO, GSC, Rank Math) en checklist numerado.",
+        "Añade nota de coherencia con mu-plugin gano-seo.php (schema digital, sin dirección física forzada)."
+      ]
+    },
+    {
+      "id": "cd-repo-005",
+      "title": "Checklist manual: eliminar wp-file-manager (alternativa al workflow 12)",
+      "priority": 1,
+      "requires_human_after": true,
+      "paths": ["memory/ops/remover-wp-file-manager-checklist.md", ".github/workflows/verify-remove-wp-file-manager.yml"],
+      "definition_of_done": [
+        "Guía en español: desactivar plugin, borrar carpeta vía SFTP, verificar ausencia en disco.",
+        "Referencia explícita al workflow 12 · Ops y a los mismos secrets que deploy.",
+        "Mención a la alerta en gano-security.php que debe desaparecer tras borrar el plugin."
+      ],
+      "instructions": [
+        "Crea memory/ops/remover-wp-file-manager-checklist.md.",
+        "No dupliques el YAML del workflow; enlaza a .github/workflows/README.md o al archivo del workflow.",
+        "Incluye verificación post: wp plugin list vía WP-CLI si lo usan en servidor."
+      ]
+    },
+    {
+      "id": "cd-repo-006",
+      "title": "Auditar cola Copilot vs código actual (tareas posiblemente obsoletas)",
+      "priority": 3,
+      "requires_human_after": false,
+      "paths": [".github/agent-queue/tasks.json", "wp-content/themes/gano-child/functions.php", "memory/claude/obsolete-copilot-tasks.md"],
+      "definition_of_done": [
+        "memory/claude/obsolete-copilot-tasks.md lista tareas del JSON cuyo trabajo ya está en main (ej. handle parent theme si ya renombrado).",
+        "Cada ítem cita archivo y línea o evidencia breve.",
+        "Recomendación: cerrar issue en GitHub vs dejar para regresión."
+      ],
+      "instructions": [
+        "Compara .github/agent-queue/tasks.json (y wave2/wave3 si aplica) con el estado actual del código.",
+        "En functions.php verifica wp_enqueue_style: si el handle del parent ya es royal-elementor-kit-parent, documenta que theme-audit-handle puede estar cubierto.",
+        "No borres entradas del JSON sin aprobación de Diego; solo documenta drift en obsolete-copilot-tasks.md."
+      ]
+    },
+    {
+      "id": "cd-repo-007",
+      "title": "Auditar tokens CSS --gano-gold y :root en style.css del child",
+      "priority": 3,
+      "requires_human_after": false,
+      "paths": ["wp-content/themes/gano-child/style.css", "memory/content/visual-tokens-wave3.md"],
+      "definition_of_done": [
+        "Informe breve en comentario al final de memory/claude/dispatch-queue-notes.md O nuevo archivo memory/claude/css-root-audit-2026-04.md con hallazgos.",
+        "Si consolidas :root, diff mínimo en style.css sin romper shop; si no tocas CSS, explica por qué en el informe."
+      ],
+      "instructions": [
+        "Busca todas las apariciones de :root y --gano-gold en gano-child/style.css.",
+        "Compara con memory/content/visual-tokens-wave3.md si existe alineación.",
+        "Si el riesgo visual es alto, limita el cambio a documentación; si hay consolidación trivial y segura, aplícala."
+      ]
+    },
+    {
+      "id": "cd-repo-008",
+      "title": "Documentar hook LCP / hero (MutationObserver) vs estructura Elementor",
+      "priority": 3,
+      "requires_human_after": false,
+      "paths": ["wp-content/themes/gano-child/functions.php", "memory/content/elementor-home-classes.md"],
+      "definition_of_done": [
+        "Nueva sección o párrafo en elementor-home-classes.md: selectores que el script LCP espera, cómo validar en front.",
+        "O archivo memory/claude/lcp-hook-notes.md enlazado desde elementor-home-classes.md."
+      ],
+      "instructions": [
+        "Localiza en functions.php el código que inyecta fetchpriority / LCP en front page.",
+        "Documenta qué nodos de Elementor deben existir para que el hook funcione; qué ocurre si el hero cambia de estructura.",
+        "No cambies lógica JS salvo bug evidente y testeable."
+      ]
+    },
+    {
+      "id": "cd-repo-009",
+      "title": "Validar colas de agentes y sintaxis PHP Gano",
+      "priority": 2,
+      "requires_human_after": false,
+      "paths": ["scripts/validate_agent_queue.py", "wp-content/themes/gano-child/functions.php"],
+      "definition_of_done": [
+        "python scripts/validate_agent_queue.py imprime OK.",
+        "php -l en functions.php (y shop-premium.php si se tocó) sin errores."
+      ],
+      "instructions": [
+        "Ejecuta validate_agent_queue.py desde la raíz del repo.",
+        "Si falla, corrige JSON en .github/agent-queue/ o el validador según corresponda.",
+        "Ejecuta php -l en archivos PHP del tema child modificados recientemente en la sesión."
+      ]
+    },
+    {
+      "id": "cd-repo-010",
+      "title": "Checklist Wordfence / 2FA wp-admin",
+      "priority": 3,
+      "requires_human_after": true,
+      "paths": ["memory/ops/wordfence-2fa-checklist.md", "TASKS.md"],
+      "definition_of_done": [
+        "memory/ops/wordfence-2fa-checklist.md con pasos para activar 2FA en usuarios admin.",
+        "Enlace a TASKS.md ítem correspondiente."
+      ],
+      "instructions": [
+        "Redacta checklist en español, genérico para Wordfence (ajustar nombres de menú si la versión difiere).",
+        "Advertir backup de códigos de recuperación y usuario de emergencia."
+      ]
+    },
+    {
+      "id": "cd-repo-011",
+      "title": "Sincronizar memory/claude/02-pendientes con TASKS tras cambios locales",
+      "priority": 4,
+      "requires_human_after": false,
+      "paths": ["memory/claude/02-pendientes-detallados.md", "TASKS.md"],
+      "definition_of_done": [
+        "Las secciones A–E de 02-pendientes reflejan los mismos bloques críticos que TASKS.md (sin contradicciones).",
+        "Fecha de última revisión actualizada al pie de 02-pendientes."
+      ],
+      "instructions": [
+        "Solo ejecutar después de que otras tareas hayan editado TASKS.md o docs operativos.",
+        "Ajusta tablas de 02-pendientes-detallados.md para alinear IDs de tarea o prioridades si cambiaron."
+      ]
+    },
+    {
+      "id": "cd-repo-012",
+      "title": "Resumen de sesión para memory/sessions/ (opcional)",
+      "priority": 5,
+      "requires_human_after": false,
+      "paths": ["memory/sessions/"],
+      "definition_of_done": [
+        "Nuevo archivo memory/sessions/YYYY-MM-DD-claude-dispatch.md con bullet de tareas completadas vía dispatch-state y decisiones.",
+        "Enlaces a PR o commit si aplica."
+      ],
+      "instructions": [
+        "Si Diego ejecutó varias tareas cd-repo-* en un día, crea sesión breve con fecha actual.",
+        "No dupliques memory/claude/01-historial; esto es log operativo del día."
+      ]
+    }
+  ]
+}

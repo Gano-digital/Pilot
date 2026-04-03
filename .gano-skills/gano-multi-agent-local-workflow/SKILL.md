@@ -45,6 +45,7 @@ description: >
 
 ## Aprovechar lo que ya produjo Claude (workflow local)
 
+- **Cola en el repo (dispatch):** `memory/claude/dispatch-queue.json` + `scripts/claude_dispatch.py` (`next` / `complete`) + guía `memory/claude/dispatch-prompt.md` — tareas que Claude puede ejecutar **en el workspace** (docs, auditorías, validación); distinto de la cola Copilot en `.github/agent-queue/`.
 - **Prompts y marketing:** `Downloads/Claude\Offloading_Tasks_LLMs_GanoDigital.md` — tareas para otros LLMs; no modifica el repo hasta que alguien copie el resultado a WP/Elementor.
 - **Arquitectura de sitio / copy:** `Downloads/Claude\Arquitectura_Sitio_Web_2026.html` — referencia UX/copy; implementación en ruta 1 vía tema hijo y plantillas.
 - **No leer** `settings.local.json` de Claude salvo necesidad explícita (suele contener datos sensibles).
