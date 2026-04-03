@@ -3,10 +3,10 @@ name: gano-wp-security
 description: >
   Skill de seguridad WordPress específico para Gano Digital. Aplica y verifica los parches
   de seguridad identificados en la auditoría integral de gano.digital. Úsalo cuando necesites:
-  corregir vulnerabilidades del stack WordPress/WooCommerce/Wompi, revisar o generar código PHP
+  corregir vulnerabilidades del stack WordPress/WooCommerce, revisar o generar código PHP
   seguro, aplicar hardening a wp-config.php, implementar nonce CSRF en endpoints REST,
-  verificar firmas HMAC en webhooks de pago, auditar permisos de archivos, o cuando el usuario
-  mencione "security fix", "parche", "vulnerabilidad", "WP_DEBUG", "Wompi webhook", "nonce",
+  auditar webhooks o plugins de pago **solo si existen en el repo**, auditar permisos de archivos, o cuando el usuario
+  mencione "security fix", "parche", "vulnerabilidad", "WP_DEBUG", "nonce",
   "hardening", "wp-config", "seguridad WordPress" en el contexto de Gano Digital.
 ---
 
@@ -18,14 +18,16 @@ Auditoría Integral de Gano Digital (Marzo 2026). Trabaja sobre el **workspace d
 
 ## Contexto del proyecto
 
-- **Stack**: WordPress + Elementor + Royal Elementor Addons + WooCommerce + Wompi Colombia
+- **Stack**: WordPress + Elementor + Royal Elementor Addons + WooCommerce; checkout comercial vía **GoDaddy Reseller** (ver `TASKS.md`)
 - **MU Plugin de seguridad**: `wp-content/mu-plugins/gano-security.php` — YA implementado, no modificar sin auditar
-- **Pasarela de pago**: `wp-content/plugins/gano-wompi-integration/` — tiene vulnerabilidades activas
+- **Plugins de pasarela locales** (si existen en el clon): solo auditoría legacy; **no** son el eje del roadmap actual
 - **Tema hijo**: `wp-content/themes/gano-child/` — chat IA sin nonce CSRF
 
 ---
 
 ## Vulnerabilidades por prioridad
+
+> **Nota (2026):** Los ítems **V-02 / V-03** que citan `gano-wompi-integration/` solo aplican **si ese plugin sigue en el entorno**. El checkout objetivo del negocio es **GoDaddy Reseller**; no priorizar mantener pasarelas locales.
 
 ### V-01 CRÍTICA — WP_DEBUG en producción
 
