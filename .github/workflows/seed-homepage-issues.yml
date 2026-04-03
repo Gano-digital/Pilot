@@ -1,6 +1,6 @@
 # Crea en bloque issues alineadas al FIXPLAN de homepage (una vez por repo, si no existen).
 # Ejecutar: Actions → Seed homepage Fix issues → Run workflow
-name: Seed homepage Fix issues
+name: "09 · Agentes · Sembrar issues homepage"
 
 on:
   workflow_dispatch:
