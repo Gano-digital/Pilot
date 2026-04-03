@@ -14,6 +14,7 @@
    - `tasks-wave3.json` — oleada 3 (**marca, UX, comercial, activos, IA, microcopy**). Brief maestro: [`memory/research/gano-wave3-brand-ux-master-brief.md`](../memory/research/gano-wave3-brand-ux-master-brief.md). Varias tareas usan `scope: coordination`; elige **`all`** o **`coordination`** según necesites.
    - `tasks-wave4-ia-content.json` — oleada 4 (**narrativa única, orden de contenidos, productos/servicios/páginas**, coherencia con IA y shop Reseller). Salida esperada: `memory/content/*-2026.md` y enlaces en `TASKS.md`.
    - `tasks-infra-dns-ssl.json` — **DNS / HTTPS / dominio**: runbooks en `memory/ops/`, uso de `scripts/check_dns_https_gano.py`. El agente **documenta**; Diego o soporte aplican cambios en GoDaddy/hosting.
+   - `tasks-api-integrations-research.json` — **APIs externas (ML + GoDaddy)**: profundiza sobre `memory/research/sota-apis-mercadolibre-godaddy-2026-04.md` (mapas, runbooks, catálogo endpoints, matriz viabilidad). **Sin** credenciales en el repo.
 3. Elige **ámbito** (`scope`):
    - `all` — todas las tareas del archivo elegido que no tengan issue abierto con el mismo id.
    - `homepage` / `theme` / `content_seo` / `security` / `commerce` / `docs` / `coordination` / `infra` — lote parcial (`infra` solo aplica a `tasks-infra-dns-ssl.json`).
@@ -24,7 +25,7 @@
 
 - Plan / política org que permita **Copilot coding agent** en el repo.
 - Etiquetas creadas (workflow **06 · Repo · Crear etiquetas** ya ejecutado en `main`).
-- Al editar colas: el workflow **07 · Validar cola JSON** comprueba los cinco archivos en `agent-queue/` (ids únicos y marcador `agent-task-id`). Local: `python scripts/validate_agent_queue.py`.
+- Al editar colas: el workflow **07 · Validar cola JSON** comprueba los seis archivos en `agent-queue/` (ids únicos y marcador `agent-task-id`). Local: `python scripts/validate_agent_queue.py`.
 
 ## Añadir tareas
 

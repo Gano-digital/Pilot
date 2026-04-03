@@ -68,25 +68,27 @@
 |---------|------------------------|-----------------|
 | [`../research/gano-wave3-brand-ux-master-brief.md`](../research/gano-wave3-brand-ux-master-brief.md) | **Brief maestro oleada 3:** voz de marca, sistema visual, arquitectura y criterios de aceptación. | *Cualquier entrega de oleada 3 o 4.* |
 | [`../research/competitive-framework-colombia-hosting.md`](../research/competitive-framework-colombia-hosting.md) | Marco competitivo del mercado de hosting en Colombia. | Ajustar precios, diferenciadores o copy de conversión. |
+| [`../research/sota-apis-mercadolibre-godaddy-2026-04.md`](../research/sota-apis-mercadolibre-godaddy-2026-04.md) | Investigación sobre portales de desarrolladores Mercado Libre y GoDaddy (OAuth, límites, Reseller). | Evaluar integraciones API o delegar la cola `tasks-api-integrations-research.json`. |
 | [`../commerce/rcc-pfid-checklist.md`](../commerce/rcc-pfid-checklist.md) | Checklist para mapear Product Feature IDs (PFID) en GoDaddy Reseller Control Center. | Conectar CTAs del sitio al carrito de GoDaddy Reseller. |
 | [`../ops/gano-seo-rankmath-gsc-checklist.md`](../ops/gano-seo-rankmath-gsc-checklist.md) | Pasos para configurar Rank Math y Google Search Console. | Publicar páginas SEO o validar cobertura en GSC. |
 
 ---
 
-## Oleada 4 — Documentos pendientes (por crear)
+## Oleada 4 — Entregas en repo (2026-04)
 
-Los documentos de la oleada 4 se generarán automáticamente cuando Copilot ejecute los issues
-sembrados desde [`.github/agent-queue/tasks-wave4-ia-content.json`](../../.github/agent-queue/tasks-wave4-ia-content.json).
-Una vez creados, añadirlos a las secciones correspondientes de este índice.
+Generados vía PRs Copilot desde [`.github/agent-queue/tasks-wave4-ia-content.json`](../../.github/agent-queue/tasks-wave4-ia-content.json). Integrar en wp-admin / Elementor según cada documento.
 
-Áreas esperadas de oleada 4:
-- **Narrativa y páginas:** plan maestro de contenidos, matriz productos/servicios actualizada.
-- **Brecha IA vs inventario:** comparativa entre arquitectura propuesta y páginas reales en wp-admin.
-- **Orden homepage v2:** ajustes post-audit de UX sobre `homepage-story-arc-wave3.md`.
-- **Pilares:** borradores de copy para las 20 páginas SOTA.
-- **Legal / contacto:** versión definitiva de `/nosotros`, términos, privacidad y ANS.
+| Archivo | Propósito en una línea | Léelo antes de… |
+|---------|------------------------|-----------------|
+| [`content-master-plan-2026.md`](content-master-plan-2026.md) | Plan maestro de narrativa, capas y prioridad de páginas (P0–P3). | Reordenar el sitio o abrir nuevas landings. |
+| [`products-services-pages-matrix-2026.md`](products-services-pages-matrix-2026.md) | Matriz vitrina ↔ slugs ↔ `GANO_PFID_*` ↔ notas RCC. | Tocar `shop-premium.php` o CTAs de producto. |
+| [`gap-ia-vs-live-inventory-2026.md`](gap-ia-vs-live-inventory-2026.md) | Brecha entre IA propuesta e inventario real (marcar *desconocido* donde aplique). | Auditar páginas en wp-admin y alinear slugs. |
+| [`homepage-section-order-spec-2026.md`](homepage-section-order-spec-2026.md) | Orden ejecutable de bloques homepage (AIDA + CTA a ecosistemas). | Reordenar secciones en Elementor. |
+| [`pilares-seo-narrative-clusters-2026.md`](pilares-seo-narrative-clusters-2026.md) | Clusters de pilares SEO y orden de publicación sugerido. | Publicar o priorizar artículos `/pilares/…`. |
+| [`navigation-primary-spec-2026.md`](navigation-primary-spec-2026.md) | Especificación del menú `primary` (orden, etiquetas ES-CO, destinos). | Editar menú en Theme Builder / wp-admin. |
+| [`trust-pages-bundle-2026.md`](trust-pages-bundle-2026.md) | Coherencia Nosotros + Contacto + Legal (enlaces cruzados, disclaimer Reseller). | Actualizar páginas de confianza o legales. |
 
-Ver estado en [`TASKS.md §Oleada 4`](../../TASKS.md#oleada-4--narrativa-y-p%C3%A1ginas-copilot).
+Ver seguimiento operativo en [`TASKS.md`](../../TASKS.md) (homepage, despliegue).
 
 ---
 

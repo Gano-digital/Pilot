@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       queue_file:
-        description: "Archivo de cola (oleadas 1–4 + infra — ver COPILOT-AGENT-QUEUE.md)"
+        description: "Archivo de cola (oleadas 1–4 + infra + API research — ver COPILOT-AGENT-QUEUE.md)"
         required: true
         default: tasks.json
         type: choice
@@ -17,6 +17,7 @@ on:
           - tasks-wave3.json
           - tasks-wave4-ia-content.json
           - tasks-infra-dns-ssl.json
+          - tasks-api-integrations-research.json
       scope:
         description: "Ámbito de tareas a generar"
         required: true
@@ -58,6 +59,7 @@ jobs:
               'tasks-wave3.json',
               'tasks-wave4-ia-content.json',
               'tasks-infra-dns-ssl.json',
+              'tasks-api-integrations-research.json',
             ];
             const qf = process.env.SEED_QUEUE_FILE || 'tasks.json';
             if (!allowed.includes(qf)) {

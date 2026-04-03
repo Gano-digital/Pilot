@@ -15,6 +15,7 @@ FILES = [
     "tasks-wave3.json",
     "tasks-wave4-ia-content.json",
     "tasks-infra-dns-ssl.json",
+    "tasks-api-integrations-research.json",
 ]
 
 

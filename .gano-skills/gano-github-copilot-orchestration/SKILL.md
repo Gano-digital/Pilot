@@ -33,7 +33,8 @@ description: >
 | [`.github/agent-queue/tasks-wave3.json`](../../.github/agent-queue/tasks-wave3.json) | Oleada 3 (`w3-*`). Brief: [`memory/research/gano-wave3-brand-ux-master-brief.md`](../../memory/research/gano-wave3-brand-ux-master-brief.md). |
 | [`.github/agent-queue/tasks-wave4-ia-content.json`](../../.github/agent-queue/tasks-wave4-ia-content.json) | Oleada 4 (`w4-*`): narrativa, páginas, matriz productos/servicios vs shop. |
 | [`.github/agent-queue/tasks-infra-dns-ssl.json`](../../.github/agent-queue/tasks-infra-dns-ssl.json) | Infra (`dns-*`): runbooks DNS/HTTPS en `memory/ops/`; **humano** aplica cambios en registrador. |
-| **08 · Agentes · Sembrar cola Copilot** (`seed-copilot-queue.yml`) | `workflow_dispatch`: **`queue_file`** (5 JSON), **ámbito** (`all`, …, **`infra`**). |
+| [`.github/agent-queue/tasks-api-integrations-research.json`](../../.github/agent-queue/tasks-api-integrations-research.json) | APIs ML + GoDaddy (`api-*`): anexos a `memory/research/sota-apis-mercadolibre-godaddy-2026-04.md`; sin secretos. |
+| **08 · Agentes · Sembrar cola Copilot** (`seed-copilot-queue.yml`) | `workflow_dispatch`: **`queue_file`** (6 JSON), **ámbito** (`all`, …, **`infra`**). |
 | **09 · Agentes · Sembrar issues homepage** | 7 issues fixplan (`homepage-fixplan`), manual. |
 | [`.github/MERGE-PLAYBOOK.md`](../../.github/MERGE-PLAYBOOK.md) | Orden sugerido de fusión cuando vuelva a haber muchos PRs. |
 

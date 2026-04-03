@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "description": "Oleada API — profundización Mercado Libre Developers + GoDaddy Developer Portal (herramienta transversal). Parte del informe base: memory/research/sota-apis-mercadolibre-godaddy-2026-04.md. Sin credenciales en commits.",
+  "tasks": [
+    {
+      "id": "api-ml-resource-map-2026",
+      "scope": "docs",
+      "title": "[agent] Mercado Libre: mapa de recursos y enlaces por caso de uso (MCO)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nExiste informe base `memory/research/sota-apis-mercadolibre-godaddy-2026-04.md`. Falta un **mapa navegable** desde el hub [API Docs CO](https://developers.mercadolibre.com.co/es_ar/api-docs-es) hacia guías concretas (items, órdenes, publicaciones, mensajes, envíos, catálogo, promociones) y nota de qué aplica a **site MCO**.\n\n## Tareas\n1. Crear `memory/research/mercadolibre-api-resource-map-2026.md`: tabla *Área / URL doc / Métodos típicos / Cuándo usarlo*.\n2. Sección **Anti-patterns** (qué no intentar desde un hosting WP genérico).\n3. Enlazar de vuelta al informe SOTA (sección cruzada).\n4. No pegar Client Id, secrets ni tokens de ejemplo reales; usar placeholders.\n\n<!-- agent-task-id:api-ml-resource-map-2026 -->"
+    },
+    {
+      "id": "api-ml-oauth-webhooks-checklist-2026",
+      "scope": "docs",
+      "title": "[agent] ML: checklist OAuth2 + PKCE + notificaciones (runbook dev)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nLa doc oficial cubre Authorization Code, refresh, PKCE y callbacks. Hace falta **runbook único** para implementadores.\n\n## Tareas\n1. Crear `memory/research/mercadolibre-oauth-webhooks-runbook-2026.md` con: flujo secuencial numerado; tabla de errores comunes (`invalid_grant`, `429`, `invalid_operator_user_id`); checklist pre-producción.\n2. Subsección **Notificaciones**: validar origen, idempotencia, reintentos.\n3. Referencias solo a URLs públicas developers.mercadolibre.*\n\n<!-- agent-task-id:api-ml-oauth-webhooks-checklist-2026 -->"
+    },
+    {
+      "id": "api-gd-endpoint-catalog-2026",
+      "scope": "docs",
+      "title": "[agent] GoDaddy API: inventario de familias de endpoints (desde developer.godaddy.com/doc)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nEl portal expone documentación interactiva en [developer.godaddy.com/doc](https://developer.godaddy.com/doc). El informe SOTA resume ToU y OTE/prod; falta **catálogo estructurado**.\n\n## Tareas\n1. Crear `memory/research/godaddy-api-endpoint-catalog-2026.md`: agrupar por producto (Domains, DNS, Shoppers, Orders, etc. — según lo que liste la doc al 2026-04).\n2. Por grupo: notas *Self-Serve vs Reseller* (`X-Shopper-Id` donde aplique).\n3. Incluir recordatorio de **60 req/min** y restricciones de elegibilidad (50/10 dominios) citando Get Started.\n4. Sin pegar API keys ni ejemplos con secretos reales.\n\n<!-- agent-task-id:api-gd-endpoint-catalog-2026 -->"
+    },
+    {
+      "id": "api-gd-reseller-ops-2026",
+      "scope": "docs",
+      "title": "[agent] GoDaddy Reseller + API: patrones operativos y límites legales",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nGano opera en marco **Reseller**. La API distingue Self-Serve vs Reseller y los ToU prohíben varios usos.\n\n## Tareas\n1. Crear `memory/research/godaddy-api-reseller-operations-2026.md`: resumen de obligaciones ToU relevantes (sin copiar texto legal completo: parafrasear y enlazar).\n2. Flujo sugerido: OTE → producción → Good as Gold cuando aplique.\n3. Matriz *acción API / requisito previo / riesgo*.\n4. Alineación con `memory/research/fase4-plataforma.md` (una subsección de enlaces, sin duplicar todo el doc).\n\n<!-- agent-task-id:api-gd-reseller-ops-2026 -->"
+    },
+    {
+      "id": "api-gano-feasibility-matrix-2026",
+      "scope": "coordination",
+      "title": "[agent] Matriz viabilidad: Gano Digital × ML × GoDaddy API (P0–P3)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\nHace falta decisión legible para roadmap: qué integraciones **valen la pena** frente a RCC + WordPress + posible billing Fase 4.\n\n## Tareas\n1. Crear `memory/research/api-integration-feasibility-gano-2026.md` con tabla: *Iniciativa | Valor negocio | Esfuerzo | Dependencia (OAuth, cuenta, dominios mínimos) | Riesgo compliance | Prioridad P0–P3*.\n2. Incluir fila explícita **No hacer** si viola ToU GoDaddy o no hay control de cuenta cliente.\n3. Referenciar `TASKS.md` y `sota-apis-mercadolibre-godaddy-2026-04.md`.\n\n<!-- agent-task-id:api-gano-feasibility-matrix-2026 -->"
+    }
+  ]
+}

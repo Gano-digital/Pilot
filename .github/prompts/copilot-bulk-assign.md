@@ -8,6 +8,7 @@
 | **Oleada 3** (marca / UX / insumos) | **#54–#68** | Bloque **“Oleada 3”** más abajo + reglas comunes. |
 | **Oleada 4** (narrativa / páginas / comercio coherente) | *nuevos tras seed* | Bloque **“Oleada 4”** + `site-ia-wave3-proposed.md`, `shop-premium.php`, `TASKS.md`. |
 | **Infra DNS/HTTPS** | *nuevos tras seed* | Bloque **“Infra”**: solo docs en `memory/ops/` y script; **no** credenciales ni IPs reales en issues. |
+| **API ML + GoDaddy (research)** | *tasks-api-integrations-research.json* | Bloque **“API integrations”**: solo `memory/research/*`; ampliar `sota-apis-mercadolibre-godaddy-2026-04.md`; **nunca** keys/tokens en commits. |
 
 Si pegaste el prompt de **oleada 3** en issues **#17–#33**, el agente puede desviarse (prioriza brief en vez de hero/menú/Lorem). **Corrige** dejando solo asignación + prompt oleada 1 en esos números, o confía en las reglas unificadas de la siguiente sección (ya matizadas).
 
@@ -148,6 +149,22 @@ Si hace falta tabla de registros, usa placeholders (ej. [IP_HOSTING]) y explica 
 PR mínimo, español Colombia; un issue → un PR cuando sea posible.
 ```
 
+## Bloque para copiar — API Mercado Libre + GoDaddy (research / oleada `api-*`)
+
+```
+Eres el coding agent del repo Gano-digital/Pilot (oleada API — integraciones documentales).
+
+Prioridad: el cuerpo del issue y el archivo de salida que pide. Base obligatoria: memory/research/sota-apis-mercadolibre-godaddy-2026-04.md (no contradecir hechos ya citados salvo que enlaces doc oficial más reciente).
+
+Alcance: solo markdown en memory/research/ (rutas exactas del issue). Prohibido commitear Client Secret, API keys, refresh tokens, ni ejemplos con credenciales reales — usa placeholders.
+
+Mercado Libre: distinguir hub CO vs ejemplos .ar en docs; OAuth2 + PKCE + notificaciones según documentación pública developers.mercadolibre.*
+
+GoDaddy: respetar ToU (rate 60/min, OTE vs prod, elegibilidad dominios, Self-Serve vs Reseller / X-Shopper-Id). No proponer usos que violen términos (p. ej. cobrar por API proxy).
+
+Un issue → un PR cuando sea posible. Mensajes en español (Colombia). Sin refactors fuera de memory/research salvo que el issue lo exija.
+```
+
 ---
 
 ## Definition of Done (revisor humano — obligatorio antes de merge)
@@ -162,4 +179,4 @@ PR mínimo, español Colombia; un issue → un PR cuando sea posible.
 
 ---
 
-_Versión alineada a `.github/DEV-COORDINATION.md` y colas `tasks.json` … `tasks-infra-dns-ssl.json`._
+_Versión alineada a `.github/DEV-COORDINATION.md` y colas `tasks.json` … `tasks-api-integrations-research.json`._

@@ -6,7 +6,7 @@ Ejecución local tipo **cola Claude dispatch** (archivos creados/actualizados en
 
 | Dispatch id | Entregable |
 |-------------|------------|
-| cd-repo-001 | `TASKS.md` — notas 08/09/10 + lista de `queue_file`; oleada 2 actualizada a 5 JSON |
+| cd-repo-001 | `TASKS.md` — notas 08/09/10 + lista de `queue_file`; oleada 2+ actualizada a 6 JSON (`tasks-api-integrations-research.json`) |
 | cd-repo-002 | `memory/commerce/rcc-pfid-checklist.md` |
 | cd-repo-003 | `memory/claude/gh-issue-close-guide.md` |
 | cd-repo-004 | `memory/ops/gano-seo-rankmath-gsc-checklist.md` |
