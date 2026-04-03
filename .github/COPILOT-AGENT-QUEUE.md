@@ -3,7 +3,7 @@
 ## Qué es
 
 - **`agent-queue/tasks.json`** — definición versionada de issues (título, cuerpo, etiquetas, ámbito).
-- **Workflow `08 · Agentes · Sembrar cola Copilot`** (archivo `seed-copilot-queue.yml`) — crea issues en GitHub **sin duplicar** si ya hay uno **abierto** con el mismo `<!-- agent-task-id:... -->` en el cuerpo.
+- **Workflow `08 · Agentes · Sembrar cola Copilot`** (archivo `seed-copilot-queue.yml`) — crea issues en GitHub **sin duplicar** si ya hay uno **abierto** con el mismo `<!-- agent-task-id:... -->` en el cuerpo. La deduplicación lee **todos los issues abiertos** del repo (paginado), no la API Search; evita límites de tasa al sembrar muchas tareas.
 
 ## Cómo usarlo (offloading)
 

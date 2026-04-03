@@ -19,15 +19,15 @@ jobs:
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const label = "homepage-fixplan";
-            const { data: found } = await github.rest.issues.listForRepo({
+            const { data: openWithLabel } = await github.rest.issues.listForRepo({
               owner,
               repo,
               labels: label,
-              state: "all",
+              state: "open",
               per_page: 5,
             });
-            if (found.length) {
-              core.info(`Issues with label ${label} already exist (${found.length}+); aborting to avoid duplicates.`);
+            if (openWithLabel.length) {
+              core.info(`Issues abiertos con label ${label} ya existen (${openWithLabel.length}); abortando para no duplicar.`);
               return;
             }
             await github.rest.issues.createLabel({

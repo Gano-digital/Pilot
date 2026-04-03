@@ -85,17 +85,35 @@ jobs:
             );
             core.info(`Scope=${scope} → ${filtered.length} tareas candidatas`);
 
+            // Deduplicación sin Search API (evita secondary rate limit: una búsqueda por tarea).
+            const markerRe = /<!--\s*agent-task-id:([^>]+?)\s*-->/g;
+            const existingIds = new Set();
+            let listPage = 1;
+            for (;;) {
+              const { data: openIssues } = await github.rest.issues.listForRepo({
+                owner,
+                repo,
+                state: 'open',
+                per_page: 100,
+                page: listPage,
+              });
+              if (!openIssues.length) break;
+              for (const issue of openIssues) {
+                if (!issue.body) continue;
+                for (const m of issue.body.matchAll(markerRe)) {
+                  existingIds.add(m[1]);
+                }
+              }
+              if (openIssues.length < 100) break;
+              listPage++;
+            }
+            core.info(`Issues abiertos con agent-task-id: ${existingIds.size} ids únicos`);
+
             let created = 0;
             let skipped = 0;
 
             for (const task of filtered) {
-              const marker = `agent-task-id:${task.id}`;
-              const q = `repo:${owner}/${repo} is:issue is:open "${marker}" in:body`;
-              const { data: search } = await github.rest.search.issuesAndPullRequests({
-                q,
-                per_page: 1,
-              });
-              if (search.total_count > 0) {
+              if (existingIds.has(task.id)) {
                 core.info(`Skip (ya existe abierto): ${task.id}`);
                 skipped++;
                 continue;
@@ -115,6 +133,7 @@ jobs:
                 body: task.body + footer,
                 labels: task.labels,
               });
+              existingIds.add(task.id);
               core.info(`Creado: ${task.id}`);
               created++;
             }

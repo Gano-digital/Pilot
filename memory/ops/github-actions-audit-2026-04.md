@@ -45,6 +45,12 @@
 
 **Acción:** `webfactory/ssh-agent` actualizado a **v0.10.0** (misma versión que `04` y `05`).
 
+### 4. `08 · Sembrar cola` / seed oleada 2 en `10` — API Search y límites
+
+**Síntoma:** Fallos intermitentes o **403** / *secondary rate limit* al sembrar muchas tareas (una llamada a `search.issuesAndPullRequests` por tarea).
+
+**Acción:** Deduplicación leyendo **issues abiertos** con `issues.listForRepo` (paginado) y extrayendo `<!-- agent-task-id:... -->` en memoria; misma lógica en `10` para oleada 2.
+
 ---
 
 ## Riesgos / deuda técnica (sin cambio obligatorio ahora)
