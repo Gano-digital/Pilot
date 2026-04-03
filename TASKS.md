@@ -144,3 +144,15 @@ _Última actualización: Abril 2026_
 
 - **Guía canónica:** [`.github/DEV-COORDINATION.md`](.github/DEV-COORDINATION.md) — qué vive en Git vs servidor vs local; cómo mantener a GitHub “enterado” sin filtrar secretos.
 - **Issues:** plantilla *Reporte de sincronización* + etiqueta `coordination` (crear etiquetas con workflow **06 · Repo · Crear etiquetas** si faltan).
+
+### Infra DNS/HTTPS
+
+> **Nota:** los archivos de runbook se crean desde la cola `tasks-infra-dns-ssl.json` (scope `infra`). Si aún no existen en el repo, las rutas abajo son **planificadas** — TODO: verificar tras merge de esos PRs.
+
+- [ ] **Runbook DNS + HTTPS GoDaddy:** [`memory/ops/dns-https-godaddy-runbook-2026.md`](memory/ops/dns-https-godaddy-runbook-2026.md) ← _TODO: crear vía issue `dns-runbook-godaddy`_
+- [ ] **Plantilla registros DNS (apex + www):** [`memory/ops/dns-expected-records-template-2026.md`](memory/ops/dns-expected-records-template-2026.md) ← _TODO: crear vía issue `dns-expected-records`_
+- [ ] **Checklist HTTPS Managed WP:** [`memory/ops/https-wordpress-managed-checklist-2026.md`](memory/ops/https-wordpress-managed-checklist-2026.md) ← _TODO: crear vía issue `https-wordpress-managed-checklist`_
+- [ ] **URL canónica (apex vs www) + HSTS:** [`memory/ops/url-canonical-gano-digital-2026.md`](memory/ops/url-canonical-gano-digital-2026.md) ← _TODO: crear vía issue `dns-canonical-www-hsts`_
+- [ ] **Script verificación local (stdlib, sin deps):** [`scripts/check_dns_https_gano.py`](scripts/check_dns_https_gano.py) — ejecutar con `python scripts/check_dns_https_gano.py`
+- [ ] **Docs de uso del script:** [`memory/ops/dns-verify-script-usage-2026.md`](memory/ops/dns-verify-script-usage-2026.md) ← _TODO: crear vía issue `dns-verify-script-docs`_
+- Sembrar cola completa: Actions → **08 · Sembrar cola Copilot** → `queue_file: tasks-infra-dns-ssl.json` → `scope: infra`

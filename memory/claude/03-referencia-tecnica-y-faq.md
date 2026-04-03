@@ -94,6 +94,10 @@ En `memory/ops/` y `memory/commerce/`: por ejemplo `gano-seo-rankmath-gsc-checkl
 
 Los agentes en GitHub **no cambian DNS**. Sembrá la cola **`tasks-infra-dns-ssl.json`** (scope **`infra`**) para generar runbooks en `memory/ops/`; ejecutá **`python scripts/check_dns_https_gano.py`** en tu PC y abrí un issue con la plantilla **DNS / HTTPS — gano.digital** si hace falta seguimiento.
 
+Recursos infra disponibles (o planificados — ver TASKS.md § *Infra DNS/HTTPS*):
+- **Runbook paso a paso:** [`memory/ops/dns-https-godaddy-runbook-2026.md`](../ops/dns-https-godaddy-runbook-2026.md) ← _TODO: se crea con issue `dns-runbook-godaddy`_
+- **Script de verificación local:** [`scripts/check_dns_https_gano.py`](../../scripts/check_dns_https_gano.py) — sin dependencias externas, ejecutar en la máquina de Diego
+
 ### ¿Puedo programar tareas en la app de Claude desde este repo?
 
 **No de forma automática:** aquí no hay API ni token hacia Anthropic. Sí puedes **copiar** la salida de `python scripts/claude_dispatch.py show <id>` en tareas programadas o instrucciones de proyecto en claude.ai, manteniendo el JSON en git como fuente de verdad.
