@@ -1,0 +1,37 @@
+---
+description: "USE WHEN writing or modifying PHP files for WordPress"
+globs: "**/*.php"
+alwaysApply: false
+---
+
+# PHP / WordPress Conventions
+
+## Funciones
+- Prefijo obligatorio: `gano_` (ej: `gano_enqueue_styles()`)
+- PHPDoc block en CADA funcion publica
+- `declare(strict_types=1)` en archivos nuevos
+
+## Seguridad (no negociable)
+- `$wpdb->prepare()` para TODA query SQL
+- `sanitize_text_field()`, `wp_kses_post()`, `absint()` para inputs
+- `esc_html()`, `esc_url()`, `esc_attr()` para outputs
+- `wp_nonce_field()` + `check_admin_referer()` en formularios
+
+## WordPress API
+- Preferir `WP_Query` sobre SQL directo
+- Usar hooks (`add_action`, `add_filter`) — no modificar core
+- `wp_enqueue_script/style` para assets — no hardcodear en HTML
+- REST API: registrar con `register_rest_route()`, validar con callbacks
+
+## PHP Version
+- Target: PHP 8.3 (servidor GoDaddy)
+- Usar typed properties, match expressions, named arguments
+- NO usar funciones deprecadas
+
+## Estructura
+```
+wp-content/
+  themes/gano-child/          # Child theme
+  plugins/gano-*/             # Plugins propios
+  mu-plugins/gano-*.php       # Must-use plugins (seguridad, SEO)
+```

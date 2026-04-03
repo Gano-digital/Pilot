@@ -1,13 +1,10 @@
 ---
 name: gano-wompi-fixer
 description: >
-  Skill especializado en la integración de pago Wompi Colombia para Gano Digital.
-  Úsalo cuando necesites: corregir el gateway de Wompi en WooCommerce, implementar
-  verificación de firma de webhooks, migrar de sandbox a producción, configurar
-  estados de orden para PSE/tarjetas/Nequi, depurar transacciones fallidas, agregar
-  logging de pagos, o cuando el usuario mencione "Wompi", "pago", "PSE", "checkout",
-  "webhook de pago", "orden pendiente", "transacción", "gateway", "pasarela" en el
-  contexto de gano.digital.
+  LEGACY / BAJA PRIORIDAD — Solo si el usuario trabaja código antiguo de pasarela local.
+  El comercio actual de Gano Digital es GoDaddy Reseller (ver TASKS.md). No invocar esta
+  skill para decisiones de producto o checkout nuevos. Úsala solo si hay que mantener o
+  auditar un plugin local histórico mencionado explícitamente.
 ---
 
 # Gano Wompi Fixer — Skill de Integración de Pago
