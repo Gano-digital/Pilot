@@ -8,7 +8,8 @@ Este documento asiste la revisión humana y el orden de merge. Actualizar tras c
 
 - **`main` (repo):** `deploy.yml` usa secrets `SSH`, `SERVER_HOST`, `SERVER_USER`, `DEPLOY_PATH` (sin host/usuario en claro). Nuevo `verify-patches.yml` (comparación MD5 Fase 1–3). `orchestrate-copilot-waves.yml` sin `{ pr: 49 }` en wave1 (README cubierto por #51).
 - **Revisión:** añadidos [`.github/AGENT-REVIEW-CHECKLIST.md`](../../.github/AGENT-REVIEW-CHECKLIST.md) y *Definition of Done* en `copilot-bulk-assign.md`.
-- **PR #47:** si el contenido ya está en `main`, cerrar la PR y enlazar el commit; evitar merge duplicado.
+- **PR #47:** cerrada; contenido en `main`.
+- **2026-04-02 (bis):** nota personal [`../notes/nota-diego-recomendaciones-2026-04.md`](../notes/nota-diego-recomendaciones-2026-04.md). Se disparó **Update branch** en la mayoría de PRs abiertas; **#49** devolvió conflicto base↔head (resolver manual o cerrar si #51 cubrió README).
 
 ---
 

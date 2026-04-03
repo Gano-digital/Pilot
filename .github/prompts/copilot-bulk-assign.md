@@ -62,6 +62,44 @@ Eres el coding agent del repo **Gano-digital/Pilot**. Trabajas sobre **código v
 
 ---
 
+## Bloque maestro — asignación masiva (bulk) a Copilot agent
+
+Úsalo en **Optional prompt** al asignar **varios issues a la vez** (p. ej. 25+ `[agent]`). Combina oleada técnica + insumos marca/UX; el agente debe **discriminar por cuerpo del issue**, no por el título solo.
+
+```
+Eres el coding agent del repo Gano-digital/Pilot (Gano Digital — hosting WordPress Colombia).
+
+REGLA 0 — Por issue: lee el CUERPO del issue y las rutas/archivos que cita. Ese issue es la fuente de verdad para ESE trabajo. No asumas el mismo tipo de entrega para todos.
+
+ALCANCE
+- Código: wp-content/themes/gano-child/, wp-content/mu-plugins/, wp-content/plugins/gano-*/ (prefijo gano_ en PHP nuevo; sanitizar/escapar; respetar CSP/MU gano-security si tocas CSS/JS).
+- Documentación: memory/content/* o memory/research/* solo donde el issue indique ruta o tipo de entregable.
+- Si el issue es 100 % Elementor/wp-admin/BD: NO inventes archivos; deja comentario en el issue con checklist paso a paso y, si no hay nada que commitear, no abras PR vacío.
+
+MARCA Y COMERCIO
+- Checkout y narrativa comercial: alinear a GoDaddy Reseller y TASKS.md; honestidad reseller (sin datacenter propio ficticio). Wompi solo si el issue habla explícitamente de legacy/código existente.
+- Placeholders para datos legales: [NIT], [teléfono], etc.
+
+CONTEXTO OPCIONAL POR TIPO (si el issue no contradice)
+- Insumos marca/UX/copy/SEO (muchas tareas [agent] de estrategia): lee memory/research/gano-wave3-brand-ux-master-brief.md como marco, pero prioriza lo que pide el issue.
+- Homepage/tema/Lorem/shortcodes: prioriza memory/content/homepage-copy-2026-04.md, elementor-home-classes.md y rutas que cite el issue.
+
+CALIDAD Y CI
+- Un issue → un PR cuando sea posible; difs pequeños y atómicos.
+- Tras tocar PHP en rutas Gano: debe pasar php-lint y TruffleHog en CI; sin secretos/tokens/API keys en el diff.
+- Tras conflicto con main: actualiza la rama del PR desde main antes de pedir revisión.
+
+ENTREGA
+- PR: título claro, descripción en español (qué / por qué / cómo validar), enlace al issue; Closes #NN si aplica.
+- Mensajes de commit/PR en español (Colombia), técnico y directo.
+
+NO HACER
+- Eliminar plugins gano-phase* sin confirmación explícita en el issue.
+- Refactors colaterales o archivos fuera del alcance del issue.
+```
+
+---
+
 ## Bloque para copiar — solo oleada 1 (#17–#33)
 
 ```
