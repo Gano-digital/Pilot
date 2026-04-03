@@ -39,8 +39,9 @@ description: >
 ## GitHub como cola de trabajo (Abril 2026)
 
 - **Issues `[agent]`** generados por `Seed Copilot task queue` + asignación a **Copilot coding agent** para PRs.
-- **Documentación:** `.github/DEV-COORDINATION.md`, `.github/COPILOT-AGENT-QUEUE.md`, prompt masivo en `.github/prompts/copilot-bulk-assign.md`.
-- Skill dedicada: **`gano-github-copilot-orchestration`**.
+- **Backlog típico:** muchos PRs en **draft** — el agente entrega código/docs pero **no** fusiona; hace falta revisión humana y marcar listos para revisión. No confundir “mucho draft” con fallo del bot: suele ser **falta de triage**.
+- **Documentación:** `.github/DEV-COORDINATION.md`, `.github/COPILOT-AGENT-QUEUE.md`, prompt masivo en `.github/prompts/copilot-bulk-assign.md` (dos bloques: oleada 1 vs oleada 3).
+- Skill dedicada: **`gano-github-copilot-orchestration`** (incluye tabla de estado de outputs y prompts).
 
 ## Aprovechar lo que ya produjo Claude (workflow local)
 
@@ -63,4 +64,4 @@ description: >
 ## Skills relacionadas
 
 - `gano-github-copilot-orchestration` — Actions, cola JSON, Copilot agent.
-- `gano-wp-security`, `gano-wompi-fixer`, `gano-content-audit`, `gano-fase4-plataforma` — alcance técnico; esta skill es **proceso y convivencia** entre herramientas.
+- `gano-wp-security`, `gano-content-audit`, `gano-fase4-plataforma` — alcance técnico; `gano-wompi-fixer` solo **legacy**; esta skill es **proceso y convivencia** entre herramientas.
