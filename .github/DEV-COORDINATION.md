@@ -14,6 +14,7 @@ Este documento es la **brújula operativa** del equipo: humanos, Copilot y Actio
 | 4 | [`memory/research/`](../memory/research/) | Investigación (ej. Fase 4 plataforma) |
 | 5 | [`memory/sessions/`](../memory/sessions/) | Reportes de sesión (Cursor, decisiones recientes) |
 | 6 | [`.github/copilot-instructions.md`](copilot-instructions.md) | Instrucciones para Copilot en el repo |
+| 7 | [`.github/AGENT-REVIEW-CHECKLIST.md`](AGENT-REVIEW-CHECKLIST.md) | Revisión estricta de PRs (humanos) antes de merge |
 
 Si algo en **servidor** no está reflejado en `TASKS.md` o en un **issue** etiquetado, GitHub “no lo sabe”: conviene abrir un **reporte de sincronización** (Issues → New → *Reporte de sincronización*) el mismo día.
 
@@ -55,8 +56,12 @@ Local (rama feature/ops) → PR → CI (TruffleHog Gano + php-lint) → merge ma
 | `seed-homepage-issues.yml` | Crea issues del fixplan homepage (manual). |
 | `seed-copilot-queue.yml` | **Cola masiva** para Copilot agent: lee `agent-queue/tasks.json`, crea issues por ámbito, deduplicado por `agent-task-id`. |
 | `setup-repo-labels.yml` | Crea etiquetas `area:*`, `coordination`, etc. Manual (**Run workflow**) o automático al hacer **push a `main`** que modifique [`label-bootstrap`](label-bootstrap). |
+| `deploy.yml` | Push a `main` en rutas `gano-child` / `gano-*` / `mu-plugins` → rsync por SSH. **Secrets obligatorios:** `SSH`, `SERVER_HOST`, `SERVER_USER`, `DEPLOY_PATH`. |
+| `verify-patches.yml` | **Manual** — compara MD5 repo vs servidor (Fase 1–3); opción `upload_missing`. Mismos secrets que `deploy.yml`. |
 
 Ejecuta **Setup repository labels** si faltan etiquetas; sin ellas el labeler y las plantillas no se ven completas.
+
+**Secrets de deploy (Settings → Secrets and variables → Actions):** además de `SSH` (clave privada), define `SERVER_HOST` (hostname o IP para `ssh-keyscan`), `SERVER_USER` (usuario SSH/SFTP) y `DEPLOY_PATH` (ruta absoluta al `public_html` o raíz WP, **sin** barra final inconsistente). Sin estos cuatro, el job de deploy fallará al expandir rutas.
 
 ---
 

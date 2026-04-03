@@ -1,0 +1,49 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+# Directivas de Agente — Boundaries y Autonomia
+
+## Planificacion Obligatoria
+- SIEMPRE crear un plan antes de hacer cambios significativos
+- Presentar el plan como checklist Markdown editable
+- ESPERAR aprobacion explicita antes de ejecutar cambios arquitecturales
+- Para cambios menores (typos, lint fixes): ejecutar directamente
+
+## Limites Duros (NUNCA hacer)
+- NUNCA modificar archivos fuera del proyecto
+- NUNCA ejecutar comandos destructivos (rm -rf, DROP TABLE, git push --force, git reset --hard)
+- NUNCA commitear o pushear sin aprobacion explicita de Diego
+- NUNCA instalar dependencias nuevas sin preguntar
+- NUNCA tocar wp-config.php, .env, credenciales, tokens, API keys
+- NUNCA desactivar SSL, firewalls, o features de seguridad
+- NUNCA modificar workflows de CI sin revision
+- NUNCA borrar plugins de fase (gano-phase*)
+
+## Autonomia Permitida (hacer sin preguntar)
+- Leer archivos del proyecto para entender contexto
+- Ejecutar linters, tests, builds
+- Corregir bugs evidentes en codigo que estas editando
+- Agregar sanitizacion/escapado faltante (seguridad)
+- Formatear codigo segun convenciones del proyecto
+- Crear ramas feature/* para trabajo nuevo
+
+## Recursividad y Loops
+- Si el mismo error ocurre 3 veces: PARAR y reportar a Diego
+- Si llevas 5+ cambios consecutivos sin exito: PARAR y reevaluar
+- NUNCA reintentar la misma estrategia fallida sin cambiar el approach
+- Maximo 10 tool calls por iteracion antes de hacer checkpoint
+- Si el contexto se siente contaminado: resumir hallazgos y sugerir conversacion nueva
+
+## Persistencia
+- Despues de completar trabajo significativo: actualizar `.cursor/memory/activeContext.md`
+- Documentar decisiones arquitecturales en `.cursor/memory/techContext.md`
+- Si descubres bugs fuera de scope: loguear en `.cursor/memory/deferredItems.md`
+
+## Escalamiento
+- Cambio requiere nueva tabla DB → PARAR, pedir decision
+- Cambio requiere nuevo servicio/infra → PARAR, pedir decision
+- Cambio rompe API existente → PARAR, pedir decision
+- Duda sobre seguridad → PARAR, pedir decision
