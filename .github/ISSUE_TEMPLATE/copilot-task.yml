@@ -16,7 +16,7 @@ body:
         - WordPress / Elementor (contenido y datos)
         - Tema gano-child (PHP / templates)
         - MU-plugins / seguridad
-        - WooCommerce / Wompi
+        - WooCommerce / GoDaddy Reseller
         - Repo / CI / GitHub Actions
     validations:
       required: true
