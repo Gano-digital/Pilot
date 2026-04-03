@@ -11,9 +11,15 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 // Define plugin constants
 define( 'GANO_RESELLER_PATH', plugin_dir_path( __FILE__ ) );
 
-// Include ACF field registration
+// Include ACF field registration and core classes
 require_once GANO_RESELLER_PATH . 'includes/acf-reseller-fields.php';
+require_once GANO_RESELLER_PATH . 'includes/class-sandbox.php';
 require_once GANO_RESELLER_PATH . 'includes/class-bundle-handler.php';
+
+// Load smoke-test page only in admin context.
+if ( is_admin() ) {
+	require_once GANO_RESELLER_PATH . 'includes/class-smoke-test.php';
+}
 
 /**
  * Filter: rstore_sync_properties
@@ -45,9 +51,9 @@ function gano_reseller_filter_sync_properties( $properties, $post_id ) {
 add_filter( 'rstore_api_query_args', 'gano_reseller_filter_api_args' );
 
 function gano_reseller_filter_api_args( $args ) {
-    // Default to es-MX and USD for international consistency
-    $args['marketId'] = 'es-MX';
-    $args['currencyType'] = 'USD'; 
-    
+    // Mercado colombiano: es-CO y COP
+    $args['marketId']     = 'es-CO';
+    $args['currencyType'] = 'COP';
+
     return $args;
 }

@@ -25,7 +25,7 @@
   --gano-primary-dark:  var(--gano-blue-dark, #1240B0);
   --gano-accent:        var(--gano-green, #00C26B);
   --gano-accent-light:  var(--gano-green-light, #E0FAF0);
-  --gano-gold-sota:     #D4AF37; /* Gano Gold para acentos SOTA */
+  --gano-gold-sota:     var(--gano-gold, #D4AF37); /* Referencia al token global --gano-gold */
   --gano-dark-bg:       var(--gano-dark, #0F1923);
   --gano-dark-secondary: var(--gano-gray-900, #1A2535);
   --gano-text-dark:     var(--gano-gray-900, #1A2535);

@@ -389,30 +389,117 @@ add_filter( 'feed_links_show_comments_feed', '__return_false' );
 // ==============================================================================
 
 /**
- * Comprueba si el sitio aún tiene datos de ejemplo y registra advertencia.
- * (Tarea manual: reemplazar dirección, teléfono y email falsos)
+ * Comprueba si el sitio aún tiene datos placeholder USA y registra advertencia
+ * con enlace directo a cada página afectada en Elementor.
+ *
+ * Busca en _elementor_data (post meta por página) y en opciones de WP.
+ * Los resultados se cachean 1 hora para no ralentizar cada carga del admin.
+ *
+ * (Tarea manual: reemplazar dirección, teléfono y email falsos en Elementor)
  */
 add_action( 'admin_notices', function() {
     if ( ! current_user_can( 'manage_options' ) ) {
         return;
     }
 
+    // Patrones placeholder a detectar → mensaje descriptivo
     $placeholders = [
-        '969 Pine Street' => 'Dirección de ejemplo detectada en el sitio.',
-        'Hythostmain@mail.com' => 'Email de ejemplo detectado. Reemplazar con email real.',
-        '+1-(314) 892-2600' => 'Teléfono de ejemplo detectado. Reemplazar con número real.',
+        '969 Pine Street'                  => 'Dirección USA (969 Pine Street). Reemplazar con dirección real en Colombia.',
+        'Grand Rapids'                     => 'Ciudad USA (Grand Rapids). Reemplazar con Bogotá.',
+        'Hythostmain@mail.com'             => 'Email genérico (Hythostmain@mail.com). Reemplazar con hola@gano.digital.',
+        '+1-(314) 892-2600'                => 'Teléfono USA (+1-(314) 892-2600). Reemplazar con número colombiano real.',
+        '+1-(314)-892-2600'                => 'Teléfono USA (+1-(314)-892-2600). Reemplazar con número colombiano real.',
+        'Advanced Web Hosting Technology'  => 'Hero genérico en inglés. Reemplazar con propuesta de valor real de Gano Digital.',
     ];
 
-    // Buscar en opciones del tema
-    $theme_options = get_option( 'elementor_data', '' );
-    foreach ( $placeholders as $placeholder => $message ) {
-        if ( strpos( $theme_options, $placeholder ) !== false ||
-             strpos( get_option( 'blogdescription', '' ), $placeholder ) !== false ) {
-            echo '<div class="notice notice-warning is-dismissible"><p><strong>Gano Security:</strong> ' .
-                 esc_html( $message ) . '</p></div>';
+    // Recuperar desde caché para no ejecutar consulta en cada carga
+    $cache_key     = 'gano_placeholder_check_v2';
+    $cached_result = get_transient( $cache_key );
+
+    if ( false === $cached_result ) {
+        global $wpdb;
+
+        $affected_pages   = [];
+        $option_messages  = [];
+
+        // Buscar en _elementor_data de páginas y entradas (publicadas y borradores)
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- búsqueda batch de meta, no hay WP_Query equivalente eficiente
+        $rows = $wpdb->get_results(
+            "SELECT p.ID, p.post_title, pm.meta_value
+             FROM {$wpdb->posts} AS p
+             INNER JOIN {$wpdb->postmeta} AS pm ON p.ID = pm.post_id
+             WHERE pm.meta_key = '_elementor_data'
+               AND p.post_status IN ('publish', 'draft')
+             LIMIT 100"
+        );
+
+        foreach ( $rows as $row ) {
+            $found = [];
+            foreach ( $placeholders as $needle => $msg ) {
+                if ( false !== strpos( $row->meta_value, $needle ) ) {
+                    $found[] = $msg;
+                }
+            }
+            if ( ! empty( $found ) ) {
+                $affected_pages[] = [
+                    'id'       => (int) $row->ID,
+                    'title'    => $row->post_title,
+                    'messages' => array_unique( $found ),
+                ];
+            }
         }
+
+        // También comprobar opciones de WP (descripción del sitio, etc.)
+        $blog_desc = get_option( 'blogdescription', '' );
+        foreach ( $placeholders as $needle => $msg ) {
+            if ( false !== strpos( $blog_desc, $needle ) ) {
+                $option_messages[] = $msg . ' (en <a href="' . esc_url( admin_url( 'options-general.php' ) ) . '">Ajustes → General → Descripción</a>)';
+            }
+        }
+
+        $cached_result = [
+            'pages'   => $affected_pages,
+            'options' => $option_messages,
+        ];
+
+        // Cachear 1 hora; se invalida si guardan opciones
+        set_transient( $cache_key, $cached_result, HOUR_IN_SECONDS );
     }
+
+    $affected_pages  = $cached_result['pages']   ?? [];
+    $option_messages = $cached_result['options']  ?? [];
+
+    if ( empty( $affected_pages ) && empty( $option_messages ) ) {
+        return; // Todo limpio — no mostrar nada
+    }
+
+    $seo_url = admin_url( 'options-general.php?page=gano-seo-settings' );
+
+    echo '<div class="notice notice-warning is-dismissible">';
+    echo '<p><strong>⚠️ Gano Security — Datos placeholder detectados:</strong> ';
+    echo 'El sitio todavía tiene contenido ficticio (dirección/teléfono/email USA). ';
+    echo 'Reemplaza con los datos reales en cada página con Elementor.</p><ul>';
+
+    foreach ( $affected_pages as $p ) {
+        $edit_url = admin_url( 'post.php?post=' . $p['id'] . '&action=elementor' );
+        echo '<li>📄 <a href="' . esc_url( $edit_url ) . '" target="_blank">' .
+             esc_html( $p['title'] ) . '</a>: ' .
+             implode( ' | ', array_map( 'esc_html', $p['messages'] ) ) . '</li>';
+    }
+
+    foreach ( $option_messages as $msg ) {
+        echo '<li>' . wp_kses( $msg, [ 'a' => [ 'href' => [] ] ] ) . '</li>';
+    }
+
+    echo '</ul><p>📋 Configura los datos del negocio en ';
+    echo '<a href="' . esc_url( $seo_url ) . '">Ajustes → Gano SEO</a> ';
+    echo '(teléfono, NIT, dirección para Schema JSON-LD).</p>';
+    echo '</div>';
 } );
+
+// Invalidar caché del detector de placeholders cuando se guarden posts/meta
+add_action( 'save_post', function() { delete_transient( 'gano_placeholder_check_v2' ); } );
+add_action( 'updated_postmeta', function() { delete_transient( 'gano_placeholder_check_v2' ); } );
 
 // ==============================================================================
 // 13. ALERTA DE PLUGINS DE RIESGO ACTIVOS — V-04 (wp-file-manager)

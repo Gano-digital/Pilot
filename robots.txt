@@ -2,6 +2,8 @@ User-agent: *
 Disallow: /wp-admin/
 Allow: /wp-admin/admin-ajax.php
 
+Sitemap: https://gano.digital/sitemap_index.xml
+
 # Gano Digital - Strictly block AI and commercial data scrapers
 
 User-agent: GPTBot
