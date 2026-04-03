@@ -90,15 +90,22 @@ Este documento asiste la revisión humana y el orden de merge. Actualizar tras c
 
 ---
 
-## 4. Siguiente acción inmediata (Diego / revisor)
+## 4. Hecho (2026-04-03)
 
-1. **#47:** Update branch + revisar diff de `deploy.yml` vs `main` local (secrets + `sync_if_exists`).
-2. **#51 vs #49:** decidir PR única de README para evitar doble merge conflictivo.
-3. **#69:** merge rápido si solo añade bloque Oleada 3 en `TASKS.md`.
-4. Abrir **Ready for review** en bloques (docs → tema → CI).
+- [x] **#69** fusionada (squash): subsección Oleada 3 en `TASKS.md` + enlaces brief / `tasks-wave3.json`.
+- [x] **#51** fusionada (squash): README drift + secret `SSH` + `COPILOT-AGENT-QUEUE.md`.
+- [ ] **#49** — *Update branch* falla por **conflicto con `main`**; README cubierto por #51. Valor residual: cambios en `.gano-skills/` si aún no están en `main` → PR pequeña nueva o cerrar #49.
+- [ ] **#47** — *Update branch* falla por **conflicto**; resolver a mano (deploy secrets + alinear con `sync_if_exists` en `main`).
+
+## 5. Siguiente acción inmediata (Diego / revisor)
+
+1. **#47:** Resolver conflictos con `main`, revisar `deploy.yml` / `verify-patches.yml`, fusionar cuando CI verde.
+2. **#49:** Cerrar o reemplazar por PR mínima solo skills.
+3. Oleada homepage **#34–#40** (tema): marcar ready y revisar por orden MERGE-PLAYBOOK.
+4. Resto oleada 3 docs: por lotes tras #47 estable.
 
 ---
 
-## 5. Archivo legacy (Wompi)
+## 6. Archivo legacy (Wompi)
 
 Política: **archivado** — ver `memory/archive/README-ARCHIVO-WOMPI-Y-PASARELAS-LEGACY.md`. Las PRs que aún mencionen sync a `gano-wompi-integration` deben alinearse con **solo desplegar si existe** / prioridad Reseller.
