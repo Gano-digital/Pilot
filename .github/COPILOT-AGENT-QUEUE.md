@@ -3,11 +3,11 @@
 ## Qué es
 
 - **`agent-queue/tasks.json`** — definición versionada de issues (título, cuerpo, etiquetas, ámbito).
-- **Workflow `Seed Copilot task queue`** — crea issues en GitHub **sin duplicar** si ya hay uno **abierto** con el mismo `<!-- agent-task-id:... -->` en el cuerpo.
+- **Workflow `08 · Agentes · Sembrar cola Copilot`** (archivo `seed-copilot-queue.yml`) — crea issues en GitHub **sin duplicar** si ya hay uno **abierto** con el mismo `<!-- agent-task-id:... -->` en el cuerpo.
 
 ## Cómo usarlo (offloading)
 
-1. Repo → **Actions** → **Seed Copilot task queue** → **Run workflow**.
+1. Repo → **Actions** → **08 · Sembrar cola Copilot** → **Run workflow**.
 2. Elige **`queue_file`**:
    - `tasks.json` — oleada 1 (~17 tareas). No crea duplicados mientras el issue abierto tenga el mismo `agent-task-id`.
    - `tasks-wave2.json` — oleada 2 (8 tareas: merge playbook, SEO canonical, fuentes, Reseller doc, `.htaccess`, CI, a11y, post-Dependabot). Usar cuando quieras **nuevos** issues tras triage de la oleada 1.
@@ -21,8 +21,8 @@
 ## Requisitos
 
 - Plan / política org que permita **Copilot coding agent** en el repo.
-- Etiquetas creadas (workflow **Setup repository labels** ya ejecutado en `main`).
-- Al editar colas: el workflow **Validate agent queue JSON** comprueba `tasks.json` / `tasks-wave2.json` (ids únicos y marcador `agent-task-id`). Local: `python scripts/validate_agent_queue.py`.
+- Etiquetas creadas (workflow **06 · Repo · Crear etiquetas** ya ejecutado en `main`).
+- Al editar colas: el workflow **07 · Validar cola JSON** comprueba `tasks.json` / `tasks-wave2.json` (ids únicos y marcador `agent-task-id`). Local: `python scripts/validate_agent_queue.py`.
 
 ## Añadir tareas
 

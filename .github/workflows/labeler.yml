@@ -1,5 +1,5 @@
-# Requiere etiquetas creadas (ejecutar workflow "Setup repository labels" una vez).
-name: Pull Request Labeler
+# Requiere etiquetas creadas (ejecutar una vez: 06 · Repo · Crear etiquetas GitHub).
+name: "03 · PR · Etiquetas automáticas"
 
 on:
   pull_request:
