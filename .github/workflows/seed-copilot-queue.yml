@@ -6,6 +6,15 @@ name: Seed Copilot task queue
 on:
   workflow_dispatch:
     inputs:
+      queue_file:
+        description: "Archivo de cola (oleada 1/2/3 — ver COPILOT-AGENT-QUEUE.md)"
+        required: true
+        default: tasks.json
+        type: choice
+        options:
+          - tasks.json
+          - tasks-wave2.json
+          - tasks-wave3.json
       scope:
         description: "Ámbito de tareas a generar"
         required: true
@@ -19,6 +28,7 @@ on:
           - security
           - commerce
           - docs
+          - coordination
 
 permissions:
   contents: read
@@ -29,17 +39,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Create issues from queue (deduplicado)
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
+        env:
+          SEED_QUEUE_FILE: ${{ github.event.inputs.queue_file }}
+          SEED_SCOPE: ${{ github.event.inputs.scope }}
         with:
           script: |
             const fs = require('fs');
-            const path = '.github/agent-queue/tasks.json';
+            const allowed = ['tasks.json', 'tasks-wave2.json', 'tasks-wave3.json'];
+            const qf = process.env.SEED_QUEUE_FILE || 'tasks.json';
+            if (!allowed.includes(qf)) {
+              core.setFailed('queue_file no permitido: ' + qf);
+              return;
+            }
+            const path = '.github/agent-queue/' + qf;
             const raw = fs.readFileSync(path, 'utf8');
-            const { tasks } = JSON.parse(raw);
-            const scope = core.getInput('scope') || 'all';
+            const parsed = JSON.parse(raw);
+            const tasks = parsed.tasks;
+            if (!Array.isArray(tasks)) {
+              core.setFailed('JSON sin array tasks: ' + path);
+              return;
+            }
+            const scope = process.env.SEED_SCOPE || 'all';
             const owner = context.repo.owner;
             const repo = context.repo.repo;
 
@@ -83,5 +107,5 @@ jobs:
             }
 
             core.info(
-              `Cola Copilot: creados=${created} omitidos=${skipped} scope=${scope}`
+              `Cola Copilot: archivo=${qf} creados=${created} omitidos=${skipped} scope=${scope}`
             );
