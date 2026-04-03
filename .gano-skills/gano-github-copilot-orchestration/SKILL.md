@@ -53,6 +53,24 @@ description: >
 - Issues **100 % wp-admin/Elementor** suelen cerrarse con **comentarios** o checklist en el issue; el agente no sustituye el panel.
 - **No** commitear PAT en URL de remotes; rotar tokens tras workflows sensibles.
 
+## Estado de outputs de bots (revisión GitHub — abril 2026)
+
+**Qué medir:** en `Gano-digital/Pilot`, los “outputs” de Copilot son **PRs**; los “inputs” operativos son **issues** `[agent]` con `agent-task-id`.
+
+| Indicador | Significado |
+|-----------|-------------|
+| Issues `[agent]` abiertos | Trabajo **no** cerrado en Git (oleada 1 **#17–#33**, oleada 3 **#54–#68**). Actualizar conteo en GitHub. |
+| PRs **draft** | El agente **sí** entregó rama; falta **revisión humana**, CI verde y **Ready for review** → merge. Acumular muchos draft = cuello de botella de revisión, no de generación. |
+| PRs **listos** (no draft) | Listos para cola de merge habitual (squash, `Closes #NN`). |
+
+**Snapshot de referencia (consultar de nuevo antes de presentar números):** ~**32** issues abiertos en los rangos de cola; ~**35** PRs abiertos, **todos en borrador** — es decir, los bots **están produciendo**, pero **nada entra a `main`** hasta revisión.
+
+**Prompts por oleada (obligatorio para asignación masiva):** [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md) — bloque **oleada 1** solo para **#17–#33**; bloque **oleada 3** solo para **#54–#68**. Mezclar prompts puede hacer que el agente priorice el brief wave3 en tareas de homepage/Lorem.
+
+**Orden de merge sugerido cuando haya muchos draft:** ver [`.github/MERGE-PLAYBOOK.md`](../../.github/MERGE-PLAYBOOK.md); PRs que solo añaden `memory/**/*.md` suelen ser **bajo riesgo** y desbloquean cierre de issues wave3; cambios en `gano-child` o MU-plugins primero o con más cuidado por conflictos.
+
+**Workflow opcional:** **Orchestrate Copilot waves** — `dry_run_merge: true` antes de fusionar oleada 1 automáticamente; luego `seed_wave2` cuando toque.
+
 ## Skills relacionadas
 
 - `gano-multi-agent-local-workflow` — Cursor vs Claude vs GitHub.
