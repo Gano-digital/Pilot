@@ -598,3 +598,107 @@ add_filter( 'rest_authentication_errors', function ( $result ) {
     }
     return $result;
 }, 5 );
+
+// =============================================================================
+// GANO RESELLER STORE — Constantes de mapeo de productos (pfids)
+// =============================================================================
+//
+// Qué es un pfid: "Product Family ID" del catálogo GoDaddy Reseller.
+// Es el identificador único que GoDaddy asigna a cada producto en el RCC.
+//
+// CÓMO OBTENER LOS pfids REALES:
+//   1. Iniciar sesión en el Reseller Control Center (RCC):
+//      https://www.godaddy.com/reseller/program/affiliate
+//   2. Ir a: Productos → Catálogo de productos.
+//   3. En cada producto, el "Product Family ID" es el pfid.
+//   4. Alternativa rápida (WP-CLI, después de sincronizar):
+//      wp reseller sync
+//      wp post list --post_type=reseller_product --fields=ID,post_title
+//      wp post meta get <POST_ID> rstore_id
+//
+// ESTRUCTURA DE URL DEL CARRITO:
+//   https://cart.secureserver.net/?plid={PLID}&items=[{"id":"{PFID}","quantity":1}]
+//   El PLID se configura en: wp-admin → Ajustes → Reseller Store → Private Label ID.
+//
+// NOTA: Los dominios (.CO / .COM) NO tienen pfid de carrito directo.
+//   Para dominios usar el shortcode [rstore-domain-search].
+//
+// TODO: Reemplazar los valores 'PENDING_RCC' con los pfids reales desde el RCC
+//       antes de activar el flujo de checkout en producción.
+// =============================================================================
+
+// --- Hosting WordPress ---
+// Fuente: RCC → Productos → Web Hosting → WordPress Hosting
+if ( ! defined( 'GANO_PFID_HOSTING_ECONOMIA' ) ) {
+	define( 'GANO_PFID_HOSTING_ECONOMIA', 'PENDING_RCC' ); // WordPress Hosting Economy  — Núcleo Prime
+}
+if ( ! defined( 'GANO_PFID_HOSTING_DELUXE' ) ) {
+	define( 'GANO_PFID_HOSTING_DELUXE', 'PENDING_RCC' );   // WordPress Hosting Deluxe   — Fortaleza Delta
+}
+if ( ! defined( 'GANO_PFID_HOSTING_PREMIUM' ) ) {
+	define( 'GANO_PFID_HOSTING_PREMIUM', 'PENDING_RCC' );  // WordPress Hosting Premium  — Bastión SOTA
+}
+if ( ! defined( 'GANO_PFID_HOSTING_ULTIMATE' ) ) {
+	define( 'GANO_PFID_HOSTING_ULTIMATE', 'PENDING_RCC' ); // WordPress Hosting Ultimate — Ultimate WP
+}
+
+// --- Seguridad / SSL ---
+// Fuente: RCC → Productos → SSL & Seguridad
+if ( ! defined( 'GANO_PFID_SSL_DELUXE' ) ) {
+	define( 'GANO_PFID_SSL_DELUXE', 'PENDING_RCC' );        // SSL DV Deluxe              — SSL Deluxe
+}
+if ( ! defined( 'GANO_PFID_SECURITY_ULTIMATE' ) ) {
+	define( 'GANO_PFID_SECURITY_ULTIMATE', 'PENDING_RCC' ); // Website Security Premium   — Security Ultimate
+}
+
+// --- Email / Colaboración ---
+// Fuente: RCC → Productos → Email & Office
+if ( ! defined( 'GANO_PFID_M365_PREMIUM' ) ) {
+	define( 'GANO_PFID_M365_PREMIUM', 'PENDING_RCC' );   // Microsoft 365 Business Premium — M365 Premium
+}
+if ( ! defined( 'GANO_PFID_ONLINE_STORAGE' ) ) {
+	define( 'GANO_PFID_ONLINE_STORAGE', 'PENDING_RCC' ); // Online Storage 1 TB            — Online Storage
+}
+
+/**
+ * Genera la URL del carrito de GoDaddy Reseller para un pfid dado.
+ *
+ * Usa el pl_id configurado en el plugin Reseller Store (wp-admin → Ajustes →
+ * Reseller Store → Private Label ID). Devuelve '#' cuando el pfid aún no está
+ * configurado (valor 'PENDING_RCC') o cuando el plugin no está activo.
+ *
+ * @param string $pfid     Product Family ID del catálogo GoDaddy Reseller.
+ * @param int    $duration Duración en meses (por defecto 12 = 1 año).
+ * @return string URL escapada lista para usar en href.
+ */
+function gano_rstore_cart_url( $pfid, $duration = 12 ) {
+	if ( empty( $pfid ) || 'PENDING_RCC' === $pfid ) {
+		return '#';
+	}
+
+	$pl_id = function_exists( 'rstore_get_option' ) ? (int) rstore_get_option( 'pl_id' ) : 0;
+
+	if ( empty( $pl_id ) ) {
+		return '#';
+	}
+
+	$items = wp_json_encode(
+		array(
+			array(
+				'id'       => $pfid,
+				'quantity' => 1,
+				'duration' => absint( $duration ),
+			),
+		)
+	);
+
+	return esc_url(
+		add_query_arg(
+			array(
+				'plid'  => $pl_id,
+				'items' => $items,
+			),
+			'https://cart.secureserver.net/'
+		)
+	);
+}
