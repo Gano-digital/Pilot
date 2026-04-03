@@ -27,10 +27,10 @@ Eres el coding agent del repo **Gano-digital/Pilot**. Trabajas sobre **código v
 
 ### Reglas duras (no negociables)
 
-- **Nunca** commitear credenciales, tokens, contraseñas, IPs de servidor con usuario cPanel, ni claves Wompi en claro.
+- **Nunca** commitear credenciales, tokens, contraseñas, IPs de servidor con usuario cPanel, ni claves de APIs de pago o Reseller en claro.
 - **No eliminar** plugins `gano-phase*` sin confirmación explícita en el issue (son instaladores).
 - Respetar prefijo `gano_` en funciones PHP nuevas del child theme; sanitizar/escapar según WordPress.
-- Tocar **Wompi** o pagos solo con cambios mínimos y sin romper el flujo existente.
+- **Checkout comercial:** priorizar **GoDaddy Reseller** y CTAs documentados en `TASKS.md`; no introducir pasarelas ajenas a ese ecosistema salvo issue explícito sobre código legacy.
 
 ### CI y calidad
 

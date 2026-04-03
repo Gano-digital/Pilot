@@ -96,7 +96,7 @@ Cuando vuelvas: **Actions → [Orchestrate Copilot waves](https://github.com/Gan
 
 ### GitHub / automatización
 
-- [x] **Auditoría oleada Copilot (2026-04):** issues #17–#33 siguen **abiertos**; hay **~17 PRs** abiertos (muchos draft) — los agentes **entregaron PRs**, falta **revisión CI + merge + cierre de issues**. Ver [`.github/MERGE-PLAYBOOK.md`](.github/MERGE-PLAYBOOK.md).
+- [x] **Auditoría oleada Copilot (2026-04):** cola de agentes **~32 issues** abiertos (#17–#33 + #54–#68); **~35 PRs** abiertos en GitHub — **todos en borrador** a fecha de revisión: los agentes **sí entregan ramas**, falta **marcar listos, CI verde, revisión humana, merge y cierre de issues**. Ver [`.github/MERGE-PLAYBOOK.md`](.github/MERGE-PLAYBOOK.md).
 - [x] **Oleada 2:** `agent-queue/tasks-wave2.json` + workflow **Seed Copilot task queue** con input `queue_file` (`tasks.json` | `tasks-wave2.json`).
 - [x] **Validación cola:** workflow **Validate agent queue JSON** + `scripts/validate_agent_queue.py` (CI al tocar `agent-queue/`).
 - [x] **Oleada 3 — issues creados en GitHub (#54–#68)** — Seed con `tasks-wave3.json` ejecutado.

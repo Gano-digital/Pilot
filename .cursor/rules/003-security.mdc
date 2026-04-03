@@ -1,0 +1,46 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+# Seguridad — Reglas Obligatorias
+
+## Archivos Prohibidos (NUNCA leer, modificar, ni commitear)
+- `.env`, `.env.*`, `*.env`
+- `wp-config.php`
+- `credentials.json`, `secrets.*`
+- `*.pem`, `*.key` (claves privadas)
+- Cualquier archivo con tokens, passwords, API keys en texto plano
+- `ssh_cli.py` con credenciales hardcoded (usar solo variables de entorno)
+
+## PHP / WordPress Security
+- SIEMPRE usar `$wpdb->prepare()` — NUNCA SQL crudo
+- SIEMPRE sanitizar inputs: `sanitize_text_field()`, `wp_kses_post()`, `absint()`
+- SIEMPRE escapar outputs: `esc_html()`, `esc_url()`, `esc_attr()`
+- SIEMPRE usar nonces: `wp_nonce_field()` + `check_admin_referer()`
+- Prefijo obligatorio: `gano_` en todas las funciones
+- `WP_DEBUG` = `false` en produccion
+- Rate limiting: max 20 req/IP/60s en endpoints REST
+
+## Prevencion de Vulnerabilidades
+- SQL Injection: SOLO queries preparadas
+- XSS: escapar TODO output dinamico
+- CSRF: nonces en TODOS los formularios
+- Path Traversal: validar rutas dentro del proyecto
+- SSRF: validar URLs antes de HTTP requests
+- Inyeccion de comandos: NUNCA `exec()`, `system()`, `passthru()` con input de usuario
+
+## Git Security
+- Ejecutar `git diff --cached` antes de cada commit para verificar que no haya secretos
+- Si TruffleHog o secret-scan falla: NO proceder con el commit
+- Branches de Copilot (`copilot/*`) requieren revision humana antes de merge
+
+## Checkout / Reseller (GoDaddy)
+- Cambios que toquen **integración Reseller**, carrito o CTAs hacia productos deben alinearse con `TASKS.md` y RCC; no inventar IDs de producto.
+- **NUNCA** hardcodear credenciales de APIs, keys de reseller, ni tokens — solo `wp_options`, secretos de CI o variables de entorno.
+- Cualquier plugin de pasarela **legacy** en el árbol: revisión extra; **no** es la prioridad comercial actual.
+
+## MU-Plugins (gano-security.php, gano-seo.php)
+- Cambios aqui afectan TODO el sitio — revision obligatoria
+- CSP headers, rate limiting, schema JSON-LD son criticos

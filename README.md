@@ -1,7 +1,7 @@
 # Gano Digital Platform
 
 > **Plataforma de hosting WordPress profesional para empresas colombianas**
-> Stack: WordPress 6.x · Elementor · WooCommerce · Wompi · GSAP 3
+> Stack: WordPress 6.x · Elementor · WooCommerce · **GoDaddy Reseller** · GSAP 3
 > URL: https://gano.digital · Hosting: GoDaddy Managed WordPress (detalles de infra en panel del proveedor, no en el repo)
 
 ---
@@ -38,8 +38,8 @@ Gano.digital-copia/
 │   ├── plugins/
 │   │   ├── gano-content-importer/  ← ⭐ 20 páginas SOTA (activar una vez)
 │   │   ├── gano-phase3-content/    ← Builder páginas principales + menú
-│   │   ├── gano-wompi-integration/ ← Pasarela Wompi Colombia
-│   │   └── gano-reseller-enhancements/ ← GoDaddy Reseller Store
+│   │   ├── gano-reseller-enhancements/ ← GoDaddy Reseller Store (checkout marca blanca)
+│   │   └── (legacy) pasarelas locales solo si existen en tu deploy — **no** son el eje comercial
 │   └── mu-plugins/
 │       ├── gano-security.php       ← CSP + headers de seguridad
 │       └── gano-seo.php            ← Schema JSON-LD + Open Graph
@@ -54,11 +54,11 @@ Gano.digital-copia/
 
 | Fase | Estado | Descripción |
 |------|--------|-------------|
-| **1 — Seguridad Base** | ✅ Completa | WP_DEBUG, Wompi HMAC, nonces CSRF |
+| **1 — Seguridad Base** | ✅ Completa | WP_DEBUG, secretos/hardening, nonces CSRF |
 | **2 — Hardening** | ✅ Completa | CSP enforced, Rate limiting REST, AES-256 |
 | **3 — SEO/Performance** | ✅ Completa | Schema JSON-LD, Core Web Vitals, templates SEO |
 | **3.5 — SOTA Content** | 🔄 En curso | 20 páginas SOTA, GSAP animations, Kinetic Monolith |
-| **4 — Plataforma Real** | 📋 Planificada | WHMCS, Wompi billing, FreeScout, DIAN |
+| **4 — Plataforma Real** | 📋 En curso (modelo GoDaddy) | Reseller RCC, CTAs → carrito, soporte; investigación billing avanzado aparte |
 | **5 — Escala** | ⏳ Futuro | CDN, backup cloud, API pública |
 
 ---
@@ -113,13 +113,11 @@ ls .gsd/agents/
 
 ---
 
-## 💳 Stack de Pagos (Colombia)
+## 💳 Checkout y cobro (Colombia)
 
-- **Gateway**: Wompi (`wp-content/plugins/gano-wompi-integration/`)
-- **Métodos**: PSE, Nequi, Daviplata, Tarjetas débito/crédito
-- **Sandbox**: `pub_test_...` / `prv_test_...`
-- **Producción**: En GitHub Secrets (nunca en código)
-- **Webhook**: `https://gano.digital/wp-json/gano-wompi/v1/webhook`
+- **Canal activo:** **GoDaddy Reseller Store** — catálogo, carrito marca blanca y cobro gestionados por el programa Reseller (ver `TASKS.md` Fase 4).
+- **Métodos disponibles al cliente:** los que ofrezca el flujo Reseller/GoDaddy en tu cuenta (no documentar aquí claves ni credenciales).
+- Código o plugins de **pasarelas locales antiguas** en el árbol: tratar como **legacy**; no es la prioridad del roadmap actual.
 
 ---
 
