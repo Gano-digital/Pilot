@@ -133,6 +133,7 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `wp-content/themes/gano-child/seo-pages/` | **NUEVO** Contenido landing pages keywords |
 | `memory/research/fase4-plataforma.md` | **NUEVO** Investigación completa Fase 4 |
 | `memory/sessions/2026-04-01-reporte-cursor-descargas-y-herramientas.md` | **2026-04-01** Reporte de sesión Cursor: Descargas, `EJECUTAR_ANALISIS.ps1`, organización de folios, seguridad (`id_rsa` → `.ssh`). Continuidad para Claude. |
+| `memory/claude/README.md` | **Contexto para Claude** — carpeta con historial abril 2026 (consolidación PRs, workflows 01–12), pendientes detallados y FAQ; empezar ahí para continuidad entre sesiones. |
 
 ## Preferencias de Diego
 - Comunicación en español

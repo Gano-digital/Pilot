@@ -42,6 +42,7 @@ _Documento de recordatorio operativo. Última revisión: **2026-04-03** (post-co
 | Consolidación PRs | [`../sessions/2026-04-03-consolidacion-prs-copilot.md`](../sessions/2026-04-03-consolidacion-prs-copilot.md) |
 | Coordinación git ↔ servidor | [`.github/DEV-COORDINATION.md`](../../.github/DEV-COORDINATION.md) |
 | Tareas globales | [`TASKS.md`](../../TASKS.md) |
+| Contexto extenso para Claude (historial + pendientes + FAQ) | [`../claude/README.md`](../claude/README.md) |
 | Prompt bulk / DoD | [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md) |
 
 ## Historial (archivo — ya resuelto)

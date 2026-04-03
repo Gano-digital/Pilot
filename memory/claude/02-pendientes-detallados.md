@@ -1,0 +1,116 @@
+# Pendientes detallados — inventario para Claude
+
+Este documento **complementa** [`TASKS.md`](../../TASKS.md) y [`../notes/nota-diego-recomendaciones-2026-04.md`](../notes/nota-diego-recomendaciones-2026-04.md) con una vista **por área** y notas de **coherencia** (qué está hecho solo en git, qué requiere servidor o panel).
+
+**Leyenda de estado**
+
+| Etiqueta | Significado |
+|----------|-------------|
+| **Repo** | Cambio presente en `main` del repositorio Pilot (puede no estar en producción). |
+| **Prod** | Requiere acción en hosting / wp-admin / RCC. |
+| **GH** | Requiere acción en GitHub (Actions, issues, settings). |
+
+---
+
+## A. Crítico — seguridad y paridad código ↔ servidor
+
+| ID | Tarea | Dónde | Notas |
+|----|-------|-------|--------|
+| A1 | Configurar secrets de deploy | **GH** | `SSH`, `SERVER_HOST`, `SERVER_USER`, `DEPLOY_PATH`. Sin ellos, **04 · Deploy** falla. Ver [`.github/DEV-COORDINATION.md`](../../.github/DEV-COORDINATION.md). |
+| A2 | Desplegar Fases 1–3 al servidor | **Prod** + **GH** | Push que toque `gano-child` / `gano-*` / `mu-plugins` dispara deploy si secrets OK; `wp-config.php` **no** va en git — subir por canal seguro aparte. |
+| A3 | Verificar parches (checksums) | **GH** | Workflow **05 · Ops · Verificar parches en servidor** — manual; opción subir faltantes. |
+| A4 | Eliminar **wp-file-manager** | **Prod** | **12 · Ops · Eliminar wp-file-manager (SSH)** con `force_remove` **o** wp-admin + SFTP. Riesgo histórico documentado en auditorías; la alerta en `gano-security.php` depende de que el plugin desaparezca. |
+
+---
+
+## B. Alta — SEO y visibilidad (wp-admin)
+
+| ID | Tarea | Dónde | Notas |
+|----|-------|-------|--------|
+| B1 | Pantalla **Gano SEO** — datos empresa digital | **Prod** | Cobertura Colombia, sin forzar dirección física si el modelo es digital. |
+| B2 | **Google Search Console** | **Prod** | Propiedad `https://gano.digital`. |
+| B3 | **Rank Math** — asistente inicial | **Prod** | Ajustar a servicios digitales / sin tienda física. |
+
+---
+
+## C. Alta — contenido y Elementor
+
+| ID | Tarea | Dónde | Notas |
+|----|-------|-------|--------|
+| C1 | Asignar menú **primary** en header | **Prod** | El tema registra la ubicación en **Repo**; falta asignación en panel / canvas Elementor. |
+| C2 | Sustituir Lorem y placeholders | **Prod** | Fuente: [`../content/homepage-copy-2026-04.md`](../content/homepage-copy-2026-04.md); clases: [`../content/elementor-home-classes.md`](../content/elementor-home-classes.md). |
+| C3 | Hero: imagen y attachment coherentes | **Prod** | |
+| C4 | Layout: clases `gano-el-*`, CTA con iconos reales | **Prod** | |
+| C5 | Eliminar testimonios falsos / métricas infladas | **Prod** | Listado en `TASKS.md` — integridad de marca. |
+| C6 | Página **Nosotros** real (manifiesto SOTA) | **Prod** | |
+| C7 | Skip link `#gano-main-content` | **Prod** | Revisar en canvas Elementor si el marcaje del main sigue el id esperado (entregable a11y en repo). |
+
+---
+
+## D. Alta — comercio Reseller (Fase 4 agilizada)
+
+| ID | Tarea | Dónde | Notas |
+|----|-------|-------|--------|
+| D1 | Depurar catálogo y precios en **RCC** | **Prod** (GoDaddy) | Hosting, VPS, SSL alineados a lo que vende la vitrina. |
+| D2 | Sustituir **PENDING_RCC** / pfids en código | **Repo** + **Prod** | Tras merge #52, el modelo es **GANO_PFID_***; valores reales vienen del RCC / Private Label. |
+| D3 | Prueba de flujo **Comprar → carrito marca blanca → cierre** | **Prod** | Smoke manual; referencia [`../smoke-tests/checkout-reseller-2026-04.md`](../smoke-tests/checkout-reseller-2026-04.md) si aplica. |
+| D4 | Canal de soporte (FreeScout u otro) | **Decisión** | TASKS menciona FreeScout; no bloquea merge en git. |
+
+---
+
+## E. GitHub — issues, colas y agentes
+
+| ID | Tarea | Dónde | Notas |
+|----|-------|-------|--------|
+| E1 | **Cerrar issues** ya cubiertos por `main` | **GH** | Tras consolidación 2026-04-03, muchos issues pueden cerrarse con comentario “resuelto en main”. Revisión **manual** lista por lista. |
+| E2 | **09 · Sembrar issues homepage** | **GH** | En `TASKS.md` sigue como checkbox: ejecutar **solo si** los 7 issues `homepage-fixplan` **no** existen. Si ya se crearon, marcar hecho en TASKS al confirmar. |
+| E3 | **08 · Sembrar cola Copilot** | **GH** | Solo para **nuevos** issues desde JSON; deduplicación por `agent-task-id`. Oleadas 2/3 ya sembradas históricamente — no re-sembrar sin revisar duplicados. |
+| E4 | Prompt Copilot por rango de issue | **GH** | [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md) — bloques oleada 1 (#17–33) vs oleada 3 (#54–68). |
+| E5 | **10 · Orquestar oleadas** | **GH** | **No** requerido para la oleada ya fusionada. Solo si reaparece un lote “oleada 1” y se desea automatizar. |
+| E6 | Rotación de tokens / remotes sin credenciales en URL | **GH** + local | Buena práctica post-deploy. |
+
+---
+
+## F. Media — plugins, acceso, someday
+
+| ID | Tarea | Dónde | Notas |
+|----|-------|-------|--------|
+| F1 | **2FA** en wp-admin | **Prod** | Wordfence presente; activación recomendada. |
+| F2 | **Plugins de fase** — ejecutar y luego limpiar con confirmación | **Prod** | **No borrar** `gano-phase*` hasta confirmar que su trabajo quedó aplicado — ver [`../notes/plugins-de-fase.md`](../notes/plugins-de-fase.md). |
+| F3 | Fase 5 (status page, chat LLM real, afiliados) | Backlog | `TASKS.md` — someday. |
+
+---
+
+## G. Investigación / referencia (no es “pendiente” inmediato)
+
+| Recurso | Uso |
+|---------|-----|
+| [`../research/fase4-plataforma.md`](../research/fase4-plataforma.md) | WHMCS, Blesta, DIAN, portal — **referencia** mientras el modelo activo sea Reseller GoDaddy. |
+| [`../research/gano-wave3-brand-ux-master-brief.md`](../research/gano-wave3-brand-ux-master-brief.md) | Brief oleada 3 / marca y UX. |
+| [`2026-04-02-progreso-consolidado.md`](../sessions/2026-04-02-progreso-consolidado.md) | Buen resumen de fases 1–3; **ignorar** conteos obsoletos de PRs abiertos (sustituir por sesión 2026-04-03). |
+
+---
+
+## H. Orden sugerido de ejecución (Diego / operador)
+
+1. Secrets **A1** → **A2** o deploy manual equivalente.  
+2. **A3** para validar.  
+3. **A4** wp-file-manager.  
+4. **B1–B3** SEO en panel.  
+5. **D1–D2** RCC + pfids.  
+6. **C1–C7** Elementor y copy.  
+7. **E1** limpieza de issues en GitHub en paralelo cuando haya tiempo.
+
+---
+
+## I. Validación local rápida (desarrolladores)
+
+```bash
+python scripts/validate_agent_queue.py
+```
+
+Debe imprimir `OK` si las colas en `.github/agent-queue/` son JSON válido según el validador del repo.
+
+---
+
+_Ultima revisión: **2026-04-03**._
