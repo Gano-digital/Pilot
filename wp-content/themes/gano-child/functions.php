@@ -53,6 +53,11 @@ function gano_child_enqueue_styles() {
     wp_enqueue_script( 'gano-sota-fx', get_stylesheet_directory_uri() . '/js/gano-sota-fx.js', array( 'gsap-scroll-trigger' ), '1.0.0', true );
     wp_enqueue_style( 'gano-sota-animations', get_stylesheet_directory_uri() . '/gano-sota-animations.css', array(), '2.0.0' );
 
+    // Ecosistemas — catálogo de planes (cd-content-002)
+    if ( is_page_template( 'templates/page-ecosistemas.php' ) ) {
+        wp_enqueue_style( 'gano-ecosistemas-css', get_stylesheet_directory_uri() . '/css/ecosistemas.css', array( 'gano-child-style' ), '1.0.0' );
+    }
+
     // Animaciones de tienda y Quiz de Descubrimiento — solo en templates de tienda
     if ( is_page_template( 'templates/shop-premium.php' ) || is_page_template( 'templates/sota-single-template.php' ) ) {
         wp_enqueue_script( 'gano-shop-animations', get_stylesheet_directory_uri() . '/js/shop-animations.js', array( 'gsap-scroll-trigger' ), '1.1.0', true );
