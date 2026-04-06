@@ -206,6 +206,99 @@
         "Si Diego ejecutó varias tareas cd-repo-* en un día, crea sesión breve con fecha actual.",
         "No dupliques memory/claude/01-historial; esto es log operativo del día."
       ]
+    },
+    {
+      "id": "cd-content-001",
+      "title": "Wave contenidos: homepage 2026 (orden definitivo + tokens)",
+      "priority": 1,
+      "requires_human_after": false,
+      "paths": ["memory/content/homepage-section-order-spec-2026.md", "memory/content/homepage-copy-2026-04.md", "memory/content/visual-tokens-wave3.md", "memory/content/elementor-home-classes.md", "wp-content/themes/gano-child/"],
+      "definition_of_done": [
+        "Homepage en Elementor sigue el orden y secciones del spec 2026.",
+        "Clases y tokens aplicados desde elementor-home-classes y visual-tokens-wave3.",
+        "Sin tocar wp-admin en vivo: cambios via child theme + JSON Elementor importable."
+      ],
+      "instructions": [
+        "Lee los 4 archivos de paths antes de tocar nada.",
+        "Genera un kit Elementor (JSON) o overrides CSS en gano-child que materialicen el orden.",
+        "Documenta en memory/sessions/2026-04-06 lo aplicado."
+      ]
+    },
+    {
+      "id": "cd-content-002",
+      "title": "Wave contenidos: páginas ecosistemas (4 planes) con CTAs Reseller",
+      "priority": 1,
+      "requires_human_after": true,
+      "paths": ["memory/content/ecosystems-copy-matrix-wave3.md", "memory/commerce/rcc-pfid-checklist.md"],
+      "definition_of_done": [
+        "4 páginas de ecosistema con copy de la matriz wave3.",
+        "CTAs apuntan a checkout Reseller con PFIDs (placeholder TBD si Diego no los confirma)."
+      ],
+      "instructions": [
+        "Genera plantillas reusables; deja {{PFID_PLACEHOLDER}} donde falte dato real.",
+        "Marca requires_human_after: Diego debe confirmar PFIDs en RCC."
+      ]
+    },
+    {
+      "id": "cd-content-003",
+      "title": "Wave contenidos: 20 páginas SOTA (gano-content-importer)",
+      "priority": 2,
+      "requires_human_after": false,
+      "paths": ["wp-content/plugins/gano-content-importer/", "memory/content/content-master-plan-2026.md"],
+      "definition_of_done": [
+        "Las 20 páginas SOTA quedan como drafts revisados con hook-box, quote, CTA y categoría correctos.",
+        "Nada se publica sin confirmación de Diego."
+      ],
+      "instructions": [
+        "Itera por categoría (infra, seguridad, IA, estrategia, performance).",
+        "Usa skill marketing:content-creation y brand-voice:brand-voice-enforcement."
+      ]
+    },
+    {
+      "id": "cd-content-004",
+      "title": "Wave contenidos: trust pages bundle + legal",
+      "priority": 2,
+      "requires_human_after": true,
+      "paths": ["memory/content/trust-pages-bundle-2026.md", "memory/content/trust-and-reseller-copy-wave3.md"],
+      "definition_of_done": [
+        "Páginas de garantía, SLA, soporte, contacto, legal listas como drafts.",
+        "Placeholders explícitos para NIT y teléfono que debe confirmar Diego."
+      ],
+      "instructions": [
+        "No inventes datos legales reales.",
+        "Usa skill legal:compliance-check si hay dudas."
+      ]
+    },
+    {
+      "id": "cd-content-005",
+      "title": "Wave contenidos: navegación + footer + FAQ schema",
+      "priority": 2,
+      "requires_human_after": false,
+      "paths": ["memory/content/navigation-primary-spec-2026.md", "memory/content/footer-contact-audit-wave3.md", "memory/content/faq-schema-candidates-wave3.md", "wp-content/mu-plugins/gano-seo.php"],
+      "definition_of_done": [
+        "Navegación primaria implementada en gano-child.",
+        "Footer revisado contra audit wave3.",
+        "FAQ JSON-LD inyectado vía gano-seo.php para los candidatos confirmados."
+      ],
+      "instructions": [
+        "El JSON-LD debe ser válido (probar con validator.schema.org mentalmente).",
+        "No duplicar schemas Organization existentes."
+      ]
+    },
+    {
+      "id": "cd-content-006",
+      "title": "Wave contenidos: microcopy + a11y pass + assets raster/social",
+      "priority": 3,
+      "requires_human_after": false,
+      "paths": ["memory/content/microcopy-wave3-kit.md", "memory/content/ux-a11y-wave3-notes.md", "memory/content/raster-asset-spec-wave3.md", "memory/content/social-preview-spec-wave3.md"],
+      "definition_of_done": [
+        "Microcopy aplicado, contraste y aria-* validados.",
+        "Specs raster y social previews documentadas como issues o assets."
+      ],
+      "instructions": [
+        "Usa design:accessibility-review.",
+        "Para assets puedes usar MCP Figma y Claude_Preview para screenshots."
+      ]
     }
   ]
 }

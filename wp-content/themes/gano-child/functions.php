@@ -53,6 +53,11 @@ function gano_child_enqueue_styles() {
     wp_enqueue_script( 'gano-sota-fx', get_stylesheet_directory_uri() . '/js/gano-sota-fx.js', array( 'gsap-scroll-trigger' ), '1.0.0', true );
     wp_enqueue_style( 'gano-sota-animations', get_stylesheet_directory_uri() . '/gano-sota-animations.css', array(), '2.0.0' );
 
+    // Ecosistemas — catálogo de planes (cd-content-002)
+    if ( is_page_template( 'templates/page-ecosistemas.php' ) ) {
+        wp_enqueue_style( 'gano-ecosistemas-css', get_stylesheet_directory_uri() . '/css/ecosistemas.css', array( 'gano-child-style' ), '1.0.0' );
+    }
+
     // Animaciones de tienda y Quiz de Descubrimiento — solo en templates de tienda
     if ( is_page_template( 'templates/shop-premium.php' ) || is_page_template( 'templates/sota-single-template.php' ) ) {
         wp_enqueue_script( 'gano-shop-animations', get_stylesheet_directory_uri() . '/js/shop-animations.js', array( 'gsap-scroll-trigger' ), '1.1.0', true );
@@ -430,7 +435,48 @@ function gano_chat_response_callback( WP_REST_Request $request ): WP_REST_Respon
         return new WP_REST_Response( array( 'error' => 'Mensaje vacío.' ), 400 );
     }
 
-    // Respuesta dinámica básica — reemplazar con LLM real en Fase 4
+    /**
+     * ESTRATEGIA: IA DINÁMICA VS ESTÁTICA
+     * Si GANO_API_TOKEN está definido en wp-config.php y no es el valor por defecto,
+     * se intenta una llamada a un LLM (modelo: gpt-3.5-turbo o superior).
+     */
+    $api_token = defined( 'GANO_API_TOKEN' ) ? GANO_API_TOKEN : '';
+
+    if ( ! empty( $api_token ) && 'TU_TOKEN_AQUÍ' !== $api_token ) {
+        // --- LLAMADA A LLM (OpenAI API) ---
+        $response = wp_remote_post( 'https://api.openai.com/v1/chat/completions', array(
+            'timeout' => 15,
+            'headers' => array(
+                'Authorization' => 'Bearer ' . $api_token,
+                'Content-Type'  => 'application/json',
+            ),
+            'body'    => wp_json_encode( array(
+                'model'    => 'gpt-3.5-turbo', // Cambiar por gpt-4o para mayor precisión
+                'messages' => array(
+                    array(
+                        'role'    => 'system',
+                        'content' => 'Eres el Agente Gano, un experto técnico en hosting WordPress, arquitecturas NVMe y seguridad Zero-Trust para Gano Digital Colombia. Responde de forma profesional, empática y técnica. Si te preguntan por precios, redirige a /ecosistemas. Siempre en español de Colombia.',
+                    ),
+                    array(
+                        'role'    => 'user',
+                        'content' => $message,
+                    ),
+                ),
+            ) ),
+        ) );
+
+        if ( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ) ) {
+            $data = json_decode( wp_remote_retrieve_body( $response ), true );
+            $reply = $data['choices'][0]['message']['content'] ?? '';
+            if ( ! empty( $reply ) ) {
+                return new WP_REST_Response( array( 'reply' => $reply ), 200 );
+            }
+        }
+        // Si hay error en la API pero el token existía, loguear para debug.
+        error_log( 'Gano Chat API Error: ' . ( is_wp_error( $response ) ? $response->get_error_message() : wp_remote_retrieve_response_code( $response ) ) );
+    }
+
+    // --- FALLBACK: RESPUESTA ESTÁTICA (Si no hay token o la API falla) ---
     $response_map = array(
         'precio'    => 'Nuestros planes van desde $196.000 COP/mes. ¿Quieres ver la comparativa completa? Visita gano.digital/ecosistemas',
         'hosting'   => 'Gano Digital ofrece hosting WordPress de alto rendimiento con NVMe Gen4, seguridad Zero-Trust y soporte 24/7 en español.',

@@ -31,6 +31,14 @@ Pendiente en producción: ajustes en Elementor/wp-admin — ver `TASKS.md` § Co
 Entregables en `main` bajo `memory/content/` o `memory/research/`. Cierre por consolidación; revisar aplicación en sitio si el issue lo pedía explícitamente.
 ```
 
+### `theme` / `gano-child`
+
+```text
+Cerrado: cambios del tema ya están en `main` (fecha: YYYY-MM-DD).
+Verificación recomendada antes de cerrar: revisar diff del archivo tocado en `wp-content/themes/gano-child/` y PR relacionado.
+Si falta reflejarse en producción, depende de deploy y limpieza de caché.
+```
+
 ### `coordination` / sync
 
 ```text
@@ -40,4 +48,6 @@ Estado sincronizado en git. Deploy/validación en servidor: seguir `DEV-COORDINA
 ## Búsqueda útil en GitHub
 
 - Issues abiertos con label `copilot` o `agent-dispatch` (según política del repo).
+- Issues por categoría para cierre por lote: `homepage-fixplan`, `wave3`, `theme`, `coordination`.
 - Filtro por texto: `agent-task-id:tu-id` en el cuerpo (si el issue viene de la cola **08**).
+- Validar cierre contra `main`: abrir issue, ubicar archivos/PR citados y confirmar que el diff ya está fusionado antes de comentar y cerrar.

@@ -40,6 +40,33 @@
 
 ---
 
+## 2026-04-03 — Dispatch Claude + validación entorno (cerrado)
+
+### Completado
+
+- [x] Cola `memory/claude/dispatch-queue.json` completada (`cd-repo-001` a `cd-repo-012`).
+- [x] Checklists operativos creados y/o actualizados para:
+    - RCC -> PFID
+    - Gano SEO + GSC + Rank Math
+    - Remoción de `wp-file-manager`
+    - Wordfence + 2FA
+- [x] PHP 8.3 CLI habilitado en Windows local.
+- [x] `php -l wp-content/themes/gano-child/functions.php` validado sin errores.
+- [x] Acceso al repo confirmado por HTTPS (`origin`).
+
+### Hallazgos
+
+- [ ] SSH a GitHub aún no autentica con la clave local actual.
+- [ ] SSH al servidor `72.167.102.145` aún no autentica con las claves locales actuales.
+
+### Estado operativo
+
+- Repo: operativo por HTTPS.
+- Cursor memory bank: requiere usar `activeContext.md` actualizado 2026-04-03 como punto de arranque.
+- Próximo cuello real: deploy/servidor + panel WordPress, no cola Claude.
+
+---
+
 ## Cómo usar este archivo
 
 Tras hitos importantes, añadir una sección con fecha o actualizar la sección **Post-actualización** para que nuevas sesiones de Cursor lean el estado en `.cursor/memory/activeContext.md` y aquí.

@@ -112,16 +112,16 @@ _Última actualización: Abril 2026_
 - [x] **Validación cola:** workflow **Validate agent queue JSON** + `scripts/validate_agent_queue.py` (CI al tocar `.github/agent-queue/`).
 - [x] **Oleada 3 — issues creados en GitHub (#54–#68)** — Seed con `tasks-wave3.json` ejecutado.
 - [ ] **Prompt Copilot:** en **#54–#68** usa el bloque **“oleada 3”** en [`.github/prompts/copilot-bulk-assign.md`](.github/prompts/copilot-bulk-assign.md); en **#17–#33** usa el bloque **“oleada 1”** (no priorizar brief wave3 en hero/menú/Lorem). Si ya asignaste con el prompt largo mezclado, no pasa nada grave: el prompt unificado ahora lo matiza por número de issue.
-- [x] ~~**Consolidar oleada 1 (merge PRs)**~~ — hecho 2026-04-03. **10 · Orquestar oleadas** solo si en el futuro vuelves a tener un lote de PRs oleada 1 y quieres automatizar merge + **seed oleada 2**. *Trabajo repetible en repo sin GitHub: cola Claude* [`memory/claude/dispatch-queue.json`](memory/claude/dispatch-queue.json) *+ `python scripts/claude_dispatch.py next`.*
+- [x] ~~**Consolidar oleada 1 (merge PRs)**~~ — hecho 2026-04-03. **10 · Orquestar oleadas** solo si en el futuro vuelves a tener un lote de PRs oleada 1 y quieres automatizar merge + **seed oleada 2**. *Trabajo repetible en repo sin GitHub (dispatch Claude): ver [memory/claude/dispatch-queue.json](memory/claude/dispatch-queue.json).*
 - [x] PR #13: CI TruffleHog + PHP lint + plantillas Copilot + `ssh_cli` sin credenciales en archivo
 - [x] Dependabot (GitHub Actions) + plantilla de PR; `labeler.yml` (workflow) retirado hasta crear etiquetas `area:*` en el repo o reactivar con permisos
 - [x] `.github/labeler.yml` conserva reglas; workflow `labeler.yml` restaurado tras ejecutar **06 · Repo · Crear etiquetas** en Actions
 - [x] **06 · Repo · Crear etiquetas** — workflow disparado vía push de [`.github/label-bootstrap`](.github/label-bootstrap) (o manual en Actions)
 - [x] Fusionar PR #13 y verificar checks en `main` (squash merge 2026-04-02)
 - [ ] Actions → ejecutar **09 · Sembrar issues homepage** una vez (7 issues `homepage-fixplan`)  
-  - *Nota: marcar este ítem `[x]` solo después de verificar en github.com que esos 7 issues existen; si ya están creados, marcá hecho y fecha.*
+  - *Nota: marcar este ítem [x] solo tras confirmar en github.com que los 7 issues homepage-fixplan existen.*
 - [ ] Actions → **08 · Sembrar cola Copilot** (`all` o por ámbito) → asignar Copilot coding agent en issues generados  
-  - *Nota: no re-ejecutar sin revisar duplicados — el workflow omite si el cuerpo ya tiene el mismo `<!-- agent-task-id:... -->`. Oleadas: `tasks-wave4-ia-content.json`, `tasks-infra-dns-ssl.json` (scope `infra`), `tasks-api-integrations-research.json` (API ML/GoDaddy).*
+  - *Nota: no re-ejecutar sin revisar duplicados por `agent-task-id` — el workflow omite si el cuerpo ya tiene el mismo ID.*
 - [ ] Rotación de tokens y limpieza de remotes con credenciales (al cierre del workflow de despliegue)
 
 ### Contenido homepage (Elementor en servidor)
