@@ -7,9 +7,14 @@ Estado en memory/claude/dispatch-state.json (gitignored) — solo progreso local
 from __future__ import annotations
 
 import argparse
+import io
 import json
 import sys
 from pathlib import Path
+
+# Forzar UTF-8 en stdout para evitar UnicodeEncodeError en Windows (cp1252)
+if hasattr(sys.stdout, "buffer"):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", line_buffering=True)
 
 ROOT = Path(__file__).resolve().parents[1]
 QUEUE_PATH = ROOT / "memory" / "claude" / "dispatch-queue.json"
