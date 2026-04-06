@@ -15,6 +15,7 @@ description: >
 ## Fuente de verdad en GitHub
 
 - **Repo:** `Gano-digital/Pilot` en GitHub (`origin`). `main` es la rama de integración con CI.
+- **Proyecto (tablero / reporting equipo):** `@Gano.digital` en GitHub Projects — ver skill **`gano-github-projects-board`** y [`memory/ops/github-projects-gano-digital-playbook-2026-04.md`](../../memory/ops/github-projects-gano-digital-playbook-2026-04.md).
 - **Documentación operativa:** [`.github/DEV-COORDINATION.md`](../../.github/DEV-COORDINATION.md) — qué vive en git vs servidor vs local; plantilla `[sync]`.
 - **Tareas por fase:** [`TASKS.md`](../../TASKS.md).
 - **Nombres numerados de workflows (sidebar):** [`.github/workflows/README.md`](../../.github/workflows/README.md) — prefijos **01–12** (incluye **12 · Ops · wp-file-manager**).

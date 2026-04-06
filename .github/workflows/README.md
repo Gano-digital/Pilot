@@ -11,6 +11,7 @@ Los **nombres mostrados en la barra lateral** siguen el patrón:
 | **04–05, 12** | Deploy / Ops | Producción, verificación parches, eliminación remota wp-file-manager |
 | **06** | Repo | Configuración puntual del repositorio |
 | **07–11** | Agentes | Cola Copilot, semillas y orquestación |
+| **13** | Projects | Añadir issues `[agent]` / `copilot` al tablero @Gano.digital (opcional) |
 
 **Orden sugerido al operar (manual):** `06` una vez si faltan etiquetas → `07` al editar colas → `08`/`09` para crear issues → `10` solo si aplica oleada histórica → `04`/`05` cuando toque servidor. **Guía ampliada:** [`memory/ops/agent-playbook-asistentes-2026-04.md`](../../memory/ops/agent-playbook-asistentes-2026-04.md).
 
@@ -34,5 +35,8 @@ Archivo | Nombre en UI
 `orchestrate-copilot-waves.yml` | 10 · Agentes · Orquestar oleadas
 `copilot-setup-steps.yml` | 11 · Agentes · Setup pasos Copilot
 `verify-remove-wp-file-manager.yml` | 12 · Ops · Eliminar wp-file-manager (SSH)
+`project-add-to-project.yml` | 13 · Projects · Añadir issues al tablero Gano.digital
+
+**Tablero GitHub Projects (@Gano.digital):** [`.github/GITHUB-PROJECT-GANO-DIGITAL.md`](../GITHUB-PROJECT-GANO-DIGITAL.md) · playbook [`memory/ops/github-projects-gano-digital-playbook-2026-04.md`](../../memory/ops/github-projects-gano-digital-playbook-2026-04.md).
 
 Cola **tasks-security-guardian.json** (guardián de seguridad): sembrar con **08**; scope `security` o `all`.

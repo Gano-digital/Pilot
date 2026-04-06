@@ -49,3 +49,4 @@ gh run list --repo Gano-digital/Pilot --limit 15
 - `.github/workflows/README.md`
 - `.github/COPILOT-AGENT-QUEUE.md`
 - MCP + extensiones Cursor: **`.gano-skills/gano-mcp-and-cursor-tooling/SKILL.md`**
+- Tablero Projects @Gano.digital: **`.gano-skills/gano-github-projects-board/SKILL.md`**
