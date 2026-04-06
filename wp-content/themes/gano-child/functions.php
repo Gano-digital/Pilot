@@ -842,6 +842,98 @@ function gano_get_sota_categories(): array {
  *
  * @return WP_Post[]
  */
+// =============================================================================
+// CD-CONTENT-005 — FAQ SCHEMA (preguntas adicionales aprobadas para homepage)
+// =============================================================================
+
+/**
+ * Agrega preguntas FAQ adicionales al schema JSON-LD de la homepage.
+ *
+ * Las preguntas pendientes de datos reales (SLA backups, NIT, SLA soporte)
+ * están en memory/content/faq-schema-candidates-wave3.md como candidatos C01–C10.
+ * Solo se activan aquí las que no dependen de placeholders.
+ *
+ * Para agregar más preguntas una vez Diego confirme los datos reales:
+ *   $questions[] = array( 'question' => '¿…?', 'answer' => '…' );
+ */
+add_filter( 'gano_faq_questions', 'gano_child_faq_extra_questions' );
+function gano_child_faq_extra_questions( array $questions ): array {
+
+    // C04 — ¿Necesito conocimientos técnicos? (sin placeholders)
+    $questions[] = array(
+        'question' => '¿Necesito saber programación o administración de servidores para gestionar mi plan?',
+        'answer'   => 'No. Los ecosistemas de Gano Digital están diseñados para que puedas operar tu WordPress sin tocar el servidor. El panel de control es visual, la configuración inicial la hacemos contigo y el monitoreo proactivo actúa antes de que notes un problema.',
+    );
+
+    // C07 — Escalabilidad: cambiar de ecosistema (sin placeholders)
+    $questions[] = array(
+        'question' => '¿Puedo cambiar de ecosistema si mi negocio crece?',
+        'answer'   => 'Sí. El camino natural es Núcleo Prime → Fortaleza Delta → Bastión SOTA. El cambio de ecosistema se coordina con el equipo de Gano Digital; migramos los recursos sin afectar la disponibilidad de tu sitio. No hay penalización por escalar.',
+    );
+
+    // C09 — Diferencia Núcleo Prime vs Bastión SOTA (sin placeholders de precio)
+    $questions[] = array(
+        'question' => '¿Cuál es la diferencia principal entre el ecosistema Núcleo Prime y Bastión SOTA?',
+        'answer'   => 'Núcleo Prime es la base de alto rendimiento: almacenamiento NVMe, WordPress optimizado y seguridad esencial, ideal para negocios en crecimiento. Bastión SOTA es la capa de resiliencia total: redundancia activa, respaldos con mayor frecuencia, soporte prioritario y monitoreo avanzado, pensado para operaciones críticas que no pueden tolerar interrupciones.',
+    );
+
+    // C10 — WordPress como plataforma (sin placeholders)
+    $questions[] = array(
+        'question' => '¿Por qué construir sobre WordPress en lugar de otra plataforma?',
+        'answer'   => 'WordPress impulsa más del 43 % de la web mundial, cuenta con el ecosistema de plugins y temas más grande del mercado, y ofrece control total sobre tu contenido y datos. Gano Digital especializa su infraestructura exclusivamente en WordPress para llevar esa plataforma a niveles enterprise: optimizaciones a nivel de servidor, caching inteligente y hardening específico que una solución genérica no puede ofrecer.',
+    );
+
+    return $questions;
+}
+
+// =============================================================================
+// CD-CONTENT-005 — FOOTER LEGAL: shortcode + acción wp_footer
+// =============================================================================
+
+/**
+ * Shortcode [gano_footer_legal] para usar en Elementor HTML widget o footer template.
+ *
+ * Uso en Elementor: widget HTML → [gano_footer_legal]
+ * Uso en PHP: echo do_shortcode('[gano_footer_legal]');
+ *
+ * @return string HTML del footer legal.
+ */
+add_shortcode( 'gano_footer_legal', 'gano_child_footer_legal_shortcode' );
+function gano_child_footer_legal_shortcode(): string {
+    $legal_links = array(
+        array( 'label' => 'Términos y Condiciones', 'url' => '/legal/terminos-y-condiciones' ),
+        array( 'label' => 'Política de Privacidad',  'url' => '/legal/politica-de-privacidad'  ),
+        array( 'label' => 'SLA',                     'url' => '/legal/acuerdo-de-nivel-de-servicio' ),
+        array( 'label' => 'Hosting WordPress Colombia', 'url' => '/hosting-wordpress-colombia' ),
+    );
+
+    $year     = gmdate( 'Y' );
+    $site_url = get_site_url();
+
+    ob_start();
+    ?>
+    <div class="gano-footer-legal">
+      <nav aria-label="<?php esc_attr_e( 'Menú legal', 'gano-child' ); ?>">
+        <ul class="gano-footer-legal__nav">
+          <?php foreach ( $legal_links as $link ) : ?>
+            <li>
+              <a href="<?php echo esc_url( $site_url . $link['url'] ); ?>">
+                <?php echo esc_html( $link['label'] ); ?>
+              </a>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      </nav>
+      <p class="gano-footer-legal__copy">
+        &copy; <?php echo esc_html( $year ); ?>
+        <a href="<?php echo esc_url( $site_url ); ?>">Gano Digital</a>.
+        Hosting WordPress en Colombia — operado sobre infraestructura GoDaddy Reseller.
+      </p>
+    </div>
+    <?php
+    return (string) ob_get_clean();
+}
+
 function gano_get_sota_hub_pages(): array {
 	$args = [
 		'post_type'      => 'page',
