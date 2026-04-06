@@ -35,14 +35,14 @@ vi.mock('./prompt-builder.js', () => ({
 }));
 
 vi.mock('./event-stream.js', () => {
-  return {
-    GSDEventStream: vi.fn().mockImplementation(() => ({
-      emitEvent: vi.fn(),
-      on: vi.fn(),
-      emit: vi.fn(),
-      addTransport: vi.fn(),
-    })),
-  };
+  // Vitest 4+: `new GSDEventStream()` requires a real constructor; vi.fn(() => ({...})) is not a constructor.
+  class MockGSDEventStream {
+    emitEvent = vi.fn();
+    on = vi.fn();
+    emit = vi.fn();
+    addTransport = vi.fn();
+  }
+  return { GSDEventStream: MockGSDEventStream };
 });
 
 vi.mock('./phase-runner.js', () => ({
