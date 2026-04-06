@@ -1,3 +1,61 @@
+# Checklist wp-admin: Gano SEO + Rank Math + Google Search Console
+
+Objetivo: ejecutar la configuracion operativa pendiente de SEO indicada en `TASKS.md` para un negocio digital (sin tienda fisica obligatoria).
+
+Referencias:
+
+- `TASKS.md` (bloque ALTA: Gano SEO, GSC, Rank Math)
+- `wp-content/mu-plugins/gano-seo.php`
+
+## 1) Gano SEO (wp-admin -> Ajustes -> Gano SEO)
+
+- [ ] Definir nombre legal/comercial de la empresa digital.
+- [ ] Definir cobertura (Colombia) y zona horaria operativa.
+- [ ] Definir email y telefono de contacto publicable.
+- [ ] Revisar URLs canonicas principales (home, planes, contacto).
+- [ ] Guardar cambios y validar que no haya errores en admin.
+
+Evidencia:
+
+- [ ] Captura de pantalla de la configuracion guardada.
+
+## 2) Google Search Console
+
+- [ ] Crear o abrir propiedad `https://gano.digital`.
+- [ ] Verificar propiedad con metodo recomendado (DNS o HTML).
+- [ ] Enviar sitemap principal (si aplica por plugin SEO).
+- [ ] Confirmar estado "Propiedad verificada".
+
+Evidencia:
+
+- [ ] Captura de propiedad verificada.
+- [ ] Captura de sitemap enviado.
+
+## 3) Rank Math (wp-admin -> Rank Math -> Setup Wizard)
+
+- [ ] Ejecutar Setup Wizard.
+- [ ] Seleccionar perfil de sitio de servicios digitales.
+- [ ] Confirmar metadatos base (titulo, descripcion, social/open graph).
+- [ ] Revisar modulos activos necesarios y desactivar modulos no usados.
+- [ ] Guardar y validar que no aparezcan alertas criticas.
+
+Evidencia:
+
+- [ ] Captura del resumen final del wizard.
+
+## 4) Verificacion funcional rapida
+
+- [ ] Abrir home publica y confirmar que no hay errores visibles.
+- [ ] Ver codigo fuente y confirmar presencia de metadatos SEO/OG esperados.
+- [ ] Registrar fecha y responsable de la ejecucion.
+
+## 5) DoD (Definition of Done)
+
+- [ ] Gano SEO configurado para modelo 100% digital.
+- [ ] GSC propiedad verificada para `https://gano.digital`.
+- [ ] Rank Math wizard completado con configuracion coherente al proyecto.
+- [ ] Evidencias adjuntas en nota de sesion o issue.
+
 # Checklist wp-admin: Gano SEO, Rank Math, Google Search Console
 
 Orden sugerido. **No** adjuntar capturas con tokens de verificación en issues públicos.

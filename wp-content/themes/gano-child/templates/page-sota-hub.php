@@ -5,6 +5,8 @@
  *
  * Muestra todas las páginas del Hub de Innovación SOTA agrupadas por categoría.
  * Páginas en draft aparecen como "En Preparación"; en publish como tarjetas completas.
+ *
+ * @package gano-child
  */
 
 declare( strict_types=1 );

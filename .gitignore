@@ -67,3 +67,6 @@ wp-content/debug.log
 
 # Progreso local cola Claude dispatch (no commitear)
 memory/claude/dispatch-state.json
+
+# Worktrees y artefactos locales de Claude Code
+.claude/

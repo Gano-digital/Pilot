@@ -53,6 +53,11 @@ function gano_child_enqueue_styles() {
     wp_enqueue_script( 'gano-sota-fx', get_stylesheet_directory_uri() . '/js/gano-sota-fx.js', array( 'gsap-scroll-trigger' ), '1.0.0', true );
     wp_enqueue_style( 'gano-sota-animations', get_stylesheet_directory_uri() . '/gano-sota-animations.css', array(), '2.0.0' );
 
+    // Ecosistemas — catálogo de planes (cd-content-002)
+    if ( is_page_template( 'templates/page-ecosistemas.php' ) ) {
+        wp_enqueue_style( 'gano-ecosistemas-css', get_stylesheet_directory_uri() . '/css/ecosistemas.css', array( 'gano-child-style' ), '1.0.0' );
+    }
+
     // Animaciones de tienda y Quiz de Descubrimiento — solo en templates de tienda
     if ( is_page_template( 'templates/shop-premium.php' ) || is_page_template( 'templates/sota-single-template.php' ) ) {
         wp_enqueue_script( 'gano-shop-animations', get_stylesheet_directory_uri() . '/js/shop-animations.js', array( 'gsap-scroll-trigger' ), '1.1.0', true );
@@ -120,7 +125,9 @@ function gano_main_content_anchor(): void {
 }
 
 // =============================================================================
-// 1c. MENÚS — ubicación 'primary' (Elementor / muchos kits); el padre solo registra 'main'
+// 1c. MENÚS — ubicaciones 'primary', 'header' y 'footer'
+//     Hello Elementor registra 'main'; kits de Elementor usan 'primary' o 'header'.
+//     Se registran las tres para que el widget Nav Menu de Elementor las muestre.
 // =============================================================================
 
 add_action( 'after_setup_theme', 'gano_child_register_nav_menus', 20 );
@@ -128,38 +135,72 @@ function gano_child_register_nav_menus(): void {
     register_nav_menus(
         array(
             'primary' => esc_html__( 'Menú principal (header / Elementor)', 'gano-child' ),
+            'header'  => esc_html__( 'Menú de cabecera (Hello Elementor Kit)', 'gano-child' ),
+            'footer'  => esc_html__( 'Menú de pie de página', 'gano-child' ),
         )
     );
 }
 
 /**
- * Fallback: si 'primary' no tiene menú asignado, copia desde 'main' o usa
- * el primer menú disponible. Cubre instalaciones donde gano-phase3-content
- * fue activado antes de que esta lógica existiera.
- * get_theme_mod() usa el caché de opciones de WP, así que el early-return
- * (caso ya configurado) no implica consulta a la BD.
+ * Asigna automáticamente el primer menú disponible a todas las ubicaciones
+ * que estén vacías: 'primary', 'header' y 'footer'.
+ *
+ * Orden de preferencia para el ID de menú:
+ *   1. Ubicación 'main' — registrada por Hello Elementor (tema padre); se reutiliza
+ *      para no duplicar el menú si el usuario ya lo configuró allí.
+ *   2. Primer menú registrado en la BD.
+ *
+ * Hooks:
+ *   - init: cubre cualquier visita de frontend/admin antes de que el administrador
+ *     asigne los menús manualmente. get_theme_mod() usa cache de opciones, por lo que
+ *     el early-return (caso ya configurado) es una operación O(1) sin consulta a BD.
+ *   - after_switch_theme: cubre activaciones en frío (instalación nueva). Cuando ambos
+ *     hooks se disparan en la misma petición (cambio de tema), la segunda llamada
+ *     hace early-return porque la primera ya guardó los valores.
  */
-add_action( 'init', 'gano_child_assign_primary_menu_fallback' );
-function gano_child_assign_primary_menu_fallback(): void {
+add_action( 'init', 'gano_child_assign_nav_menu_locations' );
+add_action( 'after_switch_theme', 'gano_child_assign_nav_menu_locations' );
+function gano_child_assign_nav_menu_locations(): void {
     $locations = get_theme_mod( 'nav_menu_locations', [] );
 
-    if ( ! empty( $locations['primary'] ) ) {
-        return; // Ya está configurado — no hacer nada.
-    }
+    // Ubicaciones gestionadas por este tema (child).
+    $managed = [ 'primary', 'header', 'footer' ];
 
-    // Copiar desde 'main' si existe.
-    if ( ! empty( $locations['main'] ) ) {
-        $locations['primary'] = $locations['main'];
-        set_theme_mod( 'nav_menu_locations', $locations );
+    // Early-return si todas las ubicaciones ya tienen un menú válido asignado.
+    $empty_locs = array_filter(
+        $managed,
+        static fn( string $loc ) => empty( $locations[ $loc ] )
+    );
+    if ( empty( $empty_locs ) ) {
         return;
     }
 
-    // Último recurso: usar el primer menú registrado.
-    $menus = wp_get_nav_menus();
-    if ( ! empty( $menus ) ) {
-        $locations['primary'] = $menus[0]->term_id;
-        set_theme_mod( 'nav_menu_locations', $locations );
+    // Determinar el ID de menú a asignar.
+    $menu_id = 0;
+
+    // 1. Reutilizar 'main' si el tema padre ya lo tiene asignado.
+    if ( ! empty( $locations['main'] ) ) {
+        $menu_id = (int) $locations['main'];
     }
+
+    // 2. Usar cualquier menú existente en la BD.
+    if ( ! $menu_id ) {
+        $menus = wp_get_nav_menus();
+        if ( ! empty( $menus ) ) {
+            $menu_id = (int) $menus[0]->term_id;
+        }
+    }
+
+    if ( ! $menu_id ) {
+        return; // No hay menús en el sistema; nada que asignar.
+    }
+
+    // Asignar $menu_id a todas las ubicaciones que estén vacías.
+    foreach ( $empty_locs as $loc ) {
+        $locations[ $loc ] = $menu_id;
+    }
+
+    set_theme_mod( 'nav_menu_locations', $locations );
 }
 
 // =============================================================================
@@ -430,7 +471,48 @@ function gano_chat_response_callback( WP_REST_Request $request ): WP_REST_Respon
         return new WP_REST_Response( array( 'error' => 'Mensaje vacío.' ), 400 );
     }
 
-    // Respuesta dinámica básica — reemplazar con LLM real en Fase 4
+    /**
+     * ESTRATEGIA: IA DINÁMICA VS ESTÁTICA
+     * Si GANO_API_TOKEN está definido en wp-config.php y no es el valor por defecto,
+     * se intenta una llamada a un LLM (modelo: gpt-3.5-turbo o superior).
+     */
+    $api_token = defined( 'GANO_API_TOKEN' ) ? GANO_API_TOKEN : '';
+
+    if ( ! empty( $api_token ) && 'TU_TOKEN_AQUÍ' !== $api_token ) {
+        // --- LLAMADA A LLM (OpenAI API) ---
+        $response = wp_remote_post( 'https://api.openai.com/v1/chat/completions', array(
+            'timeout' => 15,
+            'headers' => array(
+                'Authorization' => 'Bearer ' . $api_token,
+                'Content-Type'  => 'application/json',
+            ),
+            'body'    => wp_json_encode( array(
+                'model'    => 'gpt-3.5-turbo', // Cambiar por gpt-4o para mayor precisión
+                'messages' => array(
+                    array(
+                        'role'    => 'system',
+                        'content' => 'Eres el Agente Gano, un experto técnico en hosting WordPress, arquitecturas NVMe y seguridad Zero-Trust para Gano Digital Colombia. Responde de forma profesional, empática y técnica. Si te preguntan por precios, redirige a /ecosistemas. Siempre en español de Colombia.',
+                    ),
+                    array(
+                        'role'    => 'user',
+                        'content' => $message,
+                    ),
+                ),
+            ) ),
+        ) );
+
+        if ( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ) ) {
+            $data = json_decode( wp_remote_retrieve_body( $response ), true );
+            $reply = $data['choices'][0]['message']['content'] ?? '';
+            if ( ! empty( $reply ) ) {
+                return new WP_REST_Response( array( 'reply' => $reply ), 200 );
+            }
+        }
+        // Si hay error en la API pero el token existía, loguear para debug.
+        error_log( 'Gano Chat API Error: ' . ( is_wp_error( $response ) ? $response->get_error_message() : wp_remote_retrieve_response_code( $response ) ) );
+    }
+
+    // --- FALLBACK: RESPUESTA ESTÁTICA (Si no hay token o la API falla) ---
     $response_map = array(
         'precio'    => 'Nuestros planes van desde $196.000 COP/mes. ¿Quieres ver la comparativa completa? Visita gano.digital/ecosistemas',
         'hosting'   => 'Gano Digital ofrece hosting WordPress de alto rendimiento con NVMe Gen4, seguridad Zero-Trust y soporte 24/7 en español.',

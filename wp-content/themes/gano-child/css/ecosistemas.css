@@ -1,0 +1,251 @@
+/* ── Ecosistemas / Planes — gano-child ─────────────────────────────
+   Complementa style.css. Cargado condicionalmente en page-ecosistemas.php.
+   Tokens visuales definidos en :root de style.css.
+   ────────────────────────────────────────────────────────────────── */
+
+/* ── Hero sección ──────────────────────────────────────────────── */
+.gano-ecosistemas-hero {
+    padding: 5rem 1.5rem 4rem;
+    text-align: center;
+}
+.gano-ecosistemas-hero h1 {
+    font-size: var(--gano-fs-4xl, 2.25rem);
+    font-weight: var(--gano-fw-bold, 700);
+    line-height: var(--gano-lh-tight, 1.1);
+    max-width: 800px;
+    margin: 0.75rem auto 1rem;
+}
+.gano-ecosistemas-hero__sub {
+    font-size: var(--gano-fs-base, 1rem);
+    color: rgba(255,255,255,0.75);
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: var(--gano-lh-relaxed, 1.65);
+}
+.gano-label-pill {
+    display: inline-block;
+    font-size: var(--gano-fs-xs, .75rem);
+    font-weight: var(--gano-fw-semibold, 600);
+    letter-spacing: var(--gano-ls-wider, .08em);
+    text-transform: uppercase;
+    color: var(--gano-gold, #D4AF37);
+    border: 1px solid var(--gano-gold, #D4AF37);
+    border-radius: 999px;
+    padding: 0.25rem 0.875rem;
+    margin-bottom: 1rem;
+}
+
+/* ── Container ─────────────────────────────────────────────────── */
+.gano-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* ── Grid de planes ────────────────────────────────────────────── */
+.gano-planes-grid-section {
+    padding: 4rem 1.5rem;
+}
+.gano-planes-grid-section > .gano-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    align-items: start;
+}
+
+/* ── Tarjeta de plan ───────────────────────────────────────────── */
+.gano-plan-card {
+    position: relative;
+    border-radius: var(--gano-radius, 16px);
+    border: 1px solid #e2e8f0;
+    padding: 2rem;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.gano-plan-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(15,17,21,.1);
+}
+.gano-plan-card--featured {
+    border-color: var(--gano-orange, #FF6B1A);
+}
+.gano-plan-card--dark {
+    background: var(--gano-dark-bg, #0F1115);
+    color: #fff;
+    border-color: var(--gano-gold, #D4AF37);
+}
+.gano-plan-card--dark .gano-plan-promesa,
+.gano-plan-card--dark .gano-plan-precio span {
+    color: rgba(255,255,255,0.7);
+}
+.gano-plan-card--dark .gano-plan-beneficios li::before {
+    color: var(--gano-gold, #D4AF37);
+}
+.gano-plan-card--dark .gano-plan-objecion {
+    border-color: rgba(212,175,55,0.3);
+    color: rgba(255,255,255,0.65);
+}
+
+/* ── Badge ─────────────────────────────────────────────────────── */
+.gano-plan-badge {
+    position: absolute;
+    top: -0.75rem;
+    left: 1.5rem;
+    background: var(--gano-orange, #FF6B1A);
+    color: #fff;
+    font-size: var(--gano-fs-xs, .75rem);
+    font-weight: var(--gano-fw-semibold, 600);
+    padding: 0.2rem 0.75rem;
+    border-radius: 999px;
+    letter-spacing: 0.03em;
+}
+.gano-plan-card--dark .gano-plan-badge,
+.gano-plan-card--gold .gano-plan-badge {
+    background: var(--gano-gold, #D4AF37);
+    color: #0F1115;
+}
+
+/* ── Nombre y promesa ──────────────────────────────────────────── */
+.gano-plan-nombre {
+    font-size: var(--gano-fs-3xl, 1.875rem);
+    font-weight: var(--gano-fw-bold, 700);
+    margin: 0;
+    line-height: var(--gano-lh-snug, 1.25);
+}
+.gano-plan-card--gold .gano-plan-nombre {
+    color: var(--gano-gold, #D4AF37);
+}
+.gano-plan-promesa {
+    font-size: var(--gano-fs-sm, .875rem);
+    color: #475569;
+    line-height: var(--gano-lh-relaxed, 1.65);
+    margin: 0;
+}
+
+/* ── Precio ─────────────────────────────────────────────────────── */
+.gano-plan-precio {
+    border-top: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 1rem 0;
+}
+.gano-plan-card--dark .gano-plan-precio {
+    border-color: rgba(255,255,255,0.1);
+}
+.gano-plan-precio strong {
+    display: block;
+    font-size: var(--gano-fs-4xl, 2.25rem);
+    font-weight: var(--gano-fw-extrabold, 800);
+    line-height: 1;
+    color: var(--gano-orange, #FF6B1A);
+}
+.gano-plan-card--dark .gano-plan-precio strong {
+    color: var(--gano-gold, #D4AF37);
+}
+.gano-plan-precio span {
+    font-size: var(--gano-fs-xs, .75rem);
+    color: #64748b;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+/* ── Beneficios ────────────────────────────────────────────────── */
+.gano-plan-beneficios {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+.gano-plan-beneficios li {
+    font-size: var(--gano-fs-sm, .875rem);
+    line-height: var(--gano-lh-base, 1.5);
+    padding-left: 1.25rem;
+    position: relative;
+}
+.gano-plan-beneficios li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--gano-orange, #FF6B1A);
+    font-weight: 700;
+}
+
+/* ── Objeción/respuesta ────────────────────────────────────────── */
+.gano-plan-objecion {
+    margin: 0;
+    padding: 0.875rem 1rem;
+    border-left: 3px solid #e2e8f0;
+    font-size: var(--gano-fs-xs, .75rem);
+    color: #64748b;
+    line-height: var(--gano-lh-relaxed, 1.65);
+}
+.gano-plan-objecion p { margin: 0 0 0.25rem; font-style: italic; }
+.gano-plan-objecion footer { font-style: normal; color: #475569; }
+
+/* ── CTAs ───────────────────────────────────────────────────────── */
+.gano-plan-ctas {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+.gano-plan-pending-note {
+    font-size: var(--gano-fs-xs, .75rem);
+    color: #94a3b8;
+    text-align: center;
+}
+.gano-link-secundario {
+    text-align: center;
+    font-size: var(--gano-fs-sm, .875rem);
+    color: var(--gano-blue, #2952CC);
+    text-decoration: none;
+}
+.gano-link-secundario:hover { text-decoration: underline; }
+
+/* ── Nota de precios ───────────────────────────────────────────── */
+.gano-ecosistemas-nota {
+    padding: 1.5rem;
+    text-align: center;
+    color: #64748b;
+}
+
+/* ── Tabla comparativa ─────────────────────────────────────────── */
+.gano-ecosistemas-tabla {
+    padding: 4rem 1.5rem;
+    background: #f8fafc;
+}
+.gano-ecosistemas-tabla h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.gano-table-scroll { overflow-x: auto; }
+.gano-ecosistemas-tabla table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--gano-fs-sm, .875rem);
+}
+.gano-ecosistemas-tabla th,
+.gano-ecosistemas-tabla td {
+    padding: .75rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+.gano-ecosistemas-tabla thead th {
+    font-weight: var(--gano-fw-semibold, 600);
+    background: #fff;
+}
+.gano-ecosistemas-tabla tbody tr:hover td { background: #f1f5f9; }
+
+/* ── Responsive ────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .gano-planes-grid-section > .gano-container {
+        grid-template-columns: 1fr;
+    }
+    .gano-ecosistemas-hero h1 {
+        font-size: var(--gano-fs-3xl, 1.875rem);
+    }
+}
