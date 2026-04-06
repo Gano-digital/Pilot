@@ -29,7 +29,6 @@
 
 1. **Secret `SSH` en GitHub:** tras corregir el escaneo, el job **Deploy** avanza pero **ssh-agent falla** con `Error loading key "(stdin)": error in libcrypto` — suele ser clave mal pegada (faltan líneas `BEGIN/END`), passphrase en clave no soportada por el action, o formato distinto a PEM/OpenSSH. Regenerar clave de deploy **solo para CI** o volver a pegar el PEM completo en el secret `SSH`.
 2. **Otros secrets:** confirmar `SERVER_HOST`, `SERVER_USER`, `DEPLOY_PATH` coherentes con el servidor.
-2. **Vercel:** sigue fallando en PRs (plan Hobby + org privada); no bloquea merge con `--admin`, pero ensucia checks.
 3. **Issue #29:** checklist servidor; ejecutar **05** con `upload_missing` según resultado, o SFTP manual.
 4. **Colas Copilot:** con **un solo issue abierto** (#29), el backlog de agentes en GitHub está **limpio**. Las siguientes oleadas deben **sembrar** tareas nuevas (08) o ejecutar trabajo en **Cursor/Claude** (`memory/claude/dispatch-queue.json`).
 

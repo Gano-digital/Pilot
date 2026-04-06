@@ -469,7 +469,7 @@ function gano_get_pages_data_v2() {
 <article class="gano-sota-page" role="main" aria-label="Headless WordPress">
 <h1>⚙️ Headless WordPress: La Velocidad Absoluta</h1>
 <div class="gano-hook-box" role="doc-introduction">
-<p>WordPress renderiza HTML en el servidor. Eso es lento. La arquitectura Headless separa la API de contenido del frontend, dejando que Vercel/Netlify sirva HTML estático a la velocidad de la luz CDN.</p>
+<p>WordPress renderiza HTML en el servidor. Eso es lento. La arquitectura Headless separa la API de contenido del frontend, dejando que un frontend estático en CDN (p. ej. Netlify o Cloudflare Pages) sirva HTML a velocidad de CDN global.</p>
 </div>
 <section>
 <h2>🧠 La Innovación — Estado del Arte</h2>
@@ -485,7 +485,7 @@ function gano_get_pages_data_v2() {
 </div>
 <section>
 <h2>🛠️ Headless en tu Ecosistema Gano</h2>
-<p>Plan Enterprise y Agencia incluyen setup de Headless WordPress con Vercel + base de datos replicada. Tu tienda carga en <400ms desde cualquier punto del mundo.</p>
+<p>Plan Enterprise y Agencia incluyen setup de Headless WordPress con CDN global y base de datos replicada. Tu tienda carga en <400ms desde cualquier punto del mundo.</p>
 </section>
 <div class="gano-cta-box">
 <a href="' . esc_url( $cta_base ) . '" class="gano-btn-primary" aria-label="Pasar a arquitectura Headless">🚀 Configurar Headless Ahora</a>

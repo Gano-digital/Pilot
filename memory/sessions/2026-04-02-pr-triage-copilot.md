@@ -20,7 +20,7 @@ Este documento asiste la revisión humana y el orden de merge. Actualizar tras c
 | 100 % draft | Marcar **Ready for review** cuando CI objetivo esté verde; sin eso el equipo no puede fusionar en bloque. |
 | `mergeable_state: dirty` (ej. #47) | **Actualizar rama** desde `main` o resolver conflictos antes de merge. |
 | `mergeable_state: unstable` (varias) | Suele ser CI en curso o políticas de rama; revisar pestaña **Checks** en GitHub. |
-| Status commit **Vercel failure** | A menudo **ruido** (plan Hobby vs org privada); no bloquea por sí solo el merge de PHP/docs si Actions Gano pasan. |
+| Status checks de terceros | Revisar que Actions Gano (PHP, secretos) pasen; apps externas no sustituyen CI del repo. |
 | Ramas con `base` distinto de último `main` | Tras merges, pedir **Update branch** en las PR restantes. |
 
 **Feedback a agentes (Copilot):**

@@ -237,31 +237,31 @@ Plans execute autonomously. Checkpoints formalize interaction points where human
 **Example: Authentication Gate (Dynamic Checkpoint)**
 ```xml
 <task type="auto">
-  <name>Deploy to Vercel</name>
-  <files>.vercel/, vercel.json</files>
-  <action>Run `vercel --yes` to deploy</action>
-  <verify>vercel ls shows deployment, fetch returns 200</verify>
+  <name>Deploy to static frontend</name>
+  <files>host config / deploy manifest</files>
+  <action>Run `deploy --yes` to deploy</action>
+  <verify>deploy-cli list shows deployment, fetch returns 200</verify>
 </task>
 
-<!-- If vercel returns "Error: Not authenticated", Claude creates checkpoint on the fly -->
+<!-- If deploy CLI returns "Error: Not authenticated", Claude creates checkpoint on the fly -->
 
 <task type="checkpoint:human-action" gate="blocking">
-  <action>Authenticate Vercel CLI so I can continue deployment</action>
+  <action>Authenticate deploy CLI so I can continue deployment</action>
   <instructions>
     I tried to deploy but got authentication error.
-    Run: vercel login
+    Run: host CLI login
     This will open your browser - complete the authentication flow.
   </instructions>
-  <verification>vercel whoami returns your account email</verification>
+  <verification>deploy-cli whoami returns your account email</verification>
   <resume-signal>Type "done" when authenticated</resume-signal>
 </task>
 
 <!-- After authentication, Claude retries the deployment -->
 
 <task type="auto">
-  <name>Retry Vercel deployment</name>
-  <action>Run `vercel --yes` (now authenticated)</action>
-  <verify>vercel ls shows deployment, fetch returns 200</verify>
+  <name>Retry deployment</name>
+  <action>Run `deploy --yes` (now authenticated)</action>
+  <verify>deploy-cli list shows deployment, fetch returns 200</verify>
 </task>
 ```
 
@@ -339,17 +339,17 @@ Options:
 ╚═══════════════════════════════════════════════════════╝
 
 Progress: 3/8 tasks complete
-Task: Deploy to Vercel
+Task: Deploy to static frontend
 
-Attempted: vercel --yes
-Error: Not authenticated. Please run 'vercel login'
+Attempted: deploy --yes
+Error: Not authenticated. Please run host login
 
 What you need to do:
-  1. Run: vercel login
+  1. Run: host CLI login
   2. Complete browser authentication when it opens
   3. Return here when done
 
-I'll verify: vercel whoami returns your account
+I'll verify: deploy CLI identity returns your account
 
 ────────────────────────────────────────────────────────
 → YOUR ACTION: Type "done" when authenticated
@@ -386,7 +386,7 @@ I'll verify: vercel whoami returns your account
 
 | Service | CLI/API | Key Commands | Auth Gate |
 |---------|---------|--------------|-----------|
-| Vercel | `vercel` | `--yes`, `env add`, `--prod`, `ls` | `vercel login` |
+| Deploy CLI | `deploy-cli` | `--yes`, `env add`, `--prod`, `ls` | `host-cli login` |
 | Railway | `railway` | `init`, `up`, `variables set` | `railway login` |
 | Fly | `fly` | `launch`, `deploy`, `secrets set` | `fly auth login` |
 | Stripe | `stripe` + API | `listen`, `trigger`, API calls | API key in .env |
@@ -407,7 +407,7 @@ I'll verify: vercel whoami returns your account
 | Platform | CLI Command | Example |
 |----------|-------------|---------|
 | Convex | `npx convex env set` | `npx convex env set OPENAI_API_KEY sk-...` |
-| Vercel | `vercel env add` | `vercel env add STRIPE_KEY production` |
+| Deploy CLI | `host env add` | `host env add STRIPE_KEY production` |
 | Railway | `railway variables set` | `railway variables set API_KEY=value` |
 | Fly | `fly secrets set` | `fly secrets set DATABASE_URL=...` |
 | Supabase | `supabase secrets set` | `supabase secrets set MY_SECRET=value` |
@@ -468,7 +468,7 @@ timeout 30 bash -c 'until node -e "fetch(\"http://localhost:3000\").then(r=>{pro
 | CLI | Auto-install? | Command |
 |-----|---------------|---------|
 | npm/pnpm/yarn | No - ask user | User chooses package manager |
-| vercel | Yes | `npm i -g vercel` |
+| deploy-cli | Yes | `npm i -g your-deploy-cli` |
 | gh (GitHub) | Yes | `brew install gh` (macOS) or `apt install gh` (Linux) |
 | stripe | Yes | `npm i -g stripe` |
 | supabase | Yes | `npm i -g supabase` |
@@ -517,14 +517,14 @@ timeout 30 bash -c 'until node -e "fetch(\"http://localhost:3000\").then(r=>{pro
 
 | Action | Automatable? | Claude does it? |
 |--------|--------------|-----------------|
-| Deploy to Vercel | Yes (`vercel`) | YES |
+| Deploy to static frontend | Yes (`deploy-cli`) | YES |
 | Create Stripe webhook | Yes (API) | YES |
 | Write .env file | Yes (Write tool) | YES |
 | Create Upstash DB | Yes (`upstash`) | YES |
 | Run tests | Yes (`npm test`) | YES |
 | Start dev server | Yes (`npm run dev`) | YES |
 | Add env vars to Convex | Yes (`npx convex env set`) | YES |
-| Add env vars to Vercel | Yes (`vercel env add`) | YES |
+| Add env vars to hosting | Yes (`host env add`) | YES |
 | Seed database | Yes (CLI/API) | YES |
 | Click email verification link | No | NO |
 | Enter credit card with 3DS | No | NO |
@@ -538,7 +538,7 @@ timeout 30 bash -c 'until node -e "fetch(\"http://localhost:3000\").then(r=>{pro
 
 **DO:**
 - Automate everything with CLI/API before checkpoint
-- Be specific: "Visit https://myapp.vercel.app" not "check deployment"
+- Be specific: "Visit https://your-deployment.example.com" not "check deployment"
 - Number verification steps
 - State expected outcomes: "You should see X"
 - Provide context: why this checkpoint exists
@@ -671,15 +671,15 @@ timeout 30 bash -c 'until node -e "fetch(\"http://localhost:3000\").then(r=>{pro
 ```xml
 <!-- BAD: Asking user to deploy via dashboard -->
 <task type="checkpoint:human-action" gate="blocking">
-  <action>Deploy to Vercel</action>
-  <instructions>Visit vercel.com/new → Import repo → Click Deploy → Copy URL</instructions>
+  <action>Deploy to static frontend</action>
+  <instructions>Visit your host's deploy UI → Import repo → Click Deploy → Copy URL</instructions>
 </task>
 
 <!-- GOOD: Claude deploys, user verifies -->
 <task type="auto">
-  <name>Deploy to Vercel</name>
-  <action>Run `vercel --yes`. Capture URL.</action>
-  <verify>vercel ls shows deployment, fetch returns 200</verify>
+  <name>Deploy to static frontend</name>
+  <action>Run `deploy --yes`. Capture URL.</action>
+  <verify>deploy-cli list shows deployment, fetch returns 200</verify>
 </task>
 
 <task type="checkpoint:human-verify">

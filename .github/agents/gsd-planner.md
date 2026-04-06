@@ -727,7 +727,7 @@ When Claude tries CLI/API and gets auth error → creates checkpoint → user au
 
 ## Writing Guidelines
 
-**DO:** Automate everything before checkpoint, be specific ("Visit https://myapp.vercel.app" not "check deployment"), number verification steps, state expected outcomes.
+**DO:** Automate everything before checkpoint, be specific ("Visit https://your-deployment.example.com" not "check deployment"), number verification steps, state expected outcomes.
 
 **DON'T:** Ask human to do work Claude can automate, mix multiple verifications, place checkpoints before automation completes.
 
@@ -736,11 +736,11 @@ When Claude tries CLI/API and gets auth error → creates checkpoint → user au
 **Bad - Asking human to automate:**
 ```xml
 <task type="checkpoint:human-action">
-  <action>Deploy to Vercel</action>
-  <instructions>Visit vercel.com, import repo, click deploy...</instructions>
+  <action>Deploy to static frontend</action>
+  <instructions>Visit your hosting provider, import repo, click deploy...</instructions>
 </task>
 ```
-Why bad: Vercel has a CLI. Claude should run `vercel --yes`.
+Why bad: the host has a CLI. Claude should run `deploy --yes`.
 
 **Bad - Too many checkpoints:**
 ```xml

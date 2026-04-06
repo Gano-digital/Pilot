@@ -45,7 +45,7 @@ El código de las fases 1–3 está **listo en el repositorio** pero **no genera
 | **Oleada 4 + infra (docs)** | Entregas markdown fusionadas en `main` (PRs #100–#113, abril 2026). *Pendiente humano:* Elementor, DNS en GoDaddy, cierre de issues en GitHub si aplica. |
 | **Cola API (ML + GoDaddy)** | Informe base [`memory/research/sota-apis-mercadolibre-godaddy-2026-04.md`](../research/sota-apis-mercadolibre-godaddy-2026-04.md) + cola `tasks-api-integrations-research.json`; **sembrar con workflow 08** cuando se quieran issues `api-*`. |
 | **Guardián seguridad** | Cola `tasks-security-guardian.json` (`sec-*`), skill `.gano-skills/gano-session-security-guardian/`, checklist [`memory/ops/security-end-session-checklist.md`](../ops/security-end-session-checklist.md). |
-| **PRs abiertos** | Tras consolidación, **revisar en GitHub**; el objetivo es cola baja o cero. Vercel puede marcar fallo en contexto sin bloquear merge. |
+| **PRs abiertos** | Tras consolidación, **revisar en GitHub**; el objetivo es cola baja o cero. |
 | **Prompts Copilot** | Bloques por oleada en [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md): oleada 1, 3, 4, infra, **API integrations**. |
 | **Playbooks** | Merge: `.github/MERGE-PLAYBOOK.md` · Coordinación: `.github/DEV-COORDINATION.md`. |
 | **SOTA operativo** | [`memory/research/sota-operativo-2026-04.md`](../research/sota-operativo-2026-04.md) (incluye referencias oficiales GitHub sobre Copilot coding agent). |

@@ -16,7 +16,7 @@ Referencia: [`.github/COPILOT-AGENT-QUEUE.md`](../.github/COPILOT-AGENT-QUEUE.md
 
 En GitHub **Gano-digital/Pilot** se fusionaron (squash) los PR **#100–#113** (docs oleada 4 + infra DNS/HTTPS). El **#106** requirió **Update branch** una vez (`HEAD` desactualizado respecto de `main` tras merges previos).
 
-**Checks:** varios quedaban **UNSTABLE** por **Vercel** (contexto fallido típico org privada / plan hobby — no bloqueó el merge). CodeQL completó en verde donde aplica.
+**Checks:** revisar en GitHub que CI propio (PHP, secretos) esté en verde; CodeQL completó en verde donde aplica.
 
 **Copia local:** tras fusionar este trabajo, ejecutá `git pull origin main` en otras máquinas si quedaron atrasadas.
 

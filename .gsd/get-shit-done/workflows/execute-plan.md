@@ -168,7 +168,7 @@ Auth errors during execution are NOT failures — they're expected interaction p
 6. Retry original task
 7. Continue normally
 
-**Example:** `vercel --yes` → "Not authenticated" → checkpoint asking user to `vercel login` → verify with `vercel whoami` → retry deploy → continue
+**Example:** `deploy --yes` → "Not authenticated" → checkpoint asking user to `host-cli login` → verify with `deploy-cli whoami` → retry deploy → continue
 
 **In Summary:** Document as normal flow under "## Authentication Gates", not as deviations.
 

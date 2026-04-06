@@ -21,7 +21,7 @@
 | 11 | `copilot-setup-steps.yml` | manual + push/PR solo si cambia este YAML | Verificación entorno + PHP lint |
 | 12 | `verify-remove-wp-file-manager.yml` | manual | SSH: comprobar/eliminar plugin riesgo |
 
-**Fuera de esta carpeta (GitHub / org):** *CodeQL*, *Dependabot*, *Copilot coding agent*, *Vercel* (el fallo de Vercel en PRs típico de plan/org privada no es un bug del YAML del repo).
+**Fuera de esta carpeta (GitHub / org):** *CodeQL*, *Dependabot*, *Copilot coding agent*, y cualquier **GitHub App** de despliegue de terceros (configuración en el repo/org, no en YAML local).
 
 ---
 
@@ -68,7 +68,7 @@
 ## Qué no requiere “arreglo” en el repo
 
 - **CodeQL** (si está habilitado en org/repo): puede tardar o marcar alertas; no duplicar reglas en YAML local salvo que se añada workflow propio.
-- **Vercel** en checks de PR: configuración de producto/plan; no se corrige desde este repositorio.
+- **Apps de despliegue de terceros** en checks de PR: se gestionan en GitHub (Integrations), no en los workflows de esta carpeta.
 
 ---
 
