@@ -18,6 +18,8 @@ Los **nombres mostrados en la barra lateral** siguen el patrón:
 
 **Auditoría y troubleshooting:** [`memory/ops/github-actions-audit-2026-04.md`](../../memory/ops/github-actions-audit-2026-04.md) (fallos conocidos, riesgos, parches).
 
+**GitHub Ops (Copilot, rulesets, Dependabot, plan de pago):** [`memory/ops/github-github-ops-sota-2026-04.md`](../../memory/ops/github-github-ops-sota-2026-04.md).
+
 Archivo | Nombre en UI
 --------|----------------
 `php-lint-gano.yml` | 01 · CI · Sintaxis PHP (Gano)

@@ -5,3 +5,24 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    groups:
+      actions:
+        patterns:
+          - "*"
+
+  # Node (get-shit-done / tooling de agentes) — mismo árbol que Dependabot Vite
+  - package-ecosystem: "npm"
+    directory: "/.gsd"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 3
+    groups:
+      gsd-npm:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/.gsd/sdk"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 2

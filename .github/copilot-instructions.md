@@ -111,6 +111,22 @@ No eliminar ni desactivar de forma permanente los plugins `gano-phase*` hasta co
 - **Offloading:** ejecuta **Seed Copilot task queue** en Actions (ámbito `all` o parcial), luego asigna **GitHub Copilot** en cada issue. Guía: [`.github/COPILOT-AGENT-QUEUE.md`](COPILOT-AGENT-QUEUE.md).
 - Plantilla **Copilot task queue** para tareas sueltas; la cola JSON para lotes versionados.
 
+### Copilot coding agent (issues → PR) — buenas prácticas (SOTA)
+
+- **Issues bien acotados:** problema claro, criterios de aceptación, archivos o área (`gano-child`, `mu-plugins`). Copilot puede buscar en el código; no hace falta listar cada línea.
+- **Tipos de tarea donde suele ir bien:** correcciones de bugs, copy/docs, accesibilidad, tests, deuda técnica localizada.
+- **Evitar delegar sin revisión humana:** refactors enormes, incidentes de producción, cambios en pagos/checkout, secretos, decisiones de arquitectura ambiguas.
+- **Iterar en rama** antes de pedir PR final si el alcance es grande; revisar diff contra `main`.
+- **Instrucciones por path:** además de este archivo, existen [`.github/instructions/php-files.instructions.md`](instructions/php-files.instructions.md), [`css-js-files.instructions.md`](instructions/css-js-files.instructions.md) y [`mu-plugins.instructions.md`](instructions/mu-plugins.instructions.md) — respétalas al tocar esos globs.
+
+### Ruleset y calidad en `main`
+
+- El repositorio usa un **ruleset** en la rama por defecto que incluye revisión **Copilot**, reglas de **calidad de código** (CodeQL) y protección de ramas (p. ej. no borrar `main` a la ligera). Si un PR queda bloqueado, revisa checks y comentarios de Copilot antes de forzar merge.
+
+### Dependabot
+
+- Hay PRs automáticos para **GitHub Actions** y para **npm** bajo `.gsd` / `.gsd/sdk`. Agrupar actualizaciones reduce ruido; revisar changelog de `vite`/`vitest` si toca el tooling de tests.
+
 ## Narrativa y marca (High-Ticket)
 
 Tono **"Manifiesto Técnico"** (autoritario, visionario, sofisticado y soberano).

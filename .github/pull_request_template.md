@@ -20,3 +20,5 @@ Describe el cambio en una o dos frases.
 ## Notas para Copilot / revisores
 
 Contexto extra, URLs de preview o capturas.
+
+Si el PR lo abrió **Copilot coding agent**, enlaza el **issue** origen y confirma que pasan **PHP lint**, **TruffleHog** y **CodeQL** (ruleset / code quality).
