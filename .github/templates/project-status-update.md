@@ -1,30 +1,63 @@
-# Status update — @Gano.digital · {FECHA o ITERACIÓN}
+# Status update — Proyecto @Gano.digital · {ITERACIÓN o RANGO DE FECHAS}
 
-_Pegar en GitHub Project → **Add status update**._
+_Publicar en: GitHub → proyecto **@Gano.digital** → **Add status update**._
 
-## Resumen (1 frase)
+**Repositorio de código:** `Gano-digital/Pilot` · **Rama:** `main` · **Playbook tablero:** [`memory/ops/github-projects-gano-digital-playbook-2026-04.md`](../../memory/ops/github-projects-gano-digital-playbook-2026-04.md)
 
-{Qué cambió esta semana para el negocio o el producto.}
+---
 
-## Completado
+## Executive summary (1–2 frases)
 
-- {Issue/PR #n} — {descripción corta}
-- …
+{Impacto en producto, clientes o riesgo — qué debe recordar quien lee solo esto.}
 
-## En progreso
+---
 
-- {Issue #n} — {responsable o “Copilot / Diego”} — {siguiente paso}
+## Completado (Done / merged)
 
-## Bloqueados / riesgos
+| Item | Evidencia |
+|------|-----------|
+| {p. ej. Issue #n — título corto} | PR #{m} en `main` / checklist en issue |
+| … | … |
 
-- {p. ej. deploy SSH, Vercel check, DNS} — {acción concreta}
+---
 
-## Contexto para colaboradores
+## En progreso (In progress)
 
-- `TASKS.md` — sección relevante: …
-- Sesión / memoria: `memory/sessions/…` (si aplica)
-- Deploy / servidor: según `.github/DEV-COORDINATION.md`
+| Item | Dueño | Próximo paso / fecha |
+|------|-------|----------------------|
+| {#n} | {humano / Copilot} | {acción concreta} |
+| … | … | … |
 
-## Próxima iteración (preview)
+---
 
-- Top 3 prioridades: …
+## Bloqueados y riesgos
+
+| Bloqueo | Impacto | Mitigación |
+|---------|---------|------------|
+| {p. ej. SSH / secrets deploy} | {P0–P3} | {quién actúa — ver `TASKS.md` 🔴} |
+| {p. ej. Vercel check en PRs} | CI | {política merge / upgrade plan} |
+
+---
+
+## Métricas / salud (opcional)
+
+- **Issues abiertos `[agent]`:** {n}
+- **PRs abiertos:** {n}
+- **Dependabot:** enlace a Security si aplica
+
+---
+
+## Contexto documentado (rutas repo)
+
+- Estado por fases: **`TASKS.md`**
+- Coordinación servidor ↔ git: **`.github/DEV-COORDINATION.md`**
+- Sesión / decisión reciente: **`memory/sessions/`** (archivo concreto: …)
+- Cola agente / workflows: **`.github/COPILOT-AGENT-QUEUE.md`**, **`.github/workflows/README.md`**
+
+---
+
+## Próxima iteración (top 3)
+
+1. …
+2. …
+3. …
