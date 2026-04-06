@@ -738,3 +738,29 @@ function gano_rstore_cart_url( $pfid, $duration = 12 ) {
 		)
 	);
 }
+
+/**
+ * Retrieves all SOTA hub pages ordered by menu order then date.
+ * Returns published and draft pages so the hub can show "En Preparación" cards.
+ *
+ * @return WP_Post[]
+ */
+function gano_get_sota_hub_pages(): array {
+	$args = [
+		'post_type'      => 'page',
+		'post_status'    => [ 'publish', 'draft' ],
+		'posts_per_page' => 100,
+		'orderby'        => [ 'menu_order' => 'ASC', 'date' => 'ASC' ],
+		'meta_query'     => [
+			[
+				'key'     => '_gano_sota_category',
+				'compare' => 'EXISTS',
+			],
+		],
+		'no_found_rows'  => true,
+	];
+
+	$query = new WP_Query( $args );
+
+	return $query->posts ?? [];
+}
