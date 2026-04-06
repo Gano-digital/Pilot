@@ -35,15 +35,32 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      # Solo código Gano (no vendor / plugins de terceros: WooCommerce, EA, etc. disparan falsos positivos).
       - name: Check for hardcoded credentials
         run: |
-          if grep -rE "(SSH_PASS\s*=|password\s*=\s*['\"][^'\"\$])" \
-            --include="*.php" --include="*.py" \
-            --exclude-dir=".gsd" --exclude-dir="vendor" .; then
-            echo "❌ Credenciales en texto plano detectadas. Usa GitHub Secrets."
+          set -euo pipefail
+          FOUND=0
+          scan_dir() {
+            local d="$1"
+            [ -e "$d" ] || return 0
+            if grep -rE "(SSH_PASS\s*=|password\s*=\s*['\"][^'\"\$])" \
+              --include="*.php" --include="*.py" \
+              "$d" 2>/dev/null; then
+              FOUND=1
+            fi
+          }
+          for d in wp-content/themes/gano-child wp-content/mu-plugins scripts .github; do
+            scan_dir "$d"
+          done
+          for d in wp-content/plugins/gano-*; do
+            [ -d "$d" ] || continue
+            scan_dir "$d"
+          done
+          if [ "$FOUND" -ne 0 ]; then
+            echo "❌ Posible credencial en texto plano en código Gano. Usa GitHub Secrets."
             exit 1
           fi
-          echo "✅ Sin credenciales expuestas."
+          echo "✅ Sin credenciales expuestas (paths Gano)."
 
   # ──────────────────────────────────────────────────────────────────────────
   # JOB 2: Deploy Theme + Plugins via SSH
