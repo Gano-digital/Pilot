@@ -6,6 +6,9 @@ alwaysApply: false
 
 # Git Workflow
 
+## Remoto
+- **Solo** `origin` → `Gano-digital/Pilot` en GitHub. GitLab no forma parte del flujo (`memory/ops/archived-gitlab-remote-2026-04.md`).
+
 ## Branches
 - `feature/nombre` — nueva funcionalidad
 - `fix/nombre` — correccion de bug

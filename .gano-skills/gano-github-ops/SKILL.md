@@ -48,3 +48,4 @@ gh run list --repo Gano-digital/Pilot --limit 15
 - `memory/ops/github-github-ops-sota-2026-04.md`
 - `.github/workflows/README.md`
 - `.github/COPILOT-AGENT-QUEUE.md`
+- MCP + extensiones Cursor: **`.gano-skills/gano-mcp-and-cursor-tooling/SKILL.md`**

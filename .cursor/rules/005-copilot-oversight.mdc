@@ -8,7 +8,10 @@ alwaysApply: false
 
 ## Arquitectura de Supervision
 Cursor opera como **supervisor local** de los agentes Copilot que corren en GitHub.
-El puente es Git + GitHub CLI (`gh`).
+El puente es Git + GitHub CLI (`gh`) y, cuando esta habilitado, el MCP **user-github** (`assign_copilot_to_issue`, `request_copilot_review`, `get_copilot_job_status`, etc.; leer esquema de tools antes de invocar).
+
+## Checks de PR (Vercel)
+Si **Vercel** falla por plan (repo privado en org + Hobby) pero TruffleHog/php-lint pasan, el PR puede quedar **UNSTABLE**; el merge depende de politica del equipo (`gh pr merge --admin` solo si procede).
 
 ## Workflow de Oversight
 
@@ -85,3 +88,4 @@ gh issue close <ISSUE_NUMBER> --comment "Completed via PR #<PR_NUMBER>"
 - Workflow: `seed-copilot-queue.yml` (crea issues)
 - Orquestacion: `orchestrate-copilot-waves.yml` (merge wave1 + seed wave2)
 - Guia completa: `.github/COPILOT-AGENT-QUEUE.md`
+- Modelos del coding agent (org / picker): `memory/ops/github-copilot-agent-models-2026-04.md`

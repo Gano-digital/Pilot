@@ -52,6 +52,10 @@ Marca lo que vayas aplicando.
 
 No se gestiona desde GitHub; ver **`memory/ops/cursor-models-y-plan-2026-04.md`** y la skill **`.gano-skills/gano-cursor-models/`**.
 
+## Cursor — MCP y extensiones (repo)
+
+Skill **`.gano-skills/gano-mcp-and-cursor-tooling/`**; referencia copiada del marketplace Claude: **`.gano-skills/_reference-claude-official/mcp-integration/`**; **`.vscode/extensions.json`** (recomendadas).
+
 ## GitHub Copilot coding agent — modelos (web)
 
 Selector de modelo al asignar el agente; políticas org en **Copilot → Models**. Ver **`memory/ops/github-copilot-agent-models-2026-04.md`**.
