@@ -1535,6 +1535,95 @@ select:focus-visible {
     pointer-events: none;
 }
 
+/* =============================================================================
+   NAVEGACIÓN — CTA "Elegir plan →" en header (cd-content-005)
+   Aplica cuando el ítem de menú tiene la CSS class "gano-menu-cta" en wp-admin.
+   ============================================================================= */
+
+.gano-menu-cta > a,
+.gano-menu-cta > a:visited {
+    background: var(--gano-orange, #E85D04);
+    color: #fff !important;
+    padding: 0.5rem 1.25rem;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-decoration: none !important;
+    transition: opacity 0.2s ease, background 0.2s ease;
+    display: inline-block;
+}
+
+.gano-menu-cta > a:hover,
+.gano-menu-cta > a:focus {
+    opacity: 0.88;
+    background: var(--gano-orange, #E85D04);
+}
+
+.gano-menu-cta > a:focus-visible {
+    outline: 3px solid var(--gano-gold, #D4AF37);
+    outline-offset: 3px;
+}
+
+/* Separador visual antes del ítem "Comparar todos" en el dropdown de Ecosistemas */
+.menu-separator > a {
+    border-top: 1px solid #e2e8f0;
+    margin-top: 0.25rem;
+    padding-top: 0.75rem;
+}
+
+/* =============================================================================
+   FOOTER LEGAL — Barra inferior de trust (cd-content-005)
+   Generada por shortcode [gano_footer_legal] o wp_nav_menu location 'footer'.
+   ============================================================================= */
+
+.gano-footer-legal {
+    background: #0f172a;
+    color: #94a3b8;
+    padding: 1.5rem 1.5rem;
+    text-align: center;
+    font-size: 0.8125rem;
+    line-height: 1.75;
+}
+
+.gano-footer-legal__nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem 1.25rem;
+    list-style: none;
+    margin: 0 0 0.75rem;
+    padding: 0;
+}
+
+.gano-footer-legal__nav li a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.gano-footer-legal__nav li a:hover {
+    color: #e2e8f0;
+    text-decoration: underline;
+}
+
+.gano-footer-legal__copy {
+    margin: 0;
+    color: #64748b;
+}
+
+.gano-footer-legal__copy a {
+    color: #94a3b8;
+    text-decoration: none;
+}
+
+@media (max-width: 600px) {
+    .gano-footer-legal__nav {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .gano-skip-link {
         transition: none;
