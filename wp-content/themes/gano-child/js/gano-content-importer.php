@@ -520,7 +520,7 @@ function gano_get_pages_data_v2() {
 </section>
 <div class="gano-divider" aria-hidden="true"></div>
 <div class="gano-quote-box" role="doc-pullquote">
-<p>💬 <em>"DDoS no es un 'si' sino un 'cuándo'. Gano Digital bloquea 50k ataques diarios. Tu página seguirá online."</em></p>
+<p>💬 <em>"DDoS no es un \'si\' sino un \'cuándo\'. Gano Digital bloquea 50k ataques diarios. Tu página seguirá online."</em></p>
 </div>
 <section>
 <h2>🛠️ Protección en Tiempo Real</h2>
