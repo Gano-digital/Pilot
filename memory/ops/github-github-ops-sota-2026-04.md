@@ -48,6 +48,10 @@ Marca lo que vayas aplicando.
 - Cada **trimestre:** revisar reglas del ruleset (¿sigue siendo deseable Copilot review en cada push?).
 - Tras **grandes cambios** en `main`: ejecutar **07 · Validar cola JSON** si se editan `agent-queue/*.json`.
 
+## Cursor (IDE local) — modelos y plan
+
+No se gestiona desde GitHub; ver **`memory/ops/cursor-models-y-plan-2026-04.md`** y la skill **`.gano-skills/gano-cursor-models/`**.
+
 ## Referencias externas
 
 - [Repository custom instructions](https://docs.github.com/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot)
