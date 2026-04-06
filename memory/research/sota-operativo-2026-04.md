@@ -21,7 +21,7 @@ Nota breve para agentes y humanos: qué es “SOTA” en este proyecto y qué pr
 
 - Los agentes de código **no aplican** cambios en la base de datos de WordPress ni en el editor visual de Elementor en el servidor; ahí hacen falta **wp-admin** o flujos de import/export acordados.
 - El **deploy** por Actions puede fallar por credenciales o entorno; es independiente de la calidad del diff en un PR del agente.
-- **GitLab** como remoto adicional no sustituye el flujo descrito arriba si la prioridad es Copilot + Actions en GitHub.
+- **GitLab** no forma parte del flujo activo; el canon es Copilot + Actions en GitHub (`Pilot`).
 
 ## Investigación complementaria — Copilot coding agent (documentación oficial GitHub)
 

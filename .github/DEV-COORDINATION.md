@@ -78,7 +78,7 @@ Ejecuta **06 · Repo · Crear etiquetas** si faltan etiquetas; sin ellas el labe
 
 ## 5. Desarrollo local (recordatorio)
 
-- Clonar **desde GitHub** (`origin`) para PRs; otros remotos (ej. GitLab) son según tu flujo interno.
+- Clonar **solo desde GitHub** (`origin` → `Gano-digital/Pilot`). GitLab no forma parte del flujo; histórico en `memory/ops/archived-gitlab-remote-2026-04.md`.
 - `ssh_cli.py`: variables `GANO_SSH_HOST`, `GANO_SSH_USER`, `GANO_SSH_PASS` o `GANO_SSH_KEY_PATH` (nunca en commit).
 - Submódulo `.gsd/`: `git submodule update --init` si usas el workflow GSD.
 

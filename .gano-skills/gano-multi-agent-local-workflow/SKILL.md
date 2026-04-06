@@ -33,8 +33,8 @@ description: >
 ## Git y secretos
 
 - **Nunca** dejar PAT de GitHub en la URL de `origin` (`https://TOKEN@github.com/...`). Usar `https://github.com/org/repo.git` y credencial vía **Git Credential Manager**, PAT al prompt, o **SSH**.
-- Los tokens de GitHub (`ghp_`) no son GitLab; rotar en GitHub si hubo exposición.
-- **GitLab** como remoto adicional: opcional/exploratorio; la integración CI y la cola Copilot viven en **GitHub** (`Gano-digital/Pilot`). No mezclar credenciales de GitLab en URLs trackeadas.
+- Los tokens de GitHub (`ghp_`) rotar en GitHub si hubo exposición.
+- **GitLab** no está en uso; CI y cola Copilot solo en **GitHub** (`Gano-digital/Pilot`). Ver `memory/ops/archived-gitlab-remote-2026-04.md` si hiciera falta el enlace histórico.
 
 ## GitHub como cola de trabajo (Abril 2026)
 

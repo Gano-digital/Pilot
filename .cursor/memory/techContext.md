@@ -37,8 +37,8 @@
 
 ## Acceso y remotos
 
-- Remoto principal actual del repo: `origin https://github.com/Gano-digital/Pilot.git`
-- Remoto secundario actual: `gitlab https://gitlab.com/Ouroboros1984/Gano.digital.git`
+- **Único remoto activo:** `origin` → `https://github.com/Gano-digital/Pilot.git`
+- GitLab no está en uso; referencia archivada en `memory/ops/archived-gitlab-remote-2026-04.md`
 - Acceso Git verificado por HTTPS; no asumir SSH operativo hasta validar clave en GitHub y servidor.
 
 ## Herramientas de Dev

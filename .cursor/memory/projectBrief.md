@@ -26,5 +26,4 @@ Modelo: Reseller de alta gama con branding "Soberania Digital".
 ## URLs
 - Produccion: https://gano.digital
 - Staging: https://gano.bio/staging
-- Repo GitHub: Gano-digital/Pilot
-- Repo GitLab: Ouroboros1984/Gano.digital
+- Repo código (canon): **GitHub** `Gano-digital/Pilot` (remoto `origin`)
