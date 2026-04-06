@@ -140,6 +140,8 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `memory/ops/agent-playbook-asistentes-2026-04.md` | **Agentes + Actions + asistentes:** arranque, troubleshooting, cerrar issues, re-lanzar colas 08/09, offloading solo humano. |
 | `.vscode/tasks.json` | Tareas **Run Task** para dispatch (`next`, `list`, `validate`, `show`, `complete`) y validación cola Copilot. |
 | `scripts/generate_claude_audit_report_pdf.py` | **Informe PDF** de auditoría de desarrollo (estado repo, workflows, dispatch, PRs, riesgos). Salida: `reports/Gano-Digital-Auditoria-Desarrollo-YYYY-MM-DD.pdf` (`*.pdf` en gitignore). |
+| `scripts/generate_project_status_pdf.py` | **Reporte PDF compacto** (pocas páginas): resuelto vs pendiente, % por pilar, avance global ~47 %, prioridades P0–P3. Salida: `reports/Gano-Digital-Reporte-Status-Proyecto-YYYY-MM-DD.pdf`. Requiere `pip install fpdf2`. |
+| `scripts/generate_board_report_pdf.py` | Reporte ejecutivo más amplio (junta): `reports/Gano-Digital-Reporte-Estado-YYYY-MM.pdf`. |
 
 ## Preferencias de Diego
 - Comunicación en español
