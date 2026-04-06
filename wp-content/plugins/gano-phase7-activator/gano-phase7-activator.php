@@ -73,10 +73,93 @@ function gano_p7_activate_hub() {
 }
 
 /**
- * Helper to get attachment ID by filename
+ * Helper to get attachment ID by filename.
+ * Tries two strategies:
+ *   1. Meta value _wp_attached_file LIKE %filename%
+ *   2. post_title LIKE %filename% on attachment posts
+ * If neither finds a record and the file exists on disk, imports it automatically.
  */
-function gano_p7_get_attachment_id_by_filename($filename) {
+function gano_p7_get_attachment_id_by_filename( $filename ) {
     global $wpdb;
-    $attachment = $wpdb->get_col($wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE meta_key='_wp_attached_file' AND meta_value LIKE %s", '%' . $filename . '%'));
-    return !empty($attachment) ? $attachment[0] : false;
+
+    // Strategy 1: match via _wp_attached_file meta.
+    $attachment = $wpdb->get_col(
+        $wpdb->prepare(
+            "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key='_wp_attached_file' AND meta_value LIKE %s",
+            '%' . $wpdb->esc_like( $filename ) . '%'
+        )
+    );
+    if ( ! empty( $attachment ) ) {
+        return (int) $attachment[0];
+    }
+
+    // Strategy 2: match via post_title on attachment records.
+    $result = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT ID FROM {$wpdb->posts} WHERE post_type='attachment' AND post_title LIKE %s LIMIT 1",
+            '%' . $wpdb->esc_like( $filename ) . '%'
+        )
+    );
+    if ( $result ) {
+        return (int) $result;
+    }
+
+    // Strategy 3: file exists on disk but has no DB record — import it.
+    return gano_p7_import_file_as_attachment( $filename );
+}
+
+/**
+ * Imports a file from the wp-content/uploads directory as a WordPress attachment.
+ * Scans the uploads base dir and any immediate subdirectory (yyyy/mm pattern) for the file.
+ * Returns the new attachment ID on success, or false on failure.
+ *
+ * @param string $filename Bare filename, e.g. "hero_digital_garden.png".
+ * @return int|false
+ */
+function gano_p7_import_file_as_attachment( $filename ) {
+    require_once ABSPATH . 'wp-admin/includes/image.php';
+    require_once ABSPATH . 'wp-admin/includes/file.php';
+    require_once ABSPATH . 'wp-admin/includes/media.php';
+
+    $upload_dir = wp_upload_dir();
+    $base_dir   = $upload_dir['basedir'];
+
+    // Build candidate paths: uploads root + all yyyy/mm subdirs.
+    $candidates = [ trailingslashit( $base_dir ) . $filename ];
+    $subdirs    = glob( $base_dir . '/[0-9][0-9][0-9][0-9]/[0-9][0-9]', GLOB_ONLYDIR );
+    if ( is_array( $subdirs ) ) {
+        foreach ( $subdirs as $subdir ) {
+            $candidates[] = trailingslashit( $subdir ) . $filename;
+        }
+    }
+
+    $found_path = '';
+    foreach ( $candidates as $candidate ) {
+        if ( file_exists( $candidate ) ) {
+            $found_path = $candidate;
+            break;
+        }
+    }
+
+    if ( ! $found_path ) {
+        return false;
+    }
+
+    $filetype   = wp_check_filetype( $found_path );
+    $attachment = [
+        'guid'           => trailingslashit( $upload_dir['baseurl'] ) . _wp_relative_upload_path( $found_path ),
+        'post_mime_type' => $filetype['type'],
+        'post_title'     => sanitize_file_name( pathinfo( $filename, PATHINFO_FILENAME ) ),
+        'post_status'    => 'inherit',
+    ];
+
+    $attachment_id = wp_insert_attachment( $attachment, $found_path );
+    if ( is_wp_error( $attachment_id ) ) {
+        return false;
+    }
+
+    $metadata = wp_generate_attachment_metadata( $attachment_id, $found_path );
+    wp_update_attachment_metadata( $attachment_id, $metadata );
+
+    return (int) $attachment_id;
 }
