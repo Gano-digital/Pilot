@@ -1,48 +1,62 @@
-# Checklist RCC → PFID (GoDaddy Reseller) — Gano Digital
+# Checklist: Mapeo RCC → PFID (GoDaddy Reseller)
 
-**Para:** Diego (operador). **No** pegar pfids ni credenciales en issues públicos de GitHub.
+Este documento detalla los pasos para obtener los identificadores de producto (**PFIDs**) desde el **Reseller Control Center (RCC)** de GoDaddy y vincularlos con la vitrina de Gano Digital.
 
-## 1. Dónde obtener el pfid
+## 🔒 Privacidad y Seguridad
+> [!WARNING]
+> Los **PFIDs** y el **Private Label ID (PLID)** son identificadores públicos del catálogo, pero se recomienda completar este paso directamente en el servidor (`wp-config.php` o `functions.php`) para no commitear valores reales al repositorio si prefieres mantener el catálogo en privado durante el desarrollo.
 
-1. Entra al **Reseller Control Center (RCC)** de GoDaddy con tu cuenta reseller.
-2. Navega a **Productos** / catálogo según la documentación actual de GoDaddy Reseller.
-3. Por cada producto que vendes en la vitrina, localiza el identificador que usa el ecosistema Reseller para el carrito (**Product Family ID** / pfid — el nombre exacto puede variar en la UI; alinea con lo que espera el plugin Reseller Store en WordPress).
-4. Anota el pfid en una hoja **local** o gestor de secretos interno (no en el chat de IA pública).
+---
 
-## 2. Private Label ID (PLID)
+## 1. Localizar el Private Label ID (PLID)
+El PLID identifica tu tienda reseller. Sin él, el carrito no sabrá a qué cuenta atribuir la venta.
 
-- En **wp-admin → Ajustes → Reseller Store** (o equivalente del plugin): confirma **Private Label ID** (`pl_id`).
-- Sin `pl_id` válido, `gano_rstore_cart_url()` devuelve `#` aunque los pfids estén bien.
+1. Inicia sesión en el **RCC**.
+2. Ve a **Configuración** → **Información del sitio**.
+3. Busca el campo **Private Label ID**.
+4. Cópialo y pégalo en WordPress: **wp-admin** → **Ajustes** → **Reseller Store** → **Private Label ID**.
 
-## 3. Mapeo constante → producto (código en repo)
+---
 
-Definiciones en `wp-content/themes/gano-child/functions.php` (buscar `GANO_PFID_`). Sustituir cada `'PENDING_RCC'` por el string del pfid **solo** cuando lo tengas del RCC.
+## 2. Obtener PFIDs del Catálogo
+El **PFID** (Product Family ID) es el código que GoDaddy usa para meter un producto específico en el carrito.
 
-| Constante | Nombre en vitrina (shop-premium) | Comentario en código |
-|-----------|-----------------------------------|----------------------|
-| `GANO_PFID_HOSTING_ECONOMIA` | Núcleo Prime | WordPress Hosting Economy |
-| `GANO_PFID_HOSTING_DELUXE` | Fortaleza Delta | WordPress Hosting Deluxe |
-| `GANO_PFID_HOSTING_PREMIUM` | Bastión SOTA | WordPress Hosting Premium |
-| `GANO_PFID_HOSTING_ULTIMATE` | Ultimate WP | WordPress Hosting Ultimate |
-| `GANO_PFID_SSL_DELUXE` | SSL Deluxe | SSL DV Deluxe |
-| `GANO_PFID_SECURITY_ULTIMATE` | Security Ultimate | Website Security Premium |
-| `GANO_PFID_M365_PREMIUM` | M365 Premium | Microsoft 365 Business Premium |
-| `GANO_PFID_ONLINE_STORAGE` | Online Storage 1TB | Online Storage 1 TB |
+### Pasos en el RCC:
+1. En el menú superior, ve a **Productos** → **Catálogo de productos**.
+2. Verás una lista de todos los productos disponibles (Hosting, SSL, Email, etc.).
+3. Localiza cada producto de la tabla de abajo.
+4. Identifica la columna **Product Family ID** (o similar, a veces simplemente "ID").
+5. Copia el valor numérico.
 
-Plantilla del catálogo y precios visibles: `wp-content/themes/gano-child/templates/shop-premium.php`.
+---
 
-## 4. Cómo aplicar el cambio
+## 3. Mapeo de Constantes en el Código
+Debes reemplazar el valor `'PENDING_RCC'` por el número obtenido en `wp-content/themes/gano-child/functions.php`.
 
-1. Editar `functions.php` en el child theme (o desplegar desde repo tras commit).
-2. **Opción más segura:** definir los `define()` vía `wp-config.php` o MU-plugin **solo en el servidor** si no quieres pfids en git — entonces no reemplazar en el archivo versionado y documentar el patrón en runbook interno.
-3. Tras cambiar: probar un CTA “Comprar” en **staging** primero; la URL debe parecerse a `cart.secureserver.net` con `plid` y `items` JSON (ver comentarios en `functions.php`).
+| Constante PHP | Producto Comercial | Categoría RCC |
+| :--- | :--- | :--- |
+| `GANO_PFID_HOSTING_ECONOMIA` | **Núcleo Prime** | Web Hosting -> WordPress Economy |
+| `GANO_PFID_HOSTING_DELUXE` | **Fortaleza Delta** | Web Hosting -> WordPress Deluxe |
+| `GANO_PFID_HOSTING_PREMIUM` | **Bastión SOTA** | Web Hosting -> WordPress Premium |
+| `GANO_PFID_HOSTING_ULTIMATE` | **Ultimate WP** | Web Hosting -> WordPress Ultimate |
+| `GANO_PFID_SSL_DELUXE` | **SSL Deluxe** | SSL & Seguridad -> SSL DV Deluxe |
+| `GANO_PFID_SECURITY_ULTIMATE` | **Security Ultimate** | SSL & Seguridad -> Website Security Premium |
+| `GANO_PFID_M365_PREMIUM` | **M365 Premium** | Email & Office -> M365 Business Premium |
+| `GANO_PFID_ONLINE_STORAGE` | **Online Storage** | Email & Office -> Online Storage 1 TB |
 
-## 5. Validación rápida
+---
 
-- Clic en comprar desde una fila del shop: no debe quedarse en `#` si pfid y pl_id están configurados.
-- Revisar consola del navegador por errores de red al abrir el carrito.
+## 4. Validación del Checkout
+Una vez configurados los PFIDs y el PLID:
 
-## Referencias
+1. Ve a la página de **Ecosistemas** (`/ecosistemas`).
+2. Haz clic en un botón de **Comprar**.
+3. Deberías ser redirigido a `cart.secureserver.net` con tu marca blanca y el producto en el carrito.
+4. Verifica que el precio coincida con el configurado en el RCC.
 
-- `TASKS.md` — Fase 4 Reseller.
-- `memory/sessions/2026-04-03-consolidacion-prs-copilot.md` — modelo pfid en main post-PR #52.
+---
+
+## Referencias Técnicas
+*   **Lógica de URL**: La función `gano_rstore_cart_url()` en `functions.php` construye la URL dinámicamente.
+*   **Tareas Globales**: Ver [TASKS.md](../../TASKS.md) Fase 4.
+*   **Integración**: Ver [shop-premium.php](../../wp-content/themes/gano-child/templates/shop-premium.php) para ver dónde se disparan estos IDs.

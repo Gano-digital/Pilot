@@ -1,0 +1,269 @@
+═══════════════════════════════════════════════════════════════════════════════
+        🗂️  MAPA DE DESPLIEGUE — ESTRUCTURA DE ARCHIVOS STAGING
+═══════════════════════════════════════════════════════════════════════════════
+
+ANTES DE INSTALAR:
+─────────────────────────────────────────────────────────────────────────────
+
+public_html/staging/
+│
+├── wp-content/
+│   ├── plugins/
+│   │   └── gano-content-importer/
+│   │       ├── gano-content-importer.php (v1.0 - VIEJO)
+│   │       └── README.md
+│   │
+│   └── themes/
+│       └── gano-child/
+│           ├── style.css
+│           └── functions.php
+│
+└── wp-admin/
+    └── ... (WordPress admin files)
+
+
+DESPUÉS DE INSTALAR:
+─────────────────────────────────────────────────────────────────────────────
+
+public_html/staging/
+│
+├── wp-content/
+│   ├── plugins/
+│   │   └── gano-content-importer/
+│   │       ├── gano-content-importer.php ✅ (v2.0 - NUEVO)
+│   │       ├── gano-content-importer-v2.0.php (backup v2.0)
+│   │       ├── README.md ✅
+│   │       │
+│   │       └── js/
+│   │           └── scroll-reveal.js ✅ (NUEVO)
+│   │
+│   └── themes/
+│       └── gano-child/
+│           ├── style.css
+│           ├── functions.php
+│           └── gano-sota-animations.css ✅ (NUEVO)
+│
+└── wp-admin/
+    └── ... (WordPress admin files)
+
+
+═══════════════════════════════════════════════════════════════════════════════
+ 📋 CHECKLIST DE ARCHIVOS A COPIAR
+═══════════════════════════════════════════════════════════════════════════════
+
+De TU MÁQUINA LOCAL:
+─────────────────────────────────────────────────────────────────────────────
+
+❑ wp-content/plugins/gano-content-importer/gano-content-importer.php
+  Tamaño: 55 KB
+  Acción: REEMPLAZAR archivo existente (v1.0 → v2.0)
+  Destino: /wp-content/plugins/gano-content-importer/gano-content-importer.php
+
+❑ wp-content/plugins/gano-content-importer/js/scroll-reveal.js
+  Tamaño: 4.2 KB
+  Acción: COPIAR NUEVA CARPETA
+  Destino: /wp-content/plugins/gano-content-importer/js/scroll-reveal.js
+
+❑ wp-content/plugins/gano-content-importer/README.md
+  Tamaño: 8.8 KB
+  Acción: REEMPLAZAR (actualización de docs)
+  Destino: /wp-content/plugins/gano-content-importer/README.md
+
+❑ wp-content/themes/gano-child/gano-sota-animations.css
+  Tamaño: 14 KB
+  Acción: COPIAR NUEVO ARCHIVO
+  Destino: /wp-content/themes/gano-child/gano-sota-animations.css
+
+
+═══════════════════════════════════════════════════════════════════════════════
+ 🔍 VERIFICACIÓN DE INTEGRIDAD POST-INSTALACIÓN
+═══════════════════════════════════════════════════════════════════════════════
+
+Después de copiar, verifica:
+
+1️⃣  PERMISOS DE ARCHIVO
+─────────────────────────────────────────────────────────────────────────────
+SSH Command (si tienes acceso terminal):
+
+cd /home/[usuario]/public_html/staging/wp-content/plugins/gano-content-importer/
+chmod 644 gano-content-importer.php
+chmod 755 js/
+chmod 644 js/scroll-reveal.js
+chmod 644 README.md
+
+cd /home/[usuario]/public_html/staging/wp-content/themes/gano-child/
+chmod 644 gano-sota-animations.css
+
+✅ Verifica que el propietario sea el usuario del hosting (no root)
+
+
+2️⃣  VALIDACIÓN DE CÓDIGO PHP
+─────────────────────────────────────────────────────────────────────────────
+
+Si tienes acceso SSH:
+
+php -l /home/usuario/public_html/staging/wp-content/plugins/gano-content-importer/gano-content-importer.php
+
+Output esperado:
+  ✓ No syntax errors detected in gano-content-importer.php
+
+
+3️⃣  VERIFICACIÓN EN WORDPRESS ADMIN
+─────────────────────────────────────────────────────────────────────────────
+
+Dashboard → Plugins → Plugins Instalados
+
+Deberías ver en la lista:
+  ☑ Gano Digital — Content Hub Importer v2.0
+     Description: "Importa automáticamente las 20 páginas del Hub..."
+     Author: Gano Digital Dev
+     Version: 2.0.0
+     Status: Inactivo (waiting to activate)
+
+Si NO aparece:
+  → Verifica que gano-content-importer.php esté en la carpeta correcta
+  → Verifica header del plugin: "Plugin Name:" en línea 3
+  → Recarga la página
+
+
+4️⃣  VALIDACIÓN DE ARCHIVOS CSS Y JS
+─────────────────────────────────────────────────────────────────────────────
+
+Abre DevTools (F12) en cualquier página del sitio:
+
+Console tab → Verifica que NO haya errores 404:
+  ✗ GET /wp-content/plugins/gano-content-importer/js/scroll-reveal.js 404
+  ✗ GET /wp-content/themes/gano-child/gano-sota-animations.css 404
+
+Si ves errores 404:
+  → Verifica que los archivos realmente existan en las carpetas
+  → Verifica la ruta exacta (sin typos)
+  → Revisa permisos (chmod 644)
+
+
+═══════════════════════════════════════════════════════════════════════════════
+ 🔗 ESTRUCTURA DE URLs POST-INSTALACIÓN
+═══════════════════════════════════════════════════════════════════════════════
+
+Las páginas SOTA serán accesibles en:
+
+https://staging.gano.digital/?page_id=1234  (forma con ID)
+https://staging.gano.digital/arquitectura-nvme/  (forma amigable, si rewrite activo)
+
+Estados de página:
+  ✓ DRAFT → Solo visible para admins en admin panel
+  ✓ PUBLICADA → Visible públicamente con animaciones
+
+
+═══════════════════════════════════════════════════════════════════════════════
+ ⚠️  PROBLEMAS COMUNES Y SOLUCIONES
+═══════════════════════════════════════════════════════════════════════════════
+
+PROBLEMA: "El plugin no aparece en WordPress"
+─────────────────────────────────────────────────────────────────────────────
+✓ Solución 1: Verifica ruta exacta del archivo
+  /wp-content/plugins/gano-content-importer/gano-content-importer.php
+
+✓ Solución 2: Verifica encabezado del plugin (primeras 10 líneas)
+  Debe tener: Plugin Name, Description, Version, Author
+
+✓ Solución 3: Refresca la página
+  Dashboard → Plugins → (reload F5)
+
+✓ Solución 4: Verifica que PHP 7.4+ esté instalado
+  wp-cli: wp --version && php -v
+
+
+PROBLEMA: "Plugin activado pero no crea páginas"
+─────────────────────────────────────────────────────────────────────────────
+✓ Solución 1: Revisa debug.log
+  /wp-content/debug.log
+
+✓ Solución 2: Verifica permisos de BD
+  El usuario MySQL debe tener permisos INSERT en tabla wp_posts
+
+✓ Solución 3: Desactiva otros plugins
+  Algunos plugins pueden interferir con hooks de activation
+
+
+PROBLEMA: "CSS y JS no cargan (404 errors)"
+─────────────────────────────────────────────────────────────────────────────
+✓ Solución 1: Copia archivos nuevamente
+  Asegúrate de que existan:
+  - /js/scroll-reveal.js
+  - /wp-content/themes/gano-child/gano-sota-animations.css
+
+✓ Solución 2: Limpia caché
+  Si usas cache plugin: Dashboard → Settings → Clear All Cache
+
+✓ Solución 3: Verifica permiso de lectura (644)
+  chmod 644 /path/to/gano-sota-animations.css
+
+
+PROBLEMA: "Las páginas se ven feas sin estilos"
+─────────────────────────────────────────────────────────────────────────────
+✓ Solución 1: Verifica que gano-child theme esté ACTIVO
+  Dashboard → Appearance → Themes → Activa "Hello Elementor Child"
+
+✓ Solución 2: Fuerza reload CSS
+  Dashboard → Appearance → Customize → Refresh
+
+✓ Solución 3: Copia el CSS nuevamente
+  Asegúrate que esté en: wp-content/themes/gano-child/
+
+
+═══════════════════════════════════════════════════════════════════════════════
+ 📊 DIAGRAMA DE ACTIVACIÓN DEL PLUGIN
+═══════════════════════════════════════════════════════════════════════════════
+
+Dashboard Admin
+      ↓
+Plugins → Instalados
+      ↓
+Buscar: "Gano Digital Content Hub"
+      ↓
+Click [Activar]
+      ↓
+WordPress ejecuta: register_activation_hook()
+      ↓
+gano_import_content_hub_v2() se ejecuta
+      ↓
+╔════════════════════════════════════════════════════╗
+║  Crea 20 nuevas páginas en la BD                  ║
+║  ✓ Inserta en tabla wp_posts (20 rows)             ║
+║  ✓ Inserta metadata en wp_postmeta                 ║
+║  ✓ Asigna categorías (taxonomía)                   ║
+║  ✓ Carga featured images de /uploads/              ║
+║  Tiempo: 3-5 segundos                              ║
+╚════════════════════════════════════════════════════╝
+      ↓
+Dashboard muestra: "Plugin activado"
+      ↓
+Nuevas páginas aparecen en: Dashboard → Páginas → Todas
+
+
+═══════════════════════════════════════════════════════════════════════════════
+ ✅ CONFIRMACIÓN DE ÉXITO
+═══════════════════════════════════════════════════════════════════════════════
+
+Cuando todo está correcto verás:
+
+1. Dashboard → Plugins → Inactivos
+   ✓ "Gano Digital — Content Hub Importer v2.0" (status: ACTIVO)
+
+2. Dashboard → Páginas → Todas las Páginas
+   ✓ 20 nuevas páginas con status DRAFT
+   ✓ Títulos: Arquitectura NVMe, Zero-Trust, etc.
+
+3. Abre DevTools en cualquier página publicada
+   ✓ Console: "Scroll reveal initialized ✅"
+   ✓ Networks: CSS y JS cargan sin 404s
+
+4. Lighthouse (F12 → Lighthouse)
+   ✓ Performance: 85+/100
+   ✓ Accessibility: 90+/100
+   ✓ SEO: 95+/100
+
+═══════════════════════════════════════════════════════════════════════════════
+                              ✨ ¡LISTO!
+═══════════════════════════════════════════════════════════════════════════════
