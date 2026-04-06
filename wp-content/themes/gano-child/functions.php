@@ -120,7 +120,9 @@ function gano_main_content_anchor(): void {
 }
 
 // =============================================================================
-// 1c. MENÚS — ubicación 'primary' (Elementor / muchos kits); el padre solo registra 'main'
+// 1c. MENÚS — ubicaciones 'primary', 'header' y 'footer'
+//     Hello Elementor registra 'main'; kits de Elementor usan 'primary' o 'header'.
+//     Se registran las tres para que el widget Nav Menu de Elementor las muestre.
 // =============================================================================
 
 add_action( 'after_setup_theme', 'gano_child_register_nav_menus', 20 );
@@ -128,38 +130,72 @@ function gano_child_register_nav_menus(): void {
     register_nav_menus(
         array(
             'primary' => esc_html__( 'Menú principal (header / Elementor)', 'gano-child' ),
+            'header'  => esc_html__( 'Menú de cabecera (Hello Elementor Kit)', 'gano-child' ),
+            'footer'  => esc_html__( 'Menú de pie de página', 'gano-child' ),
         )
     );
 }
 
 /**
- * Fallback: si 'primary' no tiene menú asignado, copia desde 'main' o usa
- * el primer menú disponible. Cubre instalaciones donde gano-phase3-content
- * fue activado antes de que esta lógica existiera.
- * get_theme_mod() usa el caché de opciones de WP, así que el early-return
- * (caso ya configurado) no implica consulta a la BD.
+ * Asigna automáticamente el primer menú disponible a todas las ubicaciones
+ * que estén vacías: 'primary', 'header' y 'footer'.
+ *
+ * Orden de preferencia para el ID de menú:
+ *   1. Ubicación 'main' — registrada por Hello Elementor (tema padre); se reutiliza
+ *      para no duplicar el menú si el usuario ya lo configuró allí.
+ *   2. Primer menú registrado en la BD.
+ *
+ * Hooks:
+ *   - init: cubre cualquier visita de frontend/admin antes de que el administrador
+ *     asigne los menús manualmente. get_theme_mod() usa cache de opciones, por lo que
+ *     el early-return (caso ya configurado) es una operación O(1) sin consulta a BD.
+ *   - after_switch_theme: cubre activaciones en frío (instalación nueva). Cuando ambos
+ *     hooks se disparan en la misma petición (cambio de tema), la segunda llamada
+ *     hace early-return porque la primera ya guardó los valores.
  */
-add_action( 'init', 'gano_child_assign_primary_menu_fallback' );
-function gano_child_assign_primary_menu_fallback(): void {
+add_action( 'init', 'gano_child_assign_nav_menu_locations' );
+add_action( 'after_switch_theme', 'gano_child_assign_nav_menu_locations' );
+function gano_child_assign_nav_menu_locations(): void {
     $locations = get_theme_mod( 'nav_menu_locations', [] );
 
-    if ( ! empty( $locations['primary'] ) ) {
-        return; // Ya está configurado — no hacer nada.
-    }
+    // Ubicaciones gestionadas por este tema (child).
+    $managed = [ 'primary', 'header', 'footer' ];
 
-    // Copiar desde 'main' si existe.
-    if ( ! empty( $locations['main'] ) ) {
-        $locations['primary'] = $locations['main'];
-        set_theme_mod( 'nav_menu_locations', $locations );
+    // Early-return si todas las ubicaciones ya tienen un menú válido asignado.
+    $empty_locs = array_filter(
+        $managed,
+        static fn( string $loc ) => empty( $locations[ $loc ] )
+    );
+    if ( empty( $empty_locs ) ) {
         return;
     }
 
-    // Último recurso: usar el primer menú registrado.
-    $menus = wp_get_nav_menus();
-    if ( ! empty( $menus ) ) {
-        $locations['primary'] = $menus[0]->term_id;
-        set_theme_mod( 'nav_menu_locations', $locations );
+    // Determinar el ID de menú a asignar.
+    $menu_id = 0;
+
+    // 1. Reutilizar 'main' si el tema padre ya lo tiene asignado.
+    if ( ! empty( $locations['main'] ) ) {
+        $menu_id = (int) $locations['main'];
     }
+
+    // 2. Usar cualquier menú existente en la BD.
+    if ( ! $menu_id ) {
+        $menus = wp_get_nav_menus();
+        if ( ! empty( $menus ) ) {
+            $menu_id = (int) $menus[0]->term_id;
+        }
+    }
+
+    if ( ! $menu_id ) {
+        return; // No hay menús en el sistema; nada que asignar.
+    }
+
+    // Asignar $menu_id a todas las ubicaciones que estén vacías.
+    foreach ( $empty_locs as $loc ) {
+        $locations[ $loc ] = $menu_id;
+    }
+
+    set_theme_mod( 'nav_menu_locations', $locations );
 }
 
 // =============================================================================
