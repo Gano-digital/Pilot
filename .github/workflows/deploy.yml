@@ -9,6 +9,7 @@ on:
       - 'wp-content/plugins/gano-*/**'
       - 'wp-content/mu-plugins/**'
       - '.htaccess'
+      - '.github/workflows/deploy.yml'
 
   workflow_dispatch:
     inputs:
