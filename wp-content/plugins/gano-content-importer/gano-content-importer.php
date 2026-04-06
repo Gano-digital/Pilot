@@ -64,12 +64,53 @@ function gano_import_content_hub_v2() {
         $imported_count++;
     }
 
+    // Create the SOTA Hub page if it doesn't exist yet.
+    $hub_id = gano_create_sota_hub_page();
+
     update_option( 'gano_sota_import_stats', [
         'version'       => GANO_CONTENT_IMPORTER_VERSION,
         'imported'      => $imported_count,
         'errors'        => $error_count,
+        'hub_page_id'   => $hub_id,
         'timestamp'     => current_time( 'mysql' ),
     ] );
+}
+
+/**
+ * Creates the Hub de Innovación SOTA page as a draft if it does not exist.
+ *
+ * @return int|false Post ID on success, false on failure.
+ */
+function gano_create_sota_hub_page() {
+    $existing = get_page_by_path( 'hub-sota', OBJECT, 'page' );
+    if ( $existing ) {
+        return $existing->ID;
+    }
+
+    $admin_user = get_users( [ 'role' => 'administrator', 'number' => 1, 'fields' => 'ID' ] );
+    $author_id  = ! empty( $admin_user ) ? (int) $admin_user[0] : 1;
+
+    $post_id = wp_insert_post( [
+        'post_title'   => 'Hub de Innovación SOTA',
+        'post_name'    => 'hub-sota',
+        'post_content' => '',
+        'post_status'  => 'draft',
+        'post_type'    => 'page',
+        'post_author'  => $author_id,
+        'meta_input'   => [
+            '_wp_page_template'       => 'templates/page-sota-hub.php',
+            '_gano_sota_hub'          => '1',
+            '_gano_sota_version'      => GANO_CONTENT_IMPORTER_VERSION,
+            '_gano_sota_created_date' => current_time( 'mysql' ),
+        ],
+    ] );
+
+    if ( is_wp_error( $post_id ) ) {
+        error_log( 'gano-content-importer: error creating hub page — ' . $post_id->get_error_message() );
+        return false;
+    }
+
+    return $post_id;
 }
 
 register_deactivation_hook( __FILE__, 'gano_content_importer_deactivate' );
