@@ -38,6 +38,11 @@ gh run list --repo Gano-digital/Pilot --limit 15
 - No pegar **SSH keys** ni tokens en issues.
 - No desactivar el ruleset sin consenso.
 
+## Copilot coding agent — modelos (GitHub.com)
+
+- No se configuran en YAML del repo. **Org → Copilot → Models** (owner) + **model picker** al asignar Copilot al issue.
+- `memory/ops/github-copilot-agent-models-2026-04.md`
+
 ## Referencias en el repo
 
 - `memory/ops/github-github-ops-sota-2026-04.md`

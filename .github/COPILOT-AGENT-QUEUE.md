@@ -22,6 +22,10 @@
 4. Abre **Issues** y asigna al agente (individual o masivo). En el modal, pega el **prompt adicional** desde [`.github/prompts/copilot-bulk-assign.md`](prompts/copilot-bulk-assign.md): hay bloques para **oleada 1**, **oleada 3**, **oleada 4**, **infra**, **API**, **guardián seguridad** — usa el que corresponda al lote.
 5. Revisa CI (`php-lint`, TruffleHog en rutas Gano) antes de fusionar. Orden sugerido de fusión: [MERGE-PLAYBOOK.md](MERGE-PLAYBOOK.md).
 
+## Modelo de IA del agente (Opus, Sonnet, Auto — GitHub.com)
+
+No se configura en un archivo del repo. El **owner** de la org debe habilitar modelos en **Org → Settings → Copilot → Models**; al **asignar Copilot** a un issue, usa el **model picker** (Auto, Claude Sonnet/Opus, GPT-Codex, etc.). Guía: [`memory/ops/github-copilot-agent-models-2026-04.md`](../memory/ops/github-copilot-agent-models-2026-04.md).
+
 ## Requisitos
 
 - Plan / política org que permita **Copilot coding agent** en el repo.

@@ -127,6 +127,13 @@ No eliminar ni desactivar de forma permanente los plugins `gano-phase*` hasta co
 
 - Hay PRs automáticos para **GitHub Actions** y para **npm** bajo `.gsd` / `.gsd/sdk`. Agrupar actualizaciones reduce ruido; revisar changelog de `vite`/`vitest` si toca el tooling de tests.
 
+### GitHub Copilot cloud agent — modelo (no es este archivo)
+
+La **elección del modelo** (Auto, Claude Sonnet/Opus, GPT-Codex, etc.) ocurre en **github.com** al asignar el agente a un issue o al iniciar la tarea desde Agents; depende del **plan** y de las **políticas de modelos** de la organización. No se fija aquí.
+
+- Guía operativa: `memory/ops/github-copilot-agent-models-2026-04.md`
+- Políticas org: [GitHub Docs — Copilot policies](https://docs.github.com/en/copilot/concepts/policies)
+
 ## Narrativa y marca (High-Ticket)
 
 Tono **"Manifiesto Técnico"** (autoritario, visionario, sofisticado y soberano).

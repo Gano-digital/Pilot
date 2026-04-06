@@ -1,5 +1,15 @@
 # Prompt adicional — asignación masiva al agente (Copilot)
 
+## Modelo (GitHub.com) — antes de pegar este prompt
+
+Al **asignar Copilot** al issue en github.com, abre el **selector de modelo** si tu plan lo muestra:
+
+- Tareas **complejas** (seguridad, MU-plugins, refactors amplios): **Claude Opus** (o el Opus más alto disponible).
+- **Mayoría de issues** de código/docs en `gano-child` / plugins Gano: **Claude Sonnet** suele ser buen equilibrio.
+- Si hay límites o colas: **Auto** (elige GitHub según disponibilidad).
+
+El **owner** de la org debe tener habilitados los modelos en **Organization → Settings → Copilot → Models**. Detalle: `memory/ops/github-copilot-agent-models-2026-04.md`.
+
 ## Qué pegar según el lote (no mezclar)
 
 | Lote | Issues | Qué usar |

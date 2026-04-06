@@ -52,6 +52,10 @@ Marca lo que vayas aplicando.
 
 No se gestiona desde GitHub; ver **`memory/ops/cursor-models-y-plan-2026-04.md`** y la skill **`.gano-skills/gano-cursor-models/`**.
 
+## GitHub Copilot coding agent — modelos (web)
+
+Selector de modelo al asignar el agente; políticas org en **Copilot → Models**. Ver **`memory/ops/github-copilot-agent-models-2026-04.md`**.
+
 ## Referencias externas
 
 - [Repository custom instructions](https://docs.github.com/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot)
