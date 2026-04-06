@@ -24,6 +24,7 @@ get_header(); ?>
       <!-- FORMULARIO -->
       <div class="gano-contacto__form">
         <h2>Escríbenos</h2>
+        <?php gano_contacto_print_error_notice(); ?>
         <?php
         // Si hay Contact Form 7 instalado, usa el shortcode aquí:
         // echo do_shortcode('[contact-form-7 id="..." title="Contacto Gano"]');

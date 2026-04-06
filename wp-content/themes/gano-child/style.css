@@ -1629,3 +1629,45 @@ select:focus-visible {
         transition: none;
     }
 }
+
+/* --------------------------------------------------------------------------
+   Contacto — avisos de error (formulario nativo)
+   -------------------------------------------------------------------------- */
+.gano-form-notice--error {
+    background: rgba(220, 38, 38, 0.12);
+    border: 1px solid rgba(220, 38, 38, 0.35);
+    border-radius: 8px;
+    padding: 0.875rem 1rem;
+    margin-bottom: 1.25rem;
+    color: #fecaca;
+    font-size: 0.9375rem;
+}
+
+.gano-form-notice--error p {
+    margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   WooCommerce — carrito vacío (microcopy §4a)
+   -------------------------------------------------------------------------- */
+.gano-empty-cart {
+    max-width: 28rem;
+    margin: 2rem auto;
+    padding: 2rem 1.5rem;
+    text-align: center;
+}
+
+.gano-empty-cart p {
+    margin: 0 0 0.75rem;
+    line-height: 1.55;
+}
+
+.gano-empty-cart p:first-child strong {
+    font-size: 1.125rem;
+    color: var(--gano-text-heading, #0f172a);
+}
+
+.gano-empty-cart .gano-btn {
+    display: inline-block;
+    margin-top: 0.5rem;
+}

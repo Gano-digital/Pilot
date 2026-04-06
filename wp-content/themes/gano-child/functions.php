@@ -13,6 +13,7 @@
 // =============================================================================
 
 require_once get_stylesheet_directory() . '/inc/homepage-blocks.php';
+require_once get_stylesheet_directory() . '/inc/contact-form-handler.php';
 
 // =============================================================================
 // 1. ENQUEUE DE ESTILOS Y SCRIPTS
