@@ -836,6 +836,38 @@ function gano_get_sota_categories(): array {
 	];
 }
 
+// =============================================================================
+// CD-CONTENT-006 — WOOCOMMERCE MICROCOPY (carrito vacío)
+//   Referencia: memory/content/microcopy-wave3-kit.md §4a
+// =============================================================================
+
+/**
+ * Reemplaza el mensaje de carrito vacío de WooCommerce con copy de marca.
+ * Pronombre: tú (contexto marketing). role="status" para lectores de pantalla.
+ */
+add_filter( 'woocommerce_empty_cart_message', 'gano_child_empty_cart_message' );
+function gano_child_empty_cart_message(): string {
+    ob_start();
+    ?>
+    <div class="gano-empty-cart" role="status">
+      <p><strong>Tu carrito está vacío</strong></p>
+      <p>Aún no has agregado ningún ecosistema a tu pedido.</p>
+      <p style="color:#64748b; font-size:.9rem; margin-bottom:1.25rem;">
+        ¿No sabes por dónde empezar? Compara los ecosistemas o cuéntanos sobre tu sitio y te orientamos.
+      </p>
+      <a href="<?php echo esc_url( home_url( '/ecosistemas' ) ); ?>" class="gano-btn">
+        Ver arquitecturas y planes
+      </a>
+      &ensp;
+      <a href="<?php echo esc_url( home_url( '/contacto' ) ); ?>"
+         style="font-weight:600; color:var(--gano-blue,#2952CC);">
+        Hablar con el equipo
+      </a>
+    </div>
+    <?php
+    return (string) ob_get_clean();
+}
+
 /**
  * Retrieves all SOTA hub pages ordered by menu order then date.
  * Returns published and draft pages so the hub can show "En Preparación" cards.

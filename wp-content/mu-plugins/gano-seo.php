@@ -491,6 +491,11 @@ function gano_og_fallback(): void {
     echo '<meta property="og:description" content="' . esc_attr( $description ) . '">' . "\n";
     echo '<meta property="og:url"         content="' . esc_url( $url )          . '">' . "\n";
     echo '<meta property="og:image"       content="' . esc_url( $image )        . '">' . "\n";
+    // Dimensiones declaradas — evita warnings en Facebook Sharing Debugger y Twitter Card Validator
+    // Spec: memory/content/social-preview-spec-wave3.md §6 (cd-content-006)
+    echo '<meta property="og:image:width"  content="1200">' . "\n";
+    echo '<meta property="og:image:height" content="630">'  . "\n";
+    echo '<meta property="og:image:type"   content="image/webp">' . "\n";
     echo '<meta property="og:site_name"   content="' . esc_attr( $site_name )   . '">' . "\n";
     echo '<meta property="og:locale"      content="es_CO">' . "\n";
     echo '<meta name="twitter:card"       content="summary_large_image">' . "\n";
