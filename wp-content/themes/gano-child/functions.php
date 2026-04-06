@@ -740,6 +740,21 @@ function gano_rstore_cart_url( $pfid, $duration = 12 ) {
 }
 
 /**
+ * Returns the SOTA hub page categories (slug => label).
+ *
+ * @return array<string, string>
+ */
+function gano_get_sota_categories(): array {
+	return [
+		'infraestructura'         => 'Infraestructura',
+		'seguridad'               => 'Seguridad',
+		'inteligencia-artificial' => 'Inteligencia Artificial',
+		'rendimiento'             => 'Rendimiento',
+		'estrategia'              => 'Estrategia',
+	];
+}
+
+/**
  * Retrieves all SOTA hub pages ordered by menu order then date.
  * Returns published and draft pages so the hub can show "En Preparación" cards.
  *
@@ -762,5 +777,5 @@ function gano_get_sota_hub_pages(): array {
 
 	$query = new WP_Query( $args );
 
-	return $query->posts ?? [];
+	return $query->posts;
 }

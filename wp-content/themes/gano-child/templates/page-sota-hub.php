@@ -15,13 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$categories = [
-	'infraestructura'      => 'Infraestructura',
-	'seguridad'            => 'Seguridad',
-	'inteligencia-artificial' => 'Inteligencia Artificial',
-	'rendimiento'          => 'Rendimiento',
-	'estrategia'           => 'Estrategia',
-];
+$categories = gano_get_sota_categories();
 
 $sota_pages = gano_get_sota_hub_pages();
 ?>

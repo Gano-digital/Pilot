@@ -87,13 +87,16 @@ function gano_create_sota_hub_page() {
         return $existing->ID;
     }
 
+    $admin_user = get_users( [ 'role' => 'administrator', 'number' => 1, 'fields' => 'ID' ] );
+    $author_id  = ! empty( $admin_user ) ? (int) $admin_user[0] : 1;
+
     $post_id = wp_insert_post( [
         'post_title'   => 'Hub de Innovación SOTA',
         'post_name'    => 'hub-sota',
         'post_content' => '',
         'post_status'  => 'draft',
         'post_type'    => 'page',
-        'post_author'  => 1,
+        'post_author'  => $author_id,
         'meta_input'   => [
             '_wp_page_template'       => 'templates/page-sota-hub.php',
             '_gano_sota_hub'          => '1',
