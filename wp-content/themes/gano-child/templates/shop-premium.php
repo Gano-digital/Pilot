@@ -133,6 +133,99 @@ get_header();
     <div class="doodle constellation" style="top: 10%; right: -5%;"></div>
     <div class="doodle constellation" style="bottom: 10%; left: -5%;"></div>
 
+    <!-- SC CONSTELLATION OVERLAYS ─────────────────────────────── -->
+    <!-- Activados sólo con btnMenu o tecla M. No intrusivos.      -->
+
+    <!-- Overlay TL (top-left) — leyenda de estado -->
+    <aside id="sc-overlay-tl"
+           class="sc-overlay sc-overlay--tl"
+           aria-label="Leyenda de estado SOTA"
+           aria-hidden="true">
+        <span class="sc-overlay__title">Estado · Gano SOTA</span>
+        <dl class="sc-legend">
+            <div class="sc-legend__item">
+                <dt class="sc-legend__label">NVMe Gen4</dt>
+                <dd class="sc-legend__value">ONLINE</dd>
+            </div>
+            <div class="sc-legend__item">
+                <dt class="sc-legend__label">Zero-Trust</dt>
+                <dd class="sc-legend__value">ACTIVO</dd>
+            </div>
+            <div class="sc-legend__item">
+                <dt class="sc-legend__label">CDN Edge</dt>
+                <dd class="sc-legend__value">OK</dd>
+            </div>
+            <div class="sc-legend__item">
+                <dt class="sc-legend__label">Uptime</dt>
+                <dd class="sc-legend__value">99.9%</dd>
+            </div>
+        </dl>
+    </aside>
+
+    <!-- Overlay TR (top-right) — portales de acceso rápido -->
+    <aside id="sc-overlay-tr"
+           class="sc-overlay sc-overlay--tr"
+           aria-label="Portales de acceso rápido"
+           aria-hidden="true">
+        <span class="sc-overlay__title">Portales</span>
+        <nav class="sc-portal" aria-label="Accesos directos SOTA">
+            <a class="sc-portal__link" href="#catalog">→ Catálogo</a>
+            <a class="sc-portal__link" href="#pillars-preview">→ Arquitectura</a>
+            <a class="sc-portal__link" href="<?php echo esc_url( home_url( '/contacto' ) ); ?>">→ Contacto</a>
+        </nav>
+    </aside>
+
+    <!-- Modal SC (visible sólo en mobile ≤ 480 px) -->
+    <div id="sc-modal"
+         class="sc-modal"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="sc-modal-title"
+         aria-hidden="true">
+        <div class="sc-modal__inner">
+            <header class="sc-modal__header">
+                <span id="sc-modal-title" class="sc-modal__title">Panel SOTA</span>
+                <button id="sc-modal-close"
+                        class="sc-modal__close"
+                        aria-label="Cerrar panel SOTA">✕</button>
+            </header>
+
+            <!-- Leyenda -->
+            <p class="sc-modal__section-title">Estado</p>
+            <dl class="sc-legend sc-legend--modal">
+                <div class="sc-legend__item">
+                    <dt class="sc-legend__label">NVMe Gen4</dt>
+                    <dd class="sc-legend__value">ONLINE</dd>
+                </div>
+                <div class="sc-legend__item">
+                    <dt class="sc-legend__label">CDN Edge</dt>
+                    <dd class="sc-legend__value">OK</dd>
+                </div>
+                <div class="sc-legend__item">
+                    <dt class="sc-legend__label">Uptime</dt>
+                    <dd class="sc-legend__value">99.9%</dd>
+                </div>
+            </dl>
+
+            <!-- Portales -->
+            <p class="sc-modal__section-title">Portales</p>
+            <nav class="sc-portal" aria-label="Accesos directos móvil">
+                <a class="sc-portal__link" href="#catalog">→ Catálogo</a>
+                <a class="sc-portal__link" href="#pillars-preview">→ Arquitectura</a>
+                <a class="sc-portal__link" href="<?php echo esc_url( home_url( '/contacto' ) ); ?>">→ Contacto</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Botón de activación del panel SC (btnMenu) -->
+    <button id="sc-btn-menu"
+            class="sc-btn-menu"
+            aria-label="Abrir panel de estado SOTA"
+            aria-expanded="false"
+            aria-controls="sc-overlay-tl sc-overlay-tr sc-modal"
+            title="Panel SC (M)">⊞</button>
+    <!-- ─────────────────────────────────────────────────────────── -->
+
     <!-- HERO -->
     <section class="sota-hero">
         <div class="hero-bg-text" style="color: rgba(99, 102, 241, 0.03);">ENGINEERING</div>
