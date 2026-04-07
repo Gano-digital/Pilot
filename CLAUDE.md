@@ -138,6 +138,7 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `memory/research/fase4-plataforma.md` | **NUEVO** Investigación completa Fase 4 |
 | `memory/sessions/2026-04-01-reporte-cursor-descargas-y-herramientas.md` | **2026-04-01** Reporte de sesión Cursor: Descargas, `EJECUTAR_ANALISIS.ps1`, organización de folios, seguridad (`id_rsa` → `.ssh`). Continuidad para Claude. |
 | `memory/sessions/2026-04-02-reporte-handoff-godaddy-api-reseller-whmcs.md` | **2026-04-02** Handoff: GoDaddy Developer API vs Reseller Store, Good as Gold, WHMCS, pendientes y guardrails para Claude. |
+| `memory/sessions/2026-04-07-audit-github-pr-issues.md` | **2026-04-07** Auditoría GitHub: PR #136, issue #29, bloqueos merge (CodeQL/Vercel), estado rama local. |
 | `memory/claude/README.md` | **Contexto para Claude** — historial abril 2026, pendientes, FAQ; [`memory/claude/dispatch-queue.json`](memory/claude/dispatch-queue.json) + [`dispatch-prompt.md`](memory/claude/dispatch-prompt.md) cola ejecutable con `scripts/claude_dispatch.py`. |
 | `memory/ops/agent-playbook-asistentes-2026-04.md` | **Agentes + Actions + asistentes:** arranque, troubleshooting, cerrar issues, re-lanzar colas 08/09, offloading solo humano. |
 | `.vscode/tasks.json` | Tareas **Run Task** para dispatch (`next`, `list`, `validate`, `show`, `complete`) y validación cola Copilot. |
