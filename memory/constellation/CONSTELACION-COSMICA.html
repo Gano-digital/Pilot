@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Constelación Cósmica — Gano Digital</title>
+  <style>
+    /* ── Design tokens ─────────────────────────────────────────────── */
+    :root {
+      --gano-blue:   #1B4FD8;
+      --gano-green:  #00C26B;
+      --gano-orange: #FF6B35;
+      --gano-gold:   #D4AF37;
+      --gano-dark:   #0F1923;
+
+      --hud-bg:     rgba(15, 25, 35, 0.82);
+      --hud-border: rgba(27, 79, 216, 0.45);
+      --hud-text:   #e8f0fe;
+      --overlay-grid-color:   rgba(0, 194, 107, 0.18);
+      --overlay-nebula-color: rgba(255, 107, 53, 0.12);
+      --overlay-vortex-color: rgba(27, 79, 216, 0.14);
+      --reduce-motion: 0;  /* overridden by media query below */
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :root { --reduce-motion: 1; }
+    }
+
+    /* ── Reset / base ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--gano-dark);
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--hud-text);
+    }
+
+    /* ── Three.js canvas ───────────────────────────────────────────── */
+    #canvas3d {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      cursor: crosshair;
+    }
+
+    /* ── HUD root ──────────────────────────────────────────────────── */
+    /*
+     * Pointer-events: none on the HUD container so mouse falls through
+     * to the canvas. Interactive children re-enable pointer-events.
+     */
+    #hud {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    /* ── Panel (left side) ─────────────────────────────────────────── */
+    #panel {
+      position: absolute;
+      top: 24px; left: 24px;
+      width: 220px;
+      background: var(--hud-bg);
+      border: 1px solid var(--hud-border);
+      border-radius: 12px;
+      padding: 18px 16px;
+      pointer-events: auto;
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      transition: opacity .25s;
+    }
+    #panel h2 {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-size: .85rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--gano-blue);
+      margin-bottom: 12px;
+    }
+    #panel ul { list-style: none; }
+    #panel ul li {
+      font-size: .78rem;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      cursor: pointer;
+      transition: color .15s;
+    }
+    #panel ul li:last-child { border-bottom: none; }
+    #panel ul li:hover { color: var(--gano-green); }
+    #panel ul li.active { color: var(--gano-gold); font-weight: 600; }
+
+    /* ── Tooltip ───────────────────────────────────────────────────── */
+    #tooltip {
+      position: absolute;
+      background: var(--hud-bg);
+      border: 1px solid var(--hud-border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: .78rem;
+      line-height: 1.5;
+      pointer-events: none;        /* never intercepts, follows cursor */
+      opacity: 0;
+      transition: opacity .15s;
+      max-width: 200px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 12;
+    }
+    #tooltip.visible { opacity: 1; }
+    #tooltip strong { color: var(--gano-orange); display: block; margin-bottom: 4px; }
+
+    /* ── Indexer (bottom bar) ──────────────────────────────────────── */
+    #indexer {
+      position: absolute;
+      bottom: 24px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 12px; align-items: center;
+      background: var(--hud-bg);
+      border: 1px solid var(--hud-border);
+      border-radius: 30px;
+      padding: 10px 20px;
+      pointer-events: auto;
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+    }
+    .idx-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .idx-dot:hover { transform: scale(1.4); }
+    .idx-dot.active { box-shadow: 0 0 0 2px #fff; }
+
+    /* ── SC (Strategic Command) toggle button ──────────────────────── */
+    #scBtn {
+      position: absolute;
+      top: 24px; right: 24px;
+      background: rgba(27, 79, 216, 0.25);
+      border: 1px solid var(--gano-blue);
+      color: var(--hud-text);
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: .8rem;
+      letter-spacing: .08em;
+      cursor: pointer;
+      pointer-events: auto;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: background .2s, box-shadow .2s;
+    }
+    #scBtn:hover {
+      background: rgba(27, 79, 216, 0.5);
+      box-shadow: 0 0 12px rgba(27, 79, 216, .6);
+    }
+    #scBtn[aria-pressed="true"] {
+      background: var(--gano-blue);
+      box-shadow: 0 0 20px rgba(27, 79, 216, .8);
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+     * SC LAYER  — Strategic Command overlay
+     *
+     * FIX: pointer-events MUST be "none" when hidden so nothing blocks
+     * the canvas.  When the menu is open (.show), set it to "auto" so
+     * the layer captures all clicks (click-outside = close, no
+     * click-through to canvas / pickBody).
+     *
+     * Decorative overlays inside always keep pointer-events:none.
+     * Interactive children (.sc-modal, .sc-portal) re-enable auto.
+     * ══════════════════════════════════════════════════════════════════ */
+
+    .sc-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;          /* ← no block when hidden */
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity .3s, visibility 0s linear .3s;
+    }
+
+    /* When open: intercept ALL pointer events on the layer */
+    .sc-layer.show {
+      pointer-events: auto;          /* ← FIX: was none, must be auto */
+      visibility: visible;
+      opacity: 1;
+      transition: opacity .3s, visibility 0s linear 0s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .sc-layer { transition: none; }
+      .sc-layer.show { transition: none; }
+    }
+
+    /* ── SC decorative overlays ────────────────────────────────────── */
+    /* Always non-interactive — they are purely visual */
+    .sc-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;          /* decorative, never blocks clicks */
+    }
+
+    .sc-overlay.grid-overlay {
+      background-image:
+        linear-gradient(var(--overlay-grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--overlay-grid-color) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    .sc-overlay.nebula-overlay {
+      background:
+        radial-gradient(ellipse 60% 40% at 20% 30%, var(--overlay-nebula-color), transparent),
+        radial-gradient(ellipse 50% 35% at 75% 65%, var(--overlay-nebula-color), transparent);
+    }
+
+    .sc-overlay.vortex-overlay {
+      background:
+        radial-gradient(ellipse 70% 70% at 50% 50%, var(--overlay-vortex-color), transparent);
+    }
+
+    /* ── SC modal (central info panel) ────────────────────────────── */
+    .sc-modal {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(.92);
+      width: min(480px, 90vw);
+      background: rgba(15, 25, 35, 0.92);
+      border: 1px solid var(--gano-blue);
+      border-radius: 16px;
+      padding: 28px 28px 24px;
+      pointer-events: auto;          /* interactive — clicks stay here */
+      backdrop-filter: blur(28px) saturate(200%);
+      -webkit-backdrop-filter: blur(28px) saturate(200%);
+      opacity: 0;
+      transition: opacity .3s, transform .3s;
+      z-index: 22;
+    }
+    .sc-layer.show .sc-modal {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .sc-modal { transition: none; }
+    }
+
+    .sc-modal h3 {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-size: 1.1rem;
+      color: var(--gano-gold);
+      margin-bottom: 14px;
+      letter-spacing: .06em;
+    }
+    .sc-modal p {
+      font-size: .83rem;
+      line-height: 1.6;
+      color: rgba(232, 240, 254, .85);
+      margin-bottom: 16px;
+    }
+    .sc-modal-close {
+      position: absolute;
+      top: 14px; right: 16px;
+      background: none; border: none;
+      color: var(--hud-text);
+      font-size: 1.1rem;
+      cursor: pointer;
+      opacity: .6;
+      transition: opacity .15s;
+    }
+    .sc-modal-close:hover { opacity: 1; }
+    .sc-modal-actions {
+      display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    .sc-modal-actions button {
+      flex: 1;
+      background: rgba(27, 79, 216, .2);
+      border: 1px solid var(--gano-blue);
+      color: var(--hud-text);
+      padding: 9px 14px;
+      border-radius: 8px;
+      font-size: .78rem;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .sc-modal-actions button:hover { background: rgba(27, 79, 216, .5); }
+
+    /* ── SC portals ────────────────────────────────────────────────── */
+    .sc-portal {
+      position: absolute;
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      pointer-events: auto;          /* interactive — clicks stay here */
+      border: 2px solid;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: transform .2s, box-shadow .2s;
+      z-index: 21;
+      text-align: center;
+    }
+    .sc-portal:hover {
+      transform: scale(1.12);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .sc-portal { transition: none; }
+    }
+
+    .sc-portal span.icon { font-size: 1.4rem; }
+    .sc-portal span.label { font-size: .6rem; letter-spacing: .05em; text-transform: uppercase; }
+
+    .sc-portal.portal-security {
+      top: 18%; left: 12%;
+      background: rgba(0, 194, 107, .12);
+      border-color: var(--gano-green);
+      color: var(--gano-green);
+      box-shadow: 0 0 18px rgba(0, 194, 107, .2);
+    }
+    .sc-portal.portal-security:hover { box-shadow: 0 0 32px rgba(0, 194, 107, .5); }
+
+    .sc-portal.portal-speed {
+      top: 18%; right: 12%;
+      background: rgba(212, 175, 55, .12);
+      border-color: var(--gano-gold);
+      color: var(--gano-gold);
+      box-shadow: 0 0 18px rgba(212, 175, 55, .2);
+    }
+    .sc-portal.portal-speed:hover { box-shadow: 0 0 32px rgba(212, 175, 55, .5); }
+
+    .sc-portal.portal-ai {
+      bottom: 22%; left: 14%;
+      background: rgba(255, 107, 53, .12);
+      border-color: var(--gano-orange);
+      color: var(--gano-orange);
+      box-shadow: 0 0 18px rgba(255, 107, 53, .2);
+    }
+    .sc-portal.portal-ai:hover { box-shadow: 0 0 32px rgba(255, 107, 53, .5); }
+
+    .sc-portal.portal-sovereignty {
+      bottom: 22%; right: 14%;
+      background: rgba(27, 79, 216, .12);
+      border-color: var(--gano-blue);
+      color: #7aa8ff;
+      box-shadow: 0 0 18px rgba(27, 79, 216, .2);
+    }
+    .sc-portal.portal-sovereignty:hover { box-shadow: 0 0 32px rgba(27, 79, 216, .5); }
+
+    /* ── Focus ring indicator (accessibility) ──────────────────────── */
+    :focus-visible {
+      outline: 2px solid var(--gano-blue);
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Three.js canvas ── -->
+  <canvas id="canvas3d" role="img" aria-label="Constelación cósmica Gano Digital — escena 3D interactiva"></canvas>
+
+  <!-- ════════════════════════════════════════════════════
+       HUD  (pointer-events:none container; children opt in)
+       ════════════════════════════════════════════════════ -->
+  <div id="hud" role="region" aria-label="Panel de control HUD">
+
+    <!-- Left panel: planet index -->
+    <aside id="panel" aria-label="Índice de ecosistemas">
+      <h2>Ecosistemas</h2>
+      <ul id="planetList">
+        <li data-body="sol" class="active">☀ Sol — Núcleo Prime</li>
+        <li data-body="nucleo">🔵 Núcleo Prime</li>
+        <li data-body="fortaleza">🟢 Fortaleza Delta</li>
+        <li data-body="bastion">🟠 Bastión SOTA</li>
+        <li data-body="soberania">🟡 Soberanía Digital</li>
+      </ul>
+    </aside>
+
+    <!-- Tooltip: follows pointer -->
+    <div id="tooltip" role="tooltip" aria-live="polite">
+      <strong id="tooltipName"></strong>
+      <span id="tooltipDesc"></span>
+    </div>
+
+    <!-- SC command button -->
+    <button id="scBtn" aria-pressed="false" aria-controls="scLayer"
+            aria-label="Abrir menú de comando estratégico">
+      ⌬ SC MENU
+    </button>
+
+    <!-- Bottom indexer: one dot per body -->
+    <nav id="indexer" aria-label="Navegación rápida de ecosistemas">
+      <div class="idx-dot active" data-body="sol"
+           style="background:var(--gano-gold)" title="Sol"
+           tabindex="0" role="button" aria-label="Sol — Núcleo Prime"></div>
+      <div class="idx-dot" data-body="nucleo"
+           style="background:var(--gano-blue)" title="Núcleo Prime"
+           tabindex="0" role="button" aria-label="Núcleo Prime"></div>
+      <div class="idx-dot" data-body="fortaleza"
+           style="background:var(--gano-green)" title="Fortaleza Delta"
+           tabindex="0" role="button" aria-label="Fortaleza Delta"></div>
+      <div class="idx-dot" data-body="bastion"
+           style="background:var(--gano-orange)" title="Bastión SOTA"
+           tabindex="0" role="button" aria-label="Bastión SOTA"></div>
+      <div class="idx-dot" data-body="soberania"
+           style="background:var(--gano-gold)" title="Soberanía Digital"
+           tabindex="0" role="button" aria-label="Soberanía Digital"></div>
+    </nav>
+
+  </div><!-- /#hud -->
+
+  <!-- ════════════════════════════════════════════════════
+       SC LAYER — Strategic Command overlay
+       ════════════════════════════════════════════════════
+
+       Interaction contract:
+         • Hidden  → pointer-events:none  → canvas receives all clicks
+         • Visible (.show) → pointer-events:auto → layer absorbs clicks,
+           preventing click-through to canvas (no accidental focusPlanet)
+         • .sc-overlay  → pointer-events:none (purely decorative)
+         • .sc-modal    → pointer-events:auto (interactive)
+         • .sc-portal   → pointer-events:auto (interactive)
+
+       Click-outside: handled by scLayer's own click listener — if the
+       click target is NOT inside .sc-modal or .sc-portal, close the menu.
+       ════════════════════════════════════════════════════ -->
+  <div id="scLayer" class="sc-layer" role="dialog"
+       aria-modal="true" aria-label="Menú de comando estratégico"
+       aria-hidden="true">
+
+    <!-- Decorative overlays (non-interactive) -->
+    <div class="sc-overlay grid-overlay"    aria-hidden="true"></div>
+    <div class="sc-overlay nebula-overlay"  aria-hidden="true"></div>
+    <div class="sc-overlay vortex-overlay"  aria-hidden="true"></div>
+
+    <!-- Portals (interactive) -->
+    <div class="sc-portal portal-security" role="button" tabindex="0"
+         data-portal="security"
+         aria-label="Portal Seguridad — Fortaleza Delta">
+      <span class="icon" aria-hidden="true">🛡</span>
+      <span class="label">Seguridad</span>
+    </div>
+
+    <div class="sc-portal portal-speed" role="button" tabindex="0"
+         data-portal="speed"
+         aria-label="Portal Velocidad — NVMe Edge">
+      <span class="icon" aria-hidden="true">⚡</span>
+      <span class="label">Velocidad</span>
+    </div>
+
+    <div class="sc-portal portal-ai" role="button" tabindex="0"
+         data-portal="ai"
+         aria-label="Portal IA — Agente Soberano">
+      <span class="icon" aria-hidden="true">🤖</span>
+      <span class="label">IA Soberana</span>
+    </div>
+
+    <div class="sc-portal portal-sovereignty" role="button" tabindex="0"
+         data-portal="sovereignty"
+         aria-label="Portal Soberanía Digital">
+      <span class="icon" aria-hidden="true">🌐</span>
+      <span class="label">Soberanía</span>
+    </div>
+
+    <!-- Central modal (interactive) -->
+    <div class="sc-modal" role="document" id="scModalContent">
+      <button class="sc-modal-close" id="scModalClose"
+              aria-label="Cerrar menú de comando">✕</button>
+      <h3 id="scModalTitle">Comando Estratégico</h3>
+      <p id="scModalBody">
+        Selecciona un portal para explorar los ecosistemas de Gano Digital
+        o cierra haciendo clic fuera de este panel.
+      </p>
+      <div class="sc-modal-actions">
+        <button data-action="deploy"  aria-label="Desplegar infraestructura">⚙ Desplegar</button>
+        <button data-action="monitor" aria-label="Ver monitoreo">📊 Monitoreo</button>
+        <button data-action="secure"  aria-label="Activar modo seguro">🔒 Modo Seguro</button>
+      </div>
+    </div>
+
+  </div><!-- /#scLayer -->
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <script>
+  /* ─────────────────────────────────────────────────────────────────────
+   * CONSTELACION-COSMICA.html — Gano Digital
+   * Three.js constellation + Strategic Command overlay
+   *
+   * Architecture:
+   *  - Bodies: sun + 4 planets, each mapped to a hosting ecosystem
+   *  - pickBody(event): raycasts against celestial bodies
+   *  - focusSun / focusPlanet: camera animation on body selection
+   *  - scMenuOn: boolean — when true, the SC layer absorbs pointer events;
+   *    canvas click guard prevents pickBody from firing through the overlay
+   * ───────────────────────────────────────────────────────────────────── */
+
+  'use strict';
+
+  /* ── Accessibility: detect reduced-motion preference ─────────────── */
+  const prefersReducedMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  ).matches;
+
+  /* ── Celestial body data ──────────────────────────────────────────── */
+  const BODIES = {
+    sol: {
+      name: 'Sol — Núcleo Prime',
+      desc: 'Estrella central de la constelación Gano Digital.',
+      color: 0xD4AF37,
+      radius: 1.8,
+      orbit: 0,
+      speed: 0,
+      emissive: 0xD4AF37,
+    },
+    nucleo: {
+      name: 'Núcleo Prime',
+      desc: 'Hosting WordPress optimizado. NVMe + CDN incluido.',
+      color: 0x1B4FD8,
+      radius: 0.7,
+      orbit: 5,
+      speed: 0.4,
+      emissive: 0x0a2060,
+    },
+    fortaleza: {
+      name: 'Fortaleza Delta',
+      desc: 'Seguridad Zero-Trust. DDoS + WAF + Backups en tiempo real.',
+      color: 0x00C26B,
+      radius: 0.9,
+      orbit: 8.5,
+      speed: 0.25,
+      emissive: 0x004d2a,
+    },
+    bastion: {
+      name: 'Bastión SOTA',
+      desc: 'Infraestructura de vanguardia. Edge Computing + HTTP/3.',
+      color: 0xFF6B35,
+      radius: 0.75,
+      orbit: 12,
+      speed: 0.18,
+      emissive: 0x5c2000,
+    },
+    soberania: {
+      name: 'Soberanía Digital',
+      desc: 'Tus datos, tu control. GDPR + SIC Colombia compliant.',
+      color: 0xD4AF37,
+      radius: 0.65,
+      orbit: 15.5,
+      speed: 0.12,
+      emissive: 0x4a3800,
+    },
+  };
+
+  /* Portal → body mapping */
+  const PORTAL_BODY = {
+    security:    'fortaleza',
+    speed:       'nucleo',
+    ai:          'bastion',
+    sovereignty: 'soberania',
+  };
+
+  /* Portal content */
+  const PORTAL_CONTENT = {
+    security: {
+      title: '🛡 Fortaleza Delta — Seguridad',
+      body:  'Zero-Trust, DDoS inteligente, WAF de nueva generación y backups continuos en tiempo real.',
+    },
+    speed: {
+      title: '⚡ Núcleo Prime — Velocidad',
+      body:  'NVMe de última generación, CDN global, HTTP/3 + QUIC y Skeleton Screens para velocidad percibida máxima.',
+    },
+    ai: {
+      title: '🤖 Bastión SOTA — IA Soberana',
+      body:  'Gestión predictiva con IA, self-healing automático y el Agente IA que habla español.',
+    },
+    sovereignty: {
+      title: '🌐 Soberanía Digital',
+      body:  'Tus datos en Colombia. Cumplimiento GDPR + SIC, cifrado post-cuántico y auditoría continua.',
+    },
+  };
+
+  /* ── SC menu state ────────────────────────────────────────────────── */
+  let scMenuOn = false;
+
+  /* ── Three.js setup ───────────────────────────────────────────────── */
+  const canvas    = document.getElementById('canvas3d');
+  const renderer  = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x0F1923);
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(
+    55, window.innerWidth / window.innerHeight, 0.1, 300
+  );
+  camera.position.set(0, 12, 28);
+  camera.lookAt(0, 0, 0);
+
+  /* Ambient + point light from sun */
+  scene.add(new THREE.AmbientLight(0x334466, 0.6));
+  const sunLight = new THREE.PointLight(0xfff0c0, 2.5, 80);
+  sunLight.position.set(0, 0, 0);
+  scene.add(sunLight);
+
+  /* Starfield */
+  (function buildStars() {
+    const geo    = new THREE.BufferGeometry();
+    const count  = 2400;
+    const verts  = new Float32Array(count * 3);
+    for (let i = 0; i < count * 3; i++) {
+      verts[i] = (Math.random() - 0.5) * 220;
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(verts, 3));
+    const mat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.18, sizeAttenuation: true });
+    scene.add(new THREE.Points(geo, mat));
+  })();
+
+  /* Build meshes */
+  const meshes = {};   /* id → THREE.Mesh */
+  const angles = {};   /* id → current orbit angle (radians) */
+
+  Object.entries(BODIES).forEach(([id, data]) => {
+    const geo = new THREE.SphereGeometry(data.radius, 40, 40);
+    const mat = new THREE.MeshPhongMaterial({
+      color:    data.color,
+      emissive: data.emissive,
+      shininess: id === 'sol' ? 80 : 40,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    if (id === 'sol') {
+      mesh.position.set(0, 0, 0);
+    }
+    mesh.userData.bodyId = id;
+    scene.add(mesh);
+    meshes[id] = mesh;
+    angles[id]  = Math.random() * Math.PI * 2;
+
+    /* Orbit ring */
+    if (data.orbit > 0) {
+      const ringGeo = new THREE.RingGeometry(
+        data.orbit - 0.03, data.orbit + 0.03, 128
+      );
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: data.color, side: THREE.DoubleSide, transparent: true, opacity: 0.18,
+      });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.rotation.x = Math.PI / 2;
+      scene.add(ring);
+    }
+  });
+
+  /* ── Raycaster ────────────────────────────────────────────────────── */
+  const raycaster    = new THREE.Raycaster();
+  const pointerNDC   = new THREE.Vector2();
+  const allMeshes    = () => Object.values(meshes);
+
+  /**
+   * pickBody — perform raycast against celestial bodies.
+   *
+   * IMPORTANT: This function must NOT be called when scMenuOn is true.
+   * The canvas click guard (see below) enforces this contract.
+   */
+  function pickBody(event) {
+    const rect = canvas.getBoundingClientRect();
+    pointerNDC.x =  ((event.clientX - rect.left) / rect.width)  * 2 - 1;
+    pointerNDC.y = -((event.clientY - rect.top)  / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(pointerNDC, camera);
+    const hits = raycaster.intersectObjects(allMeshes());
+    if (hits.length === 0) return;
+
+    const bodyId = hits[0].object.userData.bodyId;
+    if (bodyId === 'sol') {
+      focusSun();
+    } else {
+      focusPlanet(bodyId);
+    }
+  }
+
+  /* Focused body state */
+  let focusedBody = 'sol';
+
+  function focusSun() {
+    focusedBody = 'sol';
+    updatePanelActive('sol');
+    showTooltipFor('sol', null);
+    if (!prefersReducedMotion) {
+      animateCameraTo(0, 12, 28);
+    }
+  }
+
+  function focusPlanet(id) {
+    if (!BODIES[id]) return;
+    focusedBody = id;
+    updatePanelActive(id);
+    showTooltipFor(id, null);
+    if (!prefersReducedMotion) {
+      const body = BODIES[id];
+      const x = meshes[id].position.x;
+      const z = meshes[id].position.z;
+      const dist = body.orbit * 0.55 + 5;
+      animateCameraTo(x * 0.6, dist * 0.5, z * 0.6 + dist);
+    }
+  }
+
+  /* ── Camera tween ─────────────────────────────────────────────────── */
+  let cameraTarget = { x: 0, y: 12, z: 28 };
+
+  function animateCameraTo(x, y, z) {
+    cameraTarget = { x, y, z };
+  }
+
+  /* ── Tooltip helpers ─────────────────────────────────────────────── */
+  const tooltip     = document.getElementById('tooltip');
+  const tooltipName = document.getElementById('tooltipName');
+  const tooltipDesc = document.getElementById('tooltipDesc');
+  let   tooltipTimer = null;
+
+  function showTooltipFor(id, event) {
+    const data = BODIES[id];
+    if (!data) return;
+    tooltipName.textContent = data.name;
+    tooltipDesc.textContent = data.desc;
+    tooltip.classList.add('visible');
+
+    if (event) {
+      tooltip.style.left = (event.clientX + 16) + 'px';
+      tooltip.style.top  = (event.clientY - 10) + 'px';
+    }
+
+    clearTimeout(tooltipTimer);
+    tooltipTimer = setTimeout(() => tooltip.classList.remove('visible'), 3000);
+  }
+
+  /* ── Panel active state ──────────────────────────────────────────── */
+  const planetListItems = document.querySelectorAll('#planetList li');
+
+  function updatePanelActive(id) {
+    planetListItems.forEach(li => {
+      li.classList.toggle('active', li.dataset.body === id);
+    });
+    const dots = document.querySelectorAll('.idx-dot');
+    dots.forEach(d => d.classList.toggle('active', d.dataset.body === id));
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────
+   * SC LAYER — open / close
+   * ───────────────────────────────────────────────────────────────────── */
+  const scLayer       = document.getElementById('scLayer');
+  const scBtn         = document.getElementById('scBtn');
+  const scModalTitle  = document.getElementById('scModalTitle');
+  const scModalBody   = document.getElementById('scModalBody');
+  const scModalClose  = document.getElementById('scModalClose');
+
+  function openScMenu() {
+    scMenuOn = true;
+    scLayer.classList.add('show');
+    scLayer.setAttribute('aria-hidden', 'false');
+    scBtn.setAttribute('aria-pressed', 'true');
+    /* Reset modal to default content */
+    scModalTitle.textContent = 'Comando Estratégico';
+    scModalBody.textContent  =
+      'Selecciona un portal para explorar los ecosistemas de Gano Digital o cierra haciendo clic fuera de este panel.';
+    /* Focus the close button for accessibility */
+    scModalClose.focus();
+  }
+
+  function closeScMenu() {
+    scMenuOn = false;
+    scLayer.classList.remove('show');
+    scLayer.setAttribute('aria-hidden', 'true');
+    scBtn.setAttribute('aria-pressed', 'false');
+    /* Return focus to toggle button */
+    scBtn.focus();
+  }
+
+  /* SC button toggles the menu */
+  scBtn.addEventListener('click', () => {
+    if (scMenuOn) closeScMenu(); else openScMenu();
+  });
+
+  /* Close button inside modal */
+  scModalClose.addEventListener('click', closeScMenu);
+
+  /* Escape key closes the menu */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && scMenuOn) closeScMenu();
+  });
+
+  /* ─────────────────────────────────────────────────────────────────────
+   * FIX: Click-outside handler on the SC layer itself.
+   *
+   * When .sc-layer.show has pointer-events:auto, every click anywhere on
+   * screen lands on this element OR on one of its interactive children.
+   * We check whether the click hit an interactive child (.sc-modal or
+   * .sc-portal); if not, it was a click on the "outside" backdrop → close.
+   *
+   * This also prevents click-through to the canvas because the layer
+   * absorbs the event (stopPropagation is NOT needed — the layer sits on
+   * top of the canvas in z-order and pointer-events:auto means the canvas
+   * never receives the event).
+   * ───────────────────────────────────────────────────────────────────── */
+  scLayer.addEventListener('click', function onScLayerClick(e) {
+    /* If the click landed inside .sc-modal or .sc-portal, do nothing. */
+    if (e.target.closest('.sc-modal') || e.target.closest('.sc-portal')) {
+      return;
+    }
+    /* Click was on the backdrop (overlay / empty area) → close. */
+    closeScMenu();
+  });
+
+  /* ── Portal clicks: update modal content and focus planet ─────────── */
+  document.querySelectorAll('.sc-portal').forEach(portal => {
+    portal.addEventListener('click', function onPortalClick(e) {
+      e.stopPropagation();          /* keep the scLayer listener from firing */
+      const key = portal.dataset.portal;
+      const content = PORTAL_CONTENT[key];
+      if (content) {
+        scModalTitle.textContent = content.title;
+        scModalBody.textContent  = content.body;
+      }
+      /* Focus the corresponding planet (only after closing the menu) */
+      const bodyId = PORTAL_BODY[key];
+      if (bodyId) {
+        closeScMenu();
+        focusPlanet(bodyId);
+      }
+    });
+
+    /* Keyboard activation */
+    portal.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        portal.click();
+      }
+    });
+  });
+
+  /* ── Modal action buttons ─────────────────────────────────────────── */
+  document.querySelectorAll('.sc-modal-actions button').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const action = btn.dataset.action;
+      /* Future: dispatch action. For now, acknowledge and close. */
+      console.log('[SC] acción:', action);
+      closeScMenu();
+    });
+  });
+
+  /* ─────────────────────────────────────────────────────────────────────
+   * Canvas click guard
+   *
+   * When scMenuOn is true the .sc-layer sits on top with pointer-events:auto,
+   * so the canvas should NOT receive clicks. This guard is a belt-and-
+   * suspenders safety net in case the event ever propagates unexpectedly.
+   * ───────────────────────────────────────────────────────────────────── */
+  canvas.addEventListener('click', function onCanvasClick(e) {
+    if (scMenuOn) {
+      /* SC menu is open; block any accidental raycast / planet focus */
+      e.stopPropagation();
+      return;
+    }
+    pickBody(e);
+  });
+
+  /* Canvas hover → tooltip preview */
+  canvas.addEventListener('mousemove', function onCanvasMove(e) {
+    if (scMenuOn) return;
+
+    const rect = canvas.getBoundingClientRect();
+    pointerNDC.x =  ((e.clientX - rect.left) / rect.width)  * 2 - 1;
+    pointerNDC.y = -((e.clientY - rect.top)  / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(pointerNDC, camera);
+    const hits = raycaster.intersectObjects(allMeshes());
+    if (hits.length > 0) {
+      const bodyId = hits[0].object.userData.bodyId;
+      canvas.style.cursor = 'pointer';
+      showTooltipFor(bodyId, e);
+    } else {
+      canvas.style.cursor = 'crosshair';
+      tooltip.classList.remove('visible');
+    }
+  });
+
+  /* ── Planet list & indexer navigation ───────────────────────────── */
+  planetListItems.forEach(li => {
+    li.addEventListener('click', () => {
+      const id = li.dataset.body;
+      if (id === 'sol') focusSun(); else focusPlanet(id);
+    });
+  });
+
+  document.querySelectorAll('.idx-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      const id = dot.dataset.body;
+      if (id === 'sol') focusSun(); else focusPlanet(id);
+    });
+    dot.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); dot.click(); }
+    });
+  });
+
+  /* ── Resize ───────────────────────────────────────────────────────── */
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  /* ── Render loop ──────────────────────────────────────────────────── */
+  const clock = new THREE.Clock();
+
+  function tick() {
+    requestAnimationFrame(tick);
+
+    const delta = clock.getDelta();
+    const t     = clock.getElapsedTime();
+
+    /* Orbit planets */
+    if (!prefersReducedMotion) {
+      Object.entries(BODIES).forEach(([id, data]) => {
+        if (data.orbit === 0) return;
+        angles[id] += data.speed * delta;
+        meshes[id].position.x = Math.cos(angles[id]) * data.orbit;
+        meshes[id].position.z = Math.sin(angles[id]) * data.orbit;
+        meshes[id].rotation.y += delta * 0.3;
+      });
+      /* Sun self-rotation */
+      meshes.sol.rotation.y += delta * 0.15;
+
+      /* Smooth camera follow */
+      camera.position.x += (cameraTarget.x - camera.position.x) * delta * 1.8;
+      camera.position.y += (cameraTarget.y - camera.position.y) * delta * 1.8;
+      camera.position.z += (cameraTarget.z - camera.position.z) * delta * 1.8;
+      camera.lookAt(0, 0, 0);
+    }
+
+    renderer.render(scene, camera);
+  }
+
+  tick();
+  </script>
+</body>
+</html>
