@@ -30,3 +30,4 @@ Conectar el repo y definir:
 
 - **Vercel** en org privada puede chocar con plan Hobby; Pages en GitHub evita ese límite en muchos casos.
 - No exponer secretos en el HTML: el dashboard solo enlaza a Actions públicos del repo.
+- **Métricas del tablero GitHub Project** en el JSON público: solo agregados (conteos por Status, lista corta *In progress*). El secret `ADD_TO_PROJECT_PAT` del workflow **13** se reutiliza en el **14**; no se imprime en logs.

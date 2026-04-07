@@ -1,6 +1,6 @@
 {
-  "schema_version": 1,
-  "generated_at": "2026-04-07T04:20:17.742421+00:00",
+  "schema_version": 2,
+  "generated_at": "2026-04-07T04:30:52.784507+00:00",
   "repository": "Gano-digital/Pilot",
   "tasks_md": {
     "total_open": 29,
@@ -99,6 +99,31 @@
         "title": "[PHASE 4] Antigravity: Validación producción final"
       }
     ]
+  },
+  "github_project": {
+    "config_present": true,
+    "config": {
+      "org": "Gano-digital",
+      "project_number": 2,
+      "display_name": "@Gano.digital",
+      "description": "Articulación Ops Hub ↔ GitHub Project (Pilot). Ajusta urls.views si las rutas /views/N no coinciden con tu tablero (copia la URL del navegador).",
+      "urls": {
+        "project": "https://github.com/orgs/Gano-digital/projects/2",
+        "prioritized_backlog": "https://github.com/orgs/Gano-digital/projects/2/views/1",
+        "status_board": "https://github.com/orgs/Gano-digital/projects/2/views/2",
+        "insights": "https://github.com/orgs/Gano-digital/projects/2/insights"
+      },
+      "traceability": {
+        "pilot_repository": "Gano-digital/Pilot",
+        "issue_marker_agent_title": "[agent]",
+        "issue_body_marker": "<!-- agent-task-id:",
+        "tasks_md": "TASKS.md",
+        "dispatch_queue": "memory/claude/dispatch-queue.json",
+        "playbook": "memory/ops/github-projects-gano-digital-playbook-2026-04.md"
+      }
+    },
+    "live_stats": null,
+    "live_stats_note": "Sin token en el entorno (GITHUB_PROJECT_TOKEN o ADD_TO_PROJECT_PAT): no se consultó la API del Project. En Actions, el workflow 14 inyecta ADD_TO_PROJECT_PAT; en local: exporta GITHUB_PROJECT_TOKEN con un PAT de lectura Projects (org)."
   },
   "audit_log": [],
   "links": {

@@ -13,6 +13,7 @@ on:
       - "memory/claude/dispatch-state.json"
       - "scripts/generate_gano_ops_progress.py"
       - "tools/gano-ops-hub/public/**"
+      - ".github/gano-project-hub.json"
       - ".github/workflows/gano-ops-hub.yml"
   schedule:
     - cron: "0 6 * * *"
@@ -36,7 +37,10 @@ jobs:
         with:
           python-version: "3.12"
 
+      # Mismo PAT que workflow 13: lectura GraphQL Projects v2 (org). Si falta, el JSON sigue con enlaces estáticos.
       - name: Generar progress.json
+        env:
+          GITHUB_PROJECT_TOKEN: ${{ secrets.ADD_TO_PROJECT_PAT }}
         run: python scripts/generate_gano_ops_progress.py --output tools/gano-ops-hub/public/data/progress.json
 
       - uses: actions/upload-pages-artifact@v3

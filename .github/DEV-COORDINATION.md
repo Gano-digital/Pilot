@@ -48,13 +48,14 @@ Local (rama feature/ops) → PR → CI (TruffleHog Gano + php-lint) → merge ma
 ### Tablero GitHub Projects (**@Gano.digital**)
 
 - El **proyecto** en GitHub (vistas Kanban, Roadmap, **Status updates**, **Insights**) es la interfaz para **ver y comunicar el hilo** del trabajo al equipo; el **código** sigue en el repo **Pilot**.
+- **Gano Ops Hub** agrega TASKS + cola Claude + (en CI) métricas del mismo Project; no reemplaza el tablero — lo **articula**. Ver [`tools/gano-ops-hub/README.md`](../tools/gano-ops-hub/README.md) y [`.github/gano-project-hub.json`](gano-project-hub.json).
 - Playbook (campos, vistas, workflows nativos del proyecto, plantilla de reporte): [`memory/ops/github-projects-gano-digital-playbook-2026-04.md`](../memory/ops/github-projects-gano-digital-playbook-2026-04.md) · entrada rápida [`.github/GITHUB-PROJECT-GANO-DIGITAL.md`](GITHUB-PROJECT-GANO-DIGITAL.md).
 
 ---
 
 ## 4. GitHub Actions que dan contexto al proceso
 
-En **Actions**, los workflows del repo se listan con un **prefijo numérico** (`01` … `13`) para ordenar la barra lateral y agrupar por fase. Leyenda: **CI** (calidad) → **PR** → **Deploy/Ops** → **Repo** (setup) → **Agentes** (Copilot). Detalle en [`.github/workflows/README.md`](workflows/README.md).
+En **Actions**, los workflows del repo se listan con un **prefijo numérico** (`01` … `14`) para ordenar la barra lateral y agrupar por fase. Leyenda: **CI** (calidad) → **PR** → **Deploy/Ops** → **Repo** (setup) → **Agentes** (Copilot). Detalle en [`.github/workflows/README.md`](workflows/README.md).
 
 | # | Nombre en UI (sidebar) | Archivo | Rol |
 |---|------------------------|---------|-----|
@@ -71,6 +72,7 @@ En **Actions**, los workflows del repo se listan con un **prefijo numérico** (`
 | 11 | Agentes · Setup pasos Copilot | `copilot-setup-steps.yml` | Pasos de configuración Copilot en el repo. |
 | 12 | Ops · Eliminar wp-file-manager (SSH) | `verify-remove-wp-file-manager.yml` | **Manual** — verifica y opcionalmente elimina el plugin vía SSH/WP-CLI. Mismos secrets que `deploy.yml`. |
 | 13 | Projects · Añadir issues al tablero Gano.digital | `project-add-to-project.yml` | Opcional — añade al Project issues `[agent]` o etiqueta `copilot`. Variable `GANO_PROJECT_URL` + secret `ADD_TO_PROJECT_PAT`. |
+| 14 | Ops · Gano Ops Hub (métricas + Pages) | `gano-ops-hub.yml` | Regenera `progress.json` y despliegue estático opcional. Si existe `ADD_TO_PROJECT_PAT`, consulta el Project por API para conteos por **Status**. Requiere Pages por Actions si quieres URL pública. |
 
 **Otros** (no viven en `.github/workflows/` del repo): *Copilot coding agent*, *Dependabot Updates* — nombres fijos por GitHub.
 

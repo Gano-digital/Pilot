@@ -1,0 +1,20 @@
+{
+  "org": "Gano-digital",
+  "project_number": 2,
+  "display_name": "@Gano.digital",
+  "description": "Articulación Ops Hub ↔ GitHub Project (Pilot). Ajusta urls.views si las rutas /views/N no coinciden con tu tablero (copia la URL del navegador).",
+  "urls": {
+    "project": "https://github.com/orgs/Gano-digital/projects/2",
+    "prioritized_backlog": "https://github.com/orgs/Gano-digital/projects/2/views/1",
+    "status_board": "https://github.com/orgs/Gano-digital/projects/2/views/2",
+    "insights": "https://github.com/orgs/Gano-digital/projects/2/insights"
+  },
+  "traceability": {
+    "pilot_repository": "Gano-digital/Pilot",
+    "issue_marker_agent_title": "[agent]",
+    "issue_body_marker": "<!-- agent-task-id:",
+    "tasks_md": "TASKS.md",
+    "dispatch_queue": "memory/claude/dispatch-queue.json",
+    "playbook": "memory/ops/github-projects-gano-digital-playbook-2026-04.md"
+  }
+}

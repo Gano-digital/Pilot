@@ -25,7 +25,7 @@
 | **`memory/research/`** | Investigaciones (Fase 4 plataforma, APIs ML + GoDaddy SOTA). |
 | **`memory/commerce/`** | RCC ↔ PFID: [`rcc-pfid-checklist.md`](../commerce/rcc-pfid-checklist.md). |
 | **`memory/constellation/`** | Constelación del proyecto: notas `00`–`08`, visualizador [`CONSTELACION-COSMICA.html`](../constellation/CONSTELACION-COSMICA.html), portal [`🌌-CONSTELACION-COSMICA.md`](../constellation/🌌-CONSTELACION-COSMICA.md). **Convención:** versionar en git si el equipo debe compartir el mapa; Obsidian abre los mismos `.md`. |
-| **`tools/gano-ops-hub/`** | **Ops Hub:** dashboard estático (`public/index.html`) + `data/progress.json` generado desde `TASKS.md` y cola Claude. CI: workflow **14 · Ops · Gano Ops Hub**. Guía: [`tools/gano-ops-hub/README.md`](../../tools/gano-ops-hub/README.md) · despliegue [`memory/ops/gano-ops-hub-deployment.md`](../ops/gano-ops-hub-deployment.md). |
+| **`tools/gano-ops-hub/`** | **Ops Hub:** dashboard estático (`public/index.html`) + `data/progress.json` desde `TASKS.md`, cola Claude y (CI) **GitHub Project @Gano.digital**. Config tablero: [`.github/gano-project-hub.json`](../../.github/gano-project-hub.json). CI: **14**. Guía: [`tools/gano-ops-hub/README.md`](../../tools/gano-ops-hub/README.md) · despliegue [`memory/ops/gano-ops-hub-deployment.md`](../ops/gano-ops-hub-deployment.md). |
 | **`memory/ops/`** | Runbooks (DNS, HTTPS, agentes, seguridad). |
 | **`memory/projects/`** | [`gano-digital.md`](../projects/gano-digital.md) — visión del producto. |
 
