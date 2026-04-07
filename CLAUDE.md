@@ -121,6 +121,9 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `.gano-skills/gano-mcp-and-cursor-tooling/` | MCP en Cursor (GitHub, browser), extensiones VS Code, Vitest `.gsd/sdk`, referencia skill oficial MCP de Claude en `_reference-claude-official/` |
 | `.gano-skills/gano-github-projects-board/` | Tablero GitHub Projects @Gano.digital: vistas, reporting, status updates, workflow 13 opcional |
 | `.gano-skills/gano-session-security-guardian/` | Cierre de sesión: higiene de datos sensibles, checklist, cola `tasks-security-guardian` (no sustituye TruffleHog) |
+| `.gano-skills/gano-starcraft1-assets-constellation/` | Formatos GRP/paleta/MPQ SC1, pipeline HUD Constellation, AgentCraft vs assets Blizzard; **no** redistribuir archivos del juego en git |
+| `.gano-skills/gano-dev-audit-reporting/` | Generar auditoría PDF/HTML para desarrolladores (capabilities + roadmap) |
+| `.gano-skills/gano-graphify-local/` | Usar Graphify (vendor) como tooling local (sin hooks) para mapas de arquitectura/UX del repo |
 
 ## Archivos importantes
 | Archivo | Qué es |
