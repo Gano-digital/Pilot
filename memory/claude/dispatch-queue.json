@@ -12,6 +12,95 @@
   },
   "tasks": [
     {
+      "id": "ag-phase4-001",
+      "title": "[PHASE 4] Antigravity: Activar y prueba inicial (cart test staging)",
+      "priority": 0,
+      "requires_human_after": true,
+      "agent": "antigravity",
+      "paths": ["ANTIGRAVITY-QUICKSTART.md", "memory/integration/antigravity-integration-2026-04-06.md"],
+      "definition_of_done": [
+        "Antigravity descargado, instalado, workspace abierto (Gano.digital-copia)",
+        "Chrome extension instalado (Agent Manager lo pedirá)",
+        "Primer test ejecutado: /reseller-cart-test staging",
+        "Test report muestra PASS (9/9 steps)",
+        "Browser recording capturado (video de CTA → Reseller cart → checkout → RCC order)",
+        "Screenshots claras de cada paso (product page, cart, checkout, confirmation)"
+      ],
+      "instructions": [
+        "Diego (humano) sigue pasos en ANTIGRAVITY-QUICKSTART.md (10 min instalación).",
+        "En Agent Manager chat: /reseller-cart-test staging",
+        "Esperar ~15-20 min a que complete test.",
+        "Revisar test report + video. Si PASS: marcar [x], continuar ag-phase4-002.",
+        "Si FAIL: diagnosticar con memory/integration/ y TASKS.md Phase 4 context, re-intentar."
+      ]
+    },
+    {
+      "id": "ag-phase4-002",
+      "title": "[PHASE 4] Antigravity: RCC audit (identificar gaps PFID)",
+      "priority": 1,
+      "requires_human_after": false,
+      "agent": "antigravity",
+      "paths": [".agents/workflows/phase4-rcc-audit.md", "memory/commerce/rcc-pfid-checklist.md"],
+      "definition_of_done": [
+        "RCC audit completa ejecutada: /phase4-rcc-audit",
+        "Reporte de audit identifica: % PFIDs mapeados, CTAs verificados, gaps en plugins",
+        "Recomendaciones accionables (qué archivo cambiar, esfuerzo estimado)",
+        "Readiness % claramente declarado (0-100%)"
+      ],
+      "instructions": [
+        "Solo ejecutar si ag-phase4-001 PASS.",
+        "En Agent Manager: /phase4-rcc-audit",
+        "Esperar ~30-45 min.",
+        "Guardar reporte de audit (artifact).",
+        "Pasar gaps a Cursor: ag-cursor-001 (implementar fixes)."
+      ]
+    },
+    {
+      "id": "ag-phase4-003",
+      "title": "[PHASE 4] Antigravity: Re-test staging post-fixes",
+      "priority": 2,
+      "requires_human_after": false,
+      "agent": "antigravity",
+      "paths": [".agents/workflows/reseller-cart-test.md"],
+      "definition_of_done": [
+        "Después de que Cursor implemente fixes (ag-cursor-001):",
+        "/reseller-cart-test staging ejecutado nuevamente",
+        "Test report muestra PASS (9/9 steps) con fixes aplicados",
+        "Browser recording prueba nuevo PFID / CTA si fue cambiado"
+      ],
+      "instructions": [
+        "Solo ejecutar después de Cursor merge.",
+        "En Agent Manager: /reseller-cart-test staging",
+        "Comparar con primer test (ag-phase4-001): ¿mejoró? ¿qué falta?",
+        "Si 100% PASS: continuar ag-phase4-004 (production test).",
+        "Si aún fallos: feedback loop con Cursor (ag-cursor-002)."
+      ]
+    },
+    {
+      "id": "ag-phase4-004",
+      "title": "[PHASE 4] Antigravity: Validación producción final",
+      "priority": 2,
+      "requires_human_after": true,
+      "agent": "antigravity",
+      "paths": [".agents/workflows/reseller-cart-test.md"],
+      "definition_of_done": [
+        "Staging 100% PASS antes de ejecutar.",
+        "/reseller-cart-test production ejecutado",
+        "Test report PASS (9/9 steps) en production",
+        "Zero CORS errors, zero timeouts, zero 500 errors",
+        "Orders visible en RCC dentro de 5 min",
+        "Customer emails recibidos dentro de 5 min"
+      ],
+      "instructions": [
+        "Solo ejecutar si ag-phase4-003 PASS 100%.",
+        "ADVERTENCIA: production test afecta órdenes reales (usa test data si es posible).",
+        "En Agent Manager: /reseller-cart-test production",
+        "Esperar ~15-20 min.",
+        "Si PASS: Phase 4 lista para launch. Diego aprueba merger.",
+        "Si FAIL: escalate con Cursor (ag-cursor-003)."
+      ]
+    },
+    {
       "id": "cd-repo-001",
       "title": "Alinear checkboxes GitHub en TASKS.md (08/09/10) con criterios condicionales",
       "priority": 1,
