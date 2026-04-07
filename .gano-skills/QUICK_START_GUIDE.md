@@ -287,6 +287,17 @@ Ejemplo progresión:
 
 ---
 
+## 🌌 Constellation / HUD StarCraft (mapa `memory/constellation`)
+
+Si el trabajo es **assets SC1**, formatos GRP/paleta, o qué puede ir al repo vs solo local:
+
+1. Leer **`memory/research/starcraft1-assets-sota.md`** (inventario + brecha).
+2. Seguir **`.gano-skills/gano-starcraft1-assets-constellation/SKILL.md`** (checklist legal y pipeline web).
+
+No commitear binarios extraídos del juego; el HTML actual usa PNG AgentCraft + CSS + WAV curados.
+
+---
+
 ## 🚀 Ya Estás Listo
 
 Todo lo que necesitás:

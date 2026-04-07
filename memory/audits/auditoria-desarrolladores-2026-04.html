@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gano Digital — Auditoría desarrolladores (Constellation + roadmap)</title>
+<style>
+  :root{
+    --bg:#0a1018;--card:#121a26;--ink:#e8eef4;--muted:#8a9aac;--accent:#5cc4d4;--gold:#c4a028;
+    --line:rgba(92,196,212,.2);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Segoe UI,system-ui,sans-serif;line-height:1.55;font-size:15px}
+  .wrap{max-width:900px;margin:0 auto;padding:32px 24px 80px}
+  h1{font-size:1.65rem;font-weight:600;margin:0 0 8px;letter-spacing:-.02em}
+  .sub{color:var(--muted);font-size:.9rem;margin-bottom:28px}
+  h2{font-size:1.1rem;color:var(--accent);margin:28px 0 12px;border-bottom:1px solid var(--line);padding-bottom:8px}
+  table{width:100%;border-collapse:collapse;font-size:.92rem;margin:12px 0}
+  th,td{border:1px solid var(--line);padding:10px 12px;text-align:left}
+  th{background:rgba(92,196,212,.08);color:var(--accent);font-weight:600}
+  ul{padding-left:1.2rem}
+  li{margin:6px 0}
+  .portraits{display:flex;gap:16px;flex-wrap:wrap;margin:16px 0}
+  .portraits figure{margin:0;text-align:center}
+  .portraits img{width:96px;height:96px;object-fit:contain;image-rendering:pixelated;border:1px solid var(--line);
+    border-radius:6px;background:#060a10;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+  .portraits figcaption{font-size:.75rem;color:var(--muted);margin-top:6px}
+  .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.75rem;background:rgba(196,160,40,.15);color:var(--gold);border:1px solid rgba(196,160,40,.35)}
+  .print-hint{color:var(--muted);font-size:.85rem;margin-top:40px;padding-top:20px;border-top:1px solid var(--line)}
+  @media print{
+    body{background:#fff;color:#111}
+    .print-hint{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="badge">Auditoría interna · Repositorio Gano Digital</p>
+  <h1>Capacidades nuevas, métricas y roadmap</h1>
+  <p class="sub">Generado para el equipo de desarrollo. PDF versionado: <code>memory/audits/gano-digital-auditoria-desarrolladores-*.pdf</code> · Regenerar con <code>python scripts/generate_dev_audit_pdf.py</code></p>
+
+  <h2>1. Estadísticas (constelación y repo)</h2>
+  <table>
+    <thead><tr><th>Métrica</th><th>Valor</th></tr></thead>
+    <tbody>
+      <tr><td>Líneas CONSTELACION-COSMICA.html</td><td>2&nbsp;922</td></tr>
+      <tr><td>Muestras WAV (sounds/agentcraft)</td><td>29</td></tr>
+      <tr><td>Skills documentadas (<code>.gano-skills</code>, sin <code>_reference</code>)</td><td>15</td></tr>
+      <tr><td>Retratos facción (PNG)</td><td>3</td></tr>
+      <tr><td>Sistemas en órbita</td><td>1 núcleo + 8 cuerpos</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2. Activos visuales (retratos HUD)</h2>
+  <p>PNG estilo worker por facción (pixel-art). Animación en el panel: CSS (<code>portraitLive</code>). Sin secuencias GRP del juego en git.</p>
+  <div class="portraits">
+    <figure><img src="../constellation/assets/portraits/portrait-worker-terran.png" alt="Terran" /><figcaption>Terran</figcaption></figure>
+    <figure><img src="../constellation/assets/portraits/portrait-worker-zerg.png" alt="Zerg" /><figcaption>Zerg</figcaption></figure>
+    <figure><img src="../constellation/assets/portraits/portrait-worker-protoss.png" alt="Protoss" /><figcaption>Protoss</figcaption></figure>
+  </div>
+
+  <h2>3. Capacidades integradas recientemente</h2>
+  <ul>
+    <li>Mapa WebGL (<code>CONSTELACION-COSMICA.html</code>): órbitas, tooltip, panel briefing, pools de audio por facción.</li>
+    <li>Interacción: <code>syncPointer</code>, raycast con proximidad, exclusión UI vs canvas.</li>
+    <li>Skill <code>gano-starcraft1-assets-constellation</code> + <code>memory/research/starcraft1-assets-sota.md</code>.</li>
+    <li>Regla Cursor <code>.cursor/rules/102-constellation-and-gano-skills.mdc</code>.</li>
+    <li><code>.gitignore</code>: excepción <code>memory/audits/*.pdf</code>; ignorados <code>vendor/</code> y <code>.obsidian/</code>.</li>
+  </ul>
+
+  <h2>4. Roadmap pendiente (extracto)</h2>
+  <ul>
+    <li><strong>Servidor:</strong> sincronizar parches F1–F3, eliminar wp-file-manager, SEO / GSC / Rank Math.</li>
+    <li><strong>Contenido:</strong> placeholder, Nosotros, plugins de fase tras validación.</li>
+    <li><strong>Fase 4:</strong> RCC Reseller, CTAs, checkout, soporte.</li>
+    <li><strong>GitHub:</strong> colas opcionales según <code>TASKS.md</code>.</li>
+    <li><strong>Someday:</strong> status page, chat IA, afiliados.</li>
+  </ul>
+  <p class="print-hint">Vista imprimible: use el navegador (Ctrl+P → Guardar como PDF) si necesita otra copia además del PDF generado por script.</p>
+</div>
+</body>
+</html>

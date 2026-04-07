@@ -122,6 +122,7 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `.gano-skills/gano-mcp-and-cursor-tooling/` | MCP en Cursor (GitHub, browser), extensiones VS Code, Vitest `.gsd/sdk`, referencia skill oficial MCP de Claude en `_reference-claude-official/` |
 | `.gano-skills/gano-github-projects-board/` | Tablero GitHub Projects @Gano.digital: vistas, reporting, status updates, workflow 13 opcional |
 | `.gano-skills/gano-session-security-guardian/` | Cierre de sesión: higiene de datos sensibles, checklist, cola `tasks-security-guardian` (no sustituye TruffleHog) |
+| `.gano-skills/gano-starcraft1-assets-constellation/` | Formatos GRP/paleta/MPQ SC1, pipeline HUD Constellation, AgentCraft vs assets Blizzard; **no** redistribuir archivos del juego en git |
 
 ## Archivos importantes
 | Archivo | Qué es |
@@ -136,6 +137,8 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `wp-content/themes/gano-child/templates/page-seo-landing.php` | **NUEVO** Template landing SEO (Fase 3) |
 | `wp-content/themes/gano-child/seo-pages/` | **NUEVO** Contenido landing pages keywords |
 | `memory/research/fase4-plataforma.md` | **NUEVO** Investigación completa Fase 4 |
+| `memory/research/starcraft1-assets-sota.md` | **2026-04-02** Inventario técnico assets SC1/BW, brecha vs Constellation, herramientas (IronGRP, PyMS), legal |
+| `memory/audits/` | PDF/HTML auditoría desarrolladores; regenerar con `python scripts/generate_dev_audit_pdf.py` |
 | `memory/sessions/2026-04-01-reporte-cursor-descargas-y-herramientas.md` | **2026-04-01** Reporte de sesión Cursor: Descargas, `EJECUTAR_ANALISIS.ps1`, organización de folios, seguridad (`id_rsa` → `.ssh`). Continuidad para Claude. |
 | `memory/sessions/2026-04-02-reporte-handoff-godaddy-api-reseller-whmcs.md` | **2026-04-02** Handoff: GoDaddy Developer API vs Reseller Store, Good as Gold, WHMCS, pendientes y guardrails para Claude. |
 | `memory/sessions/2026-04-07-audit-github-pr-issues.md` | **2026-04-07** Auditoría GitHub: PR #136, issue #29, bloqueos merge (CodeQL / reglas), estado rama local. |
