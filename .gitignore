@@ -80,3 +80,10 @@ memory/claude/dispatch-state.json
 # Agent Orchestrator (AO) - artefactos locales (opcional)
 agent-orchestrator.yaml
 agent-orchestrator.yml
+
+# ─── Tooling local / vaults (no commitear) ────────────────────────────────────
+.obsidian/
+
+# Vendor local (repos clonados para referencia; se versionan solo si son submodules)
+vendor/agentcraft/
+vendor/graphify/

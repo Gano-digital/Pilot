@@ -25,6 +25,13 @@
 4. **Prefijo gano\_** en funciones — namespace propio
 5. **GSD workflow** para agentes — coordinacion multi-agente via .github/agents/
 6. **Copilot queue** via JSON — oleadas de tareas versionadas
+7. **Tooling opcional (no runtime)** — graphify (mapa conocimiento), AO (orquestación), ML‑SSD (I+D evaluación)
+
+## Tooling opcional (repo)
+
+- **Graphify (local, seguro):** skill `.gano-skills/gano-graphify-local/` (sin hooks) para generar `graphify-out/` bajo demanda.
+- **Agent Orchestrator (AO):** skill `.gano-skills/gano-agent-orchestrator-local/` para coordinar oleadas paralelas (worktrees/PRs). Recomendado WSL2+tmux en Windows.
+- **ML‑SSD (Apple):** submodule `vendor/ml-ssd` + skill `.gano-skills/gano-ml-ssd/` como base reproducible para experimentos/evaluación de codegen.
 
 ## Servidor
 

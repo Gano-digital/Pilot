@@ -36,6 +36,24 @@ Claude ejecuta: gano-blender-to-website-pipeline/SKILL.md
 
 ---
 
+## 🧠 Tooling opcional para agentes (cuando el repo se vuelve grande)
+
+### Graphify (mapa de arquitectura, bajo demanda)
+
+- Skill: `.gano-skills/gano-graphify-local/SKILL.md`
+- Útil para: entender rápidamente módulos/relaciones y acelerar auditorías sin “leer todo”.
+
+### Agent Orchestrator (oleadas paralelas, recurso opcional)
+
+- Skill: `.gano-skills/gano-agent-orchestrator-local/SKILL.md`
+- Útil para: coordinar muchos agentes en paralelo (worktrees/PRs). En Windows se recomienda **WSL2 + tmux**.
+
+### ML‑SSD (I+D / evaluación codegen)
+
+- Skill: `.gano-skills/gano-ml-ssd/SKILL.md`
+- Repo integrado como submodule: `vendor/ml-ssd`
+- Útil para: experimentos reproducibles de evaluación de outputs de agentes (no runtime).
+
 ## 📋 Checklist Pre-Inicio
 
 ### ANTES de pedir Assets 3D

@@ -1,3 +1,6 @@
 [submodule ".gsd"]
 	path = .gsd
 	url = https://github.com/gsd-build/get-shit-done.git
+[submodule "vendor/ml-ssd"]
+	path = vendor/ml-ssd
+	url = https://github.com/apple/ml-ssd.git

@@ -82,6 +82,23 @@
 
 ---
 
+## 2026-04-07 — Tooling agentes + Constellation + PR #136 (en curso)
+
+### Completado
+
+- [x] Integración segura de tooling opcional (sin runtime):
+  - Graphify (skill `gano-graphify-local`) para mapas de arquitectura.
+  - Agent Orchestrator (skill `gano-agent-orchestrator-local`) como orquestador opcional.
+  - ML‑SSD incorporado como submodule `vendor/ml-ssd` + skill `gano-ml-ssd` (I+D/evaluación).
+- [x] PR #136 dejado merge-ready: conflictos resueltos, checks verdes.
+
+### En progreso / por validar
+
+- [ ] “Code Quality” ruleset: identificar hallazgos exactos en GitHub cuando bloquea merges aun con CI verde.
+- [ ] Oleada Constellation: resolver issues #138–#144 con prompt maestro y parches mínimos.
+
+---
+
 ## Cómo usar este archivo
 
 Tras hitos importantes, añadir una sección con fecha o actualizar la sección **Post-actualización** para que nuevas sesiones de Cursor lean el estado en `.cursor/memory/activeContext.md` y aquí.
