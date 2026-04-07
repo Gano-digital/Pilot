@@ -65,6 +65,6 @@ Si publicas desde **`main`** en lugar de `gh-pages`:
 
 ## Notas
 
-- **Vercel** en org privada puede chocar con plan Hobby; Netlify/Cloudflare suelen admitir repos privados en plan gratuito con cuota razonable.
+- **Netlify / Cloudflare Pages** suelen admitir repos privados en plan gratuito con cuota razonable (alternativa a GitHub Pages cuando el repo no es público).
 - No exponer secretos en el HTML: el dashboard solo enlaza a recursos del repo; el JSON público no debe contener tokens (el generador no los escribe).
 - **Métricas del tablero GitHub Project** en el JSON: solo agregados. El secret `ADD_TO_PROJECT_PAT` del workflow **13** alimenta el **14** en CI; no se imprime en logs.

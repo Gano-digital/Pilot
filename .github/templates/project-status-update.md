@@ -37,7 +37,7 @@ _Publicar en: GitHub → proyecto **@Gano.digital** → **Add status update**._
 | Bloqueo | Impacto | Mitigación |
 |---------|---------|------------|
 | {p. ej. SSH / secrets deploy} | {P0–P3} | {quién actúa — ver `TASKS.md` 🔴} |
-| {p. ej. Vercel check en PRs} | CI | {política merge / upgrade plan} |
+| {p. ej. check opcional de terceros en PRs} | CI | {política merge / ignorar si no aplica} |
 
 ---
 

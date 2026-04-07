@@ -16,13 +16,13 @@ Generado tras verificación del remoto `origin` (`Gano-digital/Pilot`) y estado 
 |---|--------|--------|--------|
 | **136** | docs(memoria): clarificación Fase 4 — Reseller Store canónico vs Developer API opcional | `docs/memoria-fase4-clarificacion-reseller-2026-04-06` → `main` | **Abierto**; `mergeable_state: blocked` al momento de la auditoría |
 
-### PR #136 — bloqueos detectados
+### PR #136 — bloqueos detectados (auditoría 2026-04-07)
 
 1. **Reglas del repositorio:** merge rechazado (`405`) con mensaje *“Code quality results are pending for one analyzed language”* — esperar a que **CodeQL** (jobs *Analyze python* / *Analyze javascript-typescript*) y el workflow **Agent** terminen en verde.
 2. **Revisor solicitado:** `Copilot` — puede exigirse aprobación antes del merge.
-3. **Estado externo Vercel:** commit `45b314a0` con estado **failure** en contexto `Vercel` — *“Cannot deploy from a private GitHub organization repository on the Hobby plan”*. Si la rama protegida exige verde en Vercel, hace falta **upgrade Vercel**, **desvincular** el deployment de esa comprobación para docs, o **marcar el check como no requerido** en reglas de rama.
+3. **Checks de terceros (histórico):** en esa fecha podía aparecer un contexto de despliegue externo ya no usado como gate; **política actual:** ignorar para merge si la app está desvinculada; revisar **Settings → Rules → main** solo para checks que el equipo quiera obligatorios.
 
-**Acción recomendada:** Cuando CodeQL y Agent estén en verde, reintentar **Squash merge** en [PR #136](https://github.com/Gano-digital/Pilot/pull/136). Si sigue bloqueado, revisar **Settings → Rules → main** (checks requeridos vs Vercel).
+**Acción recomendada:** Cuando CodeQL y Agent estén en verde, reintentar **Squash merge** en [PR #136](https://github.com/Gano-digital/Pilot/pull/136). Si sigue bloqueado, revisar **Settings → Rules → main** (checks requeridos).
 
 ## Issues abiertos
 
@@ -35,9 +35,8 @@ No hay otros issues abiertos en el listado consultado.
 ## Qué falta avanzar (priorizado)
 
 1. **Merge PR #136** cuando CI/reglas lo permitan (documentación Fase 4 / Reseller vs API).
-2. **Vercel:** decisión de política (plan Pro vs quitar gate vs repo público — no recomendado por secretos).
-3. **Issue #29:** sesión SSH/Panel: diff o despliegue de parches Fase 1–3 según `TASKS.md`.
-4. **Opcional:** `git add` / commit de `memory/constellation/` si el índice Obsidian debe vivir en `main`, o añadir patrón a `.gitignore` si es solo local.
+2. **Issue #29:** sesión SSH/Panel: diff o despliegue de parches Fase 1–3 según `TASKS.md`.
+3. **Opcional:** `git add` / commit de `memory/constellation/` si el índice Obsidian debe vivir en `main`, o añadir patrón a `.gitignore` si es solo local.
 
 ## Checks que sí pasaron (última muestra)
 

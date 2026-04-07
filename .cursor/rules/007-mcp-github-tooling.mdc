@@ -29,4 +29,4 @@ alwaysApply: false
 
 ## PRs y checks externos
 
-- Si **Vercel** falla por plan (org privada + Hobby), el resto de CI puede estar verde; merge con criterio humano o `gh pr merge --admin` si aplica tu política.
+- Los únicos gates canónicos en este repo son los workflows bajo `.github/workflows/` (p. ej. php-lint, TruffleHog, CodeQL). Checks de apps de terceros desinstaladas o ignoradas no definen merge por sí solos.

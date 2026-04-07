@@ -48,7 +48,7 @@
 | Documento | Tema |
 |-----------|------|
 | [`memory/sessions/2026-04-02-reporte-handoff-godaddy-api-reseller-whmcs.md`](../sessions/2026-04-02-reporte-handoff-godaddy-api-reseller-whmcs.md) | APIs GoDaddy, WHMCS, guardrails. |
-| [`memory/sessions/2026-04-07-audit-github-pr-issues.md`](../sessions/2026-04-07-audit-github-pr-issues.md) | PR #136, issue #29, CI/Vercel. |
+| [`memory/sessions/2026-04-07-audit-github-pr-issues.md`](../sessions/2026-04-07-audit-github-pr-issues.md) | PR #136, issue #29, CI / reglas de rama. |
 
 **Cola ejecutable (sin GitHub):** `python scripts/claude_dispatch.py next` — ver [`memory/claude/dispatch-prompt.md`](../claude/dispatch-prompt.md).
 
@@ -58,7 +58,7 @@
 
 ## 5. GitHub (snapshot)
 
-- **PR abierto (revisar en remoto):** documentación Fase 4 Reseller vs Developer API — merge cuando **CodeQL** y reglas de rama lo permitan; revisar **Vercel** si bloquea.
+- **PR abierto (revisar en remoto):** documentación Fase 4 Reseller vs Developer API — merge cuando **CodeQL** y reglas de rama lo permitan.
 - **Issue abierto:** [#29](https://github.com/Gano-digital/Pilot/issues/29) — paridad servidor con parches Fases 1–3.
 
 ---

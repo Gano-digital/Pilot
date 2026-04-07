@@ -104,7 +104,7 @@ Configuración recomendada en **Project settings → Fields**. Los valores deben
 | **Start / Target date** | Date (si disponible) | Roadmap; opcional en fase inicial. |
 | **Parent issue** | Sub-issue / vínculo | Epics (pocas tarjetas padre; hijos `[agent]`). |
 | **Team** | Single select | P. ej. `Core`, `Contenidos`, `Infra` — evitar indefinido `No Team` a medio plazo. |
-| **Context link** | Text | Una línea: `PR #nn`, `memory/sessions/…`, o bloqueo (Vercel, SSH). |
+| **Context link** | Text | Una línea: `PR #nn`, `memory/sessions/…`, o bloqueo (CI, SSH, DNS). |
 | **Hub ref** (opcional) | Text | Referencia cruzada breve para agentes: p. ej. `TASKS:## Fase 4`, `dispatch:ag-phase4-001`, `OpsHub:progress` — no duplicar párrafos; enlazar al issue/PR concreto en **Context link**. |
 
 ---

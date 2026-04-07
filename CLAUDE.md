@@ -138,7 +138,7 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `memory/research/fase4-plataforma.md` | **NUEVO** Investigación completa Fase 4 |
 | `memory/sessions/2026-04-01-reporte-cursor-descargas-y-herramientas.md` | **2026-04-01** Reporte de sesión Cursor: Descargas, `EJECUTAR_ANALISIS.ps1`, organización de folios, seguridad (`id_rsa` → `.ssh`). Continuidad para Claude. |
 | `memory/sessions/2026-04-02-reporte-handoff-godaddy-api-reseller-whmcs.md` | **2026-04-02** Handoff: GoDaddy Developer API vs Reseller Store, Good as Gold, WHMCS, pendientes y guardrails para Claude. |
-| `memory/sessions/2026-04-07-audit-github-pr-issues.md` | **2026-04-07** Auditoría GitHub: PR #136, issue #29, bloqueos merge (CodeQL/Vercel), estado rama local. |
+| `memory/sessions/2026-04-07-audit-github-pr-issues.md` | **2026-04-07** Auditoría GitHub: PR #136, issue #29, bloqueos merge (CodeQL / reglas), estado rama local. |
 | `memory/content/digital-files-and-content-setup.md` | **Setup digital:** mapa de `memory/`, contenido vs Elementor, handoff, GitHub, constelación — continuidad agentes/humanos. |
 | `tools/gano-ops-hub/README.md` | **Ops Hub:** dashboard progreso + acciones GitHub; `scripts/generate_gano_ops_progress.py`; workflow **14** → Pages opcional. |
 | `memory/research/aegis-patterns-for-gano-ops-2026-04.md` | Patrones inspirados en [AEGIS](https://github.com/Ouroboros1984/AEGIS) para ops (sin copiar código AGPL). |
