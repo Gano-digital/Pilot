@@ -47,4 +47,10 @@ Ver [`memory/ops/gano-ops-hub-deployment.md`](../../memory/ops/gano-ops-hub-depl
 
 ## Constelación 3D
 
-El mapa WebGL sigue en `memory/constellation/CONSTELACION-COSMICA.html`. El Ops Hub enlaza al árbol en GitHub; para experiencia local abre el HTML con servidor estático.
+El mapa WebGL está en `memory/constellation/CONSTELACION-COSMICA.html` (Galactic Map / HUD). **Referencia canónica en el historial:** commit `9c8fdaf6` (`feat(constellation): Dead Space HUD cosmic map…`). Para restaurar el archivo tras un `git restore` o copia incompleta:
+
+```bash
+git checkout 9c8fdaf6 -- memory/constellation/CONSTELACION-COSMICA.html
+```
+
+Cambios locales **nunca commiteados** no están en `git reflog`; ahí solo ayuda el historial del editor. El Ops Hub enlaza al árbol `memory/constellation` en GitHub; para probar el HTML en local usa un servidor estático (mismo criterio que `fetch()` del Hub).

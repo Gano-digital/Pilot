@@ -186,7 +186,8 @@ Gano Digital es un **proveedor de hosting WordPress en Colombia** con modelo de 
 | Archivo | Propósito | Ubicación |
 |---------|-----------|-----------|
 | **Digital files & content setup** | Mapa de carpetas `memory/`, contenido web vs repo, handoff, GitHub, visualizador cósmico | [`memory/content/digital-files-and-content-setup.md`](../content/digital-files-and-content-setup.md) |
-| **Gano Ops Hub** | Dashboard de progreso (TASKS + cola Claude) y enlaces a GitHub Actions | [`../../tools/gano-ops-hub/README.md`](../../tools/gano-ops-hub/README.md) |
+| **Gano Ops Hub** | Dashboard operativo: TASKS + cola Claude + GitHub Project @Gano.digital (workflow **14**) | [`../../tools/gano-ops-hub/README.md`](../../tools/gano-ops-hub/README.md) |
+| **CONSTELACION-COSMICA.html** | Visualizador 3D (Galactic Map v3.x, estética Dead Space HUD). **Versión canónica en git:** commit `9c8fdaf6` · objeto `08242c6f`. Recuperación: `git checkout 9c8fdaf6 -- memory/constellation/CONSTELACION-COSMICA.html` | [`CONSTELACION-COSMICA.html`](CONSTELACION-COSMICA.html) |
 | Plan Maestro 2026 | Auditoría + roadmap original | `Gano Digital — Plan Maestro 2026.docx` |
 | TASKS.md | Sprint tasks (detailed) | Repo raíz |
 | CLAUDE.md | Contexto del proyecto | Repo raíz (`CLAUDE.md`) |
@@ -219,6 +220,7 @@ Gano Digital es un **proveedor de hosting WordPress en Colombia** con modelo de 
 
 | Fecha | Cambio | Por |
 |-------|--------|-----|
+| 2026-04-07 | Referencia canónica `CONSTELACION-COSMICA.html` ↔ commit `9c8fdaf6` (recuperación tras `git restore` / pérdida local) | Cursor |
 | 2026-04-07 | Enlace a `digital-files-and-content-setup.md`; corrección ruta CLAUDE.md | Cursor |
 | 2026-04-06 | Creación inicial de constelación | Claude |
 | TBD | Integración Antigravity (post-test) | Antigravity |
