@@ -52,6 +52,7 @@ Esto es **independiente** de la cola Copilot (`.github/agent-queue/*.json` — *
 
 - **Auditoría / dispatch:** `python scripts/generate_claude_audit_report_pdf.py` → `reports/Gano-Digital-Auditoria-Desarrollo-YYYY-MM-DD.pdf` (cola dispatch, consolidación PRs; ver script para alcance).
 - **Reporte de estado equipo (junta):** `python scripts/generate_board_report_pdf.py` → `reports/Gano-Digital-Reporte-Estado-YYYY-MM.pdf` (contenido embebido en el script; regenerar tras cambios de negocio).
+- **Handoff extendido (comercial/UX + skills):** `python scripts/generate_handoff_claude_commercial_extended_pdf.py` → `reports/Gano-Digital-Handoff-Claude-Comercial-YYYY-MM-DD.pdf`.
 
 Los `.pdf` suelen estar en `.gitignore`; no esperes el binario en el remoto.
 
@@ -61,3 +62,9 @@ Cuando se cierre un bloque grande (deploy, RCC, eliminación de wp-file-manager,
 
 1. [`02-pendientes-detallados.md`](02-pendientes-detallados.md) y [`TASKS.md`](../../TASKS.md).
 2. Opcionalmente añadir una entrada datada al final de [`01-historial-y-contexto-cursor-2026-04.md`](01-historial-y-contexto-cursor-2026-04.md) o crear `memory/sessions/YYYY-MM-DD-*.md` y enlazarlo aquí.
+
+## Tooling opcional incorporado (abril 2026)
+
+- **Graphify (local, seguro):** `.gano-skills/gano-graphify-local/` — genera `graphify-out/` para mapa de arquitectura bajo demanda (sin hooks).
+- **Agent Orchestrator (AO):** `.gano-skills/gano-agent-orchestrator-local/` — coordina oleadas paralelas (worktrees/PRs), recomendado en WSL2+tmux.
+- **ML‑SSD (Apple):** `.gano-skills/gano-ml-ssd/` + submodule `vendor/ml-ssd` — base reproducible de I+D para evaluación de codegen (no runtime).

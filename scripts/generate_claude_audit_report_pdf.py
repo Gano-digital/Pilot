@@ -626,6 +626,15 @@ def build_pdf() -> Path:
     ]:
         pdf.bullet(t)
 
+    pdf.ln(2)
+    pdf.h2("9.2 Tooling opcional incorporado (opt-in, no runtime)")
+    for t in [
+        "Graphify local (sin hooks): skill .gano-skills/gano-graphify-local/ + docs tools/graphify/README.md",
+        "Agent Orchestrator (AO) opcional: skill .gano-skills/gano-agent-orchestrator-local/ + docs tools/agent-orchestrator/README.md",
+        "ML-SSD (Apple) como submodule: vendor/ml-ssd + skill .gano-skills/gano-ml-ssd/ + docs tools/ml-ssd/README.md",
+    ]:
+        pdf.bullet(t)
+
     pdf.add_page()
     pdf.h1("10. Riesgos y mitigaciones")
     pdf.table3_header("Riesgo", "Impacto", "Mitigación", 38.0, 35.0, 112.0)

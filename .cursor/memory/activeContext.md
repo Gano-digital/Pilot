@@ -1,6 +1,6 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-03 (dispatch Claude cerrado + PHP CLI habilitado + diagnóstico SSH)_
+_Última actualización: 2026-04-07 (tooling agentes + PR #136 merge-ready + submodules I+D)_
 
 ## Foco actual (producto y repo)
 
@@ -8,6 +8,7 @@ _Última actualización: 2026-04-03 (dispatch Claude cerrado + PHP CLI habilitad
 - **GitHub `Gano-digital/Pilot`:** repositorio en `main` ya consolidado; foco actual = cierre manual de issues cubiertos por `main`, uso selectivo de colas opcionales (API / security guardian) y verificación de accesos.
 - **Homepage / Elementor:** copy desde `memory/content/`, menú primary, sustituir Lorem (issues `homepage-fixplan`).
 - **Fase 4:** catálogo Reseller, mapeo CTAs en `shop-premium.php`, smoke test checkout (sin asumir estado de servidor no documentado).
+- **Constellation (tool gráfico):** oleada de issues UX/perf/a11y en GitHub (ramas `copilot/*`), con prompt maestro y guardrails anti-rewrite.
 
 ## Completado recientemente (entorno + gobernanza agentes)
 
@@ -16,6 +17,11 @@ _Última actualización: 2026-04-03 (dispatch Claude cerrado + PHP CLI habilitad
 - [x] Skills proyecto en `.gano-skills/` (incl. orquestación Copilot + multi-agente local) alineadas con cola GitHub y prompts por oleada.
 - [x] **Cola Claude dispatch:** tareas `cd-repo-001` a `cd-repo-012` completadas; checklists operativos creados en `memory/commerce/` y `memory/ops/`.
 - [x] **PHP CLI local:** PHP 8.3 habilitado en Windows y `php -l wp-content/themes/gano-child/functions.php` pasa sin errores.
+- [x] **Tooling opcional incorporado (sin romper runtime):**
+  - Graphify seguro (skill `gano-graphify-local`) para mapas de arquitectura.
+  - Agent Orchestrator (AO) opcional (skill `gano-agent-orchestrator-local`) para oleadas paralelas (recomendado WSL2).
+  - ML‑SSD (Apple) como submodule `vendor/ml-ssd` + skill `gano-ml-ssd` (I+D / evaluación codegen).
+- [x] **PR #136** (docs/memoria Fase 4) dejado **merge-ready** (conflictos resueltos, CI verde). Nota: el merge puede quedar bloqueado por ruleset de “Code Quality” en GitHub.
 
 ## En progreso
 
@@ -27,6 +33,7 @@ _Última actualización: 2026-04-03 (dispatch Claude cerrado + PHP CLI habilitad
 
 - **SSH autorización:** `origin` responde por HTTPS, pero `ssh` a `git@github.com` y al host `72.167.102.145` devuelve rechazo de clave; no asumir shell operativo hasta validar `authorized_keys` / deploy key.
 - **Brecha Git ↔ producción:** código en `main` no reflejado en gano.digital hasta deploy + acciones en panel.
+- **Ruleset GitHub (Code Quality):** algunos PRs pueden quedar “BLOCKED” aunque CI esté verde; requiere triage del hallazgo exacto en la UI de GitHub.
 
 ## Próximos pasos (orden sugerido)
 
