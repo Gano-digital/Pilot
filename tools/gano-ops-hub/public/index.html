@@ -140,6 +140,23 @@
       <div class="stat"><div class="k">Hechas (dispatch)</div><div class="v" id="dispatchDone">—</div><div class="sub">ids completados localmente</div></div>
     </div>
 
+    <h2>Mapa 3D y animaciones (constelación)</h2>
+    <p class="proj-intro">
+      Esta pantalla es el <strong>Ops Hub</strong> (métricas + enlaces): solo hay transiciones suaves en barras y botones.
+      El <strong>Galactic Map</strong> con <strong>Three.js</strong>, partículas, órbitas y panel estilo HUD está en
+      <code>memory/constellation/CONSTELACION-COSMICA.html</code> — árbol distinto en el repo.
+    </p>
+    <div class="actions" style="margin-bottom: 8px;">
+      <a class="btn" href="https://github.com/Gano-digital/Pilot/blob/main/memory/constellation/CONSTELACION-COSMICA.html" target="_blank" rel="noopener"><span class="ic">◈</span><div>Abrir HTML en GitHub<small>Referencia del archivo</small></div></a>
+    </div>
+    <p class="proj-intro" style="margin-top: 0; margin-bottom: 28px;">
+      <strong>Probar animaciones en local:</strong> en otra terminal, desde la raíz del clon:
+      <code style="color:var(--text)">cd memory\constellation</code> →
+      <code style="color:var(--text)">python -m http.server 8766</code> → navegador
+      <a class="hl" href="http://127.0.0.1:8766/CONSTELACION-COSMICA.html">http://127.0.0.1:8766/CONSTELACION-COSMICA.html</a>
+      (no uses <code>file://</code>; WebGL y módulos suelen fallar).
+    </p>
+
     <h2>GitHub Project — @Gano.digital</h2>
     <p class="proj-intro">
       El tablero de la organización es la <b>vista de trabajo</b> (issues/PR, Status, Area, Source). Este Hub es la <b>capa de mando</b>: mismas convenciones <code>[agent]</code>, enlaces directos y —en CI— conteos vivos del Project.

@@ -21,6 +21,8 @@ python -m http.server 8765
 
 Abre http://127.0.0.1:8765/ — `file://` no sirve para `fetch()` del JSON.
 
+**Animaciones 3D / Galactic Map:** no están en esta carpeta; viven en `memory/constellation/CONSTELACION-COSMICA.html`. Servidor aparte, p. ej. puerto **8766** desde `memory/constellation/`.
+
 ## URL pública (GitHub Pages)
 
 **Objetivo:** [https://gano-digital.github.io/Pilot/](https://gano-digital.github.io/Pilot/)
