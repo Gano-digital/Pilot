@@ -7,9 +7,13 @@ Mantiene la constelación sincronizada en tiempo real con Obsidian
 import requests
 import json
 import os
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, Optional
+from urllib.parse import urlparse
+
+_REQUEST_TIMEOUT = 10  # segundos
 
 class ObsidianSync:
     """Cliente para sincronizar archivos con Obsidian via Local REST API"""
@@ -24,12 +28,20 @@ class ObsidianSync:
             use_https: Usar HTTPS (default True)
         """
         self.api_key = api_key
-        self.base_url = f"{'https' if use_https else 'http'}://localhost:{port}"
+        scheme = "https" if use_https else "http"
+        self.base_url = f"{scheme}://localhost:{port}"
         self.headers = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json"
         }
-        # Desactivar verificación SSL para conexión local
+        # Omitir verificación SSL solo para conexiones locales (cert auto-firmado).
+        parsed = urlparse(self.base_url)
+        local_hosts = {"localhost", "127.0.0.1", "::1"}
+        if parsed.hostname not in local_hosts:
+            raise ValueError(
+                f"base_url apunta a host no-local ({parsed.hostname}). "
+                "No se puede omitir verificación TLS."
+            )
         self.verify_ssl = False
 
     def test_connection(self) -> bool:
@@ -38,9 +50,13 @@ class ObsidianSync:
             response = requests.get(
                 f"{self.base_url}/vault/",
                 headers=self.headers,
-                verify=self.verify_ssl
+                verify=self.verify_ssl,
+                timeout=_REQUEST_TIMEOUT,
             )
             return response.status_code == 200
+        except requests.Timeout:
+            print("❌ Timeout conectando a Obsidian")
+            return False
         except Exception as e:
             print(f"❌ Error de conexión: {e}")
             return False
@@ -51,7 +67,8 @@ class ObsidianSync:
             response = requests.get(
                 f"{self.base_url}/vault/",
                 headers=self.headers,
-                verify=self.verify_ssl
+                verify=self.verify_ssl,
+                timeout=_REQUEST_TIMEOUT,
             )
             response.raise_for_status()
             return response.json()
@@ -75,7 +92,8 @@ class ObsidianSync:
             response = requests.get(
                 f"{self.base_url}/vault/abstract/file/{encoded_path}",
                 headers=self.headers,
-                verify=self.verify_ssl
+                verify=self.verify_ssl,
+                timeout=_REQUEST_TIMEOUT,
             )
             response.raise_for_status()
             return response.text
@@ -109,7 +127,8 @@ class ObsidianSync:
                 f"{self.base_url}/vault/create",
                 headers=self.headers,
                 json=payload,
-                verify=self.verify_ssl
+                verify=self.verify_ssl,
+                timeout=_REQUEST_TIMEOUT,
             )
 
             if response.status_code in [200, 201]:
@@ -133,7 +152,8 @@ class ObsidianSync:
             response = requests.get(
                 f"{self.base_url}/vault/",
                 headers=self.headers,
-                verify=self.verify_ssl
+                verify=self.verify_ssl,
+                timeout=_REQUEST_TIMEOUT,
             )
             response.raise_for_status()
             return response.json().get("files", [])
@@ -212,8 +232,10 @@ class ObsidianSync:
 def main():
     """Script principal para pruebas"""
 
-    # API Key (usar variable de entorno en producción)
-    api_key = "1d3446a85589777fb01d0fae164ae8b458400ea58af0ab700a38d634eaf3c946"
+    api_key = os.environ.get("OBSIDIAN_API_KEY")
+    if not api_key:
+        print("❌ Variable de entorno OBSIDIAN_API_KEY no definida.")
+        sys.exit(1)
 
     # Inicializar cliente
     sync = ObsidianSync(api_key)

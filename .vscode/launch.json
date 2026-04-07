@@ -4,13 +4,13 @@
     {
       "name": "Listen for XDebug (PHP)",
       "type": "php",
-      "pathMapping": {
+      "pathMappings": {
         "/home/user/public_html": "${workspaceFolder}",
         "/var/www/html": "${workspaceFolder}"
       },
       "port": 9003,
       "hostname": "127.0.0.1",
-      "show_log": true,
+      "log": true,
       "xdebugSettings": {
         "max_data": 65535,
         "show_hidden": 1,
@@ -62,7 +62,7 @@
       "type": "php",
       "request": "launch",
       "port": 9003,
-      "pathMapping": {
+      "pathMappings": {
         "/var/www/html": "${workspaceFolder}"
       },
       "xdebugSettings": {

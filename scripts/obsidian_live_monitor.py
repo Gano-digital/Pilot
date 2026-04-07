@@ -5,6 +5,8 @@ Actualiza métricas y progreso en tiempo real
 """
 
 import json
+import os
+import sys
 from datetime import datetime
 from obsidian_sync_api import ObsidianSync
 
@@ -244,7 +246,10 @@ class GanoDigitalMonitor:
 
 
 def main():
-    api_key = "1d3446a85589777fb01d0fae164ae8b458400ea58af0ab700a38d634eaf3c946"
+    api_key = os.environ.get("OBSIDIAN_API_KEY")
+    if not api_key:
+        print("❌ Variable de entorno OBSIDIAN_API_KEY no definida.")
+        sys.exit(1)
     monitor = GanoDigitalMonitor(api_key)
     monitor.test_all_features()
 

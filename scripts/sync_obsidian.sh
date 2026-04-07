@@ -1,10 +1,33 @@
 #!/bin/bash
 # Gano Digital — Obsidian Sync via REST API
 # Sincronizar constelación con Obsidian en tiempo real
+#
+# Prerequisito: define la variable de entorno OBSIDIAN_API_KEY antes de ejecutar.
+# Ejemplo: export OBSIDIAN_API_KEY=<tu-token>
 
-API_KEY="1d3446a85589777fb01d0fae164ae8b458400ea58af0ab700a38d634eaf3c946"
+# Verificar dependencias
+if ! command -v jq &>/dev/null; then
+    echo "❌ Error: 'jq' no está instalado. Instálalo con: sudo apt install jq  (Linux) o brew install jq (macOS)"
+    exit 1
+fi
+
+# Leer API key desde variable de entorno
+if [ -z "${OBSIDIAN_API_KEY}" ]; then
+    echo "❌ Error: variable de entorno OBSIDIAN_API_KEY no definida."
+    echo "Ejemplo: export OBSIDIAN_API_KEY=<tu-token>"
+    exit 1
+fi
+
+API_KEY="${OBSIDIAN_API_KEY}"
 API_URL="https://localhost:27124"
 HEADER_AUTH="Authorization: Bearer $API_KEY"
+
+# Validar que el host sea localhost antes de usar -k
+API_HOST=$(echo "$API_URL" | awk -F[/:] '{print $4}')
+if [[ "$API_HOST" != "localhost" && "$API_HOST" != "127.0.0.1" && "$API_HOST" != "::1" ]]; then
+    echo "❌ Error: API_URL apunta a host no-local ($API_HOST). No se puede omitir verificación TLS."
+    exit 1
+fi
 
 echo "🌌 Gano Digital — Obsidian Sync"
 echo "================================"

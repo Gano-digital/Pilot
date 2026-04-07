@@ -10,7 +10,7 @@
 Abre PowerShell/CMD y ejecuta:
 
 ```cmd
-cd C:\Users\diego\Downloads\Gano.digital-copia
+cd <ruta-del-clon>
 scripts\sync-gano-obsidian.bat
 ```
 
@@ -49,11 +49,11 @@ Windows + R → taskschd.msc → Enter
   ```
 - **Add arguments**:
   ```
-  /c "C:\Users\diego\Downloads\Gano.digital-copia\scripts\sync-gano-obsidian.bat"
+  /c "<ruta-del-clon>\scripts\sync-gano-obsidian.bat"
   ```
 - **Start in**:
   ```
-  C:\Users\diego\Downloads\Gano.digital-copia
+  <ruta-del-clon>
   ```
 
 ### Paso 5: Configurar Opciones
@@ -75,8 +75,8 @@ Para crear la tarea automáticamente via PowerShell:
 ```powershell
 # Ejecuta como Admin:
 $action = New-ScheduledTaskAction -Execute 'cmd.exe' `
-  -Argument '/c "C:\Users\diego\Downloads\Gano.digital-copia\scripts\sync-gano-obsidian.bat"' `
-  -WorkingDirectory 'C:\Users\diego\Downloads\Gano.digital-copia'
+  -Argument '/c "<ruta-del-clon>\scripts\sync-gano-obsidian.bat"' `
+  -WorkingDirectory '<ruta-del-clon>'
 
 $trigger = New-ScheduledTaskTrigger -Daily -At 09:00 -RepetitionInterval (New-TimeSpan -Hours 1)
 

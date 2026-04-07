@@ -241,7 +241,7 @@
         if (tot === 0) return;
         const row = document.createElement("div");
         row.className = "row";
-        row.innerHTML = `<span class="name" title="${s.name}">${s.name}</span><span class="nums"><b>${s.done}</b> hecho · <b>${s.open}</b> abierto</span>`;
+        row.innerHTML = `<span class="name" title="${esc(s.name)}">${esc(s.name)}</span><span class="nums"><b>${s.done}</b> hecho · <b>${s.open}</b> abierto</span>`;
         secEl.appendChild(row);
       });
 
@@ -250,7 +250,7 @@
       const note = d.dispatch_note;
       let noteHtml = "";
       if (note) {
-        noteHtml = "<p style=\"font-size:12px;color:var(--warn);margin-bottom:10px;border-left:3px solid var(--warn);padding-left:10px\">" + note + "</p>";
+        noteHtml = "<p style=\"font-size:12px;color:var(--warn);margin-bottom:10px;border-left:3px solid var(--warn);padding-left:10px\">" + esc(note) + "</p>";
       }
       if (!sug.length) {
         db.innerHTML = noteHtml + "<p style=\"color:var(--muted)\">No hay sugerencias (cola vacía o todo completado).</p>";

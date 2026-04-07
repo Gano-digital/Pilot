@@ -2,10 +2,19 @@
 # PowerShell script para sincronizar constelación en tiempo real
 
 param(
-    [string]$ApiKey = "1d3446a85589777fb01d0fae164ae8b458400ea58af0ab700a38d634eaf3c946",
+    [string]$ApiKey = "",
     [int]$Port = 27124,
     [string]$Action = "sync-all"
 )
+
+# Leer API key desde variable de entorno si no se pasa como parámetro
+if (-not $ApiKey) {
+    $ApiKey = $env:OBSIDIAN_API_KEY
+}
+if (-not $ApiKey) {
+    Write-Error "API key no configurada. Define la variable de entorno OBSIDIAN_API_KEY o pasa -ApiKey <token>."
+    exit 1
+}
 
 # Configurar variables
 $ApiUrl = "https://localhost:$Port"
@@ -14,43 +23,20 @@ $Headers = @{
     "Content-Type"  = "application/json"
 }
 
-# Ignorar certificados SSL auto-firmados
-if (-not ([System.Management.Automation.PSTypeName]'ServerCertificateValidationCallback').Type) {
-    $certCallback = @"
-using System;
-using System.Net;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
-public class ServerCertificateValidationCallback
-{
-    public static void Ignore()
-    {
-        if(ServicePointManager.ServerCertificateValidationCallback ==null)
-        {
-            ServicePointManager.ServerCertificateValidationCallback +=
-                delegate
-                (
-                    Object obj,
-                    X509Certificate certificate,
-                    X509Chain chain,
-                    SslPolicyErrors errors
-                )
-                {
-                    return true;
-                };
-        }
-    }
+# Certificado auto-firmado en localhost: usar -SkipCertificateCheck por request (PS 7+).
+# Validar que el host sea realmente localhost antes de permitir skip.
+$LocalHost = [System.Uri]$ApiUrl
+if ($LocalHost.Host -notin @("localhost","127.0.0.1","::1")) {
+    Write-Error "ApiUrl apunta a un host no-local ($($LocalHost.Host)). No se puede omitir verificación TLS."
+    exit 1
 }
-"@
-    Add-Type $certCallback
-}
-[ServerCertificateValidationCallback]::Ignore()
+$SkipTls = @{ SkipCertificateCheck = $true }
 
 function Test-ObsidianConnection {
     Write-Host "🔍 Verificando conexión con Obsidian..." -ForegroundColor Cyan
 
     try {
-        $response = Invoke-RestMethod -Uri "$ApiUrl/vault/" -Headers $Headers -ErrorAction Stop
+        $response = Invoke-RestMethod -Uri "$ApiUrl/vault/" -Headers $Headers @SkipTls -ErrorAction Stop
         Write-Host "✅ Conectado a Obsidian Local REST API" -ForegroundColor Green
         return $true
     }
@@ -62,7 +48,7 @@ function Test-ObsidianConnection {
 
 function Get-VaultInfo {
     try {
-        $response = Invoke-RestMethod -Uri "$ApiUrl/vault/" -Headers $Headers
+        $response = Invoke-RestMethod -Uri "$ApiUrl/vault/" -Headers $Headers @SkipTls
         return $response
     }
     catch {
@@ -76,7 +62,7 @@ function Read-ObsidianFile {
 
     try {
         $encodedPath = [System.Uri]::EscapeDataString($Path)
-        $response = Invoke-RestMethod -Uri "$ApiUrl/vault/abstract/file/$encodedPath" -Headers $Headers
+        $response = Invoke-RestMethod -Uri "$ApiUrl/vault/abstract/file/$encodedPath" -Headers $Headers @SkipTls
         return $response
     }
     catch {
@@ -102,7 +88,8 @@ function Write-ObsidianFile {
         $response = Invoke-RestMethod -Uri "$ApiUrl/vault/create" `
             -Headers $Headers `
             -Method POST `
-            -Body $body
+            -Body $body `
+            @SkipTls
 
         Write-Host "✅ Archivo escrito: $Path" -ForegroundColor Green
         return $true
@@ -113,7 +100,7 @@ function Write-ObsidianFile {
     }
 }
 
-function Update-ConstelationStatus {
+function Update-ConstellationStatus {
     Write-Host ""
     Write-Host "📊 Actualizando estado de constelación..." -ForegroundColor Cyan
 
@@ -176,7 +163,7 @@ function Sync-AllFiles {
         Write-Host "   - $_"
     }
 
-    Update-ConstelationStatus
+    Update-ConstellationStatus
 }
 
 function Show-Dashboard {
@@ -225,7 +212,7 @@ switch ($Action) {
         Sync-AllFiles
     }
     "status" {
-        Update-ConstelationStatus
+        Update-ConstellationStatus
     }
     "test" {
         Write-Host "🧪 Ejecutando tests..." -ForegroundColor Cyan

@@ -1,11 +1,20 @@
 #!/usr/bin/env powershell
 # Gano Digital - Sincronizador Obsidian Simple
 
-$apiKey = "1d3446a85589777fb01d0fae164ae8b458400ea58af0ab700a38d634eaf3c946"
+$apiKey = $env:OBSIDIAN_API_KEY
+if (-not $apiKey) {
+    Write-Error "API key no configurada. Define la variable de entorno OBSIDIAN_API_KEY."
+    exit 1
+}
 $apiUrl = "https://localhost:27124"
 
-# Ignorar certificados auto-firmados
-[System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
+# Validar que el host sea localhost antes de omitir verificación TLS
+$uri = [System.Uri]$apiUrl
+if ($uri.Host -notin @("localhost","127.0.0.1","::1")) {
+    Write-Error "apiUrl apunta a un host no-local ($($uri.Host)). No se puede omitir verificación TLS."
+    exit 1
+}
+$skipTls = @{ SkipCertificateCheck = $true }
 
 Write-Host "🌌 Gano Digital - Obsidian Synchronizer" -ForegroundColor Magenta
 Write-Host "======================================" -ForegroundColor Magenta

@@ -4,7 +4,15 @@ REM Simple batch file using curl (built into Windows 10+)
 
 setlocal enabledelayedexpansion
 
-set API_KEY=1d3446a85589777fb01d0fae164ae8b458400ea58af0ab700a38d634eaf3c946
+REM Lee el API key desde variable de entorno OBSIDIAN_API_KEY
+REM Configura la variable antes de ejecutar: set OBSIDIAN_API_KEY=<tu-token>
+if not defined OBSIDIAN_API_KEY (
+    echo ERROR: Variable de entorno OBSIDIAN_API_KEY no definida.
+    echo Configura la variable antes de ejecutar este script:
+    echo   set OBSIDIAN_API_KEY=^<tu-token^>
+    exit /b 1
+)
+set API_KEY=%OBSIDIAN_API_KEY%
 set API_URL=https://localhost:27124
 set TIMESTAMP=%date:~-4,4%-%date:~-10,2%-%date:~-7,2% %time:~0,2%:%time:~3,2%
 

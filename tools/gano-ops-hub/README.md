@@ -49,7 +49,7 @@ Ajusta `urls.*` en `.github/gano-project-hub.json` si tus vistas del Project no 
 
 - Cada push a `main` que toque `TASKS.md` o `memory/claude/dispatch-queue.json` dispara el workflow.
 - Cron diario 06:00 UTC.
-- Tras `python scripts/claude_dispatch.py complete <id>`, haz commit de `dispatch-state.json` **solo si** quieres reflejar progreso local en el JSON del repo; en CI ese archivo suele no existir (pendientes = cola completa).
+- `dispatch-state.json` es estado local y está en `.gitignore`; no se versiona. En CI los pendientes se calculan desde la cola completa.
 
 ## Subdominio (ops.gano.digital)
 

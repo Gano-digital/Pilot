@@ -10,7 +10,6 @@ on:
     paths:
       - "TASKS.md"
       - "memory/claude/dispatch-queue.json"
-      - "memory/claude/dispatch-state.json"
       - "scripts/generate_gano_ops_progress.py"
       - "tools/gano-ops-hub/public/**"
       - ".github/gano-project-hub.json"

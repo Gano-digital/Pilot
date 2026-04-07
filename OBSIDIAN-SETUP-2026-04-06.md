@@ -1,7 +1,7 @@
 # Obsidian Implementation Summary — 2026-04-06
 
 **Status:** ✅ READY FOR ACTIVATION
-**Location:** `C:\Users\diego\Obsidian Vaults\gano-digital`
+**Location:** `C:\Users\<usuario>\Obsidian Vaults\gano-digital` *(ajusta esta ruta al directorio local donde tengas el vault)*
 **MCP Integration:** Ready (Local REST API + 2 MCP servers configured)
 
 ---

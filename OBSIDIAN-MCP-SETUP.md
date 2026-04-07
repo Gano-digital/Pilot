@@ -96,16 +96,24 @@ python3 scripts/obsidian_sync_api.py
 
 ---
 
-## 🔌 API Key Ya Configurada
+## 🔌 Configuración del API Key
 
-Tu API Key de Obsidian Local REST API está guardada en los scripts:
-```
-1d3446a85589777fb01d0fae164ae8b458400ea58af0ab700a38d634eaf3c946
+Los scripts leen el token desde la variable de entorno **`OBSIDIAN_API_KEY`**.
+**No guardes el token en el repositorio.** Configúralo localmente:
+
+**Windows (PowerShell)**:
+```powershell
+$env:OBSIDIAN_API_KEY = "<tu-token-local>"
 ```
 
-✅ Validada y funcionando
-✅ HTTPS en puerto 27124
-✅ Autenticación lista
+**Linux / macOS**:
+```bash
+export OBSIDIAN_API_KEY="<tu-token-local>"
+```
+
+Puedes encontrar tu token en Obsidian → Settings → Community Plugins → Local REST API → API Key.
+
+> ⚠️ El token no debe commitearse ni compartirse; vive únicamente en tu entorno local.
 
 ---
 
@@ -231,7 +239,7 @@ Compartir con equipo:
 
 - ✅ API Key es local (no viaja por internet)
 - ✅ HTTPS encriptado en puerto 27124
-- ✅ Token no está expuesto en el repo (gitignore si necesario)
+- ✅ Token se carga desde variable de entorno `OBSIDIAN_API_KEY` (no versionado en el repo)
 - ✅ Acceso solo vía LocalHost
 
 ---

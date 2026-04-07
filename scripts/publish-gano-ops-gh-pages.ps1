@@ -27,6 +27,20 @@ try {
     if ($LASTEXITCODE -ne 0) {
         git checkout --orphan gh-pages
     }
+    # Verificar que realmente estamos en gh-pages antes de borrar archivos
+    $currentBranch = git branch --show-current
+    if ($currentBranch -ne "gh-pages") {
+        Write-Error "No se pudo cambiar a gh-pages (rama actual: '$currentBranch'). Abortando para evitar pérdida de datos."
+        git checkout $prev
+        exit 1
+    }
+    # Abortar si hay cambios sin commit en el working tree
+    $dirty = git status --porcelain
+    if ($dirty) {
+        Write-Error "Working tree con cambios sin commit. Haz commit o stash antes de publicar."
+        git checkout $prev
+        exit 1
+    }
     Get-ChildItem -Force $Root | Where-Object { $_.Name -ne ".git" } | Remove-Item -Recurse -Force
     Copy-Item -Path (Join-Path $temp "*") -Destination $Root -Recurse
     New-Item -Path (Join-Path $Root ".nojekyll") -ItemType File -Force | Out-Null
