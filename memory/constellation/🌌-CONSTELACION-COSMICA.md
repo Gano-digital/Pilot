@@ -21,6 +21,8 @@ status: live
 
 **Ruta directa**: `memory/constellation/CONSTELACION-COSMICA.html`
 
+**Contexto repo + contenido:** [`../content/digital-files-and-content-setup.md`](../content/digital-files-and-content-setup.md)
+
 ---
 
 ## 🎨 Qué vas a ver

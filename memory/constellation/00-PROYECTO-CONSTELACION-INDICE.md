@@ -1,6 +1,6 @@
 # 🌌 Constelación del Proyecto Gano Digital
 
-**Última actualización**: 2026-04-06
+**Última actualización**: 2026-04-07
 **Propósito**: Mapa visual, conceptual y operativo del proyecto completo
 **Audiencia**: Equipo de trabajo, stakeholders, decisores
 **Estado**: 🟢 Activo (en ejecución, todas las fases documentadas)
@@ -185,9 +185,10 @@ Gano Digital es un **proveedor de hosting WordPress en Colombia** con modelo de 
 
 | Archivo | Propósito | Ubicación |
 |---------|-----------|-----------|
+| **Digital files & content setup** | Mapa de carpetas `memory/`, contenido web vs repo, handoff, GitHub, visualizador cósmico | [`memory/content/digital-files-and-content-setup.md`](../content/digital-files-and-content-setup.md) |
 | Plan Maestro 2026 | Auditoría + roadmap original | `Gano Digital — Plan Maestro 2026.docx` |
 | TASKS.md | Sprint tasks (detailed) | Repo raíz |
-| CLAUDE.md | Contexto del proyecto | Repo raíz `.claude/` |
+| CLAUDE.md | Contexto del proyecto | Repo raíz (`CLAUDE.md`) |
 | Auditoría seguridad | Análisis previo (145 pág) | `Auditoria de seguridad.pdf` |
 | Dispatch Queue | Cola de tareas (agentes) | `memory/claude/dispatch-queue.json` |
 
@@ -217,6 +218,7 @@ Gano Digital es un **proveedor de hosting WordPress en Colombia** con modelo de 
 
 | Fecha | Cambio | Por |
 |-------|--------|-----|
+| 2026-04-07 | Enlace a `digital-files-and-content-setup.md`; corrección ruta CLAUDE.md | Cursor |
 | 2026-04-06 | Creación inicial de constelación | Claude |
 | TBD | Integración Antigravity (post-test) | Antigravity |
 | TBD | Actualización Fase 4 progress | Diego |
@@ -230,6 +232,7 @@ Gano Digital es un **proveedor de hosting WordPress en Colombia** con modelo de 
 | **PFID** | Product Family ID (GoDaddy Reseller — mapeo producto WordPress → GoDaddy) |
 | **RCC** | Reseller Control Center (backend de GoDaddy para administrar órdenes) |
 | **Reseller Store** | Carrito marca blanca de GoDaddy (checkout al cliente final) |
+| **Developer API** | API REST opcional (herramientas); no sustituye al Store; ver setup digital §1 |
 | **Staging** | Ambiente de prueba (mirror de producción para validar cambios) |
 | **OTE** | Official Test Environment (sandbox de GoDaddy antes de producción) |
 | **MCP** | Model Context Protocol (protocolo de integración entre agentes) |
