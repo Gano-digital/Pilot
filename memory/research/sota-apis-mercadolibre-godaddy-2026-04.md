@@ -2,7 +2,7 @@
 
 **Ámbito:** documentación pública accesible desde los hubs oficiales ([Mercado Libre API Docs — Colombia](https://developers.mercadolibre.com.co/es_ar/api-docs-es), [GoDaddy Developer Portal](https://developer.godaddy.com/)).  
 **Fecha de captura:** 2026-04-03.  
-**Uso previsto:** referencia interna para integraciones opcionales (automatización, Reseller, catálogo, dominios) sin sustituir el roadmap actual de Gano Digital (WordPress + GoDaddy Reseller Store + Wompi donde aplique).
+**Uso previsto:** referencia interna para **herramientas opcionales** (automatización, consultas, dominios) sin sustituir el roadmap actual de Gano Digital (**WordPress + GoDaddy Reseller Store + RCC**). Las APIs REST del [Developer Portal](https://developer.godaddy.com/) **no** sustituyen el carrito ni exigen cambios en plugins: solo complementan (scripts, back-office, futuros sistemas como WHMCS) cuando haga falta.
 
 ---
 
@@ -143,8 +143,16 @@ Implica que cuentas “pequeñas” pueden **no** tener acceso completo a cierta
 
 ### 3.6 Pagos y facturación vía API
 
-- **Good as Gold:** cuenta prepago para compras (p. ej. dominios); la API descuenta tarifas fijas.
-- **Sin pasarela:** la API **no** provee procesador para cobrar a *tus* clientes finales — debes integrar cobro propio (coherente con modelo Reseller + billing aparte).
+- **Good as Gold:** según [Get Started](https://developer.godaddy.com/getstarted), hace falta **cuando la API debe completar compras** (p. ej. registrar un dominio): la API descuenta tarifas fijas de esa cuenta prepago. **No** es requisito para “tener claves” ni para todo uso de herramientas: si solo exploras, consultas o integras flujos que **no** debitan productos vía API, puede **omitirse** hasta que ese flujo exista.
+- **Sin pasarela:** la API **no** provee procesador para cobrar a *tus* clientes finales — debes integrar cobro propio (coherente con modelo **API Reseller**; el **checkout de vitrina** sigue siendo Reseller Store + RCC cuando no automatizas la compra vía REST).
+
+### 3.7 Alineación con el proyecto Gano Digital (2026-04)
+
+| Camino | Rol |
+|--------|-----|
+| **Reseller Store + RCC + `gano-reseller-enhancements`** | **Canónico** para catálogo, CTAs y checkout marca blanca. Sin dependencia de Good as Gold en ese flujo. |
+| **Developer API (Key/Secret, OTE / prod)** | **Opcional**: soporte interno, conciliación, automatización futura, integración con billing aparte. **Redundante** si RCC + informes cubren la operación; **evitar** duplicar fuentes de verdad sin proceso. |
+| **Plugins WordPress** | **No** es necesario modificarlos para “usar” las APIs: credenciales y llamadas deben vivir **fuera del front** (servidor propio, scripts, n8n, WHMCS, etc.). |
 
 ---
 

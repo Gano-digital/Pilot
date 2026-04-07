@@ -39,7 +39,7 @@ Esto refuerza el playbook local: `.github/prompts/copilot-bulk-assign.md`, `MERG
 
 ## Integraciones externas (referencia de investigación)
 
-- Resumen de portales **Mercado Libre Developers** y **GoDaddy Developer API** (sin credenciales): [`sota-apis-mercadolibre-godaddy-2026-04.md`](sota-apis-mercadolibre-godaddy-2026-04.md).
+- Resumen de portales **Mercado Libre Developers** y **GoDaddy Developer API** (sin credenciales): [`sota-apis-mercadolibre-godaddy-2026-04.md`](sota-apis-mercadolibre-godaddy-2026-04.md) — incluye **§3.7** (API REST como complemento opcional; Good as Gold solo para compras vía API; vitrina = Reseller Store + RCC).
 - Cola delegable para profundizar: `.github/agent-queue/tasks-api-integrations-research.json`.
 
 ---
