@@ -21,19 +21,27 @@ python -m http.server 8765
 
 Abre http://127.0.0.1:8765/ — `file://` no sirve para `fetch()` del JSON.
 
-## CI / GitHub Pages
+## URL pública (GitHub Pages)
 
-Workflow **14 · Ops · Gano Ops Hub** (`.github/workflows/gano-ops-hub.yml`):
+**Objetivo:** [https://gano-digital.github.io/Pilot/](https://gano-digital.github.io/Pilot/)
+
+Publicación actual en el remoto: rama **`gh-pages`** (contenido = `public/` del Hub). Actualizar con:
+
+```powershell
+pwsh -File scripts/publish-gano-ops-gh-pages.ps1
+```
+
+**Importante:** el repo **Pilot** es **privado**. En el plan gratuito de GitHub, **Pages en `github.io` no es visible para el público** (404 anónimo). Para un enlace real “para todos”: hacer el repo **público**, usar **Team/Enterprise**, o desplegar la misma rama `gh-pages` en **Netlify / Cloudflare Pages** (repos privados OK). Detalle: [`memory/ops/gano-ops-hub-deployment.md`](../../memory/ops/gano-ops-hub-deployment.md).
+
+## CI / GitHub Actions (workflow **14**)
+
+Cuando `.github/workflows/gano-ops-hub.yml` esté en **`main`**:
 
 1. Regenera `progress.json` en el runner.
-2. Si el repo tiene el secret **`ADD_TO_PROJECT_PAT`** (el mismo que el workflow **13**), cuenta ítems del Project **@Gano.digital** por campo **Status** y añade vista previa de issues *In progress*.
-3. Sube `public/` como artefacto de Pages y despliega.
+2. Con **`ADD_TO_PROJECT_PAT`**, métricas del Project **@Gano.digital** vía GraphQL.
+3. Opcional: despliegue con **Source: GitHub Actions** en *Settings → Pages* (sustituye o complementa `gh-pages`).
 
-Ajusta las URLs `urls.*` en `.github/gano-project-hub.json` si tus vistas no coinciden con `/views/1` y `/views/2` (copia la URL desde el navegador).
-
-**Activar Pages:** Repo → *Settings* → *Pages* → *Build and deployment* → **Source: GitHub Actions**.
-
-La URL será del tipo `https://gano-digital.github.io/Pilot/` (o el dominio que configure GitHub).
+Ajusta `urls.*` en `.github/gano-project-hub.json` si tus vistas del Project no coinciden con `/views/1` y `/views/2`.
 
 ## Sincronización con agentes
 
