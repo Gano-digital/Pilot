@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gano Digital — Constelación Cósmica</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Inter:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gano-blue:   #1B4FD8;
+      --gano-green:  #00C26B;
+      --gano-orange: #FF6B35;
+      --gano-gold:   #D4AF37;
+      --gano-dark:   #0F1923;
+      --gano-panel:  rgba(15, 25, 35, 0.92);
+      --font-head:   'Plus Jakarta Sans', sans-serif;
+      --font-body:   'Inter', sans-serif;
+      --font-mono:   'JetBrains Mono', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--gano-dark);
+      color: #CBD5E1;
+      font-family: var(--font-body);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* ── Canvas ─────────────────────────────────────────────── */
+    #constellation-canvas {
+      display: block;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+    }
+
+    /* ── Tooltip ─────────────────────────────────────────────── */
+    #tooltip {
+      position: fixed;
+      background: rgba(15, 25, 35, 0.9);
+      border: 1px solid rgba(27, 79, 216, 0.4);
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #E2E8F0;
+      pointer-events: none;
+      z-index: 100;
+      display: none;
+      white-space: nowrap;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 24px rgba(27, 79, 216, 0.2);
+      transition: opacity 0.15s ease;
+    }
+    #tooltip .tt-name  { font-weight: 700; color: #fff; display: block; margin-bottom: 3px; }
+    #tooltip .tt-desc  { font-size: 11px; color: #94A3B8; display: block; }
+
+    /* ── Top bar ─────────────────────────────────────────────── */
+    #topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 56px;
+      background: rgba(15, 25, 35, 0.8);
+      border-bottom: 1px solid rgba(27, 79, 216, 0.2);
+      backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      z-index: 200;
+    }
+    #topbar .logo {
+      font-family: var(--font-head);
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.04em;
+    }
+    #topbar .logo span { color: var(--gano-blue); }
+    .tb-actions { display: flex; gap: 12px; align-items: center; }
+    .tb-btn {
+      background: rgba(27, 79, 216, 0.15);
+      border: 1px solid rgba(27, 79, 216, 0.3);
+      color: #94A3B8;
+      padding: 7px 16px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .tb-btn:hover {
+      background: rgba(27, 79, 216, 0.3);
+      border-color: var(--gano-blue);
+      color: #fff;
+    }
+
+    /* ── Panel (right side) ──────────────────────────────────── */
+    #nodePanel {
+      position: fixed;
+      top: 0; right: 0;
+      width: 360px; height: 100%;
+      background: var(--gano-panel);
+      border-left: 1px solid rgba(27, 79, 216, 0.25);
+      backdrop-filter: blur(24px);
+      z-index: 300;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 80px 32px 40px;
+      overflow-y: auto;
+    }
+    /* .panel.open triggers the fix */
+    #nodePanel.panel.open { transform: translateX(0); }
+
+    .panel-close {
+      position: absolute;
+      top: 18px; right: 20px;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #94A3B8;
+      border-radius: 50%;
+      width: 32px; height: 32px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .panel-close:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+    .panel-tier {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--gano-blue);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      display: block;
+      margin-bottom: 12px;
+    }
+    .panel-title {
+      font-family: var(--font-head);
+      font-size: 26px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 16px;
+      line-height: 1.15;
+    }
+    .panel-desc {
+      font-size: 14px;
+      color: #94A3B8;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+    .panel-specs { list-style: none; margin-bottom: 32px; }
+    .panel-specs li {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 13px;
+    }
+    .panel-specs li .spec-label { color: #64748B; }
+    .panel-specs li .spec-val   { color: #E2E8F0; font-weight: 600; }
+    .panel-cta {
+      display: block;
+      background: var(--gano-blue);
+      color: #fff;
+      text-align: center;
+      padding: 14px 20px;
+      border-radius: 8px;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .panel-cta:hover { opacity: 0.9; transform: translateY(-2px); }
+
+    /* ── Indexer panel (left side) ───────────────────────────── */
+    #idxPanel {
+      position: fixed;
+      top: 0; left: 0;
+      width: 280px; height: 100%;
+      background: var(--gano-panel);
+      border-right: 1px solid rgba(27, 79, 216, 0.25);
+      backdrop-filter: blur(24px);
+      z-index: 300;
+      transform: translateX(-100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 80px 24px 40px;
+      overflow-y: auto;
+    }
+    /* #idxPanel.open triggers the fix */
+    #idxPanel.open { transform: translateX(0); }
+
+    .idx-close {
+      position: absolute;
+      top: 18px; right: 20px;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #94A3B8;
+      border-radius: 50%;
+      width: 32px; height: 32px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .idx-close:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+    .idx-title {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--gano-blue);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      display: block;
+      margin-bottom: 20px;
+    }
+    .idx-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      cursor: pointer;
+      transition: color 0.2s;
+      font-size: 13px;
+      color: #94A3B8;
+    }
+    .idx-item:hover { color: #fff; }
+    .idx-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── SC Menu (bottom centre) ─────────────────────────────── */
+    #scMenu {
+      position: fixed;
+      bottom: 0; left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      width: 520px;
+      background: var(--gano-panel);
+      border: 1px solid rgba(27, 79, 216, 0.25);
+      border-bottom: none;
+      border-radius: 16px 16px 0 0;
+      backdrop-filter: blur(24px);
+      z-index: 300;
+      padding: 24px 32px 32px;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    /* scMenu "open" state controlled via JS scMenuOn */
+    #scMenu.sc-open { transform: translateX(-50%) translateY(0); }
+
+    .sc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .sc-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--gano-blue);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+    .sc-close {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #94A3B8;
+      border-radius: 50%;
+      width: 28px; height: 28px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .sc-close:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+    .sc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .sc-item {
+      background: rgba(27, 79, 216, 0.08);
+      border: 1px solid rgba(27, 79, 216, 0.2);
+      border-radius: 8px;
+      padding: 14px 10px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 11px;
+      color: #94A3B8;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .sc-item:hover {
+      background: rgba(27, 79, 216, 0.2);
+      border-color: var(--gano-blue);
+      color: #fff;
+    }
+    .sc-icon { font-size: 20px; display: block; margin-bottom: 6px; }
+
+    /* ── Legend bar ──────────────────────────────────────────── */
+    #legend {
+      position: fixed;
+      bottom: 24px; left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      background: rgba(15, 25, 35, 0.7);
+      border: 1px solid rgba(27, 79, 216, 0.2);
+      border-radius: 40px;
+      padding: 10px 24px;
+      backdrop-filter: blur(12px);
+      z-index: 200;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #64748B;
+    }
+    .leg-item { display: flex; align-items: center; gap: 7px; }
+    .leg-dot  { width: 8px; height: 8px; border-radius: 50%; }
+  </style>
+</head>
+<body>
+
+  <!-- Canvas for Three.js render -->
+  <canvas id="constellation-canvas"></canvas>
+
+  <!-- Tooltip -->
+  <div id="tooltip">
+    <span class="tt-name" id="tt-name"></span>
+    <span class="tt-desc" id="tt-desc"></span>
+  </div>
+
+  <!-- Top bar -->
+  <div id="topbar">
+    <div class="logo">gano<span>.</span>digital</div>
+    <div class="tb-actions">
+      <button class="tb-btn" id="btn-idx">⊞ Índice</button>
+      <button class="tb-btn" id="btn-sc">⌘ Comandos</button>
+    </div>
+  </div>
+
+  <!-- Right panel (detail) — uses class "panel open" to trigger fix -->
+  <div id="nodePanel" class="panel">
+    <button class="panel-close" id="btn-panel-close">✕</button>
+    <span class="panel-tier" id="panel-tier">Ecosistema</span>
+    <h2 class="panel-title" id="panel-title">Nombre del nodo</h2>
+    <p class="panel-desc" id="panel-desc">Descripción del plan.</p>
+    <ul class="panel-specs" id="panel-specs"></ul>
+    <a href="https://gano.digital" class="panel-cta" target="_blank" rel="noopener noreferrer">Ver plan →</a>
+  </div>
+
+  <!-- Left indexer panel — uses id "idxPanel" + class "open" to trigger fix -->
+  <div id="idxPanel">
+    <button class="idx-close" id="btn-idx-close">✕</button>
+    <span class="idx-title">Índice de nodos</span>
+    <div id="idx-list"></div>
+  </div>
+
+  <!-- SC (Space Commander) menu — controlled via scMenuOn flag -->
+  <div id="scMenu">
+    <div class="sc-header">
+      <span class="sc-label">⌘ Comandos</span>
+      <button class="sc-close" id="btn-sc-close">✕</button>
+    </div>
+    <div class="sc-grid">
+      <div class="sc-item"><span class="sc-icon">🔭</span>Explorar</div>
+      <div class="sc-item"><span class="sc-icon">📡</span>Señal</div>
+      <div class="sc-item"><span class="sc-icon">🛡️</span>Seguridad</div>
+      <div class="sc-item"><span class="sc-icon">⚡</span>Rendimiento</div>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div id="legend">
+    <div class="leg-item"><div class="leg-dot" style="background:#1B4FD8"></div>Nucleo Prime</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#00C26B"></div>Fortaleza Delta</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#FF6B35"></div>Bastión SOTA</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#D4AF37"></div>Edge Node</div>
+  </div>
+
+  <script>
+    'use strict';
+
+    /* ═══════════════════════════════════════════════════════════
+     * DATOS — nodos de la constelación
+     * ═══════════════════════════════════════════════════════════ */
+    const NODE_DATA = [
+      {
+        id: 'nucleo-prime',
+        name: 'Núcleo Prime',
+        tier: 'Starter',
+        desc: 'Punto de entrada soberano. NVMe, CDN y protección DDoS incluidos desde el primer día.',
+        color: 0x1B4FD8,
+        emissive: 0x0a2a7a,
+        radius: 0.38,
+        pos: [-2.8, 0.6, -1.2],
+        specs: [
+          { label: 'Almacenamiento', val: '20 GB NVMe' },
+          { label: 'Ancho de banda', val: 'Ilimitado' },
+          { label: 'PHP', val: '8.3' },
+          { label: 'SSL', val: 'Gratis' },
+        ],
+        sfxFreq: 220,
+      },
+      {
+        id: 'fortaleza-delta',
+        name: 'Fortaleza Delta',
+        tier: 'Business',
+        desc: 'Blindaje total para operaciones críticas. Zero-Trust, backups en tiempo real y soporte prioritario.',
+        color: 0x00C26B,
+        emissive: 0x004d2a,
+        radius: 0.52,
+        pos: [0.4, -0.3, 0.5],
+        specs: [
+          { label: 'Almacenamiento', val: '50 GB NVMe' },
+          { label: 'Staging site', val: 'Incluido' },
+          { label: 'Backups', val: 'Diarios' },
+          { label: 'Soporte', val: 'Prioritario' },
+        ],
+        sfxFreq: 330,
+      },
+      {
+        id: 'bastion-sota',
+        name: 'Bastión SOTA',
+        tier: 'Enterprise',
+        desc: 'Infraestructura de vanguardia para marcas que no admiten caídas. HA, edge computing y IA soberana.',
+        color: 0xFF6B35,
+        emissive: 0x7a2e10,
+        radius: 0.68,
+        pos: [3.0, 1.2, -0.8],
+        specs: [
+          { label: 'Almacenamiento', val: '100 GB NVMe' },
+          { label: 'Alta disponibilidad', val: 'HA 99.99%' },
+          { label: 'Edge', val: 'Multi-región' },
+          { label: 'IA Soberana', val: 'Incluida' },
+        ],
+        sfxFreq: 440,
+      },
+      {
+        id: 'edge-node',
+        name: 'Edge Node',
+        tier: 'CDN / Edge',
+        desc: 'Distribución de contenido a cero latencia. HTTP/3, QUIC y caché inteligente cerca de tu audiencia.',
+        color: 0xD4AF37,
+        emissive: 0x5a4a10,
+        radius: 0.30,
+        pos: [-1.0, -1.8, 1.4],
+        specs: [
+          { label: 'Protocolo', val: 'HTTP/3 + QUIC' },
+          { label: 'PoPs', val: 'Global' },
+          { label: 'Caché', val: 'Inteligente' },
+          { label: 'Compresión', val: 'Brotli + gzip' },
+        ],
+        sfxFreq: 550,
+      },
+    ];
+
+    /* ═══════════════════════════════════════════════════════════
+     * THREE.JS — escena, cámara, renderer
+     * ═══════════════════════════════════════════════════════════ */
+    const canvas   = document.getElementById('constellation-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x0F1923, 1);
+
+    const scene  = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 8);
+
+    /* Iluminación */
+    scene.add(new THREE.AmbientLight(0x1a2a4a, 1.2));
+    const dirLight = new THREE.DirectionalLight(0x4a80ff, 1.6);
+    dirLight.position.set(5, 5, 5);
+    scene.add(dirLight);
+
+    /* ── Fondo de estrellas ──────────────────────────────────── */
+    (function buildStarfield() {
+      const count  = 2000;
+      const geo    = new THREE.BufferGeometry();
+      const verts  = new Float32Array(count * 3);
+      for (let i = 0; i < count * 3; i++) {
+        verts[i] = (Math.random() - 0.5) * 80;
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(verts, 3));
+      const mat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.04, sizeAttenuation: true });
+      scene.add(new THREE.Points(geo, mat));
+    }());
+
+    /* ── Nodos (meshes) ─────────────────────────────────────── */
+    const nodeMeshes = [];
+    const raycaster  = new THREE.Raycaster();
+    const mouse      = new THREE.Vector2(-9999, -9999);
+
+    NODE_DATA.forEach((nd) => {
+      const geo = new THREE.SphereGeometry(nd.radius, 48, 32);
+      const mat = new THREE.MeshStandardMaterial({
+        color:             nd.color,
+        emissive:          nd.emissive,
+        emissiveIntensity: 0.4,
+        roughness:         0.3,
+        metalness:         0.7,
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(...nd.pos);
+      mesh.userData = { ...nd, baseEmissive: 0.4, hovered: false };
+      scene.add(mesh);
+      nodeMeshes.push(mesh);
+    });
+
+    /* ── Líneas de conexión entre nodos ─────────────────────── */
+    (function buildEdges() {
+      const CONNECTIONS = [[0,1],[1,2],[1,3],[0,3]];
+      const mat = new THREE.LineBasicMaterial({
+        color: 0x1B4FD8,
+        transparent: true,
+        opacity: 0.18,
+      });
+      CONNECTIONS.forEach(([a, b]) => {
+        const geo = new THREE.BufferGeometry().setFromPoints([
+          nodeMeshes[a].position,
+          nodeMeshes[b].position,
+        ]);
+        scene.add(new THREE.Line(geo, mat));
+      });
+    }());
+
+    /* ── Glow sprite por nodo ───────────────────────────────── */
+    (function buildGlows() {
+      nodeMeshes.forEach((mesh) => {
+        const nd  = mesh.userData;
+        const geo = new THREE.SphereGeometry(nd.radius * 1.6, 16, 16);
+        const mat = new THREE.MeshBasicMaterial({
+          color:       nd.color,
+          transparent: true,
+          opacity:     0.06,
+          side:        THREE.BackSide,
+        });
+        const glow = new THREE.Mesh(geo, mat);
+        glow.position.copy(mesh.position);
+        scene.add(glow);
+        mesh.userData.glow     = glow;
+        mesh.userData.glowMat  = mat;
+      });
+    }());
+
+    /* ═══════════════════════════════════════════════════════════
+     * ESTADO DE UI
+     * ═══════════════════════════════════════════════════════════ */
+    /** @type {boolean} — true cuando el SC Menu está visible */
+    let scMenuOn   = false;
+    let hoveredMesh = null;
+    let audioCtx    = null;
+
+    /* ── Elementos de DOM ───────────────────────────────────── */
+    const tooltip      = document.getElementById('tooltip');
+    const ttName       = document.getElementById('tt-name');
+    const ttDesc       = document.getElementById('tt-desc');
+    const nodePanel    = document.getElementById('nodePanel');
+    const panelTier    = document.getElementById('panel-tier');
+    const panelTitle   = document.getElementById('panel-title');
+    const panelDesc    = document.getElementById('panel-desc');
+    const panelSpecs   = document.getElementById('panel-specs');
+    const idxPanel     = document.getElementById('idxPanel');
+    const idxList      = document.getElementById('idx-list');
+    const scMenu       = document.getElementById('scMenu');
+
+    /* ═══════════════════════════════════════════════════════════
+     * HELPER — ¿hay algún overlay activo?
+     *
+     * Esta función es la pieza central del fix: cuando devuelve
+     * true, animate() omite pickBody(), oculta el tooltip y
+     * restaura el cursor a su estado por defecto.
+     * ═══════════════════════════════════════════════════════════ */
+    function isOverlayActive() {
+      return (
+        document.querySelector('.panel.open') !== null ||
+        document.querySelector('#idxPanel.open') !== null ||
+        scMenuOn
+      );
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+     * AUDIO — feedback SFX al hacer hover
+     * ═══════════════════════════════════════════════════════════ */
+    function playHoverSFX(freq) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc  = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type            = 'sine';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.3);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 0.3);
+      } catch (_) { /* audioCtx no disponible */ }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+     * pickBody — hit-test con Raycaster (se llama desde animate)
+     *
+     * IMPORTANTE: esta función SOLO debe invocarse cuando
+     * isOverlayActive() === false (ver loop animate abajo).
+     * ═══════════════════════════════════════════════════════════ */
+    function pickBody() {
+      raycaster.setFromCamera(mouse, camera);
+      const hits = raycaster.intersectObjects(nodeMeshes);
+
+      if (hits.length > 0) {
+        const hit  = hits[0].object;
+        canvas.style.cursor = 'pointer';
+
+        if (hit !== hoveredMesh) {
+          /* Quitar highlight del anterior */
+          if (hoveredMesh) {
+            hoveredMesh.material.emissiveIntensity     = hoveredMesh.userData.baseEmissive;
+            hoveredMesh.userData.glowMat.opacity       = 0.06;
+            hoveredMesh.userData.hovered               = false;
+          }
+          /* Aplicar highlight al nuevo */
+          hit.material.emissiveIntensity = 1.1;
+          hit.userData.glowMat.opacity   = 0.18;
+          hit.userData.hovered           = true;
+          hoveredMesh = hit;
+          playHoverSFX(hit.userData.sfxFreq);
+        }
+
+        /* Posicionar y mostrar tooltip */
+        ttName.textContent = hit.userData.name;
+        ttDesc.textContent = hit.userData.tier;
+        tooltip.style.display = 'block';
+
+      } else {
+        /* Sin hit — restaurar estado */
+        if (hoveredMesh) {
+          hoveredMesh.material.emissiveIntensity   = hoveredMesh.userData.baseEmissive;
+          hoveredMesh.userData.glowMat.opacity     = 0.06;
+          hoveredMesh.userData.hovered             = false;
+          hoveredMesh = null;
+        }
+        tooltip.style.display = 'none';
+        canvas.style.cursor   = 'default';
+      }
+    }
+
+    /* ── Actualizar posición del tooltip al mover el ratón ───── */
+    function updateTooltipPosition(e) {
+      tooltip.style.left = (e.clientX + 18) + 'px';
+      tooltip.style.top  = (e.clientY - 36) + 'px';
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+     * LOOP PRINCIPAL — animate()
+     *
+     * FIX: antes de llamar pickBody(), se comprueba
+     * isOverlayActive().  Cuando cualquier overlay está abierto:
+     *   • pickBody() NO se ejecuta (no hay raycast 3D).
+     *   • El tooltip se oculta.
+     *   • El hover highlight se elimina del nodo previo.
+     *   • El cursor vuelve a 'default'.
+     * ═══════════════════════════════════════════════════════════ */
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const t = performance.now() * 0.001;
+
+      /* Rotación suave de los nodos */
+      nodeMeshes.forEach((mesh, i) => {
+        mesh.rotation.y = t * (0.18 + i * 0.04);
+        mesh.rotation.x = Math.sin(t * 0.3 + i) * 0.12;
+      });
+
+      /* Cámara con movimiento orbital lento */
+      camera.position.x = Math.sin(t * 0.08) * 1.2;
+      camera.position.y = Math.cos(t * 0.06) * 0.6;
+      camera.lookAt(scene.position);
+
+      /* ── FIX: omitir hover 3D cuando hay overlay activo ── */
+      if (isOverlayActive()) {
+        /* Ocultar tooltip */
+        tooltip.style.display = 'none';
+        /* Restaurar cursor a default */
+        canvas.style.cursor = 'default';
+        /* Quitar highlight del nodo que pudiera estar activo */
+        if (hoveredMesh) {
+          hoveredMesh.material.emissiveIntensity = hoveredMesh.userData.baseEmissive;
+          hoveredMesh.userData.glowMat.opacity   = 0.06;
+          hoveredMesh.userData.hovered           = false;
+          hoveredMesh = null;
+        }
+      } else {
+        /* Estado normal — calcular hover 3D */
+        pickBody();
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+     * EVENTOS DE RATÓN
+     * ═══════════════════════════════════════════════════════════ */
+    canvas.addEventListener('mousemove', (e) => {
+      /* Actualizar coordenadas NDC para el Raycaster */
+      mouse.x =  (e.clientX / window.innerWidth)  * 2 - 1;
+      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      updateTooltipPosition(e);
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+      mouse.set(-9999, -9999);
+      tooltip.style.display = 'none';
+      canvas.style.cursor   = 'default';
+    });
+
+    /* Clic en un nodo → abrir panel de detalle */
+    canvas.addEventListener('click', () => {
+      if (isOverlayActive()) return;
+      if (!hoveredMesh) return;
+
+      const nd = hoveredMesh.userData;
+
+      panelTier.textContent  = nd.tier;
+      panelTitle.textContent = nd.name;
+      panelDesc.textContent  = nd.desc;
+
+      panelSpecs.innerHTML = nd.specs.map((s) =>
+        `<li><span class="spec-label">${s.label}</span><span class="spec-val">${s.val}</span></li>`
+      ).join('');
+
+      nodePanel.classList.add('open');
+    });
+
+    /* ═══════════════════════════════════════════════════════════
+     * CONTROLES DE PANEL
+     * ═══════════════════════════════════════════════════════════ */
+    document.getElementById('btn-panel-close').addEventListener('click', () => {
+      nodePanel.classList.remove('open');
+    });
+
+    /* ═══════════════════════════════════════════════════════════
+     * CONTROLES DEL INDEXER
+     * ═══════════════════════════════════════════════════════════ */
+
+    /* Poblar lista del indexer */
+    (function buildIndexer() {
+      const colorMap = { 'nucleo-prime': '#1B4FD8', 'fortaleza-delta': '#00C26B', 'bastion-sota': '#FF6B35', 'edge-node': '#D4AF37' };
+      NODE_DATA.forEach((nd) => {
+        const item = document.createElement('div');
+        item.className = 'idx-item';
+        item.innerHTML = `<div class="idx-dot" style="background:${colorMap[nd.id]}"></div>${nd.name}`;
+        item.addEventListener('click', () => {
+          idxPanel.classList.remove('open');
+          /* Navegar cámara al nodo (GSAP) */
+          gsap.to(camera.position, {
+            x: nd.pos[0] * 0.6,
+            y: nd.pos[1] * 0.6 + 1,
+            z: nd.pos[2] * 0.6 + 5,
+            duration: 1.2,
+            ease: 'power3.inOut',
+          });
+        });
+        idxList.appendChild(item);
+      });
+    }());
+
+    document.getElementById('btn-idx').addEventListener('click', () => {
+      idxPanel.classList.toggle('open');
+    });
+
+    document.getElementById('btn-idx-close').addEventListener('click', () => {
+      idxPanel.classList.remove('open');
+    });
+
+    /* ═══════════════════════════════════════════════════════════
+     * CONTROLES DEL SC MENU
+     * ═══════════════════════════════════════════════════════════ */
+    function openScMenu() {
+      scMenuOn = true;
+      scMenu.classList.add('sc-open');
+    }
+    function closeScMenu() {
+      scMenuOn = false;
+      scMenu.classList.remove('sc-open');
+    }
+
+    document.getElementById('btn-sc').addEventListener('click', openScMenu);
+    document.getElementById('btn-sc-close').addEventListener('click', closeScMenu);
+
+    /* Cerrar overlays con Escape */
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        nodePanel.classList.remove('open');
+        idxPanel.classList.remove('open');
+        closeScMenu();
+      }
+    });
+
+    /* ═══════════════════════════════════════════════════════════
+     * RESPONSIVE
+     * ═══════════════════════════════════════════════════════════ */
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    /* ── Iniciar loop ──────────────────────────────────────── */
+    animate();
+  </script>
+</body>
+</html>
