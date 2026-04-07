@@ -5,6 +5,8 @@
 #   - Secret: ADD_TO_PROJECT_PAT = fine-grained PAT con acceso al proyecto (org: Projects write) + repo Issues read.
 #
 # Criterio: título contiene [agent] O etiqueta copilot (al abrir o al etiquetar).
+#
+# Si faltan variable/secret, el job termina en éxito con aviso (no falla el run).
 name: "13 · Projects · Añadir issues al tablero Gano.digital"
 
 on:
@@ -19,10 +21,23 @@ jobs:
   add-to-project:
     name: Add issue to org project
     runs-on: ubuntu-latest
-    if: ${{ vars.GANO_PROJECT_URL != '' && secrets.ADD_TO_PROJECT_PAT != '' }}
     steps:
+      - name: Skip si falta configuración
+        id: cfg
+        run: |
+          set -euo pipefail
+          HAS_URL="${{ vars.GANO_PROJECT_URL != '' }}"
+          HAS_PAT="${{ secrets.ADD_TO_PROJECT_PAT != '' }}"
+          if [ "$HAS_URL" != "true" ] || [ "$HAS_PAT" != "true" ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Workflow 13 desactivado::Configura vars.GANO_PROJECT_URL y secrets.ADD_TO_PROJECT_PAT en el repo para añadir issues al Project."
+            exit 0
+          fi
+          echo "enabled=true" >> "$GITHUB_OUTPUT"
+
       - name: Decide if issue matches agent/copilot queue
         id: decide
+        if: steps.cfg.outputs.enabled == 'true'
         env:
           EVENT_JSON: ${{ toJSON(github.event) }}
         run: |
@@ -41,7 +56,7 @@ jobs:
           echo "add=$ADD" >> "$GITHUB_OUTPUT"
 
       - uses: actions/add-to-project@v1.0.2
-        if: steps.decide.outputs.add == 'true'
+        if: steps.cfg.outputs.enabled == 'true' && steps.decide.outputs.add == 'true'
         with:
           project-url: ${{ vars.GANO_PROJECT_URL }}
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
