@@ -70,3 +70,7 @@ memory/claude/dispatch-state.json
 
 # Worktrees y artefactos locales de Claude Code
 .claude/
+
+# Agent Orchestrator (AO) - artefactos locales (opcional)
+agent-orchestrator.yaml
+agent-orchestrator.yml

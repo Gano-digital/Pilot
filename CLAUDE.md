@@ -124,6 +124,7 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `.gano-skills/gano-starcraft1-assets-constellation/` | Formatos GRP/paleta/MPQ SC1, pipeline HUD Constellation, AgentCraft vs assets Blizzard; **no** redistribuir archivos del juego en git |
 | `.gano-skills/gano-dev-audit-reporting/` | Generar auditoría PDF/HTML para desarrolladores (capabilities + roadmap) |
 | `.gano-skills/gano-graphify-local/` | Usar Graphify (vendor) como tooling local (sin hooks) para mapas de arquitectura/UX del repo |
+| `.gano-skills/gano-agent-orchestrator-local/` | Orquestar oleadas de agentes en paralelo (worktrees/PRs) como recurso opcional, recomendado en WSL2 |
 
 ## Archivos importantes
 | Archivo | Qué es |
