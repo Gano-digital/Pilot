@@ -3392,6 +3392,18 @@ addEventListener('resize', ()=>{
 });
 
 /* ============================================================
+   OVERLAY GUARD — desactiva hover/raycast/tooltip cuando hay UI encima
+   Condiciones: panel abierto (.panel.open), indexer (#idxPanel.open), SC menu (scMenuOn)
+   ============================================================ */
+function isOverlayActive(){
+  return (
+    document.querySelector('.panel.open') !== null ||
+    document.querySelector('#idxPanel.open') !== null ||
+    scMenuOn
+  );
+}
+
+/* ============================================================
    ANIMATION LOOP
    ============================================================ */
 const clock = new THREE.Clock();
@@ -3445,7 +3457,8 @@ function animate(){
 
   sun.rotation.y += 0.0015;
 
-  const hit = pickBody();
+  // Hover/raycast: omitir por completo cuando hay overlay activo (panel, indexer, SC menu)
+  const hit = isOverlayActive() ? -1 : pickBody();
 
   // Hover SFX 3D: por cuerpo (p0,p1,…) para variedad al cambiar órbita; gap anti-saturación
   let hov = 'void';
