@@ -33,7 +33,9 @@ Google Antigravity is an **agentic IDE** (like Cursor + automation). Unlike Curs
 ### 2. Open Workspace (2 min)
 ```bash
 # In Antigravity, click "Open Workspace"
-# Navigate to: C:\Users\diego\Downloads\Gano.digital-copia\
+# Navigate to: <ruta-del-clon>\Gano.digital-copia\
+# Example on Windows: %USERPROFILE%\Downloads\Gano.digital-copia\
+# The exact path depends on where you cloned the repo
 # Antigravity loads project structure automatically
 ```
 
