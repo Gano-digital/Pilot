@@ -9,6 +9,10 @@ Proveedor de ecosistemas de hosting de alto rendimiento (SOTA - State of the Art
 
 **Modelo de negocio actualizado**: Marca blanca basada en el programa GoDaddy Reseller. GoDaddy maneja el inventario, aprovisionamiento, facturación y pagos de los clientes (carrito de marca blanca). Gano Digital actúa como la vitrina de alto impacto (Kinetic Monolith) y orquesta el marketing/branding SOTA.
 
+### GoDaddy Developer API (REST) — herramientas opcionales
+
+Las claves del [portal de desarrolladores](https://developer.godaddy.com/getstarted) sirven para **complementar** el negocio (consultas, automatización interna, integraciones futuras fuera de WordPress). **No** sustituyen el Reseller Store ni obligan a tocar plugins. **[Good as Gold](https://developer.godaddy.com/getstarted)** solo entra en juego cuando se **compran** productos a través de la API (debitan el prepago); si el uso es solo herramientas o lecturas que no ejecutan esa compra, puede **posponerse**. Detalle técnico y ToU: `memory/research/sota-apis-mercadolibre-godaddy-2026-04.md`.
+
 ## Stack tecnológico completo
 - WordPress 6.x + Elementor + Royal Elementor Addons
 - GoDaddy Reseller Store Plugin — Importador de catálogo y redirección al carrito

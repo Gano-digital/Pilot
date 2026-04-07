@@ -80,7 +80,7 @@ _Última actualización: Abril 2026_
 
 ## 📋 Fase 4 — Integración GoDaddy Reseller (Agilizada)
 
-**ESTRATEGIA ACTUALIZADA**: Toda la facturación y el checkout recaen sobre el API y Carrito nativo de GoDaddy Reseller. Se elimina el overhead de mantener paneles de facturación locales (WHMCS) y gateways de pago propios.
+**ESTRATEGIA ACTUALIZADA**: Toda la facturación y el checkout recaen sobre el **carrito y el programa nativos** del GoDaddy Reseller (RCC + Reseller Store), no sobre la **API REST** del Developer Portal. Esa API es **opcional** solo como herramienta complementaria (scripts, back-office, futuro billing); **Good as Gold** aplica cuando haya **compras** vía API, no para uso meramente consultivo. Se elimina el overhead de mantener paneles de facturación locales (WHMCS) **mientras** el modelo activo sea Reseller; `memory/research/fase4-plataforma.md` queda como referencia para expansiones posteriores.
 
 - [ ] **Depurar Catálogo en GoDaddy Reseller Control Center**:
   - Asegurar que los productos (Hosting, VPS, SSL) tengan el precio base en el RCC (Reseller Control Center).

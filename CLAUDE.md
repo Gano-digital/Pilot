@@ -41,6 +41,7 @@ Plan actual donde está alojado gano.digital. Relevante para saber qué tenemos 
 | **plugins de fase** | gano-phase1..7 — instaladores del sitio (ver nota crítica) |
 | **MU plugin** | gano-security.php en /mu-plugins/ — seguridad base |
 | **Reseller** | Programa GoDaddy Reseller: catálogo, checkout y cobro al cliente final (ver `TASKS.md` Fase 4). |
+| **Developer API (GoDaddy)** | Herramientas **opcionales** (REST, Key/Secret): automatización o consultas **fuera** del núcleo vitrina/RCC. **No** requiere Good as Gold hasta que la API **compre** productos que debiten prepago. **No** implica cambiar plugins salvo decisión explícita. Ver `memory/research/sota-apis-mercadolibre-godaddy-2026-04.md` §3.7. |
 | **ecosistemas** | Los 4 planes de hosting de Gano Digital |
 | **skills** | Scripts de guía en .gano-skills/ |
 
