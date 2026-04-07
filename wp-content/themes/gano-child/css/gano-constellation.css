@@ -1,0 +1,194 @@
+/* =============================================================================
+   GANO CONSTELLATION — HUD Base Components
+   =============================================================================
+
+   Componentes de interfaz base (chips y paneles) del sistema "Constellation".
+   Todas las transiciones usan tokens var(--motion-*) y var(--ease-*) definidos
+   en :root de style.css.
+
+   Reglas de motion:
+   - Nunca usar `transition: all …` — listar propiedades específicas.
+   - prefers-reduced-motion: los tokens --motion-* se ponen en 0s globalmente
+     (ver bloque @media en style.css), por lo que este archivo no necesita
+     duplicar ese bloque.
+   - Valores de fallback inline garantizan funcionamiento si style.css no carga.
+
+   Cargado desde functions.php: gano_enqueue_constellation_css()
+   ============================================================================= */
+
+/* =============================================================================
+   1. CHIP — Etiqueta / Badge interactivo
+   =============================================================================
+   Uso: <span class="chip">Texto</span>
+        <span class="chip chip--gold">Premium</span>
+        <span class="chip chip--green">Activo</span>
+   ============================================================================= */
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--gano-radius-pill, 9999px);
+    font-family: var(--gano-font-body, 'Inter', sans-serif);
+    font-size: var(--gano-fs-xs, 0.75rem);
+    font-weight: var(--gano-fw-semibold, 600);
+    letter-spacing: var(--gano-ls-wide, 0.04em);
+    text-transform: uppercase;
+    line-height: 1;
+    cursor: default;
+    user-select: none;
+
+    /* Color base: variante por defecto (azul) */
+    background: var(--gano-blue-light, #E8EEFB);
+    color: var(--gano-blue, #1B4FD8);
+    border: 1px solid transparent;
+
+    /* Transición específica: sin `all`, propiedades declaradas explícitamente */
+    transition:
+        background-color var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
+        border-color     var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
+        box-shadow       var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
+        color            var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
+        transform        var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+/* Estado hover solo cuando el chip es interactivo (tiene role o es <button>/<a>) */
+.chip[role="button"]:hover,
+.chip[role="link"]:hover,
+a.chip:hover,
+button.chip:hover {
+    background: var(--gano-blue, #1B4FD8);
+    color: var(--gano-white, #FFFFFF);
+    box-shadow: var(--gano-shadow-sm, 0 1px 3px rgba(15, 25, 35, 0.08));
+    transform: translateY(-1px);
+}
+
+/* ── Variante dorada (SOTA / Premium) ────────────────────────── */
+.chip--gold {
+    background: var(--gano-gold-bg, rgba(212, 175, 55, 0.15));
+    color: var(--gano-gold, #D4AF37);
+    border-color: var(--gano-gold-border, rgba(212, 175, 55, 0.30));
+}
+
+.chip--gold[role="button"]:hover,
+a.chip--gold:hover,
+button.chip--gold:hover {
+    background: var(--gano-gold, #D4AF37);
+    color: var(--gano-dark, #0F1923);
+    border-color: var(--gano-gold, #D4AF37);
+}
+
+/* ── Variante verde (Activo / Éxito) ─────────────────────────── */
+.chip--green {
+    background: var(--gano-green-light, #E0FAF0);
+    color: var(--gano-green-dark, #00A058);
+    border-color: transparent;
+}
+
+.chip--green[role="button"]:hover,
+a.chip--green:hover,
+button.chip--green:hover {
+    background: var(--gano-green, #00C26B);
+    color: var(--gano-white, #FFFFFF);
+}
+
+/* ── Variante dark (sobre fondos oscuros) ─────────────────────── */
+.chip--dark {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.85);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.chip--dark[role="button"]:hover,
+a.chip--dark:hover,
+button.chip--dark:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.30);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+}
+
+/* =============================================================================
+   2. PANEL — Contenedor de UI elevado
+   =============================================================================
+   Uso: <div class="panel">…</div>
+        <div class="panel panel--glass">…</div>
+        <div class="panel panel--dark">…</div>
+   ============================================================================= */
+
+.panel {
+    background: var(--gano-bg-primary, #FFFFFF);
+    border: 1px solid var(--gano-gray-300, #D1D5DB);
+    border-radius: var(--gano-radius-lg, 12px);
+    padding: 1.5rem;
+    box-shadow: var(--gano-shadow-md, 0 4px 16px rgba(15, 25, 35, 0.10));
+    position: relative;
+
+    /* Transiciones del panel: tiempos más lentos que el chip,
+       usando --motion-slow para reflejar un cambio de layout/estado. */
+    transition:
+        border-color var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
+        box-shadow   var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
+        transform    var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.panel:hover {
+    box-shadow: var(--gano-shadow-lg, 0 8px 32px rgba(15, 25, 35, 0.14));
+    transform: translateY(-2px);
+}
+
+/* ── Variante glass (glassmorphism, sobre fondos oscuros) ─────── */
+.panel--glass {
+    background: rgba(15, 25, 35, 0.70);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.40);
+    color: var(--gano-gray-300, #D1D5DB);
+}
+
+.panel--glass:hover {
+    border-color: rgba(255, 255, 255, 0.20);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.50);
+}
+
+/* ── Variante dark (fondo sólido oscuro) ─────────────────────── */
+.panel--dark {
+    background: var(--gano-gray-900, #1A2535);
+    border-color: rgba(255, 255, 255, 0.08);
+    color: var(--gano-gray-300, #D1D5DB);
+}
+
+/* ── Variante gold (acento premium) ──────────────────────────── */
+.panel--gold {
+    border-color: var(--gano-gold-border, rgba(212, 175, 55, 0.30));
+    background: var(--gano-gold-soft, rgba(212, 175, 55, 0.10));
+}
+
+.panel--gold:hover {
+    border-color: var(--gano-gold, #D4AF37);
+    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.15);
+}
+
+/* =============================================================================
+   3. ACCESIBILIDAD — prefers-reduced-motion
+   =============================================================================
+   Refuerzo local: aunque style.css ya pone --motion-* en 0s, se asegura
+   aquí que .chip y .panel no apliquen transform ni transition en caso de
+   que este archivo se cargue de forma independiente.
+   ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .chip,
+    .panel {
+        transition: none;
+    }
+
+    .chip[role="button"]:hover,
+    .chip[role="link"]:hover,
+    a.chip:hover,
+    button.chip:hover,
+    .panel:hover {
+        transform: none;
+    }
+}

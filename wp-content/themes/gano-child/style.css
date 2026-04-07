@@ -117,6 +117,17 @@ Tags:         hosting, digital-services, colombia
     /* Transiciones */
     --gano-transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 
+    /* ── Motion tokens (constellation / HUD base) ─────────────────
+       Usar var(--motion-*) + var(--ease-*) en lugar de valores hardcode.
+       prefers-reduced-motion los pone en 0s en la @media de a11y.
+       ─────────────────────────────────────────────────────────── */
+    --motion-fast:   150ms;   /* chips, menu items — respuesta inmediata */
+    --motion-normal: 220ms;   /* transición estándar (≈ --gano-transition) */
+    --motion-slow:   400ms;   /* paneles, overlays — cambios de layout    */
+
+    --ease-out:    cubic-bezier(0.4, 0, 0.2, 1);   /* Material Design: suave al final */
+    --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);  /* Expo out — sensación elástica   */
+
     /* Layout */
     --gano-container:  1200px;
     --gano-container-sm: 800px;
@@ -794,7 +805,10 @@ body.woocommerce-checkout #customer_details {
 
 /* Hover Mastery: Magnetic Interaction Smoothness */
 .gano-buy-button, .gano-btn-primary {
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1) !important;
+    transition:
+        transform     var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
+        box-shadow    var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
+        background    var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)) !important;
     text-transform: uppercase;
     font-weight: 900 !important;
     letter-spacing: 0.05em;
@@ -846,7 +860,9 @@ body.woocommerce-checkout #customer_details {
     text-decoration: none !important;
     letter-spacing: 0.03em;
     box-shadow: 0 6px 24px rgba(27, 79, 216, 0.35);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition:
+        transform  var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
+        box-shadow var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .gano-btn-primary:hover {
@@ -1467,7 +1483,7 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
     border-radius: 0 0 var(--gano-radius-md) var(--gano-radius-md);
     outline: 3px solid var(--gano-gold, #D4AF37);
     outline-offset: 2px;
-    transition: top 0.2s ease;
+    transition: top var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .gano-skip-link:focus,
@@ -1549,7 +1565,9 @@ select:focus-visible {
     font-weight: 700;
     letter-spacing: 0.01em;
     text-decoration: none !important;
-    transition: opacity 0.2s ease, background 0.2s ease;
+    transition:
+        opacity    var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
+        background var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1));
     display: inline-block;
 }
 
@@ -1598,7 +1616,7 @@ select:focus-visible {
 .gano-footer-legal__nav li a {
     color: #94a3b8;
     text-decoration: none;
-    transition: color 0.15s ease;
+    transition: color var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .gano-footer-legal__nav li a:hover {
@@ -1626,6 +1644,26 @@ select:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
     .gano-skip-link {
+        transition: none;
+    }
+
+    /* ── Apagar tokens de motion para constellation / HUD base ─────
+       Cubre .chip, .panel y cualquier componente que use var(--motion-*).
+       Los valores quedan en 0s en lugar de eliminarse para no romper
+       propiedades que dependan del fallback.
+       ─────────────────────────────────────────────────────────── */
+    :root {
+        --motion-fast:   0s;
+        --motion-normal: 0s;
+        --motion-slow:   0s;
+    }
+
+    /* Garantía adicional: apagar transiciones y animaciones de los
+       componentes principales que no estén cubiertos por los tokens */
+    .gano-buy-button,
+    .gano-btn-primary,
+    .gano-menu-cta > a,
+    .gano-footer-legal__nav li a {
         transition: none;
     }
 }
