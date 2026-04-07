@@ -19,6 +19,8 @@ ROOT = Path(__file__).resolve().parents[1]
 # TrueType con Unicode (es-ES); fallback Helvetica = solo ASCII en textos
 _ARIAL = Path(r"C:\Windows\Fonts\arial.ttf")
 _ARIAL_BOLD = Path(r"C:\Windows\Fonts\arialbd.ttf")
+_DEJAVU = Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")
+_DEJAVU_BOLD = Path("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf")
 FONT_DOC = "GanoDoc"
 
 
@@ -26,6 +28,10 @@ def setup_doc_fonts(pdf: FPDF) -> str:
     if _ARIAL.is_file():
         pdf.add_font(FONT_DOC, "", str(_ARIAL))
         pdf.add_font(FONT_DOC, "B", str(_ARIAL_BOLD if _ARIAL_BOLD.is_file() else _ARIAL))
+        return FONT_DOC
+    if _DEJAVU.is_file():
+        pdf.add_font(FONT_DOC, "", str(_DEJAVU))
+        pdf.add_font(FONT_DOC, "B", str(_DEJAVU_BOLD if _DEJAVU_BOLD.is_file() else _DEJAVU))
         return FONT_DOC
     return "Helvetica"
 AUD = ROOT / "memory" / "audits"
