@@ -381,7 +381,7 @@
 
   <!-- Legend -->
   <div id="legend">
-    <div class="leg-item"><div class="leg-dot" style="background:#1B4FD8"></div>Nucleo Prime</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#1B4FD8"></div>Núcleo Prime</div>
     <div class="leg-item"><div class="leg-dot" style="background:#00C26B"></div>Fortaleza Delta</div>
     <div class="leg-item"><div class="leg-dot" style="background:#FF6B35"></div>Bastión SOTA</div>
     <div class="leg-item"><div class="leg-dot" style="background:#D4AF37"></div>Edge Node</div>
@@ -557,9 +557,10 @@
      * ESTADO DE UI
      * ═══════════════════════════════════════════════════════════ */
     /** @type {boolean} — true cuando el SC Menu está visible */
-    let scMenuOn   = false;
+    let scMenuOn    = false;
     let hoveredMesh = null;
     let audioCtx    = null;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     /* ── Elementos de DOM ───────────────────────────────────── */
     const tooltip      = document.getElementById('tooltip');
@@ -593,6 +594,7 @@
      * AUDIO — feedback SFX al hacer hover
      * ═══════════════════════════════════════════════════════════ */
     function playHoverSFX(freq) {
+      if (prefersReducedMotion) return;
       try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const osc  = audioCtx.createOscillator();
@@ -605,7 +607,7 @@
         gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.3);
         osc.start(audioCtx.currentTime);
         osc.stop(audioCtx.currentTime + 0.3);
-      } catch (_) { /* audioCtx no disponible */ }
+      } catch (err) { console.warn('Audio context no disponible:', err); }
     }
 
     /* ═══════════════════════════════════════════════════════════
@@ -735,9 +737,19 @@
       panelTitle.textContent = nd.name;
       panelDesc.textContent  = nd.desc;
 
-      panelSpecs.innerHTML = nd.specs.map((s) =>
-        `<li><span class="spec-label">${s.label}</span><span class="spec-val">${s.val}</span></li>`
-      ).join('');
+      panelSpecs.innerHTML = '';
+      nd.specs.forEach((s) => {
+        const li    = document.createElement('li');
+        const label = document.createElement('span');
+        const val   = document.createElement('span');
+        label.className  = 'spec-label';
+        val.className    = 'spec-val';
+        label.textContent = s.label;
+        val.textContent   = s.val;
+        li.appendChild(label);
+        li.appendChild(val);
+        panelSpecs.appendChild(li);
+      });
 
       nodePanel.classList.add('open');
     });
@@ -759,7 +771,12 @@
       NODE_DATA.forEach((nd) => {
         const item = document.createElement('div');
         item.className = 'idx-item';
-        item.innerHTML = `<div class="idx-dot" style="background:${colorMap[nd.id]}"></div>${nd.name}`;
+        const dot = document.createElement('div');
+        dot.className = 'idx-dot';
+        dot.style.background = colorMap[nd.id];
+        const label = document.createTextNode(nd.name);
+        item.appendChild(dot);
+        item.appendChild(label);
         item.addEventListener('click', () => {
           idxPanel.classList.remove('open');
           /* Navegar cámara al nodo (GSAP) */
