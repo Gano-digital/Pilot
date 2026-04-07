@@ -186,6 +186,7 @@ Gano Digital es un **proveedor de hosting WordPress en Colombia** con modelo de 
 | Archivo | Propósito | Ubicación |
 |---------|-----------|-----------|
 | **Digital files & content setup** | Mapa de carpetas `memory/`, contenido web vs repo, handoff, GitHub, visualizador cósmico | [`memory/content/digital-files-and-content-setup.md`](../content/digital-files-and-content-setup.md) |
+| **Gano Ops Hub** | Dashboard de progreso (TASKS + cola Claude) y enlaces a GitHub Actions | [`../../tools/gano-ops-hub/README.md`](../../tools/gano-ops-hub/README.md) |
 | Plan Maestro 2026 | Auditoría + roadmap original | `Gano Digital — Plan Maestro 2026.docx` |
 | TASKS.md | Sprint tasks (detailed) | Repo raíz |
 | CLAUDE.md | Contexto del proyecto | Repo raíz (`CLAUDE.md`) |

@@ -30,7 +30,7 @@ Plan actual donde está alojado gano.digital. Relevante para saber qué tenemos 
 - CDN incluido (hasta 2x más rápido)
 - Protección DDoS
 - Staging site disponible ← útil para probar cambios antes de subir a producción
-- Subdomains permitidos ✅ — my.gano.digital, support.gano.digital pueden crearse en este mismo plan
+- Subdomains permitidos ✅ — my.gano.digital, support.gano.digital pueden crearse en este mismo plan; **ops.gano.digital** puede apuntar al Ops Hub (GitHub Pages o carpeta estática) — ver `memory/ops/gano-ops-hub-deployment.md`
 - **Implicación Fase 4**: El staging site permite probar cambios de vitrina, Reseller y plugins antes de producción. Los subdomains van en este mismo plan cuando apliquen.
 
 ## Términos clave
@@ -140,6 +140,8 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `memory/sessions/2026-04-02-reporte-handoff-godaddy-api-reseller-whmcs.md` | **2026-04-02** Handoff: GoDaddy Developer API vs Reseller Store, Good as Gold, WHMCS, pendientes y guardrails para Claude. |
 | `memory/sessions/2026-04-07-audit-github-pr-issues.md` | **2026-04-07** Auditoría GitHub: PR #136, issue #29, bloqueos merge (CodeQL/Vercel), estado rama local. |
 | `memory/content/digital-files-and-content-setup.md` | **Setup digital:** mapa de `memory/`, contenido vs Elementor, handoff, GitHub, constelación — continuidad agentes/humanos. |
+| `tools/gano-ops-hub/README.md` | **Ops Hub:** dashboard progreso + acciones GitHub; `scripts/generate_gano_ops_progress.py`; workflow **14** → Pages opcional. |
+| `memory/research/aegis-patterns-for-gano-ops-2026-04.md` | Patrones inspirados en [AEGIS](https://github.com/Ouroboros1984/AEGIS) para ops (sin copiar código AGPL). |
 | `memory/claude/README.md` | **Contexto para Claude** — historial abril 2026, pendientes, FAQ; [`memory/claude/dispatch-queue.json`](memory/claude/dispatch-queue.json) + [`dispatch-prompt.md`](memory/claude/dispatch-prompt.md) cola ejecutable con `scripts/claude_dispatch.py`. |
 | `memory/ops/agent-playbook-asistentes-2026-04.md` | **Agentes + Actions + asistentes:** arranque, troubleshooting, cerrar issues, re-lanzar colas 08/09, offloading solo humano. |
 | `.vscode/tasks.json` | Tareas **Run Task** para dispatch (`next`, `list`, `validate`, `show`, `complete`) y validación cola Copilot. |

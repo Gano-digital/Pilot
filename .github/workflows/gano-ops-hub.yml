@@ -1,0 +1,54 @@
+# Regenera métricas del Ops Hub y (opcional) publica en GitHub Pages.
+# Requiere: Settings → Pages → Source: GitHub Actions (una vez).
+# Subdominio propio: ver memory/ops/gano-ops-hub-deployment.md
+name: "14 · Ops · Gano Ops Hub (métricas + Pages)"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "TASKS.md"
+      - "memory/claude/dispatch-queue.json"
+      - "memory/claude/dispatch-state.json"
+      - "scripts/generate_gano_ops_progress.py"
+      - "tools/gano-ops-hub/public/**"
+      - ".github/workflows/gano-ops-hub.yml"
+  schedule:
+    - cron: "0 6 * * *"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: gano-ops-hub-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generar progress.json
+        run: python scripts/generate_gano_ops_progress.py --output tools/gano-ops-hub/public/data/progress.json
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: tools/gano-ops-hub/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

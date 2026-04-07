@@ -1,6 +1,6 @@
 # Digital files and content setup — Gano Digital
 
-**Última actualización:** 2026-04-07  
+**Última actualización:** 2026-04-07 (Ops Hub + workflow 14)  
 **Propósito:** Una sola referencia para agentes y humanos: **dónde vive qué** en el repo, cómo se relaciona el **contenido web** con **memoria/constelación**, y el estado acordado en abril 2026 (GoDaddy Reseller vs API, GitHub, Claude).
 
 ---
@@ -25,6 +25,7 @@
 | **`memory/research/`** | Investigaciones (Fase 4 plataforma, APIs ML + GoDaddy SOTA). |
 | **`memory/commerce/`** | RCC ↔ PFID: [`rcc-pfid-checklist.md`](../commerce/rcc-pfid-checklist.md). |
 | **`memory/constellation/`** | Constelación del proyecto: notas `00`–`08`, visualizador [`CONSTELACION-COSMICA.html`](../constellation/CONSTELACION-COSMICA.html), portal [`🌌-CONSTELACION-COSMICA.md`](../constellation/🌌-CONSTELACION-COSMICA.md). **Convención:** versionar en git si el equipo debe compartir el mapa; Obsidian abre los mismos `.md`. |
+| **`tools/gano-ops-hub/`** | **Ops Hub:** dashboard estático (`public/index.html`) + `data/progress.json` generado desde `TASKS.md` y cola Claude. CI: workflow **14 · Ops · Gano Ops Hub**. Guía: [`tools/gano-ops-hub/README.md`](../../tools/gano-ops-hub/README.md) · despliegue [`memory/ops/gano-ops-hub-deployment.md`](../ops/gano-ops-hub-deployment.md). |
 | **`memory/ops/`** | Runbooks (DNS, HTTPS, agentes, seguridad). |
 | **`memory/projects/`** | [`gano-digital.md`](../projects/gano-digital.md) — visión del producto. |
 

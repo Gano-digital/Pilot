@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-04-07T04:20:17.742421+00:00",
+  "repository": "Gano-digital/Pilot",
+  "tasks_md": {
+    "total_open": 29,
+    "total_done": 40,
+    "total_items": 69,
+    "sections": [
+      {
+        "name": "REGRESAR AQUÍ (pendiente tu acción)",
+        "open": 0,
+        "done": 0
+      },
+      {
+        "name": "✅ Fase 1 — Parches de código aplicados",
+        "open": 0,
+        "done": 5
+      },
+      {
+        "name": "✅ Fase 2 — Hardening avanzado aplicado",
+        "open": 0,
+        "done": 2
+      },
+      {
+        "name": "✅ Fase 3 — SEO y Performance aplicado",
+        "open": 0,
+        "done": 13
+      },
+      {
+        "name": "🔴 Active — Acción manual requerida en servidor real",
+        "open": 5,
+        "done": 0
+      },
+      {
+        "name": "🟡 Pending — Contenido y Sinergia",
+        "open": 5,
+        "done": 0
+      },
+      {
+        "name": "📋 Fase 4 — Integración GoDaddy Reseller (Agilizada)",
+        "open": 4,
+        "done": 0
+      },
+      {
+        "name": "📋 Someday — Fase 5",
+        "open": 3,
+        "done": 0
+      },
+      {
+        "name": "🔄 Abril 2026 — Progreso (homepage + GitHub)",
+        "open": 12,
+        "done": 20
+      }
+    ]
+  },
+  "tasks_completion_pct": 58.0,
+  "dispatch": {
+    "queue_total": 22,
+    "completed_count": 18,
+    "pending_count": 4,
+    "dispatch_state_present": true,
+    "dispatch_note": null,
+    "completed_ids": [
+      "cd-content-001",
+      "cd-content-002",
+      "cd-content-003",
+      "cd-content-004",
+      "cd-content-005",
+      "cd-content-006",
+      "cd-repo-001",
+      "cd-repo-002",
+      "cd-repo-003",
+      "cd-repo-004",
+      "cd-repo-005",
+      "cd-repo-006",
+      "cd-repo-007",
+      "cd-repo-008",
+      "cd-repo-009",
+      "cd-repo-010",
+      "cd-repo-011",
+      "cd-repo-012"
+    ],
+    "next_suggestions": [
+      {
+        "id": "ag-phase4-001",
+        "title": "[PHASE 4] Antigravity: Activar y prueba inicial (cart test staging)"
+      },
+      {
+        "id": "ag-phase4-002",
+        "title": "[PHASE 4] Antigravity: RCC audit (identificar gaps PFID)"
+      },
+      {
+        "id": "ag-phase4-003",
+        "title": "[PHASE 4] Antigravity: Re-test staging post-fixes"
+      },
+      {
+        "id": "ag-phase4-004",
+        "title": "[PHASE 4] Antigravity: Validación producción final"
+      }
+    ]
+  },
+  "audit_log": [],
+  "links": {
+    "issues": "https://github.com/Gano-digital/Pilot/issues",
+    "pulls": "https://github.com/Gano-digital/Pilot/pulls",
+    "actions": "https://github.com/Gano-digital/Pilot/actions",
+    "security": "https://github.com/Gano-digital/Pilot/security"
+  }
+}

@@ -8,7 +8,7 @@ Los **nombres mostrados en la barra lateral** siguen el patrón:
 |--------:|------|-------------|
 | **01–02** | CI | Calidad en cada PR/push (PHP, secretos) |
 | **03** | PR | Automatización sobre pull requests |
-| **04–05, 12** | Deploy / Ops | Producción, verificación parches, eliminación remota wp-file-manager |
+| **04–05, 12, 14** | Deploy / Ops | Producción, verificación parches, wp-file-manager, **Ops Hub (Pages)** |
 | **06** | Repo | Configuración puntual del repositorio |
 | **07–11** | Agentes | Cola Copilot, semillas y orquestación |
 | **13** | Projects | Añadir issues `[agent]` / `copilot` al tablero @Gano.digital (opcional) |
@@ -36,6 +36,7 @@ Archivo | Nombre en UI
 `copilot-setup-steps.yml` | 11 · Agentes · Setup pasos Copilot
 `verify-remove-wp-file-manager.yml` | 12 · Ops · Eliminar wp-file-manager (SSH)
 `project-add-to-project.yml` | 13 · Projects · Añadir issues al tablero Gano.digital
+`gano-ops-hub.yml` | 14 · Ops · Gano Ops Hub (métricas + GitHub Pages)
 
 **Tablero GitHub Projects (@Gano.digital):** [`.github/GITHUB-PROJECT-GANO-DIGITAL.md`](../GITHUB-PROJECT-GANO-DIGITAL.md) · playbook [`memory/ops/github-projects-gano-digital-playbook-2026-04.md`](../../memory/ops/github-projects-gano-digital-playbook-2026-04.md).
 
