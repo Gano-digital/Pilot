@@ -1651,6 +1651,8 @@ select:focus-visible {
        Cubre .chip, .panel y cualquier componente que use var(--motion-*).
        Los valores quedan en 0s en lugar de eliminarse para no romper
        propiedades que dependan del fallback.
+       Nota: --ease-out y --ease-spring no se modifican porque las funciones
+       de timing son irrelevantes cuando la duración es 0s.
        ─────────────────────────────────────────────────────────── */
     :root {
         --motion-fast:   0s;

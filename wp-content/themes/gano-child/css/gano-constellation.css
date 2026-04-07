@@ -13,7 +13,7 @@
      duplicar ese bloque.
    - Valores de fallback inline garantizan funcionamiento si style.css no carga.
 
-   Cargado desde functions.php: gano_enqueue_constellation_css()
+   Cargado desde functions.php mediante wp_enqueue_style (hook gano_child_enqueue_styles).
    ============================================================================= */
 
 /* =============================================================================
