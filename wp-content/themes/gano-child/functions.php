@@ -59,6 +59,17 @@ function gano_child_enqueue_styles() {
         wp_enqueue_style( 'gano-ecosistemas-css', get_stylesheet_directory_uri() . '/css/ecosistemas.css', array( 'gano-child-style' ), '1.0.0' );
     }
 
+    // Constellation 3D Hero — se carga cuando el template o shortcode lo necesite
+    // Detecta la clase .gano-constellation-wrap en páginas/templates que la incluyan.
+    wp_register_script( 'gano-constellation', get_stylesheet_directory_uri() . '/js/gano-constellation.js', array(), '1.0.0', true );
+    if (
+        is_front_page() ||
+        is_page_template( 'templates/page-sota-hub.php' ) ||
+        is_page_template( 'templates/sota-single-template.php' )
+    ) {
+        wp_enqueue_script( 'gano-constellation' );
+    }
+
     // Animaciones de tienda y Quiz de Descubrimiento — solo en templates de tienda
     if ( is_page_template( 'templates/shop-premium.php' ) || is_page_template( 'templates/sota-single-template.php' ) ) {
         wp_enqueue_script( 'gano-shop-animations', get_stylesheet_directory_uri() . '/js/shop-animations.js', array( 'gsap-scroll-trigger' ), '1.1.0', true );
