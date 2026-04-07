@@ -1,0 +1,152 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "Gano Digital (Root)"
+    },
+    {
+      "path": ".gsd",
+      "name": "Agent SDK (.gsd)"
+    },
+    {
+      "path": "wp-content/plugins",
+      "name": "Plugins"
+    },
+    {
+      "path": "wp-content/themes/gano-child",
+      "name": "Theme (gano-child)"
+    },
+    {
+      "path": ".gano-skills",
+      "name": "Skills Repository"
+    }
+  ],
+  "settings": {
+    "php.validate.executablePath": "php",
+    "php.validate.run": "onSave",
+    "intelephense.stubs": [
+      "wordpress",
+      "wordpress-globals",
+      "wordpress-extra",
+      "wordpress-ci"
+    ],
+    "intelephense.php.version": "8.2",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "[php]": {
+      "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+      "editor.formatOnSave": true
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true
+    },
+    "[markdown]": {
+      "editor.defaultFormatter": "yzhang.markdown-all-in-one",
+      "editor.formatOnSave": false
+    },
+    "search.exclude": {
+      "wp-content/plugins/!(gano-*)/**": true,
+      "wp-content/themes/!(gano-*)/**": true,
+      "node_modules/**": true,
+      ".claude/**": false,
+      ".cursor/**": false,
+      ".vscode/**": false
+    },
+    "files.exclude": {
+      "node_modules": true,
+      ".claude/temp/**": true,
+      ".cursor/temp/**": true
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.profiles.windows": {
+      "PowerShell": {
+        "source": "PowerShell",
+        "args": []
+      },
+      "Root (./)": {
+        "path": "pwsh",
+        "args": [
+          "-NoExit",
+          "-Command",
+          "cd \"${workspaceFolder}\""
+        ]
+      },
+      "SDK (.gsd)": {
+        "path": "pwsh",
+        "args": [
+          "-NoExit",
+          "-Command",
+          "cd \"${workspaceFolder}/.gsd\"; npm -v"
+        ]
+      }
+    }
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Listen for XDebug (PHP)",
+        "type": "php",
+        "port": 9003
+      },
+      {
+        "name": "Node: .gsd Debug",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceFolder}/.gsd/index.js",
+        "cwd": "${workspaceFolder}/.gsd"
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Dispatch: Next Task",
+        "type": "shell",
+        "command": "python",
+        "args": [
+          "scripts/claude_dispatch.py",
+          "next"
+        ],
+        "presentation": {
+          "echo": true,
+          "reveal": "always"
+        }
+      },
+      {
+        "label": "Dispatch: List Tasks",
+        "type": "shell",
+        "command": "python",
+        "args": [
+          "scripts/claude_dispatch.py",
+          "list"
+        ]
+      },
+      {
+        "label": "SDK: Install Dependencies",
+        "type": "shell",
+        "command": "npm",
+        "args": [
+          "ci"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder}/.gsd"
+        }
+      },
+      {
+        "label": "SDK: Run Tests (Vitest)",
+        "type": "shell",
+        "command": "npm",
+        "args": [
+          "run",
+          "test"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder}/.gsd"
+        }
+      }
+    ]
+  }
+}

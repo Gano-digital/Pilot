@@ -1,0 +1,120 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Listen for XDebug (PHP)",
+      "type": "php",
+      "pathMapping": {
+        "/home/user/public_html": "${workspaceFolder}",
+        "/var/www/html": "${workspaceFolder}"
+      },
+      "port": 9003,
+      "hostname": "127.0.0.1",
+      "show_log": true,
+      "xdebugSettings": {
+        "max_data": 65535,
+        "show_hidden": 1,
+        "max_children": 100
+      }
+    },
+    {
+      "name": "Node: .gsd Debug",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/.gsd/index.js",
+      "cwd": "${workspaceFolder}/.gsd",
+      "outputCapture": "std",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "env": {
+        "NODE_ENV": "development",
+        "DEBUG": "gano:*"
+      }
+    },
+    {
+      "name": "Node: Attach (Remote)",
+      "type": "node",
+      "request": "attach",
+      "port": 9229,
+      "address": "127.0.0.1",
+      "restart": true,
+      "protocol": "inspector"
+    },
+    {
+      "name": "Node: Agent SDK (Vitest)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/.gsd/node_modules/.bin/vitest",
+      "args": [
+        "run",
+        "--reporter=verbose"
+      ],
+      "cwd": "${workspaceFolder}/.gsd/sdk",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    {
+      "name": "PHP: Gano Plugin (XDebug Inline)",
+      "type": "php",
+      "request": "launch",
+      "port": 9003,
+      "pathMapping": {
+        "/var/www/html": "${workspaceFolder}"
+      },
+      "xdebugSettings": {
+        "max_data": 131072,
+        "show_hidden": 1,
+        "max_children": 300
+      },
+      "runtimeArgs": [
+        "-dxdebug.mode=debug",
+        "-dxdebug.start_with_request=yes",
+        "-dxdebug.client_port=9003"
+      ]
+    },
+    {
+      "name": "Python: Scripts (Project Root)",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "Bash: Task Script",
+      "type": "node",
+      "request": "launch",
+      "program": "/bin/bash",
+      "args": [
+        "${file}"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack (PHP + Node + Debugger)",
+      "configurations": [
+        "Listen for XDebug (PHP)",
+        "Node: .gsd Debug"
+      ],
+      "stopAll": true
+    },
+    {
+      "name": "Agent SDK Development",
+      "configurations": [
+        "Node: Agent SDK (Vitest)",
+        "Python: Scripts (Project Root)"
+      ],
+      "stopAll": true
+    }
+  ]
+}

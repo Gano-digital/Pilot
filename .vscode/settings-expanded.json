@@ -1,0 +1,66 @@
+{
+  "python.terminal.executeInFileDir": false,
+  "task.quickOpen.detail": true,
+  "task.quickOpen.skip": false,
+
+  "php.validate.executablePath": "/usr/bin/php",
+  "php.suggest.basic": true,
+  "intelephense.environment.phpVersion": "8.2",
+  "intelephense.stubs": ["wordpress", "woocommerce", "wordpress-globals"],
+
+  "javascript.format.semicolons": "insert",
+  "javascript.format.insertSpaceAfterSemicolonInForStatements": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[php]": { "editor.defaultFormatter": "bmewburn.vscode-intelephense-client" },
+  "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[markdown]": { "editor.defaultFormatter": null },
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.wordWrap": "off",
+  "editor.rulers": [80, 120],
+
+  "files.exclude": {
+    "**/.claude": true,
+    "**/.cursor": true,
+    "**/.mcp": true,
+    "**/*.log": true,
+    "**/node_modules": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules": true,
+    "**/.git": true,
+    "**/.gsd": true
+  },
+
+  "git.ignoreLimitWarning": true,
+  "git.autorefresh": true,
+  "git.confirmSync": false,
+
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.rulers": [80],
+    "editor.defaultFormatter": null
+  },
+
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.git": true,
+    "**/wp-content/plugins": true,
+    "**/wp-content/themes/hello-elementor": true
+  },
+
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.iconTheme": "vs-minimal",
+  "extensions.recommendations": true,
+
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "icon": "terminal-powershell"
+    }
+  }
+}
