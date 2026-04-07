@@ -620,6 +620,262 @@
   .loader .txt-sub{font-size:8px;letter-spacing:.28em;opacity:.65;margin-top:-12px}
   @keyframes spin{to{transform:rotate(360deg)}}
 
+  /* ============================================================
+     STARCRAFT MENU MOTION LAYER (conceptos)
+     - overlays en esquinas + modal central + portales de campaña
+     - transiciones suaves y responsivas; superposiciones coherentes
+     ============================================================ */
+  :root{
+    --motion-fast:180ms;
+    --motion-med:320ms;
+    --motion-slow:520ms;
+    --ease-out:cubic-bezier(.16,1,.3,1);
+    --ease-in:cubic-bezier(.7,0,.84,0);
+    --ease-inout:cubic-bezier(.4,0,.2,1);
+    --sc-green:#48ff7a;
+    --sc-green-dim:rgba(72,255,122,.35);
+    --sc-red:#ff3a3a;
+    --sc-red-dim:rgba(255,58,58,.35);
+    --sc-violet:#a35cff;
+    --sc-violet-dim:rgba(163,92,255,.35);
+    --sc-metal:#c7b08b;
+    --sc-metal-dim:rgba(199,176,139,.28);
+    --sc-overlay-bg:rgba(6,10,14,.64);
+  }
+  @media (prefers-reduced-motion:reduce){
+    :root{ --motion-fast:1ms; --motion-med:1ms; --motion-slow:1ms; }
+  }
+  .sc-layer{position:fixed;inset:0;z-index:18;pointer-events:none}
+  .sc-layer.show{pointer-events:none}
+  .sc-corner{
+    position:absolute;
+    background:linear-gradient(180deg, rgba(8,12,18,.88), rgba(4,7,12,.72));
+    border:1px solid rgba(255,255,255,.06);
+    box-shadow:0 18px 50px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.08);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    opacity:0;transform:translateY(-10px) scale(.98);
+    transition:opacity var(--motion-med) var(--ease-out), transform var(--motion-med) var(--ease-out);
+    pointer-events:none;
+  }
+  .sc-layer.show .sc-corner{opacity:1;transform:translateY(0) scale(1)}
+  .sc-corner--tl{top:92px;left:18px;width:min(320px,46vw);height:168px;border-radius:8px;overflow:hidden}
+  .sc-corner--tr{top:92px;right:18px;width:min(340px,48vw);height:180px;border-radius:8px;overflow:hidden}
+  @media (max-width:820px){
+    .sc-corner--tl,.sc-corner--tr{top:max(82px,env(safe-area-inset-top,0px));height:144px}
+    .sc-corner--tl{left:max(10px,env(safe-area-inset-left,0px))}
+    .sc-corner--tr{right:max(10px,env(safe-area-inset-right,0px))}
+  }
+  /* TL: grid verde táctico */
+  .sc-grid{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 70% 35%, rgba(255,58,58,.15), transparent 38%),
+      radial-gradient(circle at 35% 68%, rgba(255,58,58,.12), transparent 42%),
+      linear-gradient(0deg, rgba(72,255,122,.08), rgba(72,255,122,.02)),
+      repeating-linear-gradient(90deg, rgba(72,255,122,.10) 0, rgba(72,255,122,.10) 1px, transparent 1px, transparent 12px),
+      repeating-linear-gradient(0deg, rgba(72,255,122,.10) 0, rgba(72,255,122,.10) 1px, transparent 1px, transparent 12px);
+    opacity:.85;
+    mix-blend-mode:screen;
+    filter:drop-shadow(0 0 10px rgba(72,255,122,.16));
+  }
+  .sc-grid::after{
+    content:"";position:absolute;inset:-40px;
+    background:radial-gradient(circle at 50% 50%, rgba(72,255,122,.14), transparent 55%);
+    animation:scGridSweep 2.8s var(--ease-inout) infinite;
+  }
+  @keyframes scGridSweep{
+    0%{transform:translateX(-12%) translateY(8%);opacity:.55}
+    50%{transform:translateX(8%) translateY(-6%);opacity:.95}
+    100%{transform:translateX(-12%) translateY(8%);opacity:.55}
+  }
+  .sc-corner-title{
+    position:absolute;left:10px;top:10px;
+    font-family:'JetBrains Mono',monospace;font-size:9px;
+    letter-spacing:.26em;text-transform:uppercase;
+    color:var(--sc-green);opacity:.9;
+    text-shadow:0 0 10px rgba(72,255,122,.25);
+  }
+  .sc-pips{
+    position:absolute;right:10px;top:12px;
+    display:flex;gap:6px;align-items:center;
+  }
+  .sc-pip{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.18)}
+  .sc-pip.hot{background:var(--sc-red);box-shadow:0 0 12px rgba(255,58,58,.45)}
+
+  /* TR: panel nebuloso rojo + niebla */
+  .sc-nebula{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 40% 40%, rgba(255,58,58,.22), transparent 50%),
+      radial-gradient(circle at 70% 70%, rgba(255,58,58,.16), transparent 55%),
+      radial-gradient(circle at 25% 80%, rgba(255,122,28,.10), transparent 60%),
+      linear-gradient(180deg, rgba(14,6,8,.65), rgba(4,7,12,.75));
+  }
+  .sc-nebula::before{
+    content:"";position:absolute;inset:-30px;
+    background:
+      radial-gradient(circle at 40% 50%, rgba(255,255,255,.06), transparent 55%),
+      radial-gradient(circle at 70% 40%, rgba(255,255,255,.05), transparent 60%);
+    filter:blur(10px);
+    opacity:.75;
+    animation:scFog 5.2s var(--ease-inout) infinite;
+  }
+  @keyframes scFog{
+    0%{transform:translateX(-3%) translateY(2%) scale(1)}
+    50%{transform:translateX(4%) translateY(-2%) scale(1.02)}
+    100%{transform:translateX(-3%) translateY(2%) scale(1)}
+  }
+  .sc-nebula-title{color:rgba(255,255,255,.78);text-shadow:0 0 16px rgba(255,58,58,.22)}
+
+  /* Vórtice azul (decorativo, centro-fondo) */
+  .sc-vortex{
+    position:absolute;left:50%;top:54%;
+    width:min(520px,70vw);height:min(520px,70vw);
+    transform:translate(-50%,-50%);
+    opacity:0;
+    transition:opacity var(--motion-slow) var(--ease-out);
+    pointer-events:none;
+    filter:drop-shadow(0 0 30px rgba(92,196,212,.14));
+  }
+  .sc-layer.show .sc-vortex{opacity:.9}
+  .sc-vortex::before{
+    content:"";position:absolute;inset:0;border-radius:50%;
+    background:
+      conic-gradient(from 0deg,
+        rgba(92,196,212,.0),
+        rgba(92,196,212,.12),
+        rgba(126,200,255,.22),
+        rgba(92,196,212,.08),
+        rgba(92,196,212,.0)
+      );
+    mask:radial-gradient(circle at center, transparent 38%, #000 40%, #000 70%, transparent 72%);
+    -webkit-mask:radial-gradient(circle at center, transparent 38%, #000 40%, #000 70%, transparent 72%);
+    animation:scVortexSpin 4.2s linear infinite;
+  }
+  .sc-vortex::after{
+    content:"";position:absolute;inset:18%;border-radius:50%;
+    background:radial-gradient(circle at center, rgba(126,200,255,.18), transparent 70%);
+    animation:scVortexPulse 2.8s var(--ease-inout) infinite;
+  }
+  @keyframes scVortexSpin{to{transform:rotate(360deg)}}
+  @keyframes scVortexPulse{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.06);opacity:1}}
+
+  /* Modal central estilo “Select Game Type” */
+  .sc-modal{
+    position:absolute;left:50%;top:50%;
+    transform:translate(-50%,-50%) scale(.98);
+    width:min(520px,92vw);
+    background:linear-gradient(180deg, rgba(6,10,14,.86), rgba(2,5,8,.92));
+    border:1px solid rgba(255,58,58,.7);
+    box-shadow:0 30px 90px rgba(0,0,0,.78), 0 0 30px rgba(255,58,58,.12), inset 0 1px 0 rgba(255,255,255,.08);
+    border-radius:10px;
+    opacity:0;
+    transition:opacity var(--motion-med) var(--ease-out), transform var(--motion-med) var(--ease-out);
+    pointer-events:none;
+  }
+  .sc-layer.show-modal .sc-modal{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+  .sc-modal::before{
+    content:"";position:absolute;inset:0;border-radius:10px;pointer-events:none;
+    background:
+      radial-gradient(circle at 30% 10%, rgba(255,58,58,.18), transparent 55%),
+      repeating-linear-gradient(0deg, rgba(92,196,212,.05) 0, rgba(92,196,212,.05) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode:screen;
+    opacity:.55;
+  }
+  .sc-modal-head{
+    position:relative;z-index:1;
+    padding:16px 18px 12px;
+    border-bottom:1px solid rgba(255,58,58,.18);
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  .sc-modal-title{
+    font-family:'JetBrains Mono',monospace;
+    letter-spacing:.22em;text-transform:uppercase;
+    font-size:11px;color:#f2f4ff;
+    text-shadow:0 0 18px rgba(255,58,58,.18);
+  }
+  .sc-modal-x{
+    width:30px;height:30px;border-radius:8px;
+    background:rgba(255,58,58,.08);
+    border:1px solid rgba(255,58,58,.35);
+    color:#ffd0d0;
+    cursor:pointer;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .sc-modal-body{position:relative;z-index:1;padding:16px 18px 18px}
+  .sc-choice{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    width:100%;
+    padding:14px 14px;
+    border-radius:9px;
+    background:rgba(10,16,24,.45);
+    border:1px solid rgba(255,255,255,.06);
+    color:#eaf2f6;
+    cursor:pointer;
+    transition:transform var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out), background var(--motion-fast) var(--ease-out);
+    margin-bottom:10px;
+  }
+  .sc-choice:hover{transform:translateY(-1px);border-color:rgba(255,58,58,.35);background:rgba(255,58,58,.06)}
+  .sc-choice small{display:block;color:rgba(255,255,255,.55);font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-family:'JetBrains Mono',monospace}
+  .sc-choice b{display:block;font-size:14px}
+  .sc-choice .tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.65)}
+  .sc-modal-foot{
+    position:relative;z-index:1;
+    padding:12px 18px 16px;
+    display:flex;justify-content:flex-end;gap:10px;
+    border-top:1px solid rgba(255,255,255,.06);
+  }
+  .sc-btn{
+    pointer-events:auto;
+    padding:10px 14px;border-radius:9px;
+    background:linear-gradient(180deg, rgba(199,176,139,.18), rgba(8,12,18,.85));
+    border:1px solid rgba(199,176,139,.35);
+    color:var(--sc-green);
+    font-family:'JetBrains Mono',monospace;
+    letter-spacing:.18em;text-transform:uppercase;font-size:10px;
+    cursor:pointer;
+    transition:transform var(--motion-fast) var(--ease-out), filter var(--motion-fast) var(--ease-out);
+  }
+  .sc-btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+
+  /* Portales (campaña) — 3 círculos violeta con glow */
+  .sc-portals{
+    position:absolute;left:50%;bottom:92px;transform:translateX(-50%);
+    display:grid;grid-template-columns:repeat(3, minmax(0, 160px));
+    gap:18px;
+    opacity:0;transform:translateX(-50%) translateY(12px);
+    transition:opacity var(--motion-slow) var(--ease-out), transform var(--motion-slow) var(--ease-out);
+    pointer-events:none;
+  }
+  .sc-layer.show-portals .sc-portals{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+  @media (max-width:820px){
+    .sc-portals{grid-template-columns:1fr;bottom:max(92px,env(safe-area-inset-bottom,0px));gap:12px}
+  }
+  .sc-portal{
+    pointer-events:auto;
+    display:flex;align-items:center;gap:12px;
+    padding:12px 12px;border-radius:12px;
+    background:rgba(8,12,18,.72);
+    border:1px solid rgba(163,92,255,.28);
+    box-shadow:0 18px 60px rgba(0,0,0,.65), 0 0 28px rgba(163,92,255,.14), inset 0 1px 0 rgba(255,255,255,.06);
+    cursor:pointer;
+    transition:transform var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out);
+  }
+  .sc-portal:hover{transform:translateY(-2px);border-color:rgba(163,92,255,.48)}
+  .sc-ring{
+    width:54px;height:54px;border-radius:50%;
+    background:
+      radial-gradient(circle at center, rgba(163,92,255,.10), rgba(163,92,255,.02) 55%, rgba(163,92,255,.18) 60%, transparent 70%),
+      conic-gradient(from 0deg, rgba(163,92,255,.0), rgba(163,92,255,.42), rgba(92,196,212,.24), rgba(163,92,255,.0));
+    box-shadow:0 0 20px rgba(163,92,255,.22);
+    animation:scPortalSpin 3.6s linear infinite;
+    flex-shrink:0;
+  }
+  @keyframes scPortalSpin{to{transform:rotate(360deg)}}
+  .sc-portal .meta{pointer-events:none;text-align:left;font-size:10px;line-height:1.25}
+  .sc-portal .meta b{display:block;color:#eaf2f6;font-family:'Space Grotesk',sans-serif;font-size:13px}
+  .sc-portal .meta span{display:block;color:rgba(255,255,255,.58);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;font-size:9px;margin-top:3px}
+
   /* ---------- Tooltip — Dead Space style micro-HUD ---------- */
   .tooltip{
     position:fixed;pointer-events:none;z-index:13;
@@ -932,6 +1188,76 @@
   <button class="ctrl active" id="btnLabels" title="Labels">A</button>
   <button class="ctrl" id="btnTop" title="Top view">⊕</button>
   <button class="ctrl sound active" id="btnSound" type="button" title="Sonido HUD (curated AgentCraft)">◐</button>
+  <button class="ctrl" id="btnMenu" type="button" title="Menú RTS (overlays + modal)">▦</button>
+</div>
+
+<!-- =========== SC MENU MOTION LAYER (conceptos del video) =========== -->
+<div class="sc-layer" id="scLayer" aria-hidden="true">
+  <div class="sc-corner sc-corner--tl" id="scTL">
+    <div class="sc-grid" aria-hidden="true"></div>
+    <div class="sc-corner-title">TACTICAL GRID</div>
+    <div class="sc-pips" aria-hidden="true">
+      <span class="sc-pip"></span><span class="sc-pip hot"></span><span class="sc-pip"></span>
+    </div>
+  </div>
+  <div class="sc-corner sc-corner--tr" id="scTR">
+    <div class="sc-nebula" aria-hidden="true"></div>
+    <div class="sc-corner-title sc-nebula-title">THREAT CLOUD</div>
+    <div class="sc-pips" aria-hidden="true">
+      <span class="sc-pip hot"></span><span class="sc-pip"></span><span class="sc-pip"></span>
+    </div>
+  </div>
+  <div class="sc-vortex" aria-hidden="true"></div>
+
+  <div class="sc-portals" id="scPortals">
+    <button class="sc-portal" type="button" data-race="terran" data-mode="campaign">
+      <div class="sc-ring" aria-hidden="true"></div>
+      <div class="meta">
+        <b>TERRAN</b>
+        <span>Campaign Complete</span>
+      </div>
+    </button>
+    <button class="sc-portal" type="button" data-race="zerg" data-mode="campaign">
+      <div class="sc-ring" aria-hidden="true"></div>
+      <div class="meta">
+        <b>ZERG</b>
+        <span>Episode II</span>
+      </div>
+    </button>
+    <button class="sc-portal" type="button" data-race="protoss" data-mode="campaign">
+      <div class="sc-ring" aria-hidden="true"></div>
+      <div class="meta">
+        <b>PROTOSS</b>
+        <span>Episode III</span>
+      </div>
+    </button>
+  </div>
+
+  <div class="sc-modal" id="scModal" role="dialog" aria-modal="true" aria-labelledby="scModalTitle">
+    <div class="sc-modal-head">
+      <div class="sc-modal-title" id="scModalTitle">Select Game Type</div>
+      <button class="sc-modal-x" id="scModalClose" type="button" aria-label="Cerrar">×</button>
+    </div>
+    <div class="sc-modal-body">
+      <button class="sc-choice" type="button" id="scChoiceOriginal">
+        <div>
+          <small>STARCRAFT</small>
+          <b>Original</b>
+        </div>
+        <span class="tag">CORE</span>
+      </button>
+      <button class="sc-choice" type="button" id="scChoiceExpansion">
+        <div>
+          <small>STARCRAFT</small>
+          <b>Expansion</b>
+        </div>
+        <span class="tag">BROOD WAR</span>
+      </button>
+    </div>
+    <div class="sc-modal-foot">
+      <button class="sc-btn" id="scCancel" type="button">Cancel</button>
+    </div>
+  </div>
 </div>
 
 <!-- =========== INDEXER (top-left master menu) =========== -->
@@ -2590,7 +2916,7 @@ addEventListener('pointerdown', (e)=>{
 /** Clics en canvas vs UI: inspeccionar DOM no debe disparar raycast; coords sincronizadas en pointerdown */
 function isEventOnUiLayer(el){
   return !!(el && el.closest && el.closest(
-    '.legend, .controls, .panel, .indexer, .hud-top, .scale-legend, #loader, .loader, aside.panel'
+    '.legend, .controls, .panel, .indexer, .hud-top, .scale-legend, #loader, .loader, aside.panel, .sc-layer, .sc-modal, .sc-portals'
   ));
 }
 
@@ -2941,6 +3267,118 @@ document.getElementById('btnLabels').onclick = (e)=>{
   sunLabel.visible = labelsOn;
   e.currentTarget.classList.toggle('active', labelsOn);
 };
+
+/* ============================================================
+   SC MENU LAYER — overlays + modal + portales (conceptos del video)
+   ============================================================ */
+const scLayer = document.getElementById('scLayer');
+const scModal = document.getElementById('scModal');
+const scPortals = document.getElementById('scPortals');
+let scMenuOn = false;
+let scModalOn = false;
+let scPortalsOn = false;
+
+function scRenderState(){
+  if(!scLayer) return;
+  scLayer.classList.toggle('show', scMenuOn);
+  scLayer.classList.toggle('show-modal', scMenuOn && scModalOn);
+  scLayer.classList.toggle('show-portals', scMenuOn && scPortalsOn);
+  scLayer.setAttribute('aria-hidden', scMenuOn ? 'false' : 'true');
+}
+function scOpenMenu(mode='modal'){
+  scMenuOn = true;
+  scModalOn = (mode === 'modal');
+  scPortalsOn = (mode === 'portals');
+  scRenderState();
+  // Micro feedback: abrir menú = “nav open” sin competir con selección 3D
+  hudSfxNav('navMenuOpen');
+}
+function scCloseMenu(){
+  scMenuOn = false;
+  scModalOn = false;
+  scPortalsOn = false;
+  scRenderState();
+  hudSfxNav('navMenuClose');
+}
+function scToggleMenu(){
+  if(!scMenuOn) scOpenMenu('modal');
+  else scCloseMenu();
+}
+function scOpenPortals(){
+  scMenuOn = true;
+  scModalOn = false;
+  scPortalsOn = true;
+  scRenderState();
+}
+
+// Botón barra controls
+(function initMenuBtn(){
+  const b = document.getElementById('btnMenu');
+  if(!b) return;
+  b.onclick = (e)=>{
+    e.stopPropagation();
+    scToggleMenu();
+    b.classList.toggle('active', scMenuOn);
+  };
+})();
+
+// Cerrar por overlay click (si está activo)
+if(scLayer){
+  scLayer.addEventListener('click', (e)=>{
+    // clicks en botones internos no cierran
+    if(e.target && e.target.closest && e.target.closest('.sc-modal, .sc-portal')) return;
+    scCloseMenu();
+    const b = document.getElementById('btnMenu');
+    b && b.classList.remove('active');
+  });
+}
+// Modal actions
+(function initScModal(){
+  const closeBtn = document.getElementById('scModalClose');
+  const cancelBtn = document.getElementById('scCancel');
+  const c1 = document.getElementById('scChoiceOriginal');
+  const c2 = document.getElementById('scChoiceExpansion');
+  const close = ()=>{
+    scCloseMenu();
+    const b = document.getElementById('btnMenu');
+    b && b.classList.remove('active');
+  };
+  closeBtn && (closeBtn.onclick = (e)=>{ e.stopPropagation(); close(); });
+  cancelBtn && (cancelBtn.onclick = (e)=>{ e.stopPropagation(); close(); });
+  c1 && (c1.onclick = (e)=>{ e.stopPropagation(); scOpenPortals(); });
+  c2 && (c2.onclick = (e)=>{ e.stopPropagation(); scOpenPortals(); });
+})();
+
+// Portales: click = sonido facción + foco rápido a un sistema por raza (1er match)
+if(scPortals){
+  scPortals.addEventListener('click', (e)=>{
+    const btn = e.target && e.target.closest ? e.target.closest('.sc-portal') : null;
+    if(!btn) return;
+    e.stopPropagation();
+    const race = btn.dataset.race || 'terran';
+    sfxRaceSelect(race, performance.now());
+    // mapear raza a primer sistema de esa raza para “entrar”
+    const idx = SYSTEMS.findIndex(s=>portraitConfigFor(s).race === race);
+    if(idx >= 0) focusPlanet(idx);
+    scCloseMenu();
+    const b = document.getElementById('btnMenu');
+    b && b.classList.remove('active');
+  });
+}
+
+// Teclas: M abre/cierra. ESC cierra si abierto.
+addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape' && scMenuOn){
+    scCloseMenu();
+    const b = document.getElementById('btnMenu');
+    b && b.classList.remove('active');
+  }
+  if((e.key === 'm' || e.key === 'M') && !e.repeat){
+    scToggleMenu();
+    const b = document.getElementById('btnMenu');
+    b && b.classList.toggle('active', scMenuOn);
+  }
+});
 
 /* ============================================================
    RESIZE
