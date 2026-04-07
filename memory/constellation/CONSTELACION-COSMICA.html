@@ -815,7 +815,13 @@
   /* ── Portal clicks: update modal content and focus planet ─────────── */
   document.querySelectorAll('.sc-portal').forEach(portal => {
     portal.addEventListener('click', function onPortalClick(e) {
-      e.stopPropagation();          /* keep the scLayer listener from firing */
+      /*
+       * stopPropagation is a defensive belt-and-suspenders measure. The
+       * scLayer click handler already guards against portal clicks via
+       * e.target.closest('.sc-portal'), so propagation would be harmless,
+       * but stopping it keeps the intent explicit.
+       */
+      e.stopPropagation();
       const key = portal.dataset.portal;
       const content = PORTAL_CONTENT[key];
       if (content) {
@@ -842,6 +848,10 @@
   /* ── Modal action buttons ─────────────────────────────────────────── */
   document.querySelectorAll('.sc-modal-actions button').forEach(btn => {
     btn.addEventListener('click', function(e) {
+      /*
+       * Defensive: scLayer.closest('.sc-modal') check already prevents
+       * accidental closure, but stopPropagation makes the intent explicit.
+       */
       e.stopPropagation();
       const action = btn.dataset.action;
       /* Future: dispatch action. For now, acknowledge and close. */
