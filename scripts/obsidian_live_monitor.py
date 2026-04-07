@@ -4,10 +4,9 @@
 Actualiza métricas y progreso en tiempo real
 """
 
-import json
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from obsidian_sync_api import ObsidianSync
 
 class GanoDigitalMonitor:
@@ -48,7 +47,7 @@ class GanoDigitalMonitor:
         # Agregar timestamp de actualización
         new_content = re.sub(
             r"(\*\*Última actualización\*\*:) [^\n]*",
-            rf"\1 {datetime.now().strftime('%Y-%m-%d %H:%M')} UTC",
+            rf"\1 {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M')} UTC",
             new_content
         )
 
@@ -67,7 +66,7 @@ class GanoDigitalMonitor:
         # Actualizar timestamp
         new_content = re.sub(
             r"(\*\*Última actualización\*\*:) [^\n]*",
-            rf"\1 {datetime.now().strftime('%Y-%m-%d %H:%M')} UTC",
+            rf"\1 {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M')} UTC",
             content
         )
 

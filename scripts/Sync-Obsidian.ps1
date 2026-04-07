@@ -23,6 +23,12 @@ $Headers = @{
     "Content-Type"  = "application/json"
 }
 
+# -SkipCertificateCheck existe solo en PowerShell 7+.
+if ($PSVersionTable.PSVersion.Major -lt 7) {
+    Write-Error "Este script requiere PowerShell 7+ (usa -SkipCertificateCheck). Instala PowerShell 7 y reintenta."
+    exit 1
+}
+
 # Certificado auto-firmado en localhost: usar -SkipCertificateCheck por request (PS 7+).
 # Validar que el host sea realmente localhost antes de permitir skip.
 $LocalHost = [System.Uri]$ApiUrl
@@ -104,7 +110,7 @@ function Update-ConstellationStatus {
     Write-Host ""
     Write-Host "📊 Actualizando estado de constelación..." -ForegroundColor Cyan
 
-    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $timestamp = (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss")
 
     $statusContent = @"
 # 🌌 Estado Live — Constelación Gano Digital

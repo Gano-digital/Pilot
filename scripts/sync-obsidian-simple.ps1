@@ -28,7 +28,11 @@ $headers = @{
 }
 
 try {
-    $response = Invoke-RestMethod -Uri "$apiUrl/vault/" -Headers $headers -SkipCertificateCheck
+    if ($PSVersionTable.PSVersion.Major -lt 7) {
+        Write-Error "Este script requiere PowerShell 7+ (usa -SkipCertificateCheck)."
+        exit 1
+    }
+    $response = Invoke-RestMethod -Uri "$apiUrl/vault/" -Headers $headers @skipTls
     Write-Host "Success! Connected to Obsidian." -ForegroundColor Green
     Write-Host ""
     Write-Host "Files in vault:" -ForegroundColor Yellow
@@ -47,7 +51,7 @@ try {
 $statusContent = @"
 # Status - Obsidian Sync Active
 
-**Last sync**: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') UTC
+**Last sync**: $((Get-Date).ToUniversalTime().ToString('yyyy-MM-dd HH:mm:ss')) UTC
 **System**: Online
 **Connection**: Connected
 
@@ -74,7 +78,7 @@ try {
         -Method POST `
         -Headers $headers `
         -Body $body `
-        -SkipCertificateCheck | Out-Null
+        @skipTls | Out-Null
 
     Write-Host "Success! Status file updated." -ForegroundColor Green
 } catch {

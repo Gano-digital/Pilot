@@ -16,6 +16,13 @@ set API_KEY=%OBSIDIAN_API_KEY%
 set API_URL=https://localhost:27124
 set TIMESTAMP=%date:~-4,4%-%date:~-10,2%-%date:~-7,2% %time:~0,2%:%time:~3,2%
 
+REM Seguridad: curl -k solo permitido contra localhost/127.0.0.1/::1
+echo %API_URL% | findstr /I /C:"https://localhost:" /C:"https://127.0.0.1:" /C:"https://[::1]:" >nul
+if errorlevel 1 (
+    echo ERROR: API_URL no es localhost (API_URL=%API_URL%). No se permite usar curl -k hacia host remoto.
+    exit /b 1
+)
+
 echo.
 echo ============================================
 echo  Gano Digital - Obsidian Sync

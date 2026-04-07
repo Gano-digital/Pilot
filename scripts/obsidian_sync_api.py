@@ -9,7 +9,6 @@ import json
 import os
 import sys
 from datetime import datetime
-from pathlib import Path
 from typing import Dict, Any, Optional
 from urllib.parse import urlparse
 
@@ -114,9 +113,6 @@ class ObsidianSync:
             True si fue exitoso
         """
         try:
-            # Encodeamos el path
-            encoded_path = path.replace(" ", "%20")
-
             payload = {
                 "path": path,
                 "content": content,
