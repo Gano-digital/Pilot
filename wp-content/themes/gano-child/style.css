@@ -1858,3 +1858,122 @@ select:focus-visible {
         transition: none;
     }
 }
+
+/* ============================================================
+   START: HERO OVERLAY + DOMAIN SEARCH FIX
+   Oleada 7 — Legibilidad del Hero y paleta de sección de dominio.
+
+   Instrucciones Elementor:
+   1. Sección hero → Avanzado → Clases CSS → agregar "gano-hero-overlay"
+   2. Sección búsqueda de dominio → Avanzado → Clases CSS → agregar "gano-domain-section"
+   3. Widget H1 del hero → Avanzado → Clases CSS → agregar "gano-el-hero-readability"
+   ============================================================ */
+
+/* — Hero overlay: gradiente oscuro sobre cualquier imagen de fondo — */
+.gano-hero-overlay {
+    position: relative;
+    isolation: isolate;
+}
+
+.gano-hero-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+        135deg,
+        rgba(5, 8, 12, 0.88) 0%,
+        rgba(5, 8, 12, 0.70) 55%,
+        rgba(27, 79, 216, 0.25) 100%
+    );
+}
+
+/* El contenedor de Elementor queda sobre el overlay */
+.gano-hero-overlay > .elementor-container,
+.gano-hero-overlay > .e-con-inner {
+    position: relative;
+    z-index: 2;
+}
+
+/* — Text-shadow fuerte: legible sobre cualquier imagen oscura o texturizada — */
+.gano-el-hero-readability .elementor-heading-title,
+.gano-el-hero-readability h1,
+.gano-el-hero-readability h2 {
+    text-shadow:
+        0 2px 24px rgba(5, 8, 12, 0.92),
+        0 4px 48px rgba(5, 8, 12, 0.75),
+        0 1px 4px  rgba(5, 8, 12, 0.98);
+}
+
+/* — Sección búsqueda de dominios: elimina fondo lavanda del plugin/Elementor — */
+.gano-domain-section,
+.gano-domain-section.elementor-section,
+.gano-domain-section.e-con {
+    background-color: var(--gano-dark-deep, #05080C) !important;
+    background-image: none !important;
+}
+
+/* Selector de respaldo: aplica si la sección contiene el widget del plugin */
+.elementor-section:has(.rstore-domain-search),
+.e-con:has(.rstore-domain-search) {
+    background-color: var(--gano-dark-deep, #05080C) !important;
+    background-image: none !important;
+}
+
+/* Inputs y CTA del buscador de dominios heredan paleta de marca */
+.rstore-domain-search {
+    background: transparent !important;
+    color: var(--gano-text, #E2E8F0);
+}
+
+.rstore-domain-search input[type="text"],
+.rstore-domain-search .rstore-search-input {
+    background: var(--gano-card-sota, #0B1118) !important;
+    border-color: var(--gano-border-sota, rgba(99,102,241,0.20)) !important;
+    color: var(--gano-text, #E2E8F0) !important;
+}
+
+.rstore-domain-search input[type="text"]::placeholder,
+.rstore-domain-search .rstore-search-input::placeholder {
+    color: var(--gano-text-slate, #94A3B8) !important;
+}
+
+.rstore-domain-search .rstore-search-btn,
+.rstore-domain-search button[type="submit"] {
+    background: var(--gano-orange, #EA580C) !important;
+    border-color: var(--gano-orange, #EA580C) !important;
+    color: #ffffff !important;
+}
+
+.rstore-domain-search .rstore-search-btn:hover,
+.rstore-domain-section button[type="submit"]:hover {
+    background: var(--gano-orange-hover, #C2410C) !important;
+    border-color: var(--gano-orange-hover, #C2410C) !important;
+}
+
+/* — Monolith: figura geométrica del hero (GSAP ya maneja la rotación) — */
+.gano-monolith {
+    aspect-ratio: 2 / 3;
+    width: clamp(160px, 28vw, 320px);
+    background: linear-gradient(
+        180deg,
+        var(--gano-indigo-soft, rgba(99,102,241,0.10)) 0%,
+        var(--gano-purple-soft, rgba(139,92,246,0.10)) 100%
+    );
+    border: 1px solid var(--gano-border-sota, rgba(99,102,241,0.20));
+    border-radius: var(--gano-radius-lg, 16px);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    will-change: transform;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gano-monolith {
+        animation: none !important;
+        transform: none !important;
+    }
+}
+
+/* END: HERO OVERLAY + DOMAIN SEARCH FIX */
