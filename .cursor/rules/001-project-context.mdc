@@ -29,6 +29,7 @@ Fundador: Diego. URL: https://gano.digital
 7. `.github/DEV-COORDINATION.md` — Brújula operativa
 8. GitHub **Projects** `@Gano.digital` — tablero de progreso/reporte equipo (issues siguen en repo **Pilot**); playbook `memory/ops/github-projects-gano-digital-playbook-2026-04.md`
 9. **`memory/audits/`** — informes PDF/HTML para equipo (Constellation, métricas, roadmap); regeneración `scripts/generate_dev_audit_pdf.py`
+10. **`memory/ops/homepage-vitrina-launch-plan-2026-04.md`** — plan vitrina (homepage + comercio), roles de agentes y procesos; complementa `TASKS.md`
 
 ## Idioma
 - Código: comentarios y strings en **es-CO**

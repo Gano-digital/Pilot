@@ -26,6 +26,7 @@
 5. **GSD workflow** para agentes — coordinacion multi-agente via .github/agents/
 6. **Copilot queue** via JSON — oleadas de tareas versionadas
 7. **Tooling opcional (no runtime)** — graphify (mapa conocimiento), AO (orquestación), ML‑SSD (I+D evaluación)
+8. **Plan vitrina gano.digital** — documento canónico de fases, RACI y procesos: `memory/ops/homepage-vitrina-launch-plan-2026-04.md` (complementa `TASKS.md`; copy fuente en `memory/content/`).
 
 ## Tooling opcional (repo)
 

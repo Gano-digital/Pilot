@@ -1,13 +1,13 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-08 (merge #156 + #157 en `main`; workflow **14** Ops Hub verde tras fix `generate_gano_ops_progress.py`; workflow **04** Deploy sigue `publickey` hasta alinear secret `SSH` con la misma pareja que el acceso local)_
+_Última actualización: 2026-04-08 (plan vitrina + RACI agentes en `memory/ops/homepage-vitrina-launch-plan-2026-04.md`; `TASKS.md` / `AGENTS.md` / `copilot-instructions` enlazados)_
 
 ## Foco actual (producto y repo)
 
+- **Vitrina gano.digital:** plan por fases y roles (Diego / Cursor / Copilot / Claude) — [`memory/ops/homepage-vitrina-launch-plan-2026-04.md`](../../memory/ops/homepage-vitrina-launch-plan-2026-04.md). Copy fuente: [`homepage-copy-2026-04.md`](../../memory/content/homepage-copy-2026-04.md). Aplicación en **Elementor = humano en wp-admin**; agentes no sustituyen el pegado en panel.
 - **Servidor / producción:** desplegar parches Fases 1–3 al hosting real, eliminar `wp-file-manager`, configurar Gano SEO / GSC / Rank Math (`TASKS.md` sección Active).
-- **GitHub `Gano-digital/Pilot`:** repositorio en `main` ya consolidado; foco actual = cierre manual de issues cubiertos por `main`, uso selectivo de colas opcionales (API / security guardian) y verificación de accesos.
-- **Homepage / Elementor:** copy desde `memory/content/`, menú primary, sustituir Lorem (issues `homepage-fixplan`).
-- **Fase 4:** catálogo Reseller, mapeo CTAs en `shop-premium.php`, smoke test checkout (sin asumir estado de servidor no documentado).
+- **GitHub `Gano-digital/Pilot`:** repositorio en `main` ya consolidado; cierre de issues cubiertos por `main`; colas opcionales (API / security guardian) sin bloquear vitrina.
+- **Fase 4:** catálogo Reseller, mapeo CTAs en `shop-premium.php`, smoke test checkout — [`memory/commerce/rcc-pfid-checklist.md`](../../memory/commerce/rcc-pfid-checklist.md).
 - **Constellation / Battle Map:** plan de **diseño + fine tuning + fases + alineación agentes** — [`memory/constellation/BATTLE-MAP-PLAN-DISENO-FINE-TUNING-2026-04.md`](../../memory/constellation/BATTLE-MAP-PLAN-DISENO-FINE-TUNING-2026-04.md); config ejemplo JSON — [`battle-map-config.example.json`](../../memory/constellation/battle-map-config.example.json); `CONSTELACION-COSMICA.html` expone `window.__GANO_BATTLE_MAP__` (build/plan). Oleada GitHub `copilot/cx-*` sigue playbook; no duplicar PRs masivos.
 - **Investigación SOTA UX:** [`memory/research/sota-ux-rts-fps-constellation-steal-2026-04.md`](../../memory/research/sota-ux-rts-fps-constellation-steal-2026-04.md). **Inventario recursos:** [`memory/constellation/INVENTARIO-RECURSOS-DESARROLLO-2026-04.md`](../../memory/constellation/INVENTARIO-RECURSOS-DESARROLLO-2026-04.md).
 
@@ -52,15 +52,14 @@ _Última actualización: 2026-04-08 (merge #156 + #157 en `main`; workflow **14*
 
 ## Próximos pasos (orden sugerido)
 
-1. Validar manualmente clave SSH en GitHub y en el servidor; si funciona, migrar `origin` a SSH solo si aporta valor operativo.
-2. Deploy checklist F1–3 + retirada `wp-file-manager`.
-3. Panel: SEO, menús, copy real en Elementor.
-4. Fase 4 Reseller: RCC + PFIDs reales + prueba de flujo de compra.
-5. GitHub: cerrar issues cubiertos por `main`; sembrar colas opcionales solo si hacen falta.
+1. **Fase 0 plan vitrina:** deploy F1–3 estable, `wp-file-manager` fuera, secret `SSH` alineado con servidor (ver plan § Fase 0).
+2. **Fase 1:** Lorem y métricas falsas fuera en homepage (`homepage-copy-2026-04.md` + menú primary).
+3. **Fase 2–3:** Nosotros / confianza; RCC + CTAs + checkout Reseller.
+4. GitHub: cerrar issues obsoletos; sembrar **09 · homepage-fixplan** solo si hace falta granularidad.
 
 ## Decisiones / referencias
 
-- Fuentes de verdad: `TASKS.md`, `CLAUDE.md`, `.github/DEV-COORDINATION.md`, `.github/copilot-instructions.md`.
+- Fuentes de verdad: `TASKS.md`, `CLAUDE.md`, `.github/DEV-COORDINATION.md`, `.github/copilot-instructions.md`, `memory/ops/homepage-vitrina-launch-plan-2026-04.md` (vitrina + agentes).
 - Jerarquía si hay conflicto: `CLAUDE.md` > `copilot-instructions.md` > `AGENTS.md`. **Comercio y checkout:** solo **GoDaddy Reseller / lo que ya está en el hosting GoDaddy** — no priorizar Wompi ni pasarelas ajenas a ese ecosistema.
 - Resumen ejecutivo para humanos: `memory/sessions/2026-04-02-progreso-consolidado.md`.
 - Estado dispatch y documentación operativa reciente: `memory/sessions/2026-04-03-claude-dispatch.md`.

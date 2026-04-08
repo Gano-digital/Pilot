@@ -1,5 +1,18 @@
 # Progress Tracker
 
+## 2026-04-08 — Plan vitrina + realineación agentes (documentación)
+
+### Completado
+
+- [x] [`memory/ops/homepage-vitrina-launch-plan-2026-04.md`](../../memory/ops/homepage-vitrina-launch-plan-2026-04.md) — fases 0–4, RACI, proceso repo → deploy → Elementor, enlaces canónicos.
+- [x] `TASKS.md` — enlace al plan bajo “Siguiente foco”.
+- [x] `AGENTS.md` — fuente de verdad #6 (plan vitrina).
+- [x] `.github/copilot-instructions.md` — sección **Prioridad vitrina**.
+- [x] `memory/content/digital-files-and-content-setup.md` — fila plan vitrina + fecha.
+- [x] `.cursor/memory/activeContext.md` + `techContext.md` — alineación foco y decisión arquitectónica #8.
+
+---
+
 ## 2026-04-08 — Merge #156/#157 + billing Actions + verificación workflows
 
 ### Completado
