@@ -1,6 +1,6 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-08 (PR **#159** fusionado en `main`; workflow **14** verde en push; **04** sigue en `publickey` en paso *Probar SSH* — comparar huella del log con `ssh-keygen -lf` de la `.pub` en servidor)_
+_Última actualización: 2026-04-08 (**#159** y **#160** en `main`; handoff Claude en [`2026-04-08-reporte-handoff-ssh-deploy-tokens.md`](../../memory/claude/2026-04-08-reporte-handoff-ssh-deploy-tokens.md); **04** deploy: huella OK, pendiente IP/`SERVER_*`)_
 
 ## Foco actual (producto y repo)
 
@@ -24,6 +24,7 @@ _Última actualización: 2026-04-08 (PR **#159** fusionado en `main`; workflow *
   - ML‑SSD (Apple) como submodule `vendor/ml-ssd` + skill `gano-ml-ssd` (I+D / evaluación codegen).
 - [x] **PR #136** (docs/memoria Fase 4) dejado **merge-ready** (conflictos resueltos, CI verde). Nota: el merge puede quedar bloqueado por ruleset de “Code Quality” en GitHub.
 - [x] **PR #159** — plan vitrina + prechequeo SSH en `deploy.yml` + runbook `publickey` — fusionado en `main`; PR #158 cerrado como sustituido.
+- [x] **PR #160** — troubleshooting SSH (IP) + reporte handoff para Claude — fusionado en `main`.
 
 ## En progreso
 
