@@ -60,6 +60,7 @@ _Última actualización: 2026-04-08 (PR **#159** fusionado en `main`; workflow *
 
 ## Decisiones / referencias
 
+- **Handoff Claude (SSH, Deploy CI, tokens/API):** [`memory/claude/2026-04-08-reporte-handoff-ssh-deploy-tokens.md`](../../memory/claude/2026-04-08-reporte-handoff-ssh-deploy-tokens.md).
 - Fuentes de verdad: `TASKS.md`, `CLAUDE.md`, `.github/DEV-COORDINATION.md`, `.github/copilot-instructions.md`, `memory/ops/homepage-vitrina-launch-plan-2026-04.md` (vitrina + agentes).
 - Jerarquía si hay conflicto: `CLAUDE.md` > `copilot-instructions.md` > `AGENTS.md`. **Comercio y checkout:** solo **GoDaddy Reseller / lo que ya está en el hosting GoDaddy** — no priorizar Wompi ni pasarelas ajenas a ese ecosistema.
 - Resumen ejecutivo para humanos: `memory/sessions/2026-04-02-progreso-consolidado.md`.

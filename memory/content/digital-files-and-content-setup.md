@@ -37,6 +37,7 @@
 |--------|-----|
 | **`memory/content/*.md`** | Texto fuente y especificaciones (homepage, trust, ecosistemas). Aplicación real: **Elementor / wp-admin** en el servidor. |
 | **Plan vitrina (fases + RACI)** | [`memory/ops/homepage-vitrina-launch-plan-2026-04.md`](../ops/homepage-vitrina-launch-plan-2026-04.md) — alinea agentes y procesos con `TASKS.md`. |
+| **Handoff Claude (SSH / Deploy / tokens)** | [`memory/claude/2026-04-08-reporte-handoff-ssh-deploy-tokens.md`](../claude/2026-04-08-reporte-handoff-ssh-deploy-tokens.md) — estado CI abril 2026, huella, PR #160. |
 | **`wp-content/themes/gano-child/`** | Plantillas PHP, `shop-premium.php`, estilos; despliegue según `TASKS.md` y workflows de deploy. |
 | **Rank Math / Gano SEO** | Metadatos y schema en MU-plugin; configuración en panel. |
 
@@ -50,6 +51,7 @@
 |-----------|------|
 | [`memory/sessions/2026-04-02-reporte-handoff-godaddy-api-reseller-whmcs.md`](../sessions/2026-04-02-reporte-handoff-godaddy-api-reseller-whmcs.md) | APIs GoDaddy, WHMCS, guardrails. |
 | [`memory/sessions/2026-04-07-audit-github-pr-issues.md`](../sessions/2026-04-07-audit-github-pr-issues.md) | PR #136, issue #29, CI / reglas de rama. |
+| [`memory/claude/2026-04-08-reporte-handoff-ssh-deploy-tokens.md`](../claude/2026-04-08-reporte-handoff-ssh-deploy-tokens.md) | Handoff SSH, deploy CI, tokens/API; abril 2026. |
 
 **Cola ejecutable (sin GitHub):** `python scripts/claude_dispatch.py next` — ver [`memory/claude/dispatch-prompt.md`](../claude/dispatch-prompt.md).
 
