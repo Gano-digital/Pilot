@@ -1671,3 +1671,57 @@ select:focus-visible {
     display: inline-block;
     margin-top: 0.5rem;
 }
+
+/* --------------------------------------------------------------------------
+   Constellation 3D Hero — contenedor y canvas
+   Ref: js/gano-constellation.js
+   -------------------------------------------------------------------------- */
+.gano-constellation-wrap {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    border-radius: var(--gano-radius-xl);
+    background: radial-gradient(ellipse at center, var(--gano-gray-900) 0%, var(--gano-dark) 100%);
+}
+
+.gano-constellation-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+}
+
+.gano-constellation-canvas:active {
+    cursor: grabbing;
+}
+
+/* Panel de información de nodo — visible al hacer click */
+#gano-constellation-panel {
+    position: absolute;
+    z-index: 10;
+    pointer-events: none;
+    padding: 0.4rem 0.875rem;
+    background: rgba(15, 25, 35, 0.88);
+    border: 1px solid var(--gano-gold-border);
+    border-radius: var(--gano-radius-md);
+    color: var(--gano-gold);
+    font-family: var(--gano-font-mono);
+    font-size: var(--gano-fs-xs);
+    white-space: nowrap;
+    backdrop-filter: blur(8px);
+    transition: opacity 0.2s ease;
+}
+
+/* prefers-reduced-motion: el JS ya desactiva autoRotate/twinkle/scanlines.
+   El CSS asegura además que las transiciones del panel sean instantáneas
+   y que no haya animaciones CSS asociadas al wrapper. */
+@media (prefers-reduced-motion: reduce) {
+    .gano-constellation-wrap,
+    .gano-constellation-canvas {
+        animation: none;
+    }
+    #gano-constellation-panel {
+        transition: none;
+    }
+}
