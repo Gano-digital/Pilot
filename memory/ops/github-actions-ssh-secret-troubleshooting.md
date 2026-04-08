@@ -33,6 +33,14 @@ ssh -o BatchMode=yes SERVER_USER@SERVER_HOST "echo ok"
 
 Si `ssh-add` falla en tu PC con el mismo PEM, el secret en GitHub tampoco funcionará.
 
+## `Permission denied (publickey)` (cuando `ssh-add` ya funciona)
+
+Si el workflow **04** pasa *Setup SSH Agent* pero falla en **rsync** o **ssh** con `Permission denied (publickey)`:
+
+1. El secret **`SSH`** debe ser la **privada** que corresponde a la **misma** `.pub` que está en `~/.ssh/authorized_keys` del **`SERVER_USER`** en el host **`SERVER_HOST`**.
+2. Compara **huellas** (fingerprint): en el log del job, el paso *Huella de clave en ssh-agent* ejecuta `ssh-add -l`; localmente, `ssh-keygen -lf ~/.ssh/tu_clave.pub` debe mostrar la **misma** huella que la entrada del agente en CI.
+3. Verifica que `SERVER_USER` y `SERVER_HOST` en GitHub coincidan exactamente con el par `usuario@host` con el que pruebas en local.
+
 ## Secrets relacionados
 
 - `SERVER_HOST`, `SERVER_USER`, `DEPLOY_PATH` deben coincidir con el usuario que tiene la clave en `authorized_keys`.
