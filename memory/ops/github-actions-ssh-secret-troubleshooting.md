@@ -43,6 +43,16 @@ Si el workflow **04** pasa *Setup SSH Agent* pero falla en **rsync** o **ssh** c
 4. **Orden en workflow 04 (post #159):** si falla el paso **Probar SSH (BatchMode)**, el job se detiene **antes** de rsync — el fallo es solo autenticación SSH, no sincronización de archivos.
 5. **Host IP vs hostname:** si en local conectas por alias (`Host` en `~/.ssh/config`) y en GitHub usas IP (o al revés), ambos deben resolver al mismo servidor **y** la misma clave debe estar autorizada para el `SERVER_USER` en ese host.
 
+## Huella local = huella en CI, pero sigue `publickey`
+
+Si comparas la salida de `ssh-keygen -lf` sobre tu **mismo** `.pem` / clave privada que pegaste en el secret **`SSH`** con la línea del paso *Huella de clave en ssh-agent* en Actions y **coinciden**, entonces el secret **sí** es la clave correcta. El rechazo entonces **no** es “pareja equivocada”, sino uno de estos:
+
+1. **`SERVER_USER` o `SERVER_HOST` en GitHub** no coinciden con el par con el que entras en local (typo, otro usuario cPanel, host distinto).
+2. **Restricción en el hosting:** algunos planes solo permiten SSH desde IPs conocidas; los runners de **GitHub-hosted** tienen IPs dinámicas (rangos publicados en [GitHub Meta](https://api.github.com/meta)). Si el panel o el firewall del servidor filtra por IP, puede funcionar tu PC y **fallar** CI con `publickey` o timeout.
+3. **`authorized_keys` con opciones** (`from=`, `command=`): si restringen IP o shell, valida que apliquen al tráfico del runner.
+
+**Opciones si el hosting no permite SSH genérico desde Internet:** desplegar con **self-hosted runner** en una máquina que ya tenga acceso al host, o usar **SFTP/rsync desde un túnel** que controles (documentar en runbook propio; no hardcodear credenciales en el repo).
+
 ## Secrets relacionados
 
 - `SERVER_HOST`, `SERVER_USER`, `DEPLOY_PATH` deben coincidir con el usuario que tiene la clave en `authorized_keys`.

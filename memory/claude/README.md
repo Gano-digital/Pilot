@@ -6,6 +6,7 @@ Esta carpeta concentra **registros estructurados** para que cualquier instancia 
 
 | Orden | Archivo | Para qué sirve |
 |------:|---------|----------------|
+| 0 | [2026-04-08-reporte-handoff-ssh-deploy-tokens.md](2026-04-08-reporte-handoff-ssh-deploy-tokens.md) | **Handoff SSH/Deploy/CI + tokens** — huella verificada, hipótesis IP, PR #160, enlaces a runs. Leer primero si retomas tras pausa de API/tokens. |
 | 1 | [README.md](README.md) (este) | Navegación y convenciones. |
 | 2 | [01-historial-y-contexto-cursor-2026-04.md](01-historial-y-contexto-cursor-2026-04.md) | Línea de tiempo, decisiones, consolidación de PRs, paso de documentación. |
 | 3 | [02-pendientes-detallados.md](02-pendientes-detallados.md) | Inventario exhaustivo de pendientes por área y prioridad. |
