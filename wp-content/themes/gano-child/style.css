@@ -985,36 +985,36 @@ body.woocommerce-checkout #customer_details {
     top: 25px;
     right: 25px;
     background: var(--gano-gold);
-    color: #000;
+    color: var(--gano-dark);
     padding: 6px 18px;
-    border-radius: 50px;
-    font-size: 11px;
-    font-weight: 800;
+    border-radius: var(--gano-radius-pill);
+    font-size: var(--gano-fs-xs);
+    font-weight: var(--gano-fw-extrabold);
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    letter-spacing: var(--gano-ls-wide);
+    box-shadow: var(--gano-shadow-md);
 }
 
 .gano-product-title {
-    font-size: 28px !important;
-    font-weight: 800 !important;
+    font-size: var(--gano-fs-4xl) !important;
+    font-weight: var(--gano-fw-extrabold) !important;
     margin-bottom: 15px !important;
     color: var(--gano-gold) !important;
-    letter-spacing: -0.5px !important;
+    letter-spacing: var(--gano-ls-tight) !important;
 }
 
 .gano-product-price {
-    font-size: 42px;
-    font-weight: 900;
+    font-size: var(--gano-fs-display);
+    font-weight: var(--gano-fw-extrabold);
     margin: 25px 0;
-    color: #fff;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--gano-white);
+    font-family: var(--gano-font-heading);
 }
 
 .gano-product-price span {
-    font-size: 14px;
-    font-weight: 500;
-    color: #888;
+    font-size: var(--gano-fs-sm);
+    font-weight: var(--gano-fw-medium);
+    color: var(--gano-gray-500);
     margin-left: 5px;
 }
 
@@ -1673,19 +1673,31 @@ select:focus-visible {
 /* --------------------------------------------------------------------------
    Contacto — avisos de error (formulario nativo)
    -------------------------------------------------------------------------- */
+/* START: FORM NOTICES — estados error y éxito */
 .gano-form-notice--error {
     background: rgba(220, 38, 38, 0.12);
     border: 1px solid rgba(220, 38, 38, 0.35);
-    border-radius: 8px;
+    border-radius: var(--gano-radius-md);
     padding: 0.875rem 1rem;
     margin-bottom: 1.25rem;
     color: #fecaca;
-    font-size: 0.9375rem;
+    font-size: var(--gano-fs-base);
 }
 
-.gano-form-notice--error p {
-    margin: 0;
+.gano-form-notice--error p { margin: 0; }
+
+.gano-form-notice--success {
+    background: rgba(0, 194, 107, 0.10);
+    border: 1px solid rgba(0, 194, 107, 0.30);
+    border-radius: var(--gano-radius-md);
+    padding: 0.875rem 1rem;
+    margin-bottom: 1.25rem;
+    color: var(--gano-green);
+    font-size: var(--gano-fs-base);
 }
+
+.gano-form-notice--success p { margin: 0; }
+/* END: FORM NOTICES */
 
 /* --------------------------------------------------------------------------
    WooCommerce — carrito vacío (microcopy §4a)
@@ -1765,3 +1777,56 @@ select:focus-visible {
         transition: none;
     }
 }
+
+/* ============================================================
+   START: SKELETON LOADERS — Wave 3 UX
+   Placeholders de altura fija para contenido que tarda en cargar.
+   Mejoran la velocidad percibida (LCP psicológico).
+   Uso: añadir clase .is-loading al contenedor; JS la remueve
+   cuando el contenido esté listo.
+   ============================================================ */
+@keyframes gano-shimmer {
+    0%   { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+}
+
+.gano-skeleton {
+    background: linear-gradient(
+        90deg,
+        var(--gano-gray-100) 25%,
+        rgba(255, 255, 255, 0.6) 50%,
+        var(--gano-gray-100) 75%
+    );
+    background-size: 800px 100%;
+    animation: gano-shimmer 1.4s ease-in-out infinite;
+    border-radius: var(--gano-radius-sm);
+}
+
+/* Variante dark — para secciones con fondo oscuro */
+.gano-on-dark .gano-skeleton {
+    background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0.05) 25%,
+        rgba(255,255,255,0.12) 50%,
+        rgba(255,255,255,0.05) 75%
+    );
+    background-size: 800px 100%;
+}
+
+/* Tamaños de bloque skeleton */
+.gano-skeleton--text    { height: var(--gano-fs-base); margin-bottom: 0.5rem; }
+.gano-skeleton--heading { height: var(--gano-fs-4xl);  margin-bottom: 1rem; }
+.gano-skeleton--image   { height: 240px; width: 100%; }
+.gano-skeleton--card    { height: 320px; width: 100%; border-radius: var(--gano-radius-lg); }
+.gano-skeleton--avatar  { height: 48px; width: 48px; border-radius: var(--gano-radius-pill); }
+.gano-skeleton--btn     { height: 44px; width: 140px; border-radius: var(--gano-radius-md); }
+
+/* Ocultar skeleton cuando el contenido cargó */
+.gano-skeleton[hidden],
+.is-loaded .gano-skeleton { display: none; }
+
+/* prefers-reduced-motion: shimmer estático */
+@media (prefers-reduced-motion: reduce) {
+    .gano-skeleton { animation: none; }
+}
+/* END: SKELETON LOADERS */
