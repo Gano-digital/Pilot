@@ -1,6 +1,6 @@
 # Digital files and content setup — Gano Digital
 
-**Última actualización:** 2026-04-07 (Ops Hub + workflow 14)  
+**Última actualización:** 2026-04-08 (plan vitrina + roles de agentes)  
 **Propósito:** Una sola referencia para agentes y humanos: **dónde vive qué** en el repo, cómo se relaciona el **contenido web** con **memoria/constelación**, y el estado acordado en abril 2026 (GoDaddy Reseller vs API, GitHub, Claude).
 
 ---
@@ -36,6 +36,7 @@
 | Fuente | Uso |
 |--------|-----|
 | **`memory/content/*.md`** | Texto fuente y especificaciones (homepage, trust, ecosistemas). Aplicación real: **Elementor / wp-admin** en el servidor. |
+| **Plan vitrina (fases + RACI)** | [`memory/ops/homepage-vitrina-launch-plan-2026-04.md`](../ops/homepage-vitrina-launch-plan-2026-04.md) — alinea agentes y procesos con `TASKS.md`. |
 | **`wp-content/themes/gano-child/`** | Plantillas PHP, `shop-premium.php`, estilos; despliegue según `TASKS.md` y workflows de deploy. |
 | **Rank Math / Gano SEO** | Metadatos y schema en MU-plugin; configuración en panel. |
 

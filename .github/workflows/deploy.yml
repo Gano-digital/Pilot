@@ -90,6 +90,28 @@ jobs:
         run: |
           ssh-keyscan -H "${{ secrets.SERVER_HOST }}" >> ~/.ssh/known_hosts
 
+      # Diagnóstico seguro: huella de la clave cargada (no imprime la clave privada).
+      # Comparar con `ssh-keygen -lf ~/.ssh/tu.pub` localmente si el deploy falla con publickey.
+      - name: Huella de clave en ssh-agent
+        run: |
+          set -euo pipefail
+          ssh-add -l -E sha256
+
+      # Falla aquí con el mismo error que rsync → el problema es SSH/auth, no rsync.
+      - name: Probar SSH (BatchMode)
+        env:
+          REMOTE_USER: ${{ secrets.SERVER_USER }}
+          REMOTE_HOST: ${{ secrets.SERVER_HOST }}
+        run: |
+          set -euo pipefail
+          ssh -o BatchMode=yes -o ConnectTimeout=25 "${REMOTE_USER}@${REMOTE_HOST}" \
+            "echo SSH_OK && whoami && pwd"
+
+      # Asegura que rsync use el mismo ssh(1) con BatchMode (agente ya cargado).
+      - name: Configurar RSYNC_RSH
+        run: |
+          echo 'RSYNC_RSH=ssh -o BatchMode=yes -o ConnectTimeout=30' >> "$GITHUB_ENV"
+
       - name: 📦 Deploy Child Theme
         run: |
           rsync -avz --delete \

@@ -1,13 +1,13 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-08 (repo local sincronizado con `origin/main`; enlaces ops SSH en `DEV-COORDINATION` + regeneración `progress.json` coherente con `TASKS.md`)_
+_Última actualización: 2026-04-08 (plan vitrina + RACI agentes en `memory/ops/homepage-vitrina-launch-plan-2026-04.md`; `TASKS.md` / `AGENTS.md` / `copilot-instructions` enlazados)_
 
 ## Foco actual (producto y repo)
 
+- **Vitrina gano.digital:** plan por fases y roles (Diego / Cursor / Copilot / Claude) — [`memory/ops/homepage-vitrina-launch-plan-2026-04.md`](../../memory/ops/homepage-vitrina-launch-plan-2026-04.md). Copy fuente: [`homepage-copy-2026-04.md`](../../memory/content/homepage-copy-2026-04.md). Aplicación en **Elementor = humano en wp-admin**; agentes no sustituyen el pegado en panel.
 - **Servidor / producción:** desplegar parches Fases 1–3 al hosting real, eliminar `wp-file-manager`, configurar Gano SEO / GSC / Rank Math (`TASKS.md` sección Active).
-- **GitHub `Gano-digital/Pilot`:** repositorio en `main` ya consolidado; foco actual = cierre manual de issues cubiertos por `main`, uso selectivo de colas opcionales (API / security guardian) y verificación de accesos.
-- **Homepage / Elementor:** copy desde `memory/content/`, menú primary, sustituir Lorem (issues `homepage-fixplan`).
-- **Fase 4:** catálogo Reseller, mapeo CTAs en `shop-premium.php`, smoke test checkout (sin asumir estado de servidor no documentado).
+- **GitHub `Gano-digital/Pilot`:** repositorio en `main` ya consolidado; cierre de issues cubiertos por `main`; colas opcionales (API / security guardian) sin bloquear vitrina.
+- **Fase 4:** catálogo Reseller, mapeo CTAs en `shop-premium.php`, smoke test checkout — [`memory/commerce/rcc-pfid-checklist.md`](../../memory/commerce/rcc-pfid-checklist.md).
 - **Constellation / Battle Map:** plan de **diseño + fine tuning + fases + alineación agentes** — [`memory/constellation/BATTLE-MAP-PLAN-DISENO-FINE-TUNING-2026-04.md`](../../memory/constellation/BATTLE-MAP-PLAN-DISENO-FINE-TUNING-2026-04.md); config ejemplo JSON — [`battle-map-config.example.json`](../../memory/constellation/battle-map-config.example.json); `CONSTELACION-COSMICA.html` expone `window.__GANO_BATTLE_MAP__` (build/plan). Oleada GitHub `copilot/cx-*` sigue playbook; no duplicar PRs masivos.
 - **Investigación SOTA UX:** [`memory/research/sota-ux-rts-fps-constellation-steal-2026-04.md`](../../memory/research/sota-ux-rts-fps-constellation-steal-2026-04.md). **Inventario recursos:** [`memory/constellation/INVENTARIO-RECURSOS-DESARROLLO-2026-04.md`](../../memory/constellation/INVENTARIO-RECURSOS-DESARROLLO-2026-04.md).
 
@@ -26,8 +26,8 @@ _Última actualización: 2026-04-08 (repo local sincronizado con `origin/main`; 
 
 ## En progreso
 
-- [ ] **CI Deploy (04):** si falla en *Setup SSH Agent* con `error in libcrypto`, corregir el secret `SSH` (OpenSSH/ed25519 sin passphrase, LF, no `.ppk`) — [`memory/ops/github-actions-ssh-secret-troubleshooting.md`](../../memory/ops/github-actions-ssh-secret-troubleshooting.md).
-- [ ] SSH key / acceso local: validar autorización de la clave contra GitHub y servidor cuando aplique el flujo manual.
+- [ ] **CI Deploy (04):** si `ssh-add` OK pero **rsync** falla con `Permission denied (publickey)`, el secret `SSH` no coincide con la clave autorizada en el servidor para `SERVER_USER@SERVER_HOST`, o el usuario/host en secretos no es el del deploy — [`memory/ops/github-actions-ssh-secret-troubleshooting.md`](../../memory/ops/github-actions-ssh-secret-troubleshooting.md).
+- [x] **Workflow 14 (Ops Hub):** script `--output` relativo corregido en `main` (#157); run manual post-merge: éxito ([24147290218](https://github.com/Gano-digital/Pilot/actions/runs/24147290218)).
 - [ ] SFTP / sync VS Code si aplica al flujo de deploy de Diego.
 - [ ] Deploy de archivos críticos al servidor y tareas solo-wp-admin listadas en `TASKS.md`.
 
@@ -52,15 +52,14 @@ _Última actualización: 2026-04-08 (repo local sincronizado con `origin/main`; 
 
 ## Próximos pasos (orden sugerido)
 
-1. Validar manualmente clave SSH en GitHub y en el servidor; si funciona, migrar `origin` a SSH solo si aporta valor operativo.
-2. Deploy checklist F1–3 + retirada `wp-file-manager`.
-3. Panel: SEO, menús, copy real en Elementor.
-4. Fase 4 Reseller: RCC + PFIDs reales + prueba de flujo de compra.
-5. GitHub: cerrar issues cubiertos por `main`; sembrar colas opcionales solo si hacen falta.
+1. **Fase 0 plan vitrina:** deploy F1–3 estable, `wp-file-manager` fuera, secret `SSH` alineado con servidor (ver plan § Fase 0).
+2. **Fase 1:** Lorem y métricas falsas fuera en homepage (`homepage-copy-2026-04.md` + menú primary).
+3. **Fase 2–3:** Nosotros / confianza; RCC + CTAs + checkout Reseller.
+4. GitHub: cerrar issues obsoletos; sembrar **09 · homepage-fixplan** solo si hace falta granularidad.
 
 ## Decisiones / referencias
 
-- Fuentes de verdad: `TASKS.md`, `CLAUDE.md`, `.github/DEV-COORDINATION.md`, `.github/copilot-instructions.md`.
+- Fuentes de verdad: `TASKS.md`, `CLAUDE.md`, `.github/DEV-COORDINATION.md`, `.github/copilot-instructions.md`, `memory/ops/homepage-vitrina-launch-plan-2026-04.md` (vitrina + agentes).
 - Jerarquía si hay conflicto: `CLAUDE.md` > `copilot-instructions.md` > `AGENTS.md`. **Comercio y checkout:** solo **GoDaddy Reseller / lo que ya está en el hosting GoDaddy** — no priorizar Wompi ni pasarelas ajenas a ese ecosistema.
 - Resumen ejecutivo para humanos: `memory/sessions/2026-04-02-progreso-consolidado.md`.
 - Estado dispatch y documentación operativa reciente: `memory/sessions/2026-04-03-claude-dispatch.md`.

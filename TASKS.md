@@ -11,6 +11,8 @@ _Última actualización: Abril 2026_
 
 **Siguiente foco:** secrets → **04 · Deploy** / **05 · Verificar parches** → **12 · Eliminar wp-file-manager** (si aún está en servidor) → RCC / Elementor según `TASKS.md` abajo. Guía de nombres en Actions: [`.github/workflows/README.md`](.github/workflows/README.md).
 
+**Plan vitrina (homepage + comercio + roles de agentes):** [`memory/ops/homepage-vitrina-launch-plan-2026-04.md`](memory/ops/homepage-vitrina-launch-plan-2026-04.md) — fases 0–4, RACI, procesos y enlaces canónicos. Complementa § Active, Pending y Fase 4 sin sustituirlos.
+
 ### Trabajo en paralelo (no sustituye Active ni Fase 4)
 
 - **Investigación SOTA + flujo + carriles A/B/C:** [`memory/research/sota-workflow-ops-parallel-2026-04.md`](memory/research/sota-workflow-ops-parallel-2026-04.md) — colisión con progreso real, cambios P0–P2 al workflow, checklist para ir tachando **sin pausar** deploy, contenido ni Reseller. Si un ítem choca con un P0 de esta tabla, gana la tabla de abajo.

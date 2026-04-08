@@ -14,6 +14,12 @@ URL pública: https://gano.digital
 
 Antes de asumir que el repo es idéntico a producción, lee **[`.github/DEV-COORDINATION.md`](DEV-COORDINATION.md)**: fuentes de verdad (`TASKS.md`, `memory/`), qué vive en el servidor (BD Elementor, uploads) frente a git, y cómo reportar drift con la plantilla **Reporte de sincronización**. No inventes estado de servidor si no está documentado en issues o en `TASKS.md`.
 
+## Prioridad vitrina (abril 2026)
+
+- **Plan canónico (roles y fases):** [`memory/ops/homepage-vitrina-launch-plan-2026-04.md`](../memory/ops/homepage-vitrina-launch-plan-2026-04.md) — alinea oleadas, issues y trabajo en **wp-admin** (Elementor) con el repo.
+- **Copy listo para homepage:** [`memory/content/homepage-copy-2026-04.md`](../memory/content/homepage-copy-2026-04.md). Sustituir Lorem y métricas falsas en https://gano.digital/ es **prioridad humana en panel**; el repo aporta texto y clases, no sustituye pegar en Elementor.
+- **Comercio:** RCC + Reseller Store; CTAs y `shop-premium.php` según `TASKS.md` Fase 4 y [`memory/commerce/rcc-pfid-checklist.md`](../memory/commerce/rcc-pfid-checklist.md). No inventar PFIDs.
+
 ## Stack tecnológico
 
 - **CMS**: WordPress 6.x + Elementor Pro + Royal Elementor Addons

@@ -43,6 +43,7 @@ URL: https://gano.digital | Repo: Gano-digital/Pilot
 3. `.github/DEV-COORDINATION.md` — Brujula operativa
 4. `.github/copilot-instructions.md` — Instrucciones Copilot
 5. `.cursor/memory/activeContext.md` — Contexto actual Cursor
+6. `memory/ops/homepage-vitrina-launch-plan-2026-04.md` — Plan vitrina gano.digital: fases, RACI (Cursor / Copilot / Claude / humano), enlaces a copy y Fase 4 Reseller
 
 ### Flujo de trabajo
 ```
