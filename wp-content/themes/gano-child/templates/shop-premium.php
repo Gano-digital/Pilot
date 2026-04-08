@@ -13,55 +13,43 @@
 get_header();
 ?>
 
-<!-- ========================================================= -->
-<!-- GSAP & SOTA DEPENDENCIES -->
-<!-- ========================================================= -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
-
+<!-- START: SHOP PREMIUM STYLES -->
+<!-- GSAP enqueued via functions.php — no inline script tags needed -->
 <style>
-    /* DEFINITIVE CYBER-COLD PALETTE SOTA */
-    :root {
-        --gano-blue:         #1B4FD8;   
-        --gano-purple:       #8B5CF6;   
-        --gano-indigo:       #6366F1;   
-        --gano-dark:         #05080C;   
-        --gano-card:         #0B1118;   
-        --gano-border:       rgba(99, 102, 241, 0.2);
-        --gano-glow:         rgba(139, 92, 246, 0.5);
-        --font-main: 'Inter', sans-serif;
-        --font-head: 'Plus Jakarta Sans', sans-serif;
-        --font-mono: 'JetBrains Mono', monospace;
-    }
+    /* START: SOTA WRAPPER — Dark template scoped to .sota-wrapper.
+       Usa tokens globales de style.css. No redefinir :root aquí.
+       Nuevos tokens SOTA (--gano-purple, --gano-indigo, etc.) viven en style.css.
+    */
 
-    /* Wrap inside a specific container to avoid breaking global WP styles */
     .sota-wrapper {
-        background-color: var(--gano-dark); 
-        color: #94A3B8; 
-        font-family: var(--font-main); 
-        overflow-x: hidden; 
-        line-height: 1.6;
+        background-color: var(--gano-dark-deep);
+        color: var(--gano-text-slate);
+        font-family: var(--gano-font-body);
+        overflow-x: hidden;
+        line-height: var(--gano-lh-relaxed);
     }
 
-    .sota-wrapper h1, .sota-wrapper h2, .sota-wrapper h3, .sota-wrapper h4 { 
-        color: #FFF; 
-        font-family: var(--font-head); 
-        letter-spacing: -0.04em; 
+    .sota-wrapper h1,
+    .sota-wrapper h2,
+    .sota-wrapper h3,
+    .sota-wrapper h4 {
+        color: var(--gano-white);
+        font-family: var(--gano-font-heading);
+        letter-spacing: var(--gano-ls-tight);
     }
-    
-    .sota-wrapper .accent { 
-        color: var(--gano-purple); 
-        font-weight: 800; 
-        text-transform: uppercase; 
-        font-size: 12px; 
-        letter-spacing: 4px; 
-        display: block; 
-        margin-bottom: 15px; 
+
+    .sota-wrapper .accent {
+        color: var(--gano-purple);
+        font-weight: var(--gano-fw-extrabold);
+        text-transform: uppercase;
+        font-size: var(--gano-fs-xs);
+        letter-spacing: var(--gano-ls-wider);
+        display: block;
+        margin-bottom: var(--gano-fs-sm);
     }
 
     .mockup-status { position: fixed; top: 0; left: 0; width: 0%; height: 2px; background: var(--gano-purple); z-index: 10000; box-shadow: 0 0 15px var(--gano-purple); }
-    .badge-fixed { position: fixed; bottom: 20px; right: 20px; background: rgba(139, 92, 246, 0.1); border: 1px solid var(--gano-purple); color: #FFF; padding: 10px 20px; font-family: var(--font-mono); font-size: 10px; z-index: 1000; backdrop-filter: blur(10px); }
+    .badge-fixed { position: fixed; bottom: 20px; right: 20px; background: var(--gano-purple-soft); border: 1px solid var(--gano-purple); color: var(--gano-white); padding: 10px 20px; font-family: var(--gano-font-mono); font-size: 10px; z-index: 1000; backdrop-filter: blur(10px); }
 
     /* DECORATIVE DOODLES */
     .doodle { position: absolute; pointer-events: none; opacity: 0.15; z-index: 0; }
@@ -69,61 +57,71 @@ get_header();
 
     /* HERO SECTION */
     .sota-hero { height: 90vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding-top: 60px; }
-    .hero-bg-text { position: absolute; font-family: var(--font-mono); font-size: 15vw; font-weight: 900; color: rgba(255,255,255,0.02); white-space: nowrap; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 0; }
-    
+    .hero-bg-text { position: absolute; font-family: var(--gano-font-mono); font-size: 15vw; font-weight: var(--gano-fw-extrabold); color: rgba(255,255,255,0.02); white-space: nowrap; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 0; }
+
     .monolith-wrap { perspective: 1500px; position: absolute; width: 400px; height: 600px; opacity: 0.8; z-index: 1; }
-    .monolith { width: 100%; height: 100%; background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(139,92,246,0.1)); border: 1px solid var(--gano-border); backdrop-filter: blur(40px); box-shadow: 0 50px 100px rgba(0,0,0,0.5); }
+    .monolith { width: 100%; height: 100%; background: linear-gradient(135deg, var(--gano-indigo-soft), var(--gano-purple-soft)); border: 1px solid var(--gano-border-sota); backdrop-filter: blur(40px); box-shadow: 0 50px 100px rgba(0,0,0,0.5); }
 
     .hero-content { text-align: center; max-width: 900px; z-index: 10; position: relative; }
-    .sota-hero h1 { font-size: clamp(3rem, 7vw, 7rem); font-weight: 800; line-height: 0.85; margin-bottom: 30px; text-transform: lowercase; }
+    .sota-hero h1 { font-size: clamp(3rem, 7vw, 7rem); font-weight: var(--gano-fw-extrabold); line-height: 0.85; margin-bottom: 30px; text-transform: lowercase; }
     .sota-hero h1 span { color: var(--gano-purple); }
-    .sota-hero p { font-size: 1.4rem; font-weight: 300; margin-bottom: 50px; color: #FFF; opacity: 0.6; }
+    .sota-hero p { font-size: var(--gano-fs-lg); font-weight: var(--gano-fw-normal); margin-bottom: 50px; color: var(--gano-white); opacity: 0.6; }
 
     .btn-sota {
         background: linear-gradient(90deg, var(--gano-blue), var(--gano-indigo));
-        color: #FFF; text-decoration: none; padding: 22px 60px; border-radius: 4px; font-weight: 900;
-        text-transform: uppercase; letter-spacing: 2px; font-size: 13px; display: inline-block;
-        transition: 0.4s; border: none; cursor: pointer; box-shadow: 0 10px 30px rgba(27, 79, 216, 0.3);
+        color: var(--gano-white); text-decoration: none; padding: 22px 60px;
+        border-radius: var(--gano-radius-sm); font-weight: var(--gano-fw-extrabold);
+        text-transform: uppercase; letter-spacing: var(--gano-ls-wide); font-size: var(--gano-fs-xs);
+        display: inline-block; transition: var(--gano-transition); border: none; cursor: pointer;
+        box-shadow: 0 10px 30px rgba(27, 79, 216, 0.3);
     }
-    .btn-sota:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5); }
+    .btn-sota:hover { transform: translateY(-5px); box-shadow: 0 15px 40px var(--gano-purple-glow); }
 
     /* CATALOG SECTION */
     .sota-section { padding: 100px 5%; position: relative; z-index: 5; }
     .sota-container { max-width: 1400px; margin: 0 auto; }
-    
+
     .section-header { margin-bottom: 80px; text-align: center; }
     .section-header h2 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 20px; }
 
     .catalog-nav { display: flex; justify-content: center; gap: 30px; margin-bottom: 80px; flex-wrap: wrap; }
-    .nav-item { cursor: pointer; font-family: var(--font-mono); font-size: 12px; font-weight: 700; text-transform: uppercase; color: #555; transition: 0.3s; padding: 10px 20px; border-bottom: 2px solid transparent; }
+    .nav-item { cursor: pointer; font-family: var(--gano-font-mono); font-size: var(--gano-fs-xs); font-weight: var(--gano-fw-bold); text-transform: uppercase; color: var(--gano-gray-500); transition: var(--gano-transition); padding: 10px 20px; border-bottom: 2px solid transparent; }
     .nav-item.active, .nav-item:hover { color: var(--gano-purple); border-color: var(--gano-purple); }
 
-    .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; transition: 0.5s; }
-    
+    .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; transition: var(--motion-slow) var(--ease-out); }
+
     .product-card {
-        background: var(--gano-card); border: 1px solid var(--gano-border); padding: 40px 30px;
-        display: flex; flex-direction: column; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        position: relative; overflow: hidden; border-radius: 8px;
+        background: var(--gano-card-sota); border: 1px solid var(--gano-border-sota); padding: 40px 30px;
+        display: flex; flex-direction: column; transition: var(--motion-slow) var(--ease-spring);
+        position: relative; overflow: hidden; border-radius: var(--gano-radius-md);
     }
     .product-card:hover { transform: translateY(-10px); border-color: var(--gano-purple); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
-    .product-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: linear-gradient(0deg, rgba(139,92,246,0.05), transparent); transition: 0.6s; z-index: 0; }
+    .product-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: linear-gradient(0deg, var(--gano-purple-soft), transparent); transition: var(--motion-slow); z-index: 0; }
     .product-card:hover::after { height: 100%; }
-    
+
     .product-card > * { position: relative; z-index: 2; }
 
     .svg-container { position: relative; width: 60px; height: 60px; margin-bottom: 30px; }
     .path-anim { stroke: var(--gano-purple); stroke-width: 1; fill: none; stroke-dasharray: 200; stroke-dashoffset: 200; transition: stroke-dashoffset 2s ease; }
     .product-card:hover .path-anim { stroke-dashoffset: 0; }
 
-    .p-name { font-size: 1.4rem; margin-bottom: 15px; color: #FFF; }
-    .p-desc { font-size: 13px; opacity: 0.5; margin-bottom: 25px; min-height: 48px; }
-    .p-price { font-family: var(--font-mono); font-size: 1.6rem; color: #FFF; font-weight: 800; margin-top: auto; margin-bottom: 20px; }
+    .p-name { font-size: var(--gano-fs-2xl); margin-bottom: 15px; color: var(--gano-white); }
+    .p-desc { font-size: var(--gano-fs-xs); opacity: 0.5; margin-bottom: 25px; min-height: 48px; }
+    .p-price { font-family: var(--gano-font-mono); font-size: var(--gano-fs-2xl); color: var(--gano-white); font-weight: var(--gano-fw-extrabold); margin-top: auto; margin-bottom: 20px; }
     .p-price span { font-size: 10px; color: var(--gano-purple); text-transform: uppercase; display: block; margin-bottom: 5px; }
 
-    .rstore-add-to-cart { width: 100%; text-align: center; padding: 12px; font-weight: bold; background: rgba(99, 102, 241, 0.1); color: var(--gano-purple); border: 1px solid var(--gano-border); cursor: pointer; transition: 0.3s; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
-    .rstore-add-to-cart:hover { background: var(--gano-purple); color: #FFF; }
+    .rstore-add-to-cart { width: 100%; text-align: center; padding: 12px; font-weight: var(--gano-fw-bold); background: var(--gano-indigo-soft); color: var(--gano-purple); border: 1px solid var(--gano-border-sota); cursor: pointer; transition: var(--gano-transition); font-size: var(--gano-fs-xs); text-transform: uppercase; letter-spacing: var(--gano-ls-wide); }
+    .rstore-add-to-cart:hover { background: var(--gano-purple); color: var(--gano-white); }
     .rstore-add-to-cart--pending { opacity: 0.4; cursor: not-allowed; }
+
+    /* PILLARS SECTION */
+    .pillars-section-bg { background: var(--gano-purple-soft); }
+    .pillars-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; text-align: center; }
+    .pillar-chip { background: rgba(255,255,255,0.02); border: 1px solid var(--gano-border-sota); padding: 20px; font-family: var(--gano-font-mono); font-size: var(--gano-fs-xs); text-transform: uppercase; }
+
+    /* END: SOTA WRAPPER */
 </style>
+<!-- END: SHOP PREMIUM STYLES -->
 
 <div class="sota-wrapper">
     <div class="mockup-status" id="scroll-progress"></div>
@@ -324,16 +322,16 @@ get_header();
     </section>
 
     <!-- PILLARS -->
-    <section class="sota-section" style="background: rgba(99,102,241,0.01);">
+    <section class="sota-section pillars-section-bg">
         <div class="sota-container text-center">
             <div class="section-header">
                 <span class="accent">Innovación Proactiva</span>
-                <h2 style="text-align: center;">Pivotes de Arquitectura</h2>
+                <h2>Pivotes de Arquitectura</h2>
             </div>
-            
-            <div id="pillars-preview" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:20px; text-align: center;">
+
+            <div id="pillars-preview" class="pillars-grid">
                 <?php foreach($sotaPillars as $pillar): ?>
-                    <div class="reveal-pillar" style="background:rgba(255,255,255,0.02); border:1px solid var(--gano-border); padding:20px; font-family:var(--font-mono); font-size:11px; text-transform:uppercase;">
+                    <div class="reveal-pillar pillar-chip">
                         <?php echo esc_html($pillar); ?>
                     </div>
                 <?php endforeach; ?>
