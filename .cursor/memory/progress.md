@@ -1,5 +1,15 @@
 # Progress Tracker
 
+## 2026-04-08 — Reporte Claude handoff (SSH/Deploy/tokens)
+
+### Completado
+
+- [x] [`memory/claude/2026-04-08-reporte-handoff-ssh-deploy-tokens.md`](../../memory/claude/2026-04-08-reporte-handoff-ssh-deploy-tokens.md) — reporte detallado para Claude (huella, runs, hipótesis IP, PR #160).
+- [x] Enlaces en `memory/claude/README.md`, `02-pendientes-detallados`, plan vitrina, `digital-files-and-content-setup`, `activeContext`, `deferredItems`.
+- [ ] Fusionar **PR #160** cuando la política de rama lo permita.
+
+---
+
 ## 2026-04-08 — Post-merge #159 + estado Actions
 
 ### Completado
