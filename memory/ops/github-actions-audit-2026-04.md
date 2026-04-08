@@ -72,10 +72,16 @@
 
 ---
 
+## Actualización 2026-04-08
+
+- Workflows **13** (`project-add-to-project.yml`) y **14** (`gano-ops-hub.yml`) añadidos tras la auditoría inicial; inventario ampliado en [`.github/workflows/README.md`](../../.github/workflows/README.md).
+- Fallo típico **04 / 05 / 12** con clave SSH en CI: [`github-actions-ssh-secret-troubleshooting.md`](github-actions-ssh-secret-troubleshooting.md).
+
 ## Referencias
 
-- [`../.github/workflows/README.md`](../.github/workflows/README.md) — prefijos 01–12.
+- [`../.github/workflows/README.md`](../.github/workflows/README.md) — prefijos 01–14.
 - [`../.github/MERGE-PLAYBOOK.md`](../.github/MERGE-PLAYBOOK.md) — orden de merges.
+- [`github-actions-ssh-secret-troubleshooting.md`](github-actions-ssh-secret-troubleshooting.md) — formato del secret `SSH` en Actions.
 - `actions/labeler` README: [github.com/actions/labeler](https://github.com/actions/labeler)
 
 _Verificar tras push: Actions → ejecutar un PR de prueba o revisar el siguiente PR para confirmar **03** en verde._
