@@ -1,6 +1,6 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-07 (investigación SOTA workflow paralelo + registro en `memory/research/`)_
+_Última actualización: 2026-04-08 (repo local sincronizado con `origin/main`; enlaces ops SSH en `DEV-COORDINATION` + regeneración `progress.json` coherente con `TASKS.md`)_
 
 ## Foco actual (producto y repo)
 
@@ -26,22 +26,15 @@ _Última actualización: 2026-04-07 (investigación SOTA workflow paralelo + reg
 
 ## En progreso
 
-- [ ] SSH key / acceso: validar autorización real de la clave actual contra GitHub y servidor; el transporte responde, pero la autenticación por clave sigue fallando.
+- [ ] **CI Deploy (04):** si falla en *Setup SSH Agent* con `error in libcrypto`, corregir el secret `SSH` (OpenSSH/ed25519 sin passphrase, LF, no `.ppk`) — [`memory/ops/github-actions-ssh-secret-troubleshooting.md`](../../memory/ops/github-actions-ssh-secret-troubleshooting.md).
+- [ ] SSH key / acceso local: validar autorización de la clave contra GitHub y servidor cuando aplique el flujo manual.
 - [ ] SFTP / sync VS Code si aplica al flujo de deploy de Diego.
 - [ ] Deploy de archivos críticos al servidor y tareas solo-wp-admin listadas en `TASKS.md`.
 
-## GitHub — PRs abiertos (auditoría 2026-04-07)
+## GitHub — PRs y merges
 
-Repo `Gano-digital/Pilot`: **9 PRs abiertos** (#136 + #145–#152). **Ninguno fusionable vía `gh merge` desde esta sesión:** ruleset org **«Gano.digital»** bloquea merge con **«Code quality findings»** (incluso `--admin` en #136). Además **#136** no puede autoaprobarse (autor = mismo usuario).
-
-| PR | Rama | Estado | mergeable | Notas |
-|----|------|--------|-----------|--------|
-| 136 | docs/memoria-fase4… | OPEN | MERGEABLE pero **merge blocked** por política | CI: validate, TruffleHog, CodeQL jobs OK |
-| 145–152 | copilot/cx-* | DRAFT | 147 **CONFLICTING**; resto MERGEABLE | Constellation oleada; squash sugerido |
-
-**Desbloqueo manual en GitHub:** Security / Code scanning o reglas del PR → revisar o descartar hallazgos que exija el ruleset; u otra cuenta con permiso **aprueba** #136. Luego `gh pr merge 136 --squash` o botón Merge.
-
-**#147:** antes de merge, actualizar rama con `main` (resolver conflictos) vía UI «Update branch» o merge local.
+- **Estado dinámico:** revisar con `gh pr list --repo Gano-digital/Pilot` o la pestaña Pull requests. Varios PRs históricos pueden estar ya fusionados en `main`; no usar tablas de auditoría antigua como fuente de verdad sin verificar.
+- **Ruleset «Code quality» / CodeQL:** si un PR queda bloqueado por hallazgos de escaneo, el desbloqueo es en la UI de GitHub (Security / reglas del PR).
 
 ## Bloqueadores
 

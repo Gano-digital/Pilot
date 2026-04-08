@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-04-07T04:59:06.943190+00:00",
+  "generated_at": "2026-04-08T01:43:46.161816+00:00",
   "repository": "Gano-digital/Pilot",
   "tasks_md": {
-    "total_open": 29,
+    "total_open": 34,
     "total_done": 40,
-    "total_items": 69,
+    "total_items": 74,
     "sections": [
       {
         "name": "REGRESAR AQUÍ (pendiente tu acción)",
@@ -48,13 +48,18 @@
         "done": 0
       },
       {
+        "name": "📋 Etapa posterior — Tests y calidad de ingeniería del código",
+        "open": 5,
+        "done": 0
+      },
+      {
         "name": "🔄 Abril 2026 — Progreso (homepage + GitHub)",
         "open": 12,
         "done": 20
       }
     ]
   },
-  "tasks_completion_pct": 58.0,
+  "tasks_completion_pct": 54.1,
   "dispatch": {
     "queue_total": 22,
     "completed_count": 0,

@@ -66,6 +66,7 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   # JOB 2: Deploy Theme + Plugins via SSH
   # Requiere secrets: SSH, SERVER_HOST, SERVER_USER, DEPLOY_PATH
+  # ssh-add / libcrypto: memory/ops/github-actions-ssh-secret-troubleshooting.md
   # ──────────────────────────────────────────────────────────────────────────
   deploy:
     name: 🚀 Deploy to ${{ github.event.inputs.environment || 'production' }}

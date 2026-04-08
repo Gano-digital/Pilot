@@ -1,5 +1,16 @@
 # Progress Tracker
 
+## 2026-04-08 — Ops: enlaces SSH CI + artefacto Ops Hub
+
+### Completado
+
+- [x] Enlace explícito a [`memory/ops/github-actions-ssh-secret-troubleshooting.md`](../memory/ops/github-actions-ssh-secret-troubleshooting.md) desde `.github/DEV-COORDINATION.md` y comentario en `deploy.yml`.
+- [x] Sección de actualización en `memory/ops/github-actions-audit-2026-04.md` (workflows 13–14 + troubleshooting).
+- [x] Regenerado `tools/gano-ops-hub/public/data/progress.json` con `scripts/generate_gano_ops_progress.py` (alineado a `TASKS.md` actual).
+- [x] `.cursor/memory/activeContext.md` — tabla de PRs obsoleta sustituida por instrucción dinámica; foco deploy CI + SSH.
+
+---
+
 ## 2026-04-07 — Battle Map: plan diseño + fine tuning + agentes
 
 ### Completado (documentación + marca en HTML)

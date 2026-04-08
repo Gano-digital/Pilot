@@ -82,6 +82,8 @@ Ejecuta **06 · Repo · Crear etiquetas** si faltan etiquetas; sin ellas el labe
 
 **Secrets de deploy (Settings → Secrets and variables → Actions):** además de `SSH` (clave privada), define `SERVER_HOST` (hostname o IP para `ssh-keyscan`), `SERVER_USER` (usuario SSH/SFTP) y `DEPLOY_PATH` (ruta absoluta al `public_html` o raíz WP, **sin** barra final inconsistente). Sin estos cuatro, el job de deploy fallará al expandir rutas.
 
+Si **04 / 05 / 12** fallan en *Setup SSH Agent* con `error in libcrypto` / `ssh-add`, el contenido del secret `SSH` no es PEM/OpenSSH válido para CI (p. ej. `.ppk`, CRLF, passphrase). Guía: [`memory/ops/github-actions-ssh-secret-troubleshooting.md`](../memory/ops/github-actions-ssh-secret-troubleshooting.md).
+
 ---
 
 ## 5. Desarrollo local (recordatorio)
