@@ -64,9 +64,22 @@ jobs:
           echo "✅ Sin credenciales expuestas (paths Gano)."
 
   # ──────────────────────────────────────────────────────────────────────────
-  # JOB 2: Deploy Theme + Plugins via SSH
-  # Requiere secrets: SSH, SERVER_HOST, SERVER_USER, DEPLOY_PATH
-  # ssh-add / libcrypto: memory/ops/github-actions-ssh-secret-troubleshooting.md
+  # JOB 2: Deploy Theme + Plugins via HTTPS Webhook
+  #
+  # Reemplaza SSH/rsync (bloqueado por firewall de GoDaddy contra runners de GitHub).
+  # El servidor recibe un ZIP firmado con HMAC-SHA256 vía HTTPS POST.
+  #
+  # Requiere secrets:
+  #   GANO_DEPLOY_HOOK_URL    = https://gano.digital/wp-content/gano-deploy/receive.php
+  #   GANO_DEPLOY_HOOK_SECRET = mismo valor que GANO_DEPLOY_HOOK_SECRET en wp-config.php
+  #
+  # Setup inicial (una sola vez por Diego):
+  #   1. scp wp-content/gano-deploy/receive.php gano-godaddy:DEPLOY_PATH/wp-content/gano-deploy/
+  #   2. En wp-config.php del servidor agregar:
+  #        define('GANO_DEPLOY_HOOK_SECRET', '<secret>');
+  #   3. Agregar los dos secrets en GitHub Settings → Secrets and variables → Actions
+  #
+  # Referencia: memory/ops/github-actions-ssh-secret-troubleshooting.md
   # ──────────────────────────────────────────────────────────────────────────
   deploy:
     name: 🚀 Deploy to ${{ github.event.inputs.environment || 'production' }}
@@ -81,78 +94,67 @@ jobs:
         with:
           submodules: false
 
-      - name: Setup SSH Agent
-        uses: webfactory/ssh-agent@v0.10.0
-        with:
-          ssh-private-key: ${{ secrets.SSH }}
-
-      - name: Add server to known_hosts
-        run: |
-          ssh-keyscan -H "${{ secrets.SERVER_HOST }}" >> ~/.ssh/known_hosts
-
-      # Diagnóstico seguro: huella de la clave cargada (no imprime la clave privada).
-      # Comparar con `ssh-keygen -lf ~/.ssh/tu.pub` localmente si el deploy falla con publickey.
-      - name: Huella de clave en ssh-agent
+      - name: 📦 Empaquetar archivos para deploy
         run: |
           set -euo pipefail
-          ssh-add -l -E sha256
 
-      # Falla aquí con el mismo error que rsync → el problema es SSH/auth, no rsync.
-      - name: Probar SSH (BatchMode)
-        env:
-          REMOTE_USER: ${{ secrets.SERVER_USER }}
-          REMOTE_HOST: ${{ secrets.SERVER_HOST }}
-        run: |
-          set -euo pipefail
-          ssh -o BatchMode=yes -o ConnectTimeout=25 "${REMOTE_USER}@${REMOTE_HOST}" \
-            "echo SSH_OK && whoami && pwd"
+          # Recolectar plugins gano-* que existen en el repo
+          PLUGIN_DIRS=""
+          for d in wp-content/plugins/gano-*; do
+            [ -d "$d" ] && PLUGIN_DIRS="$PLUGIN_DIRS $d"
+          done
 
-      # Asegura que rsync use el mismo ssh(1) con BatchMode (agente ya cargado).
-      - name: Configurar RSYNC_RSH
-        run: |
-          echo 'RSYNC_RSH=ssh -o BatchMode=yes -o ConnectTimeout=30' >> "$GITHUB_ENV"
-
-      - name: 📦 Deploy Child Theme
-        run: |
-          rsync -avz --delete \
-            --exclude='.git' \
-            --exclude='*.map' \
-            wp-content/themes/gano-child/ \
-            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.DEPLOY_PATH }}/wp-content/themes/gano-child/"
-
-      - name: 📦 Deploy Custom Plugins
-        run: |
-          set -euo pipefail
-          REMOTE="${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}"
-          RPLUG="${{ secrets.DEPLOY_PATH }}/wp-content/plugins"
-          sync_if_exists() {
-            local name="$1"
-            local src="wp-content/plugins/${name}"
-            if [ ! -d "$src" ]; then
-              echo "⏭️ Omitido (no existe en repo): ${name}"
-              return 0
-            fi
-            echo "📤 Sincronizando ${name}..."
-            rsync -avz --delete --exclude='.git' "${src}/" "${REMOTE}:${RPLUG}/${name}/"
-          }
-          sync_if_exists "gano-content-importer"
-          sync_if_exists "gano-phase3-content"
-          sync_if_exists "gano-reseller-enhancements"
-          # Legacy / archivado — solo si el directorio existe en el clon
-          sync_if_exists "gano-wompi-integration"
-
-      - name: 📦 Deploy MU Plugins (Fase 1-3)
-        run: |
-          rsync -avz \
+          # MU Plugins individuales
+          MU_FILES=""
+          for f in \
             wp-content/mu-plugins/gano-security.php \
             wp-content/mu-plugins/gano-seo.php \
-            wp-content/mu-plugins/gano-agent-core.php \
-            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.DEPLOY_PATH }}/wp-content/mu-plugins/"
+            wp-content/mu-plugins/gano-agent-core.php; do
+            [ -f "$f" ] && MU_FILES="$MU_FILES $f"
+          done
 
-      - name: 🔄 Flush WordPress Cache
+          # Crear ZIP (excluir .git y .map)
+          zip -r /tmp/gano-deploy.zip \
+            wp-content/themes/gano-child/ \
+            $MU_FILES \
+            $PLUGIN_DIRS \
+            -x "*.git*" "*.map"
+
+          echo "ZIP_SIZE=$(du -sh /tmp/gano-deploy.zip | cut -f1)" >> "$GITHUB_ENV"
+          echo "✅ Paquete creado: $(du -sh /tmp/gano-deploy.zip)"
+
+      - name: 🚀 Deploy via webhook (HTTPS POST)
+        env:
+          HOOK_URL:    ${{ secrets.GANO_DEPLOY_HOOK_URL }}
+          HOOK_SECRET: ${{ secrets.GANO_DEPLOY_HOOK_SECRET }}
         run: |
-          ssh "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" \
-            "cd ${{ secrets.DEPLOY_PATH }} && wp cache flush --allow-root 2>/dev/null || true"
+          set -euo pipefail
+
+          # Calcular firma HMAC-SHA256
+          SIG="sha256=$(openssl dgst -sha256 -hmac "$HOOK_SECRET" /tmp/gano-deploy.zip | awk '{print $NF}')"
+
+          echo "📤 Enviando deploy (${ZIP_SIZE}) a webhook..."
+          HTTP_CODE=$(curl -sS -o /tmp/deploy-response.json -w "%{http_code}" \
+            --max-time 120 \
+            -X POST \
+            -H "X-Gano-Signature: ${SIG}" \
+            -H "Content-Type: application/zip" \
+            -H "User-Agent: GanoDeploy/1.0 (GitHub-Actions)" \
+            --data-binary @/tmp/gano-deploy.zip \
+            "$HOOK_URL")
+
+          echo "HTTP: $HTTP_CODE"
+          cat /tmp/deploy-response.json || true
+
+          if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "207" ]; then
+            ERRORS=$(python3 -c "import json,sys; d=json.load(open('/tmp/deploy-response.json')); print(len(d.get('errors',[])), d.get('deployed',0))" 2>/dev/null || echo "? ?")
+            read NERR NDEP <<< "$ERRORS"
+            echo "✅ Deploy OK — archivos: ${NDEP}, errores: ${NERR}"
+            [ "$NERR" = "0" ] || exit 1
+          else
+            echo "❌ Webhook falló: HTTP $HTTP_CODE"
+            exit 1
+          fi
 
       - name: ✅ Verify Deployment
         run: |

@@ -1,0 +1,4 @@
+# Deshabilitar listado de directorio
+Options -Indexes
+
+# Solo receive.php es el endpoint — toda la seguridad real es HMAC en el script PHP
