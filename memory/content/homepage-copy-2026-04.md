@@ -99,6 +99,7 @@ Elegir mi arquitectura
 
 ## Notas de implementación
 
-1. **Menú**: el child theme **Gano** registra la ubicación WordPress **`primary`** (el padre solo tenía `main`). En Apariencia → Menús asigna el menú a **“Menú principal (header / Elementor)”** y alinea con lo que pida tu plantilla de cabecera en Elementor. Ver [`elementor-home-classes.md`](elementor-home-classes.md).
+1. **Checklist por bloques (orden, clases CSS, a11y):** [`memory/ops/homepage-vitrina-launch-plan-2026-04.md`](../ops/homepage-vitrina-launch-plan-2026-04.md) § Fase 1 — checklist de aplicación.
+2. **Menú**: el child theme **Gano** registra la ubicación WordPress **`primary`** (el padre solo tenía `main`). En Apariencia → Menús asigna el menú a **“Menú principal (header / Elementor)”** y alinea con lo que pida tu plantilla de cabecera en Elementor. Ver [`elementor-home-classes.md`](elementor-home-classes.md).
 2. **Imágenes**: cada bloque con icono o ilustración debe tener `alt` descriptivo en español.
 3. **Coming soon / borradores**: cualquier página no lista debe quedar en borrador para no competir SEO con la home.

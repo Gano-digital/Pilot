@@ -1,6 +1,6 @@
 # Plan vitrina gano.digital — agentes, procesos y objetivos
 
-**Última actualización:** 2026-04-08  
+**Última actualización:** 2026-04-08 (checklist Fase 1 wp-admin; toolchain Node en §3)  
 **URL objetivo:** https://gano.digital/  
 **Estado del sitio (abril 2026):** narrativa y hero alineados a marca; persisten **Lorem**, **métricas en cero** y **copy placeholder** en bloques pilar y confianza. Este documento **alinea** a Cursor, Copilot, Claude y trabajo humano sin duplicar listas enteras de `TASKS.md`.
 
@@ -49,6 +49,17 @@
 - Menú **primary**, layout: [`elementor-home-classes.md`](../content/elementor-home-classes.md), [`homepage-section-order-spec-2026.md`](../content/homepage-section-order-spec-2026.md).
 - Issues opcionales: sembrar **09 · homepage-fixplan** si hace falta granularidad en GitHub.
 
+**Checklist de aplicación (wp-admin)** — orden canónico alineado a [`homepage-section-order-spec-2026.md`](../content/homepage-section-order-spec-2026.md):
+
+- [ ] **Menú primary:** Apariencia → Menús → asignar a **«Menú principal (header / Elementor)»** (ver notas en copy fuente).
+- [ ] **Bloque 1 — Hero:** pegar § Hero del copy; en la primera sección del canvas, **Avanzado → ID CSS:** `gano-main-content` (skip link / a11y).
+- [ ] **Bloque 2 — Cuatro pilares:** texto por card; clase `gano-el-pillar` en cada tarjeta.
+- [ ] **Bloque 3 — Socio tecnológico:** manifiesto + bullets; `gano-el-prose-narrow` en el cuerpo si aplica el layout.
+- [ ] **Bloque 4 — Métricas:** solo formulaciones respaldadas (SLA, COP, canal de soporte real); sin cifras inventadas.
+- [ ] **Bloque 5 — Ecosistemas / planes:** CTAs hacia páginas o carrito Reseller reales (RCC / PFIDs documentados; no inventar IDs).
+- [ ] **Bloque 6 — CTA final:** § CTA final del copy; botón con clase `gano-btn` según especificación.
+- [ ] **Cierre:** revisión móvil + escritorio; confirmar que no queda Lorem ni métricas en cero.
+
 ### Fase 2 — Confianza y páginas legales / marca
 
 - Página **Nosotros** / manifiesto; políticas cuando existan borradores.
@@ -64,6 +75,10 @@
 ### Fase 4 — Endurecimiento operativo
 
 - 2FA wp-admin; limpieza plugins de fase cuando el contenido esté aplicado; colas opcionales (API research, security guardian) **sin** pausar vitrina.
+
+### Toolchain Node (repo, no bloquea vitrina)
+
+- Dependencias transitivas del paquete **`.gsd/sdk`** (`hono`, `@hono/node-server`, `@anthropic-ai/sdk`) se fijan con **`overrides`** en [`.gsd/sdk/package.json`](../../.gsd/sdk/package.json) para cerrar alertas Dependabot; tras `npm install` en `.gsd/sdk`, `npm audit` debe reportar **0** vulnerabilidades. El sitio WordPress no consume este árbol en runtime.
 
 ---
 

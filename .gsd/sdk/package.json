@@ -32,6 +32,11 @@
   "engines": {
     "node": ">=20"
   },
+  "overrides": {
+    "@anthropic-ai/sdk": "^0.81.0",
+    "@hono/node-server": "^1.19.13",
+    "hono": "^4.12.12"
+  },
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
