@@ -11,6 +11,10 @@ _Última actualización: Abril 2026_
 
 **Siguiente foco:** secrets → **04 · Deploy** / **05 · Verificar parches** → **12 · Eliminar wp-file-manager** (si aún está en servidor) → RCC / Elementor según `TASKS.md` abajo. Guía de nombres en Actions: [`.github/workflows/README.md`](.github/workflows/README.md).
 
+### Trabajo en paralelo (no sustituye Active ni Fase 4)
+
+- **Investigación SOTA + flujo + carriles A/B/C:** [`memory/research/sota-workflow-ops-parallel-2026-04.md`](memory/research/sota-workflow-ops-parallel-2026-04.md) — colisión con progreso real, cambios P0–P2 al workflow, checklist para ir tachando **sin pausar** deploy, contenido ni Reseller. Si un ítem choca con un P0 de esta tabla, gana la tabla de abajo.
+
 ---
 
 ## ✅ Fase 1 — Parches de código aplicados
@@ -96,6 +100,16 @@ _Última actualización: Abril 2026_
 - [ ] StatusPage (Upptime o Cachet)
 - [ ] Conectar Chat IA a LLM real (n8n / Make / API propia)
 - [ ] Programa de afiliados / sub-resellers
+
+## 📋 Etapa posterior — Tests y calidad de ingeniería del código
+
+_Activar cuando:_ parches F1–3 desplegados de forma estable, flujo Fase 4 Reseller validado en staging (o criterio explícito de “listos para deuda técnica”), y contenido crítico bajo control. Objetivo: acercar la dimensión **tests automatizados** al nivel ya alto de **CI + documentación** (ver conversación de auditoría ~7.5–8/10 global vs ~5–6/10 en tests puros).
+
+- [ ] Leer y aplicar criterios de `.gano-skills/gano-wp-engineering-quality/SKILL.md`.
+- [ ] Definir alcance mínimo (p. ej. helpers en `gano-seo.php`, utilidades sin DOM; **no** todo Elementor).
+- [ ] Introducir PHPUnit + bootstrap WP **o** batería WP-CLI/smoke acotada que complemente `php -l` (sin duplicar ruido).
+- [ ] Opcional: E2E muy acotado en flujos sensibles (coste alto; solo si aporta).
+- [ ] Documentar en CI un job que ejecute solo tests nuevos en paths definidos.
 
 ---
 

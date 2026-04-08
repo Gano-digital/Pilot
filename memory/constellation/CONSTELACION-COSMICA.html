@@ -1377,6 +1377,16 @@
 </script>
 
 <script type="module">
+/**
+ * Battle Map — plan de diseño / fine tuning:
+ * memory/constellation/BATTLE-MAP-PLAN-DISENO-FINE-TUNING-2026-04.md
+ * Config ejemplo (Fase 2): battle-map-config.example.json
+ */
+window.__GANO_BATTLE_MAP__ = {
+  build: '2026-04-07',
+  version: '3.0',
+  plan: 'memory/constellation/BATTLE-MAP-PLAN-DISENO-FINE-TUNING-2026-04.md',
+};
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -1683,7 +1693,7 @@ const BRIEFS = {
     ],
     progressPct:100,
     dependencies:['GoDaddy Managed Deluxe','Reseller Control Center','Wordfence premium','Elementor Pro + Royal Addons'],
-    threats:['Plugin conflicts en deploy F4','Reseller API latency ocasional','DDoS (mitigado por CDN)'],
+    threats:['Plugin conflicts en deploy F4','Reseller API latency ocasional','Riesgo DDoS (mitigación típica: CDN/WAF) — no incidente'],
     nextActions:['Deploy gano-reseller-enhancements','Probar subdomains (my., support.)','Validar workflow staging → prod','Runbook de rollback'],
     log:[
       {t:'T-180d',m:'Managed Deluxe activated'},
