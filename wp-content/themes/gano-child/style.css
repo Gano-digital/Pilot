@@ -101,6 +101,18 @@ Tags:         hosting, digital-services, colombia
     --gano-gold-soft: rgba(212, 175, 55, 0.10); /* Fondo sutil tarjetas premium */
     --gano-gold-glow: rgba(212, 175, 55, 0.20); /* Sombra hover cards premium */
 
+    /* START: KINETIC MONOLITH — Cyber-Cold Palette (shop SOTA / dark templates) */
+    --gano-purple:        #8B5CF6;               /* Violeta tech — acento Kinetic Monolith */
+    --gano-purple-soft:   rgba(139, 92, 246, 0.10); /* Fondo sutil purple */
+    --gano-purple-glow:   rgba(139, 92, 246, 0.50); /* Glow hover / sombras */
+    --gano-indigo:        #6366F1;               /* Índigo — acento secundario SOTA */
+    --gano-indigo-soft:   rgba(99, 102, 241, 0.10);  /* Fondo sutil índigo */
+    --gano-border-sota:   rgba(99, 102, 241, 0.20);  /* Borde tarjetas dark */
+    --gano-dark-deep:     #05080C;               /* Fondo hero SOTA (más oscuro que --gano-dark) */
+    --gano-card-sota:     #0B1118;               /* Fondo de tarjetas dark mode */
+    --gano-text-slate:    #94A3B8;               /* Texto body sobre fondos dark */
+    /* END: KINETIC MONOLITH */
+
     /* Espaciado */
     --gano-radius-sm:  4px;
     --gano-radius-md:  8px;
