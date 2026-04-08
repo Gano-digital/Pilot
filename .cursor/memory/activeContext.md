@@ -1,6 +1,6 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-08 (plan vitrina + RACI agentes en `memory/ops/homepage-vitrina-launch-plan-2026-04.md`; `TASKS.md` / `AGENTS.md` / `copilot-instructions` enlazados)_
+_Última actualización: 2026-04-08 (PR **#159** fusionado en `main`; workflow **14** verde en push; **04** sigue en `publickey` en paso *Probar SSH* — comparar huella del log con `ssh-keygen -lf` de la `.pub` en servidor)_
 
 ## Foco actual (producto y repo)
 
@@ -23,6 +23,7 @@ _Última actualización: 2026-04-08 (plan vitrina + RACI agentes en `memory/ops/
   - Agent Orchestrator (AO) opcional (skill `gano-agent-orchestrator-local`) para oleadas paralelas (recomendado WSL2).
   - ML‑SSD (Apple) como submodule `vendor/ml-ssd` + skill `gano-ml-ssd` (I+D / evaluación codegen).
 - [x] **PR #136** (docs/memoria Fase 4) dejado **merge-ready** (conflictos resueltos, CI verde). Nota: el merge puede quedar bloqueado por ruleset de “Code Quality” en GitHub.
+- [x] **PR #159** — plan vitrina + prechequeo SSH en `deploy.yml` + runbook `publickey` — fusionado en `main`; PR #158 cerrado como sustituido.
 
 ## En progreso
 

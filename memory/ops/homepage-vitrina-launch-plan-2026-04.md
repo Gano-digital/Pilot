@@ -38,6 +38,7 @@
 ### Fase 0 — Infra y despliegue (bloquea el resto)
 
 - Alinear **secret `SSH`** con la misma pareja que acceso local; `SERVER_*`, `DEPLOY_PATH` coherentes.
+- Tras merge **#159**, el workflow **04** incluye **Huella** (`ssh-add -l`) y **Probar SSH** antes de rsync. Si **Probar SSH** falla, comparar la huella del log con `ssh-keygen -lf` de la `.pub` que está en el servidor (ver troubleshooting).
 - Workflows: **04 · Deploy**, **05 · Verificar parches**, **12 · wp-file-manager** según [`TASKS.md`](../../TASKS.md) § Active.
 - Runbook SSH CI: [`github-actions-ssh-secret-troubleshooting.md`](github-actions-ssh-secret-troubleshooting.md).
 

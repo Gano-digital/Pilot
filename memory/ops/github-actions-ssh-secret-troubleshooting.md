@@ -40,6 +40,8 @@ Si el workflow **04** pasa *Setup SSH Agent* pero falla en **rsync** o **ssh** c
 1. El secret **`SSH`** debe ser la **privada** que corresponde a la **misma** `.pub` que está en `~/.ssh/authorized_keys` del **`SERVER_USER`** en el host **`SERVER_HOST`**.
 2. Compara **huellas** (fingerprint): en el log del job, el paso *Huella de clave en ssh-agent* ejecuta `ssh-add -l`; localmente, `ssh-keygen -lf ~/.ssh/tu_clave.pub` debe mostrar la **misma** huella que la entrada del agente en CI.
 3. Verifica que `SERVER_USER` y `SERVER_HOST` en GitHub coincidan exactamente con el par `usuario@host` con el que pruebas en local.
+4. **Orden en workflow 04 (post #159):** si falla el paso **Probar SSH (BatchMode)**, el job se detiene **antes** de rsync — el fallo es solo autenticación SSH, no sincronización de archivos.
+5. **Host IP vs hostname:** si en local conectas por alias (`Host` en `~/.ssh/config`) y en GitHub usas IP (o al revés), ambos deben resolver al mismo servidor **y** la misma clave debe estar autorizada para el `SERVER_USER` en ese host.
 
 ## Secrets relacionados
 

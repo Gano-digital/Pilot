@@ -1,5 +1,15 @@
 # Progress Tracker
 
+## 2026-04-08 — Post-merge #159 + estado Actions
+
+### Completado
+
+- [x] **#159** en `main` — plan vitrina, docs agentes, pasos *Huella* / *Probar SSH* en deploy.
+- [x] **Workflow 14** (push #159): éxito en mismo commit que tocó `gano-ops-hub.yml` paths.
+- [ ] **Workflow 04:** último run con #159 falla en *Probar SSH* ([24148915581](https://github.com/Gano-digital/Pilot/actions/runs/24148915581)) — siguiente paso operativo: alinear huella/pem en secret `SSH` con `authorized_keys` (ver [`github-actions-ssh-secret-troubleshooting.md`](../../memory/ops/github-actions-ssh-secret-troubleshooting.md)).
+
+---
+
 ## 2026-04-08 — Plan vitrina + realineación agentes (documentación)
 
 ### Completado
