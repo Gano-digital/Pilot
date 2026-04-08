@@ -152,16 +152,16 @@ body {
     font-family: var(--gano-font-body);
     font-size: var(--gano-fs-base);
     color: var(--gano-gray-700);
-    line-height: 1.65;
+    line-height: var(--gano-lh-relaxed);
     -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--gano-font-heading);
     color: var(--gano-dark);
-    line-height: 1.25;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    line-height: var(--gano-lh-snug);
+    font-weight: var(--gano-fw-bold);
+    letter-spacing: var(--gano-ls-tight);
 }
 
 h1 { font-size: clamp(var(--gano-fs-3xl), 5vw, var(--gano-fs-5xl)); }
@@ -170,6 +170,87 @@ h3 { font-size: clamp(var(--gano-fs-xl), 2.5vw, var(--gano-fs-3xl)); }
 h4 { font-size: var(--gano-fs-xl); }
 h5 { font-size: var(--gano-fs-lg); }
 h6 { font-size: var(--gano-fs-base); }
+
+/* START: ESCALA TIPOGRÁFICA — Clases utilitarias
+   Usar en templates PHP, Elementor (campo CSS Class) y componentes.
+   Cada nivel mapea exactamente a los tokens de :root.
+   ============================================================ */
+
+/* Display — Hero / landing headline */
+.gano-display {
+    font-family: var(--gano-font-heading);
+    font-size: var(--gano-fs-display);
+    font-weight: var(--gano-fw-extrabold);
+    line-height: var(--gano-lh-tight);
+    letter-spacing: var(--gano-ls-tight);
+    color: var(--gano-dark);
+}
+
+/* Lead — Primer párrafo / subtítulo hero */
+.gano-lead {
+    font-size: var(--gano-fs-lg);
+    font-weight: var(--gano-fw-normal);
+    line-height: var(--gano-lh-loose);
+    color: var(--gano-gray-700);
+}
+
+/* Body — Texto corrido estándar (redundante pero explícito para Elementor) */
+.gano-body {
+    font-size: var(--gano-fs-base);
+    font-weight: var(--gano-fw-normal);
+    line-height: var(--gano-lh-relaxed);
+    color: var(--gano-gray-700);
+}
+
+/* Small — Texto auxiliar, notas al pie */
+.gano-small {
+    font-size: var(--gano-fs-sm);
+    line-height: var(--gano-lh-base);
+    color: var(--gano-gray-500);
+}
+
+/* Caption — Pie de imagen, metadata */
+.gano-caption {
+    font-size: var(--gano-fs-xs);
+    line-height: var(--gano-lh-base);
+    color: var(--gano-gray-500);
+    font-style: italic;
+}
+
+/* Overline — Etiqueta sobre títulos (ej. "SOTA v3.1", "Fase 4") */
+.gano-overline {
+    font-family: var(--gano-font-mono);
+    font-size: var(--gano-fs-xs);
+    font-weight: var(--gano-fw-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--gano-ls-wider);
+    color: var(--gano-blue);
+}
+
+/* Mono — Código inline, IDs técnicos, precios */
+.gano-mono {
+    font-family: var(--gano-font-mono);
+    font-size: var(--gano-fs-sm);
+    letter-spacing: var(--gano-ls-normal);
+}
+
+/* Variantes dark — para secciones con fondo oscuro */
+.gano-on-dark .gano-display,
+.gano-on-dark h1,
+.gano-on-dark h2,
+.gano-on-dark h3,
+.gano-on-dark h4 { color: var(--gano-white); }
+
+.gano-on-dark .gano-lead,
+.gano-on-dark .gano-body,
+.gano-on-dark p { color: var(--gano-text-slate); }
+
+.gano-on-dark .gano-small,
+.gano-on-dark .gano-caption { color: var(--gano-gray-500); }
+
+.gano-on-dark .gano-overline { color: var(--gano-purple); }
+
+/* END: ESCALA TIPOGRÁFICA */
 
 a {
     color: var(--gano-blue);
