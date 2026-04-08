@@ -27,7 +27,7 @@ _Última actualización: 2026-04-08 (PR **#159** fusionado en `main`; workflow *
 
 ## En progreso
 
-- [ ] **CI Deploy (04):** si `ssh-add` OK pero **rsync** falla con `Permission denied (publickey)`, el secret `SSH` no coincide con la clave autorizada en el servidor para `SERVER_USER@SERVER_HOST`, o el usuario/host en secretos no es el del deploy — [`memory/ops/github-actions-ssh-secret-troubleshooting.md`](../../memory/ops/github-actions-ssh-secret-troubleshooting.md).
+- [ ] **CI Deploy (04):** la **huella** de la clave en CI coincide con `id_rsa_deploy` local (misma pareja que el secret). Si sigue `publickey`, revisar **`SERVER_USER` / `SERVER_HOST`** en GitHub y posible **bloqueo por IP** del hosting frente a runners de GitHub — [`memory/ops/github-actions-ssh-secret-troubleshooting.md`](../../memory/ops/github-actions-ssh-secret-troubleshooting.md) § *Huella local = huella en CI*.
 - [x] **Workflow 14 (Ops Hub):** script `--output` relativo corregido en `main` (#157); run manual post-merge: éxito ([24147290218](https://github.com/Gano-digital/Pilot/actions/runs/24147290218)).
 - [ ] SFTP / sync VS Code si aplica al flujo de deploy de Diego.
 - [ ] Deploy de archivos críticos al servidor y tareas solo-wp-admin listadas en `TASKS.md`.
