@@ -1,0 +1,295 @@
+/* ── Constellation SC Overlays — gano-child ────────────────────────
+   Overlays complementarios (TL / TR / modal / portals) para la
+   página SOTA SHOP. Se activan exclusivamente mediante btnMenu o
+   la tecla M. En pantallas pequeñas utilizan safe-area-inset-*
+   y cambian de posición/tamaño para no tapar la leyenda ni los
+   controles del catálogo.
+   ──────────────────────────────────────────────────────────────── */
+
+/* ── Variables locales ──────────────────────────────────────────── */
+:root {
+    --sc-purple:     #8B5CF6;
+    --sc-indigo:     #6366F1;
+    --sc-dark:       rgba(5, 8, 12, 0.88);
+    --sc-border:     rgba(99, 102, 241, 0.3);
+    --sc-font-mono:  'JetBrains Mono', 'Courier New', monospace;
+    --sc-z-overlay:  500;
+    --sc-z-modal:    600;
+    --sc-z-btn:      700;
+    --sc-radius:     6px;
+    --sc-panel-w:    220px;
+    --sc-panel-w-sm: 160px;
+}
+
+/* ── Botón de activación (btnMenu) ──────────────────────────────── */
+.sc-btn-menu {
+    position: fixed;
+    bottom: calc(100px + env(safe-area-inset-bottom, 0px));
+    right: calc(1.25rem + env(safe-area-inset-right, 0px));
+    width: 40px;
+    height: 40px;
+    background: var(--sc-dark);
+    border: 1px solid var(--sc-border);
+    border-radius: var(--sc-radius);
+    color: var(--sc-purple);
+    font-family: var(--sc-font-mono);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: var(--sc-z-btn);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(12px) saturate(160%);
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.sc-btn-menu:hover,
+.sc-btn-menu[aria-expanded="true"] {
+    border-color: var(--sc-purple);
+    box-shadow: 0 0 14px rgba(139, 92, 246, 0.4);
+}
+
+/* ── Base del overlay (oculto por defecto) ──────────────────────── */
+.sc-overlay {
+    position: fixed;
+    top: calc(4.5rem + env(safe-area-inset-top, 0px));
+    width: var(--sc-panel-w);
+    max-height: calc(100vh - 9rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    max-height: calc(100dvh - 9rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    background: var(--sc-dark);
+    border: 1px solid var(--sc-border);
+    border-radius: var(--sc-radius);
+    padding: 0.875rem 1rem;
+    font-family: var(--sc-font-mono);
+    font-size: 10px;
+    color: #94A3B8;
+    z-index: var(--sc-z-overlay);
+    backdrop-filter: blur(20px) saturate(180%);
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.22s ease, visibility 0.22s ease, transform 0.22s ease;
+}
+
+/* ── Posición: top-left ─────────────────────────────────────────── */
+.sc-overlay--tl {
+    left: calc(1rem + env(safe-area-inset-left, 0px));
+}
+
+/* ── Posición: top-right ────────────────────────────────────────── */
+.sc-overlay--tr {
+    right: calc(1rem + env(safe-area-inset-right, 0px));
+}
+
+/* ── Estado activo ──────────────────────────────────────────────── */
+.sc-overlay.is-active {
+    pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* ── Título del panel ───────────────────────────────────────────── */
+.sc-overlay__title {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--sc-purple);
+    margin-bottom: 0.625rem;
+    border-bottom: 1px solid var(--sc-border);
+    padding-bottom: 0.375rem;
+}
+
+/* ── Leyenda (legend items) ─────────────────────────────────────── */
+.sc-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.sc-legend__item {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    line-height: 1.4;
+}
+
+.sc-legend__label {
+    color: #64748B;
+}
+
+.sc-legend__value {
+    color: #E2E8F0;
+    font-weight: 700;
+}
+
+/* ── Portal links ───────────────────────────────────────────────── */
+.sc-portal {
+    margin-top: 0.625rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sc-portal__link {
+    color: var(--sc-indigo);
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition: color 0.2s;
+}
+
+.sc-portal__link:hover {
+    color: var(--sc-purple);
+}
+
+/* ── Encabezado de sección dentro del modal ─────────────────────── */
+.sc-modal__section-title {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--sc-purple);
+    margin: 0 0 0.5rem;
+}
+
+/* Legend inside modal needs bottom margin before next section */
+.sc-legend--modal {
+    margin-bottom: 0.875rem;
+}
+
+/* ── Modal SC (visible sólo en mobile cuando está activo) ───────── */
+.sc-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:
+        calc(env(safe-area-inset-top, 0px) + 1rem)
+        calc(env(safe-area-inset-right, 0px) + 1rem)
+        calc(env(safe-area-inset-bottom, 0px) + 1rem)
+        calc(env(safe-area-inset-left, 0px) + 1rem);
+    background: rgba(5, 8, 12, 0.7);
+    z-index: var(--sc-z-modal);
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.22s ease, visibility 0.22s ease;
+}
+
+.sc-modal.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.sc-modal__inner {
+    background: var(--sc-dark);
+    border: 1px solid var(--sc-border);
+    border-radius: var(--sc-radius);
+    padding: 1.25rem 1.5rem;
+    width: 100%;
+    max-width: 360px;
+    max-height: 70vh;
+    max-height: 70dvh;
+    overflow-y: auto;
+    position: relative;
+    font-family: var(--sc-font-mono);
+    font-size: 11px;
+    color: #94A3B8;
+    backdrop-filter: blur(24px) saturate(180%);
+}
+
+.sc-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--sc-border);
+    padding-bottom: 0.625rem;
+}
+
+.sc-modal__title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--sc-purple);
+}
+
+.sc-modal__close {
+    background: none;
+    border: 1px solid var(--sc-border);
+    border-radius: 4px;
+    color: #64748B;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    padding: 2px 6px;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.sc-modal__close:hover {
+    color: #E2E8F0;
+    border-color: var(--sc-purple);
+}
+
+/* El modal está oculto en desktop; sólo se usa en mobile ≤ 480px */
+@media (min-width: 481px) {
+    .sc-modal {
+        display: none !important;
+    }
+}
+
+/* ── Breakpoint tablet (≤ 820px) ────────────────────────────────── */
+@media (max-width: 820px) {
+    .sc-overlay {
+        --sc-panel-w: var(--sc-panel-w-sm);
+        top: calc(3.5rem + env(safe-area-inset-top, 0px));
+        font-size: 9px;
+        padding: 0.625rem 0.75rem;
+        max-height: calc(50vh - env(safe-area-inset-top, 0px));
+        max-height: calc(50dvh - env(safe-area-inset-top, 0px));
+    }
+
+    /* Desplazar TL hacia abajo para no tapar botones de navegación */
+    .sc-overlay--tl {
+        left: calc(0.75rem + env(safe-area-inset-left, 0px));
+    }
+
+    .sc-overlay--tr {
+        right: calc(0.75rem + env(safe-area-inset-right, 0px));
+    }
+
+    .sc-btn-menu {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+        bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+    }
+}
+
+/* ── Breakpoint mobile (≤ 480px) ────────────────────────────────── */
+@media (max-width: 480px) {
+    /* Ocultar panels TL/TR en favor del modal centrado */
+    .sc-overlay--tl,
+    .sc-overlay--tr {
+        display: none !important;
+    }
+
+    .sc-btn-menu {
+        width: 34px;
+        height: 34px;
+        font-size: 15px;
+        bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+        right: calc(1rem + env(safe-area-inset-right, 0px));
+    }
+}

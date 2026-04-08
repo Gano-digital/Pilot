@@ -67,6 +67,23 @@ function gano_child_enqueue_styles() {
         wp_enqueue_style( 'gano-bundle-quiz-css', get_stylesheet_directory_uri() . '/css/gano-bundle-quiz.css', array(), '1.0.0' );
         wp_enqueue_script( 'gano-bundle-quiz-js', get_stylesheet_directory_uri() . '/js/gano-bundle-quiz.js', array(), '1.0.0', true );
     }
+
+    // Constellation SC Overlays — responsive TL/TR/modal/portals (cx-06)
+    if ( is_page_template( 'templates/shop-premium.php' ) ) {
+        wp_enqueue_style(
+            'gano-constellation-overlay',
+            get_stylesheet_directory_uri() . '/css/gano-constellation-overlay.css',
+            array( 'gano-child-style' ),
+            '1.0.0'
+        );
+        wp_enqueue_script(
+            'gano-constellation-overlay',
+            get_stylesheet_directory_uri() . '/js/gano-constellation-overlay.js',
+            array(),
+            '1.0.0',
+            true
+        );
+    }
 }
 
 /**
