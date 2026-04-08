@@ -34,6 +34,8 @@ deploy.ps1
 
 # ─── Documentos y Binarios ────────────────────────────────────────────────────
 *.pdf
+# Excepción: auditorías internas versionadas
+!memory/audits/*.pdf
 *.docx
 *.xlsx
 *.zip
@@ -67,6 +69,10 @@ wp-content/debug.log
 
 # Progreso local cola Claude dispatch (no commitear)
 memory/claude/dispatch-state.json
+
+# Vault Obsidian / clones locales de referencia
+.obsidian/
+/vendor/
 
 # Worktrees y artefactos locales de Claude Code
 .claude/

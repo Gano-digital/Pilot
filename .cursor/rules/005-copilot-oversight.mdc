@@ -10,8 +10,8 @@ alwaysApply: false
 Cursor opera como **supervisor local** de los agentes Copilot que corren en GitHub.
 El puente es Git + GitHub CLI (`gh`) y, cuando esta habilitado, el MCP **user-github** (`assign_copilot_to_issue`, `request_copilot_review`, `get_copilot_job_status`, etc.; leer esquema de tools antes de invocar).
 
-## Checks de PR (Vercel)
-Si **Vercel** falla por plan (repo privado en org + Hobby) pero TruffleHog/php-lint pasan, el PR puede quedar **UNSTABLE**; el merge depende de politica del equipo (`gh pr merge --admin` solo si procede).
+## Checks de PR
+Priorizar **php-lint** y **TruffleHog** (workflows del repo). Cualquier check de terceros desvinculado o ignorado por política del equipo no bloquea el merge si CI propio está verde y la revisión humana lo aprueba.
 
 ## Workflow de Oversight
 

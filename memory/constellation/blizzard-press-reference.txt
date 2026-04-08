@@ -1,0 +1,45 @@
+Blizzard Games Press — StarCraft (referencia para el equipo, sin assets en repo)
+================================================================================
+
+Índice oficial (screenshots, logos, press kits):
+https://blizzard.gamespress.com/StarCraft#?tab=screenshots-1&scrollto=
+
+IMPORTANTE
+----------
+- Los ZIPs e imágenes son propiedad de Blizzard Entertainment. El Press Center
+  está pensado para medios/prensa; revisa los términos del sitio antes de usar
+  capturas o marcas en sitios públicos o comerciales.
+- No incluimos aquí binarios ni capturas: evita commitear arte de Blizzard al
+  repositorio. Usa esta lista solo como guía para descargar tú mismo con tu
+  cuenta y decidir alcance legal.
+
+Nota de alcance
+---------------
+- La ficha "StarCraft" en Games Press está orientada sobre todo a StarCraft II.
+- Para moodboard cercano al RTS clásico / Remastered, prioriza estos kits
+  (nombres aproximados según el catálogo público):
+
+  * StarCraft: Remastered Announcement Press Kit (~2017)
+  * StarCraft 20th Anniversary Press Kit (~2018)
+
+Flujo sugerido (manual)
+-----------------------
+1. Entrar al enlace, pestaña screenshots / artwork según necesites.
+2. Iniciar sesión en Games Press si el sitio lo exige para descargas.
+3. Añadir solo los archivos que necesites al carrito (hay límite de tamaño ZIP).
+4. Extraer en una carpeta LOCAL fuera del repo (ej. referencias/moodboard/) o
+   en un almacenamiento privado del equipo — no en git.
+
+Qué sí hace CONSTELACION-COSMICA.html
+-------------------------------------
+- Patrones de UI (bisel, jerarquía de menú, briefing) inspirados en principios
+  de RTS de los 90, implementación original en CSS.
+- Retratos AgentCraft en memory/constellation/assets/portraits/ (proyecto
+  AgentCraft / starcraft-local; no son assets de Blizzard).
+
+Investigación técnica ampliada (formatos GRP, paletas, pipeline web):
+  memory/research/starcraft1-assets-sota.md
+Skill operativa (guardrails + checklist):
+  .gano-skills/gano-starcraft1-assets-constellation/SKILL.md
+
+Última revisión: 2026-04-02

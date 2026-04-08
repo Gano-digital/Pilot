@@ -13,6 +13,17 @@
 | **Proyecto @Gano.digital** | **GitHub Project** (v2): vistas, campos personalizados, *workflows* del tablero, *status updates*, Insights. |
 | **Repositorio Pilot** | **`Gano-digital/Pilot`**: código WordPress Gano, `.github/`, `memory/`, `TASKS.md`. Los ítems del tablero son **issues y PRs de este repo** (salvo que enlacéis otro explícitamente). |
 | **Fuente de verdad del estado “cerrado”** | **Issue/PR en GitHub** + merge a **`main`** + `TASKS.md` / `memory/sessions/` cuando aplique. El tablero **refleja** y **comunica**; no sustituye git. |
+| **Gano Ops Hub** | Interfaz operativa en repo (`tools/gano-ops-hub/`) que **agrega** TASKS + cola Claude + **métricas del Project** (vía API en CI). El tablero de GitHub **no condiciona** el Hub: el Hub articula enlaces, conteos y convenciones; el Project sigue siendo la rejilla de issues/PR. |
+
+### 0.0.1 Modelo de coherencia (tres carriles)
+
+| Carril | Rol | Trazabilidad típica |
+|--------|-----|---------------------|
+| **GitHub Project @Gano.digital** | Estado por **tarjeta** (Status, Priority, Area, Source), vistas *Prioritized backlog*, *Status board*, PRs vinculados | Issue `#n` en `Gano-digital/Pilot` |
+| **TASKS.md** | Mapa por **fases** y checkboxes (macro-progreso del producto) | Secciones `##` + ítems `- [ ]` |
+| **Cola dispatch** (`memory/claude/dispatch-queue.json`) | Trabajo **local** orquestado con `claude_dispatch.py` | `id` estable + opcional vínculo a issue en cuerpo |
+
+**Regla:** cerrar trabajo en el **issue** y reflejar **Done** en el Project; actualizar **TASKS** cuando cierre un bloque de fase; marcar **dispatch** cuando el carril local terminó. El **workflow 14** regenera el Hub y puede leer el Project con el mismo PAT que el **13**.
 
 ---
 
@@ -30,7 +41,10 @@ Usar siempre rutas relativas a la **raíz del clon** (`Pilot`).
 | Cola masiva agente | `.github/COPILOT-AGENT-QUEUE.md` |
 | Colas JSON (7 archivos) | `.github/agent-queue/` (`tasks.json`, `tasks-wave2.json`, … `tasks-security-guardian.json`) |
 | Workflow añadir al Project (13) | `.github/workflows/project-add-to-project.yml` |
-| Índice workflows 01–13 | `.github/workflows/README.md` |
+| Config articulación Hub ↔ Project | `.github/gano-project-hub.json` |
+| Gano Ops Hub (UI + JSON) | `tools/gano-ops-hub/README.md` |
+| Workflow regenerar Hub / Pages (14) | `.github/workflows/gano-ops-hub.yml` |
+| Índice workflows 01–14 | `.github/workflows/README.md` |
 | Tareas y fases del producto | `TASKS.md` |
 | Playbook humanos + agentes | `memory/ops/agent-playbook-asistentes-2026-04.md` |
 | Ops GitHub (rulesets, Dependabot) | `memory/ops/github-github-ops-sota-2026-04.md` |
@@ -78,6 +92,7 @@ Configuración recomendada en **Project settings → Fields**. Los valores deben
 | `manual` | Creado a mano o fuera de plantillas |
 | `security-guardian` | Cola `tasks-security-guardian.json` + skill sesión / higiene |
 | `coordination` | Etiqueta `coordination` / plantilla sync servidor ↔ git |
+| `gano-ops-hub` | Seguimiento explícito desde el Hub (p. ej. tarea creada tras revisar métricas en Pages) |
 
 ---
 
@@ -89,7 +104,8 @@ Configuración recomendada en **Project settings → Fields**. Los valores deben
 | **Start / Target date** | Date (si disponible) | Roadmap; opcional en fase inicial. |
 | **Parent issue** | Sub-issue / vínculo | Epics (pocas tarjetas padre; hijos `[agent]`). |
 | **Team** | Single select | P. ej. `Core`, `Contenidos`, `Infra` — evitar indefinido `No Team` a medio plazo. |
-| **Context link** | Text | Una línea: `PR #nn`, `memory/sessions/…`, o bloqueo (Vercel, SSH). |
+| **Context link** | Text | Una línea: `PR #nn`, `memory/sessions/…`, o bloqueo (CI, SSH, DNS). |
+| **Hub ref** (opcional) | Text | Referencia cruzada breve para agentes: p. ej. `TASKS:## Fase 4`, `dispatch:ag-phase4-001`, `OpsHub:progress` — no duplicar párrafos; enlazar al issue/PR concreto en **Context link**. |
 
 ---
 
@@ -126,7 +142,7 @@ Alineado a la realidad Gano: muchas tareas son **Elementor/servidor** — el DoD
 | **Prioritized backlog** | Table | `Status` ≠ Done; ordenar por **Priority**; columnas: Title, Assignee, Area, Source. |
 | **Current iteration** | Board o Table | **Iteration** = activa; `Status` ∈ {Todo, In progress, Blocked}. |
 | **Roadmap** | Roadmap | Agrupar por **Iteration** o fechas; issues con *start/target* si se usan. |
-| **Agent queue** | Table | Título contiene `[agent]` **o** etiqueta `copilot` — cola Copilot + revisión humana. |
+| **Agent queue** | Table | Título contiene `[agent]` **o** etiqueta `copilot` — cola Copilot + revisión humana. **Alineado** al filtro del workflow **13** y a la vista “operativa” del **Gano Ops Hub**. |
 | **Infra & coordination** | Table | Etiqueta `infra` **o** `coordination` **o** `Area` = infra. |
 | **Dependabot / deps** | Table | Etiqueta `dependencies` o `Source` = dependabot. |
 | **My items** | Table | `Assignee` = @me |
@@ -174,6 +190,16 @@ Alineado a la realidad Gano: muchas tareas son **Elementor/servidor** — el DoD
 
 Sin variable y secret el job **no corre** (diseño intencional).
 
+### 9.1 Workflow 14 — Gano Ops Hub (lectura del mismo Project)
+
+| Elemento | Valor |
+|----------|-------|
+| Archivo | `.github/workflows/gano-ops-hub.yml` |
+| Uso del PAT | Si `ADD_TO_PROJECT_PAT` está definido, se exporta como `GITHUB_PROJECT_TOKEN` para **GraphQL** (`projectV2`) y contar ítems por **Status** + vista previa *In progress*. |
+| Config | `.github/gano-project-hub.json` — `org`, `project_number`, URLs de vistas (ajustar `/views/N` si cambian en GitHub). |
+
+Sin PAT, el Hub sigue mostrando enlaces estáticos y TASKS/dispatch; las tarjetas de métricas del Project marcan “no disponibles” hasta configurar el secret.
+
 ---
 
 ## 10. Convenciones de nomenclatura (ya en uso en el repo)
@@ -205,10 +231,12 @@ Para que el tablero refleje **necesidades reales** del proyecto (no solo UI):
 |-----------|-----------|
 | `.github/GITHUB-PROJECT-GANO-DIGITAL.md` | Puerta de entrada desde el repo a este playbook. |
 | `.github/DEV-COORDINATION.md` | Servidor ↔ git ↔ Actions; incluye fila del workflow **13**. |
-| `.github/workflows/README.md` | Lista **01–13** con archivos `.yml`. |
+| `.github/workflows/README.md` | Lista **01–14** con archivos `.yml`. |
+| `tools/gano-ops-hub/README.md` | Hub operativo + sincronía con Project. |
+| `.github/gano-project-hub.json` | URLs y metadatos de articulación con el tablero org. |
 | `.gano-skills/gano-github-copilot-orchestration/SKILL.md` | Colas **08–10** y JSON en `agent-queue/`. |
 | `.gano-skills/gano-github-projects-board/SKILL.md` | Resumen para asistentes IA en Cursor/Claude. |
 
 ---
 
-*Última revisión de rutas y etiquetas: alineado a `.github/labeler.yml`, `setup-repo-labels.yml` (06), `seed-copilot-queue.yml` (08) y `TASKS.md` (abril 2026).*
+*Última revisión de rutas y etiquetas: alineado a `.github/labeler.yml`, `setup-repo-labels.yml` (06), `seed-copilot-queue.yml` (08), **Gano Ops Hub + `gano-project-hub.json` (14)** y `TASKS.md` (abril 2026).*

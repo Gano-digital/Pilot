@@ -9,6 +9,7 @@
 | Addons                   | Royal Elementor Addons             | Latest                                                               |
 | Commerce                 | WooCommerce                        | Latest                                                               |
 | Checkout / pagos cliente | GoDaddy Reseller Store             | Marca blanca (RCC + Store); pasarelas locales solo legacy si existen |
+| APIs REST GoDaddy (Developer) | Opcional / fuera de WP        | Herramientas o integraciones server-side; no sustituyen Store; Good as Gold solo si la API compra productos ([getstarted](https://developer.godaddy.com/getstarted)) |
 | Seguridad                | Wordfence + gano-security.php      | Custom                                                               |
 | SEO                      | Rank Math + gano-seo.php           | Custom                                                               |
 | Tema                     | gano-child (Hello Elementor child) | Custom                                                               |

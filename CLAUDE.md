@@ -30,7 +30,7 @@ Plan actual donde está alojado gano.digital. Relevante para saber qué tenemos 
 - CDN incluido (hasta 2x más rápido)
 - Protección DDoS
 - Staging site disponible ← útil para probar cambios antes de subir a producción
-- Subdomains permitidos ✅ — my.gano.digital, support.gano.digital pueden crearse en este mismo plan
+- Subdomains permitidos ✅ — my.gano.digital, support.gano.digital pueden crearse en este mismo plan; **ops.gano.digital** puede apuntar al Ops Hub (GitHub Pages o carpeta estática) — ver `memory/ops/gano-ops-hub-deployment.md`
 - **Implicación Fase 4**: El staging site permite probar cambios de vitrina, Reseller y plugins antes de producción. Los subdomains van en este mismo plan cuando apliquen.
 
 ## Términos clave
@@ -41,6 +41,7 @@ Plan actual donde está alojado gano.digital. Relevante para saber qué tenemos 
 | **plugins de fase** | gano-phase1..7 — instaladores del sitio (ver nota crítica) |
 | **MU plugin** | gano-security.php en /mu-plugins/ — seguridad base |
 | **Reseller** | Programa GoDaddy Reseller: catálogo, checkout y cobro al cliente final (ver `TASKS.md` Fase 4). |
+| **Developer API (GoDaddy)** | Herramientas **opcionales** (REST, Key/Secret): automatización o consultas **fuera** del núcleo vitrina/RCC. **No** requiere Good as Gold hasta que la API **compre** productos que debiten prepago. **No** implica cambiar plugins salvo decisión explícita. Ver `memory/research/sota-apis-mercadolibre-godaddy-2026-04.md` §3.7. |
 | **ecosistemas** | Los 4 planes de hosting de Gano Digital |
 | **skills** | Scripts de guía en .gano-skills/ |
 
@@ -140,7 +141,14 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `wp-content/themes/gano-child/templates/page-seo-landing.php` | **NUEVO** Template landing SEO (Fase 3) |
 | `wp-content/themes/gano-child/seo-pages/` | **NUEVO** Contenido landing pages keywords |
 | `memory/research/fase4-plataforma.md` | **NUEVO** Investigación completa Fase 4 |
+| `memory/research/starcraft1-assets-sota.md` | **2026-04-02** Inventario técnico assets SC1/BW, brecha vs Constellation, herramientas (IronGRP, PyMS), legal |
+| `memory/audits/` | PDF/HTML auditoría desarrolladores; regenerar con `python scripts/generate_dev_audit_pdf.py` |
 | `memory/sessions/2026-04-01-reporte-cursor-descargas-y-herramientas.md` | **2026-04-01** Reporte de sesión Cursor: Descargas, `EJECUTAR_ANALISIS.ps1`, organización de folios, seguridad (`id_rsa` → `.ssh`). Continuidad para Claude. |
+| `memory/sessions/2026-04-02-reporte-handoff-godaddy-api-reseller-whmcs.md` | **2026-04-02** Handoff: GoDaddy Developer API vs Reseller Store, Good as Gold, WHMCS, pendientes y guardrails para Claude. |
+| `memory/sessions/2026-04-07-audit-github-pr-issues.md` | **2026-04-07** Auditoría GitHub: PR #136, issue #29, bloqueos merge (CodeQL / reglas), estado rama local. |
+| `memory/content/digital-files-and-content-setup.md` | **Setup digital:** mapa de `memory/`, contenido vs Elementor, handoff, GitHub, constelación — continuidad agentes/humanos. |
+| `tools/gano-ops-hub/README.md` | **Ops Hub:** dashboard progreso + acciones GitHub; `scripts/generate_gano_ops_progress.py`; workflow **14** → Pages opcional. |
+| `memory/research/aegis-patterns-for-gano-ops-2026-04.md` | Patrones inspirados en [AEGIS](https://github.com/Ouroboros1984/AEGIS) para ops (sin copiar código AGPL). |
 | `memory/claude/README.md` | **Contexto para Claude** — historial abril 2026, pendientes, FAQ; [`memory/claude/dispatch-queue.json`](memory/claude/dispatch-queue.json) + [`dispatch-prompt.md`](memory/claude/dispatch-prompt.md) cola ejecutable con `scripts/claude_dispatch.py`. |
 | `memory/ops/agent-playbook-asistentes-2026-04.md` | **Agentes + Actions + asistentes:** arranque, troubleshooting, cerrar issues, re-lanzar colas 08/09, offloading solo humano. |
 | `.vscode/tasks.json` | Tareas **Run Task** para dispatch (`next`, `list`, `validate`, `show`, `complete`) y validación cola Copilot. |

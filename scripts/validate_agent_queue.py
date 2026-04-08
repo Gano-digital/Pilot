@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 QUEUE_DIR = ROOT / ".github" / "agent-queue"
 FILES = [
     "tasks.json",
+    "tasks-constellation-ux.json",
     "tasks-wave2.json",
     "tasks-wave3.json",
     "tasks-wave4-ia-content.json",

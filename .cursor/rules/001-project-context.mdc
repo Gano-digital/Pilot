@@ -28,6 +28,7 @@ Fundador: Diego. URL: https://gano.digital
 6. `.github/copilot-instructions.md` — Instrucciones GitHub Copilot
 7. `.github/DEV-COORDINATION.md` — Brújula operativa
 8. GitHub **Projects** `@Gano.digital` — tablero de progreso/reporte equipo (issues siguen en repo **Pilot**); playbook `memory/ops/github-projects-gano-digital-playbook-2026-04.md`
+9. **`memory/audits/`** — informes PDF/HTML para equipo (Constellation, métricas, roadmap); regeneración `scripts/generate_dev_audit_pdf.py`
 
 ## Idioma
 - Código: comentarios y strings en **es-CO**

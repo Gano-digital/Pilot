@@ -5,7 +5,7 @@ _Última actualización: Abril 2026_
 
 **Si saliste y vuelves:** nota de continuidad **cPanel/DNS + agentes GitHub** → [`memory/notes/nota-salida-cpanel-dns-y-agentes-2026-04.md`](memory/notes/nota-salida-cpanel-dns-y-agentes-2026-04.md).
 
-**Recordatorio personal (prioridades y workflows):** [`memory/notes/nota-diego-recomendaciones-2026-04.md`](memory/notes/nota-diego-recomendaciones-2026-04.md) · **Contexto para Claude (carpeta dedicada):** [`memory/claude/README.md`](memory/claude/README.md) · **Playbook agentes + asistentes (arranque, troubleshooting, offloading):** [`memory/ops/agent-playbook-asistentes-2026-04.md`](memory/ops/agent-playbook-asistentes-2026-04.md)
+**Recordatorio personal (prioridades y workflows):** [`memory/notes/nota-diego-recomendaciones-2026-04.md`](memory/notes/nota-diego-recomendaciones-2026-04.md) · **Contexto para Claude (carpeta dedicada):** [`memory/claude/README.md`](memory/claude/README.md) · **Mapa de archivos digitales y contenido (`memory/`, constelación, handoff):** [`memory/content/digital-files-and-content-setup.md`](memory/content/digital-files-and-content-setup.md) · **Ops Hub (métricas + Actions):** [`tools/gano-ops-hub/README.md`](tools/gano-ops-hub/README.md) · **Playbook agentes + asistentes (arranque, troubleshooting, offloading):** [`memory/ops/agent-playbook-asistentes-2026-04.md`](memory/ops/agent-playbook-asistentes-2026-04.md)
 
 **Estado abril 2026:** la cola de **PRs Copilot** se consolidó en `main` (ver [`memory/sessions/2026-04-03-consolidacion-prs-copilot.md`](memory/sessions/2026-04-03-consolidacion-prs-copilot.md)). **Ya no hace falta** ejecutar **10 · Orquestar oleadas** para fusionar esa oleada.
 
@@ -80,7 +80,7 @@ _Última actualización: Abril 2026_
 
 ## 📋 Fase 4 — Integración GoDaddy Reseller (Agilizada)
 
-**ESTRATEGIA ACTUALIZADA**: Toda la facturación y el checkout recaen sobre el API y Carrito nativo de GoDaddy Reseller. Se elimina el overhead de mantener paneles de facturación locales (WHMCS) y gateways de pago propios.
+**ESTRATEGIA ACTUALIZADA**: Toda la facturación y el checkout recaen sobre el **carrito y el programa nativos** del GoDaddy Reseller (RCC + Reseller Store), no sobre la **API REST** del Developer Portal. Esa API es **opcional** solo como herramienta complementaria (scripts, back-office, futuro billing); **Good as Gold** aplica cuando haya **compras** vía API, no para uso meramente consultivo. Se elimina el overhead de mantener paneles de facturación locales (WHMCS) **mientras** el modelo activo sea Reseller; `memory/research/fase4-plataforma.md` queda como referencia para expansiones posteriores.
 
 - [ ] **Depurar Catálogo en GoDaddy Reseller Control Center**:
   - Asegurar que los productos (Hosting, VPS, SSL) tengan el precio base en el RCC (Reseller Control Center).

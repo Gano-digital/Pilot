@@ -14,6 +14,7 @@ Este documento resume **arranque**, **troubleshooting**, **cierre de tareas** y 
 | **Actions 08 / 09 / 10** | Sembrar issues, issues homepage, merge histórico oleada 1 | `.github/workflows/` |
 | **Colas JSON** | Definición versionada de tareas (7 archivos) | `.github/agent-queue/*.json` |
 | **Claude / Cursor (local)** | `memory/claude/dispatch-queue.json` + `scripts/claude_dispatch.py` | Sin GitHub |
+| **Gano Ops Hub** | Dashboard estático + `progress.json` (TASKS + dispatch); workflow **14** | GitHub Pages opcional · [`tools/gano-ops-hub/README.md`](../../tools/gano-ops-hub/README.md) |
 
 **Regla:** Actions **no** ejecuta a Copilot; solo crea o organiza issues. Tú asignas Copilot en la UI.
 
@@ -34,7 +35,7 @@ Este documento resume **arranque**, **troubleshooting**, **cierre de tareas** y 
 
 ## 3. Ciclo diario (consolidar y avanzar)
 
-1. `git pull` · revisar **Actions** en GitHub para la última ejecución en `main`.
+1. `git pull` · revisar **Actions** en GitHub para la última ejecución en `main` · **Ops Hub** (métricas y botones a workflows): [`tools/gano-ops-hub/public/index.html`](../../tools/gano-ops-hub/public/index.html) localmente o URL de Pages tras **14** (ver [`memory/ops/gano-ops-hub-deployment.md`](gano-ops-hub-deployment.md)).
 2. **PRs:** fusionar con CI verde; usar [`.github/AGENT-REVIEW-CHECKLIST.md`](../../.github/AGENT-REVIEW-CHECKLIST.md). Orden de muchos PRs: [`.github/MERGE-PLAYBOOK.md`](../../.github/MERGE-PLAYBOOK.md).
 3. **Issues:** cerrar los cubiertos por `main` — plantillas en [`../claude/gh-issue-close-guide.md`](../claude/gh-issue-close-guide.md).
 4. **No re-sembrar 08** sin revisar duplicados: el workflow ignora tareas cuyo `<!-- agent-task-id:... -->` ya está en un issue **abierto** (deduplicación por lista de issues, no Search API).
@@ -86,4 +87,4 @@ Definición de tareas: [`../claude/dispatch-queue.json`](../claude/dispatch-queu
 
 ---
 
-*Última revisión: abril 2026 — alineado con workflows 07 (validación), 08 (deduplicación por issues abiertos), auditoría Actions.*
+*Última revisión: abril 2026 — alineado con workflows 07 (validación), 08 (deduplicación por issues abiertos), **14** (Ops Hub / Pages), auditoría Actions.*

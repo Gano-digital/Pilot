@@ -256,7 +256,7 @@ def build() -> Path:
     pdf.add_page()
     pdf.h1("4. Riesgos y dependencias")
     pdf.bullet("Drift: código en main no reflejado en hosting hasta deploy o SFTP manual.")
-    pdf.bullet("Vercel: check en PR puede fallar (org privada + plan Hobby); CI TruffleHog/php-lint pueden estar verdes.")
+    pdf.bullet("Checks de terceros: solo aplican si siguen instalados en la org; CI del repo (TruffleHog, php-lint, CodeQL) es la referencia.")
     pdf.bullet("Trabajo solo Elementor no versionado: documentar en issues y status updates del Project @Gano.digital.")
 
     pdf.h1("5. Próximos 30 días (recomendado)")

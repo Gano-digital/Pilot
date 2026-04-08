@@ -1,0 +1,120 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-04-07T04:59:06.943190+00:00",
+  "repository": "Gano-digital/Pilot",
+  "tasks_md": {
+    "total_open": 29,
+    "total_done": 40,
+    "total_items": 69,
+    "sections": [
+      {
+        "name": "REGRESAR AQUÍ (pendiente tu acción)",
+        "open": 0,
+        "done": 0
+      },
+      {
+        "name": "✅ Fase 1 — Parches de código aplicados",
+        "open": 0,
+        "done": 5
+      },
+      {
+        "name": "✅ Fase 2 — Hardening avanzado aplicado",
+        "open": 0,
+        "done": 2
+      },
+      {
+        "name": "✅ Fase 3 — SEO y Performance aplicado",
+        "open": 0,
+        "done": 13
+      },
+      {
+        "name": "🔴 Active — Acción manual requerida en servidor real",
+        "open": 5,
+        "done": 0
+      },
+      {
+        "name": "🟡 Pending — Contenido y Sinergia",
+        "open": 5,
+        "done": 0
+      },
+      {
+        "name": "📋 Fase 4 — Integración GoDaddy Reseller (Agilizada)",
+        "open": 4,
+        "done": 0
+      },
+      {
+        "name": "📋 Someday — Fase 5",
+        "open": 3,
+        "done": 0
+      },
+      {
+        "name": "🔄 Abril 2026 — Progreso (homepage + GitHub)",
+        "open": 12,
+        "done": 20
+      }
+    ]
+  },
+  "tasks_completion_pct": 58.0,
+  "dispatch": {
+    "queue_total": 22,
+    "completed_count": 0,
+    "pending_count": 22,
+    "dispatch_state_present": false,
+    "dispatch_note": "Sin dispatch-state.json en este entorno: en CI los pendientes pueden coincidir con el total de la cola. Localmente, `claude_dispatch.py complete` actualiza el estado (archivo en .gitignore).",
+    "completed_ids": [],
+    "next_suggestions": [
+      {
+        "id": "ag-phase4-001",
+        "title": "[PHASE 4] Antigravity: Activar y prueba inicial (cart test staging)"
+      },
+      {
+        "id": "ag-phase4-002",
+        "title": "[PHASE 4] Antigravity: RCC audit (identificar gaps PFID)"
+      },
+      {
+        "id": "cd-content-001",
+        "title": "Wave contenidos: homepage 2026 (orden definitivo + tokens)"
+      },
+      {
+        "id": "cd-content-002",
+        "title": "Wave contenidos: páginas ecosistemas (4 planes) con CTAs Reseller"
+      },
+      {
+        "id": "cd-repo-001",
+        "title": "Alinear checkboxes GitHub en TASKS.md (08/09/10) con criterios condicionales"
+      }
+    ]
+  },
+  "github_project": {
+    "config_present": true,
+    "config": {
+      "org": "Gano-digital",
+      "project_number": 2,
+      "display_name": "@Gano.digital",
+      "description": "Articulación Ops Hub ↔ GitHub Project (Pilot). Ajusta urls.views si las rutas /views/N no coinciden con tu tablero (copia la URL del navegador).",
+      "urls": {
+        "project": "https://github.com/orgs/Gano-digital/projects/2",
+        "prioritized_backlog": "https://github.com/orgs/Gano-digital/projects/2/views/1",
+        "status_board": "https://github.com/orgs/Gano-digital/projects/2/views/2",
+        "insights": "https://github.com/orgs/Gano-digital/projects/2/insights"
+      },
+      "traceability": {
+        "pilot_repository": "Gano-digital/Pilot",
+        "issue_marker_agent_title": "[agent]",
+        "issue_body_marker": "<!-- agent-task-id:",
+        "tasks_md": "TASKS.md",
+        "dispatch_queue": "memory/claude/dispatch-queue.json",
+        "playbook": "memory/ops/github-projects-gano-digital-playbook-2026-04.md"
+      }
+    },
+    "live_stats": null,
+    "live_stats_note": "Sin token en el entorno (GITHUB_PROJECT_TOKEN o ADD_TO_PROJECT_PAT): no se consultó la API del Project. En Actions, el workflow 14 inyecta ADD_TO_PROJECT_PAT; en local: exporta GITHUB_PROJECT_TOKEN con un PAT de lectura Projects (org)."
+  },
+  "audit_log": [],
+  "links": {
+    "issues": "https://github.com/Gano-digital/Pilot/issues",
+    "pulls": "https://github.com/Gano-digital/Pilot/pulls",
+    "actions": "https://github.com/Gano-digital/Pilot/actions",
+    "security": "https://github.com/Gano-digital/Pilot/security"
+  }
+}

@@ -4,6 +4,8 @@ _Publicar en: GitHub → proyecto **@Gano.digital** → **Add status update**._
 
 **Repositorio de código:** `Gano-digital/Pilot` · **Rama:** `main` · **Playbook tablero:** [`memory/ops/github-projects-gano-digital-playbook-2026-04.md`](../../memory/ops/github-projects-gano-digital-playbook-2026-04.md)
 
+**Gano Ops Hub (mismo estado agregado que ves en Pages / local):** [`tools/gano-ops-hub/README.md`](../../tools/gano-ops-hub/README.md) · config [`../../.github/gano-project-hub.json`](../../.github/gano-project-hub.json). Usa el Hub como **lienzo operativo**; este *status update* sigue siendo el comunicado humano en la UI de GitHub Projects.
+
 ---
 
 ## Executive summary (1–2 frases)
@@ -35,7 +37,7 @@ _Publicar en: GitHub → proyecto **@Gano.digital** → **Add status update**._
 | Bloqueo | Impacto | Mitigación |
 |---------|---------|------------|
 | {p. ej. SSH / secrets deploy} | {P0–P3} | {quién actúa — ver `TASKS.md` 🔴} |
-| {p. ej. Vercel check en PRs} | CI | {política merge / upgrade plan} |
+| {p. ej. check opcional de terceros en PRs} | CI | {política merge / ignorar si no aplica} |
 
 ---
 
@@ -44,6 +46,8 @@ _Publicar en: GitHub → proyecto **@Gano.digital** → **Add status update**._
 - **Issues abiertos `[agent]`:** {n}
 - **PRs abiertos:** {n}
 - **Dependabot:** enlace a Security si aplica
+- **Project (API / Hub):** {p. ej. Done X%, In progress Y — copiar del Gano Ops Hub tras workflow **14** o de *Insights* del tablero}
+- **TASKS.md (checkboxes):** {p. ej. Z% completado — coherencia con fases, no con cada issue}
 
 ---
 

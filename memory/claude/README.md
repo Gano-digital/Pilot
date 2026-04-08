@@ -28,6 +28,8 @@ Esto es **independiente** de la cola Copilot (`.github/agent-queue/*.json` — *
 - **Plantillas para cerrar issues en GitHub:** [`gh-issue-close-guide.md`](gh-issue-close-guide.md)
 - **Memoria del proyecto y stack:** [`CLAUDE.md`](../../CLAUDE.md) en la raíz del workspace.
 - **Lista maestra de tareas:** [`TASKS.md`](../../TASKS.md).
+- **Setup digital — archivos y contenido (mapa `memory/`, handoff, constelación):** [`../content/digital-files-and-content-setup.md`](../content/digital-files-and-content-setup.md).
+- **Gano Ops Hub (stats TASKS + dispatch, botones Actions):** [`../../tools/gano-ops-hub/README.md`](../../tools/gano-ops-hub/README.md).
 - **Recordatorio operativo de Diego (prioridades + cuándo correr Actions):** [`../notes/nota-diego-recomendaciones-2026-04.md`](../notes/nota-diego-recomendaciones-2026-04.md).
 - **Progreso consolidado (equipo):** [`../sessions/2026-04-02-progreso-consolidado.md`](../sessions/2026-04-02-progreso-consolidado.md).
 - **Consolidación PRs Copilot (2026-04-03):** [`../sessions/2026-04-03-consolidacion-prs-copilot.md`](../sessions/2026-04-03-consolidacion-prs-copilot.md).

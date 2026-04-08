@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌌 Gano Digital - Constelación Interactiva</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+            padding: 20px;
+            min-height: calc(100vh - 200px);
+        }
+
+        #network {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f5f7fa;
+        }
+
+        .sidebar {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            overflow-y: auto;
+            max-height: 600px;
+        }
+
+        .sidebar h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .node-list {
+            list-style: none;
+        }
+
+        .node-list li {
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background: white;
+            border-left: 4px solid #667eea;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .node-list li:hover {
+            background: #e0e7ff;
+            border-left-color: #764ba2;
+            transform: translateX(4px);
+        }
+
+        .metrics {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .metric-item:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            font-weight: 500;
+            color: #374151;
+            font-size: 0.9em;
+        }
+
+        .metric-value {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .info-panel {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        button.active {
+            background: #10b981;
+        }
+
+        .legend {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #e5e7eb;
+            font-size: 0.85em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .status.critical { background: #fee2e2; color: #991b1b; }
+        .status.high { background: #fef3c7; color: #92400e; }
+        .status.medium { background: #dbeafe; color: #1e40af; }
+        .status.low { background: #dcfce7; color: #166534; }
+
+        footer {
+            background: #f3f4f6;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                max-height: 400px;
+            }
+        }
+
+        .welcome-message {
+            background: #ecfdf5;
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌌 Gano Digital — Constelación Interactiva</h1>
+            <p>Mapa visual de arquitectura, procesos, agentes y progreso Phase 4</p>
+        </header>
+
+        <div class="content">
+            <div>
+                <div class="controls">
+                    <button onclick="resetNetwork()">🔄 Reiniciar Vista</button>
+                    <button onclick="focusPhase4()">⚡ Fase 4 (Critical)</button>
+                    <button onclick="focusAgents()">👥 Agentes</button>
+                    <button onclick="focusRisks()">⚠️ Riesgos</button>
+                </div>
+                <div id="network"></div>
+            </div>
+
+            <div class="sidebar">
+                <div class="welcome-message">
+                    <strong>💡 Tip:</strong> Haz click en nodos para destacarlos. Arrastra para mover. Usa botones arriba para enfocar vistas.
+                </div>
+
+                <div class="metrics">
+                    <h3>📊 Métricas Phase 4</h3>
+                    <div class="metric-item">
+                        <span class="metric-label">Fases completadas</span>
+                        <span class="metric-value">3/5 (60%)</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Fase 4 Progress</span>
+                        <span class="metric-value">15%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">PFID Mappings</span>
+                        <span class="metric-value">0/5</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Test Pass Rate</span>
+                        <span class="metric-value">Pending</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Blockers Activos</span>
+                        <span class="metric-value">1 🔴</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Go-Live Target</span>
+                        <span class="metric-value">Apr 20</span>
+                    </div>
+                </div>
+
+                <div class="info-panel">
+                    <strong>🎯 Próximos Pasos (Inmediatos):</strong>
+                    <ul style="margin-top: 8px; margin-left: 15px;">
+                        <li>Apr 7: Activar Antigravity (Diego)</li>
+                        <li>Apr 8: RCC Audit (Antigravity)</li>
+                        <li>Apr 9-15: PFID Mappings (Cursor)</li>
+                        <li>Apr 20: GO LIVE 🚀</li>
+                    </ul>
+                </div>
+
+                <div class="legend">
+                    <h3 style="margin-bottom: 10px;">🔑 Leyenda</h3>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #fca5a5;"></div>
+                        <span>Crítico / Blocker</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #fed7aa;"></div>
+                        <span>Alto / En Progreso</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #86efac;"></div>
+                        <span>Normal / Completado</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #93c5fd;"></div>
+                        <span>Agente / Persona</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #d8b4fe;"></div>
+                        <span>Componente Técnico</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <strong>Gano Digital — Última actualización: Apr 6, 2026</strong> |
+            Esta constelación contiene 8 documentos interconectados (Obsidian-compatible) |
+            Para detalles, consulta memory/constellation/
+        </footer>
+    </div>
+
+    <script>
+        // Datos de nodos y conexiones
+        const nodesData = [
+            // Estrategia
+            { id: 1, label: '🎯 Gano Digital', title: 'Hosting WordPress en Colombia', color: '#fbbf24', size: 40 },
+            { id: 2, label: '📋 Mapa Estratégico', title: 'Visión + Decisiones', color: '#60a5fa' },
+
+            // Fases
+            { id: 3, label: '📅 5 Fases Roadmap', title: 'F1-3: ✅ F4: 🟠 F5: 📅', color: '#86efac' },
+            { id: 4, label: '⚡ Fase 4 (Critical)', title: 'Comercialización en progreso', color: '#fca5a5', size: 35 },
+
+            // Agentes
+            { id: 10, label: '👨‍💼 Diego', title: 'Founder/Conductor', color: '#93c5fd' },
+            { id: 11, label: '🧠 Claude', title: 'Research/Architecture', color: '#93c5fd' },
+            { id: 12, label: '⌨️ Cursor', title: 'Code Implementation', color: '#93c5fd' },
+            { id: 13, label: '🖥️ VS Code', title: 'Operations/Deployment', color: '#93c5fd' },
+            { id: 14, label: '🤖 Antigravity', title: 'Automation/QA', color: '#93c5fd', size: 35 },
+
+            // Arquitectura
+            { id: 20, label: '⚙️ Arquitectura Sistemas', title: 'WordPress + GoDaddy + Reseller', color: '#d8b4fe' },
+            { id: 21, label: '🌐 WordPress', title: 'CMS + Elementor', color: '#d8b4fe' },
+            { id: 22, label: '☁️ GoDaddy Managed', title: 'Hosting + Staging', color: '#d8b4fe' },
+            { id: 23, label: '🛒 Reseller Store', title: 'Carrito marca blanca', color: '#d8b4fe', size: 30 },
+            { id: 24, label: '📊 RCC', title: 'Reseller Control Center', color: '#d8b4fe' },
+
+            // Procesos
+            { id: 30, label: '🔄 Procesos Operativos', title: 'Workflows críticos', color: '#fed7aa' },
+            { id: 31, label: '📋 RCC Audit', title: 'Auditar configuración', color: '#fed7aa' },
+            { id: 32, label: '🗺️ PFID Mapping', title: '5 productos a mapear', color: '#fca5a5', size: 30 },
+            { id: 33, label: '🧪 Cart Testing', title: 'E2E validation', color: '#fed7aa' },
+            { id: 34, label: '📦 Deployment', title: 'Staging → Production', color: '#fed7aa' },
+
+            // Métricas
+            { id: 40, label: '📊 Métricas & Progreso', title: 'KPIs + Dashboards', color: '#86efac' },
+            { id: 41, label: '📈 Burn-down Chart', title: 'Timeline visual', color: '#86efac' },
+            { id: 42, label: '⚠️ Risk Heat Map', title: 'Probabilidad × Impacto', color: '#fca5a5' },
+
+            // Riesgos
+            { id: 50, label: '🚨 Riesgos & Dependencias', title: 'Blockers + Mitigaciones', color: '#fca5a5', size: 35 },
+            { id: 51, label: '🔴 B-001: Antigravity', title: 'Diego activation pending', color: '#fca5a5', size: 25 },
+            { id: 52, label: '🟡 B-002: PFID Availability', title: 'External: GoDaddy', color: '#fed7aa' },
+            { id: 53, label: '🟡 B-003: Compliance Data', title: 'NIT + Phone', color: '#fed7aa' },
+
+            // Gobierno
+            { id: 60, label: '👔 Equipo & Coordinación', title: 'RACI + Autoridades', color: '#93c5fd' },
+            { id: 61, label: '📋 RACI Matrix', title: 'Responsabilidades', color: '#93c5fd' },
+        ];
+
+        const edgesData = [
+            // Estrategia
+            { from: 1, to: 2, label: '', arrows: 'to' },
+            { from: 2, to: 3, label: '', arrows: 'to' },
+            { from: 3, to: 4, label: '', arrows: 'to' },
+
+            // Agentes conectados a proyecto
+            { from: 1, to: 10, label: 'conducción', arrows: 'to' },
+            { from: 1, to: 14, label: '', arrows: 'to' },
+
+            // Agentes a procesos
+            { from: 14, to: 31, label: 'ejecuta', arrows: 'to' },
+            { from: 12, to: 32, label: 'mapea', arrows: 'to' },
+            { from: 14, to: 33, label: 'valida', arrows: 'to' },
+            { from: 13, to: 34, label: 'deploya', arrows: 'to' },
+            { from: 11, to: 11, label: 'revisa', arrows: 'from' },
+
+            // Procesos
+            { from: 4, to: 30, label: '', arrows: 'to' },
+            { from: 30, to: 31, label: '', arrows: 'to' },
+            { from: 30, to: 32, label: '', arrows: 'to' },
+            { from: 30, to: 33, label: '', arrows: 'to' },
+            { from: 30, to: 34, label: '', arrows: 'to' },
+
+            // Arquitectura
+            { from: 4, to: 20, label: '', arrows: 'to' },
+            { from: 20, to: 21, label: '', arrows: 'to' },
+            { from: 20, to: 22, label: '', arrows: 'to' },
+            { from: 20, to: 23, label: '', arrows: 'to' },
+            { from: 20, to: 24, label: '', arrows: 'to' },
+
+            // Métricas
+            { from: 4, to: 40, label: '', arrows: 'to' },
+            { from: 40, to: 41, label: '', arrows: 'to' },
+            { from: 40, to: 42, label: '', arrows: 'to' },
+
+            // Riesgos
+            { from: 4, to: 50, label: '', arrows: 'to' },
+            { from: 50, to: 51, label: '', arrows: 'to' },
+            { from: 50, to: 52, label: '', arrows: 'to' },
+            { from: 50, to: 53, label: '', arrows: 'to' },
+
+            // Gobierno
+            { from: 4, to: 60, label: '', arrows: 'to' },
+            { from: 60, to: 61, label: '', arrows: 'to' },
+        ];
+
+        const nodes = new vis.DataSet(nodesData);
+        const edges = new vis.DataSet(edgesData);
+
+        const container = document.getElementById('network');
+        const data = { nodes: nodes, edges: edges };
+        const options = {
+            physics: {
+                enabled: true,
+                stabilization: { iterations: 200 }
+            },
+            interaction: {
+                navigationButtons: true,
+                keyboard: true,
+                hover: true
+            }
+        };
+
+        const network = new vis.Network(container, data, options);
+
+        // Event listeners
+        network.on("click", function(params) {
+            if (params.nodes.length > 0) {
+                const nodeId = params.nodes[0];
+                const node = nodes.get(nodeId);
+                console.log('Node clicked:', node);
+            }
+        });
+
+        // Focus functions
+        function resetNetwork() {
+            network.fit();
+        }
+
+        function focusPhase4() {
+            const phase4Nodes = [4, 31, 32, 33, 34, 51, 52, 53];
+            network.selectNodes(phase4Nodes);
+            network.fit({ nodes: phase4Nodes, animation: true });
+        }
+
+        function focusAgents() {
+            const agentNodes = [10, 11, 12, 13, 14];
+            network.selectNodes(agentNodes);
+            network.fit({ nodes: agentNodes, animation: true });
+        }
+
+        function focusRisks() {
+            const riskNodes = [50, 51, 52, 53, 42];
+            network.selectNodes(riskNodes);
+            network.fit({ nodes: riskNodes, animation: true });
+        }
+
+        // Auto-fit on load
+        window.addEventListener('load', () => {
+            setTimeout(() => network.fit(), 500);
+        });
+    </script>
+</body>
+</html>

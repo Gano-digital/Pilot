@@ -2,6 +2,8 @@
 
 Este documento detalla los pasos para obtener los identificadores de producto (**PFIDs**) desde el **Reseller Control Center (RCC)** de GoDaddy y vincularlos con la vitrina de Gano Digital.
 
+> **Nota:** El **Developer API** ([getstarted](https://developer.godaddy.com/getstarted)) es independiente de este flujo: el checkout canónico sigue siendo **Reseller Store + RCC**. Las claves REST son opcionales para otras herramientas; no son necesarias para mapear PFIDs.
+
 ## 🔒 Privacidad y Seguridad
 > [!WARNING]
 > Los **PFIDs** y el **Private Label ID (PLID)** son identificadores públicos del catálogo, pero se recomienda completar este paso directamente en el servidor (`wp-config.php` o `functions.php`) para no commitear valores reales al repositorio si prefieres mantener el catálogo en privado durante el desarrollo.

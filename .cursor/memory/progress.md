@@ -1,5 +1,20 @@
 # Progress Tracker
 
+## 2026-04-07 — Auditoría desarrolladores + Constellation (abierto / entregable)
+
+### Completado
+
+- [x] Regla Cursor `102-constellation-and-gano-skills.mdc` (Constellation, skills, TASKS/CLAUDE)
+- [x] `memory/audits/`: PDF `gano-digital-auditoria-desarrolladores-*.pdf` + HTML con retratos y estadísticas
+- [x] Script `scripts/generate_dev_audit_pdf.py` (fpdf2 + Arial Windows); `.gitignore` excepción `memory/audits/*.pdf`, ignorados `vendor/` y `.obsidian/`
+- [x] Skill `gano-starcraft1-assets-constellation` + research `starcraft1-assets-sota.md` enlazados en CLAUDE y QUICK_START
+
+### Pendiente (equipo)
+
+- [ ] Revisar PDF/HTML con desarrolladores; regenerar PDF tras hitos mayores
+
+---
+
 ## 2026-04-02 — Setup entorno y gobernanza (cerrado)
 
 ### Completado

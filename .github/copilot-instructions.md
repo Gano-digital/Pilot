@@ -19,6 +19,7 @@ Antes de asumir que el repo es idéntico a producción, lee **[`.github/DEV-COOR
 - **CMS**: WordPress 6.x + Elementor Pro + Royal Elementor Addons
 - **E-commerce**: WooCommerce (moneda COP, zona Bogotá)
 - **Pagos / checkout**: **GoDaddy Reseller Store** (marca blanca). No priorizar Wompi ni pasarelas locales salvo código legacy explícito en el repo.
+- **GoDaddy Developer API (REST)**: **opcional** — herramientas o integraciones fuera del núcleo vitrina/RCC; no sustituye el carrito Reseller. **Good as Gold** solo si la API **compra** productos que debiten prepago ([getstarted](https://developer.godaddy.com/getstarted)). Nunca commitear Key/Secret. Matriz y ToU: `memory/research/sota-apis-mercadolibre-godaddy-2026-04.md` (§3.7).
 - **Seguridad**: Wordfence + MU Plugin `gano-security.php`
 - **SEO**: Rank Math + MU Plugin `gano-seo.php`
 - **Tema**: Hello Elementor → `gano-child` (child theme)
