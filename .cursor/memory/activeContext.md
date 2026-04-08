@@ -1,6 +1,6 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-08 (repo local sincronizado con `origin/main`; enlaces ops SSH en `DEV-COORDINATION` + regeneración `progress.json` coherente con `TASKS.md`)_
+_Última actualización: 2026-04-08 (merge #156 + #157 en `main`; workflow **14** Ops Hub verde tras fix `generate_gano_ops_progress.py`; workflow **04** Deploy sigue `publickey` hasta alinear secret `SSH` con la misma pareja que el acceso local)_
 
 ## Foco actual (producto y repo)
 
@@ -26,8 +26,8 @@ _Última actualización: 2026-04-08 (repo local sincronizado con `origin/main`; 
 
 ## En progreso
 
-- [ ] **CI Deploy (04):** si falla en *Setup SSH Agent* con `error in libcrypto`, corregir el secret `SSH` (OpenSSH/ed25519 sin passphrase, LF, no `.ppk`) — [`memory/ops/github-actions-ssh-secret-troubleshooting.md`](../../memory/ops/github-actions-ssh-secret-troubleshooting.md).
-- [ ] SSH key / acceso local: validar autorización de la clave contra GitHub y servidor cuando aplique el flujo manual.
+- [ ] **CI Deploy (04):** si `ssh-add` OK pero **rsync** falla con `Permission denied (publickey)`, el secret `SSH` no coincide con la clave autorizada en el servidor para `SERVER_USER@SERVER_HOST`, o el usuario/host en secretos no es el del deploy — [`memory/ops/github-actions-ssh-secret-troubleshooting.md`](../../memory/ops/github-actions-ssh-secret-troubleshooting.md).
+- [x] **Workflow 14 (Ops Hub):** script `--output` relativo corregido en `main` (#157); run manual post-merge: éxito ([24147290218](https://github.com/Gano-digital/Pilot/actions/runs/24147290218)).
 - [ ] SFTP / sync VS Code si aplica al flujo de deploy de Diego.
 - [ ] Deploy de archivos críticos al servidor y tareas solo-wp-admin listadas en `TASKS.md`.
 
