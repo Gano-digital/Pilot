@@ -87,3 +87,8 @@ agent-orchestrator.yml
 # Vendor local (repos clonados para referencia; se versionan solo si son submodules)
 vendor/agentcraft/
 vendor/graphify/
+
+# Scripts con credenciales — NUNCA commitear
+audit_content.php
+cleanup_content.php
+*.staging.php
