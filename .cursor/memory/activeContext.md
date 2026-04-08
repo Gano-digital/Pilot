@@ -1,10 +1,10 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-08 (**#159** y **#160** en `main`; handoff Claude en [`2026-04-08-reporte-handoff-ssh-deploy-tokens.md`](../../memory/claude/2026-04-08-reporte-handoff-ssh-deploy-tokens.md); **04** deploy: huella OK, pendiente IP/`SERVER_*`)_
+_Última actualización: 2026-04-08 (**#159** y **#160** en `main`; handoff Claude en [`2026-04-08-reporte-handoff-ssh-deploy-tokens.md`](../../memory/claude/2026-04-08-reporte-handoff-ssh-deploy-tokens.md); **04** deploy: huella OK, pendiente IP/`SERVER_*`; Dependabot `.gsd/sdk` resuelto con `overrides`; plan vitrina con **checklist Fase 1** en [`homepage-vitrina-launch-plan-2026-04.md`](../../memory/ops/homepage-vitrina-launch-plan-2026-04.md))_
 
 ## Foco actual (producto y repo)
 
-- **Vitrina gano.digital:** plan por fases y roles (Diego / Cursor / Copilot / Claude) — [`memory/ops/homepage-vitrina-launch-plan-2026-04.md`](../../memory/ops/homepage-vitrina-launch-plan-2026-04.md). Copy fuente: [`homepage-copy-2026-04.md`](../../memory/content/homepage-copy-2026-04.md). Aplicación en **Elementor = humano en wp-admin**; agentes no sustituyen el pegado en panel.
+- **Vitrina gano.digital:** plan por fases y roles (Diego / Cursor / Copilot / Claude) — [`memory/ops/homepage-vitrina-launch-plan-2026-04.md`](../../memory/ops/homepage-vitrina-launch-plan-2026-04.md) (checklist orden de bloques § Fase 1). Copy fuente: [`homepage-copy-2026-04.md`](../../memory/content/homepage-copy-2026-04.md). Aplicación en **Elementor = humano en wp-admin**; agentes no sustituyen el pegado en panel.
 - **Servidor / producción:** desplegar parches Fases 1–3 al hosting real, eliminar `wp-file-manager`, configurar Gano SEO / GSC / Rank Math (`TASKS.md` sección Active).
 - **GitHub `Gano-digital/Pilot`:** repositorio en `main` ya consolidado; cierre de issues cubiertos por `main`; colas opcionales (API / security guardian) sin bloquear vitrina.
 - **Fase 4:** catálogo Reseller, mapeo CTAs en `shop-premium.php`, smoke test checkout — [`memory/commerce/rcc-pfid-checklist.md`](../../memory/commerce/rcc-pfid-checklist.md).

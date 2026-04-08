@@ -1,5 +1,15 @@
 # Progress Tracker
 
+## 2026-04-08 — Dependabot `.gsd/sdk` + checklist vitrina Fase 1
+
+### Completado
+
+- [x] **`overrides`** en [`.gsd/sdk/package.json`](../../.gsd/sdk/package.json) (`hono` ^4.12.12, `@hono/node-server` ^1.19.13, `@anthropic-ai/sdk` ^0.81.0); `package-lock.json` regenerado; `npm audit` 0 en `.gsd/sdk` y `.gsd/`.
+- [x] Plan vitrina — checklist wp-admin por bloques (hero → CTA final) + nota toolchain Node en [`homepage-vitrina-launch-plan-2026-04.md`](../../memory/ops/homepage-vitrina-launch-plan-2026-04.md); referencia en `TASKS.md`.
+- [x] `techContext` / `activeContext` actualizados.
+
+---
+
 ## 2026-04-08 — Reporte Claude handoff (SSH/Deploy/tokens)
 
 ### Completado
