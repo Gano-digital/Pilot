@@ -1869,10 +1869,20 @@ select:focus-visible {
    3. Widget H1 del hero → Avanzado → Clases CSS → agregar "gano-el-hero-readability"
    ============================================================ */
 
-/* — Hero overlay: gradiente oscuro sobre cualquier imagen de fondo — */
+/* — Hero overlay: imagen de data center + gradiente oscuro para contraste de texto — */
 .gano-hero-overlay {
     position: relative;
     isolation: isolate;
+    /* Imagen de fondo: corredor de data center, luz LED azul-blanca */
+    background-image: url('assets/images/hero-datacenter.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+/* Si Elementor ya tiene una imagen configurada en el panel, la respeta */
+.elementor-element.gano-hero-overlay[style*="background-image"] {
+    background-image: var(--bg-override, url('assets/images/hero-datacenter.jpg'));
 }
 
 .gano-hero-overlay::before {
@@ -1881,11 +1891,13 @@ select:focus-visible {
     inset: 0;
     z-index: 1;
     pointer-events: none;
+    /* Gradiente calibrado para la foto de data center:
+       izquierda oscura (texto) → derecha con tinte azul (realza las luces LED) */
     background: linear-gradient(
-        135deg,
-        rgba(5, 8, 12, 0.88) 0%,
-        rgba(5, 8, 12, 0.70) 55%,
-        rgba(27, 79, 216, 0.25) 100%
+        105deg,
+        rgba(5, 8, 12, 0.86) 0%,
+        rgba(5, 8, 12, 0.62) 50%,
+        rgba(27, 79, 216, 0.20) 100%
     );
 }
 
