@@ -79,4 +79,6 @@ Para **web** (Three.js / HTML): el flujo realista es **GRP → PNG por frame** (
 
 - Skill operativa: `.gano-skills/gano-starcraft1-assets-constellation/SKILL.md`  
 - Mapa interactivo: `memory/constellation/CONSTELACION-COSMICA.html`  
-- Nota prensa Blizzard: `memory/constellation/blizzard-press-reference.txt`
+- Nota prensa Blizzard: `memory/constellation/blizzard-press-reference.txt`  
+- UX multi-título + S.T.E.A.L. + mapeo SFX AgentCraft: `memory/research/sota-ux-rts-fps-constellation-steal-2026-04.md`  
+- Inventario WAV/PNG/unidades y estrategia herramienta privada: `memory/constellation/INVENTARIO-RECURSOS-DESARROLLO-2026-04.md`

@@ -124,6 +124,7 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `.gano-skills/gano-session-security-guardian/` | Cierre de sesión: higiene de datos sensibles, checklist, cola `tasks-security-guardian` (no sustituye TruffleHog) |
 | `.gano-skills/gano-starcraft1-assets-constellation/` | Formatos GRP/paleta/MPQ SC1, pipeline HUD Constellation, AgentCraft vs assets Blizzard; **no** redistribuir archivos del juego en git |
 | `.gano-skills/gano-dev-audit-reporting/` | Generar auditoría PDF/HTML para desarrolladores (capabilities + roadmap) |
+| `.gano-skills/gano-wp-engineering-quality/` | **Etapa posterior:** PHPUnit/WP-CLI/smoke y E2E opcional para subir calidad “ingeniería pura” sin reescribir WP; activar tras deploy estable y Fase 4 (ver `TASKS.md`) |
 | `.gano-skills/gano-graphify-local/` | Usar Graphify (vendor) como tooling local (sin hooks) para mapas de arquitectura/UX del repo |
 | `.gano-skills/gano-agent-orchestrator-local/` | Orquestar oleadas de agentes en paralelo (worktrees/PRs) como recurso opcional, recomendado en WSL2 |
 | `.gano-skills/gano-ml-ssd/` | Recurso integral I+D (apple/ml-ssd) para evaluación de codegen; submodule en `vendor/ml-ssd` |

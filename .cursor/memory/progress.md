@@ -1,17 +1,34 @@
 # Progress Tracker
 
-## 2026-04-07 — Auditoría desarrolladores + Constellation (abierto / entregable)
+## 2026-04-07 — Battle Map: plan diseño + fine tuning + agentes
 
-### Completado
+### Completado (documentación + marca en HTML)
 
-- [x] Regla Cursor `102-constellation-and-gano-skills.mdc` (Constellation, skills, TASKS/CLAUDE)
-- [x] `memory/audits/`: PDF `gano-digital-auditoria-desarrolladores-*.pdf` + HTML con retratos y estadísticas
-- [x] Script `scripts/generate_dev_audit_pdf.py` (fpdf2 + Arial Windows); `.gitignore` excepción `memory/audits/*.pdf`, ignorados `vendor/` y `.obsidian/`
-- [x] Skill `gano-starcraft1-assets-constellation` + research `starcraft1-assets-sota.md` enlazados en CLAUDE y QUICK_START
+- [x] `memory/constellation/BATTLE-MAP-PLAN-DISENO-FINE-TUNING-2026-04.md` — fases 0–3, objetivos D1–D5, tabla agentes (Diego / Cursor / Copilot / Claude), checklist Go/No-Go.
+- [x] `memory/constellation/battle-map-config.example.json` — plantilla Fase 2 (SFX + systems stub).
+- [x] `CONSTELACION-COSMICA.html` — `window.__GANO_BATTLE_MAP__` + comentario en módulo principal.
+- [x] Enlaces desde `INVENTARIO-RECURSOS-DESARROLLO-2026-04.md` y `activeContext.md`.
 
-### Pendiente (equipo)
+### Próximo (ejecución)
 
-- [ ] Revisar PDF/HTML con desarrolladores; regenerar PDF tras hitos mayores
+- [ ] Fase 0 checklist (abrir local, probar rutas).
+- [ ] Fase 1: tuning CSS/SFX según plan (PR acotado).
+- [ ] Fase 2 (opcional): `fetch` config + fallback.
+
+---
+
+## 2026-04-07 — Investigación SOTA workflow + paralelismo (registro)
+
+### Completado (documentación)
+
+- [x] `memory/research/sota-workflow-ops-parallel-2026-04.md` — SOTA (GitOps ligero, staging, gates merge, inventario plugins, runbooks), colisión con estado Gano, cambios esenciales P0–P2, modelo carriles A/B/C, checklist operativa.
+- [x] Enlaces desde `TASKS.md` (*Trabajo en paralelo*) y `.cursor/memory/activeContext.md`.
+
+### Pendiente (ir tachando en el doc de investigación o aquí)
+
+- [ ] Ritual semanal 15 min PRs bloqueados por CodeQL/ruleset.
+- [ ] Runbook incidente 1 página + drill restauración (Carril C).
+- [ ] Tabla inventario plugins terceros v1.
 
 ---
 
@@ -22,7 +39,7 @@
 - [x] VS Code instalado y configurado (extensiones según sesión)
 - [x] Cursor: **9** rules `.mdc` (contexto, boundaries, security, error handling, copilot oversight, memory protocol, PHP/WP, CSS/JS, git workflow)
 - [x] Cursor hooks configurados
-- [x] Cursor memory bank inicializado (`projectBrief`, `techContext`, `activeContext`, `progress`, `deferredItems`)
+- [x] Cursor memory bank inicializado (`projectBrief`, `techContext`, `activeContext`, `deferredItems`)
 - [x] `AGENTS.md` (estándar cross-tool)
 - [x] Workflows / repo: `copilot-setup-steps.yml`, `CODEOWNERS` (según sesión de setup)
 - [x] Documentación Copilot repo: `copilot-instructions.md`, cola `.github/agent-queue/`, playbooks merge/coordinación
