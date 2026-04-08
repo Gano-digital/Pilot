@@ -343,9 +343,20 @@ def main() -> None:
         sys.stdout.write(text)
         return
 
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(text, encoding="utf-8")
-    print(f"Escrito {args.output.relative_to(ROOT)}")
+    out_path = args.output
+    # En Actions (y a veces en local) `--output` se pasa relativo a la raíz del repo.
+    # `Path.relative_to()` falla si mezclamos rutas relativas vs absolutas, así que
+    # normalizamos a ruta absoluta basada en `ROOT`.
+    if not out_path.is_absolute():
+        out_path = (ROOT / out_path).resolve()
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(text, encoding="utf-8")
+    try:
+        pretty = out_path.relative_to(ROOT)
+    except ValueError:
+        pretty = out_path
+    print(f"Escrito {pretty}")
 
 
 if __name__ == "__main__":
