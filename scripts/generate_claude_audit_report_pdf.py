@@ -79,6 +79,11 @@ def git_log_oneline(n: int = 18) -> list[str]:
     return [ln.strip() for ln in raw.splitlines() if ln.strip()]
 
 
+def _courier_safe(s: str, max_len: int = 118) -> str:
+    """Courier (core font) no admite todo Unicode; recorta a Latin-1."""
+    return "".join(c if ord(c) < 256 else "?" for c in s)[:max_len]
+
+
 def count_tasks_agent_queue() -> tuple[int, int]:
     """(total tareas, archivos cola)."""
     d = ROOT / ".github" / "agent-queue"
@@ -260,7 +265,7 @@ class AuditPDF(FPDF):
             self.cell(
                 self.epw,
                 3.8,
-                ln[:110],
+                _courier_safe(ln, 110),
                 new_x=XPos.LMARGIN,
                 new_y=YPos.NEXT,
             )
@@ -486,7 +491,7 @@ def build_pdf() -> Path:
     pdf.p("Últimas entradas --oneline (truncado a 16). Actualizar regenerando el PDF.")
     pdf.set_font("Courier", "", 7)
     for ln in log_lines[:16]:
-        pdf.cell(0, 3.6, ln[:118], new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+        pdf.cell(0, 3.6, _courier_safe(ln, 118), new_x=XPos.LMARGIN, new_y=YPos.NEXT)
     pdf.ln(2)
     pdf.set_font("GanoAudit", "", 10)
     pdf.bullet("Remoto GitHub: Gano-digital/Pilot (integración CI, Copilot).")
@@ -681,7 +686,36 @@ def build_pdf() -> Path:
         pdf.bullet(t)
 
     pdf.add_page()
-    pdf.h1("12. Apéndice — referencias de archivo")
+    pdf.h1("12. Estado operativo actual (sincronización abril 2026)")
+    pdf.p(
+        "Instantánea al generar este PDF. Validar Actions y Security en github.com/Gano-digital/Pilot si se requiere precisión contractual."
+    )
+    pdf.h2("12.1 Integración código ↔ servidor")
+    for t in [
+        "Workflow 04 Deploy y 05 Verificar parches requieren SSH válido (secrets SSH, SERVER_HOST, SERVER_USER, DEPLOY_PATH). "
+        "Si el job falla en «Probar SSH» con publickey, no hay rsync: la producción puede quedar desalineada respecto a main.",
+        "Archivos que 05 compara por MD5: gano-security.php, gano-seo.php, gano-child/functions.php, gano-chat.js, style.css. "
+        "El deploy 04 también envía gano-agent-core.php, child theme completo y plugins gano-* existentes en repo.",
+        "Eliminación de wp-file-manager: workflow 12 (mismos secrets) o manual en wp-admin + SFTP.",
+    ]:
+        pdf.bullet(t)
+    pdf.h2("12.2 Repositorio y toolchain (abr 2026)")
+    for t in [
+        "Dependabot (árbol .gsd/sdk): transitivas hono / @hono/node-server / @anthropic-ai/sdk cerradas con overrides en package.json; npm audit → 0 en ese paquete.",
+        "Plan vitrina homepage: checklist Fase 1 en memory/ops/homepage-vitrina-launch-plan-2026-04.md; copy en memory/content/homepage-copy-2026-04.md.",
+        "Handoff SSH/Deploy/tokens: memory/claude/2026-04-08-reporte-handoff-ssh-deploy-tokens.md.",
+    ]:
+        pdf.bullet(t)
+    pdf.h2("12.3 Pendientes de activación (panel, no solo git)")
+    for t in [
+        "Gano SEO, Google Search Console, Rank Math (TASKS.md Active).",
+        "Elementor: Lorem fuera, menú primary, CTAs alineados a RCC/pfids reales.",
+        "Fase 4: catálogo RCC, prueba checkout marca blanca, soporte cliente según roadmap.",
+    ]:
+        pdf.bullet(t)
+
+    pdf.add_page()
+    pdf.h1("13. Apéndice — referencias de archivo")
     pdf.p(
         "TASKS.md; CLAUDE.md; memory/claude/README.md; memory/sessions/2026-04-03-consolidacion-prs-copilot.md; "
         ".github/DEV-COORDINATION.md; .github/workflows/README.md; .github/MERGE-PLAYBOOK.md; "
