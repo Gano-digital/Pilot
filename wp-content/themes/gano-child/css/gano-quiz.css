@@ -12,7 +12,7 @@
 }
 
 #gano-quiz-header h2 {
-    color: var(--gano-chat-gold, #D4AF37);
+    color: var(--gano-gold, #D4AF37);
     margin-top: 0;
     font-size: 1.8rem;
     text-transform: uppercase;

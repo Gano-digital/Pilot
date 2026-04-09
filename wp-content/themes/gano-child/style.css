@@ -39,6 +39,11 @@ Tags:         hosting, digital-services, colombia
     --gano-orange-dark:  #E55520;
     --gano-orange-light: #FFF0EB;
 
+    /* Oro */
+    --gano-gold:        #D4AF37;
+    --gano-gold-soft:   rgba(212, 175, 55, 0.10);
+    --gano-gold-glow:   rgba(212, 175, 55, 0.20); /* Sombra hover cards premium */
+
     /* Neutrales */
     --gano-dark:         #0F1923;   /* Títulos principales */
     --gano-gray-900:     #1A2535;

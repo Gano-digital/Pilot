@@ -1,17 +1,19 @@
 /* Gano Premium Custom Cursor - Styles */
 
-body, a, button, [role="button"], label, select {
-    cursor: none !important; /* Hide default cursor */
-}
+@media (pointer: fine) {
+    body, a, button, [role="button"], label, select {
+        cursor: none !important; /* Hide default cursor */
+    }
 
-.gano-cursor-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 999999;
+    .gano-cursor-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 999999;
+    }
 }
 
 #gano-cursor-dot {

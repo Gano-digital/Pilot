@@ -319,11 +319,12 @@ add_action( 'send_headers', function() {
         //
         $csp = implode( '; ', [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com https://www.googletagmanager.com https://ajax.googleapis.com",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com https://www.googletagmanager.com https://ajax.googleapis.com https://cdnjs.cloudflare.com",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' data: https://fonts.gstatic.com",
             "img-src 'self' data: https:",
-            "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com",
+            "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://api.godaddy.com https://myh.godaddy.com",
+            "frame-src 'self' https://reseller.godaddy.com https://www.godaddy.com",
             "upgrade-insecure-requests",
             "report-uri /wp-json/gano/v1/csp-report",
         ] );
@@ -343,7 +344,7 @@ add_action( 'send_headers', function() {
         header( 'Referrer-Policy: strict-origin-when-cross-origin' );
 
         // Permissions Policy — desactivar features no usadas por el sitio
-        header( 'Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()' );
+        header( 'Permissions-Policy: camera=(), microphone=(), geolocation=()' );
     }
 } );
 
