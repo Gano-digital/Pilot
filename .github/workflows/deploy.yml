@@ -90,6 +90,7 @@ jobs:
         run: |
           set -euo pipefail
           DEPLOY="${{ secrets.DEPLOY_PATH }}"
+          mkdir -p "$DEPLOY/wp-content/themes"
           rsync -av --delete \
             --exclude='.git' \
             --exclude='*.map' \
@@ -101,6 +102,7 @@ jobs:
         run: |
           set -euo pipefail
           DEPLOY="${{ secrets.DEPLOY_PATH }}"
+          mkdir -p "$DEPLOY/wp-content/mu-plugins"
           for f in \
             wp-content/mu-plugins/gano-security.php \
             wp-content/mu-plugins/gano-seo.php \
@@ -112,6 +114,7 @@ jobs:
         run: |
           set -euo pipefail
           DEPLOY="${{ secrets.DEPLOY_PATH }}"
+          mkdir -p "$DEPLOY/wp-content/plugins"
           for d in wp-content/plugins/gano-*; do
             [ -d "$d" ] || continue
             name=$(basename "$d")
