@@ -1,5 +1,5 @@
-# UI Actions: 04 · Deploy · Producción (rsync)
-name: "04 · Deploy · Producción (rsync)"
+# UI Actions: 04 · Deploy · Producción (webhook HTTPS)
+name: "04 · Deploy · Producción (webhook HTTPS)"
 
 on:
   push:
@@ -29,11 +29,11 @@ concurrency:
 jobs:
   # ──────────────────────────────────────────────────────────────────────────
   # JOB 1: Security Scan — No credentials in code
-  # Corre en self-hosted runner (servidor GoDaddy) — sin consumir minutos GitHub.
+  # Corre en ubuntu-latest (repo public = minutos gratis).
   # ──────────────────────────────────────────────────────────────────────────
   security-check:
     name: 🔐 Security Scan
-    runs-on: [self-hosted, gano-production]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
 
@@ -64,18 +64,21 @@ jobs:
           echo "✅ Sin credenciales expuestas (paths Gano)."
 
   # ──────────────────────────────────────────────────────────────────────────
-  # JOB 2: Deploy Theme + Plugins — rsync local en el servidor
+  # JOB 2: Deploy Theme + Plugins — Webhook HTTPS (receive.php)
   #
-  # El self-hosted runner corre EN el servidor GoDaddy:
-  # - No SSH externo (el runner ya está en la máquina).
-  # - No webhook — copia de archivos directa con rsync.
-  # - Sin consumir minutos de GitHub Actions.
+  # Genera ZIP de archivos Gano (tema, plugins, MU-plugins, .htaccess)
+  # y lo envía a https://gano.digital/wp-content/gano-deploy/receive.php
+  # con firma HMAC-SHA256.
   #
-  # Runner: gano-godaddy-server (~/github-runner) — cron restart cada 5 min.
+  # Ventajas:
+  # - Sin SSH externo (HTTPS POST)
+  # - Sin minutos GitHub (repo public)
+  # - Sin runner self-hosted en producción
+  # - Fiable y reversible
   # ──────────────────────────────────────────────────────────────────────────
   deploy:
     name: 🚀 Deploy to ${{ github.event.inputs.environment || 'production' }}
-    runs-on: [self-hosted, gano-production]
+    runs-on: ubuntu-latest
     needs: security-check
     environment:
       name: Production
@@ -86,53 +89,75 @@ jobs:
         with:
           submodules: false
 
-      - name: 📦 Deploy Child Theme
+      - name: 📦 Prepare deployment ZIP
         run: |
           set -euo pipefail
-          DEPLOY="${{ secrets.DEPLOY_PATH }}"
-          mkdir -p "$DEPLOY/wp-content/themes"
-          rsync -av --delete \
-            --exclude='.git' \
-            --exclude='*.map' \
-            wp-content/themes/gano-child/ \
-            "$DEPLOY/wp-content/themes/gano-child/"
-          echo "✅ gano-child sincronizado"
 
-      - name: 📦 Deploy MU Plugins
-        run: |
-          set -euo pipefail
-          DEPLOY="${{ secrets.DEPLOY_PATH }}"
-          mkdir -p "$DEPLOY/wp-content/mu-plugins"
-          for f in \
-            wp-content/mu-plugins/gano-security.php \
-            wp-content/mu-plugins/gano-seo.php \
-            wp-content/mu-plugins/gano-agent-core.php; do
-            [ -f "$f" ] && rsync -av "$f" "$DEPLOY/wp-content/mu-plugins/" && echo "✅ $f"
+          # Create temporary directory
+          TMPDIR=$(mktemp -d)
+          trap "rm -rf $TMPDIR" EXIT
+
+          # Copy files preserving structure
+          mkdir -p "$TMPDIR/wp-content/themes"
+          mkdir -p "$TMPDIR/wp-content/plugins"
+          mkdir -p "$TMPDIR/wp-content/mu-plugins"
+
+          # Copy theme
+          cp -r wp-content/themes/gano-child "$TMPDIR/wp-content/themes/"
+
+          # Copy MU plugins
+          cp wp-content/mu-plugins/gano-*.php "$TMPDIR/wp-content/mu-plugins/" 2>/dev/null || true
+
+          # Copy custom Gano plugins
+          for plugin in wp-content/plugins/gano-*; do
+            [ -d "$plugin" ] && cp -r "$plugin" "$TMPDIR/wp-content/plugins/"
           done
 
-      - name: 📦 Deploy Custom Plugins
+          # Copy .htaccess
+          [ -f .htaccess ] && cp .htaccess "$TMPDIR/"
+
+          # Create ZIP
+          cd "$TMPDIR"
+          zip -r "$GITHUB_WORKSPACE/deploy-${{ github.sha }}.zip" . -q
+          ls -lh "$GITHUB_WORKSPACE/deploy-${{ github.sha }}.zip"
+
+      - name: 🔐 Sign and send webhook
+        env:
+          WEBHOOK_URL: ${{ secrets.GANO_DEPLOY_HOOK_URL }}
+          WEBHOOK_SECRET: ${{ secrets.GANO_DEPLOY_HOOK_SECRET }}
         run: |
           set -euo pipefail
-          DEPLOY="${{ secrets.DEPLOY_PATH }}"
-          mkdir -p "$DEPLOY/wp-content/plugins"
-          for d in wp-content/plugins/gano-*; do
-            [ -d "$d" ] || continue
-            name=$(basename "$d")
-            rsync -av --delete --exclude='.git' \
-              "$d/" "$DEPLOY/wp-content/plugins/$name/"
-            echo "✅ $name"
-          done
 
-      - name: 🔄 Flush WordPress Cache
-        run: |
-          wp cache flush --allow-root --path="${{ secrets.DEPLOY_PATH }}" 2>/dev/null || true
-          echo "✅ Cache flushed"
+          ZIP_FILE="deploy-${{ github.sha }}.zip"
+
+          # Compute HMAC-SHA256 signature
+          SIGNATURE=$(openssl dgst -sha256 -hmac "$WEBHOOK_SECRET" -binary "$ZIP_FILE" | xxd -p -c256)
+          SIGNATURE="sha256=$SIGNATURE"
+
+          echo "📤 Sending to webhook..."
+          HTTP_STATUS=$(curl -s -w "%{http_code}" -o /tmp/webhook_response.json \
+            -X POST \
+            -H "X-Gano-Signature: $SIGNATURE" \
+            -H "Content-Type: application/zip" \
+            --data-binary @"$ZIP_FILE" \
+            "$WEBHOOK_URL")
+
+          echo "Response ($HTTP_STATUS):"
+          cat /tmp/webhook_response.json | jq . || cat /tmp/webhook_response.json
+
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
+            echo "✅ Webhook accepted"
+          else
+            echo "❌ Webhook failed (HTTP $HTTP_STATUS)"
+            exit 1
+          fi
 
       - name: ✅ Verify Deployment
         run: |
           set -euo pipefail
           for i in 1 2 3 4 5; do
-            HTTP=$(curl -sS -o /dev/null -w "%{http_code}" -A "GanoVerify/1.0" \
+            HTTP=$(curl -sS -o /dev/null -w "%{http_code}" \
+              -A "Mozilla/5.0 (Gano Deploy Verify)" \
               --max-time 20 https://gano.digital || echo "000")
             if [ "$HTTP" -ge 200 ] && [ "$HTTP" -lt 400 ]; then
               echo "✅ Sitio respondiendo: HTTP $HTTP"
@@ -148,7 +173,8 @@ jobs:
         if: always()
         run: |
           echo "## 🚀 Deployment Report" >> $GITHUB_STEP_SUMMARY
-          echo "- **Runner**: gano-godaddy-server (self-hosted)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Method**: Webhook HTTPS (receive.php)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Runner**: ubuntu-latest" >> $GITHUB_STEP_SUMMARY
           echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Timestamp**: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_STEP_SUMMARY
