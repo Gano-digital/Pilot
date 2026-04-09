@@ -84,7 +84,8 @@ if ($open_result !== true) {
 
 // ── 7. Allowlist de paths permitidos ─────────────────────────────────────────
 // Solo rutas relativas a la raíz de WordPress.
-$deploy_root = dirname(__DIR__, 2);  // → /home/f1rml03th382/public_html/gano.digital
+// Raíz WP: calculada en runtime (no incluir rutas absolutas reales en el repo).
+$deploy_root = dirname(__DIR__, 2);
 $allowed_prefixes = [
     'wp-content/themes/gano-child/',
     'wp-content/mu-plugins/gano-',

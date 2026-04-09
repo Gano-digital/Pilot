@@ -9,6 +9,8 @@ _Última actualización: Abril 2026_
 
 **Estado abril 2026:** la cola de **PRs Copilot** se consolidó en `main` (ver [`memory/sessions/2026-04-03-consolidacion-prs-copilot.md`](memory/sessions/2026-04-03-consolidacion-prs-copilot.md)). **Ya no hace falta** ejecutar **10 · Orquestar oleadas** para fusionar esa oleada.
 
+**Repo `Pilot` (2026-04-10):** **público** — revisar **runners self-hosted** vinculados (no ejecutar prod en mismo host que acepta jobs de forks sin aislamiento); ver `memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md` §5 y `.cursor/memory/activeContext.md`.
+
 **Siguiente foco:** secrets → **04 · Deploy** / **05 · Verificar parches** → **12 · Eliminar wp-file-manager** (si aún está en servidor) → RCC / Elementor según `TASKS.md` abajo. Guía de nombres en Actions: [`.github/workflows/README.md`](.github/workflows/README.md).
 
 **Plan vitrina (homepage + comercio + roles de agentes):** [`memory/ops/homepage-vitrina-launch-plan-2026-04.md`](memory/ops/homepage-vitrina-launch-plan-2026-04.md) — fases 0–4, RACI, checklist Fase 1 (wp-admin), procesos y enlaces canónicos. Complementa § Active, Pending y Fase 4 sin sustituirlos.
@@ -18,6 +20,7 @@ _Última actualización: Abril 2026_
 ### Trabajo en paralelo (no sustituye Active ni Fase 4)
 
 - **Investigación SOTA + flujo + carriles A/B/C:** [`memory/research/sota-workflow-ops-parallel-2026-04.md`](memory/research/sota-workflow-ops-parallel-2026-04.md) — colisión con progreso real, cambios P0–P2 al workflow, checklist para ir tachando **sin pausar** deploy, contenido ni Reseller. Si un ítem choca con un P0 de esta tabla, gana la tabla de abajo.
+- **SOTA CI / cadena de suministro / runners (abr 2026):** [`memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md`](memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md) — OWASP A03:2025, uso seguro de Actions, checklist vs self-hosted y minutos GitHub-hosted.
 
 ---
 

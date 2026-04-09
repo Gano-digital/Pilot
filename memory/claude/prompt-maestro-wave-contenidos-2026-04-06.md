@@ -17,8 +17,8 @@ No inventes datos: si falta información marcada como `[PENDIENTE]`, deja el pla
 
 **Sitio:** gano.digital — hosting WordPress para Colombia, modelo Reseller GoDaddy.
 **Stack:** WordPress + Elementor + WooCommerce + Hello Elementor → gano-child.
-**Servidor producción:** 72.167.102.145 · cPanel: f1rml03th382
-**Ruta WP:** `/home/f1rml03th382/public_html/gano.digital`
+**Servidor producción:** host y usuario **solo en panel GoDaddy / variables locales** (no commitear valores reales).
+**Ruta WP:** `/home/<USUARIO_CPANEL>/public_html/<sitio>` (ajustar según hosting).
 **DB:** `gano_staging` · prefijo: `wp_6ce773b45f_`
 **Repo:** rama activa `claude/contenidos-web-2026-04-06` → PR #114.
 **Branch de trabajo:** crea `fix/prod-wave-YYYY-MM-DD` desde `claude/contenidos-web-2026-04-06` para tus cambios.
@@ -38,7 +38,7 @@ Ejecutar **en este orden** vía wp-cli sobre staging:
 
 ### TAREA A — Issue #116: Unpublish Coming Soon (BLOQUEA todo lo demás)
 ```bash
-wp --path=/home/f1rml03th382/public_html/gano.digital \
+wp --path=/ruta/absoluta/a/wordpress \
    post update 1698 --post_status=draft
 # Verificar:
 wp --path=... post get 1698 --field=post_status
@@ -67,7 +67,7 @@ wp --path=... menu location assign <menu-slug> header
 ### TAREA C — Issue #117: Assets faltantes
 ```bash
 # Verificar si existen físicamente
-ls /home/f1rml03th382/public_html/gano.digital/wp-content/uploads/ | grep -E "hero_digital_garden|decorative_abstract_seed"
+ls /ruta/a/wp-content/uploads/ | grep -E "hero_digital_garden|decorative_abstract_seed"
 
 # Si existen → importar como attachment
 wp --path=... media import /home/.../uploads/hero_digital_garden.png --title="Hero Digital Garden"

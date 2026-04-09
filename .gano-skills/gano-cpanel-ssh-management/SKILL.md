@@ -4,11 +4,13 @@
 **Estado:** 🟡 PARTIALLY OPERATIONAL (SSH keys need sync)
 **Especialización:** Configuración servidor GoDaddy, dominios, SSL, deployments, backups
 
+`<IP_SERVIDOR>` y `<USUARIO_CPANEL>` son placeholders: los valores reales viven en el panel GoDaddy, GitHub Secrets o variables locales — **no** commitear IP/usuario reales en ramas públicas.
+
 ---
 
 ## 🎯 Propósito
 
-Automatizar y documentar la administración completa del servidor GoDaddy (72.167.102.145) donde corre gano.digital:
+Automatizar y documentar la administración completa del servidor GoDaddy (<IP_SERVIDOR>) donde corre gano.digital:
 
 - ✅ Configuración de dominios (Addon Domain, parqueo, redirecciones)
 - ✅ Gestión SSL/TLS y certificados
@@ -25,8 +27,8 @@ Automatizar y documentar la administración completa del servidor GoDaddy (72.16
 | Secret Name | Valor | Tipo |
 |------------|-------|------|
 | `SSH_PRIVATE_KEY` | ~/.ssh/id_rsa (hardened permisos) | SSH Key |
-| `SERVER_HOST` | 72.167.102.145 | IP |
-| `SERVER_USER` | f1rml03th382 | Usuario cPanel/SSH |
+| `SERVER_HOST` | <IP_SERVIDOR> | IP |
+| `SERVER_USER` | <USUARIO_CPANEL> | Usuario cPanel/SSH |
 | `DEPLOY_PATH` | /public_html/gano.digital | Ruta WordPress |
 | `CPANEL_USER` | [Diego proporciona] | cPanel account |
 | `CPANEL_TOKEN` | [Diego proporciona] | cPanel API token |
@@ -44,14 +46,14 @@ Automatizar y documentar la administración completa del servidor GoDaddy (72.16
 
 **Opción A: vía SSH (Recomendado)**
 ```bash
-ssh f1rml03th382@72.167.102.145 << 'EOF'
+ssh <USUARIO_CPANEL>@<IP_SERVIDOR> << 'EOF'
   # Verificar estado actual
   grep "gano.digital" /etc/userdomains
 
   # Editar archivo
   sudo nano /etc/userdomains
-  # BUSCAR: gano.digital: f1rml03th382
-  # CAMBIAR A: gano.digital: f1rml03th382:/public_html/gano.digital
+  # BUSCAR: gano.digital: <USUARIO_CPANEL>
+  # CAMBIAR A: gano.digital: <USUARIO_CPANEL>:/public_html/gano.digital
 
   # Reconstruir configuración
   /scripts/builddomainconf
@@ -66,7 +68,7 @@ EOF
 
 **Opción B: vía cPanel API (If documented)**
 ```bash
-# POST a: https://72.167.102.145:2083/json-api/cpanel
+# POST a: https://<IP_SERVIDOR>:2083/json-api/cpanel
 # Endpoint: ModifyAddonDomain
 # Params: domain=gano.digital, dir=/public_html/gano.digital
 ```
@@ -81,8 +83,8 @@ Antes de cada push a `main`:
 #!/bin/bash
 # Script: pre-deploy-validation.sh
 
-SERVER_HOST="72.167.102.145"
-SERVER_USER="f1rml03th382"
+SERVER_HOST="<IP_SERVIDOR>"
+SERVER_USER="<USUARIO_CPANEL>"
 DEPLOY_PATH="/public_html/gano.digital"
 
 echo "[1] Verificando conectividad SSH..."
@@ -122,7 +124,7 @@ bash .gano-skills/gano-cpanel-ssh-management/pre-deploy-validation.sh
 # Cron: 0 2 * * 0 (Domingos 02:00 UTC)
 
 BACKUP_DATE=$(date +%Y%m%d_%H%M%S)
-BACKUP_DIR="/home/f1rml03th382/backups"
+BACKUP_DIR="/home/<USUARIO_CPANEL>/backups"
 DEPLOY_PATH="/public_html/gano.digital"
 
 echo "⏳ Iniciando backup $BACKUP_DATE..."
@@ -159,7 +161,7 @@ Dominios que monitorear:
 
 **If manual renewal needed:**
 ```bash
-ssh f1rml03th382@72.167.102.145 << 'EOF'
+ssh <USUARIO_CPANEL>@<IP_SERVIDOR> << 'EOF'
   /usr/local/cpanel/bin/ssl_install --domain=gano.digital \
     --cert-file=/etc/ssl/certs/gano.digital.crt \
     --key-file=/etc/ssl/private/gano.digital.key \
@@ -177,7 +179,7 @@ EOF
 #!/bin/bash
 # Ejecutar: daily (cron 0 6 * * *)
 
-SERVER="f1rml03th382@72.167.102.145"
+SERVER="<USUARIO_CPANEL>@<IP_SERVIDOR>"
 
 echo "=== CPU Usage ==="
 ssh "$SERVER" "top -bn1 | grep 'Cpu(s)' | sed 's/.*, *\([0-9.]*\)%* id.*/\1/' | awk '{print 100 - $1}'"
@@ -226,8 +228,8 @@ icacls "$env:USERPROFILE\.ssh\id_ed25519" /inheritance:r /grant:r "$env:USERNAME
 ### SSH Config Optimizado (~/.ssh/config)
 ```
 Host gano-godaddy
-    HostName 72.167.102.145
-    User f1rml03th382
+    HostName <IP_SERVIDOR>
+    User <USUARIO_CPANEL>
     Port 22
     IdentityFile ~/.ssh/id_ed25519
     ServerAliveInterval 60
@@ -252,7 +254,7 @@ Host gano-godaddy
       "blockers": ["gano.digital deploy", "DNS validation"],
       "assignee": "diego",
       "commands": [
-        "Validar SSH access: ssh f1rml03th382@72.167.102.145",
+        "Validar SSH access: ssh <USUARIO_CPANEL>@<IP_SERVIDOR>",
         "Ejecutar: grep gano.digital /etc/userdomains",
         "Editar /etc/userdomains (ruta correcta)",
         "/scripts/builddomainconf",
@@ -276,7 +278,7 @@ Host gano-godaddy
       "status": "ready",
       "commands": [
         "SSH al servidor",
-        "mkdir -p /home/f1rml03th382/backups",
+        "mkdir -p /home/<USUARIO_CPANEL>/backups",
         "crontab -e → añadir línea backup",
         "Validar: crontab -l"
       ]

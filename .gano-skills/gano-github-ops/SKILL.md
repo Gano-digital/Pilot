@@ -38,6 +38,12 @@ gh run list --repo Gano-digital/Pilot --limit 15
 - No pegar **SSH keys** ni tokens en issues.
 - No desactivar el ruleset sin consenso.
 
+## Runners self-hosted + minutos (abr 2026)
+
+- Los jobs en **GitHub-hosted** (`ubuntu-latest`) **sí** consumen minutos del plan en repos **privados/internal**.
+- Los jobs en **self-hosted** (p. ej. **04 Deploy** con etiqueta `gano-production`) **no** sustituyen la necesidad de **hardening**: el host debe tratarse como producción; ver [`memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md`](../../memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md).
+- **Visibilidad del repo:** *Public* cambia política de minutos y exposición del código; *Internal* no otorga minutos ilimitados como público — decisión de org.
+
 ## Copilot coding agent — modelos (GitHub.com)
 
 - No se configuran en YAML del repo. **Org → Copilot → Models** (owner) + **model picker** al asignar Copilot al issue.
@@ -45,6 +51,7 @@ gh run list --repo Gano-digital/Pilot --limit 15
 
 ## Referencias en el repo
 
+- `memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md` — SOTA CI/supply chain y checklist
 - `memory/ops/github-github-ops-sota-2026-04.md`
 - `.github/workflows/README.md`
 - `.github/COPILOT-AGENT-QUEUE.md`

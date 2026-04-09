@@ -1,24 +1,52 @@
-## Resumen
+## 📝 Descripción
 
-Describe el cambio en una o dos frases.
+<!-- Una o dos frases: qué cambio hiciste y por qué -->
 
-## Área
+## 🎯 Tipo de cambio
 
-- [ ] Tema `gano-child`
-- [ ] MU-plugins / seguridad
-- [ ] Plugins `gano-*`
-- [ ] CI / GitHub
-- [ ] Contenido / Elementor (nota: mucho vive en BD; documenta IDs o export)
+- [ ] 🐛 Bug fix (cambio no-breaking que arregla un issue)
+- [ ] ✨ Nuevo feature (funcionalidad nueva)
+- [ ] 📘 Refactor (cambio de código sin alterar comportamiento)
+- [ ] 💅 Estilo/CSS (cambios visuales, tokens, layout)
+- [ ] 📚 Documentación
+- [ ] ⚡ Performance
+- [ ] 🔒 Seguridad
 
-## Checklist
+## 🔍 Cambios principales
 
-- [ ] No se añaden credenciales, tokens ni rutas con usuario de hosting en claro.
-- [ ] Si toca checkout/Reseller o plugins de pago: revisado según `TASKS.md` y sin secretos en claro.
-- [ ] `php -l` local en archivos tocados (o confío en CI).
-- [ ] Si el cambio ya está en servidor o diverge de prod: actualicé [`DEV-COORDINATION.md`](.github/DEV-COORDINATION.md) / `TASKS.md` o abrí issue **[sync]**.
+<!-- Lista los cambios de manera clara -->
+- Cambio 1: Qué archivo y por qué
+- Cambio 2: ...
 
-## Notas para Copilot / revisores
+### Archivos modificados
+```
+wp-content/themes/gano-child/style.css       (líneas añadidas/eliminadas)
+```
 
-Contexto extra, URLs de preview o capturas.
+## ✅ Checklist
 
-Si el PR lo abrió **Copilot coding agent**, enlaza el **issue** origen y confirma que pasan **PHP lint**, **TruffleHog** y **CodeQL** (ruleset / code quality).
+### Código
+- [ ] Mi código sigue la guía de estilo del proyecto
+- [ ] NO hardcodeé colores/espacios/fuentes (usé tokens de `--gano-*`)
+- [ ] NO commiteé `wp-config.php`, `.env`, o secretos
+- [ ] Si añadí token CSS nuevo, lo justifiqué
+
+### Testing
+- [ ] Probé localmente en Laragon
+- [ ] Verificé en Chrome DevTools
+- [ ] Responsive: mobile + desktop
+- [ ] Sin errores de consola
+
+## 🚀 Cómo reviewear
+
+1. Clonar rama: `git checkout arcana/tu-rama`
+2. [Pasos específicos de testing]
+3. Verificar en vivo: [URL de staging o local]
+
+## 🔗 Issues relacionados
+
+Closes #[number] (si aplica)
+
+---
+
+**Contribuidor:** @sergioeancontact-alt

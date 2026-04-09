@@ -8,7 +8,7 @@ description: >
   "label-bootstrap", "assign copilot", "offloading issues", "PRs del agente", "orchestrate waves".
 ---
 
-# Gano — GitHub, Actions y Copilot coding agent (actualizado **2026-04**)
+# Gano — GitHub, Actions y Copilot coding agent (actualizado **2026-04-09**)
 
 **Playbook asistentes:** [`memory/ops/agent-playbook-asistentes-2026-04.md`](../../memory/ops/agent-playbook-asistentes-2026-04.md)
 
@@ -67,6 +67,13 @@ description: >
 - **Actions no ejecuta** al agente: **crea issues**. El usuario asigna **GitHub Copilot** (sidebar o bulk).
 - Issues **100 % wp-admin/Elementor** suelen cerrarse con **checklist** en el issue.
 - **No** commitear PAT en URL de remotes; rotar tokens tras workflows sensibles.
+
+## SOTA abr 2026 — CI, runners self-hosted y cadena de suministro
+
+- **Documento de investigación:** [`memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md`](../../memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md) — OWASP **A03:2025** (supply chain), [uso seguro de Actions](https://docs.github.com/en/actions/reference/security/secure-use), checklist P0/P1.
+- **Minutos GitHub-hosted:** jobs en `ubuntu-latest` consumen cuota org; **04 Deploy** en **self-hosted** evita ese coste cuando el runner está en línea.
+- **Riesgo:** no usar el mismo runner self-hosted para repos **públicos** o PRs no confiables junto al deploy a producción (código arbitrario en el host).
+- **Antes de hacer el repo público:** escaneo de **historial** (TruffleHog/gitleaks) + rotación de secretos tocados.
 
 ## Indicadores (actualizar antes de citar números)
 

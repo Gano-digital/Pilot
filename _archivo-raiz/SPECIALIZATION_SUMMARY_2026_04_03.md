@@ -44,7 +44,7 @@
 ✅ Validar: Lighthouse, performance metrics
 
 ### SSH/cPanel Administration
-✅ Acceder servidor vía SSH (credenciales: f1rml03th382@72.167.102.145)
+✅ Acceder servidor vía SSH (credenciales: <USUARIO_CPANEL>@<IP_SERVIDOR>)
 ✅ Corregir Addon Domain routing
 ✅ Monitorear salud servidor (CPU, memoria, MySQL)
 ✅ Gestionar backups automatizados
@@ -112,7 +112,7 @@ Claude:
 Diego: "Valida tu SSH access y corrige el Addon Domain"
 
 Claude:
-1. Confirma SSH credenciales (f1rml03th382)
+1. Confirma SSH credenciales (<USUARIO_CPANEL>)
 2. Ejecuta SKILL.md (gano-cpanel-ssh-management, WF-1)
 3. Valida: grep gano.digital /etc/userdomains
 4. Edita: /etc/userdomains (ruta correcta)
@@ -138,7 +138,7 @@ Claude:
 ## 🔐 Critical Path (Próximas 72 Horas)
 
 ### Hoy (04-03, Continuación)
-- ⏳ **Diego:** Valida SSH access: `ssh f1rml03th382@72.167.102.145`
+- ⏳ **Diego:** Valida SSH access: `ssh <USUARIO_CPANEL>@<IP_SERVIDOR>`
 - ⏳ **Diego:** Ejecuta corrección Addon Domain (opción B, línea por línea)
 - ⏳ **Diego:** Proporciona confirmación: "Addon Domain ✅ y DNS propagado"
 

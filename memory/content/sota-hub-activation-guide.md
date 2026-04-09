@@ -57,14 +57,14 @@ El plugin `gano-content-importer` crea automáticamente:
 ### 1. Activar el plugin
 
 ```bash
-wp --path=/home/f1rml03th382/public_html/gano.digital \
+wp --path=/ruta/absoluta/a/la/raiz/de/wordpress \
    plugin activate gano-content-importer
 ```
 
 ### 2. Verificar las 20 páginas SOTA creadas
 
 ```bash
-wp --path=/home/f1rml03th382/public_html/gano.digital \
+wp --path=/ruta/absoluta/a/la/raiz/de/wordpress \
    post list \
    --post_type=page \
    --post_status=draft \
@@ -78,7 +78,7 @@ wp --path=/home/f1rml03th382/public_html/gano.digital \
 ### 3. Verificar template de páginas SOTA
 
 ```bash
-wp --path=/home/f1rml03th382/public_html/gano.digital \
+wp --path=/ruta/absoluta/a/la/raiz/de/wordpress \
    post meta get <ID> _wp_page_template
 # Resultado esperado: elementor_canvas
 ```
@@ -86,7 +86,7 @@ wp --path=/home/f1rml03th382/public_html/gano.digital \
 ### 4. Verificar página hub
 
 ```bash
-wp --path=/home/f1rml03th382/public_html/gano.digital \
+wp --path=/ruta/absoluta/a/la/raiz/de/wordpress \
    post list \
    --post_type=page \
    --post_status=draft \

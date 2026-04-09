@@ -1,5 +1,24 @@
 # Progress Tracker
 
+## 2026-04-10 — Repo Pilot **público** + alerta runner self-hosted
+
+### Hecho (verificado)
+
+- [x] `Gano-digital/Pilot` — visibilidad **PUBLIC** (`gh repo view`).
+- [ ] **P0 seguridad:** runner **`gano-godaddy-server`** (id **21**, `gano-production`) sigue **online** en el repo público — desregistrar o aislar **urgente** (ver [`sota-investigacion-2026-04-09-ci-supply-chain-agents.md`](../../memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md) §5).
+
+---
+
+## 2026-04-09 — Investigación SOTA (CI, supply chain, runners)
+
+### Completado
+
+- [x] [`memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md`](../../memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md) — síntesis OWASP A03:2025, GitHub secure use, checklist P0–P2 vs Pilot (self-hosted, minutos, webhook).
+- [x] Skills [`.gano-skills/gano-github-copilot-orchestration/SKILL.md`](../../.gano-skills/gano-github-copilot-orchestration/SKILL.md) y [`.gano-skills/gano-github-ops/SKILL.md`](../../.gano-skills/gano-github-ops/SKILL.md) — sección SOTA + runners/minutos.
+- [x] `techContext.md` — decisión arquitectónica #9 (SOTA CI/supply chain).
+
+---
+
 ## 2026-04-08 — Dependabot `.gsd/sdk` + checklist vitrina Fase 1
 
 ### Completado
@@ -153,7 +172,7 @@
 ### Hallazgos
 
 - [ ] SSH a GitHub aún no autentica con la clave local actual.
-- [ ] SSH al servidor `72.167.102.145` aún no autentica con las claves locales actuales.
+- [ ] SSH al servidor de producción aún no autentica con las claves locales actuales (host en secrets / panel).
 
 ### Estado operativo
 

@@ -67,7 +67,7 @@ Claude ejecuta: gano-blender-to-website-pipeline/SKILL.md
 ### ANTES de pedir Correcciones cPanel
 - [ ] Validar SSH:
   ```bash
-  ssh f1rml03th382@72.167.102.145
+  ssh <USUARIO_CPANEL>@<IP_SERVIDOR>
   # Debería conectar sin errores
   ```
 - [ ] Tener lista contraseña o clave SSH
@@ -123,7 +123,7 @@ DIEGO: "Claude, el Addon Domain de gano.digital está mal apuntado"
 CLAUDE:
 "Entendido. Voy a ejecutar corrección vía SSH.
 Confirmando credenciales:
-  - User: f1rml03th382@72.167.102.145
+  - User: <USUARIO_CPANEL>@<IP_SERVIDOR>
   - Key: ~/.ssh/id_rsa (hardened permisos)
 
 Iniciando... (si SSH keys están sincronizadas)
@@ -137,7 +137,7 @@ Iniciando... (si SSH keys están sincronizadas)
 ❌ NOTA: SSH keys no están en servidor aún.
    Necesito que hagas manualmente:
 
-   ssh f1rml03th382@72.167.102.145
+   ssh <USUARIO_CPANEL>@<IP_SERVIDOR>
    # Si pide password, úsala
    # Una vez dentro:
    grep gano.digital /etc/userdomains
@@ -232,7 +232,7 @@ Claude revisa 3d-assets-manifest.json, ejecuta Wave X, reporta diario.
 | Problema | Solución |
 |----------|----------|
 | "Blender no inicia" | Instalá: `scoop install blender` |
-| "SSH connection refused" | Valida: `ssh f1rml03th382@72.167.102.145` |
+| "SSH connection refused" | Valida: `ssh <USUARIO_CPANEL>@<IP_SERVIDOR>` |
 | "Asset quality baja" | Dime: "Regenerá el asset de [X] con feedback" |
 | "Timeline muy ajustado" | Prioriza: "Prefiero 3 assets bien que 5 mediocres" |
 | "No entiendo dónde está el archivo" | Preguntá: "Dónde está [asset] cuando termina?" |
@@ -279,7 +279,7 @@ Ejemplo progresión:
 
 ## 🎯 Próximos Pasos (Orden)
 
-1. **HOY:** Diego valida SSH access: `ssh f1rml03th382@72.167.102.145`
+1. **HOY:** Diego valida SSH access: `ssh <USUARIO_CPANEL>@<IP_SERVIDOR>`
 2. **HOY:** Diego me da signal: "Procede con Assets"
 3. **MAÑANA:** Wave 1 iniciada (3 iconos, 2h cada uno)
 4. **PRÓXIMA SEMANA:** 5 assets en producción

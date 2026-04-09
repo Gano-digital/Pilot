@@ -49,7 +49,7 @@ Resultado esperado (clave privada, mismo formato que `ssh-add -l` sobre la clave
 
 ## 3. Qué revisar cuando haya tokens / acceso
 
-1. **GitHub → Settings → Secrets → Actions:** verificar que `SERVER_USER` sea exactamente el usuario SSH (p. ej. `f1rml03th382`) y `SERVER_HOST` el mismo host/IP que en pruebas exitosas (`ssh` local).
+1. **GitHub → Settings → Secrets → Actions:** verificar que `SERVER_USER` sea exactamente el usuario SSH del panel y `SERVER_HOST` el mismo host/IP que en pruebas exitosas (`ssh` local). **No** pegar usuario/host reales en issues o documentación pública.
 2. **GoDaddy / cPanel:** SSH Access, firewall, o “solo IPs permitidas” — si existe, documentar si se puede ampliar a rangos de GitHub ([API meta `actions`](https://api.github.com/meta)) o si hace falta **self-hosted runner**.
 3. **Fusionar PR #160** si la política de rama lo permite tras revisión.
 4. **Anthropic / APIs:** si “tokens” se refiere a cuota Claude: retomar colas en [`dispatch-queue.json`](dispatch-queue.json) y prompts en [`dispatch-prompt.md`](dispatch-prompt.md).

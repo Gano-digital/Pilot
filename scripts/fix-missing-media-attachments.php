@@ -4,7 +4,7 @@
  *
  * Uso (wp-cli):
  *   wp eval-file scripts/fix-missing-media-attachments.php \
- *       --path=/home/f1rml03th382/public_html/gano.digital
+ *       --path=/ruta/absoluta/a/la/raiz/de/wordpress
  *
  * Qué hace:
  *   1. Busca hero_digital_garden.png y decorative_abstract_seed.png en el

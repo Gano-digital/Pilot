@@ -134,6 +134,7 @@ Copiar progreso a `.cursor/memory/progress.md` cuando se complete un bloque.
 | `.cursor/memory/deferredItems.md` | Secretos/rotación; no duplicar hallazgos aquí. |
 | `.gano-skills/gano-wp-engineering-quality/SKILL.md` | Cuando toque tests automatizados. |
 | `memory/ops/agent-playbook-asistentes-2026-04.md` | Coordinación agentes humanos. |
+| [`sota-investigacion-2026-04-09-ci-supply-chain-agents.md`](sota-investigacion-2026-04-09-ci-supply-chain-agents.md) | CI/CD, OWASP A03:2025, runners self-hosted, minutos Actions. |
 
 ---
 
@@ -142,3 +143,4 @@ Copiar progreso a `.cursor/memory/progress.md` cuando se complete un bloque.
 | Fecha | Nota |
 |-------|------|
 | 2026-04-07 | Versión inicial: SOTA, colisión, P0–P2, paralelismo, checklist. |
+| 2026-04-09 | Enlace a investigación CI/supply chain y runners (`sota-investigacion-2026-04-09-ci-supply-chain-agents.md`). |

@@ -27,6 +27,7 @@
 6. **Copilot queue** via JSON — oleadas de tareas versionadas
 7. **Tooling opcional (no runtime)** — graphify (mapa conocimiento), AO (orquestación), ML‑SSD (I+D evaluación)
 8. **Plan vitrina gano.digital** — documento canónico de fases, RACI y procesos: `memory/ops/homepage-vitrina-launch-plan-2026-04.md` (complementa `TASKS.md`; copy fuente en `memory/content/`).
+9. **SOTA CI / supply chain (abr 2026)** — OWASP A03:2025 + uso seguro de Actions y runners self-hosted; checklist en `memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md`; skills `gano-github-copilot-orchestration` y `gano-github-ops` enlazan la síntesis.
 
 ## Tooling opcional (repo)
 
@@ -37,8 +38,7 @@
 
 ## Servidor
 
-- Host: 72.167.102.145 (GoDaddy)
-- Usuario: f1rml03th382
+- Host / usuario SSH o cPanel: **solo en panel GoDaddy o variables locales** (`GANO_SSH_*` / secrets de CI); no pegar IP ni usuario real en commits públicos.
 - PHP: 8.3
 - WP-CLI: disponible
 - SSH: transporte responde, pero autenticación por clave aún no validada
@@ -47,7 +47,7 @@
 
 ## Acceso y remotos
 
-- **Único remoto activo:** `origin` → `https://github.com/Gano-digital/Pilot.git`
+- **Único remoto activo:** `origin` → `https://github.com/Gano-digital/Pilot.git` (**repositorio público** desde 2026-04-10; no asumir privacidad del código).
 - GitLab no está en uso; referencia archivada en `memory/ops/archived-gitlab-remote-2026-04.md`
 - Acceso Git verificado por HTTPS; no asumir SSH operativo hasta validar clave en GitHub y servidor.
 

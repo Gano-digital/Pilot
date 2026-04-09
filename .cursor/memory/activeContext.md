@@ -1,12 +1,12 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-08 (**#159** y **#160** en `main`; handoff Claude en [`2026-04-08-reporte-handoff-ssh-deploy-tokens.md`](../../memory/claude/2026-04-08-reporte-handoff-ssh-deploy-tokens.md); **04** deploy: huella OK, pendiente IP/`SERVER_*`; Dependabot `.gsd/sdk` resuelto con `overrides`; plan vitrina con **checklist Fase 1** en [`homepage-vitrina-launch-plan-2026-04.md`](../../memory/ops/homepage-vitrina-launch-plan-2026-04.md))_
+_Última actualización: 2026-04-10 — **`Gano-digital/Pilot` es repositorio PÚBLICO** (`gh repo view` → `visibility: PUBLIC`). **Riesgo P0:** sigue registrado runner self-hosted **`gano-godaddy-server`** (etiqueta `gano-production`, **online**) — con repo público, un workflow en PR/fork puede intentar ejecutar código en ese host; mitigar **ya** (desregistrar runner, runner aislado fuera de prod, o política estricta de Actions en forks). Ver §5–§6 en [`sota-investigacion-2026-04-09-ci-supply-chain-agents.md`](../../memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md). Plan vitrina y Fase 4 sin cambio de foco._
 
 ## Foco actual (producto y repo)
 
 - **Vitrina gano.digital:** plan por fases y roles (Diego / Cursor / Copilot / Claude) — [`memory/ops/homepage-vitrina-launch-plan-2026-04.md`](../../memory/ops/homepage-vitrina-launch-plan-2026-04.md) (checklist orden de bloques § Fase 1). Copy fuente: [`homepage-copy-2026-04.md`](../../memory/content/homepage-copy-2026-04.md). Aplicación en **Elementor = humano en wp-admin**; agentes no sustituyen el pegado en panel.
 - **Servidor / producción:** desplegar parches Fases 1–3 al hosting real, eliminar `wp-file-manager`, configurar Gano SEO / GSC / Rank Math (`TASKS.md` sección Active).
-- **GitHub `Gano-digital/Pilot`:** repositorio en `main` ya consolidado; cierre de issues cubiertos por `main`; colas opcionales (API / security guardian) sin bloquear vitrina.
+- **GitHub `Gano-digital/Pilot`:** **`main` público** — minutos Actions en runners GitHub-hosted más favorables; **no** commitear secretos; vigilar **self-hosted en prod** (ver línea de actualización arriba).
 - **Fase 4:** catálogo Reseller, mapeo CTAs en `shop-premium.php`, smoke test checkout — [`memory/commerce/rcc-pfid-checklist.md`](../../memory/commerce/rcc-pfid-checklist.md).
 - **Constellation / Battle Map:** plan de **diseño + fine tuning + fases + alineación agentes** — [`memory/constellation/BATTLE-MAP-PLAN-DISENO-FINE-TUNING-2026-04.md`](../../memory/constellation/BATTLE-MAP-PLAN-DISENO-FINE-TUNING-2026-04.md); config ejemplo JSON — [`battle-map-config.example.json`](../../memory/constellation/battle-map-config.example.json); `CONSTELACION-COSMICA.html` expone `window.__GANO_BATTLE_MAP__` (build/plan). Oleada GitHub `copilot/cx-*` sigue playbook; no duplicar PRs masivos.
 - **Investigación SOTA UX:** [`memory/research/sota-ux-rts-fps-constellation-steal-2026-04.md`](../../memory/research/sota-ux-rts-fps-constellation-steal-2026-04.md). **Inventario recursos:** [`memory/constellation/INVENTARIO-RECURSOS-DESARROLLO-2026-04.md`](../../memory/constellation/INVENTARIO-RECURSOS-DESARROLLO-2026-04.md).
@@ -40,7 +40,8 @@ _Última actualización: 2026-04-08 (**#159** y **#160** en `main`; handoff Clau
 
 ## Bloqueadores
 
-- **SSH autorización:** `origin` responde por HTTPS, pero `ssh` a `git@github.com` y al host `72.167.102.145` devuelve rechazo de clave; no asumir shell operativo hasta validar `authorized_keys` / deploy key.
+- **Runner self-hosted + repo público (P0 seguridad):** mientras `gano-godaddy-server` esté **online** y vinculado a este repo **público**, la superficie de ataque incluye **ejecución arbitraria** vía Actions si un flujo malicioso llega a colarse (forks/PR). Acción recomendada: desregistrar runner en GitHub + parar servicio en host, **o** VM/runner dedicado sin acceso a WordPress prod + “Require approval for all outside collaborators” en Actions.
+- **SSH autorización:** `origin` responde por HTTPS, pero `ssh` al servidor de producción puede devolver rechazo de clave; no asumir shell operativo hasta validar `authorized_keys` / deploy key (host/usuario en secretos, no en texto público).
 - **Brecha Git ↔ producción:** código en `main` no reflejado en gano.digital hasta deploy + acciones en panel.
 - **Ruleset GitHub (Code Quality):** algunos PRs pueden quedar “BLOCKED” aunque CI esté verde; requiere triage del hallazgo exacto en la UI de GitHub.
 
