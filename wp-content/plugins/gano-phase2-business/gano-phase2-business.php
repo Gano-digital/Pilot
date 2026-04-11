@@ -168,8 +168,14 @@ function gano_p2_activate() {
 
 // ─── HELPER: buscar ID de página por título ──────────────────────────────────
 function gano_p2_get_page_id( $title ) {
-    $page = get_page_by_title( $title, OBJECT, 'page' );
-    return $page ? (int) $page->ID : 0;
+    $found_pages = get_posts([
+        'post_type'      => 'page',
+        'title'          => $title,
+        'posts_per_page' => 1,
+        'post_status'    => 'any',
+        'fields'         => 'ids',
+    ]);
+    return !empty($found_pages) ? (int) $found_pages[0] : 0;
 }
 
 // ─── MOSTRAR RESULTADOS EN ADMIN ─────────────────────────────────────────────

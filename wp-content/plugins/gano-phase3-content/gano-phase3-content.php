@@ -166,7 +166,7 @@ function gano_p3_activate() {
         ],
         'politica-de-cookies' => [
             'title'   => 'Política de Cookies',
-            'content' => '<p>Esta política de cookies será completada antes del lanzamiento del sitio.</p>',
+            'content' => gano_p3_cookies_content(),
         ],
     ];
 
@@ -839,6 +839,108 @@ function gano_p3_privacy_content() {
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
 <p>No vendemos ni cedemos sus datos personales a terceros con fines comerciales. Podemos compartir información con proveedores de servicios tecnológicos que actúan bajo estrictas obligaciones de confidencialidad.</p>
+<!-- /wp:paragraph -->
+HTML;
+}
+
+// ─── POLÍTICA DE COOKIES ──────────────────────────────────────────────────────
+function gano_p3_cookies_content() {
+    return <<<HTML
+<!-- wp:heading {"level":1} -->
+<h1>Política de Cookies</h1>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><em>Última actualización: Marzo 2026</em></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":2} -->
+<h2>1. ¿Qué son las cookies?</h2>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Las cookies son pequeños archivos de texto que se almacenan en tu navegador cuando visitas nuestro sitio web. Estos archivos nos permiten mejorar tu experiencia, recordar tus preferencias y analizar cómo usas gano.digital.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":2} -->
+<h2>2. Tipos de cookies que utilizamos</h2>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Cookies Técnicas (Necesarias)</h3>
+<!-- /wp:heading -->
+<!-- wp:list -->
+<ul>
+  <li><strong>wordpress_logged_in:</strong> Mantiene tu sesión activa en WordPress.</li>
+  <li><strong>wordpress_sec:</strong> Token de seguridad CSRF para proteger acciones en la cuenta.</li>
+  <li><strong>woocommerce_cart_hash:</strong> Identifica tu carrito de compras en WooCommerce.</li>
+  <li><strong>woocommerce_items_in_cart:</strong> Número de artículos en tu carrito.</li>
+  <li><strong>wp_settings_time:</strong> Configuración de zona horaria del usuario.</li>
+  <li><strong>PHPSESSID:</strong> Identificador de sesión del servidor PHP.</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Cookies Analíticas (Estadísticas)</h3>
+<!-- /wp:heading -->
+<!-- wp:list -->
+<ul>
+  <li><strong>_ga, _gat, _gid:</strong> Google Analytics — rastrean sesiones, páginas visitadas y comportamiento del usuario para mejorar nuestros servicios. (Anónimamente, sin identificar datos personales).</li>
+  <li><strong>Google Ads / Remarketing:</strong> Nos permiten mostrar anuncios relevantes si visitas otros sitios web.</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Cookies de Preferencia (Funcionalidad)</h3>
+<!-- /wp:heading -->
+<!-- wp:list -->
+<ul>
+  <li><strong>gano-theme-mode:</strong> Recuerda si prefieres modo claro u oscuro.</li>
+  <li><strong>gano-lang:</strong> Idioma seleccionado (español/inglés, si aplicable).</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":2} -->
+<h2>3. ¿Cómo usamos tus datos?</h2>
+<!-- /wp:heading -->
+<!-- wp:list -->
+<ul>
+  <li><strong>Mejorar la seguridad:</strong> Prevenir fraude, ataques CSRF y acceso no autorizado.</li>
+  <li><strong>Personalizar tu experiencia:</strong> Recordar carrito, preferencias y configuraciones.</li>
+  <li><strong>Análisis y reportes:</strong> Entender cómo usas el sitio para optimizar velocidad, contenido y diseño.</li>
+  <li><strong>Cumplimiento legal:</strong> Almacenar datos requeridos por regulaciones en Colombia (DIAN, Habeas Data).</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":2} -->
+<h2>4. ¿Cómo aceptar o rechazar cookies?</h2>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>La mayoría de navegadores modernos te permiten rechazar cookies o ser notificado antes de que se instalen. Puedes cambiar esta configuración en tu navegador:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul>
+  <li><strong>Chrome:</strong> Configuración → Privacidad y seguridad → Cookies</li>
+  <li><strong>Firefox:</strong> Preferencias → Privacidad → Cookies</li>
+  <li><strong>Safari:</strong> Preferencias → Privacidad → Cookies y datos de sitios web</li>
+  <li><strong>Edge:</strong> Configuración → Privacidad y servicios → Cookies</li>
+</ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><em>Nota: Si rechazas cookies técnicas, algunos servicios del sitio (carrito, login, seguridad) pueden no funcionar correctamente.</em></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":2} -->
+<h2>5. Responsable del tratamiento y contacto</h2>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p><strong>Gano Digital SAS</strong><br />Calle 184 #18-22, Bogotá, Colombia<br />NIT: [Será completado en Ajustes Generales]<br />Email: privacidad@gano.digital<br />Teléfono: [Será completado en Ajustes Generales]</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":2} -->
+<h2>6. Cambios en esta política</h2>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Podemos actualizar esta política en cualquier momento. Te notificaremos sobre cambios significativos mediante un aviso en el sitio o por correo electrónico. Tu uso continuado del sitio implica aceptación de la política actualizada.</p>
 <!-- /wp:paragraph -->
 HTML;
 }

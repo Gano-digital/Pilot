@@ -1,7 +1,7 @@
 /* Gano Chat - Premium Glassmorphism Interface */
 :root {
-    --gano-chat-gold: #D4AF37;
-    --gano-chat-dark: #0f1115;
+    --gano-chat-gold:  var(--gano-gold);
+    --gano-chat-dark:  var(--gano-dark-bg, #0f1115);
     --gano-chat-glass: rgba(15, 17, 21, 0.85);
 }
 

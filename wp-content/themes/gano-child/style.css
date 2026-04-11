@@ -98,6 +98,12 @@ Tags:         hosting, digital-services, colombia
 
     /* Oro — disponible globalmente (ver también Phase 6) */
     --gano-gold:      #D4AF37;            /* Acento SOTA — ratio ≥ 7:1 sobre dark-bg */
+    --gano-gold-glow: rgba(212, 175, 55, 0.20); /* Brillo sutil para sombras */
+
+    /* Tokens faltantes usados con fallback en css/*.css */
+    --gano-text-primary:  #e8eaf0;
+    --gano-radius:        12px;
+    --gano-container-sm:  800px;
     --gano-gold-soft: rgba(212, 175, 55, 0.10); /* Fondo sutil tarjetas premium */
     --gano-gold-glow: rgba(212, 175, 55, 0.20); /* Sombra hover cards premium */
 

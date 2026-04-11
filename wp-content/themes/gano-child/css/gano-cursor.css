@@ -1,7 +1,10 @@
 /* Gano Premium Custom Cursor - Styles */
 
-body, a, button, [role="button"], label, select {
-    cursor: none !important; /* Hide default cursor */
+/* Solo ocultar cursor en dispositivos con puntero fino (mouse/trackpad), no en touch */
+@media (pointer: fine) {
+    body, a, button, [role="button"], label, select {
+        cursor: none !important; /* Hide default cursor */
+    }
 }
 
 .gano-cursor-wrapper {
