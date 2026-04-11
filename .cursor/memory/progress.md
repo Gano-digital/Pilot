@@ -1,5 +1,24 @@
 # Progress Tracker
 
+## 2026-04-11 — Skill mínima para Cloud agents (run/test starter)
+
+### Completado
+
+- [x] Nueva skill `cloud-agent-starter` en [`.agents/skills/cloud-agent-starter/SKILL.md`](../../.agents/skills/cloud-agent-starter/SKILL.md) con arranque práctico por áreas:
+  - WordPress runtime (`gano-child`, MU-plugins, `plugins/gano-*`)
+  - Commerce Reseller (smoke test + flags sandbox/coming-soon)
+  - GitHub workflows + agent queue (validación JSON y secretos esperados)
+  - Tooling `.gsd` (Node tests por subárea)
+- [x] Incluida sección corta de mantenimiento “learning loop” para actualizar la skill con nuevos runbooks/trucos.
+- [x] Validaciones ejecutadas durante la creación:
+  - `python3 scripts/validate_agent_queue.py` (OK)
+  - `php -l` sobre archivos clave del flujo reseller/phase plugins (OK)
+  - comprobación de existencia de archivos y rutas referenciadas en la skill (OK)
+
+### Siguiente uso recomendado
+
+- [ ] Referenciar esta skill en futuros handoffs para reducir tiempo de arranque de Cloud agents.
+
 ## 2026-04-10 — Repo Pilot **público** + alerta runner self-hosted
 
 ### Hecho (verificado)

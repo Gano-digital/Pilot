@@ -1,6 +1,6 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-10 — **`Gano-digital/Pilot` es repositorio PÚBLICO** (`gh repo view` → `visibility: PUBLIC`). **Riesgo P0:** sigue registrado runner self-hosted **`gano-godaddy-server`** (etiqueta `gano-production`, **online**) — con repo público, un workflow en PR/fork puede intentar ejecutar código en ese host; mitigar **ya** (desregistrar runner, runner aislado fuera de prod, o política estricta de Actions en forks). Ver §5–§6 en [`sota-investigacion-2026-04-09-ci-supply-chain-agents.md`](../../memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md). Plan vitrina y Fase 4 sin cambio de foco._
+_Última actualización: 2026-04-11 — **nueva skill base para Cloud agents** en `.agents/skills/cloud-agent-starter/SKILL.md` (setup/login/run/test por áreas: WordPress runtime, commerce Reseller, workflows GitHub y tooling `.gsd`). Mantenerla como runbook vivo con el loop de actualización definido al final de la skill. Se conserva riesgo P0 previo del runner self-hosted en repo público._
 
 ## Foco actual (producto y repo)
 
@@ -13,6 +13,7 @@ _Última actualización: 2026-04-10 — **`Gano-digital/Pilot` es repositorio P�
 
 ## Completado recientemente (entorno + gobernanza agentes)
 
+- [x] **Skill Cloud starter:** `.agents/skills/cloud-agent-starter/SKILL.md` creada con instrucciones prácticas para arranque inmediato (preflight, pruebas por área, flags reales `gano_reseller_sandbox` y `_gano_coming_soon`, y mantenimiento del runbook).
 - [x] **Setup Cursor:** rules **9** `.mdc` (001–006, 100–101, 200), memory protocol, PHP/WP, CSS/JS, git workflow, copilot oversight.
 - [x] Memory bank (`.cursor/memory/`) operativo; `AGENTS.md` y flujo multi-agente documentados.
 - [x] Skills proyecto en `.gano-skills/` (incl. orquestación Copilot + multi-agente local) alineadas con cola GitHub y prompts por oleada.
