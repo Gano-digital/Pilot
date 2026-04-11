@@ -1,5 +1,16 @@
 # Progress Tracker
 
+## 2026-04-11 — Skill starter para Cloud agents (run + test)
+
+### Completado
+
+- [x] Nueva skill mínima en `.agents/skills/cloud-agent-starter/SKILL.md` con arranque rápido para agentes cloud.
+- [x] Guía práctica por área del código: `gano-child`, `mu-plugins`, comercio Reseller, workflows GitHub y tooling `.gsd`.
+- [x] Incluye validaciones de login/acceso (`gh auth`, secrets de deploy), dry-runs (`upload_missing=false`, `force_remove=false`) y mock de feature flag con `PENDING_RCC`.
+- [x] Sección corta de mantenimiento para actualizar la skill con nuevos trucos de runbook/testing.
+
+---
+
 ## 2026-04-10 — Repo Pilot **público** + alerta runner self-hosted
 
 ### Hecho (verificado)

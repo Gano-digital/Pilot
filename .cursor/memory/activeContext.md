@@ -16,6 +16,7 @@ _Última actualización: 2026-04-10 — **`Gano-digital/Pilot` es repositorio P�
 - [x] **Setup Cursor:** rules **9** `.mdc` (001–006, 100–101, 200), memory protocol, PHP/WP, CSS/JS, git workflow, copilot oversight.
 - [x] Memory bank (`.cursor/memory/`) operativo; `AGENTS.md` y flujo multi-agente documentados.
 - [x] Skills proyecto en `.gano-skills/` (incl. orquestación Copilot + multi-agente local) alineadas con cola GitHub y prompts por oleada.
+- [x] Nueva skill starter para agentes cloud en `.agents/skills/cloud-agent-starter/SKILL.md` con bootstrap rápido, logins, dry-runs (`upload_missing` / `force_remove`) y workflows de prueba por área (tema, MU-plugins, Reseller, workflows, `.gsd`).
 - [x] **Cola Claude dispatch:** tareas `cd-repo-001` a `cd-repo-012` completadas; checklists operativos creados en `memory/commerce/` y `memory/ops/`.
 - [x] **PHP CLI local:** PHP 8.3 habilitado en Windows y `php -l wp-content/themes/gano-child/functions.php` pasa sin errores.
 - [x] **Tooling opcional incorporado (sin romper runtime):**
