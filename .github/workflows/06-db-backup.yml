@@ -1,0 +1,138 @@
+# 06 · Backup · BD Automático (MySQL)
+name: "06 · Backup · BD Automático"
+
+on:
+  schedule:
+    # 2 AM UTC = 9 PM COT (off-peak)
+    - cron: "0 2 * * *"
+  
+  workflow_dispatch:
+    inputs:
+      retention_days:
+        description: "Días para retener backups"
+        required: false
+        default: "30"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    name: 💾 Database Backup
+    runs-on: [self-hosted, gano-production]
+    
+    steps:
+      - uses: actions/checkout@v6
+      
+      - name: ✅ Verify SSH connectivity
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no \
+            "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" \
+            "echo 'SSH connection successful' && pwd"
+      
+      - name: 📦 Export database
+        run: |
+          set -euo pipefail
+          DEPLOY="${{ secrets.DEPLOY_PATH }}"
+          BACKUP_DIR="/home/${{ secrets.SERVER_USER }}/backups/gano_db"
+          TIMESTAMP=$(date '+%Y%m%d_%H%M%S')
+          BACKUP_FILE="gano_db_${TIMESTAMP}.sql"
+          
+          ssh -i ~/.ssh/id_rsa "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" << 'SCRIPT'
+            set -euo pipefail
+            DEPLOY="${{ secrets.DEPLOY_PATH }}"
+            BACKUP_DIR="/home/${{ secrets.SERVER_USER }}/backups/gano_db"
+            TIMESTAMP=$(date '+%Y%m%d_%H%M%S')
+            BACKUP_FILE="gano_db_${TIMESTAMP}.sql"
+            
+            # Create backup directory if not exists
+            mkdir -p "$BACKUP_DIR"
+            
+            # Export database
+            echo "Exporting database to $BACKUP_FILE..."
+            wp db export "$BACKUP_DIR/$BACKUP_FILE" --allow-root --path="$DEPLOY" 2>&1 | head -5
+            
+            # Compress
+            echo "Compressing backup..."
+            gzip -v "$BACKUP_DIR/$BACKUP_FILE"
+            
+            # List recent backups
+            echo "Recent backups:"
+            ls -lh "$BACKUP_DIR" | tail -5
+          SCRIPT
+          
+          echo "✅ Database exported and compressed"
+      
+      - name: 🧹 Cleanup old backups
+        run: |
+          set -euo pipefail
+          RETENTION_DAYS=${{ github.event.inputs.retention_days || '30' }}
+          
+          ssh -i ~/.ssh/id_rsa "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" << "SCRIPT"
+            set -euo pipefail
+            BACKUP_DIR="/home/${{ secrets.SERVER_USER }}/backups/gano_db"
+            RETENTION_DAYS=${{ github.event.inputs.retention_days || '30' }}
+            
+            if [ -d "$BACKUP_DIR" ]; then
+              echo "Deleting backups older than $RETENTION_DAYS days..."
+              find "$BACKUP_DIR" -maxdepth 1 -name "gano_db_*.sql.gz" -mtime +$RETENTION_DAYS -delete -print
+              echo "Cleanup completed"
+            fi
+          SCRIPT
+      
+      - name: 📊 Generate metadata
+        run: |
+          set -euo pipefail
+          METADATA_FILE="memory/ops/db-backup-manifest-latest.json"
+          TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          
+          # Get latest backup info from server
+          BACKUP_INFO=$(ssh -i ~/.ssh/id_rsa "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" << 'SCRIPT'
+            BACKUP_DIR="/home/${{ secrets.SERVER_USER }}/backups/gano_db"
+            if [ -d "$BACKUP_DIR" ]; then
+              LATEST=$(ls -t "$BACKUP_DIR"/gano_db_*.sql.gz 2>/dev/null | head -1)
+              if [ ! -z "$LATEST" ]; then
+                SIZE=$(du -h "$LATEST" | awk '{print $1}')
+                CHECKSUM=$(md5sum "$LATEST" | awk '{print $1}')
+                echo "$(basename "$LATEST"):$SIZE:$CHECKSUM"
+              fi
+            fi
+          SCRIPT
+          )
+          
+          if [ ! -z "$BACKUP_INFO" ]; then
+            FILENAME=$(echo "$BACKUP_INFO" | cut -d: -f1)
+            SIZE=$(echo "$BACKUP_INFO" | cut -d: -f2)
+            CHECKSUM=$(echo "$BACKUP_INFO" | cut -d: -f3)
+            
+            cat > "$METADATA_FILE" << JSON
+          {
+            "timestamp": "$TIMESTAMP",
+            "filename": "$FILENAME",
+            "size": "$SIZE",
+            "checksum_md5": "$CHECKSUM",
+            "retention_days": ${{ github.event.inputs.retention_days || '30' }},
+            "backup_path": "/home/${{ secrets.SERVER_USER }}/backups/gano_db/",
+            "workflow": "06-db-backup.yml",
+            "trigger": "${{ github.event_name }}"
+          }
+          JSON
+            
+            echo "✅ Metadata saved to $METADATA_FILE"
+            cat "$METADATA_FILE"
+          fi
+      
+      - name: 📈 Backup Summary
+        if: always()
+        run: |
+          echo "## 💾 Database Backup Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp:** $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ✅ Completed" >> $GITHUB_STEP_SUMMARY
+          echo "**Location:** /home/${{ secrets.SERVER_USER }}/backups/gano_db/" >> $GITHUB_STEP_SUMMARY
+          echo "**Retention:** ${{ github.event.inputs.retention_days || '30' }} days" >> $GITHUB_STEP_SUMMARY
+          echo "**Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "See `memory/ops/db-backup-manifest-latest.json` for latest backup metadata." >> $GITHUB_STEP_SUMMARY
