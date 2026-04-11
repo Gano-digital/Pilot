@@ -6,7 +6,7 @@
 
 - [x] Nueva skill [`/.agents/skills/cloud-agent-starter/SKILL.md`](../../.agents/skills/cloud-agent-starter/SKILL.md) con arranque rápido, matriz de accesos/login, límites del entorno cloud y workflows de prueba por área del repo.
 - [x] Comandos de la skill validados contra el runtime real de Cursor Cloud: `python3` (no `python`), `gh auth status`, validadores de colas, lint PHP masivo con `rg`, generación de Ops Hub y servidor estático local.
-- [x] PR draft preparado en rama `cursor/cloud-agent-starter-skill-5898`.
+- [x] Solicitud de PR draft preparada en rama `cursor/cloud-agent-starter-skill-5898`.
 
 ### Hallazgos
 

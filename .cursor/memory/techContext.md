@@ -32,7 +32,7 @@
 ## Tooling opcional (repo)
 
 - **`.gsd/sdk` (Node, no runtime WP):** Dependabot en transitive deps (`hono`, `@hono/node-server`, `@anthropic-ai/sdk`) se cierra con **`overrides`** en `.gsd/sdk/package.json` + `npm install`; `npm audit` debe quedar en 0.
-- **Cloud agents / bootstrap:** skill `/.agents/skills/cloud-agent-starter/SKILL.md` resume arranque, accesos, límites y checks rápidos por área del repo; en Cursor Cloud preferir **`python3`** (no `python`) para scripts locales y `rg --files` para lint masivo/documentado.
+- **Cloud agents / bootstrap:** skill `.agents/skills/cloud-agent-starter/SKILL.md` resume arranque, accesos, límites y checks rápidos por área del repo; en Cursor Cloud preferir **`python3`** (no `python`) para scripts locales y `rg --files` para lint masivo/documentado.
 - **Graphify (local, seguro):** skill `.gano-skills/gano-graphify-local/` (sin hooks) para generar `graphify-out/` bajo demanda.
 - **Agent Orchestrator (AO):** skill `.gano-skills/gano-agent-orchestrator-local/` para coordinar oleadas paralelas (worktrees/PRs). Recomendado WSL2+tmux en Windows.
 - **ML‑SSD (Apple):** submodule `vendor/ml-ssd` + skill `.gano-skills/gano-ml-ssd/` como base reproducible para experimentos/evaluación de codegen.
