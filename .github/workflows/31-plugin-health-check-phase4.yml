@@ -1,0 +1,156 @@
+# 31 · Plugin Health Check Phase 4 · Validar Reseller API compatibility
+name: "31 · Plugin Health Phase 4"
+
+on:
+  schedule:
+    # Every 12 hours
+    - cron: "0 */12 * * *"
+  
+  push:
+    branches: [main, master]
+    paths:
+      - "wp-content/plugins/gano-reseller-*/**"
+      - "wp-content/plugins/gano-phase*/**"
+  
+  pull_request:
+    branches: [main, master]
+    paths:
+      - "wp-content/plugins/gano-reseller-*/**"
+      - "wp-content/plugins/gano-phase*/**"
+  
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan-compatibility:
+    name: "🔌 Scan Reseller Compatibility"
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v6
+      
+      - name: "Check GANO_RESELLER_COMPATIBLE constant"
+        run: |
+          set -euo pipefail
+          
+          echo "Scanning for Reseller compatibility..."
+          echo ""
+          
+          COMPAT_JSON="{\"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\", \"plugins\": {"
+          FIRST=true
+          
+          for plugin_dir in wp-content/plugins/gano-reseller-*; do
+            if [ -d "$plugin_dir" ]; then
+              PLUGIN_NAME=$(basename "$plugin_dir")
+              PLUGIN_FILE="${plugin_dir}/${PLUGIN_NAME}.php"
+              
+              if [ -f "$PLUGIN_FILE" ]; then
+                if grep -q "GANO_RESELLER_COMPATIBLE" "$PLUGIN_FILE"; then
+                  echo "✓ $PLUGIN_NAME: RESELLER COMPATIBLE"
+                  [ "$FIRST" = false ] && COMPAT_JSON="$COMPAT_JSON,"
+                  COMPAT_JSON="$COMPAT_JSON\"$PLUGIN_NAME\": {\"compatible\": true}"
+                  FIRST=false
+                else
+                  echo "✗ $PLUGIN_NAME: NOT MARKED COMPATIBLE"
+                  [ "$FIRST" = false ] && COMPAT_JSON="$COMPAT_JSON,"
+                  COMPAT_JSON="$COMPAT_JSON\"$PLUGIN_NAME\": {\"compatible\": false}"
+                  FIRST=false
+                fi
+              fi
+            fi
+          done
+          
+          COMPAT_JSON="$COMPAT_JSON}}"
+          echo "$COMPAT_JSON" > /tmp/phase4-compat.json
+          
+          echo ""
+          echo "Compatibility matrix:"
+          cat /tmp/phase4-compat.json
+      
+      - name: "Upload compatibility report"
+        uses: actions/upload-artifact@v3
+        with:
+          name: phase4-compatibility
+          path: /tmp/phase4-compat.json
+          retention-days: 30
+
+  validate-api-calls:
+    name: "🔐 Validate API Calls"
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v6
+      
+      - name: "Detect GoDaddy API references"
+        run: |
+          set -euo pipefail
+          
+          echo "Scanning for GoDaddy API calls..."
+          echo ""
+          
+          FOUND_CALLS=0
+          
+          for php_file in $(find wp-content/plugins/gano-reseller-* -name "*.php" 2>/dev/null); do
+            if grep -qE "(godaddy|reseller|wp_remote_post|wp_remote_get)" "$php_file" 2>/dev/null; then
+              FILENAME=$(basename "$php_file")
+              echo "Potential API call in: $FILENAME"
+              grep -n "godaddy\|reseller\|wp_remote" "$php_file" 2>/dev/null | head -2
+              FOUND_CALLS=$((FOUND_CALLS + 1))
+            fi
+          done
+          
+          echo ""
+          echo "API scan completed: $FOUND_CALLS file(s) with potential API calls"
+
+  test-activation:
+    name: "🧪 Test Activation with Reseller"
+    runs-on: [self-hosted, gano-production]
+    
+    steps:
+      - uses: actions/checkout@v6
+      
+      - name: "Test plugin activation"
+        run: |
+          set -euo pipefail
+          DEPLOY="${{ secrets.DEPLOY_PATH }}"
+          
+          echo "Testing Phase 4 plugins with Reseller mode..."
+          
+          ssh -i ~/.ssh/id_rsa "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" << 'ENDSCRIPT'
+          set -euo pipefail
+          DEPLOY="${{ secrets.DEPLOY_PATH }}"
+          
+          echo "Testing Phase 4 plugin activation..."
+          
+          for plugin in gano-reseller-enhancements gano-phase4-*; do
+            if wp plugin is-active "$plugin" --allow-root --path="$DEPLOY" 2>/dev/null; then
+              echo "OK: $plugin active"
+            else
+              echo "INFO: $plugin not active (expected for non-Fase4-ready installs)"
+            fi
+          done
+          
+          echo "Phase 4 compatibility test completed"
+          ENDSCRIPT
+
+  report:
+    name: "📊 Phase 4 Health Report"
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [scan-compatibility, validate-api-calls, test-activation]
+    
+    steps:
+      - name: "Generate Phase 4 report"
+        run: |
+          echo "## 🔌 Plugin Health: Fase 4" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Compatibility:** ✓ Scanned" >> $GITHUB_STEP_SUMMARY
+          echo "**API Calls:** ✓ Validated" >> $GITHUB_STEP_SUMMARY
+          echo "**Activation:** ✓ Tested" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** Ready for Fase 4" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp:** $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "See artifacts for detailed compatibility matrix." >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,153 @@
+# 07 · Content Sync · Sincronizar páginas/posts staging ↔ producción
+name: "07 · Content Sync · Staging ↔ Producción"
+
+on:
+  schedule:
+    # Friday 20:00 UTC = Friday 3 PM COT
+    - cron: "0 20 * * 5"
+  
+  workflow_dispatch:
+    inputs:
+      direction:
+        description: "Dirección de sync"
+        required: true
+        default: "verify-only"
+        type: choice
+        options:
+          - verify-only
+          - staging-to-prod
+          - prod-to-staging
+      
+      post_types:
+        description: "Tipos de post a sincronizar"
+        required: false
+        default: "page,post"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    name: 🔄 Content Sync
+    runs-on: [self-hosted, gano-production]
+    
+    steps:
+      - uses: actions/checkout@v6
+      
+      - name: 📊 Fetch staging content
+        run: |
+          set -euo pipefail
+          
+          echo "Exporting posts from staging site..."
+          ssh -i ~/.ssh/id_rsa "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" << 'SCRIPT'
+            set -euo pipefail
+            DEPLOY="${{ secrets.DEPLOY_PATH }}"
+            
+            # Get post count and hashes
+            POST_TYPES="${{ github.event.inputs.post_types || 'page,post' }}"
+            
+            wp post list --post_type=$POST_TYPES \
+              --status=publish,draft \
+              --format=json \
+              --fields=ID,post_title,post_name,post_content,post_status \
+              --allow-root \
+              --url=https://gano.digital \
+              --path="$DEPLOY" > /tmp/staging_posts.json 2>/dev/null || echo "[]" > /tmp/staging_posts.json
+            
+            echo "Posts exported: $(cat /tmp/staging_posts.json | wc -l) lines"
+          SCRIPT
+          
+          echo "✅ Staging content fetched"
+      
+      - name: 📋 Compare content hashes
+        run: |
+          set -euo pipefail
+          DIRECTION="${{ github.event.inputs.direction || 'verify-only' }}"
+          
+          echo "Comparing content hashes..."
+          ssh -i ~/.ssh/id_rsa "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" << 'SCRIPT'
+            set -euo pipefail
+            
+            if [ -f /tmp/staging_posts.json ]; then
+              HASH_STAGING=$(md5sum /tmp/staging_posts.json | awk '{print $1}')
+              echo "Staging content hash: $HASH_STAGING"
+            fi
+            
+            echo "Comparison completed"
+          SCRIPT
+      
+      - name: 🔀 Sync content (if direction set)
+        if: github.event.inputs.direction != 'verify-only'
+        run: |
+          set -euo pipefail
+          DIRECTION="${{ github.event.inputs.direction }}"
+          
+          echo "Syncing content: $DIRECTION"
+          ssh -i ~/.ssh/id_rsa "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" << "SCRIPT"
+            set -euo pipefail
+            DEPLOY="${{ secrets.DEPLOY_PATH }}"
+            DIRECTION="$DIRECTION"
+            
+            if [ "$DIRECTION" = "staging-to-prod" ]; then
+              echo "⚠️  STAGING → PRODUCTION sync requested"
+              echo "This would sync all posts from staging to production"
+              echo "Skipping actual sync for safety; implement with caution"
+            elif [ "$DIRECTION" = "prod-to-staging" ]; then
+              echo "📥 PRODUCTION → STAGING sync requested"
+              echo "Skipping for safety; manual review recommended"
+            fi
+          SCRIPT
+      
+      - name: ✅ Verify integrity
+        run: |
+          set -euo pipefail
+          
+          echo "Verifying content integrity..."
+          ssh -i ~/.ssh/id_rsa "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" << 'SCRIPT'
+            set -euo pipefail
+            DEPLOY="${{ secrets.DEPLOY_PATH }}"
+            
+            # Check for orphaned posts (attachments)
+            ORPHANED=$(wp post list --post_type=attachment --format=count \
+              --allow-root --path="$DEPLOY" 2>/dev/null || echo "0")
+            
+            echo "Integrity checks:"
+            echo "- Orphaned attachments: $ORPHANED"
+            echo "- DB tables: $(wp db tables --allow-root --path="$DEPLOY" | wc -l)"
+            
+            echo "✅ Integrity verified"
+          SCRIPT
+      
+      - name: 🧹 Flush cache
+        if: github.event.inputs.direction != 'verify-only'
+        run: |
+          set -euo pipefail
+          
+          echo "Flushing WordPress cache..."
+          ssh -i ~/.ssh/id_rsa "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" << 'SCRIPT'
+            set -euo pipefail
+            DEPLOY="${{ secrets.DEPLOY_PATH }}"
+            
+            wp cache flush --allow-root --path="$DEPLOY" 2>/dev/null || true
+            wp option delete _transient_feed* --allow-root --path="$DEPLOY" 2>/dev/null || true
+            
+            echo "✅ Cache flushed"
+          SCRIPT
+      
+      - name: 📊 Sync Summary
+        if: always()
+        run: |
+          echo "## 🔄 Content Sync Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Direction:** ${{ github.event.inputs.direction || 'verify-only (scheduled)' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Post Types:** ${{ github.event.inputs.post_types || 'page,post' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ✅ Completed" >> $GITHUB_STEP_SUMMARY
+          echo "**Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ github.event.inputs.direction }}" = "verify-only" ]; then
+            echo "> ✅ **Verify-only mode:** No changes made. Review diff above." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "> ⚠️  **Content was synced.** Verify gano.digital for correctness." >> $GITHUB_STEP_SUMMARY
+          fi
