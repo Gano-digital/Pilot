@@ -1,5 +1,17 @@
 # Progress Tracker
 
+## 2026-04-11 — Skill base para agentes Cloud
+
+### Completado
+
+- [x] Nueva skill `.agents/skills/cloud-starter/SKILL.md` con enfoque “first 10 minutes” para sesiones Cloud.
+- [x] Incluye bootstrap operativo (`git status`, `gh auth status`, `php/python/node`, `git submodule status`).
+- [x] Incluye runbook por área del repo (tema child, MU plugins, plugins `gano-*`, workflows/queue, scripts/Ops Hub, `.gsd/sdk`) con comandos concretos de prueba.
+- [x] Añadida sección corta de “feature flags/toggles y mock seguro” (`GANO_API_TOKEN`, `GANO_PFID_*`, inputs de workflows).
+- [x] Validación en entorno Cloud de comandos clave documentados (`gh`, `php`, `python`, `node`, `validate_agent_queue.py`, `generate_gano_ops_progress.py`, `curl` a `gano.digital`).
+
+---
+
 ## 2026-04-10 — Repo Pilot **público** + alerta runner self-hosted
 
 ### Hecho (verificado)

@@ -25,6 +25,7 @@ _Última actualización: 2026-04-10 — **`Gano-digital/Pilot` es repositorio P�
 - [x] **PR #136** (docs/memoria Fase 4) dejado **merge-ready** (conflictos resueltos, CI verde). Nota: el merge puede quedar bloqueado por ruleset de “Code Quality” en GitHub.
 - [x] **PR #159** — plan vitrina + prechequeo SSH en `deploy.yml` + runbook `publickey` — fusionado en `main`; PR #158 cerrado como sustituido.
 - [x] **PR #160** — troubleshooting SSH (IP) + reporte handoff para Claude — fusionado en `main`.
+- [x] **Skill Cloud starter** creada en `.agents/skills/cloud-starter/SKILL.md` con bootstrap de sesión, accesos (GH/SSH), testing por áreas (tema, MU, plugins, workflows, scripts, SDK) y sección de actualización continua de runbook.
 
 ## En progreso
 
