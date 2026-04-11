@@ -14,7 +14,12 @@
 | 5 | 2026-04-02 | Header fix | fix_header.py en C:/tmp pendiente | BAJA |
 | 6 | 2026-04-08 | Deploy CI 04 | Huella SSH coincide con local; sigue publickey — revisar SERVER_* y firewall/IP hosting vs runners GitHub; PR #160 docs; handoff [`memory/claude/2026-04-08-reporte-handoff-ssh-deploy-tokens.md`](../../memory/claude/2026-04-08-reporte-handoff-ssh-deploy-tokens.md) | ALTA |
 | 7 | 2026-04-09 | SOTA / supply chain | Opcional: análisis estático de workflows (`zizmor` u homólogo) antes de merge masivo YAML; inventario plugins WP en prod como tabla en `memory/ops/` | BAJA |
-| 8 | 2026-04-10 | Repo público + Actions | **CRÍTICO:** Runner self-hosted `gano-godaddy-server` (id 21) online en `Pilot` público — desregistrar en GitHub + parar servicio en host, o runner aislado; revisar Settings → Actions → fork workflows | CRITICA |
+| 8 | 2026-04-10 | Repo público + Actions | ~~Runner self-hosted en `Pilot`~~ — **verificado 2026-04-10:** API `repos/.../actions/runners` → **0 runners** en el repo; `deploy.yml` usa **ubuntu-latest** + webhook HTTPS. **Pendiente solo con permisos org:** confirmar que no queden runners a nivel **organización** (`admin:org`); workflow `test-runner.yml` sigue pidiendo `self-hosted` (dispatch manual quedaría sin runner si no hay org runner). | MITIGADO (repo) |
+| 9 | 2026-04-10 | cPanel / Installatron | Errores `noconfigfile` + logs “Unable to read source install configuration file” + updates 400 — ticket GoDaddy o reparación Installatron; decidir si Drupal `/123/` se elimina; SSL Force HTTPS en dominios activos — ver [`investigacion-servidor-cpanel-evidencias-reparacion-2026-04.md`](../../memory/ops/investigacion-servidor-cpanel-evidencias-reparacion-2026-04.md) | ALTA |
 
 ## Resueltos
 *Mover items aqui cuando se completen.*
+
+| # | Fecha | Resolución |
+|---|-------|-----------|
+| 8 | 2026-04-10 | **Verificado 2026-04-11:** `gh api repos/Gano-digital/Pilot/actions/runners` → total_count: 0. **Runner ya eliminado.** `deploy.yml` usa `ubuntu-latest` + webhook HTTPS. **Cerrado.** |

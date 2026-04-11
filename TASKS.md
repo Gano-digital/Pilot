@@ -9,7 +9,9 @@ _Última actualización: Abril 2026_
 
 **Estado abril 2026:** la cola de **PRs Copilot** se consolidó en `main` (ver [`memory/sessions/2026-04-03-consolidacion-prs-copilot.md`](memory/sessions/2026-04-03-consolidacion-prs-copilot.md)). **Ya no hace falta** ejecutar **10 · Orquestar oleadas** para fusionar esa oleada.
 
-**Repo `Pilot` (2026-04-10):** **público** — revisar **runners self-hosted** vinculados (no ejecutar prod en mismo host que acepta jobs de forks sin aislamiento); ver `memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md` §5 y `.cursor/memory/activeContext.md`.
+**Repo `Pilot` (2026-04-11):** **público** — **runners self-hosted eliminados** ✅ (verificado 2026-04-11: `gh api` → total_count: 0). Deploy **04** usa `ubuntu-latest` + webhook HTTPS. Ver `memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md` §5 y `.cursor/memory/activeContext.md`.
+
+**Hosting cPanel (evidencias capturas):** [`memory/ops/investigacion-servidor-cpanel-evidencias-reparacion-2026-04.md`](memory/ops/investigacion-servidor-cpanel-evidencias-reparacion-2026-04.md) — Installatron/Drupal (`/123/`) vs WordPress `gano.digital`, errores de config, SSL/HTTPS, backups, RAM 512 MB; plan de reparación por fases (ticket GoDaddy recomendado para Installatron).
 
 **Siguiente foco:** secrets → **04 · Deploy** / **05 · Verificar parches** → **12 · Eliminar wp-file-manager** (si aún está en servidor) → RCC / Elementor según `TASKS.md` abajo. Guía de nombres en Actions: [`.github/workflows/README.md`](.github/workflows/README.md).
 
