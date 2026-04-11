@@ -1,5 +1,14 @@
 # Progress Tracker
 
+## 2026-04-11 — Starter skill para Cloud agents
+
+### Completado
+
+- [x] Nueva skill [`.agents/skills/cloud-codebase-starter/SKILL.md`](../../.agents/skills/cloud-codebase-starter/SKILL.md) con instrucciones mínimas de arranque para agentes Cloud: setup, accesos humanos, comandos por área (`wp-content`, `.gsd`, `.gsd/sdk`, scripts, Ops Hub) y "knobs" reales (`queue_file`, `scope`, `upload_missing`, `force_remove`).
+- [x] La guía deja explícito que WordPress completo / Elementor / RCC no arrancan solo desde el repo si no hay entorno o credenciales provisionadas; se priorizan checks reproducibles de repo.
+
+---
+
 ## 2026-04-10 — Repo Pilot **público** + alerta runner self-hosted
 
 ### Hecho (verificado)

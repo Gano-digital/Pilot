@@ -13,6 +13,7 @@ _Última actualización: 2026-04-10 — **`Gano-digital/Pilot` es repositorio P�
 
 ## Completado recientemente (entorno + gobernanza agentes)
 
+- [x] **Starter skill para Cloud agents:** nueva guía mínima en [`.agents/skills/cloud-codebase-starter/SKILL.md`](../../.agents/skills/cloud-codebase-starter/SKILL.md) con setup inicial, login requerido, arranque/pruebas por área (`wp-content`, `.gsd`, `.gsd/sdk`, scripts, Ops Hub) y mantenimiento del runbook.
 - [x] **Setup Cursor:** rules **9** `.mdc` (001–006, 100–101, 200), memory protocol, PHP/WP, CSS/JS, git workflow, copilot oversight.
 - [x] Memory bank (`.cursor/memory/`) operativo; `AGENTS.md` y flujo multi-agente documentados.
 - [x] Skills proyecto en `.gano-skills/` (incl. orquestación Copilot + multi-agente local) alineadas con cola GitHub y prompts por oleada.
