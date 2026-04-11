@@ -66,3 +66,30 @@ Issue en GitHub → Copilot crea PR (draft) → CI verifica → Cursor/Diego rev
 - Nomenclatura: Nucleo Prime, Fortaleza Delta, Bastion SOTA
 - NUNCA usar: "barato", "hosting compartido", "low cost"
 - Foco: inversion en soberania digital
+
+## Cursor Cloud specific instructions
+
+### What can be developed/tested locally
+
+This repo is a **partial WordPress installation** (customizations only — no WP core files). A full WordPress runtime (PHP + MySQL + Apache) is **not** set up in the Cloud VM. What **can** be run:
+
+| Area | Command | Notes |
+|------|---------|-------|
+| **PHP syntax lint** | `find wp-content/mu-plugins wp-content/themes/gano-child -name '*.php' -exec php -l {} \;` and same for `wp-content/plugins/gano-*` | Mirrors CI workflow `php-lint-gano.yml`. All custom PHP must pass. |
+| **GSD tests** | `cd .gsd && npm test` | Node.js ≥20. 1483/1504 pass; 21 failures are pre-existing in the submodule. |
+| **GSD SDK tests** | `cd .gsd/sdk && npx vitest run` | 677/690 pass; 8 failures are pre-existing (MODULE_NOT_FOUND in gsd-tools integration). |
+| **Python PDF reports** | `python3 scripts/generate_project_status_pdf.py` (and other `scripts/generate_*.py`) | Requires `fpdf2` + `fonts-dejavu`. Output in `reports/`. |
+| **Ops Hub dashboard** | `python3 scripts/generate_gano_ops_progress.py && cd tools/gano-ops-hub/public && python3 -m http.server 8765` | Static dashboard at http://127.0.0.1:8765/. |
+
+### System dependencies (installed via apt, not in update script)
+
+- `php8.3-cli php8.3-common php8.3-xml php8.3-mbstring php8.3-curl` — for `php -l` linting
+- `fonts-dejavu` — required by `fpdf2` PDF generation scripts (they look for `DejaVuSans-Oblique.ttf`)
+
+### Gotchas
+
+- The `reports/` directory is gitignored; PDF output is local-only.
+- `wp-config.php` is never in the repo; only `wp-config-sample.php` exists.
+- GSD submodule (`.gsd/`) has its own lockfiles; run `npm install` in both `.gsd/` and `.gsd/sdk/` separately.
+- The Ops Hub needs `progress.json` regenerated before serving: `python3 scripts/generate_gano_ops_progress.py`.
+- No pre-commit hooks or lint-staged config exist in this repo; CI enforcement happens via GitHub Actions.
