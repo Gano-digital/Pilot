@@ -3,29 +3,32 @@ name: gano-wp-security
 description: >
   Skill de seguridad WordPress específico para Gano Digital. Aplica y verifica los parches
   de seguridad identificados en la auditoría integral de gano.digital. Úsalo cuando necesites:
-  corregir vulnerabilidades del stack WordPress/WooCommerce/Wompi, revisar o generar código PHP
+  corregir vulnerabilidades del stack WordPress/WooCommerce, revisar o generar código PHP
   seguro, aplicar hardening a wp-config.php, implementar nonce CSRF en endpoints REST,
-  verificar firmas HMAC en webhooks de pago, auditar permisos de archivos, o cuando el usuario
-  mencione "security fix", "parche", "vulnerabilidad", "WP_DEBUG", "Wompi webhook", "nonce",
+  auditar webhooks o plugins de pago **solo si existen en el repo**, auditar permisos de archivos, o cuando el usuario
+  mencione "security fix", "parche", "vulnerabilidad", "WP_DEBUG", "nonce",
   "hardening", "wp-config", "seguridad WordPress" en el contexto de Gano Digital.
 ---
 
 # Gano WP Security — Skill de Seguridad WordPress
 
 Este skill guía la implementación de los parches de seguridad críticos identificados en la
-Auditoría Integral de Gano Digital (Marzo 2026). Trabaja siempre sobre el directorio del
-proyecto: `/sessions/trusting-vibrant-newton/mnt/Gano.digital-copia/`.
+Auditoría Integral de Gano Digital (Marzo 2026). Trabaja sobre el **workspace del repo**
+(`Gano.digital-copia` / clon de `Gano-digital/Pilot`), no rutas absolutas de otra máquina.
 
 ## Contexto del proyecto
 
-- **Stack**: WordPress + Elementor + Royal Elementor Addons + WooCommerce + Wompi Colombia
+- **Stack**: WordPress + Elementor + Royal Elementor Addons + WooCommerce; checkout comercial vía **GoDaddy Reseller** (ver `TASKS.md`)
 - **MU Plugin de seguridad**: `wp-content/mu-plugins/gano-security.php` — YA implementado, no modificar sin auditar
-- **Pasarela de pago**: `wp-content/plugins/gano-wompi-integration/` — tiene vulnerabilidades activas
+- **Plugins de pasarela locales** (si existen en el clon): solo auditoría legacy; **no** son el eje del roadmap actual
 - **Tema hijo**: `wp-content/themes/gano-child/` — chat IA sin nonce CSRF
+- **Cierre de sesión / higiene repo:** skill complementaria `gano-session-security-guardian` (checklist, cola `tasks-security-guardian`) — no duplica parches PHP.
 
 ---
 
 ## Vulnerabilidades por prioridad
+
+> **Nota (2026):** Los ítems **V-02 / V-03** que citan `gano-wompi-integration/` solo aplican **si ese plugin sigue en el entorno**. El checkout objetivo del negocio es **GoDaddy Reseller**; no priorizar mantener pasarelas locales.
 
 ### V-01 CRÍTICA — WP_DEBUG en producción
 
@@ -232,3 +235,10 @@ grep -n "WP_DEBUG" wp-config.php
 # Buscar debug.log accesible
 ls -la wp-content/debug.log 2>/dev/null
 ```
+
+## CI y secretos en el repo (Abril 2026)
+
+- **TruffleHog** en GitHub Actions escanea **solo rutas Gano** (MU-plugins, tema hijo, plugins `gano-*`); no sustituye auditoría manual de vendor de terceros.
+- **Scripts SSH locales:** usar variables de entorno (`GANO_SSH_*` u otras acordadas); **no** commitear contraseñas, claves privadas ni tokens en el repo.
+- **`.gitignore`:** mantener fuera `.env`, backups de BD y scripts personales destructivos.
+- Si el flujo comercial prioriza **GoDaddy Reseller** para pagos, los ítems de Wompi en checklist siguen siendo relevantes solo donde el plugin o webhooks locales sigan activos.

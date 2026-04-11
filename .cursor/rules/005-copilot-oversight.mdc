@@ -1,0 +1,91 @@
+---
+description: "USE WHEN reviewing Copilot PRs, managing GitHub agents, or coordinating with GitHub Actions"
+globs:
+alwaysApply: false
+---
+
+# Supervision de GitHub Copilot desde Cursor
+
+## Arquitectura de Supervision
+Cursor opera como **supervisor local** de los agentes Copilot que corren en GitHub.
+El puente es Git + GitHub CLI (`gh`) y, cuando esta habilitado, el MCP **user-github** (`assign_copilot_to_issue`, `request_copilot_review`, `get_copilot_job_status`, etc.; leer esquema de tools antes de invocar).
+
+## Checks de PR
+Priorizar **php-lint** y **TruffleHog** (workflows del repo). Cualquier check de terceros desvinculado o ignorado por política del equipo no bloquea el merge si CI propio está verde y la revisión humana lo aprueba.
+
+## Workflow de Oversight
+
+### 1. Monitorear PRs de Copilot
+```bash
+# Listar PRs abiertas del agente
+gh pr list --author "app/copilot" --state open
+
+# Ver detalles de un PR especifico
+gh pr view <PR_NUMBER> --comments
+
+# Ver checks/CI del PR
+gh pr checks <PR_NUMBER>
+```
+
+### 2. Revisar Codigo del Agente
+```bash
+# Checkout local para revision en Cursor
+gh pr checkout <PR_NUMBER>
+
+# Ver diff completo
+gh pr diff <PR_NUMBER>
+
+# Buscar patrones peligrosos en el diff
+gh pr diff <PR_NUMBER> | grep -E "(exec\(|system\(|passthru\(|eval\(|\\\$_GET|\\\$_POST|password|secret|token|api.key)"
+```
+
+### 3. Corregir al Agente
+```bash
+# Comentario de correccion (el agente lee @copilot mentions)
+gh pr comment <PR_NUMBER> --body "@copilot Fix: [descripcion del problema]. Follow the guidelines in .github/copilot-instructions.md"
+
+# Review formal con cambios solicitados
+gh pr review <PR_NUMBER> --request-changes --body "Issues found: [lista]"
+
+# Aprobar despues de correccion
+gh pr review <PR_NUMBER> --approve --body "LGTM after fixes"
+```
+
+### 4. Merge Strategy
+- Preferir **squash merge** si el historial del agente es ruidoso
+- SIEMPRE verificar CI verde (php-lint + TruffleHog) antes de merge
+- Seguir orden de `.github/MERGE-PLAYBOOK.md`:
+  1. Tema/gano-child (base visual)
+  2. MU-plugins/SEO
+  3. Docs/README
+  4. Commerce/shop-premium
+
+### 5. Agent Queue Management
+```bash
+# Ver issues de la cola
+gh issue list --label "copilot" --state open
+
+# Asignar Copilot a un issue
+gh issue edit <ISSUE_NUMBER> --add-assignee "@me"
+# Luego en GitHub UI: asignar a Copilot
+
+# Cerrar issues completados
+gh issue close <ISSUE_NUMBER> --comment "Completed via PR #<PR_NUMBER>"
+```
+
+## Patrones a Vigilar en PRs de Copilot
+- [ ] No hay credenciales/tokens en el diff
+- [ ] Funciones PHP usan prefijo `gano_`
+- [ ] SQL usa `$wpdb->prepare()`
+- [ ] Outputs escapados correctamente
+- [ ] No se eliminaron plugins de fase
+- [ ] No se modifico wp-config.php
+- [ ] CI checks pasan (php-lint, TruffleHog)
+- [ ] Cambios alineados con `TASKS.md`
+
+## Orquestacion de Oleadas
+- Cola de tareas: `.github/agent-queue/tasks*.json`
+- Workflow: `seed-copilot-queue.yml` (crea issues)
+- Orquestacion: `orchestrate-copilot-waves.yml` (merge wave1 + seed wave2)
+- Guia completa: `.github/COPILOT-AGENT-QUEUE.md`
+- Modelos del coding agent (org / picker): `memory/ops/github-copilot-agent-models-2026-04.md`

@@ -1,0 +1,47 @@
+# Crea etiquetas usadas por .github/labeler.yml y plantillas de issues.
+# Disparadores: manual (workflow_dispatch) o push a main que toque .github/label-bootstrap
+name: "06 · Repo · Crear etiquetas GitHub"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/label-bootstrap"
+
+concurrency:
+  group: setup-repo-labels
+  cancel-in-progress: false
+
+permissions:
+  issues: write
+
+jobs:
+  labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure area / workflow labels exist
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const specs = [
+              { name: "area:theme", color: "1D76DB", description: "Cambios en tema gano-child" },
+              { name: "area:mu-plugins", color: "5319E7", description: "MU-plugins / seguridad" },
+              { name: "area:plugins-gano", color: "0E8A16", description: "Plugins gano-*" },
+              { name: "area:ci", color: "FBCA04", description: "GitHub Actions / CI" },
+              { name: "dependencies", color: "EDEDED", description: "Dependabot / dependencias" },
+              { name: "copilot", color: "5319E7", description: "Delegable a Copilot" },
+              { name: "homepage-fixplan", color: "0E8A16", description: "Tareas homepage Elementor" },
+              { name: "coordination", color: "C5DEF5", description: "Sincronización servidor/local/GitHub" },
+              { name: "infra", color: "B60205", description: "DNS, SSL, dominio, hosting (runbooks)" },
+            ];
+            for (const s of specs) {
+              await github.rest.issues.createLabel({
+                owner, repo, name: s.name, color: s.color, description: s.description,
+              }).catch((e) => {
+                if (e.status !== 422) throw e;
+                core.info(`Label exists or conflict: ${s.name}`);
+              });
+            }

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "name": "Constellation UX wave",
+  "description": "Oleada enfocada en el tool gráfico Constellation (motion, overlays, interacción, a11y, audio).",
+  "tasks": [
+    {
+      "id": "cx-01-sc-layer-clickout",
+      "title": "fix(constellation): SC menu overlay click-out + no click-through",
+      "scope": "docs",
+      "labels": ["copilot", "enhancement", "javascript", "documentation"],
+      "body": "### Contexto\nEl tool gráfico vive en `memory/constellation/CONSTELACION-COSMICA.html` (Three.js + HUD). Se añadió una capa complementaria tipo menú RTS (`#scLayer`) con overlays (grid verde, nebula roja, vortex azul), un modal central y portales.\n\n### Problema\nHoy el cierre por click fuera del modal/portales **no funciona** porque `.sc-layer` tiene `pointer-events:none` incluso cuando está visible; el listener `scLayer.addEventListener('click', ...)` nunca recibe eventos. Además, debemos garantizar que esta capa **no provoque click-through** al canvas 3D.\n\n### Objetivo\n- Hacer que el overlay cierre correctamente por click fuera **sin romper**:\n  - el raycast 3D (`pickBody`) cuando se interactúa con UI\n  - el comportamiento del panel/tooltip/indexer\n- Mantener el carácter **complementario**: el HUD base debe seguir igual.\n\n### Requerimientos\n- Solo modificar `memory/constellation/CONSTELACION-COSMICA.html`.\n- Respetar `prefers-reduced-motion`.\n- Evitar regresiones de interacción: clicks en modal/portales deben funcionar; clicks fuera deben cerrar; nunca debe enfocarse un planeta por un click en UI.\n\n### Pistas\n- Revisa `.sc-layer{pointer-events:none}` y `.sc-layer.show{pointer-events:none}`.\n- Alternativas válidas:\n  1) Activar `pointer-events:auto` SOLO cuando el menú esté abierto, y dejar decorativos con `pointer-events:none`.\n  2) O escuchar clicks en `document` y cerrar si `scMenuOn` y el click no cae dentro de `.sc-modal`/`.sc-portal`.\n\n### Criterios de aceptación\n- Click fuera del modal/portales cierra el menú.\n- Click en UI no dispara `focusPlanet`/`focusSun`.\n- No cambia visualmente el HUD base.\n\n<!-- agent-task-id:cx-01-sc-layer-clickout -->"
+    },
+    {
+      "id": "cx-02-hover-disable-under-ui",
+      "title": "fix(constellation): desactivar hover/raycast/tooltip debajo de overlays y panel",
+      "scope": "docs",
+      "labels": ["copilot", "bug", "javascript"],
+      "body": "### Problema\nEl loop `animate()` corre `pickBody()` cada frame y muestra tooltip/cursor incluso cuando hay UI encima (panel abierto, indexer abierto, SC menu abierto). Esto genera sensación de interacción doble y cursor inconsistente.\n\n### Objetivo\nCuando cualquiera de estas capas esté activa:\n- panel `.panel.open`\n- indexer `#idxPanel.open`\n- SC menu (`scMenuOn`)\n\nEntonces:\n- no calcular hover 3D (o forzar hit=-1)\n- ocultar tooltip\n- cursor default\n\n### Archivos\n- `memory/constellation/CONSTELACION-COSMICA.html`\n\n### Criterios de aceptación\n- Con panel abierto: tooltip no aparece y hover SFX 3D no suena.\n- Con indexer abierto: idem.\n- Con SC menu abierto: idem.\n\n<!-- agent-task-id:cx-02-hover-disable-under-ui -->"
+    },
+    {
+      "id": "cx-03-ui-layer-refactor",
+      "title": "refactor(constellation): robustecer detección UI vs canvas (data-ui-layer)",
+      "scope": "docs",
+      "labels": ["copilot", "enhancement", "javascript"],
+      "body": "### Problema\n`isEventOnUiLayer()` usa un selector hardcode `.closest('.legend, .controls, ...')`. Es frágil al añadir nuevas capas UI.\n\n### Objetivo\nImplementar un mecanismo robusto:\n- Agregar `data-ui-layer=\"true\"` a los contenedores principales de UI (legend, controls, indexer, panel, scLayer, hud-top, scale-legend, loader), o un root único.\n- Cambiar `isEventOnUiLayer(el)` para detectar por `closest('[data-ui-layer=\"true\"]')`.\n\n### Criterios de aceptación\n- Cualquier UI nueva bajo un contenedor `data-ui-layer` queda automáticamente excluida del raycast.\n- El comportamiento existente no cambia.\n\n<!-- agent-task-id:cx-03-ui-layer-refactor -->"
+    },
+    {
+      "id": "cx-04-a11y-indexer-buttons",
+      "title": "a11y(constellation): indexer accesible (buttons, focus, ESC, enter/space)",
+      "scope": "docs",
+      "labels": ["copilot", "enhancement", "javascript", "documentation"],
+      "body": "### Problema\n- `idxToggle` debería ser `type=\"button\"`.\n- Los items del indexer se construyen como `div` clicable; no son accesibles por teclado.\n\n### Objetivo\n- Asegurar que `idxToggle` tenga `type=\"button\"`.\n- Convertir items del indexer a `button` o hacerlos focusables con `tabindex=0` + `role=button`.\n- Añadir handlers `keydown`: Enter/Espacio para activar, ESC para cerrar.\n- Opcional: al abrir indexer, focus al primer item; al cerrar, devolver foco al toggle.\n\n### Archivos\n- `memory/constellation/CONSTELACION-COSMICA.html`\n\n### Criterios de aceptación\n- Se puede navegar indexer con teclado y activar un item.\n\n<!-- agent-task-id:cx-04-a11y-indexer-buttons -->"
+    },
+    {
+      "id": "cx-05-motion-tokenize-ui",
+      "title": "motion(constellation): unificar transiciones UI con tokens --motion/* y --ease/*",
+      "scope": "docs",
+      "labels": ["copilot", "enhancement", "documentation"],
+      "body": "### Problema\nHay tokens de motion en `:root` (para SC menu), pero muchas transiciones del HUD base están hardcode (`.panel`, `.chip`, etc.). `prefers-reduced-motion` no apaga esas transiciones.\n\n### Objetivo\n- Introducir/usar tokens para UI base sin cambiar la “sensación” actual.\n- Reemplazar `transition:all .2s ease` en `.chip` por transiciones específicas (background/border/box-shadow/transform) usando `var(--motion-fast)` y `var(--ease-out)`.\n- Tokenizar las transiciones de `.panel` manteniendo sus tiempos actuales.\n- Asegurar que `prefers-reduced-motion` reduzca transiciones relevantes.\n\n### Criterios de aceptación\n- No cambia el layout; solo consistencia de motion.\n\n<!-- agent-task-id:cx-05-motion-tokenize-ui -->"
+    },
+    {
+      "id": "cx-06-responsive-overlays-safearea",
+      "title": "responsive(constellation): overlays SC no deben tapar controles/leyenda (safe-area + breakpoints)",
+      "scope": "docs",
+      "labels": ["copilot", "enhancement", "javascript"],
+      "body": "### Objetivo\nEn pantallas pequeñas, overlays (TL/TR) y portales no deben tapar legend/controls.\n\n### Requerimientos\n- Usar `env(safe-area-inset-*)` donde aplique.\n- Ajustar posiciones/size en `@media (max-width:820px)` y `@media (max-width:480px)`.\n- Mantener overlays como capa complementaria: se activan solo con `btnMenu` / `M`.\n\n### Criterios de aceptación\n- En móvil, menú RTS sigue usable: modal centrado y botones visibles.\n\n<!-- agent-task-id:cx-06-responsive-overlays-safearea -->"
+    },
+    {
+      "id": "cx-07-audio-semantic-coherence",
+      "title": "audio(constellation): coherencia semántica por facción (hover=Rdy, select=Yes, warn/crit=Err) + variedad sin spam",
+      "scope": "docs",
+      "labels": ["copilot", "enhancement", "javascript", "documentation"],
+      "body": "### Problema\nLos pools actuales funcionan, pero mezclan familias (advisor/neutral dentro de terran hover) y algunos eventos usan `Rdy` como `select`.\n\n### Objetivo\nRe-mapar pools usando solo WAV existentes en `memory/constellation/sounds/agentcraft/`:\n- Hover (3D/UI): solo sonidos tipo `*Rdy*` por facción.\n- Select: solo `*Yes*` por facción.\n- BriefOk: `Yes`/`Upd` positivos.\n- BriefWarn vs BriefCrit: deben sonar distintos; `Err` reservado para crit.\n- Neutral/Star: usar pools neutrales (advisor/comm) sin sesgo de raza.\n\nOpcional (si es simple): implementar selección tipo shuffle-bag para evitar repetición inmediata.\n\n### Criterios de aceptación\n- No hay errores 404 de WAV.\n- Se siente consistente y variado.\n\n<!-- agent-task-id:cx-07-audio-semantic-coherence -->"
+    },
+    {
+      "id": "cx-08-reduced-motion-3d",
+      "title": "perf(constellation): prefers-reduced-motion reduce loops 3D (autoRotate, speeds, render)",
+      "scope": "docs",
+      "labels": ["copilot", "enhancement", "javascript"],
+      "body": "### Problema\n`prefers-reduced-motion` apaga algunas animaciones CSS, pero el loop 3D sigue animando órbitas/scanlines/etc.\n\n### Objetivo\nCuando `matchMedia('(prefers-reduced-motion: reduce)')`:\n- Desactivar `autoRotate` por defecto.\n- Reducir speeds de órbitas/twinkle, o throttlear render (ej. render cada 2 frames).\n- Mantener la app funcional (clicks/panel).\n\n### Criterios de aceptación\n- Menos movimiento percibido sin romper interacción.\n\n<!-- agent-task-id:cx-08-reduced-motion-3d -->"
+    }
+  ]
+}
+

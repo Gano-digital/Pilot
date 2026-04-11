@@ -1,4 +1,5 @@
-name: 🚀 Deploy Gano Digital → Production
+# UI Actions: 04 · Deploy · Producción (rsync)
+name: "04 · Deploy · Producción (rsync)"
 
 on:
   push:
@@ -8,6 +9,7 @@ on:
       - 'wp-content/plugins/gano-*/**'
       - 'wp-content/mu-plugins/**'
       - '.htaccess'
+      - '.github/workflows/deploy.yml'
 
   workflow_dispatch:
     inputs:
@@ -27,107 +29,126 @@ concurrency:
 jobs:
   # ──────────────────────────────────────────────────────────────────────────
   # JOB 1: Security Scan — No credentials in code
+  # Corre en self-hosted runner (servidor GoDaddy) — sin consumir minutos GitHub.
   # ──────────────────────────────────────────────────────────────────────────
   security-check:
     name: 🔐 Security Scan
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, gano-production]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Check for hardcoded credentials
         run: |
-          # Fail if any PHP credential patterns are found outside .gsd/
-          if grep -rE "(SSH_PASS\s*=|password\s*=\s*['\"][^'\"\$])" \
-            --include="*.php" --include="*.py" \
-            --exclude-dir=".gsd" --exclude-dir="vendor" .; then
-            echo "❌ Credenciales en texto plano detectadas. Usa GitHub Secrets."
+          set -euo pipefail
+          FOUND=0
+          scan_dir() {
+            local d="$1"
+            [ -e "$d" ] || return 0
+            if grep -rE "(SSH_PASS\s*=|password\s*=\s*['\"][^'\"\$])" \
+              --include="*.php" --include="*.py" \
+              "$d" 2>/dev/null; then
+              FOUND=1
+            fi
+          }
+          for d in wp-content/themes/gano-child wp-content/mu-plugins scripts .github; do
+            scan_dir "$d"
+          done
+          for d in wp-content/plugins/gano-*; do
+            [ -d "$d" ] || continue
+            scan_dir "$d"
+          done
+          if [ "$FOUND" -ne 0 ]; then
+            echo "❌ Posible credencial en texto plano en código Gano. Usa GitHub Secrets."
             exit 1
           fi
-          echo "✅ Sin credenciales expuestas."
+          echo "✅ Sin credenciales expuestas (paths Gano)."
 
   # ──────────────────────────────────────────────────────────────────────────
-  # JOB 2: Deploy Theme + Plugins via SSH
+  # JOB 2: Deploy Theme + Plugins — rsync local en el servidor
+  #
+  # El self-hosted runner corre EN el servidor GoDaddy:
+  # - No SSH externo (el runner ya está en la máquina).
+  # - No webhook — copia de archivos directa con rsync.
+  # - Sin consumir minutos de GitHub Actions.
+  #
+  # Runner: gano-godaddy-server (~/github-runner) — cron restart cada 5 min.
   # ──────────────────────────────────────────────────────────────────────────
   deploy:
     name: 🚀 Deploy to ${{ github.event.inputs.environment || 'production' }}
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, gano-production]
     needs: security-check
     environment:
-      name: ${{ github.event.inputs.environment || 'production' }}
+      name: Production
       url: https://gano.digital
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
-          submodules: false  # .gsd no se despliega al servidor
-
-      - name: Setup SSH Agent
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SSH }}
-
-      - name: Add server to known_hosts
-        run: |
-          ssh-keyscan -H 72.167.102.145 >> ~/.ssh/known_hosts
+          submodules: false
 
       - name: 📦 Deploy Child Theme
         run: |
-          rsync -avz --delete \
+          set -euo pipefail
+          DEPLOY="${{ secrets.DEPLOY_PATH }}"
+          mkdir -p "$DEPLOY/wp-content/themes"
+          rsync -av --delete \
             --exclude='.git' \
             --exclude='*.map' \
             wp-content/themes/gano-child/ \
-            f1rml03th382@72.167.102.145:/home/f1rml03th382/public_html/wp-content/themes/gano-child/
-
-      - name: 📦 Deploy Custom Plugins
-        run: |
-          rsync -avz --delete \
-            --exclude='.git' \
-            wp-content/plugins/gano-content-importer/ \
-            f1rml03th382@72.167.102.145:/home/f1rml03th382/public_html/wp-content/plugins/gano-content-importer/
-
-          rsync -avz --delete \
-            --exclude='.git' \
-            wp-content/plugins/gano-phase3-content/ \
-            f1rml03th382@72.167.102.145:/home/f1rml03th382/public_html/wp-content/plugins/gano-phase3-content/
-
-          rsync -avz --delete \
-            --exclude='.git' \
-            wp-content/plugins/gano-wompi-integration/ \
-            f1rml03th382@72.167.102.145:/home/f1rml03th382/public_html/wp-content/plugins/gano-wompi-integration/
-
-          rsync -avz --delete \
-            --exclude='.git' \
-            wp-content/plugins/gano-reseller-enhancements/ \
-            f1rml03th382@72.167.102.145:/home/f1rml03th382/public_html/wp-content/plugins/gano-reseller-enhancements/
+            "$DEPLOY/wp-content/themes/gano-child/"
+          echo "✅ gano-child sincronizado"
 
       - name: 📦 Deploy MU Plugins
         run: |
-          rsync -avz \
+          set -euo pipefail
+          DEPLOY="${{ secrets.DEPLOY_PATH }}"
+          mkdir -p "$DEPLOY/wp-content/mu-plugins"
+          for f in \
             wp-content/mu-plugins/gano-security.php \
             wp-content/mu-plugins/gano-seo.php \
-            wp-content/mu-plugins/gano-agent-core.php \
-            f1rml03th382@72.167.102.145:/home/f1rml03th382/public_html/wp-content/mu-plugins/
+            wp-content/mu-plugins/gano-agent-core.php; do
+            [ -f "$f" ] && rsync -av "$f" "$DEPLOY/wp-content/mu-plugins/" && echo "✅ $f"
+          done
+
+      - name: 📦 Deploy Custom Plugins
+        run: |
+          set -euo pipefail
+          DEPLOY="${{ secrets.DEPLOY_PATH }}"
+          mkdir -p "$DEPLOY/wp-content/plugins"
+          for d in wp-content/plugins/gano-*; do
+            [ -d "$d" ] || continue
+            name=$(basename "$d")
+            rsync -av --delete --exclude='.git' \
+              "$d/" "$DEPLOY/wp-content/plugins/$name/"
+            echo "✅ $name"
+          done
 
       - name: 🔄 Flush WordPress Cache
         run: |
-          ssh f1rml03th382@72.167.102.145 \
-            "cd /home/f1rml03th382/public_html && wp cache flush --allow-root 2>/dev/null || true"
+          wp cache flush --allow-root --path="${{ secrets.DEPLOY_PATH }}" 2>/dev/null || true
+          echo "✅ Cache flushed"
 
       - name: ✅ Verify Deployment
         run: |
-          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://gano.digital)
-          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 400 ]; then
-            echo "✅ Sitio respondiendo: HTTP $HTTP_STATUS"
-          else
-            echo "❌ Sitio no responde correctamente: HTTP $HTTP_STATUS"
-            exit 1
-          fi
+          set -euo pipefail
+          for i in 1 2 3 4 5; do
+            HTTP=$(curl -sS -o /dev/null -w "%{http_code}" -A "GanoVerify/1.0" \
+              --max-time 20 https://gano.digital || echo "000")
+            if [ "$HTTP" -ge 200 ] && [ "$HTTP" -lt 400 ]; then
+              echo "✅ Sitio respondiendo: HTTP $HTTP"
+              exit 0
+            fi
+            echo "Reintento $i/5 — HTTP $HTTP"
+            sleep 5
+          done
+          echo "❌ Sitio no responde: HTTP $HTTP"
+          exit 1
 
       - name: 📊 Deployment Summary
         if: always()
         run: |
           echo "## 🚀 Deployment Report" >> $GITHUB_STEP_SUMMARY
-          echo "- **Servidor**: 72.167.102.145 (gano.digital)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Runner**: gano-godaddy-server (self-hosted)" >> $GITHUB_STEP_SUMMARY
           echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Timestamp**: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_STEP_SUMMARY

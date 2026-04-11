@@ -1,0 +1,367 @@
+{
+  "metadata": {
+    "project": "Gano Digital",
+    "manifest_version": "1.0",
+    "created": "2026-04-03",
+    "updated": "2026-04-03",
+    "maintained_by": "Claude (Blender 3D Specialist)",
+    "total_assets": 12,
+    "status": "PLANNING",
+    "total_storage_target": "15MB (all formats combined)"
+  },
+
+  "asset_categories": {
+    "icons": {
+      "description": "Small 3D icons for feature lists, benefits, CTAs",
+      "target_count": 4,
+      "target_resolution": "800x800px",
+      "target_format": "WebP (lossy, quality=80)",
+      "estimated_size_per": "40KB"
+    },
+    "hero_illustrations": {
+      "description": "Large hero section assets and background illustrations",
+      "target_count": 3,
+      "target_resolution": "2048x2048px or 1920x1080px",
+      "target_format": "WebP (lossless) + PNG fallback",
+      "estimated_size_per": "400KB"
+    },
+    "server_illustrations": {
+      "description": "Datacenter, infrastructure, technical diagrams",
+      "target_count": 2,
+      "target_resolution": "1600x1200px",
+      "target_format": "WebP + GLTF-Draco (3D)",
+      "estimated_size_per": "200KB image + 150KB 3D"
+    },
+    "animated_elements": {
+      "description": "Micro-animations for Elementor, skeleton loading, transitions",
+      "target_count": 2,
+      "target_resolution": "800x600px (animated GIF/MP4)",
+      "target_format": "WebP animated + MP4 fallback",
+      "estimated_size_per": "100KB"
+    },
+    "3d_interactive": {
+      "description": "Full 3D models for model-viewer integration",
+      "target_count": 1,
+      "target_format": "GLTF-Draco compressed",
+      "estimated_size": "300KB"
+    }
+  },
+
+  "asset_specifications": [
+    {
+      "id": "security-lock-v1",
+      "name": "Candado Digital - Zero Trust",
+      "category": "icons",
+      "status": "PLANNED",
+      "priority": "P0",
+      "description": "Minimalist 3D lock icon with digital code overlay. Represents Zero-Trust Security philosophy.",
+      "specifications": {
+        "resolution": "800x800px",
+        "color_scheme": ["#0066FF", "#C0C0C0", "#FFFFFF"],
+        "style": "3D modern, minimalist, clean lines",
+        "background": "transparent",
+        "animation": "none",
+        "lighting": "3-point professional setup"
+      },
+      "sources": {
+        "primary": "hunyuan3d",
+        "fallback": "sketchfab:search:secure+lock+icon",
+        "textures": "procedural (Blender nodes)"
+      },
+      "prompts": {
+        "hunyuan3d": "Icono 3D moderno: candado digital con líneas de código superpuestas. Colores: azul digital #0066FF, plata #C0C0C0, blanco. Estilo: minimalista, bordes definidos, fondo transparente. Resolución: 2K. Uso: landing page hosting seguro, tema Zero-Trust Security.",
+        "sketchfab_search": "candado digital secure zero trust lock icon 3d modern minimalist"
+      },
+      "usage": {
+        "elementor": ["hero-section", "feature-grid", "benefits-list"],
+        "pages": ["home", "seguridad", "servicios"],
+        "contexts": ["hero-icon", "feature-card-icon", "benefit-bullet"]
+      },
+      "deliverables": {
+        "webp_800x800": "wp-content/themes/gano-child/assets/images/icons/security-lock-800x800.webp",
+        "png_fallback": "wp-content/themes/gano-child/assets/images/icons/security-lock-800x800.png",
+        "blender_source": ".blender/projects/security-lock-v1.blend"
+      },
+      "metrics": {
+        "target_file_size": "40KB",
+        "lighthouse_performance_impact": "pending",
+        "render_time_hours": 1.5,
+        "optimization_time_hours": 0.3
+      },
+      "schedule": {
+        "start_date": "2026-04-04",
+        "target_completion": "2026-04-05",
+        "total_timeline_hours": 2
+      }
+    },
+
+    {
+      "id": "speed-lightning-v1",
+      "name": "Rayo Velocidad - Performance",
+      "category": "icons",
+      "status": "PLANNED",
+      "priority": "P0",
+      "description": "Dynamic 3D lightning bolt. Represents speed, performance, and energy.",
+      "specifications": {
+        "resolution": "800x800px",
+        "color_scheme": ["#FFD700", "#FFA500", "#FFFFFF"],
+        "style": "3D dynamic, geometric, tech aesthetic",
+        "background": "transparent",
+        "animation": "none",
+        "lighting": "dramatic 2-light setup"
+      },
+      "sources": {
+        "primary": "hunyuan3d",
+        "fallback": "sketchfab:search:lightning+bolt+3d"
+      },
+      "prompts": {
+        "hunyuan3d": "Icono 3D moderno: rayo de energía dinámico y poderoso. Colores: dorado #FFD700, naranja #FFA500, blanco. Estilo: geométrico, tech, bordes nítidos, minimalista. Fondo transparente. Uso: tema velocidad y performance de hosting."
+      },
+      "usage": {
+        "elementor": ["feature-grid", "benefits-section"],
+        "pages": ["home", "rendimiento"],
+        "contexts": ["feature-card-icon", "speed-indicator"]
+      },
+      "deliverables": {
+        "webp_800x800": "wp-content/themes/gano-child/assets/images/icons/speed-lightning-800x800.webp",
+        "png_fallback": "wp-content/themes/gano-child/assets/images/icons/speed-lightning-800x800.png",
+        "blender_source": ".blender/projects/speed-lightning-v1.blend"
+      },
+      "metrics": {
+        "target_file_size": "40KB",
+        "render_time_hours": 1.5,
+        "optimization_time_hours": 0.3
+      },
+      "schedule": {
+        "start_date": "2026-04-05",
+        "target_completion": "2026-04-06",
+        "total_timeline_hours": 2
+      }
+    },
+
+    {
+      "id": "shield-ddos-v1",
+      "name": "Escudo DDoS - Protección",
+      "category": "icons",
+      "status": "PLANNED",
+      "priority": "P0",
+      "description": "3D shield with digital patterns. Represents DDoS protection and security.",
+      "specifications": {
+        "resolution": "800x800px",
+        "color_scheme": ["#0066FF", "#00FF00", "#FFFFFF"],
+        "style": "3D tech, layered, fortress aesthetic",
+        "background": "transparent",
+        "animation": "none"
+      },
+      "sources": {
+        "primary": "hunyuan3d",
+        "fallback": "sketchfab"
+      },
+      "prompts": {
+        "hunyuan3d": "Icono 3D: escudo digital multicapa con patrones de protección. Colores: azul #0066FF, verde neón #00FF00, blanco. Estilo: tech moderno, capas visibles, líneas de código digitales. Tema: protección DDoS y seguridad multicapa."
+      },
+      "usage": {
+        "elementor": ["feature-grid"],
+        "pages": ["seguridad"],
+        "contexts": ["protection-feature"]
+      },
+      "deliverables": {
+        "webp_800x800": "wp-content/themes/gano-child/assets/images/icons/shield-ddos-800x800.webp"
+      },
+      "metrics": {
+        "target_file_size": "40KB",
+        "render_time_hours": 1.5
+      }
+    },
+
+    {
+      "id": "server-nvme-hero",
+      "name": "Servidor NVMe - Infraestructura",
+      "category": "hero_illustrations",
+      "status": "PLANNED",
+      "priority": "P1",
+      "description": "Large hero illustration showing NVMe server architecture with data flow.",
+      "specifications": {
+        "resolution": "1920x1080px",
+        "color_scheme": ["#0066FF", "#00FF00", "#1a1a2e"],
+        "style": "3D architecture visualization, modern datacenter",
+        "background": "gradient dark to light blue",
+        "animation": "optional: data flow pulse"
+      },
+      "sources": {
+        "primary": "hunyuan3d",
+        "fallback": "sketchfab:datacenter"
+      },
+      "prompts": {
+        "hunyuan3d": "Ilustración 3D profesional: servidor moderno con arquitectura NVMe visible. Elementos: circuitos digitales, flujo de datos luminosos verde, estructura metálica azul. Fondo: gradiente azul oscuro a claro. Estilo: futurista, limpio, profesional. Resolución: 4K. Uso: hero section landing page hosting."
+      },
+      "usage": {
+        "elementor": ["hero-section", "above-fold"],
+        "pages": ["home"],
+        "contexts": ["hero-background"]
+      },
+      "deliverables": {
+        "webp": "wp-content/themes/gano-child/assets/images/heroes/nvme-server-1920x1080.webp",
+        "blender_3d": "wp-content/themes/gano-child/assets/3d/scenes/nvme-server-v1.glb"
+      },
+      "metrics": {
+        "target_file_size": "350KB",
+        "render_time_hours": 3,
+        "optimization_time_hours": 0.5
+      }
+    },
+
+    {
+      "id": "colombia-globe-hero",
+      "name": "Globo Colombia - Soberanía Digital",
+      "category": "hero_illustrations",
+      "status": "PLANNED",
+      "priority": "P1",
+      "description": "3D globe with Colombia highlighted. Represents local sovereignty and geographic focus.",
+      "specifications": {
+        "resolution": "1920x1080px",
+        "color_scheme": ["#FFD700", "#0066FF", "#FFFFFF"],
+        "style": "3D globe, geographic emphasis on Colombia",
+        "background": "starfield or dark space theme",
+        "animation": "rotating globe"
+      },
+      "sources": {
+        "primary": "hunyuan3d",
+        "fallback": "sketchfab:globe"
+      },
+      "prompts": {
+        "hunyuan3d": "Globo terráqueo 3D con Colombia destacada en oro luminoso. Fondo: espacio con estrellas. Estilo: moderno, profesional, tema: soberanía digital Latinoamérica. Colores: azul océano, dorado Colombia, blanco continentes."
+      },
+      "usage": {
+        "elementor": ["hero-section", "soberanía-section"],
+        "pages": ["home", "soberanía-digital"],
+        "contexts": ["geographic-hero"]
+      },
+      "deliverables": {
+        "webp": "wp-content/themes/gano-child/assets/images/heroes/colombia-globe-1920x1080.webp",
+        "animated": "wp-content/themes/gano-child/assets/videos/colombia-globe-rotating.mp4"
+      },
+      "metrics": {
+        "target_file_size": "400KB",
+        "render_time_hours": 2.5
+      }
+    },
+
+    {
+      "id": "skeleton-loading-animation",
+      "name": "Skeleton Loading Animado",
+      "category": "animated_elements",
+      "status": "PLANNED",
+      "priority": "P2",
+      "description": "Micro-animation for page loading skeleton states. Smooth, professional aesthetic.",
+      "specifications": {
+        "resolution": "1200x600px",
+        "format": "WebP animated + MP4",
+        "duration": "2 seconds (loop)",
+        "color_scheme": ["#E8E8E8", "#D0D0D0", "shimmer gradient"],
+        "style": "minimal, geometric shimmer"
+      },
+      "sources": {
+        "primary": "blender_custom",
+        "method": "Blender animation + material nodes"
+      },
+      "usage": {
+        "elementor": ["before-page-load"],
+        "pages": ["all pages with async content"],
+        "contexts": ["content-skeleton"]
+      },
+      "deliverables": {
+        "webp_animated": "wp-content/themes/gano-child/assets/animations/skeleton-shimmer.webp",
+        "mp4_fallback": "wp-content/themes/gano-child/assets/animations/skeleton-shimmer.mp4"
+      },
+      "metrics": {
+        "target_file_size": "80KB",
+        "render_time_hours": 1.5
+      }
+    },
+
+    {
+      "id": "infographic-performance",
+      "name": "Infografía - Comparativa Velocidad",
+      "category": "server_illustrations",
+      "status": "PLANNED",
+      "priority": "P2",
+      "description": "Side-by-side comparison: Traditional Hosting vs Gano Digital (NVMe, CDN, optimization).",
+      "specifications": {
+        "resolution": "1600x900px",
+        "style": "infographic, tech visualization",
+        "color_scheme": ["#0066FF", "#FF6B6B", "#00FF00"],
+        "elements": "bars, icons, numbers, arrows"
+      },
+      "sources": {
+        "primary": "blender_custom + text overlay",
+        "components": "blender 3D + Figma design"
+      },
+      "usage": {
+        "elementor": ["comparison-section"],
+        "pages": ["rendimiento"],
+        "contexts": ["side-by-side-comparison"]
+      },
+      "deliverables": {
+        "webp": "wp-content/themes/gano-child/assets/images/infographics/performance-comparison.webp"
+      },
+      "metrics": {
+        "target_file_size": "200KB",
+        "creation_time_hours": 2
+      }
+    }
+  ],
+
+  "generation_schedule": {
+    "wave_1": {
+      "timeline": "2026-04-04 to 2026-04-10",
+      "assets": ["security-lock-v1", "speed-lightning-v1", "shield-ddos-v1"],
+      "assignee": "claude-blender",
+      "status": "READY TO START"
+    },
+    "wave_2": {
+      "timeline": "2026-04-10 to 2026-04-17",
+      "assets": ["server-nvme-hero", "colombia-globe-hero"],
+      "assignee": "claude-blender",
+      "status": "READY TO START (depends on Blender daemon)"
+    },
+    "wave_3": {
+      "timeline": "2026-04-17 to 2026-04-24",
+      "assets": ["skeleton-loading-animation", "infographic-performance"],
+      "assignee": "claude-blender",
+      "status": "PLANNED"
+    }
+  },
+
+  "dependencies": {
+    "blender_daemon": "⚠️ REQUIRED - Blender must be running for execution",
+    "ssh_access": "✅ READY - cPanel/server access configured (awaiting key sync)",
+    "polyhaven_access": "✅ READY - Sketchfab + PolyHaven APIs available",
+    "hunyuan3d_integration": "✅ READY - AI generation tool available",
+    "git_workflow": "✅ READY - Version control configured"
+  },
+
+  "performance_targets": {
+    "individual_asset_time": "1.5 - 3 hours (from concept to production)",
+    "batch_time": "Wave 1: 7 days (3 parallel assets)",
+    "total_storage": "< 15MB for all 12 assets",
+    "lighthouse_performance": "> 90 on all pages using assets",
+    "web_performance": "LCP < 2.5s, CLS < 0.1"
+  },
+
+  "quality_metrics": {
+    "brand_consistency": "All assets match Gano Digital brand (blue #0066FF, modern, professional)",
+    "licensing": "All assets CC0 or commercial license",
+    "optimization": "Web-optimized (WebP, GLTF-Draco, min file size)",
+    "accessibility": "alt text provided, WCAG 2.1 AA compliant",
+    "versioning": "Semantic versioning (asset-name-vX.Y.Z)"
+  },
+
+  "notes": {
+    "blender_setup": "Blender daemon must be running on local machine. Will attempt to auto-start via scripts/start-blender.sh if not available.",
+    "asset_sourcing": "Priority: Hunyuan3D > Sketchfab CC0 > Polyhaven. Always validate licenses.",
+    "git_strategy": "Each asset = separate commit with metadata. Atomic commits for easy rollback.",
+    "continuous_improvement": "Each asset generates learned patterns saved to .gano-skills/ for future optimization.",
+    "post_completion": "Target: 25+ high-quality assets enabling rapid future page creation"
+  }
+}

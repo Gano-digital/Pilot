@@ -1,0 +1,45 @@
+name: DNS / HTTPS — gano.digital
+description: Seguimiento de propagación, certificado o URL canónica (sin secretos en el cuerpo).
+title: "[infra] DNS/HTTPS: "
+labels: ["coordination", "infra"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Usa esta plantilla para **gano.digital** cuando falle resolución, HTTPS o redirecciones.
+        **No pegues** contraseñas de GoDaddy ni tokens. Puedes adjuntar salida de `python scripts/check_dns_https_gano.py` (sin datos sensibles).
+
+  - type: textarea
+    id: symptom
+    attributes:
+      label: Síntoma
+      description: Ej. "https://gano.digital timeout", "www no redirige", "certificado inválido".
+    validations:
+      required: true
+
+  - type: textarea
+    id: checks
+    attributes:
+      label: Qué ya probaste
+      description: Navegador, incógnito, otro DNS, script local, etc.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: apex_www
+    attributes:
+      label: URL que debe ser canónica
+      options:
+        - https://gano.digital (apex)
+        - https://www.gano.digital
+        - Aún no definido
+    validations:
+      required: true
+
+  - type: textarea
+    id: next
+    attributes:
+      label: Siguiente paso sugerido (humano)
+      description: Ej. "Abrir ticket GoDaddy", "Ajustar A en registrador", "Revisar SSL en Managed WP".
+    validations:
+      required: false

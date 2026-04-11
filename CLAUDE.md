@@ -7,7 +7,7 @@ real de hosting WordPress en Colombia. Workspace: esta carpeta raíz del proyect
 ## Proyecto actual
 | Nombre | Qué es |
 |--------|--------|
-| **gano.digital** | Sitio web de hosting WordPress en Colombia (WP + Elementor + WooCommerce + Wompi) |
+| **gano.digital** | Sitio web de hosting WordPress en Colombia (WP + Elementor + WooCommerce; checkout vía **GoDaddy Reseller**) |
 | **Plan Maestro** | Auditoría integral + roadmap de 5 fases generado en Marzo 2026 |
 
 → Detalles completos: `memory/projects/gano-digital.md`
@@ -17,7 +17,7 @@ real de hosting WordPress en Colombia. Workspace: esta carpeta raíz del proyect
 |-----------|---------|
 | **CMS** | WordPress + Elementor + Royal Elementor Addons |
 | **E-commerce** | WooCommerce (moneda COP, zona Bogotá) |
-| **Pago** | Wompi Colombia (PSE + Tarjetas + Nequi) |
+| **Pago / checkout cliente** | **GoDaddy Reseller Store** (carrito marca blanca, facturación del lado Reseller). Sin priorizar pasarelas locales ajenas al ecosistema GoDaddy. |
 | **Seguridad** | Wordfence + MU Plugin gano-security.php |
 | **SEO** | Rank Math |
 | **Tema** | Hello Elementor → gano-child |
@@ -30,8 +30,8 @@ Plan actual donde está alojado gano.digital. Relevante para saber qué tenemos 
 - CDN incluido (hasta 2x más rápido)
 - Protección DDoS
 - Staging site disponible ← útil para probar cambios antes de subir a producción
-- Subdomains permitidos ✅ — my.gano.digital, support.gano.digital pueden crearse en este mismo plan
-- **Implicación Fase 4**: El staging site permite instalar/probar WHMCS, FreeScout, etc. antes de ir a producción. Los subdomains van en este mismo servidor (no se necesita VPS separado para el portal y soporte).
+- Subdomains permitidos ✅ — my.gano.digital, support.gano.digital pueden crearse en este mismo plan; **ops.gano.digital** puede apuntar al Ops Hub (GitHub Pages o carpeta estática) — ver `memory/ops/gano-ops-hub-deployment.md`
+- **Implicación Fase 4**: El staging site permite probar cambios de vitrina, Reseller y plugins antes de producción. Los subdomains van en este mismo plan cuando apliquen.
 
 ## Términos clave
 | Término | Significado |
@@ -40,7 +40,8 @@ Plan actual donde está alojado gano.digital. Relevante para saber qué tenemos 
 | **fases** | Las 5 fases del roadmap de desarrollo |
 | **plugins de fase** | gano-phase1..7 — instaladores del sitio (ver nota crítica) |
 | **MU plugin** | gano-security.php en /mu-plugins/ — seguridad base |
-| **Wompi** | Pasarela de pago colombiana (PSE/tarjetas) |
+| **Reseller** | Programa GoDaddy Reseller: catálogo, checkout y cobro al cliente final (ver `TASKS.md` Fase 4). |
+| **Developer API (GoDaddy)** | Herramientas **opcionales** (REST, Key/Secret): automatización o consultas **fuera** del núcleo vitrina/RCC. **No** requiere Good as Gold hasta que la API **compre** productos que debiten prepago. **No** implica cambiar plugins salvo decisión explícita. Ver `memory/research/sota-apis-mercadolibre-godaddy-2026-04.md` §3.7. |
 | **ecosistemas** | Los 4 planes de hosting de Gano Digital |
 | **skills** | Scripts de guía en .gano-skills/ |
 
@@ -88,26 +89,21 @@ Plugin que instala contenido de posicionamiento estratégico. Cada página inclu
 
 ### Completado ✅ — Fases 1, 2 y 3
 
-**Fase 1 — Parches críticos:** WP_DEBUG, webhook Wompi HMAC, clave hardcodeada, nonce CSRF chat, alerta wp-file-manager
-**Fase 2 — Hardening:** Rate limiting REST (429), AES-256-CBC claves Wompi, CSP enforced + 4 headers, CSRF troubleshooter
+**Fase 1 — Parches críticos:** WP_DEBUG, endurecimiento de secretos/webhooks donde aplicaba el código histórico, nonce CSRF chat, alerta wp-file-manager
+**Fase 2 — Hardening:** Rate limiting REST (429), almacenamiento seguro de claves donde hubo plugins de pago legacy, CSP enforced + 4 headers, CSRF troubleshooter
 **Fase 3 — SEO/Performance:** Schema JSON-LD (Org+LocalBiz+Product+FAQ), MU plugin gano-seo.php, Core Web Vitals, template landing SEO, landing "hosting wordpress colombia"
 
 → Detalle completo: `TASKS.md`
 
-### Próximos pasos — Fase 4 (Plataforma Real de Hosting)
-Investigación actualizada en: `memory/research/fase4-plataforma.md`
+### Próximos pasos — Fase 4 (comercialización dentro de GoDaddy)
 
-1. **Billing panel**: Instalar Blesta (recomendado) o WHMCS — ver comparativa en memory/research
-2. **Módulo Wompi** para WHMCS/Blesta
-3. **DIAN** facturación electrónica — módulo ESTUPENDO (contacto guardado)
-4. **Portal cliente**: my.gano.digital — subdomain + SSL
-5. **Tickets**: support.gano.digital — Freescout (self-hosted, gratis)
-6. **Dominios**: ResellerClub API (ya integrado en WHMCS nativo)
-7. **VPS provisión**: DigitalOcean / Hetzner vía módulo WHMCS
-8. **WhatsApp**: CloudLinkd (self-hosted) o WA Client module
-9. **Status page**: Cachet (self-hosted) o UptimeRobot
+**Prioridad:** lo que ya está o encaja en **GoDaddy** (Managed WordPress + **Reseller Store** + RCC). Ver **`TASKS.md`** (Fase 4 agilizada) y **`memory/projects/gano-digital.md`**.
 
-⚠️ Diego debe proveer: datos reales de contacto (NIT, teléfono), credenciales Wompi producción, decisión Blesta/WHMCS
+Ejemplos de línea de trabajo actual: depurar catálogo en Reseller Control Center, mapear CTAs del mockup (`shop-premium.php`) al carrito Reseller, prueba de flujo de checkout marca blanca, soporte (FreeScout u otro) si se define.
+
+Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/research/fase4-plataforma.md` como **referencia**, no como compromiso mientras el modelo activo sea Reseller en GoDaddy.
+
+⚠️ Diego debe proveer: datos reales de contacto (NIT, teléfono) donde falten en copy/legal.
 
 ## Referencia Externa
 | Documento | Contenido |
@@ -117,11 +113,21 @@ Investigación actualizada en: `memory/research/fase4-plataforma.md`
 ## Skills disponibles
 | Skill | Usar cuando |
 |-------|-------------|
-| `.gano-skills/gano-wp-security/` | Parches de seguridad WordPress/Wompi |
-| `.gano-skills/gano-wompi-fixer/` | Gateway de pago, webhooks, sandbox→producción |
+| `.gano-skills/gano-wp-security/` | Parches de seguridad WordPress / MU-plugins / tema |
+| `.gano-skills/gano-wompi-fixer/` | **Legacy** — solo si en el entorno aún existe código/plugin antiguo de pasarela local; **no priorizar**; comercio actual = Reseller GoDaddy |
 | `.gano-skills/gano-content-audit/` | Reemplazo de contenido placeholder, copy |
 | `.gano-skills/gano-fase4-plataforma/` | WHMCS/Blesta, billing, portal cliente, DIAN, investigación Fase 4 |
 | `.gano-skills/gano-multi-agent-local-workflow/` | Varios agentes (Cursor/Claude/Antigravity), ruta 1 vs backup, git sin secretos en URL |
+| `.gano-skills/gano-github-copilot-orchestration/` | GitHub Pilot: workflows 01–12, cola `.github/agent-queue/`, **08/09/10** (semillas/orquestar), prompt bulk, estado post-merge abril 2026 en la skill |
+| `.gano-skills/gano-mcp-and-cursor-tooling/` | MCP en Cursor (GitHub, browser), extensiones VS Code, Vitest `.gsd/sdk`, referencia skill oficial MCP de Claude en `_reference-claude-official/` |
+| `.gano-skills/gano-github-projects-board/` | Tablero GitHub Projects @Gano.digital: vistas, reporting, status updates, workflow 13 opcional |
+| `.gano-skills/gano-session-security-guardian/` | Cierre de sesión: higiene de datos sensibles, checklist, cola `tasks-security-guardian` (no sustituye TruffleHog) |
+| `.gano-skills/gano-starcraft1-assets-constellation/` | Formatos GRP/paleta/MPQ SC1, pipeline HUD Constellation, AgentCraft vs assets Blizzard; **no** redistribuir archivos del juego en git |
+| `.gano-skills/gano-dev-audit-reporting/` | Generar auditoría PDF/HTML para desarrolladores (capabilities + roadmap) |
+| `.gano-skills/gano-wp-engineering-quality/` | **Etapa posterior:** PHPUnit/WP-CLI/smoke y E2E opcional para subir calidad “ingeniería pura” sin reescribir WP; activar tras deploy estable y Fase 4 (ver `TASKS.md`) |
+| `.gano-skills/gano-graphify-local/` | Usar Graphify (vendor) como tooling local (sin hooks) para mapas de arquitectura/UX del repo |
+| `.gano-skills/gano-agent-orchestrator-local/` | Orquestar oleadas de agentes en paralelo (worktrees/PRs) como recurso opcional, recomendado en WSL2 |
+| `.gano-skills/gano-ml-ssd/` | Recurso integral I+D (apple/ml-ssd) para evaluación de codegen; submodule en `vendor/ml-ssd` |
 
 ## Archivos importantes
 | Archivo | Qué es |
@@ -131,15 +137,28 @@ Investigación actualizada en: `memory/research/fase4-plataforma.md`
 | `wp-config.php` | Config principal — hardened (Fase 1) |
 | `wp-content/mu-plugins/gano-security.php` | MU Plugin seguridad + CSP enforced (Fase 2) |
 | `wp-content/mu-plugins/gano-seo.php` | **NUEVO** MU Plugin SEO — schema JSON-LD (Fase 3) |
-| `wp-content/plugins/gano-wompi-integration/` | Pasarela Wompi — reescrita y hardened (Fase 1-2) |
+| `wp-content/plugins/gano-wompi-integration/` | **Solo si está presente en el sitio** — legado; no es el eje comercial actual (Reseller) |
 | `wp-content/themes/gano-child/functions.php` | Child theme — Core Web Vitals + rate limiting |
 | `wp-content/themes/gano-child/templates/page-seo-landing.php` | **NUEVO** Template landing SEO (Fase 3) |
 | `wp-content/themes/gano-child/seo-pages/` | **NUEVO** Contenido landing pages keywords |
 | `memory/research/fase4-plataforma.md` | **NUEVO** Investigación completa Fase 4 |
+| `memory/research/starcraft1-assets-sota.md` | **2026-04-02** Inventario técnico assets SC1/BW, brecha vs Constellation, herramientas (IronGRP, PyMS), legal |
+| `memory/audits/` | PDF/HTML auditoría desarrolladores; regenerar con `python scripts/generate_dev_audit_pdf.py` |
 | `memory/sessions/2026-04-01-reporte-cursor-descargas-y-herramientas.md` | **2026-04-01** Reporte de sesión Cursor: Descargas, `EJECUTAR_ANALISIS.ps1`, organización de folios, seguridad (`id_rsa` → `.ssh`). Continuidad para Claude. |
+| `memory/sessions/2026-04-02-reporte-handoff-godaddy-api-reseller-whmcs.md` | **2026-04-02** Handoff: GoDaddy Developer API vs Reseller Store, Good as Gold, WHMCS, pendientes y guardrails para Claude. |
+| `memory/sessions/2026-04-07-audit-github-pr-issues.md` | **2026-04-07** Auditoría GitHub: PR #136, issue #29, bloqueos merge (CodeQL / reglas), estado rama local. |
+| `memory/content/digital-files-and-content-setup.md` | **Setup digital:** mapa de `memory/`, contenido vs Elementor, handoff, GitHub, constelación — continuidad agentes/humanos. |
+| `tools/gano-ops-hub/README.md` | **Ops Hub:** dashboard progreso + acciones GitHub; `scripts/generate_gano_ops_progress.py`; workflow **14** → Pages opcional. |
+| `memory/research/aegis-patterns-for-gano-ops-2026-04.md` | Patrones inspirados en [AEGIS](https://github.com/Ouroboros1984/AEGIS) para ops (sin copiar código AGPL). |
+| `memory/claude/README.md` | **Contexto para Claude** — historial abril 2026, pendientes, FAQ; [`memory/claude/dispatch-queue.json`](memory/claude/dispatch-queue.json) + [`dispatch-prompt.md`](memory/claude/dispatch-prompt.md) cola ejecutable con `scripts/claude_dispatch.py`. |
+| `memory/ops/agent-playbook-asistentes-2026-04.md` | **Agentes + Actions + asistentes:** arranque, troubleshooting, cerrar issues, re-lanzar colas 08/09, offloading solo humano. |
+| `.vscode/tasks.json` | Tareas **Run Task** para dispatch (`next`, `list`, `validate`, `show`, `complete`) y validación cola Copilot. |
+| `scripts/generate_claude_audit_report_pdf.py` | **Informe PDF** de auditoría de desarrollo (estado repo, workflows, dispatch, PRs, riesgos). Salida: `reports/Gano-Digital-Auditoria-Desarrollo-YYYY-MM-DD.pdf` (`*.pdf` en gitignore). |
+| `scripts/generate_project_status_pdf.py` | **Reporte PDF compacto** (pocas páginas): resuelto vs pendiente, % por pilar, avance global ~47 %, prioridades P0–P3. Salida: `reports/Gano-Digital-Reporte-Status-Proyecto-YYYY-MM-DD.pdf`. Requiere `pip install fpdf2`. |
+| `scripts/generate_board_report_pdf.py` | Reporte ejecutivo más amplio (junta): `reports/Gano-Digital-Reporte-Estado-YYYY-MM.pdf`. |
 
 ## Preferencias de Diego
 - Comunicación en español
 - Prefiere documentación en .docx para reportes formales
-- Quiere implementar todo el stack real de hosting (WHMCS + facturación DIAN)
+- Quiere cerrar la vitrina y el flujo comercial **dentro del ecosistema GoDaddy** (Reseller + hosting actual); investigaciones WHMCS/DIAN quedan como referencia, no como prioridad mientras Reseller cubra checkout
 - No eliminar plugins de fase sin confirmación explícita

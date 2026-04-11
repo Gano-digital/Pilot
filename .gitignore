@@ -17,9 +17,15 @@
 /wp-content/upgrade/
 
 # ─── Credenciales y Archivos Sensibles ────────────────────────────────────────
-# Estos archivos contienen credenciales del servidor — NUNCA en git
-ssh_cli.py
+# Credenciales locales — NUNCA en git
+.env
+.env.*
+!.env.example
 gano_sftp_manager.py
+# Scripts de operaciones destructivas / one-off (mantener solo en local)
+run_cleanup.py
+run_db_recovery.py
+run_local_*.py
 import_staging_db.py
 cleanup_staging_db.py
 wp-config-staging.php
@@ -28,6 +34,8 @@ deploy.ps1
 
 # ─── Documentos y Binarios ────────────────────────────────────────────────────
 *.pdf
+# Excepción: auditorías internas versionadas
+!memory/audits/*.pdf
 *.docx
 *.xlsx
 *.zip
@@ -58,3 +66,29 @@ wp-content/debug.log
 ../configs/
 *.bak
 *.backup
+
+# Progreso local cola Claude dispatch (no commitear)
+memory/claude/dispatch-state.json
+
+# Vault Obsidian / clones locales de referencia
+.obsidian/
+/vendor/
+
+# Worktrees y artefactos locales de Claude Code
+.claude/
+
+# Agent Orchestrator (AO) - artefactos locales (opcional)
+agent-orchestrator.yaml
+agent-orchestrator.yml
+
+# ─── Tooling local / vaults (no commitear) ────────────────────────────────────
+.obsidian/
+
+# Vendor local (repos clonados para referencia; se versionan solo si son submodules)
+vendor/agentcraft/
+vendor/graphify/
+
+# Scripts con credenciales — NUNCA commitear
+audit_content.php
+cleanup_content.php
+*.staging.php

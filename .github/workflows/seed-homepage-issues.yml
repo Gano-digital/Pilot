@@ -1,0 +1,86 @@
+# Crea en bloque issues alineadas al FIXPLAN de homepage (una vez por repo, si no existen).
+# Ejecutar: Actions → Seed homepage Fix issues → Run workflow
+name: "09 · Agentes · Sembrar issues homepage"
+
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create homepage task issues (idempotent)
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const label = "homepage-fixplan";
+            const { data: openWithLabel } = await github.rest.issues.listForRepo({
+              owner,
+              repo,
+              labels: label,
+              state: "open",
+              per_page: 5,
+            });
+            if (openWithLabel.length) {
+              core.info(`Issues abiertos con label ${label} ya existen (${openWithLabel.length}); abortando para no duplicar.`);
+              return;
+            }
+            await github.rest.issues.createLabel({
+              owner,
+              repo,
+              name: label,
+              color: "0E8A16",
+              description: "Tareas homepage / Elementor (GANO fixplan)",
+            }).catch(() => {});
+            await github.rest.issues.createLabel({
+              owner,
+              repo,
+              name: "copilot",
+              color: "5319E7",
+              description: "Tarea apta para Copilot / revisión asistida",
+            }).catch(() => {});
+            const tasks = [
+              {
+                title: "[homepage] Asignar menú principal a ubicación primary",
+                body: `## Objetivo\nAsignar el menú existente a la ubicación de tema **primary** (nav_menu_locations no vacío).\n\n## Validación\nEn el front: Inicio, Hosting, Dominios, Servicios, Ecosistemas, Nosotros, Contacto visibles según diseño.\n\n## Etiqueta\n${label}`,
+              },
+              {
+                title: "[homepage] Hero: asset y vínculo en Elementor",
+                body: `## Objetivo\nCorregir hero (imagen hero_digital_garden.png u otra) con attachment_id válido y textos/CTA enlazados en datos Elementor.\n\n## Validación\nHero carga imagen y CTA sin roturas.\n\n## Etiqueta\n${label}`,
+              },
+              {
+                title: "[homepage] Pilares: reemplazar Lorem y placeholders",
+                body: `## Objetivo\nSustituir Lorem ipsum y emojis placeholder por copy e iconos definitivos (NVMe, WordPress blindada, Zero-Trust, Edge).\n\n## Validación\nSin Lorem en la sección pilares.\n\n## Etiqueta\n${label}`,
+              },
+              {
+                title: "[homepage] Sección “Un Socio Tecnológico”: copy real",
+                body: `## Objetivo\nReemplazar texto placeholder por contenido final y bullets alineados a posicionamiento Gano.\n\n## Validación\nRevisión visual + coherencia con PDF de referencia del sitio.\n\n## Etiqueta\n${label}`,
+              },
+              {
+                title: "[homepage] Layout: z-index / solapamiento texto",
+                body: `## Objetivo\nAjustar z-index u orden de capas en Elementor para que ilustración no tape texto.\n\n## Validación\nBreakpoints móvil y desktop.\n\n## Etiqueta\n${label}`,
+              },
+              {
+                title: "[homepage] CTA final: iconos en lugar de estrellas placeholder",
+                body: `## Objetivo\nSustituir caracteres ★ placeholder por iconos Elementor/Font Awesome según diseño.\n\n## Validación\nCTA final sin placeholders obvios.\n\n## Etiqueta\n${label}`,
+              },
+              {
+                title: "[homepage] Coming soon: pasar a borrador si aplica",
+                body: `## Objetivo\nSi post_id 1698 (o equivalente) está publicado como coming soon, pasar a **draft** o redirigir según estrategia.\n\n## Validación\nNo aparece en navegación pública si debe estar oculto.\n\n## Etiqueta\n${label}`,
+              },
+            ];
+            for (const t of tasks) {
+              await github.rest.issues.create({
+                owner,
+                repo,
+                title: t.title,
+                body: t.body,
+                labels: [label, "copilot"],
+              });
+              core.info(`Created: ${t.title}`);
+            }

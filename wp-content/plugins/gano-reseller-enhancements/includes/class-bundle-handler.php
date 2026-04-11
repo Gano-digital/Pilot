@@ -55,11 +55,14 @@ class Gano_Bundle_Handler {
             ];
         }
 
-        $pl_id = rstore_get_option( 'pl_id', '599667' );
-        $checkout_url = sprintf(
-            'https://cart.secureserver.net/?plid=%s&items=%s',
-            $pl_id,
-            urlencode( json_encode( $items ) )
+        $pl_id        = rstore_get_option( 'pl_id', '599667' );
+        $cart_base    = Gano_Reseller_Sandbox::get_cart_base_url();
+        $checkout_url = add_query_arg(
+            array(
+                'plid'  => $pl_id,
+                'items' => json_encode( $items ),
+            ),
+            $cart_base
         );
 
         wp_redirect( $checkout_url );

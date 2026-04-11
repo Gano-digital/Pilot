@@ -1,0 +1,19 @@
+# Requiere etiquetas creadas (ejecutar una vez: 06 · Repo · Crear etiquetas GitHub).
+name: "03 · PR · Etiquetas automáticas"
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (config .github/labeler.yml del PR)
+        uses: actions/checkout@v6
+      - uses: actions/labeler@v6

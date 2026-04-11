@@ -72,7 +72,7 @@ Template for `.planning/codebase/STACK.md` - captures the technology foundation.
 - [Additional tooling: e.g., "Docker for local DB"]
 
 **Production:**
-- [Deployment target: e.g., "Vercel", "AWS Lambda", "Docker container"]
+- [Deployment target: e.g., "Cloudflare Pages", "AWS Lambda", "Docker container"]
 - [Version requirements]
 
 ---

@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Guía de coordinación (GitHub ↔ servidor ↔ local)
+    url: https://github.com/Gano-digital/Pilot/blob/main/.github/DEV-COORDINATION.md
+    about: Fuentes de verdad, flujos y checklist sin secretos en el repo.

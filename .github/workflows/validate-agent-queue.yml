@@ -1,0 +1,34 @@
+# Falla el CI si tasks.json / tasks-wave2.json están mal formados o rompen deduplicación.
+name: "07 · Agentes · Validar cola JSON"
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - ".github/agent-queue/**"
+      - "scripts/validate_agent_queue.py"
+      - ".github/workflows/validate-agent-queue.yml"
+      - ".github/workflows/orchestrate-copilot-waves.yml"
+      - ".github/workflows/seed-copilot-queue.yml"
+      - ".github/workflows/seed-homepage-issues.yml"
+  pull_request:
+    branches: [main, master]
+    paths:
+      - ".github/agent-queue/**"
+      - "scripts/validate_agent_queue.py"
+      - ".github/workflows/validate-agent-queue.yml"
+      - ".github/workflows/seed-copilot-queue.yml"
+      - ".github/workflows/orchestrate-copilot-waves.yml"
+      - ".github/workflows/seed-homepage-issues.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Validate agent-queue JSON
+        run: python3 scripts/validate_agent_queue.py

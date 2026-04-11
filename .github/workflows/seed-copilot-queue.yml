@@ -1,0 +1,145 @@
+# Crea issues listos para el Copilot coding agent (cola versionada en agent-queue/tasks.json).
+# Ejecutar: Actions → 08 · Agentes · Sembrar cola Copilot → elegir ámbito → Run workflow.
+# Idempotencia: no duplica si ya existe un issue abierto con el mismo <!-- agent-task-id:... -->.
+name: "08 · Agentes · Sembrar cola Copilot"
+
+on:
+  workflow_dispatch:
+    inputs:
+      queue_file:
+        description: "Archivo de cola (oleadas 1–4 + infra + API + guardián seguridad — ver COPILOT-AGENT-QUEUE.md)"
+        required: true
+        default: tasks.json
+        type: choice
+        options:
+          - tasks.json
+          - tasks-constellation-ux.json
+          - tasks-wave2.json
+          - tasks-wave3.json
+          - tasks-wave4-ia-content.json
+          - tasks-infra-dns-ssl.json
+          - tasks-api-integrations-research.json
+          - tasks-security-guardian.json
+      scope:
+        description: "Ámbito de tareas a generar"
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - homepage
+          - theme
+          - content_seo
+          - security
+          - commerce
+          - docs
+          - coordination
+          - infra
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Create issues from queue (deduplicado)
+        uses: actions/github-script@v8
+        env:
+          SEED_QUEUE_FILE: ${{ github.event.inputs.queue_file }}
+          SEED_SCOPE: ${{ github.event.inputs.scope }}
+        with:
+          script: |
+            const fs = require('fs');
+            const allowed = [
+              'tasks.json',
+              'tasks-constellation-ux.json',
+              'tasks-wave2.json',
+              'tasks-wave3.json',
+              'tasks-wave4-ia-content.json',
+              'tasks-infra-dns-ssl.json',
+              'tasks-api-integrations-research.json',
+              'tasks-security-guardian.json',
+            ];
+            const qf = process.env.SEED_QUEUE_FILE || 'tasks.json';
+            if (!allowed.includes(qf)) {
+              core.setFailed('queue_file no permitido: ' + qf);
+              return;
+            }
+            const path = '.github/agent-queue/' + qf;
+            const raw = fs.readFileSync(path, 'utf8');
+            const parsed = JSON.parse(raw);
+            const tasks = parsed.tasks;
+            if (!Array.isArray(tasks)) {
+              core.setFailed('JSON sin array tasks: ' + path);
+              return;
+            }
+            const scope = process.env.SEED_SCOPE || 'all';
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const filtered = tasks.filter(
+              (t) => scope === 'all' || t.scope === scope
+            );
+            core.info(`Scope=${scope} → ${filtered.length} tareas candidatas`);
+
+            // Deduplicación sin Search API (evita secondary rate limit: una búsqueda por tarea).
+            const markerRe = /<!--\s*agent-task-id:([^>]+?)\s*-->/g;
+            const existingIds = new Set();
+            let listPage = 1;
+            for (;;) {
+              const { data: openIssues } = await github.rest.issues.listForRepo({
+                owner,
+                repo,
+                state: 'open',
+                per_page: 100,
+                page: listPage,
+              });
+              if (!openIssues.length) break;
+              for (const issue of openIssues) {
+                if (!issue.body) continue;
+                for (const m of issue.body.matchAll(markerRe)) {
+                  existingIds.add(m[1]);
+                }
+              }
+              if (openIssues.length < 100) break;
+              listPage++;
+            }
+            core.info(`Issues abiertos con agent-task-id: ${existingIds.size} ids únicos`);
+
+            let created = 0;
+            let skipped = 0;
+
+            for (const task of filtered) {
+              if (existingIds.has(task.id)) {
+                core.info(`Skip (ya existe abierto): ${task.id}`);
+                skipped++;
+                continue;
+              }
+
+              const footer =
+                '\n\n---\n**Siguiente paso:** en la barra lateral del issue, asigna **GitHub Copilot** (coding agent) para que abra un PR, o trabaja el issue manualmente. Ver [guía de cola](https://github.com/' +
+                owner +
+                '/' +
+                repo +
+                '/blob/main/.github/COPILOT-AGENT-QUEUE.md).';
+
+              await github.rest.issues.create({
+                owner,
+                repo,
+                title: task.title,
+                body: task.body + footer,
+                labels: task.labels,
+              });
+              existingIds.add(task.id);
+              core.info(`Creado: ${task.id}`);
+              created++;
+            }
+
+            core.info(
+              `Cola Copilot: archivo=${qf} creados=${created} omitidos=${skipped} scope=${scope}`
+            );

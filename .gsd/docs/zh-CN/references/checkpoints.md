@@ -160,31 +160,31 @@
 **示例：认证门控（动态检查点）**
 ```xml
 <task type="auto">
-  <name>部署到 Vercel</name>
-  <files>.vercel/, vercel.json</files>
-  <action>运行 `vercel --yes` 进行部署</action>
-  <verify>vercel ls 显示部署，curl 返回 200</verify>
+  <name>部署到静态前端</name>
+  <files>host config / deploy manifest</files>
+  <action>运行 `deploy --yes` 进行部署</action>
+  <verify>deploy-cli list 显示部署，curl 返回 200</verify>
 </task>
 
-<!-- 如果 vercel 返回 "Error: Not authenticated"，Claude 即时创建检查点 -->
+<!-- 如果 deploy CLI 返回 "Error: Not authenticated"，Claude 即时创建检查点 -->
 
 <task type="checkpoint:human-action" gate="blocking">
-  <action>认证 Vercel CLI 以便我继续部署</action>
+  <action>认证部署 CLI 以便我继续部署</action>
   <instructions>
     我尝试部署但收到认证错误。
-    运行：vercel login
+    运行：host-cli login
     这将打开你的浏览器 - 完成认证流程。
   </instructions>
-  <verification>vercel whoami 返回你的账户邮箱</verification>
+  <verification>deploy-cli whoami 返回你的账户邮箱</verification>
   <resume-signal>认证完成后输入 "done"</resume-signal>
 </task>
 
 <!-- 认证后，Claude 重试部署 -->
 
 <task type="auto">
-  <name>重试 Vercel 部署</name>
-  <action>运行 `vercel --yes`（已认证）</action>
-  <verify>vercel ls 显示部署，curl 返回 200</verify>
+  <name>重试静态前端部署</name>
+  <action>运行 `deploy --yes`（已认证）</action>
+  <verify>deploy-cli list 显示部署，curl 返回 200</verify>
 </task>
 ```
 
@@ -280,7 +280,7 @@
 
 | 服务 | CLI/API | 关键命令 | 认证门控 |
 |------|---------|----------|----------|
-| Vercel | `vercel` | `--yes`, `env add`, `--prod`, `ls` | `vercel login` |
+| Deploy CLI | `deploy-cli` | `--yes`, `env add`, `--prod`, `ls` | `host-cli login` |
 | Railway | `railway` | `init`, `up`, `variables set` | `railway login` |
 | Fly | `fly` | `launch`, `deploy`, `secrets set` | `fly auth login` |
 | Stripe | `stripe` + API | `listen`, `trigger`, API 调用 | .env 中的 API key |
@@ -301,7 +301,7 @@
 | 平台 | CLI 命令 | 示例 |
 |------|----------|------|
 | Convex | `npx convex env set` | `npx convex env set OPENAI_API_KEY sk-...` |
-| Vercel | `vercel env add` | `vercel env add STRIPE_KEY production` |
+| Deploy CLI | `host env add` | `host env add STRIPE_KEY production` |
 | Railway | `railway variables set` | `railway variables set API_KEY=value` |
 | Fly | `fly secrets set` | `fly secrets set DATABASE_URL=...` |
 | Supabase | `supabase secrets set` | `supabase secrets set MY_SECRET=value` |
@@ -335,7 +335,7 @@ timeout 30 bash -c 'until curl -s localhost:3000 > /dev/null 2>&1; do sleep 1; d
 | CLI | 自动安装？ | 命令 |
 |-----|------------|------|
 | npm/pnpm/yarn | 否 - 询问用户 | 用户选择包管理器 |
-| vercel | 是 | `npm i -g vercel` |
+| deploy-cli | 是 | `npm i -g your-deploy-cli` |
 | gh (GitHub) | 是 | `brew install gh` (macOS) 或 `apt install gh` (Linux) |
 | stripe | 是 | `npm i -g stripe` |
 | supabase | 是 | `npm i -g supabase` |
@@ -362,14 +362,14 @@ timeout 30 bash -c 'until curl -s localhost:3000 > /dev/null 2>&1; do sleep 1; d
 
 | 操作 | 可自动化？| Claude 做？|
 |------|------------|------------|
-| 部署到 Vercel | 是 (`vercel`) | 是 |
+| 部署到静态前端 | 是 (`deploy-cli`) | 是 |
 | 创建 Stripe webhook | 是 (API) | 是 |
 | 写入 .env 文件 | 是 (Write 工具) | 是 |
 | 创建 Upstash DB | 是 (`upstash`) | 是 |
 | 运行测试 | 是 (`npm test`) | 是 |
 | 启动开发服务器 | 是 (`npm run dev`) | 是 |
 | 添加环境变量到 Convex | 是 (`npx convex env set`) | 是 |
-| 添加环境变量到 Vercel | 是 (`vercel env add`) | 是 |
+| 添加环境变量到主机 | 是 (`host env add`) | 是 |
 | 填充数据库 | 是 (CLI/API) | 是 |
 | 点击邮件验证链接 | 否 | 否 |
 | 输入带 3DS 的信用卡 | 否 | 否 |
@@ -414,15 +414,15 @@ timeout 30 bash -c 'until curl -s localhost:3000 > /dev/null 2>&1; do sleep 1; d
 ```xml
 <!-- 错误：让用户通过仪表板部署 -->
 <task type="checkpoint:human-action" gate="blocking">
-  <action>部署到 Vercel</action>
-  <instructions>访问 vercel.com/new → 导入仓库 → 点击部署 → 复制 URL</instructions>
+  <action>部署到静态前端</action>
+  <instructions>访问主机商部署页面 → 导入仓库 → 点击部署 → 复制 URL</instructions>
 </task>
 
 <!-- 正确：Claude 部署，用户验证 -->
 <task type="auto">
-  <name>部署到 Vercel</name>
-  <action>运行 `vercel --yes`。捕获 URL。</action>
-  <verify>vercel ls 显示部署，curl 返回 200</verify>
+  <name>部署到静态前端</name>
+  <action>运行 `deploy --yes`。捕获 URL。</action>
+  <verify>deploy-cli list 显示部署，curl 返回 200</verify>
 </task>
 
 <task type="checkpoint:human-verify">

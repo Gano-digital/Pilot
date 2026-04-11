@@ -1,0 +1,32 @@
+---
+description: "USE WHEN configuring MCP, Cursor browser, GitHub tools from IDE, or Vitest/GSD SDK checks"
+globs:
+alwaysApply: false
+---
+
+# MCP, GitHub desde IDE y tooling local (Gano)
+
+## Dónde está documentado
+
+- Skill: **`.gano-skills/gano-mcp-and-cursor-tooling/SKILL.md`**
+- Copilot + `gh`: **`.cursor/rules/005-copilot-oversight.mdc`**
+- Referencia Claude (MCP plugins): **`.gano-skills/_reference-claude-official/mcp-integration/`**
+
+## Cursor — servidores MCP habituales en este equipo
+
+1. **user-github** — API de alto nivel (issues, PRs, Copilot: `assign_copilot_to_issue`, `request_copilot_review`, …). Revisar esquema de cada tool antes de invocar.
+2. **cursor-ide-browser** — pruebas web; orden: navigate → lock → snapshot → interacción → unlock.
+
+## Repo
+
+- **Solo `origin` → `Gano-digital/Pilot`.** GitLab archivado: `memory/ops/archived-gitlab-remote-2026-04.md`.
+- **`.cursor/mcp.json`:** puede estar vacío; secretos solo en env local. Ver **`.cursor/README-MCP.md`**.
+
+## Checks sin servidor
+
+- **Vitest (GSD):** `cd .gsd/sdk && npm run test:unit`
+- **Cola agentes:** `python scripts/validate_agent_queue.py`
+
+## PRs y checks externos
+
+- Los únicos gates canónicos en este repo son los workflows bajo `.github/workflows/` (p. ej. php-lint, TruffleHog, CodeQL). Checks de apps de terceros desinstaladas o ignoradas no definen merge por sí solos.

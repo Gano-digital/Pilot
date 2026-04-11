@@ -1,0 +1,70 @@
+# Gano Digital — Cursor Rules (2026-04-06)
+# Instrucciones personalizadas para coherencia Reseller + API strategy
+
+## PRODUCT MODEL
+
+Canonical checkout: GoDaddy Reseller Store + RCC (WordPress vitrina)
+API: Developer Portal REST (opcional, backend automation ONLY)
+Good as Gold: Solo API purchases (debita prepago). No requerido para consultas.
+
+Decision: Checkout? → RCC. Backend automation? → API (env vars). Comprar vía API? → Good as Gold check.
+
+## WORDPRESS SECURITY (SIEMPRE)
+
+✅ Nonce: wp_verify_nonce($_POST['nonce'], 'action')
+✅ Sanitize: sanitize_text_field(), sanitize_email(), sanitize_textarea_field()
+✅ Escape: esc_html(), esc_attr(), esc_url(), esc_js()
+✅ Rate limit: set_transient('rl_' . md5($ip), 1, 60)
+✅ MU plugin: lógica crítica, nunca en tema
+
+❌ Eval, SQL directo, hardcode secrets, jQuery
+
+## RESELLER & PFID
+
+PFID constants: define('GANO_PFID_HOSTING_ECONOMIA', 'PENDING_RCC')
+NO hardcode domain IDs (crear issue "RCC: Obtener PFIDs")
+Cart URL: gano_rstore_cart_url($pfid) helper
+
+## CODE PATTERNS
+
+PHP Form:
+function gano_contact_submit() {
+  check_admin_referer('gano_contact', 'nonce');
+  $email = sanitize_email($_POST['email']);
+  if (!is_email($email)) wp_die('Invalid');
+  wp_mail($admin, 'Contacto', $msg, $headers);
+  wp_redirect(home_url('/gracias')); exit;
+}
+
+JavaScript (vanilla):
+const input = document.getElementById('gano-chat-input');
+input?.addEventListener('input', (e) => {
+  fetch(ganoChatConfig.endpoint, {
+    method: 'POST',
+    headers: { 'X-Nonce': ganoChatConfig.nonce },
+    body: JSON.stringify({ query: e.target.value.trim() })
+  }).then(r => r.json()).catch(err => console.error(err));
+});
+
+CSS (tokens):
+:root { --gano-gold: #D4AF37; --gano-orange: #FF8C42; }
+.gano-btn { background: var(--gano-orange); padding: 0.75rem 1.5rem; }
+
+## MISTAKES
+
+API para checkout → RCC canonical
+Hardcode tokens → [REDACTED] o env vars
+Olvidar nonce → wp_nonce_field() + verify
+Magic PFID → Constantes en functions.php
+
+## QUICK CHECKLIST
+
+□ Checkout? → RCC only
+□ API call? → Server-side, env vars
+□ Form? → Nonce + sanitize + rate limit
+□ Secret? → .env.local, NO commit
+□ CSS? → Tokens
+□ JS? → Vanilla, NO jQuery
+□ Ready? → Security checklist
+
+Last updated: 2026-04-06

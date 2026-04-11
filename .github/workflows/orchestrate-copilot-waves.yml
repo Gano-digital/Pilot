@@ -1,0 +1,202 @@
+# Consolida PRs Copilot oleada 1 (orden MERGE-PLAYBOOK) y opcionalmente crea issues oleada 2.
+# Ejecutar: Actions → 10 · Agentes · Orquestar oleadas → Run workflow.
+# Requiere que los PRs pasen reglas de rama (si hay revisión obligatoria, fusiona manualmente).
+name: "10 · Agentes · Orquestar oleadas"
+
+on:
+  workflow_dispatch:
+    inputs:
+      merge_wave1:
+        description: "Fusionar PRs oleada 1 en orden (CI debe estar verde; borradores → ready)"
+        type: boolean
+        default: true
+      seed_wave2:
+        description: "Crear issues desde tasks-wave2.json (deduplicado por agent-task-id)"
+        type: boolean
+        default: true
+      dry_run_merge:
+        description: "Si true, solo registra qué se fusionaría (no llama a merge)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (para leer tasks-wave2.json)
+        uses: actions/checkout@v6
+
+      - name: Merge oleada 1 + seed oleada 2
+        uses: actions/github-script@v8
+        env:
+          MERGE_WAVE1: ${{ github.event.inputs.merge_wave1 }}
+          SEED_WAVE2: ${{ github.event.inputs.seed_wave2 }}
+          DRY_RUN: ${{ github.event.inputs.dry_run_merge }}
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const doMerge = process.env.MERGE_WAVE1 === 'true';
+            const doSeed = process.env.SEED_WAVE2 === 'true';
+            const dryRun = process.env.DRY_RUN === 'true';
+
+            // Orden MERGE-PLAYBOOK: CI crítico → tema → SEO/MU → docs → commerce
+            // PR → issue para Closes # (solo si el PR cubre el trabajo en repo)
+            // Lista wave1 histórica (oleada 1); PRs ya fusionados se omiten (state !== open).
+            // #47 (CI deploy/verify) integrado en main (acfb51b5), no listar aquí.
+            // #51 README → #32 cubierto; #69 oleada 3 TASKS no estaba en lista.
+            const wave1 = [
+              { pr: 34, closes: 17 },
+              { pr: 35, closes: 18 },
+              { pr: 36, closes: 19 },
+              { pr: 37, closes: 20 },
+              { pr: 38, closes: 21 },
+              { pr: 39, closes: 22 },
+              { pr: 40, closes: 23 },
+              { pr: 41, closes: 25 },
+              { pr: 45, closes: 24 },
+              { pr: 42, closes: 26 },
+              { pr: 43, closes: 28 },
+              { pr: 44, closes: 27 },
+              { pr: 50, closes: 33 },
+              { pr: 46, closes: 30 },
+              { pr: 48, closes: 31 },
+            ];
+
+            const summary = [];
+
+            if (doMerge) {
+              for (const { pr: num, closes } of wave1) {
+                try {
+                  const { data: pr } = await github.rest.pulls.get({
+                    owner,
+                    repo,
+                    pull_number: num,
+                  });
+                  if (pr.state !== 'open') {
+                    summary.push(`PR #${num}: ya cerrado, omitido`);
+                    continue;
+                  }
+                  if (pr.draft) {
+                    if (dryRun) {
+                      summary.push(`PR #${num}: [dry-run] marcaría ready + merge → Closes #${closes}`);
+                      continue;
+                    }
+                    await github.rest.pulls.update({
+                      owner,
+                      repo,
+                      pull_number: num,
+                      draft: false,
+                    });
+                    core.info(`PR #${num}: marcado listo para revisión`);
+                  }
+                  if (dryRun) {
+                    summary.push(`PR #${num}: [dry-run] merge squash → Closes #${closes}`);
+                    continue;
+                  }
+                  try {
+                    await github.rest.pulls.updateBranch({
+                      owner,
+                      repo,
+                      pull_number: num,
+                      expected_head_sha: pr.head.sha,
+                    });
+                    core.info(`PR #${num}: rama actualizada con base`);
+                  } catch (upd) {
+                    core.warning(`PR #${num}: update-branch omitido o falló — ${upd.message}`);
+                  }
+                  const { data: pr2 } = await github.rest.pulls.get({
+                    owner,
+                    repo,
+                    pull_number: num,
+                  });
+                  if (pr2.mergeable === false) {
+                    summary.push(`PR #${num}: conflicto tras update, omitido`);
+                    continue;
+                  }
+                  const msg = `Closes #${closes}\n\nAutomated via orchestrate-copilot-waves.yml (MERGE-PLAYBOOK).`;
+                  await github.rest.pulls.merge({
+                    owner,
+                    repo,
+                    pull_number: num,
+                    merge_method: 'squash',
+                    commit_title: pr.title,
+                    commit_message: msg,
+                  });
+                  summary.push(`PR #${num}: fusionado (Closes #${closes})`);
+                } catch (e) {
+                  summary.push(`PR #${num}: ERROR — ${e.message || e}`);
+                  core.warning(`Fallo en #${num}: ${e.message || e}`);
+                }
+              }
+            } else {
+              summary.push('merge_wave1 desactivado');
+            }
+
+            if (doSeed) {
+              const fs = require('fs');
+              const path = '.github/agent-queue/tasks-wave2.json';
+              const { tasks } = JSON.parse(fs.readFileSync(path, 'utf8'));
+              const markerRe = /<!--\s*agent-task-id:([^>]+?)\s*-->/g;
+              const existingIds = new Set();
+              let listPage = 1;
+              for (;;) {
+                const { data: openIssues } = await github.rest.issues.listForRepo({
+                  owner,
+                  repo,
+                  state: 'open',
+                  per_page: 100,
+                  page: listPage,
+                });
+                if (!openIssues.length) break;
+                for (const issue of openIssues) {
+                  if (!issue.body) continue;
+                  for (const m of issue.body.matchAll(markerRe)) {
+                    existingIds.add(m[1]);
+                  }
+                }
+                if (openIssues.length < 100) break;
+                listPage++;
+              }
+              let created = 0;
+              let skipped = 0;
+              for (const task of tasks) {
+                if (existingIds.has(task.id)) {
+                  skipped++;
+                  continue;
+                }
+                const footer =
+                  '\n\n---\n**Siguiente paso:** asigna **GitHub Copilot** o manual. [Cola](https://github.com/' +
+                  owner +
+                  '/' +
+                  repo +
+                  '/blob/main/.github/COPILOT-AGENT-QUEUE.md) · oleada 2 (`w2-*`).';
+                await github.rest.issues.create({
+                  owner,
+                  repo,
+                  title: task.title,
+                  body: task.body + footer,
+                  labels: task.labels,
+                });
+                existingIds.add(task.id);
+                created++;
+              }
+              summary.push(`Oleada 2: issues creados=${created} omitidos=${skipped}`);
+            } else {
+              summary.push('seed_wave2 desactivado');
+            }
+
+            core.info(summary.join('\n'));
+            try {
+              await core.summary
+                .addHeading('10 · Agentes · Orquestar oleadas', 2)
+                .addCodeBlock(summary.join('\n'))
+                .write();
+            } catch (e) {
+              core.warning(`Job summary no escrito: ${e.message || e}`);
+            }

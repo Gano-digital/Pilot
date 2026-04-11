@@ -1,0 +1,5 @@
+{
+  "python.terminal.executeInFileDir": false,
+  "task.quickOpen.detail": true,
+  "task.quickOpen.skip": false
+}

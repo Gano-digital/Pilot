@@ -1,0 +1,83 @@
+name: "12 · Ops · Eliminar wp-file-manager (SSH)"
+
+on:
+  workflow_dispatch:
+    inputs:
+      force_remove:
+        description: 'Eliminar el plugin si se encuentra (true = sí, false = solo verificar)'
+        required: false
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+jobs:
+  verify-remove:
+    name: 🔍 Verificar wp-file-manager en producción
+    runs-on: ubuntu-latest
+    permissions: {}
+    env:
+      SSH_HOST: ${{ secrets.SERVER_HOST }}
+      SSH_USER: ${{ secrets.SERVER_USER }}
+      WP_ROOT:  ${{ secrets.DEPLOY_PATH }}
+
+    steps:
+      - name: Setup SSH Agent
+        uses: webfactory/ssh-agent@v0.10.0
+        with:
+          ssh-private-key: ${{ secrets.SSH }}
+
+      - name: Add server to known_hosts
+        run: |
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+
+      - name: 🔍 Verificar presencia del plugin
+        id: check
+        run: |
+          PLUGIN_PATH="${WP_ROOT}/wp-content/plugins/wp-file-manager"
+          EXISTS=$(ssh "${SSH_USER}@${SSH_HOST}" "[ -d '$PLUGIN_PATH' ] && echo 'yes' || echo 'no'")
+          echo "plugin_exists=$EXISTS" >> "$GITHUB_OUTPUT"
+          echo "plugin_path=$PLUGIN_PATH" >> "$GITHUB_OUTPUT"
+          if [ "$EXISTS" = "yes" ]; then
+            echo "⚠️  wp-file-manager ENCONTRADO en el servidor."
+          else
+            echo "✅  wp-file-manager NO está presente en el servidor."
+          fi
+
+      - name: 🗑️ Eliminar plugin (si existe y force_remove=true)
+        if: steps.check.outputs.plugin_exists == 'yes' && github.event.inputs.force_remove == 'true'
+        run: |
+          PLUGIN_PATH="${{ steps.check.outputs.plugin_path }}"
+          echo "Desactivando wp-file-manager via WP-CLI..."
+          ssh "${SSH_USER}@${SSH_HOST}" \
+            "cd '$WP_ROOT' && wp plugin deactivate wp-file-manager --allow-root 2>/dev/null || true"
+          echo "Eliminando directorio del plugin..."
+          ssh "${SSH_USER}@${SSH_HOST}" "rm -rf '$PLUGIN_PATH'"
+          echo "✅  Directorio wp-file-manager eliminado."
+
+      - name: 🔁 Confirmar eliminación
+        if: steps.check.outputs.plugin_exists == 'yes' && github.event.inputs.force_remove == 'true'
+        run: |
+          PLUGIN_PATH="${{ steps.check.outputs.plugin_path }}"
+          STILL_EXISTS=$(ssh "${SSH_USER}@${SSH_HOST}" "[ -d '$PLUGIN_PATH' ] && echo 'yes' || echo 'no'")
+          if [ "$STILL_EXISTS" = "no" ]; then
+            echo "✅  Confirmado: wp-file-manager eliminado correctamente."
+          else
+            echo "❌  ERROR: El directorio todavía existe después del borrado."
+            exit 1
+          fi
+
+      - name: 📊 Resumen
+        if: always()
+        run: |
+          echo "## 🔒 Reporte — wp-file-manager" >> $GITHUB_STEP_SUMMARY
+          echo "| Campo | Valor |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Servidor** | gano.digital |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Plugin encontrado** | ${{ steps.check.outputs.plugin_exists }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Acción** | ${{ github.event.inputs.force_remove == 'true' && 'Eliminar si existe' || 'Solo verificar' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Timestamp** | $(date -u +%Y-%m-%dT%H:%M:%SZ) |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "> **CVE-2020-25213 (CVSS 10.0)**: wp-file-manager permite RCE sin autenticación." >> $GITHUB_STEP_SUMMARY
+          echo "> Ver: [NVD](https://nvd.nist.gov/vuln/detail/CVE-2020-25213)" >> $GITHUB_STEP_SUMMARY

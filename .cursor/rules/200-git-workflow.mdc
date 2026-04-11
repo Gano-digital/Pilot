@@ -1,0 +1,43 @@
+---
+description: "USE WHEN making git commits, creating branches, or opening PRs"
+globs:
+alwaysApply: false
+---
+
+# Git Workflow
+
+## Remoto
+- **Solo** `origin` → `Gano-digital/Pilot` en GitHub. GitLab no forma parte del flujo (`memory/ops/archived-gitlab-remote-2026-04.md`).
+
+## Branches
+- `feature/nombre` — nueva funcionalidad
+- `fix/nombre` — correccion de bug
+- `ops/nombre` — CI, infra, docs
+- `copilot/*` — ramas creadas por GitHub Copilot agent (no tocar directamente)
+
+## Commits
+- Conventional commits: `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `test:`
+- Scope opcional: `feat(gano-child):`, `fix(reseller):`, `docs(memory):`
+- Subject < 72 caracteres
+- Referenciar issues: `Closes #NN` o `Ref #NN`
+
+## Pull Requests
+- Usar template de `.github/pull_request_template.md`
+- PRs pequenas (< 400 lineas cambiadas)
+- Incluir: Resumen, Area, Checklist, Notas
+- CI debe pasar: php-lint + TruffleHog
+
+## Pre-Commit
+- `git diff --cached` para verificar que no haya secretos
+- `php -l` en archivos PHP modificados
+- No commitear archivos generados/temporales
+
+## Staging individual
+- NUNCA usar `git add .` o `git add -A`
+- Agregar archivos especificos por nombre
+- Verificar `git status` antes de commit
+
+## Merge Strategy
+- Seguir `.github/MERGE-PLAYBOOK.md` para orden
+- Preferir squash merge para PRs de Copilot
+- Siempre verificar CI verde antes de merge

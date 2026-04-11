@@ -8,6 +8,11 @@ import type {
 } from './types.js';
 import { GSDEventType } from './types.js';
 
+// Shared fn ref so `new GSDTools()` (Vitest 4+) always calls the current mock from beforeEach
+const gsdToolsTestCtx = vi.hoisted(() => ({
+  roadmapAnalyze: vi.fn(),
+}));
+
 // ─── Mock modules ────────────────────────────────────────────────────────────
 
 // Mock the heavy dependencies that GSD constructor + runPhase pull in
@@ -35,14 +40,14 @@ vi.mock('./prompt-builder.js', () => ({
 }));
 
 vi.mock('./event-stream.js', () => {
-  return {
-    GSDEventStream: vi.fn().mockImplementation(() => ({
-      emitEvent: vi.fn(),
-      on: vi.fn(),
-      emit: vi.fn(),
-      addTransport: vi.fn(),
-    })),
-  };
+  // Vitest 4+: `new GSDEventStream()` requires a real constructor; vi.fn(() => ({...})) is not a constructor.
+  class MockGSDEventStream {
+    emitEvent = vi.fn();
+    on = vi.fn();
+    emit = vi.fn();
+    addTransport = vi.fn();
+  }
+  return { GSDEventStream: MockGSDEventStream };
 });
 
 vi.mock('./phase-runner.js', () => ({
@@ -65,9 +70,12 @@ vi.mock('./phase-prompt.js', () => ({
 }));
 
 vi.mock('./gsd-tools.js', () => ({
-  GSDTools: vi.fn().mockImplementation(() => ({
-    roadmapAnalyze: vi.fn(),
-  })),
+  GSDTools: class MockGSDTools {
+    constructor(_opts?: unknown) {}
+    roadmapAnalyze(...args: unknown[]) {
+      return gsdToolsTestCtx.roadmapAnalyze(...args);
+    }
+  },
   GSDToolsError: class extends Error {
     name = 'GSDToolsError';
   },
@@ -75,7 +83,6 @@ vi.mock('./gsd-tools.js', () => ({
 }));
 
 import { GSD } from './index.js';
-import { GSDTools } from './gsd-tools.js';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -123,14 +130,8 @@ describe('GSD.run()', () => {
       (event: GSDEvent) => events.push(event),
     );
 
-    // Wire mock roadmapAnalyze on the GSDTools instance
     mockRoadmapAnalyze = vi.fn();
-    vi.mocked(GSDTools).mockImplementation(
-      () =>
-        ({
-          roadmapAnalyze: mockRoadmapAnalyze,
-        }) as any,
-    );
+    gsdToolsTestCtx.roadmapAnalyze = mockRoadmapAnalyze;
   });
 
   it('discovers phases and calls runPhase for each incomplete one', async () => {

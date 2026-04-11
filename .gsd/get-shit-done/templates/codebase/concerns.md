@@ -215,9 +215,9 @@ Template for `.planning/codebase/CONCERNS.md` - captures known issues and areas 
 
 **Server-side render blocking:**
 - Current capacity: ~50 concurrent users before slowdown
-- Limit: Vercel Hobby plan (10s function timeout, 100GB-hrs/mo)
+- Limit: entry hosting plan (10s function timeout, 100GB-hrs/mo)
 - Symptoms at limit: 504 gateway timeouts on course pages
-- Scaling path: Upgrade to Vercel Pro ($20/mo), add edge caching
+- Scaling path: Upgrade to hosting Pro tier ($20/mo), add edge caching
 
 ## Dependencies at Risk
 

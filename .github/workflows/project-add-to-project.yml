@@ -1,0 +1,62 @@
+# Añade issues de Pilot al proyecto @Gano.digital (GitHub Projects).
+#
+# Configuración (una vez):
+#   - Variable del repo: GANO_PROJECT_URL = URL del proyecto (pestaña del navegador al abrir el Project).
+#   - Secret: ADD_TO_PROJECT_PAT = fine-grained PAT con acceso al proyecto (org: Projects write) + repo Issues read.
+#
+# Criterio: título contiene [agent] O etiqueta copilot (al abrir o al etiquetar).
+#
+# Si faltan variable/secret, el job termina en éxito con aviso (no falla el run).
+name: "13 · Projects · Añadir issues al tablero Gano.digital"
+
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  contents: read
+  issues: read
+
+jobs:
+  add-to-project:
+    name: Add issue to org project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skip si falta configuración
+        id: cfg
+        run: |
+          set -euo pipefail
+          HAS_URL="${{ vars.GANO_PROJECT_URL != '' }}"
+          HAS_PAT="${{ secrets.ADD_TO_PROJECT_PAT != '' }}"
+          if [ "$HAS_URL" != "true" ] || [ "$HAS_PAT" != "true" ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Workflow 13 desactivado::Configura vars.GANO_PROJECT_URL y secrets.ADD_TO_PROJECT_PAT en el repo para añadir issues al Project."
+            exit 0
+          fi
+          echo "enabled=true" >> "$GITHUB_OUTPUT"
+
+      - name: Decide if issue matches agent/copilot queue
+        id: decide
+        if: steps.cfg.outputs.enabled == 'true'
+        env:
+          EVENT_JSON: ${{ toJSON(github.event) }}
+        run: |
+          set -euo pipefail
+          ADD=false
+          ACTION=$(echo "$EVENT_JSON" | jq -r .action)
+          TITLE=$(echo "$EVENT_JSON" | jq -r .issue.title)
+          case "$TITLE" in *"[agent]"*) ADD=true ;; esac
+          if [ "$ACTION" = "opened" ]; then
+            echo "$EVENT_JSON" | jq -r '.issue.labels[]?.name // empty' | grep -xqi 'copilot' && ADD=true || true
+          fi
+          if [ "$ACTION" = "labeled" ]; then
+            L=$(echo "$EVENT_JSON" | jq -r .label.name)
+            echo "$L" | grep -xqi 'copilot' && ADD=true || true
+          fi
+          echo "add=$ADD" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/add-to-project@v1.0.2
+        if: steps.cfg.outputs.enabled == 'true' && steps.decide.outputs.add == 'true'
+        with:
+          project-url: ${{ vars.GANO_PROJECT_URL }}
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}

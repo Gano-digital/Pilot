@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Ejemplo para Fase 2: externalizar SYSTEMS / overrides SFX. No commitear secretos. Copiar a battle-map-config.json local si se implementa fetch().",
+  "meta": {
+    "title": "Gano Digital · Battle Map",
+    "build": "2026-04-07",
+    "plan": "memory/constellation/BATTLE-MAP-PLAN-DISENO-FINE-TUNING-2026-04.md"
+  },
+  "sfx": {
+    "basePath": "sounds/agentcraft/",
+    "nav": {
+      "navMenuOpen": "TSCUpd00.wav",
+      "navMenuClose": "tadUpd02.wav",
+      "navPanelClose": "PAdUpd06.wav"
+    },
+    "masterGain": 0.42,
+    "gapsMs": {
+      "hover3d": 520,
+      "uiHover": 420
+    }
+  },
+  "systems": [
+    {
+      "id": "01",
+      "name": "Mapa Estratégico",
+      "type": "terrestrial",
+      "lookRef": "mars",
+      "color": "#c89070",
+      "status": "Activo",
+      "taskRef": "TASKS.md — visión producto"
+    }
+  ],
+  "briefsOverlay": {
+    "01": {
+      "designation": "GD-STR-01",
+      "classification": "STRATEGIC MAP",
+      "subtitle": "Soberanía digital LATAM"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+# Etiquetas por ruta. Las claves con ":" van entre comillas.
+# Nota: `changed-files-labels-limit` se omitió — en labeler v6 el parser puede tratarlo
+# como nombre de etiqueta si el esquema no coincide; con pocas reglas no hace falta.
+
+"area:theme":
+  - changed-files:
+      - any-glob-to-any-file: "wp-content/themes/gano-child/**"
+
+"area:mu-plugins":
+  - changed-files:
+      - any-glob-to-any-file: "wp-content/mu-plugins/**"
+
+"area:plugins-gano":
+  - changed-files:
+      - any-glob-to-any-file: "wp-content/plugins/gano-*/**"
+
+"area:ci":
+  - changed-files:
+      - any-glob-to-any-file: ".github/**"

@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "description": "Cola de issues para Copilot coding agent y revisores humanos. No incluir secretos.",
+  "tasks": [
+    {
+      "id": "hp-primary-nav",
+      "scope": "homepage",
+      "title": "[agent] Menú: asignar primary + verificar header Elementor",
+      "labels": ["copilot", "homepage-fixplan", "coordination"],
+      "body": "## Contexto\nTras desplegar `gano-child`, WordPress ya expone la ubicación **primary**. El header de Elementor debe mostrar el menú correcto.\n\n## Tareas\n1. wp-admin → Apariencia → Menús: asignar menú a *Menú principal (header / Elementor)*.\n2. Theme Builder → Header: confirmar widget de menú apunta a primary o al kit correcto.\n3. Probar móvil + desktop.\n\n## Referencias\n- `memory/content/elementor-home-classes.md`\n- `.github/DEV-COORDINATION.md`\n\n## Definición de hecho\nMenú visible sin duplicados; sin ítems rotos.\n\n<!-- agent-task-id:hp-primary-nav -->"
+    },
+    {
+      "id": "hp-hero-copy",
+      "scope": "homepage",
+      "title": "[agent] Hero: copy + imagen + CTAs (Elementor)",
+      "labels": ["copilot", "homepage-fixplan"],
+      "body": "## Contexto\nSustituir placeholders del hero con copy final.\n\n## Tareas\n1. Pegar copy desde `memory/content/homepage-copy-2026-04.md` (sección Hero).\n2. Imagen con attachment_id válido; alt en español.\n3. Aplicar clases `gano-el-stack`, `gano-el-layer-top` / `gano-el-layer-base` y opcional `gano-el-hero-readability` según `memory/content/elementor-home-classes.md`.\n\n## Definición de hecho\nSin texto Lorem; LCP razonable; CTAs enlazan a destinos reales.\n\n<!-- agent-task-id:hp-hero-copy -->"
+    },
+    {
+      "id": "hp-pillars",
+      "scope": "homepage",
+      "title": "[agent] Pilares: 4 cards — copy + clase gano-el-pillar",
+      "labels": ["copilot", "homepage-fixplan"],
+      "body": "## Contexto\nEliminar Lorem en las cuatro cards.\n\n## Tareas\n1. Texto desde `memory/content/homepage-copy-2026-04.md` (Cuatro pilares).\n2. Clase CSS `gano-el-pillar` en cada tarjeta/columna.\n3. Iconos o ilustraciones con alt descriptivo.\n\n## Definición de hecho\nSin Lorem; contraste legible; hover no rompe en móvil.\n\n<!-- agent-task-id:hp-pillars -->"
+    },
+    {
+      "id": "hp-partner-block",
+      "scope": "homepage",
+      "title": "[agent] Bloque “socio tecnológico” + métricas prudentes",
+      "labels": ["copilot", "homepage-fixplan"],
+      "body": "## Tareas\n1. Copy: `homepage-copy-2026-04.md` (Un socio tecnológico + Métricas).\n2. `gano-el-prose-narrow` en texto; `gano-el-metrics` / `gano-el-metric` en franja de números.\n3. No inflar cifras: solo SLA reales.\n\n<!-- agent-task-id:hp-partner-block -->"
+    },
+    {
+      "id": "hp-cta-icons",
+      "scope": "homepage",
+      "title": "[agent] CTA final: iconos reales (sustituir ★)",
+      "labels": ["copilot", "homepage-fixplan"],
+      "body": "## Tareas\n1. Reemplazar asteriscos placeholder por iconos Elementor/Font Awesome.\n2. Contenedor con clase `gano-el-cta-icons`.\n3. Enlaces y focus accesibles.\n\n<!-- agent-task-id:hp-cta-icons -->"
+    },
+    {
+      "id": "hp-coming-soon",
+      "scope": "homepage",
+      "title": "[agent] Coming soon / páginas borrador según estrategia",
+      "labels": ["copilot", "homepage-fixplan"],
+      "body": "## Tareas\n1. Identificar post/página coming soon publicada indebidamente.\n2. Pasar a borrador o excluir del menú.\n3. Documentar en issue [sync] si aplica.\n\n<!-- agent-task-id:hp-coming-soon -->"
+    },
+    {
+      "id": "theme-audit-handle",
+      "scope": "theme",
+      "title": "[agent] Tema: renombrar handle parent style (cosmético + claridad)",
+      "labels": ["copilot", "area:theme"],
+      "body": "## Contexto\n`gano_child_enqueue_styles` usa handle `hello-elementor-parent-style` pero el padre es `royal-elementor-kit`.\n\n## Tareas\n1. Renombrar handle a algo como `royal-elementor-kit-parent` y actualizar dependencia del child style.\n2. Verificar que no hay regresión de orden de carga.\n3. `php -l` en `functions.php`.\n\n<!-- agent-task-id:theme-audit-handle -->"
+    },
+    {
+      "id": "theme-css-root",
+      "scope": "theme",
+      "title": "[agent] CSS: unificar tokens --gano-gold en :root global",
+      "labels": ["copilot", "area:theme"],
+      "body": "## Contexto\n`--gano-gold` está en un segundo `:root` dentro del bloque shop.\n\n## Tareas\n1. Mover o duplicar tokens de oro en el primer `:root` de marca o documentar por qué no.\n2. Revisar que utilidades `gano-el-*` y shop comparten variables.\n3. Minimizar regresiones visuales.\n\n<!-- agent-task-id:theme-css-root -->"
+    },
+    {
+      "id": "theme-lcp",
+      "scope": "theme",
+      "title": "[agent] LCP: revisar script MutationObserver en front page",
+      "labels": ["copilot", "area:theme"],
+      "body": "## Contexto\n`functions.php` inyecta script para fetchpriority en hero.\n\n## Tareas\n1. Validar selectores con estructura actual de Elementor (containers).\n2. Acotar tiempo/desconexión si hace falta.\n3. No tocar admin.\n\n<!-- agent-task-id:theme-lcp -->"
+    },
+    {
+      "id": "seo-rankmath",
+      "scope": "content_seo",
+      "title": "[agent] Rank Math: wizard + modelo negocio digital (sin tienda física)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Tareas\n1. Documentar en comentario del issue qué pasos del wizard se completaron.\n2. Alinear schema local/negocio con `gano-seo.php` y política de datos reales.\n3. Sin commitear credenciales.\n\n## Referencia\n`TASKS.md` sección Rank Math.\n\n<!-- agent-task-id:seo-rankmath -->"
+    },
+    {
+      "id": "seo-gsc",
+      "scope": "content_seo",
+      "title": "[agent] Search Console: propiedad https://gano.digital",
+      "labels": ["copilot", "coordination"],
+      "body": "## Tareas\n1. Checklist de verificación DNS/HTML file.\n2. Enviar sitemap si Rank Math lo expone.\n3. Resumen en comentario (sin capturas con tokens).\n\n<!-- agent-task-id:seo-gsc -->"
+    },
+    {
+      "id": "sec-wpfilemanager",
+      "scope": "security",
+      "title": "[agent] Verificar eliminación de wp-file-manager en producción",
+      "labels": ["copilot", "area:mu-plugins"],
+      "body": "## Contexto\n`TASKS.md` marca eliminación crítica.\n\n## Tareas\n1. Confirmar plugin ausente en servidor.\n2. Si persiste: plan de borrado + post [sync].\n\n<!-- agent-task-id:sec-wpfilemanager -->"
+    },
+    {
+      "id": "sec-upload-deploy",
+      "scope": "security",
+      "title": "[agent] Checklist: subir parches Fase 1–3 si faltan en servidor",
+      "labels": ["copilot", "coordination"],
+      "body": "## Archivos (ver TASKS.md)\n- wp-config hardening\n- mu-plugins gano-security, gano-seo\n- gano-child functions + assets\n\n## Tareas\n1. Comparar hashes o fechas con repo `main`.\n2. Listar gaps en comentario.\n\n<!-- agent-task-id:sec-upload-deploy -->"
+    },
+    {
+      "id": "woo-reseller-ctas",
+      "scope": "commerce",
+      "title": "[agent] shop-premium: mapear CTAs a IDs Reseller reales",
+      "labels": ["copilot", "area:theme"],
+      "body": "## Contexto\n`TASKS.md` Fase 4 — carrito GoDaddy Reseller.\n\n## Tareas\n1. Revisar `templates/shop-premium.php` y enlaces.\n2. Documentar IDs/productos requeridos en el issue (sin API keys).\n3. PR pequeño si solo son constantes documentadas en PHP comentadas.\n\n<!-- agent-task-id:woo-reseller-ctas -->"
+    },
+    {
+      "id": "woo-checkout-smoke",
+      "scope": "commerce",
+      "title": "[agent] Smoke test checkout reseller (sandbox / staging)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Tareas\n1. Flujo desde CTA hasta carrito marca blanca (según entorno disponible).\n2. Anotar fallos sin datos de pago reales en el issue.\n\n<!-- agent-task-id:woo-checkout-smoke -->"
+    },
+    {
+      "id": "docs-sync-playbook",
+      "scope": "docs",
+      "title": "[agent] Actualizar README si drift con deploy real",
+      "labels": ["copilot", "area:ci"],
+      "body": "## Tareas\n1. Revisar `README.md` vs flujo real (Laragon vs servidor).\n2. PR mínimo: enlaces a DEV-COORDINATION y agent queue.\n\n<!-- agent-task-id:docs-sync-playbook -->"
+    },
+    {
+      "id": "docs-remove-placeholder-contact",
+      "scope": "docs",
+      "title": "[agent] Auditoría contenido: footer/contacto (skill gano-content-audit)",
+      "labels": ["copilot", "coordination"],
+      "body": "## Contexto\n`.gano-skills/gano-content-audit` lista datos USA ficticios a reemplazar.\n\n## Tareas\n1. Listar páginas/widgets con datos falsos.\n2. PR o issue [sync] con reemplazos propuestos (datos reales los aplica Diego).\n\n<!-- agent-task-id:docs-remove-placeholder-contact -->"
+    }
+  ]
+}

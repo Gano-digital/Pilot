@@ -33,10 +33,21 @@ description: >
 ## Git y secretos
 
 - **Nunca** dejar PAT de GitHub en la URL de `origin` (`https://TOKEN@github.com/...`). Usar `https://github.com/org/repo.git` y credencial vía **Git Credential Manager**, PAT al prompt, o **SSH**.
-- Los tokens de GitHub (`ghp_`) no son GitLab; rotar en GitHub si hubo exposición.
+- Los tokens de GitHub (`ghp_`) rotar en GitHub si hubo exposición.
+- **GitLab** no está en uso; CI y cola Copilot solo en **GitHub** (`Gano-digital/Pilot`). Ver `memory/ops/archived-gitlab-remote-2026-04.md` si hiciera falta el enlace histórico.
+
+## GitHub como cola de trabajo (Abril 2026)
+
+- **Issues `[agent]`** generados por workflow **08 · Sembrar cola Copilot** (`seed-copilot-queue.yml`) + asignación a **Copilot coding agent** para PRs.
+- **Seis archivos de cola** (`tasks.json` … `tasks-api-integrations-research.json`): validados con `python scripts/validate_agent_queue.py` y workflow **07**.
+- **CLI:** `gh` autenticado en la máquina del desarrollador puede disparar workflows (`gh workflow run "08 · Agentes · Sembrar cola Copilot" -f queue_file=… -f scope=…`); no sustituye el token de Actions en la nube.
+- **PRs:** el agente suele abrir **draft**; hace falta **Ready for review**, CI razonable y **merge** humano (squash). Tras consolidación 2026-04-03 el objetivo es cola baja o cero en `main`.
+- **Documentación:** `.github/DEV-COORDINATION.md`, `.github/COPILOT-AGENT-QUEUE.md`, prompts por lote en `.github/prompts/copilot-bulk-assign.md` (oleadas 1, 3, 4, infra, API).
+- Skill dedicada: **`gano-github-copilot-orchestration`** (tabla de colas, workflows, CI).
 
 ## Aprovechar lo que ya produjo Claude (workflow local)
 
+- **Cola en el repo (dispatch):** `memory/claude/dispatch-queue.json` + `scripts/claude_dispatch.py` (`next` / `complete`) + guía `memory/claude/dispatch-prompt.md` — tareas que Claude puede ejecutar **en el workspace** (docs, auditorías, validación); distinto de la cola Copilot en `.github/agent-queue/`.
 - **Prompts y marketing:** `Downloads/Claude\Offloading_Tasks_LLMs_GanoDigital.md` — tareas para otros LLMs; no modifica el repo hasta que alguien copie el resultado a WP/Elementor.
 - **Arquitectura de sitio / copy:** `Downloads/Claude\Arquitectura_Sitio_Web_2026.html` — referencia UX/copy; implementación en ruta 1 vía tema hijo y plantillas.
 - **No leer** `settings.local.json` de Claude salvo necesidad explícita (suele contener datos sensibles).
@@ -55,4 +66,5 @@ description: >
 
 ## Skills relacionadas
 
-- `gano-wp-security`, `gano-wompi-fixer`, `gano-content-audit`, `gano-fase4-plataforma` — alcance técnico; esta skill es **proceso y convivencia** entre herramientas.
+- `gano-github-copilot-orchestration` — Actions, cola JSON, Copilot agent.
+- `gano-wp-security`, `gano-content-audit`, `gano-fase4-plataforma` — alcance técnico; `gano-wompi-fixer` solo **legacy**; esta skill es **proceso y convivencia** entre herramientas.

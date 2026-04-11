@@ -1,0 +1,3539 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Sistema Gano Digital · Galactic Map v3.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* ============================================================
+       DEAD SPACE UX PALETTE — industrial sci-fi HUD
+       Inspired by: Isaac's RIG, diegetic holograms, ship terminals
+       ============================================================ */
+    --bg:#03070c;
+    --bg-2:#06101a;
+    --bg-3:#0a1822;
+    --ink:#d4dae0;               /* bone white */
+    --ink-2:#8fa5b4;              /* dusty teal */
+    --muted:#4a6170;
+    --line:rgba(92,196,212,.14);
+    --line-strong:rgba(92,196,212,.35);
+
+    /* Primary: turquoise cyan (Isaac's holographic UI) */
+    --accent:#5cc4d4;
+    --accent-dim:#2a7888;
+    --accent-glow:rgba(92,196,212,.55);
+
+    /* Industrial orange (warning, tools, Plasma Cutter) */
+    --orange:#ff7a1c;
+    --orange-soft:#ffa04a;
+    --orange-glow:rgba(255,122,28,.55);
+
+    /* Dark green (health, ammo indicators) */
+    --green:#3a7a5c;
+    --green-bright:#5fd49a;
+
+    /* Blood red (critical, danger) */
+    --danger:#d84848;
+    --danger-glow:rgba(216,72,72,.55);
+
+    /* Legacy aliases */
+    --warn:var(--orange);
+    --ok:var(--green-bright);
+
+    /* ============================================================
+       STARCRAFT (1998) MENU UX — principios reutilizados (original)
+       No se usan sprites ni marcas de Blizzard; solo patrones públicos:
+       · Canvas 640×480: densidad alta, tipografía pequeña, mucho contraste.
+       · Marcos “metálicos”: bisel claro arriba/izq, sombra abajo/dcha (relieve).
+       · Menú vertical: una opción activa, lista legible, foco claro.
+       · Briefing: retrato + bloque de texto (lectura escaneable).
+       · In-game HUD: recursos arriba, minimapa, panel de órdenes — jerarquía fija.
+       Ref. pública: manuales / retros de UI de la época; evolución E3 en prensa.
+       Material de prensa Blizzard (SC II / Remastered): solo referencia visual
+       bajo términos del Press Center — ver memory/constellation/blizzard-press-reference.txt
+       ============================================================ */
+    --sc-panel:#141c28;
+    --sc-panel-deep:#0a1018;
+    --sc-bevel-light:rgba(255,255,255,.14);
+    --sc-bevel-mid:rgba(255,255,255,.06);
+    --sc-bevel-dark:rgba(0,0,0,.5);
+    --sc-menu-gold:#c4a028;
+    --sc-menu-gold-dim:rgba(196,160,40,.35);
+    --sc-frame-radius:6px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;width:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:'Space Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  #app{position:fixed;inset:0}
+  canvas{display:block}
+
+  /* ---------- HUD top ---------- */
+  .hud{position:fixed;pointer-events:none;z-index:10}
+  .hud-top{
+    top:0;left:0;right:0;
+    padding:22px 28px 56px 28px;
+    display:flex;justify-content:space-between;align-items:flex-start;
+    background:linear-gradient(180deg,rgba(1,2,10,.92) 0%,rgba(1,2,10,0) 100%);
+    pointer-events:none;
+  }
+  .hud-top .brand{max-width:min(560px,calc(100vw - 48px));pointer-events:auto}
+  .brand{pointer-events:auto}
+  .brand .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--accent);opacity:.8;margin-bottom:8px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .brand .eyebrow::before{content:"";width:22px;height:1px;background:var(--accent);opacity:.6}
+  .brand h1{
+    font-size:24px;font-weight:500;letter-spacing:.005em;color:#f0f4ff;
+  }
+  .brand h1 b{font-weight:700;background:linear-gradient(90deg,#dde3f5,#7ec8ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .brand .sub{font-size:12px;color:var(--muted);margin-top:5px;letter-spacing:.03em;font-family:'JetBrains Mono',monospace}
+
+  .meta{
+    pointer-events:auto;text-align:right;
+    font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);
+    line-height:1.8;flex-shrink:0;max-width:min(280px,38vw)
+  }
+  .meta b{color:var(--ink-2);font-weight:500}
+  .meta .dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--ok);box-shadow:0 0 6px var(--ok);margin-right:6px;animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+  /* ---------- Bottom legend (taxonomy) — secuencial 01→08, grid responsive ---------- */
+  .legend{
+    position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,118px));
+    gap:8px 10px;
+    padding:12px 14px;
+    background:linear-gradient(165deg, rgba(20,28,40,.92) 0%, rgba(5,8,22,.88) 100%);
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    border:1px solid rgba(92,196,212,.22);
+    border-radius:var(--sc-frame-radius);
+    box-shadow:
+      0 8px 32px rgba(0,0,0,.75),
+      inset 0 1px 0 var(--sc-bevel-light),
+      inset 1px 0 0 var(--sc-bevel-mid),
+      inset -1px -1px 0 var(--sc-bevel-dark);
+    pointer-events:auto;z-index:11;
+    max-width:min(760px,96vw);
+  }
+  @media (max-width:900px){
+    .legend{
+      grid-template-columns:repeat(2,minmax(0,min(150px,44vw)));
+      bottom:max(72px,env(safe-area-inset-bottom,0px));
+      padding:10px 10px;
+      gap:6px 8px;
+    }
+  }
+  @media (max-width:480px){
+    .legend{
+      grid-template-columns:1fr 1fr;
+      max-width:min(100vw - 16px,380px);
+      padding:8px;
+    }
+    .chip{min-height:68px;padding:6px 8px;font-size:9px}
+    .chip-sc-portrait{width:24px;height:24px}
+  }
+  .chip{
+    display:flex;flex-direction:column;align-items:stretch;gap:6px;
+    padding:8px 10px;border-radius:8px;
+    font-size:10px;letter-spacing:.02em;color:var(--ink);
+    background:rgba(10,16,24,.35);
+    border:1px solid rgba(92,196,212,.12);
+    cursor:pointer;transition:all .2s ease;
+    font-weight:500;text-align:left;
+    min-height:76px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.04), inset 0 -1px 0 rgba(0,0,0,.25);
+  }
+  .chip:hover{background:rgba(126,200,255,.07);border-color:rgba(126,200,255,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+  .chip.active{
+    background:rgba(126,200,255,.12);border-color:rgba(126,200,255,.45);
+    box-shadow:
+      0 0 0 1px rgba(92,196,212,.2),
+      inset 0 2px 4px rgba(0,0,0,.35),
+      inset 0 1px 0 rgba(255,255,255,.08);
+  }
+  /* Facción SC — alineado a retratos + SFX por raza */
+  .chip--race-terran:hover{background:rgba(90,150,210,.1);border-color:rgba(110,175,225,.4)}
+  .chip--race-terran.active{background:rgba(90,150,210,.14);border-color:rgba(130,185,235,.5);box-shadow:0 0 0 1px rgba(100,160,220,.25)}
+  .chip--race-zerg:hover{background:rgba(100,170,80,.1);border-color:rgba(130,195,100,.4)}
+  .chip--race-zerg.active{background:rgba(100,170,80,.14);border-color:rgba(140,205,110,.45);box-shadow:0 0 0 1px rgba(120,190,95,.22)}
+  .chip--race-protoss:hover{background:rgba(200,160,70,.08);border-color:rgba(215,175,90,.42)}
+  .chip--race-protoss.active{background:rgba(200,160,70,.12);border-color:rgba(225,190,100,.48);box-shadow:0 0 0 1px rgba(210,170,85,.22)}
+  .chip-sc-portrait{
+    width:28px;height:28px;flex-shrink:0;border:1px solid rgba(92,196,212,.45);
+    background:rgba(2,6,10,.85);overflow:hidden;border-radius:3px;
+    box-shadow:inset 0 0 8px rgba(0,0,0,.45);
+  }
+  .chip--race-terran .chip-sc-portrait{border-color:rgba(110,170,220,.55)}
+  .chip--race-zerg .chip-sc-portrait{border-color:rgba(130,195,100,.55)}
+  .chip--race-protoss .chip-sc-portrait{border-color:rgba(215,175,90,.55)}
+  .chip-sc-portrait img{
+    width:100%;height:100%;object-fit:contain;object-position:center bottom;
+    image-rendering:pixelated;image-rendering:crisp-edges;
+    animation:portraitIdle 3s ease-in-out infinite;
+  }
+  .chip:hover .chip-sc-portrait img{animation-duration:2.35s;filter:brightness(1.08)}
+  @media (prefers-reduced-motion:reduce){ .chip-sc-portrait img{animation:none} }
+  .chip-top-mini{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex:1;min-width:0}
+  .chip .chip-top{
+    display:flex;align-items:flex-start;justify-content:space-between;gap:6px;
+  }
+  .chip .tax-ico{
+    font-size:15px;line-height:1;opacity:.95;
+    filter:drop-shadow(0 0 5px rgba(92,196,212,.35));
+    flex-shrink:0;
+  }
+  .chip .swatch{width:8px;height:8px;border-radius:50%;flex-shrink:0;box-shadow:0 0 6px currentColor}
+  .chip .chip-idline{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .chip .num{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);font-weight:600}
+  .chip .chip-name{
+    font-size:9.5px;line-height:1.25;color:var(--ink-2);
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .hud-badge{
+    font-family:'JetBrains Mono',monospace;font-size:6.5px;letter-spacing:.12em;
+    padding:2px 6px;border-radius:2px;border:1px solid;font-weight:700;
+    flex-shrink:0;
+  }
+  .hud-badge.ok{color:var(--green-bright);border-color:rgba(95,212,154,.5);background:rgba(95,212,154,.1)}
+  .hud-badge.warn{color:var(--orange);border-color:rgba(255,122,28,.55);background:rgba(255,122,28,.12);animation:hudPulse 2s ease-in-out infinite}
+  .hud-badge.crit{color:#ff8a8a;border-color:rgba(255,100,100,.6);background:rgba(216,72,72,.18);animation:hudPulse 1.3s ease-in-out infinite}
+  @keyframes hudPulse{0%,100%{opacity:1;filter:brightness(1)}50%{opacity:.92;filter:brightness(1.15)}}
+
+  /* ============================================================
+     PANEL — DEAD SPACE DIEGETIC HUD
+     Holographic projection with scanlines, CRT flicker,
+     corner brackets, typewriter reveal, data-dense layout
+     ============================================================ */
+  .panel{
+    position:fixed;right:22px;top:96px;bottom:22px;
+    width:480px;max-width:calc(100vw - 44px);
+    max-height:calc(100vh - 118px);
+    background:
+      linear-gradient(180deg, rgba(10,18,28,.94) 0%, rgba(3,7,12,.96) 100%),
+      radial-gradient(ellipse at top, rgba(92,196,212,.08), transparent 60%);
+    border:1px solid var(--line-strong);
+    padding:0;
+    pointer-events:auto;z-index:14;
+    opacity:0;visibility:hidden;
+    transform:translateX(40px);
+    transition:opacity .35s ease, transform .5s cubic-bezier(.2,.9,.3,1), visibility 0s .5s;
+    font-family:'JetBrains Mono',monospace;
+    color:var(--ink);
+    box-shadow:
+      0 30px 80px rgba(0,0,0,.85),
+      0 0 40px rgba(92,196,212,.08),
+      inset 0 1px 0 rgba(92,196,212,.22),
+      inset 1px 0 0 rgba(255,255,255,.05),
+      inset -1px -1px 0 rgba(0,0,0,.4),
+      inset 0 0 60px rgba(92,196,212,.03);
+    clip-path:polygon(
+      0 0, calc(100% - 22px) 0, 100% 22px,
+      100% calc(100% - 8px), calc(100% - 8px) 100%,
+      22px 100%, 0 calc(100% - 22px)
+    );
+  }
+  .panel.open{
+    opacity:1;visibility:visible;transform:translateX(0);
+    transition:opacity .4s, transform .5s cubic-bezier(.2,.9,.3,1), visibility 0s;
+  }
+
+  /* Scanlines overlay */
+  .panel::before{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+    background:repeating-linear-gradient(
+      0deg,
+      rgba(92,196,212,.05) 0,
+      rgba(92,196,212,.05) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    mix-blend-mode:screen;
+    animation:scanShift 12s linear infinite;
+  }
+  @keyframes scanShift{0%{background-position:0 0}100%{background-position:0 120px}}
+
+  /* CRT vignette + flicker */
+  .panel::after{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:3;
+    background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.4) 100%);
+    animation:crtFlicker 5s ease-in-out infinite;
+  }
+  @keyframes crtFlicker{
+    0%,100%{opacity:1}
+    50%{opacity:.94}
+    52%{opacity:.88}
+    54%{opacity:.96}
+  }
+
+  /* Corner brackets */
+  .panel .brackets{position:absolute;inset:8px;pointer-events:none;z-index:4}
+  .panel .brackets::before,
+  .panel .brackets::after{
+    content:"";position:absolute;width:24px;height:24px;
+    border:1px solid var(--accent);
+    filter:drop-shadow(0 0 4px var(--accent-glow));
+  }
+  .panel .brackets::before{top:0;left:0;border-right:none;border-bottom:none}
+  .panel .brackets::after{bottom:0;right:0;border-left:none;border-top:none}
+
+  /* Inner scrollable content — franja superior tipo “briefing bar” (patrón SC menú) */
+  .panel-inner{
+    position:relative;z-index:1;
+    padding:28px 28px 26px;
+    height:100%;overflow-y:auto;
+  }
+  .panel-inner::before{
+    content:"";position:absolute;top:0;left:24px;right:24px;height:2px;
+    background:linear-gradient(90deg, transparent 0%, var(--sc-menu-gold-dim) 18%, var(--sc-menu-gold) 50%, var(--sc-menu-gold-dim) 82%, transparent 100%);
+    opacity:.72;pointer-events:none;z-index:5;
+    box-shadow:0 0 12px rgba(196,160,40,.15);
+  }
+  .panel-inner::-webkit-scrollbar{width:4px}
+  .panel-inner::-webkit-scrollbar-track{background:rgba(92,196,212,.05)}
+  .panel-inner::-webkit-scrollbar-thumb{background:rgba(92,196,212,.3)}
+
+  /* ----- Header ----- */
+  .p-header{margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid rgba(92,196,212,.18);position:relative}
+  .p-header::after{
+    content:"";position:absolute;bottom:-1px;left:0;width:45%;height:1px;
+    background:var(--accent);box-shadow:0 0 8px var(--accent-glow);
+  }
+
+  .p-designation{
+    font-size:9px;letter-spacing:.3em;color:var(--accent);
+    display:flex;gap:10px;align-items:center;margin-bottom:10px;
+    text-transform:uppercase;
+  }
+  .p-designation .pulse{
+    width:6px;height:6px;border-radius:50%;background:var(--accent);
+    box-shadow:0 0 8px var(--accent);
+    animation:pulse 1.6s ease-in-out infinite;
+  }
+  .p-designation .divider{flex:1;height:1px;background:linear-gradient(90deg,var(--accent),transparent)}
+  .p-designation .clock{color:var(--orange);text-shadow:0 0 6px var(--orange-glow)}
+
+  .p-class-tag{
+    display:inline-block;padding:4px 11px;
+    border:1px solid var(--accent);
+    font-size:9px;letter-spacing:.22em;
+    color:var(--accent);text-transform:uppercase;
+    margin-bottom:14px;
+    background:rgba(92,196,212,.05);
+    clip-path:polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);
+    padding-left:14px;padding-right:14px;
+  }
+  .p-class-tag.critical{border-color:var(--danger);color:var(--danger);background:rgba(216,72,72,.08)}
+  .p-class-tag.warning{border-color:var(--orange);color:var(--orange);background:rgba(255,122,28,.08)}
+
+  .p-name{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:26px;font-weight:600;color:#eaf2f6;
+    line-height:1.15;letter-spacing:-.005em;
+    margin-bottom:6px;
+    text-shadow:0 0 18px rgba(92,196,212,.25);
+  }
+  .p-subtitle{
+    font-size:10px;color:var(--ink-2);
+    letter-spacing:.14em;text-transform:uppercase;
+  }
+
+  /* ----- StarCraft-style unit portrait (AgentCraft starcraft-local assets) ----- */
+  .p-header.p-header--rts{
+    display:grid;
+    grid-template-columns:132px 1fr;
+    gap:4px 18px;
+    align-items:start;
+  }
+  .p-header-main{min-width:0}
+  .p-portrait-col{
+    position:relative;
+    width:128px;
+  }
+  .p-portrait-shell{
+    position:relative;
+    width:120px;height:120px;
+    border:2px solid rgba(92,196,212,.55);
+    background:rgba(2,6,12,.95);
+    box-shadow:
+      inset 0 0 0 1px rgba(0,0,0,.85),
+      0 0 0 1px rgba(0,0,0,.6),
+      0 8px 28px rgba(0,0,0,.65);
+    overflow:hidden;
+  }
+  .p-portrait-shell.race-terran{
+    border-color:rgba(110,170,220,.75);
+    box-shadow:inset 0 0 24px rgba(60,120,200,.12), 0 0 20px rgba(80,140,210,.15);
+  }
+  .p-portrait-shell.race-zerg{
+    border-color:rgba(140,200,110,.65);
+    box-shadow:inset 0 0 26px rgba(80,160,60,.14), 0 0 18px rgba(100,180,80,.12);
+  }
+  .p-portrait-shell.race-protoss{
+    border-color:rgba(220,180,90,.7);
+    box-shadow:inset 0 0 26px rgba(200,150,40,.12), 0 0 20px rgba(230,190,80,.1);
+  }
+  .p-portrait-img{
+    display:block;width:100%;height:100%;
+    object-fit:contain;
+    object-position:center bottom;
+    image-rendering:pixelated;
+    image-rendering:crisp-edges;
+    animation:portraitIdle 2.8s ease-in-out infinite;
+  }
+  .p-portrait-crt{
+    pointer-events:none;position:absolute;inset:0;z-index:3;
+    background:repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,.12) 0,
+      rgba(0,0,0,.12) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    mix-blend-mode:multiply;opacity:.55;
+  }
+  .p-portrait-shine{
+    pointer-events:none;position:absolute;inset:0;z-index:4;
+    background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.14) 50%,transparent 65%);
+    mix-blend-mode:overlay;
+    animation:portraitShine 4.2s linear infinite;
+  }
+  .p-portrait-flicker{
+    pointer-events:none;position:absolute;inset:0;z-index:2;
+    background:rgba(92,196,212,.03);
+    animation:portraitFlicker 5.5s steps(3) infinite;
+  }
+  .p-portrait-label{
+    margin-top:6px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:7px;letter-spacing:.28em;
+    color:var(--muted);text-align:center;
+    text-transform:uppercase;
+  }
+  @keyframes portraitIdle{
+    0%,100%{transform:scale(1);filter:brightness(1) contrast(1.02)}
+    45%{transform:scale(1.02);filter:brightness(1.07) contrast(1.05)}
+    70%{transform:scale(1.01);filter:brightness(1.03) contrast(1.03)}
+  }
+  /* Un solo keyframe evita choque transform entre animaciones */
+  @keyframes portraitLive{
+    0%,100%{transform:translateY(0) scale(1);filter:brightness(1) contrast(1.02)}
+    35%{transform:translateY(-2px) scale(1.045);filter:brightness(1.1) contrast(1.06)}
+    55%{transform:translateY(1px) scale(1.01);filter:brightness(1.04) contrast(1.03)}
+    75%{transform:translateY(-1px) scale(1.03);filter:brightness(1.07) contrast(1.04)}
+  }
+  .panel.open .p-portrait-img{animation:portraitLive 3.1s ease-in-out infinite}
+  @keyframes portraitShine{
+    0%{transform:translateX(-120%) skewX(-8deg)}
+    100%{transform:translateX(120%) skewX(-8deg)}
+  }
+  @keyframes portraitFlicker{
+    0%,88%,100%{opacity:1}
+    90%{opacity:.92}
+    92%{opacity:.85}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .p-portrait-img,.p-portrait-shine,.p-portrait-flicker,.panel.open .p-portrait-img{animation:none!important}
+  }
+  @media (max-width:920px){
+    .p-header.p-header--rts{grid-template-columns:1fr;text-align:center}
+    .p-portrait-col{justify-self:center;margin-bottom:8px}
+    .p-header-main{text-align:left}
+  }
+
+  /* ----- Sections ----- */
+  .section{margin-top:22px;opacity:0;transform:translateY(6px);transition:opacity .3s, transform .3s}
+  .section.reveal{opacity:1;transform:translateY(0)}
+
+  .section-label{
+    font-size:9px;letter-spacing:.28em;color:var(--accent);
+    text-transform:uppercase;margin-bottom:10px;
+    display:flex;align-items:center;gap:10px;
+    font-weight:500;
+  }
+  .section-label::before{content:"◣";font-size:9px;color:var(--accent)}
+  .section-label::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(92,196,212,.3),transparent)}
+  .section-label .idx{color:var(--muted);font-size:8px}
+
+  .brief-text{
+    font-size:11.5px;line-height:1.75;
+    color:var(--ink);letter-spacing:.005em;
+    min-height:1.75em;
+    text-align:justify;
+  }
+  .brief-text .cursor{
+    display:inline-block;width:7px;height:11px;
+    background:var(--accent);vertical-align:middle;margin-left:3px;
+    box-shadow:0 0 8px var(--accent-glow);
+    animation:blink 1.1s steps(2) infinite;
+  }
+  @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+
+  /* Objectives list */
+  .obj-list{list-style:none}
+  .obj-list li{
+    display:flex;align-items:center;gap:11px;
+    padding:7px 0;font-size:10.5px;color:var(--ink);
+    border-bottom:1px dotted rgba(92,196,212,.1);
+  }
+  .obj-list li:last-child{border-bottom:none}
+  .obj-list .mark{
+    width:12px;height:12px;border:1px solid var(--accent);
+    flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    font-size:8px;font-weight:700;
+  }
+  .obj-list .mark.complete{background:var(--accent);color:#02080c;box-shadow:0 0 6px var(--accent-glow)}
+  .obj-list .mark.complete::before{content:"✓"}
+  .obj-list .mark.active{border-color:var(--orange);color:var(--orange);background:rgba(255,122,28,.1);box-shadow:0 0 8px var(--orange-glow);animation:pulse 1.4s ease-in-out infinite}
+  .obj-list .mark.active::before{content:"●"}
+  .obj-list .mark.pending{border-color:var(--muted);opacity:.5}
+  .obj-list .mark.pending::before{content:"○"}
+  .obj-list .mark.critical{border-color:var(--danger);color:var(--danger);background:rgba(216,72,72,.12);box-shadow:0 0 8px var(--danger-glow)}
+  .obj-list .mark.critical::before{content:"!"}
+
+  /* Metrics grid */
+  .metric-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:6px;
+    margin-bottom:8px;
+  }
+  .metric-cell{
+    padding:9px 11px;
+    background:linear-gradient(180deg,rgba(92,196,212,.06),rgba(92,196,212,.02));
+    border:1px solid rgba(92,196,212,.15);
+    position:relative;
+  }
+  .metric-cell::before{content:"";position:absolute;top:0;left:0;width:10px;height:1px;background:var(--accent);box-shadow:0 0 4px var(--accent-glow)}
+  .metric-cell::after{content:"";position:absolute;top:0;left:0;width:1px;height:10px;background:var(--accent);box-shadow:0 0 4px var(--accent-glow)}
+  .metric-cell .mk{
+    font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);display:block;margin-bottom:4px;
+  }
+  .metric-cell .mv{
+    font-size:13px;color:var(--ink);font-weight:600;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .metric-cell .mv.warn{color:var(--orange);text-shadow:0 0 6px var(--orange-glow)}
+  .metric-cell .mv.danger{color:var(--danger);text-shadow:0 0 6px var(--danger-glow)}
+  .metric-cell .mv.ok{color:var(--green-bright);text-shadow:0 0 6px rgba(95,212,154,.45)}
+
+  /* Progress bar — segmented */
+  .bar-wrap{margin-top:10px}
+  .bar-label{
+    display:flex;justify-content:space-between;
+    font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:4px;
+  }
+  .bar-label .val{color:var(--accent)}
+  .bar{
+    height:6px;background:rgba(92,196,212,.06);
+    border:1px solid rgba(92,196,212,.2);
+    position:relative;overflow:hidden;
+  }
+  .bar .fill{
+    height:100%;
+    background:repeating-linear-gradient(
+      90deg,
+      var(--accent) 0,var(--accent) 4px,
+      transparent 4px,transparent 6px
+    );
+    box-shadow:0 0 10px var(--accent-glow);
+    width:0;transition:width 1.4s cubic-bezier(.2,.9,.3,1);
+  }
+  .bar.critical .fill{background:repeating-linear-gradient(90deg,var(--danger) 0,var(--danger) 4px,transparent 4px,transparent 6px);box-shadow:0 0 10px var(--danger-glow)}
+  .bar.warning .fill{background:repeating-linear-gradient(90deg,var(--orange) 0,var(--orange) 4px,transparent 4px,transparent 6px);box-shadow:0 0 10px var(--orange-glow)}
+
+  /* Dep/threat/action lists */
+  .dep-list,.threat-list,.action-list{list-style:none}
+  .dep-list li,.threat-list li,.action-list li{
+    font-size:10.5px;color:var(--ink);
+    padding:5px 0 5px 20px;position:relative;
+    line-height:1.45;
+  }
+  .dep-list li::before{content:"▸";position:absolute;left:2px;color:var(--accent);font-weight:700}
+  .threat-list li{color:#e8c4a8}
+  .threat-list li::before{content:"⚠";position:absolute;left:0;color:var(--orange);font-weight:700;text-shadow:0 0 6px var(--orange-glow)}
+  .action-list li::before{content:"▶";position:absolute;left:2px;color:var(--green-bright);font-weight:700;text-shadow:0 0 6px rgba(95,212,154,.45)}
+
+  /* Activity log */
+  .log-list{
+    font-size:9.5px;color:var(--ink-2);line-height:1.7;
+    background:rgba(92,196,212,.03);
+    border:1px solid rgba(92,196,212,.1);
+    padding:10px 12px;
+  }
+  .log-row{display:flex;gap:12px;padding:2px 0}
+  .log-row .log-time{color:var(--accent);min-width:52px;font-weight:500}
+  .log-row .log-msg{color:var(--ink-2);flex:1}
+  .log-row.critical .log-msg{color:var(--orange)}
+
+  /* Close button */
+  .p-close{
+    position:absolute;top:14px;right:14px;
+    width:30px;height:30px;
+    background:rgba(92,196,212,.05);
+    border:1px solid var(--line-strong);
+    color:var(--accent);cursor:pointer;
+    font-size:14px;font-family:'JetBrains Mono',monospace;
+    display:flex;align-items:center;justify-content:center;
+    z-index:10;transition:.2s;
+    clip-path:polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px));
+  }
+  .p-close:hover{background:rgba(216,72,72,.15);color:var(--danger);border-color:var(--danger)}
+
+  /* ---------- Controls ---------- */
+  .controls{
+    position:fixed;left:24px;bottom:24px;
+    display:flex;flex-direction:column;gap:6px;
+    pointer-events:auto;z-index:11;
+  }
+  .ctrl{
+    width:40px;height:40px;border-radius:var(--sc-frame-radius);
+    background:linear-gradient(165deg, rgba(22,30,42,.9), rgba(5,8,22,.82));
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border:1px solid rgba(92,196,212,.2);
+    color:var(--ink-2);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    font-size:15px;transition:.2s;
+    box-shadow:
+      inset 0 1px 0 var(--sc-bevel-light),
+      inset -1px -1px 0 var(--sc-bevel-dark),
+      0 4px 14px rgba(0,0,0,.45);
+  }
+  .ctrl:hover{border-color:rgba(126,200,255,.38);color:var(--ink)}
+  .ctrl:active{box-shadow:inset 0 2px 6px rgba(0,0,0,.5), inset 0 -1px 0 rgba(255,255,255,.04)}
+  .ctrl.active{background:rgba(126,200,255,.1);border-color:rgba(126,200,255,.45);color:var(--accent)}
+  .ctrl.sound{font-size:13px;letter-spacing:0}
+  .ctrl.sound.muted{opacity:.45;color:var(--muted)}
+  .ctrl.sound:not(.muted){color:var(--accent)}
+
+  /* ---------- Loader ---------- */
+  .loader{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:99;transition:opacity 1s ease;flex-direction:column;gap:20px}
+  .loader.hide{opacity:0;pointer-events:none}
+  .loader .ring{width:48px;height:48px;border-radius:50%;border:1px solid rgba(126,200,255,.12);border-top-color:var(--accent);animation:spin 1.2s linear infinite}
+  .loader .txt{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase}
+  .loader .txt-sub{font-size:8px;letter-spacing:.28em;opacity:.65;margin-top:-12px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ============================================================
+     STARCRAFT MENU MOTION LAYER (conceptos)
+     - overlays en esquinas + modal central + portales de campaña
+     - transiciones suaves y responsivas; superposiciones coherentes
+     ============================================================ */
+  :root{
+    --motion-fast:180ms;
+    --motion-med:320ms;
+    --motion-slow:520ms;
+    --ease-out:cubic-bezier(.16,1,.3,1);
+    --ease-in:cubic-bezier(.7,0,.84,0);
+    --ease-inout:cubic-bezier(.4,0,.2,1);
+    --sc-green:#48ff7a;
+    --sc-green-dim:rgba(72,255,122,.35);
+    --sc-red:#ff3a3a;
+    --sc-red-dim:rgba(255,58,58,.35);
+    --sc-violet:#a35cff;
+    --sc-violet-dim:rgba(163,92,255,.35);
+    --sc-metal:#c7b08b;
+    --sc-metal-dim:rgba(199,176,139,.28);
+    --sc-overlay-bg:rgba(6,10,14,.64);
+  }
+  @media (prefers-reduced-motion:reduce){
+    :root{ --motion-fast:1ms; --motion-med:1ms; --motion-slow:1ms; }
+  }
+  .sc-layer{position:fixed;inset:0;z-index:18;pointer-events:none}
+  .sc-layer.show{pointer-events:none}
+  .sc-corner{
+    position:absolute;
+    background:linear-gradient(180deg, rgba(8,12,18,.88), rgba(4,7,12,.72));
+    border:1px solid rgba(255,255,255,.06);
+    box-shadow:0 18px 50px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.08);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    opacity:0;transform:translateY(-10px) scale(.98);
+    transition:opacity var(--motion-med) var(--ease-out), transform var(--motion-med) var(--ease-out);
+    pointer-events:none;
+  }
+  .sc-layer.show .sc-corner{opacity:1;transform:translateY(0) scale(1)}
+  .sc-corner--tl{top:92px;left:18px;width:min(320px,46vw);height:168px;border-radius:8px;overflow:hidden}
+  .sc-corner--tr{top:92px;right:18px;width:min(340px,48vw);height:180px;border-radius:8px;overflow:hidden}
+  @media (max-width:820px){
+    .sc-corner--tl,.sc-corner--tr{top:max(82px,env(safe-area-inset-top,0px));height:144px}
+    .sc-corner--tl{left:max(10px,env(safe-area-inset-left,0px))}
+    .sc-corner--tr{right:max(10px,env(safe-area-inset-right,0px))}
+  }
+  /* TL: grid verde táctico */
+  .sc-grid{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 70% 35%, rgba(255,58,58,.15), transparent 38%),
+      radial-gradient(circle at 35% 68%, rgba(255,58,58,.12), transparent 42%),
+      linear-gradient(0deg, rgba(72,255,122,.08), rgba(72,255,122,.02)),
+      repeating-linear-gradient(90deg, rgba(72,255,122,.10) 0, rgba(72,255,122,.10) 1px, transparent 1px, transparent 12px),
+      repeating-linear-gradient(0deg, rgba(72,255,122,.10) 0, rgba(72,255,122,.10) 1px, transparent 1px, transparent 12px);
+    opacity:.85;
+    mix-blend-mode:screen;
+    filter:drop-shadow(0 0 10px rgba(72,255,122,.16));
+  }
+  .sc-grid::after{
+    content:"";position:absolute;inset:-40px;
+    background:radial-gradient(circle at 50% 50%, rgba(72,255,122,.14), transparent 55%);
+    animation:scGridSweep 2.8s var(--ease-inout) infinite;
+  }
+  @keyframes scGridSweep{
+    0%{transform:translateX(-12%) translateY(8%);opacity:.55}
+    50%{transform:translateX(8%) translateY(-6%);opacity:.95}
+    100%{transform:translateX(-12%) translateY(8%);opacity:.55}
+  }
+  .sc-corner-title{
+    position:absolute;left:10px;top:10px;
+    font-family:'JetBrains Mono',monospace;font-size:9px;
+    letter-spacing:.26em;text-transform:uppercase;
+    color:var(--sc-green);opacity:.9;
+    text-shadow:0 0 10px rgba(72,255,122,.25);
+  }
+  .sc-pips{
+    position:absolute;right:10px;top:12px;
+    display:flex;gap:6px;align-items:center;
+  }
+  .sc-pip{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.18)}
+  .sc-pip.hot{background:var(--sc-red);box-shadow:0 0 12px rgba(255,58,58,.45)}
+
+  /* TR: panel nebuloso rojo + niebla */
+  .sc-nebula{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 40% 40%, rgba(255,58,58,.22), transparent 50%),
+      radial-gradient(circle at 70% 70%, rgba(255,58,58,.16), transparent 55%),
+      radial-gradient(circle at 25% 80%, rgba(255,122,28,.10), transparent 60%),
+      linear-gradient(180deg, rgba(14,6,8,.65), rgba(4,7,12,.75));
+  }
+  .sc-nebula::before{
+    content:"";position:absolute;inset:-30px;
+    background:
+      radial-gradient(circle at 40% 50%, rgba(255,255,255,.06), transparent 55%),
+      radial-gradient(circle at 70% 40%, rgba(255,255,255,.05), transparent 60%);
+    filter:blur(10px);
+    opacity:.75;
+    animation:scFog 5.2s var(--ease-inout) infinite;
+  }
+  @keyframes scFog{
+    0%{transform:translateX(-3%) translateY(2%) scale(1)}
+    50%{transform:translateX(4%) translateY(-2%) scale(1.02)}
+    100%{transform:translateX(-3%) translateY(2%) scale(1)}
+  }
+  .sc-nebula-title{color:rgba(255,255,255,.78);text-shadow:0 0 16px rgba(255,58,58,.22)}
+
+  /* Vórtice azul (decorativo, centro-fondo) */
+  .sc-vortex{
+    position:absolute;left:50%;top:54%;
+    width:min(520px,70vw);height:min(520px,70vw);
+    transform:translate(-50%,-50%);
+    opacity:0;
+    transition:opacity var(--motion-slow) var(--ease-out);
+    pointer-events:none;
+    filter:drop-shadow(0 0 30px rgba(92,196,212,.14));
+  }
+  .sc-layer.show .sc-vortex{opacity:.9}
+  .sc-vortex::before{
+    content:"";position:absolute;inset:0;border-radius:50%;
+    background:
+      conic-gradient(from 0deg,
+        rgba(92,196,212,.0),
+        rgba(92,196,212,.12),
+        rgba(126,200,255,.22),
+        rgba(92,196,212,.08),
+        rgba(92,196,212,.0)
+      );
+    mask:radial-gradient(circle at center, transparent 38%, #000 40%, #000 70%, transparent 72%);
+    -webkit-mask:radial-gradient(circle at center, transparent 38%, #000 40%, #000 70%, transparent 72%);
+    animation:scVortexSpin 4.2s linear infinite;
+  }
+  .sc-vortex::after{
+    content:"";position:absolute;inset:18%;border-radius:50%;
+    background:radial-gradient(circle at center, rgba(126,200,255,.18), transparent 70%);
+    animation:scVortexPulse 2.8s var(--ease-inout) infinite;
+  }
+  @keyframes scVortexSpin{to{transform:rotate(360deg)}}
+  @keyframes scVortexPulse{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.06);opacity:1}}
+
+  /* Modal central estilo “Select Game Type” */
+  .sc-modal{
+    position:absolute;left:50%;top:50%;
+    transform:translate(-50%,-50%) scale(.98);
+    width:min(520px,92vw);
+    background:linear-gradient(180deg, rgba(6,10,14,.86), rgba(2,5,8,.92));
+    border:1px solid rgba(255,58,58,.7);
+    box-shadow:0 30px 90px rgba(0,0,0,.78), 0 0 30px rgba(255,58,58,.12), inset 0 1px 0 rgba(255,255,255,.08);
+    border-radius:10px;
+    opacity:0;
+    transition:opacity var(--motion-med) var(--ease-out), transform var(--motion-med) var(--ease-out);
+    pointer-events:none;
+  }
+  .sc-layer.show-modal .sc-modal{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+  .sc-modal::before{
+    content:"";position:absolute;inset:0;border-radius:10px;pointer-events:none;
+    background:
+      radial-gradient(circle at 30% 10%, rgba(255,58,58,.18), transparent 55%),
+      repeating-linear-gradient(0deg, rgba(92,196,212,.05) 0, rgba(92,196,212,.05) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode:screen;
+    opacity:.55;
+  }
+  .sc-modal-head{
+    position:relative;z-index:1;
+    padding:16px 18px 12px;
+    border-bottom:1px solid rgba(255,58,58,.18);
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  .sc-modal-title{
+    font-family:'JetBrains Mono',monospace;
+    letter-spacing:.22em;text-transform:uppercase;
+    font-size:11px;color:#f2f4ff;
+    text-shadow:0 0 18px rgba(255,58,58,.18);
+  }
+  .sc-modal-x{
+    width:30px;height:30px;border-radius:8px;
+    background:rgba(255,58,58,.08);
+    border:1px solid rgba(255,58,58,.35);
+    color:#ffd0d0;
+    cursor:pointer;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .sc-modal-body{position:relative;z-index:1;padding:16px 18px 18px}
+  .sc-choice{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    width:100%;
+    padding:14px 14px;
+    border-radius:9px;
+    background:rgba(10,16,24,.45);
+    border:1px solid rgba(255,255,255,.06);
+    color:#eaf2f6;
+    cursor:pointer;
+    transition:transform var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out), background var(--motion-fast) var(--ease-out);
+    margin-bottom:10px;
+  }
+  .sc-choice:hover{transform:translateY(-1px);border-color:rgba(255,58,58,.35);background:rgba(255,58,58,.06)}
+  .sc-choice small{display:block;color:rgba(255,255,255,.55);font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-family:'JetBrains Mono',monospace}
+  .sc-choice b{display:block;font-size:14px}
+  .sc-choice .tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.65)}
+  .sc-modal-foot{
+    position:relative;z-index:1;
+    padding:12px 18px 16px;
+    display:flex;justify-content:flex-end;gap:10px;
+    border-top:1px solid rgba(255,255,255,.06);
+  }
+  .sc-btn{
+    pointer-events:auto;
+    padding:10px 14px;border-radius:9px;
+    background:linear-gradient(180deg, rgba(199,176,139,.18), rgba(8,12,18,.85));
+    border:1px solid rgba(199,176,139,.35);
+    color:var(--sc-green);
+    font-family:'JetBrains Mono',monospace;
+    letter-spacing:.18em;text-transform:uppercase;font-size:10px;
+    cursor:pointer;
+    transition:transform var(--motion-fast) var(--ease-out), filter var(--motion-fast) var(--ease-out);
+  }
+  .sc-btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+
+  /* Portales (campaña) — 3 círculos violeta con glow */
+  .sc-portals{
+    position:absolute;left:50%;bottom:92px;transform:translateX(-50%);
+    display:grid;grid-template-columns:repeat(3, minmax(0, 160px));
+    gap:18px;
+    opacity:0;transform:translateX(-50%) translateY(12px);
+    transition:opacity var(--motion-slow) var(--ease-out), transform var(--motion-slow) var(--ease-out);
+    pointer-events:none;
+  }
+  .sc-layer.show-portals .sc-portals{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+  @media (max-width:820px){
+    .sc-portals{grid-template-columns:1fr;bottom:max(92px,env(safe-area-inset-bottom,0px));gap:12px}
+  }
+  .sc-portal{
+    pointer-events:auto;
+    display:flex;align-items:center;gap:12px;
+    padding:12px 12px;border-radius:12px;
+    background:rgba(8,12,18,.72);
+    border:1px solid rgba(163,92,255,.28);
+    box-shadow:0 18px 60px rgba(0,0,0,.65), 0 0 28px rgba(163,92,255,.14), inset 0 1px 0 rgba(255,255,255,.06);
+    cursor:pointer;
+    transition:transform var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out);
+  }
+  .sc-portal:hover{transform:translateY(-2px);border-color:rgba(163,92,255,.48)}
+  .sc-ring{
+    width:54px;height:54px;border-radius:50%;
+    background:
+      radial-gradient(circle at center, rgba(163,92,255,.10), rgba(163,92,255,.02) 55%, rgba(163,92,255,.18) 60%, transparent 70%),
+      conic-gradient(from 0deg, rgba(163,92,255,.0), rgba(163,92,255,.42), rgba(92,196,212,.24), rgba(163,92,255,.0));
+    box-shadow:0 0 20px rgba(163,92,255,.22);
+    animation:scPortalSpin 3.6s linear infinite;
+    flex-shrink:0;
+  }
+  @keyframes scPortalSpin{to{transform:rotate(360deg)}}
+  .sc-portal .meta{pointer-events:none;text-align:left;font-size:10px;line-height:1.25}
+  .sc-portal .meta b{display:block;color:#eaf2f6;font-family:'Space Grotesk',sans-serif;font-size:13px}
+  .sc-portal .meta span{display:block;color:rgba(255,255,255,.58);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;font-size:9px;margin-top:3px}
+
+  /* ---------- Tooltip — Dead Space style micro-HUD ---------- */
+  .tooltip{
+    position:fixed;pointer-events:none;z-index:13;
+    min-width:230px;max-width:290px;
+    padding:13px 15px;
+    background:linear-gradient(180deg,rgba(6,16,26,.96),rgba(3,7,12,.98));
+    border:1px solid var(--line-strong);
+    box-shadow:
+      0 12px 40px rgba(0,0,0,.9),
+      0 0 20px rgba(92,196,212,.12),
+      inset 0 1px 0 rgba(92,196,212,.15);
+    opacity:0;transition:opacity .15s, transform .2s;
+    transform:translate(16px,16px) scale(.96);
+    transform-origin:top left;
+    font-family:'JetBrains Mono',monospace;
+    clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+  .tooltip.show{opacity:1;transform:translate(16px,16px) scale(1)}
+  .tooltip.tooltip--race-terran{border-color:rgba(110,170,220,.55);box-shadow:0 12px 40px rgba(0,0,0,.9),0 0 24px rgba(80,140,200,.12)}
+  .tooltip.tooltip--race-zerg{border-color:rgba(130,195,100,.5);box-shadow:0 12px 40px rgba(0,0,0,.9),0 0 24px rgba(100,180,80,.1)}
+  .tooltip.tooltip--race-protoss{border-color:rgba(215,175,90,.52);box-shadow:0 12px 40px rgba(0,0,0,.9),0 0 24px rgba(200,160,60,.1)}
+  .tooltip::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(92,196,212,.04) 0,rgba(92,196,212,.04) 1px,transparent 1px,transparent 3px);
+    mix-blend-mode:screen;
+  }
+  .tt-portrait-row{
+    display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;
+    position:relative;z-index:1;
+  }
+  .tt-portrait-wrap{
+    width:44px;height:44px;flex-shrink:0;
+    border:1px solid rgba(92,196,212,.4);
+    background:rgba(0,0,0,.45);overflow:hidden;
+    box-shadow:inset 0 0 10px rgba(0,0,0,.6);
+  }
+  .tt-portrait-wrap.race-terran{border-color:rgba(110,170,220,.55)}
+  .tt-portrait-wrap.race-zerg{border-color:rgba(130,190,100,.55)}
+  .tt-portrait-wrap.race-protoss{border-color:rgba(210,170,80,.55)}
+  .tt-portrait{
+    width:100%;height:100%;object-fit:contain;
+    image-rendering:pixelated;image-rendering:crisp-edges;
+  }
+  .tt-portrait-meta{flex:1;min-width:0}
+  .tt-portrait-meta .tt-class{margin-bottom:4px}
+  .tt-portrait-meta .tt-name{margin-bottom:0;font-size:14px}
+  .tt-class{
+    font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--accent);display:flex;align-items:center;gap:8px;
+    margin-bottom:6px;position:relative;
+  }
+  .tt-class::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--accent),transparent)}
+  .tt-class .icon{font-size:11px;text-shadow:0 0 6px var(--accent-glow)}
+  .tt-name{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:15px;font-weight:600;color:#eaf2f6;
+    line-height:1.2;margin-bottom:9px;position:relative;
+    text-shadow:0 0 12px rgba(92,196,212,.2);
+  }
+  .tt-row{display:flex;justify-content:space-between;font-size:10px;padding:3px 0;position:relative}
+  .tt-row .k{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.08em}
+  .tt-row .v{color:var(--ink);font-weight:500}
+  .tt-hint{
+    margin-top:9px;padding-top:8px;
+    border-top:1px solid rgba(92,196,212,.15);
+    font-size:8.5px;color:var(--accent);
+    letter-spacing:.18em;text-transform:uppercase;
+    position:relative;display:flex;align-items:center;gap:6px;
+  }
+  .tt-hint::before{content:"▶";font-size:8px}
+
+  /* ============================================================
+     INDEXER MENU — Dropdown master index of all experiences
+     Dead Space "RIG interface" style
+     ============================================================ */
+  .indexer{
+    position:fixed;top:102px;left:22px;
+    pointer-events:auto;z-index:15;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .idx-toggle{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 16px 10px 14px;
+    background:linear-gradient(180deg,rgba(18,26,38,.95),rgba(6,12,20,.98));
+    border:1px solid var(--line-strong);
+    color:var(--accent);cursor:pointer;
+    font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+    font-family:'JetBrains Mono',monospace;font-weight:500;
+    box-shadow:
+      0 8px 28px rgba(0,0,0,.65),
+      inset 0 1px 0 var(--sc-bevel-light),
+      inset -1px -1px 0 var(--sc-bevel-dark);
+    transition:.22s;
+    clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
+    min-width:220px;
+  }
+  .idx-toggle:hover{background:linear-gradient(180deg,rgba(92,196,212,.12),rgba(10,18,28,.96));color:#eaf2f6}
+  .idx-toggle .tri{
+    width:10px;height:10px;
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .3s;
+  }
+  .idx-toggle.open .tri{transform:rotate(90deg)}
+  .idx-toggle .dot{
+    width:6px;height:6px;border-radius:50%;background:var(--orange);
+    box-shadow:0 0 8px var(--orange-glow);
+    animation:pulse 1.8s ease-in-out infinite;
+  }
+  .idx-toggle .lbl{flex:1;text-align:left}
+
+  .idx-panel{
+    position:absolute;top:calc(100% + 8px);left:0;
+    width:360px;
+    background:linear-gradient(180deg,rgba(6,16,26,.96),rgba(3,7,12,.98));
+    border:1px solid var(--line-strong);
+    box-shadow:0 20px 60px rgba(0,0,0,.85), 0 0 40px rgba(92,196,212,.08), inset 0 1px 0 rgba(92,196,212,.18);
+    opacity:0;visibility:hidden;
+    transform:translateY(-8px);
+    transition:opacity .3s, transform .35s cubic-bezier(.2,.9,.3,1), visibility 0s .35s;
+    clip-path:polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+  }
+  .idx-panel.open{opacity:1;visibility:visible;transform:translateY(0);transition:opacity .3s, transform .35s, visibility 0s}
+  .idx-panel::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(92,196,212,.04) 0,rgba(92,196,212,.04) 1px,transparent 1px,transparent 3px);
+    mix-blend-mode:screen;
+  }
+  .idx-panel::after{
+    content:"";position:absolute;inset:6px;pointer-events:none;
+    border:1px solid transparent;
+  }
+
+  .idx-head{
+    padding:14px 18px 10px;
+    border-bottom:1px solid rgba(92,196,212,.18);
+    position:relative;
+  }
+  .idx-head::after{
+    content:"";position:absolute;bottom:-1px;left:0;width:40%;height:1px;
+    background:var(--accent);box-shadow:0 0 6px var(--accent-glow);
+  }
+  .idx-head .title{
+    font-size:9px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:4px;display:flex;gap:8px;align-items:center;
+    text-shadow:0 0 20px rgba(92,196,212,.15);
+  }
+  .idx-head .title::before{content:"◣"}
+  .idx-head .sub{
+    font-size:8.5px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;
+  }
+
+  .idx-list{
+    padding:6px;max-height:60vh;overflow-y:auto;position:relative;z-index:2;
+  }
+  .idx-list::-webkit-scrollbar{width:3px}
+  .idx-list::-webkit-scrollbar-thumb{background:rgba(92,196,212,.3)}
+
+  .idx-item{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 14px;margin:2px 0;
+    background:transparent;border:1px solid transparent;
+    cursor:pointer;transition:.18s;position:relative;
+  }
+  .idx-item:hover{
+    background:rgba(92,196,212,.08);
+    border-color:rgba(92,196,212,.3);
+  }
+  .idx-item:hover .idx-name{color:#eaf2f6}
+  .idx-item--race-terran{border-left:2px solid rgba(100,165,215,.35)}
+  .idx-item--race-zerg{border-left:2px solid rgba(120,195,95,.38)}
+  .idx-item--race-protoss{border-left:2px solid rgba(210,175,85,.38)}
+  .idx-item--race-terran:hover{background:rgba(90,150,210,.09)}
+  .idx-item--race-zerg:hover{background:rgba(100,175,85,.09)}
+  .idx-item--race-protoss:hover{background:rgba(200,160,70,.07)}
+  .idx-portrait-wrap{
+    width:36px;height:36px;flex-shrink:0;
+    border:1px solid rgba(92,196,212,.35);
+    background:rgba(2,6,10,.9);
+    overflow:hidden;
+    box-shadow:inset 0 0 8px rgba(0,0,0,.5);
+  }
+  .idx-portrait-wrap.race-terran{border-color:rgba(110,170,220,.5)}
+  .idx-portrait-wrap.race-zerg{border-color:rgba(130,190,100,.5)}
+  .idx-portrait-wrap.race-protoss{border-color:rgba(210,170,80,.5)}
+  .idx-portrait{
+    width:100%;height:100%;object-fit:contain;
+    image-rendering:pixelated;image-rendering:crisp-edges;
+    animation:portraitIdle 3.2s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion:reduce){ .idx-portrait{animation:none} }
+  .idx-item .idx-icon{
+    width:28px;height:28px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--line-strong);
+    font-size:13px;color:var(--accent);
+    background:rgba(92,196,212,.06);
+  }
+  .idx-item .idx-body{flex:1;min-width:0}
+  .idx-item .idx-num{
+    font-size:8px;letter-spacing:.2em;color:var(--muted);
+    text-transform:uppercase;margin-bottom:2px;
+    display:flex;gap:6px;align-items:center;
+  }
+  .idx-item .idx-name{
+    font-size:12px;color:var(--ink);font-weight:500;
+    font-family:'Space Grotesk',sans-serif;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    transition:.2s;
+  }
+  .idx-item .idx-status{
+    font-size:8px;padding:2px 7px;
+    border:1px solid currentColor;
+    text-transform:uppercase;letter-spacing:.1em;
+    flex-shrink:0;
+  }
+  .idx-item .idx-status.ok{color:var(--green-bright)}
+  .idx-item .idx-status.warn{color:var(--orange)}
+  .idx-item .idx-status.crit{color:var(--danger);animation:pulse 1.6s ease-in-out infinite}
+
+  .idx-foot{
+    padding:10px 18px;
+    border-top:1px solid rgba(92,196,212,.15);
+    font-size:8px;color:var(--muted);
+    letter-spacing:.14em;text-transform:uppercase;
+    display:flex;justify-content:space-between;
+    position:relative;z-index:2;
+  }
+  .idx-foot b{color:var(--accent)}
+
+  /* Scale legend bottom-right — marco compacto estilo panel RTS */
+  .scale-legend{
+    position:fixed;right:24px;bottom:24px;
+    pointer-events:auto;z-index:11;
+    font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);
+    letter-spacing:.12em;text-transform:uppercase;
+    text-align:right;line-height:1.7;
+    padding:10px 12px;
+    background:rgba(10,16,24,.55);
+    border:1px solid rgba(92,196,212,.16);
+    border-radius:var(--sc-frame-radius);
+    box-shadow:
+      inset 0 1px 0 var(--sc-bevel-light),
+      inset -1px -1px 0 var(--sc-bevel-dark),
+      0 6px 20px rgba(0,0,0,.4);
+  }
+  .scale-legend b{color:var(--ink-2);font-weight:500}
+
+  @media (max-width:820px){
+    .panel{
+      right:max(10px,env(safe-area-inset-right,0px));
+      left:max(10px,env(safe-area-inset-left,0px));
+      width:auto;top:auto;
+      bottom:max(84px,env(safe-area-inset-bottom,12px));
+      transform:translateY(20px);
+      max-height:min(72vh,calc(100vh - 140px));
+    }
+    .panel.open{transform:translateY(0)}
+    .hud-top{padding:16px 18px 40px;padding-top:max(16px,env(safe-area-inset-top,0px))}
+    .brand h1{font-size:18px}
+    .meta,.scale-legend{display:none}
+    .controls{
+      flex-direction:row;
+      bottom:max(14px,env(safe-area-inset-bottom,14px));
+      left:50%;transform:translateX(-50%);
+      flex-wrap:wrap;justify-content:center;max-width:96vw;gap:8px;
+    }
+    .indexer{
+      top:max(88px,env(safe-area-inset-top,0px));
+      left:max(12px,env(safe-area-inset-left,0px));
+    }
+    .idx-panel{max-width:min(360px,calc(100vw - 24px))}
+  }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<div class="loader" id="loader">
+  <div class="ring"></div>
+  <div class="txt">Calibrando sistema · Gano Digital</div>
+  <div class="txt txt-sub">COMMAND CONSOLE · ENGAGED</div>
+</div>
+
+<div class="hud hud-top">
+  <div class="brand">
+    <div class="eyebrow">COMMAND · GALACTIC MAP · v3.0</div>
+    <h1>Sistema <b>Gano Digital</b></h1>
+    <div class="sub">Consola RTS (jerarquía menú clásica) + HUD diegético · Phase 4 · 2026</div>
+  </div>
+  <div class="meta">
+    <div><span class="dot"></span><b>SYNC LIVE</b> · Obsidian REST</div>
+    <div>1 estrella · 8 cuerpos · 1 cinturón · 1 cometa</div>
+    <div>WebGL 2 · ACES · Bloom 0.35</div>
+  </div>
+</div>
+
+<div class="legend" id="legend"></div>
+
+<div class="scale-legend">
+  <div><b>↓ ESCALA ORBITAL</b></div>
+  <div>Núcleo → Cinturón → Periferia</div>
+  <div>Distancia ≈ Independencia operacional</div>
+</div>
+
+<div class="controls">
+  <button class="ctrl" id="btnReset" title="Reset view">⌂</button>
+  <button class="ctrl active" id="btnRotate" title="Auto rotate">↻</button>
+  <button class="ctrl active" id="btnLines" title="Connections">≋</button>
+  <button class="ctrl active" id="btnLabels" title="Labels">A</button>
+  <button class="ctrl" id="btnTop" title="Top view">⊕</button>
+  <button class="ctrl sound active" id="btnSound" type="button" title="Sonido HUD (curated AgentCraft)">◐</button>
+  <button class="ctrl" id="btnMenu" type="button" title="Menú RTS (overlays + modal)">▦</button>
+</div>
+
+<!-- =========== SC MENU MOTION LAYER (conceptos del video) =========== -->
+<div class="sc-layer" id="scLayer" aria-hidden="true">
+  <div class="sc-corner sc-corner--tl" id="scTL">
+    <div class="sc-grid" aria-hidden="true"></div>
+    <div class="sc-corner-title">TACTICAL GRID</div>
+    <div class="sc-pips" aria-hidden="true">
+      <span class="sc-pip"></span><span class="sc-pip hot"></span><span class="sc-pip"></span>
+    </div>
+  </div>
+  <div class="sc-corner sc-corner--tr" id="scTR">
+    <div class="sc-nebula" aria-hidden="true"></div>
+    <div class="sc-corner-title sc-nebula-title">THREAT CLOUD</div>
+    <div class="sc-pips" aria-hidden="true">
+      <span class="sc-pip hot"></span><span class="sc-pip"></span><span class="sc-pip"></span>
+    </div>
+  </div>
+  <div class="sc-vortex" aria-hidden="true"></div>
+
+  <div class="sc-portals" id="scPortals">
+    <button class="sc-portal" type="button" data-race="terran" data-mode="campaign">
+      <div class="sc-ring" aria-hidden="true"></div>
+      <div class="meta">
+        <b>TERRAN</b>
+        <span>Campaign Complete</span>
+      </div>
+    </button>
+    <button class="sc-portal" type="button" data-race="zerg" data-mode="campaign">
+      <div class="sc-ring" aria-hidden="true"></div>
+      <div class="meta">
+        <b>ZERG</b>
+        <span>Episode II</span>
+      </div>
+    </button>
+    <button class="sc-portal" type="button" data-race="protoss" data-mode="campaign">
+      <div class="sc-ring" aria-hidden="true"></div>
+      <div class="meta">
+        <b>PROTOSS</b>
+        <span>Episode III</span>
+      </div>
+    </button>
+  </div>
+
+  <div class="sc-modal" id="scModal" role="dialog" aria-modal="true" aria-labelledby="scModalTitle">
+    <div class="sc-modal-head">
+      <div class="sc-modal-title" id="scModalTitle">Select Game Type</div>
+      <button class="sc-modal-x" id="scModalClose" type="button" aria-label="Cerrar">×</button>
+    </div>
+    <div class="sc-modal-body">
+      <button class="sc-choice" type="button" id="scChoiceOriginal">
+        <div>
+          <small>STARCRAFT</small>
+          <b>Original</b>
+        </div>
+        <span class="tag">CORE</span>
+      </button>
+      <button class="sc-choice" type="button" id="scChoiceExpansion">
+        <div>
+          <small>STARCRAFT</small>
+          <b>Expansion</b>
+        </div>
+        <span class="tag">BROOD WAR</span>
+      </button>
+    </div>
+    <div class="sc-modal-foot">
+      <button class="sc-btn" id="scCancel" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========== INDEXER (top-left master menu) =========== -->
+<div class="indexer" id="indexer">
+  <button class="idx-toggle" id="idxToggle">
+    <span class="dot"></span>
+    <span class="lbl">INDEX · SYSTEMS REGISTRY</span>
+    <span class="tri">▶</span>
+  </button>
+  <div class="idx-panel" id="idxPanel">
+    <div class="idx-head">
+      <div class="title">Directorio de Experiencias</div>
+      <div class="sub">9 cuerpos indexados · Click para brief</div>
+    </div>
+    <div class="idx-list" id="idxList"></div>
+    <div class="idx-foot">
+      <span>GANO · DIGITAL</span>
+      <span><b>v3.1</b> · DS-HUD</span>
+    </div>
+  </div>
+</div>
+
+<!-- =========== BRIEF PANEL (Dead Space diegetic HUD) =========== -->
+<aside class="panel" id="panel">
+  <div class="brackets"></div>
+  <button class="p-close" id="closePanel">×</button>
+  <div class="panel-inner">
+
+    <div class="p-header p-header--rts">
+      <div class="p-portrait-col">
+        <div class="p-portrait-shell race-protoss" id="pPortraitShell">
+          <img id="pPortraitImg" class="p-portrait-img" src="" alt="" width="120" height="120" decoding="async" />
+          <div class="p-portrait-flicker" aria-hidden="true"></div>
+          <div class="p-portrait-crt" aria-hidden="true"></div>
+          <div class="p-portrait-shine" aria-hidden="true"></div>
+        </div>
+        <div class="p-portrait-label" id="pPortraitFaction">UNIT</div>
+      </div>
+      <div class="p-header-main">
+        <div class="p-designation">
+          <span class="pulse"></span>
+          <span id="pDesignation">GD-XXX-00</span>
+          <span class="divider"></span>
+          <span class="clock" id="pClock">T+00:00:00</span>
+        </div>
+        <div class="p-class-tag" id="pClassTag">CLASSIFICATION</div>
+        <div class="p-name" id="pName">—</div>
+        <div class="p-subtitle" id="pSubtitle">—</div>
+      </div>
+    </div>
+
+    <div class="section" id="sBrief">
+      <div class="section-label">Mission Brief <span class="idx">// 01</span></div>
+      <div class="brief-text" id="pBrief"></div>
+    </div>
+
+    <div class="section" id="sObj">
+      <div class="section-label">Operational Objectives <span class="idx">// 02</span></div>
+      <ul class="obj-list" id="pObjectives"></ul>
+    </div>
+
+    <div class="section" id="sMetrics">
+      <div class="section-label">Key Metrics <span class="idx">// 03</span></div>
+      <div class="metric-grid" id="pMetrics"></div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>Operational Progress</span><span class="val" id="pBarVal">0%</span></div>
+        <div class="bar" id="pBar"><div class="fill" id="pBarFill"></div></div>
+      </div>
+    </div>
+
+    <div class="section" id="sDeps">
+      <div class="section-label">Dependencies <span class="idx">// 04</span></div>
+      <ul class="dep-list" id="pDeps"></ul>
+    </div>
+
+    <div class="section" id="sThreats">
+      <div class="section-label">Risk Assessment <span class="idx">// 05</span></div>
+      <ul class="threat-list" id="pThreats"></ul>
+    </div>
+
+    <div class="section" id="sActions">
+      <div class="section-label">Directive / Next Actions <span class="idx">// 06</span></div>
+      <ul class="action-list" id="pActions"></ul>
+    </div>
+
+    <div class="section" id="sLog">
+      <div class="section-label">Activity Log <span class="idx">// 07</span></div>
+      <div class="log-list" id="pLog"></div>
+    </div>
+
+  </div>
+</aside>
+
+<!-- =========== HOVER TOOLTIP =========== -->
+<div class="tooltip" id="tooltip">
+  <div class="tt-portrait-row">
+    <div class="tt-portrait-wrap" id="ttPortraitWrap"><img class="tt-portrait" id="ttPortrait" src="" alt="" /></div>
+    <div class="tt-portrait-meta">
+      <div class="tt-class"><span class="icon" id="ttIcon">●</span><span id="ttClass">—</span></div>
+      <div class="tt-name" id="ttName">—</div>
+    </div>
+  </div>
+  <div class="tt-row"><span class="k">Tipo</span><span class="v" id="ttType">—</span></div>
+  <div class="tt-row"><span class="k">Referencia visual</span><span class="v" id="ttRef">—</span></div>
+  <div class="tt-row"><span class="k">Distancia</span><span class="v" id="ttDist">—</span></div>
+  <div class="tt-row"><span class="k">Estado</span><span class="v" id="ttStatus">—</span></div>
+  <div class="tt-hint">Click para brief completo</div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+/**
+ * Battle Map — plan de diseño / fine tuning:
+ * memory/constellation/BATTLE-MAP-PLAN-DISENO-FINE-TUNING-2026-04.md
+ * Config ejemplo (Fase 2): battle-map-config.example.json
+ */
+window.__GANO_BATTLE_MAP__ = {
+  build: '2026-04-07',
+  version: '3.0',
+  plan: 'memory/constellation/BATTLE-MAP-PLAN-DISENO-FINE-TUNING-2026-04.md',
+};
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+/* ============================================================
+   STELLAR TAXONOMY — Datos del sistema Gano Digital
+   Cada cuerpo está clasificado por su rol semántico:
+   - star          → Núcleo del proyecto
+   - terrestrial   → Fundaciones sólidas (estables, cercanas)
+   - gas-giant     → Sistemas grandes e influyentes
+   - ice-giant     → Procesos de soporte (lejanos, fríos)
+   - comet         → Riesgos (órbita excéntrica)
+   - belt          → Cinturón de componentes pequeños
+   ============================================================ */
+
+const TAXONOMY = {
+  'star':        { icon:'☉', label:'Estrella · Núcleo',          colorRing:'#ffd9a8' },
+  'terrestrial': { icon:'●', label:'Planeta Terrestre',          colorRing:'#b8927a' },
+  'gas-giant':   { icon:'◉', label:'Gigante Gaseoso',            colorRing:'#c49a6c' },
+  'ice-giant':   { icon:'◐', label:'Gigante de Hielo',           colorRing:'#6a90ad' },
+  'comet':       { icon:'☄', label:'Cometa · Órbita Excéntrica', colorRing:'#a8c4d4' },
+  'belt':        { icon:'⋯', label:'Cinturón de Asteroides',     colorRing:'#7a7a8a' },
+};
+/** Referencia visual del preset procedural (Sistema Solar) */
+const LOOK_LABELS = {
+  sol:'Sol (G2V)',
+  mars:'Marte', jupiter:'Júpiter', saturn:'Saturno', mercury:'Mercurio', venus:'Venus',
+  neptune:'Neptuno', uranus:'Urano', halley:'Halley',
+};
+
+/** Retratos estilo SC (workers PNG starcraft-local AgentCraft). Sin sprites GRP del juego en repo — animación vía CSS. */
+const PORTRAIT_BASE = 'assets/portraits/';
+const SC_PORTRAITS = {
+  '00': { race:'protoss', file:'portrait-worker-protoss.png', faction:'PROTOSS' },
+  '01': { race:'protoss', file:'portrait-worker-protoss.png', faction:'PROTOSS' },
+  '02': { race:'terran', file:'portrait-worker-terran.png', faction:'TERRAN' },
+  '03': { race:'zerg', file:'portrait-worker-zerg.png', faction:'ZERG' },
+  '04': { race:'terran', file:'portrait-worker-terran.png', faction:'TERRAN' },
+  '05': { race:'terran', file:'portrait-worker-terran.png', faction:'TERRAN' },
+  '06': { race:'protoss', file:'portrait-worker-protoss.png', faction:'PROTOSS' },
+  '07': { race:'terran', file:'portrait-worker-terran.png', faction:'TERRAN' },
+  '08': { race:'zerg', file:'portrait-worker-zerg.png', faction:'ZERG' },
+};
+function portraitConfigFor(sys){
+  if(!sys || sys.id === undefined) return SC_PORTRAITS['01'];
+  return SC_PORTRAITS[sys.id] || SC_PORTRAITS['01'];
+}
+function applyBriefPortrait(sys){
+  const cfg = portraitConfigFor(sys);
+  const shell = document.getElementById('pPortraitShell');
+  const img = document.getElementById('pPortraitImg');
+  const lbl = document.getElementById('pPortraitFaction');
+  if(!shell || !img || !lbl) return;
+  shell.className = 'p-portrait-shell race-' + cfg.race;
+  lbl.textContent = cfg.faction + ' · UNIT';
+  const url = PORTRAIT_BASE + cfg.file;
+  img.onload = ()=>{ img.style.opacity = '1'; };
+  img.onerror = ()=>{ img.style.opacity = '0'; };
+  img.style.opacity = '0.9';
+  img.src = url;
+  img.alt = cfg.faction + ' portrait';
+}
+function applyTooltipPortrait(sys){
+  const cfg = portraitConfigFor(sys);
+  const wrap = document.getElementById('ttPortraitWrap');
+  const im = document.getElementById('ttPortrait');
+  const tt = document.getElementById('tooltip');
+  if(!wrap || !im) return;
+  wrap.className = 'tt-portrait-wrap race-' + cfg.race;
+  im.src = PORTRAIT_BASE + cfg.file;
+  im.alt = '';
+  if(tt){
+    tt.classList.remove('tooltip--race-terran','tooltip--race-zerg','tooltip--race-protoss');
+    tt.classList.add('tooltip--race-' + cfg.race);
+  }
+}
+
+/* Orden canónico SYS 01 → 08 (leyenda, indexador y órbitas alineados al mismo índice) */
+const SYSTEMS = [
+  {
+    id:'01', name:'Mapa Estratégico', type:'terrestrial',
+    lookRef:'mars',
+    color:'#c89070', baseColor:'#5a3a28',
+    radius:14, size:1.05, angle:0.2, tilt:0.02,
+    desc:'Visión de soberanía digital LATAM, modelo Reseller GoDaddy y decisiones estratégicas. Cuerpo terrestre denso: la base sobre la que orbita todo.',
+    status:'Activo', progress:'100%', owner:'Diego', crit:'Alta',
+    children:['Visión','Modelo','Posicionamiento','Decisiones']
+  },
+  {
+    id:'02', name:'Fases & Roadmap', type:'gas-giant',
+    lookRef:'jupiter',
+    color:'#c49a6c', baseColor:'#3a2a14',
+    radius:38, size:2.4, angle:0.9, tilt:-0.05,
+    desc:'5 fases del Plan Maestro 2026. F1-F3 completadas. F4 (comercialización vía Reseller) en ejecución crítica. Gigante gaseoso: el sistema más voluminoso del proyecto.',
+    status:'Phase 4 · 15%', progress:'60%', owner:'Diego + Agentes', crit:'Crítica',
+    children:['F1 ✓','F2 ✓','F3 ✓','F4 ●','F5'],
+    bands:true
+  },
+  {
+    id:'03', name:'Ecosistema Agentes', type:'gas-giant',
+    lookRef:'saturn',
+    color:'#9080b0', baseColor:'#1e1a2e',
+    radius:48, size:2.6, angle:2.2, tilt:0.08,
+    desc:'5 agentes IA orquestados: Claude (estrategia), Cursor (código), Antigravity (auditoría), Copilot (workflows), Diego (decisiones). Gigante con su propio sistema de lunas.',
+    status:'Operativo', progress:'80%', owner:'Multi-agent', crit:'Alta',
+    children:['Claude','Cursor','Antigravity','Copilot','Diego'],
+    bands:true, rings:true
+  },
+  {
+    id:'04', name:'Arquitectura', type:'terrestrial',
+    lookRef:'mercury',
+    color:'#7a8a9c', baseColor:'#2a3440',
+    radius:19, size:1.2, angle:1.4, tilt:-0.03,
+    desc:'WordPress Managed Deluxe + Hello Elementor + WooCommerce + Reseller Store + Wordfence + MU plugins. Roca operacional.',
+    status:'Hardened', progress:'100%', owner:'Stack GoDaddy', crit:'Media',
+    children:['WP+Elementor','Reseller','MU Plugins','CDN','Staging']
+  },
+  {
+    id:'05', name:'Procesos Operativos', type:'terrestrial',
+    lookRef:'venus',
+    color:'#b07060', baseColor:'#3a201c',
+    radius:24, size:0.95, angle:2.7, tilt:0.04,
+    desc:'RCC Audit, Cart Testing 9/9, deployment workflow staging→prod, dispatch queue Claude, orquestación Copilot.',
+    status:'En curso', progress:'40%', owner:'Cursor + Antigravity', crit:'Alta',
+    children:['RCC Audit','Cart Test','Deploy','Dispatch']
+  },
+  {
+    id:'06', name:'Métricas & KPIs', type:'ice-giant',
+    lookRef:'neptune',
+    color:'#5e8a9c', baseColor:'#162228',
+    radius:60, size:1.7, angle:3.5, tilt:-0.06,
+    desc:'Dashboard ejecutivo, burn-down Phase 4, completion %, blockers, PFID mappings, go-live tracker. Gigante helado: lejano pero esencial.',
+    status:'Live sync', progress:'15%', owner:'STATUS-LIVE.md', crit:'Alta',
+    children:['KPIs','Burn-down','PFID','Go-Live']
+  },
+  {
+    id:'07', name:'Equipo & Coordinación', type:'ice-giant',
+    lookRef:'uranus',
+    color:'#6878a0', baseColor:'#181c2c',
+    radius:70, size:1.55, angle:4.7, tilt:0.05,
+    desc:'Roles RACI, canales de comunicación, standups async vía dispatch queue, coordinación Diego ↔ agentes IA.',
+    status:'Sincronizado', progress:'90%', owner:'Diego', crit:'Media',
+    children:['Roles','RACI','Standups','Comms']
+  },
+  {
+    id:'08', name:'Riesgos & Bloqueadores', type:'comet',
+    lookRef:'halley',
+    color:'#b8d0e0', baseColor:'#3a4858',
+    radius:82, size:0.7, angle:5.5, tilt:0.18,
+    desc:'1 blocker activo: PFID mappings 0/5. Riesgo crítico para go-live Apr 20, 2026. Cometa de órbita excéntrica: aparece, alerta, regresa.',
+    status:'1 BLOCKER', progress:'CRÍTICO', owner:'Diego', crit:'Crítica',
+    children:['Blockers','PFID 0/5','Mitigación','Go-Live'],
+    eccentric:true
+  },
+];
+
+/* ============================================================
+   BRIEFS — Datos expandidos tipo "brief corporativo de misión"
+   Cada entrada alimenta el panel Dead Space con:
+   designation, classification, subtitle, missionBrief,
+   objectives, metrics, progressPct, dependencies,
+   threats, nextActions, log
+   ============================================================ */
+const BRIEFS = {
+  '00':{
+    designation:'GD-CORE-00',
+    classification:'CLASS-OMEGA // PRIMARY NODE',
+    classLevel:'critical',
+    subtitle:'Founder · Vision · Brand Authority',
+    missionBrief:'Núcleo operacional del proyecto Gano Digital. Fuente única de autoridad ejecutiva, visión estratégica y narrativa de marca. Todo el ecosistema orbita en torno a las decisiones emitidas desde este punto. Estado actual: operacional sin degradación. Capacidad de decisión: máxima. Alineación multi-agente: nominal.',
+    objectives:[
+      {label:'Visión 2026 consolidada', state:'complete'},
+      {label:'Modelo comercial lockeado (Reseller GoDaddy)', state:'complete'},
+      {label:'Narrativa soberanía digital LATAM', state:'active'},
+      {label:'Alineación multi-agente RACI', state:'active'},
+    ],
+    metrics:[
+      {k:'Authority',v:'MAX',state:'ok'},
+      {k:'Decision Lag',v:'<24H',state:'ok'},
+      {k:'Focus Index',v:'94%',state:'ok'},
+      {k:'Burn Rate',v:'NOMINAL'},
+    ],
+    progressPct:100,
+    dependencies:['Diego (Founder · Único decisor)','Plan Maestro 2026','GoDaddy Reseller Program','Infraestructura Managed Deluxe'],
+    threats:['Saturación ejecutiva en sprint final','Drift de prioridades bajo presión','3 decisiones pendientes de Fase 4'],
+    nextActions:['Aprobar checkout Reseller final','Firmar PFID de 5 productos','Greenlight go-live Apr 20 2026'],
+    log:[
+      {t:'T-30d',m:'Plan Maestro publicado y distribuido'},
+      {t:'T-14d',m:'Fase 3 completada · schema JSON-LD live'},
+      {t:'T-06d',m:'RCC audit scope definido'},
+      {t:'T-00h',m:'Sistema operacional · sync live'},
+    ]
+  },
+  '01':{
+    designation:'GD-STR-01',
+    classification:'CLASS-A // STRATEGIC',
+    classLevel:'',
+    subtitle:'Terrestrial Body · Decisional Core',
+    missionBrief:'Consolidar Gano Digital como proveedor líder de hosting WordPress soberano en Colombia. Este sistema alberga la visión LATAM, el modelo comercial Reseller GoDaddy y la matriz completa de decisiones ejecutivas. Cuerpo terrestre denso: fundación sobre la que orbitan todos los sistemas operacionales. Estabilidad estructural: nominal.',
+    objectives:[
+      {label:'Visión LATAM documentada', state:'complete'},
+      {label:'Modelo Reseller validado técnicamente', state:'complete'},
+      {label:'Posicionamiento SEO "hosting wordpress colombia"', state:'active'},
+      {label:'Lock de decisiones Fase 4', state:'pending'},
+    ],
+    metrics:[
+      {k:'Authority Score',v:'42/100'},
+      {k:'Brand Clarity',v:'HIGH',state:'ok'},
+      {k:'Market Fit',v:'VALIDATED',state:'ok'},
+      {k:'Decision Debt',v:'3 items',state:'warn'},
+    ],
+    progressPct:100,
+    dependencies:['Diego (Founder)','Reseller GoDaddy','Brand Guidelines v2','Auditoría externa 145pp'],
+    threats:['Indecisión ejecutiva en precios finales','Drift de narrativa bajo presión comercial','Falta data real de contacto (NIT, teléfono)'],
+    nextActions:['Definir NIT y contacto legal','Aprobar copy institucional final','Firmar decisión go-live Apr 20','Locking de pricing Reseller'],
+    log:[
+      {t:'T-90d',m:'Visión LATAM aprobada por Diego'},
+      {t:'T-45d',m:'Modelo Reseller lockeado'},
+      {t:'T-10d',m:'SEO landing deployed'},
+      {t:'T-00h',m:'Awaiting F4 decision lock'},
+    ]
+  },
+  '02':{
+    designation:'GD-PHS-02',
+    classification:'CLASS-A // TIMELINE-CRITICAL',
+    classLevel:'warning',
+    subtitle:'Gas Giant · Operational Chronology',
+    missionBrief:'Las 5 fases del Plan Maestro 2026. Fases 1-3 completadas: parches críticos, hardening + CSP enforced, SEO con schema JSON-LD y Core Web Vitals. Fase 4 en ejecución crítica: comercialización vía GoDaddy Reseller Store. Fase 5 (post-launch) aún sin activar. Volumen operacional más grande del sistema. Velocidad actual subóptima respecto a target.',
+    objectives:[
+      {label:'F1 · Parches críticos de seguridad', state:'complete'},
+      {label:'F2 · Hardening + CSP + rate limiting', state:'complete'},
+      {label:'F3 · SEO + Core Web Vitals + schema', state:'complete'},
+      {label:'F4 · Comercialización Reseller GoDaddy', state:'active'},
+      {label:'F5 · Post-launch + métricas live', state:'pending'},
+    ],
+    metrics:[
+      {k:'Fases Done',v:'3/5',state:'ok'},
+      {k:'F4 Progress',v:'15%',state:'warn'},
+      {k:'Velocity',v:'0.8 t/d'},
+      {k:'ETA Go-Live',v:'APR 20',state:'warn'},
+    ],
+    progressPct:60,
+    dependencies:['F3 artifacts (schema, CWV)','RCC Audit (Antigravity)','PFID mappings (Cursor)','Diego approval gates'],
+    threats:['PFID mappings 0/5 → BLOQUEADOR CRÍTICO','Burn-down lento vs. target','Antigravity no activado','Ventana de 14 días hasta go-live'],
+    nextActions:['Activar Antigravity esta semana','Generar los 5 PFID mappings','Ejecutar staging test 9/9 PASS','Validar production test final'],
+    log:[
+      {t:'T-120d',m:'F1 iniciada'},
+      {t:'T-70d',m:'F2 completada · CSP enforced'},
+      {t:'T-20d',m:'F3 completada · JSON-LD live'},
+      {t:'T-14d',m:'F4 kickoff · Reseller scope'},
+      {t:'T-00h',m:'F4 15% · awaiting PFID'},
+    ]
+  },
+  '03':{
+    designation:'GD-AGT-03',
+    classification:'CLASS-A // MULTI-AGENT GRID',
+    classLevel:'',
+    subtitle:'Ringed Gas Giant · Distributed Intelligence',
+    missionBrief:'Orquestación de 5 agentes IA autónomos operando en paralelo sobre el proyecto. Claude (estrategia + memoria persistente), Cursor (código + refactor + PRs), Antigravity (auditoría + RCC), GitHub Copilot (workflows CI/CD + actions), Diego (decisiones humanas irreducibles). Cada agente tiene su propia zona RACI. Sistema de anillos representa la cohesión del ecosistema distribuido.',
+    objectives:[
+      {label:'Claude · dispatch queue v2 activa', state:'complete'},
+      {label:'Cursor · PFID mappings pipeline', state:'active'},
+      {label:'Antigravity · RCC audit pendiente', state:'active'},
+      {label:'Copilot · workflows 01-12 online', state:'complete'},
+      {label:'Diego · greenlight gates', state:'active'},
+    ],
+    metrics:[
+      {k:'Agents Online',v:'4/5',state:'warn'},
+      {k:'Dispatch Queue',v:'7 tasks'},
+      {k:'Avg Latency',v:'2.1h',state:'ok'},
+      {k:'Sync Health',v:'NOMINAL',state:'ok'},
+    ],
+    progressPct:80,
+    dependencies:['Claude memory system + MD files','Cursor PR pipeline','Antigravity MCP integration','Copilot GitHub Actions','Diego manual review'],
+    threats:['Antigravity offline (bloqueador F4)','Context drift entre agentes','Race conditions en dispatch queue','Single-human dependency'],
+    nextActions:['Diego activa Antigravity (~20 min)','Sincronizar memoria multi-agente','Validar RACI matrix para F4','Documentar handoff protocols'],
+    log:[
+      {t:'T-45d',m:'Multi-agent architecture online'},
+      {t:'T-30d',m:'Copilot workflows 01-12 merged'},
+      {t:'T-10d',m:'Dispatch queue v2 · Claude'},
+      {t:'T-00h',m:'Waiting on Antigravity'},
+    ]
+  },
+  '04':{
+    designation:'GD-ARC-04',
+    classification:'CLASS-B // INFRASTRUCTURE',
+    classLevel:'',
+    subtitle:'Terrestrial Body · Operational Bedrock',
+    missionBrief:'Stack técnico completo: WordPress Managed Deluxe (GoDaddy, 20GB NVMe, CDN, staging) + Hello Elementor + gano-child theme + WooCommerce COP zona Bogotá + Reseller Store marca blanca + Wordfence + MU plugins custom (gano-security.php, gano-seo.php). Las Fases 1-3 ya hardenearon completamente esta capa. Cimiento técnico sólido.',
+    objectives:[
+      {label:'WordPress hardened (Fase 1)', state:'complete'},
+      {label:'CSP enforced + rate limiting (F2)', state:'complete'},
+      {label:'Schema JSON-LD + Core Web Vitals (F3)', state:'complete'},
+      {label:'Staging parity con producción', state:'active'},
+    ],
+    metrics:[
+      {k:'Storage',v:'20GB NVMe'},
+      {k:'CDN',v:'ACTIVE',state:'ok'},
+      {k:'Security',v:'HARDENED',state:'ok'},
+      {k:'CWV Score',v:'92/100',state:'ok'},
+    ],
+    progressPct:100,
+    dependencies:['GoDaddy Managed Deluxe','Reseller Control Center','Wordfence premium','Elementor Pro + Royal Addons'],
+    threats:['Plugin conflicts en deploy F4','Reseller API latency ocasional','Riesgo DDoS (mitigación típica: CDN/WAF) — no incidente'],
+    nextActions:['Deploy gano-reseller-enhancements','Probar subdomains (my., support.)','Validar workflow staging → prod','Runbook de rollback'],
+    log:[
+      {t:'T-180d',m:'Managed Deluxe activated'},
+      {t:'T-120d',m:'MU gano-security deployed'},
+      {t:'T-30d',m:'MU gano-seo deployed'},
+      {t:'T-00h',m:'Stack ready · awaiting F4 deploy'},
+    ]
+  },
+  '05':{
+    designation:'GD-OPS-05',
+    classification:'CLASS-B // OPERATIONAL',
+    classLevel:'warning',
+    subtitle:'Terrestrial Body · Execution Pipeline',
+    missionBrief:'Procesos operativos críticos de Fase 4: RCC Audit del catálogo en Reseller Control Center, Cart Test 9/9 para validación del checkout completo, workflow de deployment staging→prod, dispatch queue para Claude y orquestación de workflows Copilot 01-12. Pipeline que convierte decisiones ejecutivas en código merged y live.',
+    objectives:[
+      {label:'RCC Audit ejecutado', state:'pending'},
+      {label:'Cart Test 9/9 PASS', state:'pending'},
+      {label:'Deploy pipeline validado', state:'active'},
+      {label:'Dispatch queue operativa', state:'complete'},
+    ],
+    metrics:[
+      {k:'Test Pass Rate',v:'N/A',state:'warn'},
+      {k:'Deploy Frequency',v:'3/wk'},
+      {k:'MTTR',v:'<2h',state:'ok'},
+      {k:'Queue Depth',v:'7 pend.'},
+    ],
+    progressPct:40,
+    dependencies:['Antigravity (RCC audit)','Cursor (PFID execution)','Staging site (Managed Deluxe)','GitHub Actions runners'],
+    threats:['RCC audit no iniciado','Test rate desconocido aún','Pipeline staging→prod no probado en F4 scope','Rollback plan incompleto'],
+    nextActions:['Kickoff RCC audit con Antigravity','Correr cart test 9/9 en staging','Validar y documentar rollback','Runbook final de go-live'],
+    log:[
+      {t:'T-21d',m:'Dispatch queue v1 online'},
+      {t:'T-10d',m:'Copilot workflows ready'},
+      {t:'T-05d',m:'Staging parity check'},
+      {t:'T-00h',m:'Awaiting RCC kickoff'},
+    ]
+  },
+  '06':{
+    designation:'GD-MET-06',
+    classification:'CLASS-C // TELEMETRY',
+    classLevel:'warning',
+    subtitle:'Ice Giant · Remote Observability',
+    missionBrief:'Sistema de telemetría y métricas. STATUS-LIVE.md se sincroniza cada hora vía Windows Task Scheduler + Obsidian Local REST API (puerto 27124 HTTPS). Dashboard ejecutivo, burn-down Phase 4, PFID mappings tracker, go-live countdown. Fuente única de verdad sobre el estado real del proyecto. Sin fallos de sync en las últimas 24h.',
+    objectives:[
+      {label:'STATUS-LIVE.md sync cada 1h', state:'complete'},
+      {label:'Burn-down F4 tracking', state:'active'},
+      {label:'PFID counter (0/5)', state:'active'},
+      {label:'Go-live countdown T-14d', state:'active'},
+    ],
+    metrics:[
+      {k:'Sync Uptime',v:'100%',state:'ok'},
+      {k:'F4 Completion',v:'15%',state:'warn'},
+      {k:'PFID Done',v:'0/5',state:'danger'},
+      {k:'Days to Launch',v:'14d',state:'warn'},
+    ],
+    progressPct:15,
+    dependencies:['Obsidian Local REST API','Windows Task Scheduler','sync-gano-obsidian.bat','Task: Gano-Digital-Obsidian-Sync'],
+    threats:['Métricas desactualizadas si Obsidian cierra','PFID completion rate muy bajo','Go-live date inflexible (Apr 20)'],
+    nextActions:['Aumentar sync a 30min en sprint final','Añadir alertas por threshold','Exponer dashboard al equipo','Auto-snapshot diario'],
+    log:[
+      {t:'T-02d',m:'REST API integration'},
+      {t:'T-01d',m:'Task scheduler registered'},
+      {t:'T-00h',m:'Sync live · every 1h'},
+    ]
+  },
+  '07':{
+    designation:'GD-TEAM-07',
+    classification:'CLASS-C // COORDINATION',
+    classLevel:'',
+    subtitle:'Ice Giant · Communication Network',
+    missionBrief:'Estructura RACI del equipo híbrido humano-IA. Diego en el centro como founder y único decision maker. 5 agentes IA como ejecutores especializados en sus dominios. Canales de comunicación async vía dispatch queue y standups escritos en MD. Sync semanal con Claude para revisión estratégica. Coordinación optimizada para zero friction, zero context loss.',
+    objectives:[
+      {label:'Roles RACI definidos', state:'complete'},
+      {label:'Standups async online', state:'complete'},
+      {label:'Weekly sync cadence', state:'active'},
+      {label:'Escalation paths documentados', state:'active'},
+    ],
+    metrics:[
+      {k:'Team Size',v:'1+5'},
+      {k:'Sync Cadence',v:'DAILY'},
+      {k:'Blockers Open',v:'1',state:'warn'},
+      {k:'RACI Coverage',v:'90%',state:'ok'},
+    ],
+    progressPct:90,
+    dependencies:['Dispatch queue system','Memory MD files','Weekly standup template','Claude persistent memory'],
+    threats:['Diego overload en sprint final','Context loss entre sesiones','Single point of failure (Diego)','Falta de reviewer secundario'],
+    nextActions:['Documentar playbook delegation','Auto-resumen semanal vía Claude','Rotar dispatch reviewer','Backup decision-maker'],
+    log:[
+      {t:'T-60d',m:'RACI matrix v1'},
+      {t:'T-20d',m:'Dispatch standups activos'},
+      {t:'T-00h',m:'Coordination nominal'},
+    ]
+  },
+  '08':{
+    designation:'GD-RSK-08',
+    classification:'CLASS-OMEGA // CRITICAL',
+    classLevel:'critical',
+    subtitle:'Comet · Eccentric Orbit · Active Threat',
+    missionBrief:'Sistema de detección y mitigación de riesgos. Orbita en trayectoria excéntrica porque los riesgos aparecen, amenazan y regresan. ALERTA ACTIVA: 1 blocker crítico en PFID mappings (0/5 completados). Sin resolución en próximos 5 días hábiles, el go-live del Apr 20 queda comprometido. Requiere intervención ejecutiva inmediata.',
+    objectives:[
+      {label:'Risk registry actualizado', state:'complete'},
+      {label:'Blocker PFID 0/5 → 5/5', state:'critical'},
+      {label:'Antigravity activation', state:'active'},
+      {label:'Go-live contingency plan', state:'pending'},
+    ],
+    metrics:[
+      {k:'Active Blockers',v:'1',state:'danger'},
+      {k:'Crit Risks',v:'2',state:'warn'},
+      {k:'PFID Done',v:'0/5',state:'danger'},
+      {k:'Go-Live Risk',v:'MEDIUM',state:'warn'},
+    ],
+    progressPct:20,
+    dependencies:['Diego (Antigravity activation)','Cursor (PFID execution)','GoDaddy Reseller API','Staging validation'],
+    threats:['PFID incompleto → go-live delay','Diego bandwidth saturado','Dependencia hard en Antigravity','Sin plan B para PFID mappings'],
+    nextActions:['PRIORIDAD 1: Activar Antigravity HOY','Sprint PFID: 5 mappings en 72h','Contingency: delay go-live +7d si falla','Daily blocker review a las 08:00'],
+    log:[
+      {t:'T-10d',m:'PFID blocker identificado'},
+      {t:'T-05d',m:'Antigravity dependency tagged'},
+      {t:'T-02d',m:'Risk escalated to Diego'},
+      {t:'T-00h',m:'⚠ CRITICAL · awaiting action'},
+    ]
+  },
+};
+
+/** Estado HUD unificado (leyenda, indexador, sprites 3D) */
+function hudStatusFor(sys){
+  if(!sys || sys.id === undefined) return 'ok';
+  const b = BRIEFS[sys.id];
+  if(!b) return 'ok';
+  if(b.classLevel === 'critical') return 'crit';
+  if(b.classLevel === 'warning') return 'warn';
+  const metrics = b.metrics || [];
+  if(metrics.some(m=>m.state === 'danger')) return 'crit';
+  if(metrics.some(m=>m.state === 'warn')) return 'warn';
+  return 'ok';
+}
+
+/* ============================================================
+   SCENE
+   ============================================================ */
+const app = document.getElementById('app');
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#01020a');
+scene.fog = new THREE.FogExp2(0x01020a, 0.006);
+
+const camera = new THREE.PerspectiveCamera(55, innerWidth/innerHeight, 0.1, 4000);
+camera.position.set(0, 50, 130);
+
+const renderer = new THREE.WebGLRenderer({ antialias:true, powerPreference:'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.55;          // ← MUCHO más bajo
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+app.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.minDistance = 18;
+controls.maxDistance = 280;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.25;
+controls.maxPolarAngle = Math.PI*0.85;
+controls.minPolarAngle = Math.PI*0.15;
+
+/* ============================================================
+   POSTPROCESSING — bloom muy sutil
+   ============================================================ */
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.35, 0.6, 0.85);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+
+/* ============================================================
+   LIGHTING — Sol como point light
+   ============================================================ */
+const ambient = new THREE.AmbientLight(0x182240, 0.4);
+scene.add(ambient);
+const sunLight = new THREE.PointLight(0xffd9a8, 2.8, 600, 1.4);
+sunLight.position.set(0,0,0);
+scene.add(sunLight);
+const fillLight = new THREE.DirectionalLight(0x4a5a8a, 0.15);
+fillLight.position.set(50,80,30);
+scene.add(fillLight);
+
+/* ============================================================
+   STARFIELD — denso pero sutil
+   ============================================================ */
+function createStarfield(){
+  const geo = new THREE.BufferGeometry();
+  const N = 9000;
+  const pos = new Float32Array(N*3);
+  const col = new Float32Array(N*3);
+  const sz  = new Float32Array(N);
+  const ph  = new Float32Array(N);
+  // estrellas tipo espectral real (proporciones aprox)
+  const palette = [
+    [new THREE.Color('#9ab8ff'), 0.03], // O - azul
+    [new THREE.Color('#aac9ff'), 0.06], // B
+    [new THREE.Color('#cad7ff'), 0.10], // A
+    [new THREE.Color('#f8f7ff'), 0.15], // F
+    [new THREE.Color('#fff4e8'), 0.20], // G - sol
+    [new THREE.Color('#ffd2a1'), 0.22], // K - naranja
+    [new THREE.Color('#ffb27a'), 0.24], // M - rojo enano
+  ];
+  function pick(){
+    const r = Math.random();
+    let acc=0;
+    for(const [c,p] of palette){ acc+=p; if(r<acc) return c; }
+    return palette[palette.length-1][0];
+  }
+  for(let i=0;i<N;i++){
+    const r = 350 + Math.random()*900;
+    const t = Math.random()*Math.PI*2;
+    const p = Math.acos(2*Math.random()-1);
+    pos[i*3]   = r*Math.sin(p)*Math.cos(t);
+    pos[i*3+1] = r*Math.sin(p)*Math.sin(t)*0.6; // achatado, disco galáctico
+    pos[i*3+2] = r*Math.cos(p);
+    const c = pick();
+    col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b;
+    sz[i] = Math.random()*1.1 + 0.2;
+    ph[i] = Math.random()*Math.PI*2;
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  geo.setAttribute('color',    new THREE.BufferAttribute(col,3));
+  geo.setAttribute('aSize',    new THREE.BufferAttribute(sz,1));
+  geo.setAttribute('aPhase',   new THREE.BufferAttribute(ph,1));
+
+  const mat = new THREE.ShaderMaterial({
+    uniforms:{ uTime:{value:0}, uPixel:{value:devicePixelRatio} },
+    vertexShader:`
+      attribute float aSize;
+      attribute float aPhase;
+      uniform float uTime;
+      uniform float uPixel;
+      varying vec3 vColor;
+      varying float vTwinkle;
+      void main(){
+        vColor = color;
+        vTwinkle = 0.6 + 0.4*sin(uTime*1.2 + aPhase*5.0);
+        vec4 mv = modelViewMatrix * vec4(position,1.0);
+        gl_Position = projectionMatrix * mv;
+        gl_PointSize = aSize * uPixel * (200.0/-mv.z) * (0.7+0.5*vTwinkle);
+      }
+    `,
+    fragmentShader:`
+      varying vec3 vColor;
+      varying float vTwinkle;
+      void main(){
+        vec2 uv = gl_PointCoord - 0.5;
+        float d = length(uv);
+        float a = smoothstep(0.5, 0.0, d);
+        a = pow(a, 2.5);
+        gl_FragColor = vec4(vColor*(0.8+vTwinkle*0.6), a*0.85);
+      }
+    `,
+    transparent:true, depthWrite:false, vertexColors:true,
+    blending:THREE.AdditiveBlending,
+  });
+  return new THREE.Points(geo, mat);
+}
+const starfield = createStarfield();
+scene.add(starfield);
+
+/* ============================================================
+   GALACTIC PLANE — disco sutil de polvo
+   ============================================================ */
+function createGalacticDust(){
+  const geo = new THREE.BufferGeometry();
+  const N = 3500;
+  const pos = new Float32Array(N*3);
+  const col = new Float32Array(N*3);
+  const sz  = new Float32Array(N);
+  for(let i=0;i<N;i++){
+    const r = 80 + Math.pow(Math.random(),0.5)*900;
+    const t = Math.random()*Math.PI*2;
+    pos[i*3]   = Math.cos(t)*r;
+    pos[i*3+1] = (Math.random()-0.5)*15;
+    pos[i*3+2] = Math.sin(t)*r;
+    const tint = 0.15 + Math.random()*0.25;
+    col[i*3]   = tint*0.6;
+    col[i*3+1] = tint*0.5;
+    col[i*3+2] = tint;
+    sz[i] = Math.random()*2 + 0.5;
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  geo.setAttribute('color',    new THREE.BufferAttribute(col,3));
+  geo.setAttribute('aSize',    new THREE.BufferAttribute(sz,1));
+
+  const mat = new THREE.ShaderMaterial({
+    uniforms:{ uPixel:{value:devicePixelRatio}},
+    vertexShader:`
+      attribute float aSize;
+      uniform float uPixel;
+      varying vec3 vColor;
+      void main(){
+        vColor = color;
+        vec4 mv = modelViewMatrix*vec4(position,1.0);
+        gl_Position = projectionMatrix*mv;
+        gl_PointSize = aSize*uPixel*(180.0/-mv.z);
+      }
+    `,
+    fragmentShader:`
+      varying vec3 vColor;
+      void main(){
+        vec2 uv = gl_PointCoord-0.5;
+        float d = length(uv);
+        float a = smoothstep(0.5,0.0,d);
+        gl_FragColor = vec4(vColor, a*0.4);
+      }
+    `,
+    transparent:true, depthWrite:false, vertexColors:true,
+    blending:THREE.AdditiveBlending,
+  });
+  return new THREE.Points(geo, mat);
+}
+scene.add(createGalacticDust());
+
+/* ============================================================
+   STAR — Sol Gano Digital (G-type, dimmed)
+   ============================================================ */
+function createSun(){
+  const group = new THREE.Group();
+
+  // núcleo con shader fresnel suave
+  const coreGeo = new THREE.SphereGeometry(3.2, 64, 64);
+  const coreMat = new THREE.ShaderMaterial({
+    uniforms:{ uTime:{value:0}},
+    vertexShader:`
+      varying vec3 vN; varying vec3 vP;
+      void main(){
+        vN = normalize(normalMatrix*normal);
+        vec4 mv = modelViewMatrix*vec4(position,1.0);
+        vP = mv.xyz;
+        gl_Position = projectionMatrix*mv;
+      }
+    `,
+    fragmentShader:`
+      varying vec3 vN; varying vec3 vP;
+      uniform float uTime;
+      void main(){
+        float fres = pow(1.0 - max(dot(normalize(-vP), vN), 0.0), 2.0);
+        float pulse = 0.92 + 0.08*sin(uTime*1.2);
+        vec3 hot = vec3(1.0, 0.85, 0.55);
+        vec3 cool = vec3(0.7, 0.45, 0.25);
+        vec3 col = mix(hot, cool*1.4, fres) * pulse;
+        gl_FragColor = vec4(col, 1.0);
+      }
+    `,
+  });
+  group.add(new THREE.Mesh(coreGeo, coreMat));
+
+  // corona pequeña y sutil
+  const cTex = makeRadialTexture('#ffc880', 0.5, 0.0);
+  const corona = new THREE.Sprite(new THREE.SpriteMaterial({ map:cTex, transparent:true, blending:THREE.AdditiveBlending, depthWrite:false }));
+  corona.scale.set(11, 11, 1);
+  group.add(corona);
+
+  group.userData.coreMat = coreMat;
+  return group;
+}
+
+function makeRadialTexture(hex, inner=1.0, outerAlpha=0.0){
+  const c = document.createElement('canvas');
+  c.width = c.height = 256;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(128,128,0,128,128,128);
+  const col = new THREE.Color(hex);
+  const R=(col.r*255)|0, G=(col.g*255)|0, B=(col.b*255)|0;
+  g.addColorStop(0,    `rgba(${R},${G},${B},${inner})`);
+  g.addColorStop(0.35, `rgba(${R},${G},${B},${inner*0.35})`);
+  g.addColorStop(1,    `rgba(${R},${G},${B},${outerAlpha})`);
+  ctx.fillStyle = g;
+  ctx.fillRect(0,0,256,256);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
+const sun = createSun();
+scene.add(sun);
+
+// Star data for tooltip
+const STAR_DATA = {
+  id:'00', name:'Gano Digital · Núcleo', type:'star', lookRef:'sol',
+  desc:'Estrella central del sistema. Origen de la visión, marca y autoridad de decisión. Toda la energía del proyecto fluye desde aquí.',
+  status:'Activo', progress:'100%', owner:'Diego (Founder)', crit:'Núcleo',
+  radius:0,
+  children:['Visión','Marca','Autoridad','Estrategia']
+};
+
+/* ============================================================
+   PLANET BUILDERS — uno por tipo
+   ============================================================ */
+
+function hashSeed(str){
+  let h = 2166136261;
+  for(let i=0;i<str.length;i++) h = Math.imul(h ^ str.charCodeAt(i), 16777619);
+  return h>>>0;
+}
+function mulberry32(a){
+  return function(){
+    let t = a += 0x6D2B79F5;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+function makeSaturnRingTexture(){
+  const c = document.createElement('canvas');
+  c.width = 512; c.height = 32;
+  const ctx = c.getContext('2d');
+  for(let x=0;x<512;x++){
+    const t = x/512;
+    let a = 0;
+    if(t > 0.05 && t < 0.18) a = 0.35;
+    else if(t > 0.2 && t < 0.42) a = 0.55;
+    else if(t > 0.45 && t < 0.48) a = 0.08;
+    else if(t > 0.5 && t < 0.78) a = 0.62;
+    else if(t > 0.8 && t < 0.94) a = 0.4;
+    ctx.fillStyle = `rgba(210,190,165,${a})`;
+    ctx.fillRect(x,0,1,32);
+  }
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.ClampToEdgeWrapping;
+  tex.repeat.set(2, 1);
+  return tex;
+}
+
+/** Texturas inspiradas en cuerpos reales del Sistema Solar (procedural) */
+function makePlanetTexture(sys){
+  const c = document.createElement('canvas');
+  c.width = 1024; c.height = 512;
+  const ctx = c.getContext('2d');
+  const rnd = mulberry32(hashSeed(sys.id + (sys.lookRef||'')));
+  const look = sys.lookRef || 'generic';
+  const base = new THREE.Color(sys.color);
+  const accent = new THREE.Color(sys.baseColor);
+  const W = 1024, H = 512;
+  const rgb = (r,g,b)=>`rgb(${r|0},${g|0},${b|0})`;
+  const rgba = (r,g,b,a)=>`rgba(${r|0},${g|0},${b|0},${a})`;
+
+  function baseGradient(top, mid, bot){
+    const g = ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0, top);
+    g.addColorStop(0.48, mid);
+    g.addColorStop(1, bot);
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,W,H);
+  }
+
+  if(look === 'mars'){
+    baseGradient(rgb(200,120,85), rgb(140,70,45), rgb(85,42,28));
+    for(let y=0;y<55;y++){
+      const a = (55-y)/80;
+      ctx.fillStyle = `rgba(240,235,228,${a*0.55})`;
+      ctx.fillRect(0,y,W,1);
+    }
+    for(let y=0;y<45;y++){
+      const a = (45-y)/70;
+      ctx.fillStyle = `rgba(235,230,222,${a*0.5})`;
+      ctx.fillRect(0,H-1-y,W,1);
+    }
+    for(let i=0;i<180;i++){
+      const x = rnd()*W, y = 60+rnd()*(H-120), r = 8+rnd()*45;
+      ctx.fillStyle = rgba(55+rnd()*30,30+rnd()*20,18+rnd()*15,0.35+rnd()*0.25);
+      ctx.beginPath();
+      ctx.ellipse(x,y,r,r*0.85,0,0,Math.PI*2);
+      ctx.fill();
+    }
+    ctx.globalCompositeOperation = 'overlay';
+    for(let y=0;y<H;y++){
+      const dust = rnd()*0.08;
+      ctx.fillStyle = `rgba(80,40,25,${dust})`;
+      ctx.fillRect(0,y,W,1);
+    }
+    ctx.globalCompositeOperation = 'source-over';
+  } else if(look === 'jupiter'){
+    ctx.fillStyle = rgb(210,165,115);
+    ctx.fillRect(0,0,W,H);
+    for(let y=0;y<H;y++){
+      const n = Math.sin(y*0.09)*0.5+Math.sin(y*0.035+1.2)*0.35+Math.sin(y*0.15+2.4)*0.25;
+      const a = (n+1)/2;
+      const br = 175+a*55, bg = 120+a*45, bb = 70+a*35;
+      ctx.fillStyle = rgba(br,bg,bb,0.5);
+      ctx.fillRect(0,y,W,1);
+    }
+    const grd = ctx.createRadialGradient(420,230,0,420,230,95);
+    grd.addColorStop(0, 'rgba(180,65,45,0.95)');
+    grd.addColorStop(0.55, 'rgba(140,50,38,0.65)');
+    grd.addColorStop(1, 'rgba(120,70,50,0)');
+    ctx.fillStyle = grd;
+    ctx.beginPath();
+    ctx.ellipse(420,230,88,58,0.15,0,Math.PI*2);
+    ctx.fill();
+    for(let i=0;i<30;i++){
+      ctx.strokeStyle = rgba(90,60,40,0.12);
+      ctx.lineWidth = 1+rnd()*2;
+      ctx.beginPath();
+      ctx.moveTo(0, rnd()*H);
+      ctx.bezierCurveTo(W*0.3,rnd()*H,W*0.7,rnd()*H,W,rnd()*H);
+      ctx.stroke();
+    }
+  } else if(look === 'saturn'){
+    baseGradient(rgb(218,200,165), rgb(190,165,125), rgb(165,138,98));
+    for(let y=0;y<H;y++){
+      const n = Math.sin(y*0.11)*0.35+Math.sin(y*0.04)*0.25;
+      const a = (n+1)/2;
+      ctx.fillStyle = rgba(140+a*40,115+a*35,75+a*25,0.35);
+      ctx.fillRect(0,y,W,1);
+    }
+    ctx.fillStyle = 'rgba(255,252,245,0.08)';
+    ctx.fillRect(0,0,W,40);
+    ctx.fillRect(0,H-35,W,35);
+  } else if(look === 'mercury'){
+    baseGradient(rgb(150,148,152), rgb(115,114,118), rgb(82,80,85));
+    for(let i=0;i<220;i++){
+      const x = rnd()*W, y = rnd()*H, r = 4+rnd()*38;
+      const shade = 0.25+rnd()*0.35;
+      const g = ctx.createRadialGradient(x-r*0.2,y-r*0.2,0,x,y,r);
+      g.addColorStop(0, rgba(190,188,192,shade));
+      g.addColorStop(0.55, rgba(95,93,98,shade*1.2));
+      g.addColorStop(1, rgba(55,54,58,shade*0.8));
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(x,y,r,0,Math.PI*2);
+      ctx.fill();
+    }
+  } else if(look === 'venus'){
+    baseGradient(rgb(235,220,175), rgb(210,185,140), rgb(185,155,115));
+    ctx.globalAlpha = 0.45;
+    for(let k=0;k<25;k++){
+      const y0 = rnd()*H;
+      ctx.fillStyle = rgba(200,175,120,0.15+rnd()*0.2);
+      ctx.fillRect(0,y0,W,18+rnd()*40);
+    }
+    ctx.globalAlpha = 1;
+    for(let y=0;y<H;y++){
+      const w = Math.sin(y*0.025+y*0.01*y)*8;
+      ctx.fillStyle = rgba(230,210,165,0.06+Math.abs(w)*0.01);
+      ctx.fillRect(0,y,W,1);
+    }
+  } else if(look === 'neptune'){
+    baseGradient(rgb(45,85,165), rgb(28,55,130), rgb(12,28,75));
+    for(let y=0;y<H;y++){
+      const n = Math.sin(y*0.08)*0.25+Math.sin(y*0.022)*0.15;
+      ctx.fillStyle = rgba(55+n*40,95+n*50,175+n*40,0.35);
+      ctx.fillRect(0,y,W,1);
+    }
+    for(let i=0;i<8;i++){
+      const cx = rnd()*W, cy = rnd()*H;
+      const g = ctx.createRadialGradient(cx,cy,0,cx,cy,120+rnd()*80);
+      g.addColorStop(0, 'rgba(255,255,255,0.35)');
+      g.addColorStop(0.4, 'rgba(180,210,255,0.12)');
+      g.addColorStop(1, 'rgba(30,60,140,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.ellipse(cx,cy,100+rnd()*60,35+rnd()*25,rnd()*0.5,0,Math.PI*2);
+      ctx.fill();
+    }
+  } else if(look === 'uranus'){
+    baseGradient(rgb(140,205,215), rgb(95,165,185), rgb(55,115,145));
+    for(let y=0;y<H;y++){
+      const n = Math.sin(y*0.045)*0.2;
+      ctx.fillStyle = rgba(70+n*30,140+n*40,160+n*30,0.25);
+      ctx.fillRect(0,y,W,1);
+    }
+    ctx.fillStyle = 'rgba(200,235,245,0.12)';
+    ctx.fillRect(0,0,W,28);
+    ctx.fillRect(0,H-22,W,22);
+  } else if(look === 'halley'){
+    baseGradient(rgb(180,195,210), rgb(130,150,175), rgb(90,105,125));
+    for(let i=0;i<400;i++){
+      const x = rnd()*W, y = rnd()*H;
+      ctx.fillStyle = rgba(40+rnd()*40,55+rnd()*50,70+rnd()*50,0.15+rnd()*0.35);
+      ctx.fillRect(x,y,1+rnd()*2,1+rnd()*2);
+    }
+    ctx.fillStyle = 'rgba(30,40,55,0.25)';
+    ctx.beginPath();
+    ctx.ellipse(W*0.35,H*0.5,W*0.45,H*0.42,0,0,Math.PI*2);
+    ctx.fill();
+    const g = ctx.createRadialGradient(W*0.62,H*0.48,0,W*0.62,H*0.48,90);
+    g.addColorStop(0, 'rgba(240,248,255,0.5)');
+    g.addColorStop(1, 'rgba(160,180,200,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(W*0.62,H*0.48,70,0,Math.PI*2);
+    ctx.fill();
+  } else {
+    const grad = ctx.createLinearGradient(0,0,0,H);
+    grad.addColorStop(0, `rgb(${base.r*255*0.7|0},${base.g*255*0.7|0},${base.b*255*0.7|0})`);
+    grad.addColorStop(0.5, `rgb(${accent.r*255|0},${accent.g*255|0},${accent.b*255|0})`);
+    grad.addColorStop(1, `rgb(${base.r*255*0.6|0},${base.g*255*0.6|0},${base.b*255*0.6|0})`);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0,0,W,H);
+    const type = sys.type;
+    if(type==='gas-giant'){
+      for(let y=0;y<H;y++){
+        const n = Math.sin(y*0.18)*0.5+Math.sin(y*0.07+1.3)*0.3;
+        const a = (n+1)/2;
+        ctx.fillStyle = `rgba(${base.r*255*(0.6+a*0.6)|0},${base.g*255*(0.6+a*0.6)|0},${base.b*255*(0.6+a*0.6)|0},0.5)`;
+        ctx.fillRect(0,y,W,1);
+      }
+    } else if(type==='ice-giant'){
+      for(let y=0;y<H;y++){
+        const n = Math.sin(y*0.12)*0.4;
+        const a = (n+1)/2;
+        ctx.fillStyle = `rgba(${base.r*255*(0.7+a*0.4)|0},${base.g*255*(0.7+a*0.4)|0},${base.b*255*(0.7+a*0.4)|0},0.4)`;
+        ctx.fillRect(0,y,W,1);
+      }
+    } else {
+      for(let i=0;i<160;i++){
+        const x = rnd()*W, y = rnd()*H, r = rnd()*22+4;
+        const tint = rnd()*0.5+0.4;
+        ctx.fillStyle = `rgba(${base.r*255*tint|0},${base.g*255*tint|0},${base.b*255*tint|0},${rnd()*0.5+0.3})`;
+        ctx.beginPath();
+        ctx.arc(x,y,r,0,Math.PI*2);
+        ctx.fill();
+      }
+    }
+  }
+
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
+const planets = [];
+const planetGroup = new THREE.Group();
+scene.add(planetGroup);
+
+function makeStatusHudSprite(status){
+  const map = {
+    ok:  { text:'OK',   stroke:'rgba(95,212,154,0.9)',  txt:'#8ef5c4' },
+    warn:{ text:'WARN', stroke:'rgba(255,122,28,0.92)', txt:'#ffc090' },
+    crit:{ text:'CRIT', stroke:'rgba(255,110,110,0.95)', txt:'#ffb8b8' },
+  };
+  const cfg = map[status] || map.ok;
+  const c = document.createElement('canvas');
+  c.width = 320; c.height = 112;
+  const ctx = c.getContext('2d');
+  const pad = 10;
+  const w = c.width - pad*2;
+  const h = c.height - pad*2;
+  ctx.fillStyle = 'rgba(4,10,18,0.92)';
+  ctx.beginPath();
+  if(ctx.roundRect) ctx.roundRect(pad, pad, w, h, 8);
+  else ctx.rect(pad, pad, w, h);
+  ctx.fill();
+  ctx.strokeStyle = cfg.stroke;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.font = 'bold 46px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.shadowColor = 'rgba(0,0,0,.85)';
+  ctx.shadowBlur = 6;
+  ctx.fillStyle = cfg.txt;
+  ctx.fillText(cfg.text, c.width/2, c.height/2);
+  ctx.shadowBlur = 0;
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  const mat = new THREE.SpriteMaterial({
+    map: tex, transparent: true, depthTest: false, depthWrite: false,
+  });
+  mat.opacity = 0.95;
+  const sprite = new THREE.Sprite(mat);
+  return { sprite, mat };
+}
+
+SYSTEMS.forEach((sys,i)=>{
+  const g = new THREE.Group();
+  const x = Math.cos(sys.angle)*sys.radius;
+  const z = Math.sin(sys.angle)*sys.radius;
+  const y = Math.sin(sys.angle*1.7)*sys.tilt*sys.radius;
+  g.position.set(x,y,z);
+
+  // geometría según tipo
+  let radius = sys.size;
+  const geo = new THREE.SphereGeometry(radius, 64, 64);
+  const tex = makePlanetTexture(sys);
+  const lr = sys.lookRef || '';
+  let rough = 0.82, metal = 0.06;
+  if(lr==='jupiter' || lr==='saturn'){ rough = 0.68; metal = 0.08; }
+  else if(lr==='neptune' || lr==='uranus'){ rough = 0.52; metal = 0.28; }
+  else if(lr==='venus'){ rough = 0.58; metal = 0.04; }
+  else if(lr==='mars' || lr==='mercury'){ rough = 0.9; metal = 0.03; }
+  else if(lr==='halley' || sys.type==='comet'){ rough = 0.38; metal = 0.12; }
+  else if(sys.type==='comet'){ rough = 0.4; metal = 0.05; }
+  else if(sys.type==='ice-giant'){ rough = 0.55; metal = 0.22; }
+  const mat = new THREE.MeshStandardMaterial({
+    map: tex,
+    roughness: rough,
+    metalness: metal,
+    emissive: new THREE.Color(sys.color),
+    emissiveIntensity: lr==='neptune' || lr==='uranus' ? 0.06 : 0.04,
+  });
+  const sphere = new THREE.Mesh(geo, mat);
+  sphere.rotation.y = Math.random()*Math.PI*2;
+  g.add(sphere);
+
+  // Anillos tipo Saturno (textura radial + doble banda hielo/polvo)
+  if(sys.rings){
+    const ringTex = makeSaturnRingTexture();
+    const ringGeo = new THREE.RingGeometry(radius*1.52, radius*2.68, 128, 1);
+    const ringMat = new THREE.MeshBasicMaterial({
+      map: ringTex,
+      color: new THREE.Color(0xffffff),
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.88,
+      depthWrite: false,
+    });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = Math.PI/2.25;
+    ring.rotation.y = 0.22;
+    g.add(ring);
+    const ringGeo2 = new THREE.RingGeometry(radius*2.75, radius*2.95, 96);
+    const ringMat2 = new THREE.MeshBasicMaterial({
+      color: new THREE.Color('#c8b090'),
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.22,
+      depthWrite: false,
+    });
+    const ring2 = new THREE.Mesh(ringGeo2, ringMat2);
+    ring2.rotation.x = Math.PI/2.25;
+    ring2.rotation.y = 0.22;
+    g.add(ring2);
+  }
+
+  // halo MUY sutil
+  const haloMat = new THREE.SpriteMaterial({
+    map: makeRadialTexture(sys.color, 0.35, 0.0),
+    transparent:true, blending:THREE.AdditiveBlending, depthWrite:false,
+  });
+  const halo = new THREE.Sprite(haloMat);
+  const haloSize = radius*4.5;
+  halo.scale.set(haloSize, haloSize, 1);
+  g.add(halo);
+
+  // anillo orbital (línea fina)
+  const orbitPts = [];
+  for(let a=0;a<=64;a++){
+    const t = a/64*Math.PI*2;
+    orbitPts.push(new THREE.Vector3(Math.cos(t)*sys.radius, 0, Math.sin(t)*sys.radius));
+  }
+  const orbitGeo = new THREE.BufferGeometry().setFromPoints(orbitPts);
+  const orbitMat = new THREE.LineBasicMaterial({
+    color: new THREE.Color(sys.color),
+    transparent:true, opacity:0.13,
+  });
+  const orbit = new THREE.Line(orbitGeo, orbitMat);
+  scene.add(orbit);
+
+  // Lunas (children como sub-cuerpos)
+  const moons = [];
+  if(sys.type !== 'comet'){
+    sys.children.forEach((cn, ci)=>{
+      const mr = 0.18 + (sys.type==='gas-giant'?0.08:0);
+      const mGeo = new THREE.SphereGeometry(mr, 16, 16);
+      const mMat = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(sys.color).multiplyScalar(0.7),
+        roughness:0.9, metalness:0.05,
+        emissive: new THREE.Color(sys.color),
+        emissiveIntensity: 0.08,
+      });
+      const moon = new THREE.Mesh(mGeo, mMat);
+      const mGroup = new THREE.Group();
+      mGroup.add(moon);
+      mGroup.userData = {
+        angle: ci/sys.children.length*Math.PI*2 + Math.random()*0.5,
+        radius: radius*1.8 + ci*0.4,
+        speed: 0.4 + ci*0.07,
+        tilt: ci*0.2,
+      };
+      moon.position.x = mGroup.userData.radius;
+      g.add(mGroup);
+      moons.push({ group:mGroup, mesh:moon });
+    });
+  }
+
+  // Cometa: añadir cola de partículas
+  let cometTail = null;
+  if(sys.type==='comet'){
+    const tailGeo = new THREE.BufferGeometry();
+    const TN = 80;
+    const tailPos = new Float32Array(TN*3);
+    const tailAlpha = new Float32Array(TN);
+    for(let k=0;k<TN;k++){
+      tailPos[k*3]   = -k*0.25;
+      tailPos[k*3+1] = (Math.random()-0.5)*0.15;
+      tailPos[k*3+2] = (Math.random()-0.5)*0.15;
+      tailAlpha[k] = 1 - k/TN;
+    }
+    tailGeo.setAttribute('position', new THREE.BufferAttribute(tailPos,3));
+    tailGeo.setAttribute('aAlpha', new THREE.BufferAttribute(tailAlpha,1));
+    const tailMat = new THREE.ShaderMaterial({
+      uniforms:{ uColor:{value:new THREE.Color(sys.color)}, uPixel:{value:devicePixelRatio}},
+      vertexShader:`
+        attribute float aAlpha;
+        varying float vA;
+        uniform float uPixel;
+        void main(){
+          vA = aAlpha;
+          vec4 mv = modelViewMatrix*vec4(position,1.0);
+          gl_Position = projectionMatrix*mv;
+          gl_PointSize = (3.0+aAlpha*4.0)*uPixel*(60.0/-mv.z);
+        }
+      `,
+      fragmentShader:`
+        varying float vA;
+        uniform vec3 uColor;
+        void main(){
+          vec2 uv = gl_PointCoord-0.5;
+          float d = length(uv);
+          float a = smoothstep(0.5,0.0,d)*vA*0.55;
+          gl_FragColor = vec4(uColor, a);
+        }
+      `,
+      transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
+    });
+    cometTail = new THREE.Points(tailGeo, tailMat);
+    g.add(cometTail);
+  }
+
+  const hudSt = hudStatusFor(sys);
+  const { sprite: hudSpr, mat: hudMat } = makeStatusHudSprite(hudSt);
+  const hudY = sys.size * (sys.type==='gas-giant' ? 2.15 : sys.type==='ice-giant' ? 1.95 : sys.type==='comet' ? 2.5 : 2.35) + 2.1;
+  hudSpr.position.set(0, hudY, 0);
+  const hudScale = sys.type==='gas-giant' ? 7.2 : sys.type==='ice-giant' ? 6.4 : sys.type==='comet' ? 5.2 : 5.8;
+  hudSpr.scale.set(hudScale, hudScale * 0.34, 1);
+  hudSpr.renderOrder = 998;
+  g.add(hudSpr);
+
+  planetGroup.add(g);
+  planets.push({
+    group:g, sphere, sys, moons, cometTail, halo,
+    baseAngle:sys.angle, baseRadius:sys.radius, baseY:y,
+    label:null, hudMat, hudStatus: hudSt
+  });
+});
+
+/* ============================================================
+   ASTEROID BELT — entre planetas terrestres y gigantes
+   ============================================================ */
+function createAsteroidBelt(){
+  const group = new THREE.Group();
+  const N = 1200;
+  const geo = new THREE.BufferGeometry();
+  const pos = new Float32Array(N*3);
+  const col = new Float32Array(N*3);
+  const sz  = new Float32Array(N);
+  const angles = new Float32Array(N);
+  const radii = new Float32Array(N);
+  for(let i=0;i<N;i++){
+    const r = 28 + Math.random()*5;
+    const t = Math.random()*Math.PI*2;
+    angles[i] = t;
+    radii[i] = r;
+    pos[i*3]   = Math.cos(t)*r;
+    pos[i*3+1] = (Math.random()-0.5)*1.2;
+    pos[i*3+2] = Math.sin(t)*r;
+    const tint = 0.4 + Math.random()*0.3;
+    col[i*3]   = 0.55*tint;
+    col[i*3+1] = 0.5*tint;
+    col[i*3+2] = 0.45*tint;
+    sz[i] = Math.random()*1.4+0.4;
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  geo.setAttribute('color',    new THREE.BufferAttribute(col,3));
+  geo.setAttribute('aSize',    new THREE.BufferAttribute(sz,1));
+
+  const mat = new THREE.ShaderMaterial({
+    uniforms:{ uPixel:{value:devicePixelRatio}},
+    vertexShader:`
+      attribute float aSize;
+      uniform float uPixel;
+      varying vec3 vColor;
+      void main(){
+        vColor = color;
+        vec4 mv = modelViewMatrix*vec4(position,1.0);
+        gl_Position = projectionMatrix*mv;
+        gl_PointSize = aSize*uPixel*(120.0/-mv.z);
+      }
+    `,
+    fragmentShader:`
+      varying vec3 vColor;
+      void main(){
+        vec2 uv = gl_PointCoord-0.5;
+        float d = length(uv);
+        float a = smoothstep(0.5,0.0,d);
+        gl_FragColor = vec4(vColor, a*0.85);
+      }
+    `,
+    transparent:true, depthWrite:false, vertexColors:true,
+  });
+  const belt = new THREE.Points(geo, mat);
+  belt.userData = { angles, radii, N };
+  group.add(belt);
+  return { group, belt };
+}
+const { group: beltGroup, belt: asteroidBelt } = createAsteroidBelt();
+scene.add(beltGroup);
+
+/* ============================================================
+   CONNECTION LINES — sol → planetas (sutil, animado)
+   ============================================================ */
+const linksGroup = new THREE.Group();
+scene.add(linksGroup);
+
+planets.forEach(p=>{
+  const start = new THREE.Vector3(0,0,0);
+  const end = p.group.position.clone();
+  const mid = start.clone().lerp(end, 0.5);
+  mid.y += 2 + Math.random()*2;
+  const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
+  const pts = curve.getPoints(60);
+  const geo = new THREE.BufferGeometry().setFromPoints(pts);
+
+  const mat = new THREE.ShaderMaterial({
+    uniforms:{
+      uTime:{value:0},
+      uColor:{value:new THREE.Color(p.sys.color)},
+    },
+    vertexShader:`
+      varying float vT;
+      void main(){
+        vT = float(gl_VertexID)/60.0;
+        gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0);
+      }
+    `,
+    fragmentShader:`
+      varying float vT;
+      uniform float uTime;
+      uniform vec3 uColor;
+      void main(){
+        float pulse = fract(vT - uTime*0.18);
+        pulse = pow(1.0 - abs(pulse - 0.5)*2.0, 6.0);
+        float base = 0.07;
+        gl_FragColor = vec4(uColor, base + pulse*0.35);
+      }
+    `,
+    transparent:true, blending:THREE.AdditiveBlending, depthWrite:false,
+  });
+  const line = new THREE.Line(geo, mat);
+  linksGroup.add(line);
+  p.linkMat = mat;
+});
+
+/* ============================================================
+   LABELS (CSS sprites)
+   ============================================================ */
+function makeLabel(text, sub=''){
+  const c = document.createElement('canvas');
+  c.width = 512; c.height = 160;
+  const ctx = c.getContext('2d');
+  ctx.font = '600 38px "Space Grotesk", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.shadowColor = 'rgba(0,0,0,.95)';
+  ctx.shadowBlur = 8;
+  ctx.fillStyle = '#dde3f5';
+  ctx.fillText(text, 256, 60);
+  if(sub){
+    ctx.font = '500 22px "JetBrains Mono", monospace';
+    ctx.fillStyle = 'rgba(154,163,196,.85)';
+    ctx.fillText(sub, 256, 110);
+  }
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  const mat = new THREE.SpriteMaterial({ map:tex, transparent:true, depthWrite:false, depthTest:false });
+  const s = new THREE.Sprite(mat);
+  s.scale.set(9, 2.8, 1);
+  s.renderOrder = 999;
+  return s;
+}
+planets.forEach(p=>{
+  const ref = LOOK_LABELS[p.sys.lookRef] || '';
+  const sub = ref ? `· ${ref} · ${p.sys.id} ·` : `· ${p.sys.id} ·`;
+  const l = makeLabel(p.sys.name, sub);
+  l.position.set(0, p.sys.size*1.8 + 1.2, 0);
+  p.group.add(l);
+  p.label = l;
+});
+
+const sunLabel = makeLabel('GANO · DIGITAL', '☉ NÚCLEO');
+sunLabel.scale.set(11, 3.5, 1);
+sunLabel.position.set(0, 5.5, 0);
+sun.add(sunLabel);
+
+const sunHudSt = hudStatusFor(STAR_DATA);
+const sunHudPair = makeStatusHudSprite(sunHudSt);
+sunHudPair.sprite.position.set(0, 8.2, 0);
+sunHudPair.sprite.scale.set(6.8, 2.3, 1);
+sunHudPair.sprite.renderOrder = 998;
+sun.add(sunHudPair.sprite);
+sun.userData.hudMat = sunHudPair.mat;
+
+/* ============================================================
+   LEGEND BUILD (with taxonomy)
+   ============================================================ */
+const legend = document.getElementById('legend');
+SYSTEMS.forEach((s,i)=>{
+  const chip = document.createElement('button');
+  chip.type = 'button';
+  const pc = portraitConfigFor(s);
+  chip.className = 'chip chip--race chip--race-' + pc.race;
+  chip.dataset.sysId = s.id;
+  chip.dataset.race = pc.race;
+  const tax = TAXONOMY[s.type];
+  const st = hudStatusFor(s);
+  const lbl = st === 'ok' ? 'OK' : st === 'warn' ? 'WARN' : 'CRIT';
+  chip.innerHTML = `
+    <div class="chip-top">
+      <div class="chip-sc-portrait" title="${pc.faction}"><img src="${PORTRAIT_BASE}${pc.file}" alt="" /></div>
+      <div class="chip-top-mini">
+        <span class="tax-ico" title="${tax.label}">${tax.icon}</span>
+        <span class="hud-badge ${st}">${lbl}</span>
+      </div>
+    </div>
+    <div class="chip-idline">
+      <span class="swatch" style="background:${s.color};color:${s.color}"></span>
+      <span class="num">${s.id}</span>
+    </div>
+    <div class="chip-name">${s.name}</div>`;
+  chip.onclick = ()=>focusPlanet(i);
+  chip.addEventListener('pointerenter', ()=>{
+    sfxUiHoverRace(pc.race, 'chip:'+s.id);
+  });
+  legend.appendChild(chip);
+});
+
+/* ============================================================
+   HUD SFX — AgentCraft curated-sounds (github.com/w00ing/agentcraft)
+   · Navegación: menú / cierre panel
+   · Hover: al cambiar de facción (Terran / Protoss / Zerg) o sol — coherente con retratos
+   · Brief: tabla por raza × estado — alineada a SC_PORTRAITS
+   ============================================================ */
+const SFX_BASE = 'sounds/agentcraft/';
+const SFX_NAV = {
+  navMenuOpen: 'TSCUpd00.wav',
+  navMenuClose: 'tadUpd02.wav',
+  navPanelClose: 'PAdUpd06.wav',
+};
+/** Núcleo — pools para variedad (siempre misma familia SC: confirm/advisor) */
+const SFX_STAR = {
+  hoverPool: ['TSCRdy00.wav', 'TSCYes01.wav'],
+  brief: 'pprRdy00.wav',
+  selectPool: ['TSCYes00.wav', 'TSCYes03.wav'],
+};
+/** Por facción: hover = ready scans; select = “ataque”/ack combate; brief* = estado misión */
+const SFX_RACE = {
+  terran: {
+    hoverPool: ['marine-TMaRdy00.wav', 'ghost-tghrdy00.wav', 'TSCYes01.wav'],
+    selectPool: ['tank-ttayes00.wav', 'ghost-tghyes00.wav', 'vulture-tvuyes00.wav'],
+    briefOk: ['TSCYes01.wav', 'TSCYes00.wav'],
+    briefWarn: ['tadErr01.wav', 'TSCYes03.wav'],
+    briefCrit: ['tadErr01.wav', 'ghost-tghyes00.wav'],
+  },
+  protoss: {
+    hoverPool: ['pzeRdy00.wav', 'probe-pprYes00.wav', 'pprRdy00.wav'],
+    selectPool: ['zealot-PZeYes00.wav', 'dragoon-PDrYes00.wav', 'shuttle-PShYes00.wav'],
+    briefOk: ['probe-pprYes00.wav', 'PAdUpd02.wav'],
+    briefWarn: ['PAdUpd02.wav', 'PAdErr06.wav'],
+    briefCrit: ['PAdErr00.wav', 'PAdErr06.wav'],
+  },
+  zerg: {
+    hoverPool: ['zdrRdy00.wav', 'hydra-zhyRdy00.wav', 'zergling-ZZeRdy00.wav'],
+    selectPool: ['zergling-ZZeYes00.wav', 'hydra-zhyRdy00.wav'],
+    briefOk: ['zdrYes01.wav', 'zergling-ZZeYes00.wav'],
+    briefWarn: ['zergling-ZZeRdy00.wav', 'hydra-zhyRdy00.wav'],
+    briefCrit: ['ZAdErr00.wav', 'ZAdErr06.wav'],
+  },
+};
+let sfxUnlocked = false;
+let sfxMuted = localStorage.getItem('gano-hud-sound') === '0';
+const mqReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const mqNarrow = window.matchMedia('(max-width:900px)');
+const mqPhone = window.matchMedia('(max-width:600px)');
+const mqPointerCoarse = window.matchMedia('(pointer: coarse)');
+/** Mínimo entre dos samples de hover 3D — evita saturación al cruzar bordes o mover rápido */
+const HOVER_SFX_MIN_GAP_MS = 520;
+let lastHoverAudioKey = 'void';
+let lastHoverSfxAt = 0;
+const UI_HOVER_GAP_MS = 420;
+let lastUiHoverKey = '';
+let lastUiHoverAt = 0;
+function sfxPickPool(pool, seed){
+  if(pool == null) return null;
+  if(typeof pool === 'string') return pool;
+  if(!Array.isArray(pool) || pool.length === 0) return null;
+  const n = Math.floor(Math.abs(Number(seed)) || performance.now()) % pool.length;
+  return pool[n];
+}
+function sfxMasterGain(){
+  if(sfxMuted) return 0;
+  let g = 0.42;
+  if(mqPhone.matches) g *= 0.62;
+  else if(mqNarrow.matches) g *= 0.78;
+  return g;
+}
+/** Hover 3D: desactivado en móvil y en vista táctil estrecha; volumen más bajo en tablet */
+function sfxHoverEligible(){
+  if(!sfxUnlocked || sfxMuted) return false;
+  if(mqReduceMotion.matches) return false;
+  if(mqPhone.matches) return false;
+  if(mqPointerCoarse.matches && mqNarrow.matches) return false;
+  return true;
+}
+function sfxHoverGain(){
+  if(mqReduceMotion.matches) return 0;
+  let g = sfxMasterGain() * 0.36;
+  if(mqNarrow.matches) g *= 0.75;
+  return g;
+}
+function sfxPlayFile(rel, vol){
+  if(!sfxUnlocked || sfxMuted || vol <= 0) return;
+  const a = new Audio(SFX_BASE + rel);
+  a.volume = Math.min(1, vol);
+  a.play().catch(()=>{});
+}
+function hudSfxNav(key){
+  const rel = SFX_NAV[key];
+  if(!rel) return;
+  sfxPlayFile(rel, sfxMasterGain());
+}
+function sfxBriefOpen(sys){
+  if(!sfxUnlocked || sfxMuted) return;
+  if(sys.type === 'star' || sys.id === '00'){
+    sfxPlayFile(SFX_STAR.brief, sfxMasterGain());
+    return;
+  }
+  const st = hudStatusFor(sys);
+  const tier = st === 'crit' ? 'briefCrit' : st === 'warn' ? 'briefWarn' : 'briefOk';
+  const race = portraitConfigFor(sys).race;
+  const row = SFX_RACE[race];
+  if(!row) return;
+  let rel = row[tier];
+  rel = sfxPickPool(rel, String(sys.id) + tier);
+  if(!rel) return;
+  sfxPlayFile(rel, sfxMasterGain());
+}
+function sfxStarSelect(){
+  if(!sfxUnlocked || sfxMuted) return;
+  const f = sfxPickPool(SFX_STAR.selectPool, Date.now());
+  if(f) sfxPlayFile(f, sfxMasterGain() * 0.52);
+}
+function sfxRaceSelect(race, seed){
+  if(!sfxUnlocked || sfxMuted) return;
+  const row = SFX_RACE[race];
+  if(!row || !row.selectPool) return;
+  const f = sfxPickPool(row.selectPool, seed);
+  if(f) sfxPlayFile(f, sfxMasterGain() * 0.52);
+}
+/** Hover 3D (solo si sfxHoverEligible + llamado con throttle en animate) */
+function sfxHoverRace(key){
+  const vol = sfxHoverGain();
+  if(vol <= 0) return;
+  if(key === 'sun'){
+    const pool = SFX_STAR.hoverPool;
+    sfxPlayFile(sfxPickPool(pool, performance.now()), vol);
+    return;
+  }
+  const row = SFX_RACE[key];
+  if(!row) return;
+  const pool = row.hoverPool;
+  sfxPlayFile(sfxPickPool(pool, performance.now()), vol);
+}
+/** Leyenda / INDEX — hover UI (no compite con throttle 3D; gap propio) */
+function sfxUiHoverRace(race, uiKey){
+  if(!sfxUnlocked || sfxMuted) return;
+  if(mqPhone.matches) return;
+  const now = performance.now();
+  if(uiKey === lastUiHoverKey && now - lastUiHoverAt < UI_HOVER_GAP_MS) return;
+  lastUiHoverKey = uiKey;
+  lastUiHoverAt = now;
+  const row = SFX_RACE[race];
+  if(!row) return;
+  const pool = row.hoverPool;
+  const f = sfxPickPool(pool, uiKey + race);
+  if(f) sfxPlayFile(f, sfxMasterGain() * 0.3);
+}
+(function initSfxBtn(){
+  const b = document.getElementById('btnSound');
+  if(!b) return;
+  b.classList.toggle('muted', sfxMuted);
+  b.classList.toggle('active', !sfxMuted);
+  b.title = sfxMuted ? 'Activar sonido HUD' : 'Silenciar todo el audio HUD';
+  b.onclick = (e)=>{
+    e.stopPropagation();
+    sfxMuted = !sfxMuted;
+    localStorage.setItem('gano-hud-sound', sfxMuted ? '0' : '1');
+    b.classList.toggle('muted', sfxMuted);
+    b.classList.toggle('active', !sfxMuted);
+    b.title = sfxMuted ? 'Activar sonido HUD' : 'Silenciar todo el audio HUD';
+    if(!sfxMuted){ sfxUnlocked = true; hudSfxNav('navMenuOpen'); }
+  };
+})();
+
+/* ============================================================
+   INTERACTION
+   ============================================================ */
+const ray = new THREE.Raycaster();
+ray.params.Points.threshold = 0;
+const mouse = new THREE.Vector2(-10,-10);
+const tooltip = document.getElementById('tooltip');
+const panel = document.getElementById('panel');
+const _pickWorld = new THREE.Vector3();
+
+function syncPointer(e){
+  if(!e || typeof e.clientX !== 'number') return;
+  mouse.x = (e.clientX/innerWidth)*2-1;
+  mouse.y = -(e.clientY/innerHeight)*2+1;
+  if(tooltip){
+    tooltip.style.left = e.clientX+'px';
+    tooltip.style.top  = e.clientY+'px';
+  }
+}
+addEventListener('pointerdown', (e)=>{
+  syncPointer(e);
+  sfxUnlocked = true;
+}, { capture: true });
+
+/** Clics en canvas vs UI: inspeccionar DOM no debe disparar raycast; coords sincronizadas en pointerdown */
+function isEventOnUiLayer(el){
+  return !!(el && el.closest && el.closest(
+    '.legend, .controls, .panel, .indexer, .hud-top, .scale-legend, #loader, .loader, aside.panel, .sc-layer, .sc-modal, .sc-portals'
+  ));
+}
+
+addEventListener('pointermove', e=>{ syncPointer(e); }, { passive: true });
+
+addEventListener('click', e=>{
+  syncPointer(e);
+  if(isEventOnUiLayer(e.target)) return;
+  const hit = pickBody();
+  if(hit==='sun') focusSun();
+  else if(hit!==-1 && hit!==null) focusPlanet(hit);
+});
+
+function pickBody(){
+  ray.setFromCamera(mouse, camera);
+  const sunHit = ray.intersectObject(sun.children[0], false);
+  if(sunHit.length>0) return 'sun';
+  const meshes = planets.map(p=>p.sphere);
+  const hits = ray.intersectObjects(meshes, false);
+  if(hits.length>0) return meshes.indexOf(hits[0].object);
+
+  let bestI = -1;
+  let bestD = Infinity;
+  for(let i=0;i<planets.length;i++){
+    planets[i].group.getWorldPosition(_pickWorld);
+    const d2 = ray.ray.distanceSqToPoint(_pickWorld);
+    const pad = planets[i].sys.size * 1.55;
+    if(d2 <= pad*pad && d2 < bestD){
+      bestD = d2;
+      bestI = i;
+    }
+  }
+  if(bestI >= 0) return bestI;
+
+  const dSun2 = ray.ray.distanceSqToPoint(new THREE.Vector3(0,0,0));
+  const sunNear = 4.15;
+  if(dSun2 <= sunNear*sunNear) return 'sun';
+
+  return -1;
+}
+
+function setTooltipForSystem(sys){
+  applyTooltipPortrait(sys);
+  const tax = TAXONOMY[sys.type];
+  document.getElementById('ttIcon').textContent = tax.icon;
+  document.getElementById('ttClass').textContent = tax.label;
+  document.getElementById('ttName').textContent = sys.name;
+  document.getElementById('ttType').textContent = tax.label.split('·')[0].trim();
+  document.getElementById('ttRef').textContent = (sys.lookRef && LOOK_LABELS[sys.lookRef]) ? LOOK_LABELS[sys.lookRef] : '—';
+  document.getElementById('ttDist').textContent = sys.radius>0 ? `${sys.radius.toFixed(1)} UA` : 'Núcleo';
+  document.getElementById('ttStatus').textContent = sys.status;
+  tooltip.style.borderColor = sys.color+'66';
+}
+
+/* =========================================================
+   TYPEWRITER + SEQUENTIAL SECTION REVEAL (Dead Space feel)
+   ========================================================= */
+let typeToken = 0;
+function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+function typeWrite(el, text, speed=7, token){
+  return new Promise(resolve=>{
+    el.textContent = '';
+    let i = 0;
+    const step = ()=>{
+      if(token !== typeToken) return resolve();
+      if(i <= text.length){
+        el.textContent = text.slice(0,i);
+        i++;
+        setTimeout(step, speed);
+      } else resolve();
+    };
+    step();
+  });
+}
+
+async function openPanel(sys){
+  typeToken++;
+  const token = typeToken;
+  const brief = BRIEFS[sys.id] || BRIEFS['00'];
+
+  applyBriefPortrait(sys);
+
+  // Header (instant)
+  document.getElementById('pDesignation').textContent = brief.designation;
+  const tag = document.getElementById('pClassTag');
+  tag.textContent = brief.classification;
+  tag.className = 'p-class-tag ' + (brief.classLevel || '');
+  document.getElementById('pName').textContent = sys.name;
+  document.getElementById('pSubtitle').textContent = brief.subtitle;
+  // Live session clock
+  const now = new Date();
+  document.getElementById('pClock').textContent = 'T+'+now.toTimeString().slice(0,8);
+
+  // Clear and hide all sections
+  const secs = ['sBrief','sObj','sMetrics','sDeps','sThreats','sActions','sLog'];
+  secs.forEach(id=>document.getElementById(id).classList.remove('reveal'));
+  const briefEl = document.getElementById('pBrief');
+  const objEl = document.getElementById('pObjectives');
+  const metricsEl = document.getElementById('pMetrics');
+  const depsEl = document.getElementById('pDeps');
+  const threatsEl = document.getElementById('pThreats');
+  const actionsEl = document.getElementById('pActions');
+  const logEl = document.getElementById('pLog');
+  const barFill = document.getElementById('pBarFill');
+  const barVal = document.getElementById('pBarVal');
+  const bar = document.getElementById('pBar');
+
+  briefEl.innerHTML = '';
+  objEl.innerHTML = '';
+  metricsEl.innerHTML = '';
+  depsEl.innerHTML = '';
+  threatsEl.innerHTML = '';
+  actionsEl.innerHTML = '';
+  logEl.innerHTML = '';
+  barFill.style.width = '0%';
+  barVal.textContent = '0%';
+  bar.className = 'bar';
+
+  panel.classList.add('open');
+  [...legend.children].forEach((c,idx)=>c.classList.toggle('active', SYSTEMS[idx]?.id===sys.id));
+
+  await wait(120);
+  if(token !== typeToken) return;
+
+  // 1. Brief (typewriter)
+  document.getElementById('sBrief').classList.add('reveal');
+  const span = document.createElement('span');
+  const cursor = document.createElement('span');
+  cursor.className = 'cursor';
+  briefEl.appendChild(span);
+  briefEl.appendChild(cursor);
+  await typeWrite(span, brief.missionBrief, 6, token);
+  if(token !== typeToken) return;
+  await wait(150);
+  cursor.remove();
+
+  // 2. Objectives (staggered fade in)
+  document.getElementById('sObj').classList.add('reveal');
+  for(const obj of brief.objectives){
+    if(token !== typeToken) return;
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="mark ${obj.state}"></span><span>${obj.label}</span>`;
+    objEl.appendChild(li);
+    await wait(60);
+  }
+
+  // 3. Metrics + progress bar
+  document.getElementById('sMetrics').classList.add('reveal');
+  for(const m of brief.metrics){
+    if(token !== typeToken) return;
+    const cell = document.createElement('div');
+    cell.className = 'metric-cell';
+    cell.innerHTML = `<span class="mk">${m.k}</span><span class="mv ${m.state||''}">${m.v}</span>`;
+    metricsEl.appendChild(cell);
+    await wait(45);
+  }
+  await wait(120);
+  if(token !== typeToken) return;
+  // animate bar
+  if(brief.progressPct < 30) bar.className = 'bar critical';
+  else if(brief.progressPct < 60) bar.className = 'bar warning';
+  barFill.style.width = brief.progressPct + '%';
+  // animate number
+  let n = 0;
+  const target = brief.progressPct;
+  const tick = ()=>{
+    if(token !== typeToken) return;
+    n += Math.max(1, Math.ceil((target-n)/8));
+    if(n >= target) n = target;
+    barVal.textContent = n + '%';
+    if(n < target) setTimeout(tick, 40);
+  };
+  tick();
+
+  // 4. Dependencies
+  await wait(200);
+  document.getElementById('sDeps').classList.add('reveal');
+  for(const d of brief.dependencies){
+    if(token !== typeToken) return;
+    const li = document.createElement('li');
+    li.textContent = d;
+    depsEl.appendChild(li);
+    await wait(35);
+  }
+
+  // 5. Threats
+  document.getElementById('sThreats').classList.add('reveal');
+  for(const t of brief.threats){
+    if(token !== typeToken) return;
+    const li = document.createElement('li');
+    li.textContent = t;
+    threatsEl.appendChild(li);
+    await wait(35);
+  }
+
+  // 6. Actions
+  document.getElementById('sActions').classList.add('reveal');
+  for(const a of brief.nextActions){
+    if(token !== typeToken) return;
+    const li = document.createElement('li');
+    li.textContent = a;
+    actionsEl.appendChild(li);
+    await wait(35);
+  }
+
+  // 7. Log
+  document.getElementById('sLog').classList.add('reveal');
+  for(const l of brief.log){
+    if(token !== typeToken) return;
+    const row = document.createElement('div');
+    row.className = 'log-row' + (l.m.includes('CRITICAL')||l.m.includes('⚠')?' critical':'');
+    row.innerHTML = `<span class="log-time">${l.t}</span><span class="log-msg">${l.m}</span>`;
+    logEl.appendChild(row);
+    await wait(30);
+  }
+}
+
+/* =========================================================
+   INDEXER — dropdown master menu of all interactive bodies
+   ========================================================= */
+const idxToggle = document.getElementById('idxToggle');
+const idxPanel = document.getElementById('idxPanel');
+const idxList = document.getElementById('idxList');
+
+function statusClassFor(sys){
+  return hudStatusFor(sys);
+}
+function statusLabelFor(sys){
+  const st = hudStatusFor(sys);
+  if(st === 'crit') return 'CRIT';
+  if(st === 'warn') return 'WARN';
+  return 'OK';
+}
+
+function buildIndexer(){
+  // Star first
+  const starSys = { id:'00', name:'Gano Digital · Core', type:'star', radius:0, lookRef:'sol' };
+  const allBodies = [starSys, ...SYSTEMS];
+  idxList.innerHTML = '';
+  allBodies.forEach(sys=>{
+    const tax = TAXONOMY[sys.type];
+    const cls = statusClassFor(sys);
+    const lbl = statusLabelFor(sys);
+    const pc = portraitConfigFor(sys);
+    const item = document.createElement('div');
+    item.className = 'idx-item idx-item--race-' + pc.race;
+    item.innerHTML = `
+      <div class="idx-portrait-wrap race-${pc.race}">
+        <img class="idx-portrait" src="${PORTRAIT_BASE}${pc.file}" alt="" />
+      </div>
+      <div class="idx-body">
+        <div class="idx-num">SYS · ${sys.id} <span>·</span> ${tax.label.split('·')[0].trim()}</div>
+        <div class="idx-name">${sys.name}</div>
+      </div>
+      <div class="idx-status ${cls}">${lbl}</div>
+    `;
+    item.onclick = ()=>{
+      closeIndexer();
+      if(sys.id === '00') focusSun();
+      else {
+        const idx = SYSTEMS.findIndex(s=>s.id===sys.id);
+        if(idx>=0) focusPlanet(idx);
+      }
+    };
+    item.addEventListener('pointerenter', ()=>{
+      sfxUiHoverRace(pc.race, 'idx:'+sys.id);
+    });
+    idxList.appendChild(item);
+  });
+}
+function openIndexer(){
+  idxPanel.classList.add('open');
+  idxToggle.classList.add('open');
+}
+function closeIndexer(){
+  idxPanel.classList.remove('open');
+  idxToggle.classList.remove('open');
+}
+idxToggle.onclick = (e)=>{
+  e.stopPropagation();
+  if(idxPanel.classList.contains('open')){ hudSfxNav('navMenuClose'); closeIndexer(); }
+  else { hudSfxNav('navMenuOpen'); openIndexer(); }
+};
+document.addEventListener('click', (e)=>{
+  if(!document.getElementById('indexer').contains(e.target)) closeIndexer();
+});
+buildIndexer();
+
+document.getElementById('closePanel').onclick = ()=>{
+  hudSfxNav('navPanelClose');
+  panel.classList.remove('open');
+  [...legend.children].forEach(c=>c.classList.remove('active'));
+  setPlanetEmissive(-1);
+};
+
+let focusTarget = null;
+function setPlanetEmissive(activeIdx){
+  planets.forEach((p,idx)=>{
+    const base = idx === activeIdx ? 0.14 : 0.04;
+    if(p.sphere && p.sphere.material) p.sphere.material.emissiveIntensity = base;
+  });
+}
+function focusPlanet(i){
+  const p = planets[i];
+  sfxRaceSelect(portraitConfigFor(p.sys).race, i);
+  setTimeout(()=>sfxBriefOpen(p.sys), 280);
+  setPlanetEmissive(i);
+  const target = p.group.position.clone();
+  const dir = target.clone().normalize();
+  const dist = 8 + p.sys.size*4;
+  const camPos = target.clone().add(dir.multiplyScalar(dist)).add(new THREE.Vector3(0, dist*0.4, 0));
+  focusTarget = { camPos, look:target.clone(), t:0 };
+  controls.autoRotate = false;
+  document.getElementById('btnRotate').classList.remove('active');
+  openPanel(p.sys);
+}
+function focusSun(){
+  sfxStarSelect();
+  setTimeout(()=>sfxBriefOpen(STAR_DATA), 280);
+  setPlanetEmissive(-1);
+  focusTarget = { camPos:new THREE.Vector3(0,12,22), look:new THREE.Vector3(0,0,0), t:0 };
+  controls.autoRotate = false;
+  document.getElementById('btnRotate').classList.remove('active');
+  openPanel(STAR_DATA);
+}
+
+/* ============================================================
+   CONTROLS
+   ============================================================ */
+document.getElementById('btnReset').onclick = ()=>{
+  focusTarget = { camPos:new THREE.Vector3(0,50,130), look:new THREE.Vector3(0,0,0), t:0 };
+};
+document.getElementById('btnTop').onclick = ()=>{
+  focusTarget = { camPos:new THREE.Vector3(0,170,1), look:new THREE.Vector3(0,0,0), t:0 };
+};
+document.getElementById('btnRotate').onclick = (e)=>{
+  controls.autoRotate = !controls.autoRotate;
+  e.currentTarget.classList.toggle('active', controls.autoRotate);
+};
+document.getElementById('btnLines').onclick = (e)=>{
+  linksGroup.visible = !linksGroup.visible;
+  e.currentTarget.classList.toggle('active', linksGroup.visible);
+};
+let labelsOn = true;
+document.getElementById('btnLabels').onclick = (e)=>{
+  labelsOn = !labelsOn;
+  planets.forEach(p=>p.label.visible = labelsOn);
+  sunLabel.visible = labelsOn;
+  e.currentTarget.classList.toggle('active', labelsOn);
+};
+
+/* ============================================================
+   SC MENU LAYER — overlays + modal + portales (conceptos del video)
+   ============================================================ */
+const scLayer = document.getElementById('scLayer');
+const scModal = document.getElementById('scModal');
+const scPortals = document.getElementById('scPortals');
+let scMenuOn = false;
+let scModalOn = false;
+let scPortalsOn = false;
+
+function scRenderState(){
+  if(!scLayer) return;
+  scLayer.classList.toggle('show', scMenuOn);
+  scLayer.classList.toggle('show-modal', scMenuOn && scModalOn);
+  scLayer.classList.toggle('show-portals', scMenuOn && scPortalsOn);
+  scLayer.setAttribute('aria-hidden', scMenuOn ? 'false' : 'true');
+}
+function scOpenMenu(mode='modal'){
+  scMenuOn = true;
+  scModalOn = (mode === 'modal');
+  scPortalsOn = (mode === 'portals');
+  scRenderState();
+  // Micro feedback: abrir menú = “nav open” sin competir con selección 3D
+  hudSfxNav('navMenuOpen');
+}
+function scCloseMenu(){
+  scMenuOn = false;
+  scModalOn = false;
+  scPortalsOn = false;
+  scRenderState();
+  hudSfxNav('navMenuClose');
+}
+function scToggleMenu(){
+  if(!scMenuOn) scOpenMenu('modal');
+  else scCloseMenu();
+}
+function scOpenPortals(){
+  scMenuOn = true;
+  scModalOn = false;
+  scPortalsOn = true;
+  scRenderState();
+}
+
+// Botón barra controls
+(function initMenuBtn(){
+  const b = document.getElementById('btnMenu');
+  if(!b) return;
+  b.onclick = (e)=>{
+    e.stopPropagation();
+    scToggleMenu();
+    b.classList.toggle('active', scMenuOn);
+  };
+})();
+
+// Cerrar por overlay click (si está activo)
+if(scLayer){
+  scLayer.addEventListener('click', (e)=>{
+    // clicks en botones internos no cierran
+    if(e.target && e.target.closest && e.target.closest('.sc-modal, .sc-portal')) return;
+    scCloseMenu();
+    const b = document.getElementById('btnMenu');
+    b && b.classList.remove('active');
+  });
+}
+// Modal actions
+(function initScModal(){
+  const closeBtn = document.getElementById('scModalClose');
+  const cancelBtn = document.getElementById('scCancel');
+  const c1 = document.getElementById('scChoiceOriginal');
+  const c2 = document.getElementById('scChoiceExpansion');
+  const close = ()=>{
+    scCloseMenu();
+    const b = document.getElementById('btnMenu');
+    b && b.classList.remove('active');
+  };
+  closeBtn && (closeBtn.onclick = (e)=>{ e.stopPropagation(); close(); });
+  cancelBtn && (cancelBtn.onclick = (e)=>{ e.stopPropagation(); close(); });
+  c1 && (c1.onclick = (e)=>{ e.stopPropagation(); scOpenPortals(); });
+  c2 && (c2.onclick = (e)=>{ e.stopPropagation(); scOpenPortals(); });
+})();
+
+// Portales: click = sonido facción + foco rápido a un sistema por raza (1er match)
+if(scPortals){
+  scPortals.addEventListener('click', (e)=>{
+    const btn = e.target && e.target.closest ? e.target.closest('.sc-portal') : null;
+    if(!btn) return;
+    e.stopPropagation();
+    const race = btn.dataset.race || 'terran';
+    sfxRaceSelect(race, performance.now());
+    // mapear raza a primer sistema de esa raza para “entrar”
+    const idx = SYSTEMS.findIndex(s=>portraitConfigFor(s).race === race);
+    if(idx >= 0) focusPlanet(idx);
+    scCloseMenu();
+    const b = document.getElementById('btnMenu');
+    b && b.classList.remove('active');
+  });
+}
+
+// Teclas: M abre/cierra. ESC cierra si abierto.
+addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape' && scMenuOn){
+    scCloseMenu();
+    const b = document.getElementById('btnMenu');
+    b && b.classList.remove('active');
+  }
+  if((e.key === 'm' || e.key === 'M') && !e.repeat){
+    scToggleMenu();
+    const b = document.getElementById('btnMenu');
+    b && b.classList.toggle('active', scMenuOn);
+  }
+});
+
+/* ============================================================
+   RESIZE
+   ============================================================ */
+addEventListener('resize', ()=>{
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  composer.setSize(innerWidth, innerHeight);
+  bloom.setSize(innerWidth, innerHeight);
+});
+
+/* ============================================================
+   OVERLAY GUARD — desactiva hover/raycast/tooltip cuando hay UI encima
+   Condiciones: panel abierto (.panel.open), indexer (#idxPanel.open), SC menu (scMenuOn)
+   ============================================================ */
+function isOverlayActive(){
+  return (
+    document.querySelector('.panel.open') !== null ||
+    document.querySelector('#idxPanel.open') !== null ||
+    scMenuOn
+  );
+}
+
+/* ============================================================
+   ANIMATION LOOP
+   ============================================================ */
+const clock = new THREE.Clock();
+function animate(){
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+
+  starfield.material.uniforms.uTime.value = t;
+  sun.userData.coreMat.uniforms.uTime.value = t;
+  planets.forEach(p=>{ p.linkMat && (p.linkMat.uniforms.uTime.value = t); });
+
+  // Planetas — órbitas keplerianas simplificadas
+  planets.forEach((p,i)=>{
+    const speed = 0.025 / Math.sqrt(p.baseRadius/14); // más lentos los lejanos
+    const a = p.baseAngle + t*speed;
+    let r = p.baseRadius;
+    if(p.sys.eccentric){
+      // órbita elíptica para el cometa
+      r = p.baseRadius * (1 - 0.4*Math.cos(a*0.7));
+    }
+    p.group.position.x = Math.cos(a)*r;
+    p.group.position.z = Math.sin(a)*r;
+    p.group.position.y = p.baseY + Math.sin(t*0.3+i)*0.3;
+    p.sphere.rotation.y += 0.003;
+
+    // cometa: orientar cola hacia afuera del sol
+    if(p.cometTail){
+      const dir = p.group.position.clone().normalize();
+      const angle = Math.atan2(dir.z, dir.x);
+      p.cometTail.rotation.y = -angle;
+    }
+
+    // lunas
+    p.moons.forEach(({group:mg})=>{
+      const u = mg.userData;
+      const a2 = u.angle + t*u.speed*0.5;
+      mg.children[0].position.set(Math.cos(a2)*u.radius, Math.sin(a2*1.3+u.tilt)*0.4, Math.sin(a2)*u.radius);
+    });
+  });
+
+  // Asteroide belt rotation
+  const beltPos = asteroidBelt.geometry.attributes.position;
+  const ang = asteroidBelt.userData.angles;
+  const rad = asteroidBelt.userData.radii;
+  for(let i=0;i<asteroidBelt.userData.N;i++){
+    const a = ang[i] + t*0.04*(1 + (i%5)*0.02);
+    beltPos.array[i*3]   = Math.cos(a)*rad[i];
+    beltPos.array[i*3+2] = Math.sin(a)*rad[i];
+  }
+  beltPos.needsUpdate = true;
+
+  sun.rotation.y += 0.0015;
+
+  // Hover/raycast: omitir por completo cuando hay overlay activo (panel, indexer, SC menu)
+  const hit = isOverlayActive() ? -1 : pickBody();
+
+  // Hover SFX 3D: por cuerpo (p0,p1,…) para variedad al cambiar órbita; gap anti-saturación
+  let hov = 'void';
+  let hovKey = 'void';
+  if(hit === 'sun'){ hov = 'sun'; hovKey = 'sun'; }
+  else if(hit !== -1 && hit !== null){
+    hov = portraitConfigFor(SYSTEMS[hit]).race;
+    hovKey = 'p'+hit;
+  }
+  if(hovKey === 'void'){
+    lastHoverAudioKey = 'void';
+  } else if(hovKey !== lastHoverAudioKey){
+    const now = performance.now();
+    if(sfxHoverEligible() && now - lastHoverSfxAt >= HOVER_SFX_MIN_GAP_MS){
+      sfxHoverRace(hov === 'sun' ? 'sun' : hov);
+      lastHoverSfxAt = now;
+      lastHoverAudioKey = hovKey;
+    }
+  }
+
+  // HUD alert pulse (sprites sobre cuerpos)
+  const pulseAmp = (st)=>{
+    if(st==='crit') return 0.68 + 0.32*Math.sin(t*5.1);
+    if(st==='warn') return 0.78 + 0.22*Math.sin(t*3.35);
+    return 0.86 + 0.14*Math.sin(t*1.9);
+  };
+  if(sun.userData.hudMat){
+    sun.userData.hudMat.opacity = Math.min(1, pulseAmp(hudStatusFor(STAR_DATA)));
+  }
+  planets.forEach(p=>{
+    if(p.hudMat) p.hudMat.opacity = Math.min(1, pulseAmp(hudStatusFor(p.sys)));
+  });
+
+  // tooltip hover (mismo raycast que SFX)
+  if(hit==='sun'){
+    document.body.style.cursor = 'pointer';
+    setTooltipForSystem(STAR_DATA);
+    tooltip.classList.add('show');
+  } else if(hit!==-1 && hit!==null){
+    document.body.style.cursor = 'pointer';
+    setTooltipForSystem(SYSTEMS[hit]);
+    tooltip.classList.add('show');
+  } else {
+    document.body.style.cursor = 'default';
+    tooltip.classList.remove('show');
+  }
+
+  // camera tween
+  if(focusTarget){
+    focusTarget.t = Math.min(1, focusTarget.t + 0.018);
+    const k = easeInOutCubic(focusTarget.t);
+    camera.position.lerp(focusTarget.camPos, k*0.12);
+    controls.target.lerp(focusTarget.look, k*0.12);
+    if(focusTarget.t>=1 && camera.position.distanceTo(focusTarget.camPos)<0.5){
+      focusTarget = null;
+    }
+  }
+
+  controls.update();
+  composer.render();
+}
+function easeInOutCubic(x){return x<0.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2}
+
+animate();
+setTimeout(()=>document.getElementById('loader').classList.add('hide'), 700);
+</script>
+</body>
+</html>

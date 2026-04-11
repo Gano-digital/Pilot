@@ -1,0 +1,30 @@
+---
+description: Mapa Constellation, skills .gano-skills y evolución con TASKS/CLAUDE
+globs: memory/constellation/**,.gano-skills/**/SKILL.md,memory/research/starcraft*.md,CLAUDE.md,TASKS.md
+alwaysApply: false
+---
+
+# Constellation + skills + procesos integrados
+
+Cuando toques **`memory/constellation/`**, **`.gano-skills/`** o documentación de **assets SC / HUD**:
+
+## Fuentes de verdad (orden)
+1. **`TASKS.md`** — qué está hecho y qué sigue (roadmap operativo).
+2. **`CLAUDE.md`** — tabla de skills y archivos importantes del monorepo.
+3. **`memory/research/starcraft1-assets-sota.md`** — formatos GRP/paleta y límites legales.
+4. **`.gano-skills/gano-starcraft1-assets-constellation/SKILL.md`** — checklist al añadir audio/imagen.
+
+## Constellation (`CONSTELACION-COSMICA.html`)
+- **No** commitear binarios extraídos del juego Blizzard; retratos en `memory/constellation/assets/portraits/` y WAV en `sounds/agentcraft/` son el conjunto versionado.
+- Tras cambiar SFX, retratos o datos `SYSTEMS`/`SC_PORTRAITS`, considerar una línea en **`memory/audits/`** o sesión en `memory/sessions/` si el cambio es entregable para equipo.
+- El HUD debe seguir coherentes: pools SFX por facción, `syncPointer` para raycast, `isEventOnUiLayer` para clics UI vs canvas.
+
+## Skills nuevas o cambios
+- Añadir fila en **`CLAUDE.md`** (tabla Skills disponibles) cuando se cree un `SKILL.md` nuevo bajo `.gano-skills/<nombre>/`.
+- Actualizar **`.gano-skills/QUICK_START_GUIDE.md`** solo si el flujo es entrada frecuente para el equipo.
+
+## Auditoría y reportes
+- Informes PDF/HTML para desarrolladores viven en **`memory/audits/`**; el script **`scripts/generate_dev_audit_pdf.py`** puede regenerar el PDF cuando cambien estadísticas clave.
+
+## Integración con GitHub / agentes
+- Colas y workflows: **`.github/agent-queue/`**, **`.github/workflows/README.md`**; no duplicar estado: **`TASKS.md`** sigue siendo el resumen humano prioritario.
