@@ -1,5 +1,15 @@
 # Progress Tracker
 
+## 2026-04-11 — Skill starter para Cloud agents
+
+### Completado
+
+- [x] Nueva skill `.agents/skills/cloud-agent-starter/SKILL.md` con instrucciones mínimas y prácticas para agentes Cloud: login (`gh auth status`), verificación runtime (`php`, `node`, `npm`), expectativas reales sobre WordPress en Cloud, mock seguro para Reseller (`PENDING_RCC`) y workflows de prueba por área (`gano-child`, comercio, `.gsd/sdk`, GitHub/Actions).
+- [x] Validado en Cursor Cloud: `php` 8.3, `node` 22, `npm` 10, `gh` autenticado; `wp` **no** está en PATH por defecto.
+- [x] Checks de apoyo: `git diff --check`, `php -l` en archivos de comercio referenciados y `npm run test:unit` en `.gsd/sdk`.
+
+---
+
 ## 2026-04-10 — Repo Pilot **público** + alerta runner self-hosted
 
 ### Hecho (verificado)
