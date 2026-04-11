@@ -27,7 +27,7 @@ if ( is_admin() ) {
  */
 add_filter( 'rstore_sync_properties', 'gano_reseller_filter_sync_properties', 10, 2 );
 
-function gano_reseller_filter_sync_properties( $properties, $post_id ) {
+function gano_reseller_filter_sync_properties( $properties, $post_id = 0 ) {
     // Check if ACF is active and the override flag is set
     if ( function_exists( 'get_field' ) ) {
         $override = get_field( 'override_price', $post_id );
