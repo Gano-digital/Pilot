@@ -4,7 +4,7 @@
 - **Name**: cloud-agent-starter
 - **Description**: Minimal bootstrap skill for Cloud agents working in `Gano-digital/Pilot`. Use it to decide how to start, what can be tested locally, which logins are required, and which checks to run before and after edits.
 - **Scope**: Workspace (`/workspace`)
-- **Dependencies**: `git`, `python3`, `php`, `node >= 20` for `.gsd`, `gh` CLI (read-only auth already available in cloud), Docker optional for TruffleHog parity.
+- **Dependencies**: `git`, `python3` (use this, not `python`, in cloud), `php`, `node >= 20` for `.gsd`, `gh` CLI (read-only auth already available in cloud), Docker optional for TruffleHog parity.
 
 ## Use this skill when
 - The prompt says "how do I run this repo", "how do I test this", "cloud setup", "bootstrap", "smoke test", or "what should I run first".
@@ -36,8 +36,8 @@
 2. Confirm cloud GitHub auth if the task needs GitHub context:
    - `gh auth status`
 3. Run the two fastest repo health checks:
-   - `python scripts/validate_agent_queue.py`
-   - `python scripts/validate_claude_dispatch.py`
+   - `python3 scripts/validate_agent_queue.py`
+   - `python3 scripts/validate_claude_dispatch.py`
 4. Decide the area you are touching and run the matching workflow from the table below.
 
 ## Feature flags, mocks, and environment toggles
@@ -71,9 +71,9 @@
 **Cloud-safe test workflow**
 1. Run targeted syntax checks on files you edited:
    - `php -l path/to/file.php`
-2. Run CI-parity lint for all custom PHP before commit:
-   - `find wp-content/mu-plugins wp-content/themes/gano-child -name '*.php' -exec php -l {} \;`
-   - `find wp-content/plugins -maxdepth 1 -type d -name 'gano-*' -exec find {} -name '*.php' -exec php -l {} \; \;`
+2. Run bulk lint for all custom PHP before commit:
+   - `rg --files wp-content/mu-plugins wp-content/themes/gano-child -g '*.php' | while IFS= read -r file; do php -l "$file"; done`
+   - `rg --files wp-content/plugins -g '*.php' | rg '^wp-content/plugins/gano-' | while IFS= read -r file; do php -l "$file"; done`
 3. If you changed JS/CSS and you have a real URL or local WP runtime, do a browser smoke test there.
 4. If there is no working runtime, explicitly say the change was validated at code level only and why runtime proof is blocked.
 
@@ -89,7 +89,7 @@
 
 **Cloud-safe test workflow**
 1. Validate queue JSON:
-   - `python scripts/validate_agent_queue.py`
+   - `python3 scripts/validate_agent_queue.py`
 2. If the task touched workflow docs or queue routing, review:
    - `.github/COPILOT-AGENT-QUEUE.md`
    - `.github/workflows/README.md`
@@ -114,10 +114,10 @@
 
 **Cloud-safe test workflow**
 1. Validate structure:
-   - `python scripts/validate_claude_dispatch.py`
+   - `python3 scripts/validate_claude_dispatch.py`
 2. Inspect queue behavior:
-   - `python scripts/claude_dispatch.py list`
-   - `python scripts/claude_dispatch.py next`
+   - `python3 scripts/claude_dispatch.py list`
+   - `python3 scripts/claude_dispatch.py next`
 3. If you changed task definitions or docs, make sure the commands still describe the queue accurately.
 
 **Good completion signal**
@@ -155,9 +155,9 @@
 
 **How to start**
 1. Generate fresh data:
-   - `python scripts/generate_gano_ops_progress.py`
+   - `python3 scripts/generate_gano_ops_progress.py`
 2. Serve the static UI locally:
-   - `cd tools/gano-ops-hub/public && python -m http.server 8765`
+   - `cd tools/gano-ops-hub/public && python3 -m http.server 8765`
 3. Open `http://127.0.0.1:8765/`
 
 **Important**
@@ -167,7 +167,7 @@
 - Regenerate `progress.json`.
 - Serve the static site.
 - If the task touched DNS/HTTPS tooling, also run:
-  - `python scripts/check_dns_https_gano.py`
+  - `python3 scripts/check_dns_https_gano.py`
 
 ### 6. Commerce / Reseller / RCC
 
@@ -195,11 +195,11 @@
 | If you touched... | Run at minimum |
 |-------------------|----------------|
 | `wp-content/**/*.php` | `php -l` on edited files plus CI-parity bulk lint |
-| `.github/agent-queue/**` | `python scripts/validate_agent_queue.py` |
-| `memory/claude/dispatch-queue.json` or dispatch docs | `python scripts/validate_claude_dispatch.py` and `python scripts/claude_dispatch.py list` |
+| `.github/agent-queue/**` | `python3 scripts/validate_agent_queue.py` |
+| `memory/claude/dispatch-queue.json` or dispatch docs | `python3 scripts/validate_claude_dispatch.py` and `python3 scripts/claude_dispatch.py list` |
 | `.gsd/**` | `npm test` in `.gsd/` |
 | `.gsd/sdk/**` | `npm run build` and `npm test` in `.gsd/sdk/` |
-| `tools/gano-ops-hub/**` or progress scripts | `python scripts/generate_gano_ops_progress.py` and serve `tools/gano-ops-hub/public` |
+| `tools/gano-ops-hub/**` or progress scripts | `python3 scripts/generate_gano_ops_progress.py` and serve `tools/gano-ops-hub/public` |
 | Commerce / PFID / cart wiring | Repo-side lint + staging-first workflow from `phase4-commerce` |
 
 ## Do not waste time on these dead ends
