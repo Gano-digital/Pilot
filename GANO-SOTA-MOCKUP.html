@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gano Digital — EXTREME SOTA MOCKUP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            /* DEFINITIVE CYBER-COLD PALETTE */
+            --gano-blue:         #1B4FD8;   /* Surgical Blue */
+            --gano-purple:       #8B5CF6;   /* Cyber Purple */
+            --gano-indigo:       #6366F1;   /* High-Ticket Indigo */
+            --gano-dark:         #05080C;   /* Midnight Abyss */
+            --gano-card:         #0B1118;   /* Technical Gray-Blue */
+            --gano-border:       rgba(99, 102, 241, 0.2);
+            --gano-glow:         rgba(139, 92, 246, 0.5);
+            --font-main: 'Inter', sans-serif;
+            --font-head: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--gano-dark); color: #94A3B8; font-family: var(--font-main); overflow-x: hidden; line-height: 1.6; }
+
+        .mockup-status { position: fixed; top: 0; left: 0; width: 100%; height: 2px; background: var(--gano-purple); z-index: 10000; box-shadow: 0 0 15px var(--gano-purple); }
+        .badge-fixed { position: fixed; bottom: 20px; right: 20px; background: rgba(139, 92, 246, 0.1); border: 1px solid var(--gano-purple); color: #FFF; padding: 10px 20px; font-family: var(--font-mono); font-size: 10px; z-index: 1000; backdrop-filter: blur(10px); }
+
+        h1, h2, h3, h4 { color: #FFF; font-family: var(--font-head); letter-spacing: -0.04em; }
+        .accent { color: var(--gano-purple); font-weight: 800; text-transform: uppercase; font-size: 12px; letter-spacing: 4px; display: block; margin-bottom: 15px; }
+
+        /* DECORATIVE DOODLES (CYBER GARDEN) */
+        .doodle { position: absolute; pointer-events: none; opacity: 0.15; z-index: 0; }
+        .constellation { width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, var(--gano-indigo) 0%, transparent 70%); filter: blur(80px); }
+
+        /* HERO SECTION */
+        .hero { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding-top: 60px; }
+        .hero-bg-text { position: absolute; font-family: var(--font-mono); font-size: 15vw; font-weight: 900; color: rgba(255,255,255,0.02); white-space: nowrap; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: -1; }
+        
+        .monolith-wrap { perspective: 1500px; position: absolute; width: 400px; height: 600px; opacity: 0.8; }
+        .monolith { width: 100%; height: 100%; background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(139,92,246,0.1)); border: 1px solid var(--gano-border); backdrop-filter: blur(40px); box-shadow: 0 50px 100px rgba(0,0,0,0.5); }
+
+        .hero-content { text-align: center; max-width: 900px; z-index: 10; position: relative; }
+        .hero h1 { font-size: 7rem; font-weight: 800; line-height: 0.85; margin-bottom: 30px; text-transform: lowercase; }
+        .hero h1 span { color: var(--gano-purple); }
+        .hero p { font-size: 1.4rem; font-weight: 300; margin-bottom: 50px; color: #FFF; opacity: 0.6; }
+
+        .btn-sota {
+            background: linear-gradient(90deg, var(--gano-blue), var(--gano-indigo));
+            color: #FFF; text-decoration: none; padding: 22px 60px; border-radius: 4px; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 2px; font-size: 13px; display: inline-block;
+            transition: 0.4s; border: none; cursor: pointer; box-shadow: 0 10px 30px rgba(27, 79, 216, 0.3);
+        }
+        .btn-sota:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5); }
+
+        /* GRID CATALOG SECTION */
+        .section { padding: 150px 5%; position: relative; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        
+        .section-header { margin-bottom: 100px; text-align: center; }
+        .section-header h2 { font-size: 4rem; margin-bottom: 20px; }
+
+        .catalog-nav { display: flex; justify-content: center; gap: 30px; margin-bottom: 80px; }
+        .nav-item { cursor: pointer; font-family: var(--font-mono); font-size: 12px; font-weight: 700; text-transform: uppercase; color: #555; transition: 0.3s; padding: 10px 20px; border-bottom: 2px solid transparent; }
+        .nav-item.active { color: var(--gano-purple); border-color: var(--gano-purple); }
+
+        .catalog-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; transition: 0.5s; }
+        
+        .product-card {
+            background: var(--gano-card); border: 1px solid var(--gano-border); padding: 40px 30px;
+            display: flex; flex-direction: column; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative; overflow: hidden;
+        }
+        .product-card:hover { transform: translateY(-15px); border-color: var(--gano-purple); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+        .product-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: linear-gradient(0deg, rgba(139,92,246,0.05), transparent); transition: 0.6s; }
+        .product-card:hover::after { height: 100%; }
+
+        .p-icon { width: 60px; height: 60px; margin-bottom: 30px; color: var(--gano-purple); fill: currentColor; }
+        .p-name { font-size: 1.4rem; margin-bottom: 15px; color: #FFF; }
+        .p-desc { font-size: 13px; opacity: 0.5; margin-bottom: 25px; min-height: 48px; }
+        .p-price { font-family: var(--font-mono); font-size: 1.6rem; color: #FFF; font-weight: 800; margin-top: auto; }
+        .p-price span { font-size: 10px; color: var(--gano-purple); text-transform: uppercase; display: block; margin-bottom: 5px; }
+
+        /* INTEGRATED ASSETS (SVGS AS CONSTANTS IN CSS/HTML) */
+        /* Using standard FA icons for the placeholder of specific SVGs but I can also use raw SVG paths */
+        
+        .svg-container { position: relative; width: 60px; height: 60px; margin-bottom: 30px; }
+        .path-anim { stroke: var(--gano-purple); stroke-width: 1; fill: none; stroke-dasharray: 200; stroke-dashoffset: 200; transition: stroke-dashoffset 2s ease; }
+        .product-card:hover .path-anim { stroke-dashoffset: 0; }
+
+        /* FOOTER */
+        footer { background: #030508; padding: 120px 5%; border-top: 1px solid var(--gano-border); text-align: center; }
+        .footer-logo { font-size: 2.2rem; font-weight: 900; color: #FFF; margin-bottom: 30px; display: block; }
+        .footer-links { display: flex; justify-content: center; gap: 40px; margin-bottom: 60px; list-style: none; }
+        .footer-links a { color: #555; text-decoration: none; font-size: 13px; text-transform: uppercase; font-weight: 700; transition: 0.3s; }
+        .footer-links a:hover { color: var(--gano-purple); }
+
+    </style>
+</head>
+<body>
+
+    <div class="mockup-status" id="scroll-progress"></div>
+    <div class="badge-fixed">SOTA v3.1 — EXTREME CATALOG</div>
+
+    <!-- BACKGROUND DOODLES -->
+    <div class="doodle constellation" style="top: 10%; right: -5%;"></div>
+    <div class="doodle constellation" style="bottom: 10%; left: -5%;"></div>
+
+    <!-- 1. HERO -->
+    <section class="hero">
+        <div class="hero-bg-text">ENGINEERING</div>
+        <div class="monolith-wrap"><div class="monolith" id="main-monolith"></div></div>
+        
+        <div class="hero-content">
+            <span class="accent reveal">Omnipresencia de Datos</span>
+            <h1 class="reveal">gano.digital<span>/</span>sota</h1>
+            <p class="reveal">El fin de la infraestructura pasiva. Ecosistemas resilientes, soberanos y quirúrgicamente precisos para activos digitales de alta autoridad.</p>
+            <div class="reveal">
+                <button class="btn-sota" onclick="window.scrollTo(0, window.innerHeight);">Explorar Portafolio</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. CATEGORIZED CATALOG (48 ITEMS) -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="accent">Operatividad Total</span>
+                <h2>Catálogo Reseller SOTA</h2>
+            </div>
+
+            <div class="catalog-nav">
+                <div class="nav-item active" onclick="filterCatalog('all')">Todos</div>
+                <div class="nav-item" onclick="filterCatalog('hosting')">Computación</div>
+                <div class="nav-item" onclick="filterCatalog('security')">Blindaje</div>
+                <div class="nav-item" onclick="filterCatalog('identity')">Identidad</div>
+                <div class="nav-item" onclick="filterCatalog('email')">Colaboración</div>
+            </div>
+
+            <div class="catalog-grid" id="catalog-container">
+                <!-- GRID GENERATED BY JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. ANIMATED ASSETS PREVIEW (THE 20 SOTA PILLARS) -->
+    <section class="section" style="background: rgba(99,102,241,0.01);">
+        <div class="container text-center">
+            <div class="section-header">
+                <span class="accent">Innovación Proactiva</span>
+                <h2>Pivotes de Soberanía</h2>
+            </div>
+            
+            <div id="pillars-preview" style="display:grid; grid-template-columns: repeat(5, 1fr); gap:20px;">
+                <!-- Generated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">GANO DIGITAL</div>
+        <ul class="footer-links">
+            <li><a href="#">Infraestructura</a></li>
+            <li><a href="#">Blindaje</a></li>
+            <li><a href="#">Legado</a></li>
+            <li><a href="#">Manifiesto</a></li>
+        </ul>
+        <p style="font-size:11px; font-family:var(--font-mono); opacity:0.3;">ESTADO DEL ARTE — ALPHA HUB BOGOTÁ — COPYRIGHT 2026</p>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger, TextPlugin);
+
+        // DATA: ALL 48 ITEMS (Simplified for the Mockup)
+        const products = [
+            // CATEGORY: HOSTING - 12 Items
+            { cat: 'hosting', name: 'Start WP', desc: 'Soberanía inicial para marcas emergentes.', price: '196.000', icon: 'fa-rocket' },
+            { cat: 'hosting', name: 'Pro Managed', desc: 'Ecosistema administrado por ingenieros.', price: '450.000', icon: 'fa-microchip' },
+            { cat: 'hosting', name: 'Business NVMe', desc: 'Velocidad crítica Gen4 para e-commerce.', price: '890.000', icon: 'fa-bolt' },
+            { cat: 'hosting', name: 'Ultimate WP', desc: 'Inmunidad ante picos masivos de tráfico.', price: '1.2M', icon: 'fa-crown' },
+            { cat: 'hosting', name: 'Economy cPanel', desc: 'Arquitectura tradicional de alta estabilidad.', price: '150.000', icon: 'fa-server' },
+            { cat: 'hosting', name: 'Deluxe cPanel', desc: 'Recursos dinámicos para gestión escalada.', price: '320.000', icon: 'fa-cubes' },
+            { cat: 'hosting', name: 'Self Managed VPS', desc: 'Propiedad del metal con control total.', price: '540.000', icon: 'fa-terminal' },
+            { cat: 'hosting', name: 'Fully Managed VPS', desc: 'Orquestado por ingenieros SOTA.', price: '1.1M', icon: 'fa-gears' },
+            { cat: 'hosting', name: 'VPS Pro Alpha', desc: 'Nodo dedicado con latencia cero.', price: '2.5M', icon: 'fa-atom' },
+            { cat: 'hosting', name: 'Dedicated Node 1', desc: 'Infraestructura monobloque aislada.', price: '4.8M', icon: 'fa-building-shield' },
+            { cat: 'hosting', name: 'Dedicated Node 2', desc: 'Doble procesador para cómputo crítico.', price: '7.2M', icon: 'fa-network-wired' },
+            { cat: 'hosting', name: 'Enterprise Cluster', desc: 'Disponibilidad monolítica multi-región.', price: 'Consultar', icon: 'fa-cloud' },
+
+            // CATEGORY: SECURITY - 12 Items
+            { cat: 'security', name: 'SSL Standard', desc: 'Cifrado básico perimetral.', price: '350.000', icon: 'fa-lock' },
+            { cat: 'security', name: 'SSL Deluxe', desc: 'Validación corporativa de alta confianza.', price: '680.000', icon: 'fa-shield-halved' },
+            { cat: 'security', name: 'SSL Premium Wildcard', desc: 'Cobertura total de subdominios críticos.', price: '1.2M', icon: 'fa-vault' },
+            { cat: 'security', name: 'Website Backup', desc: 'Plan de continuidad de datos 24/7.', price: '240.000', icon: 'fa-rotate-left' },
+            { cat: 'security', name: 'Premium Backup Pro', desc: 'Máquina del tiempo digital granular.', price: '560.000', icon: 'fa-database' },
+            { cat: 'security', name: 'Security Essential', desc: 'WAF de filtrado proactivo de red.', price: '450.000', icon: 'fa-user-sec' },
+            { cat: 'security', name: 'Security Deluxe', desc: 'Escaneo profundo y autocuración.', price: '920.000', icon: 'fa-bug-slash' },
+            { cat: 'security', name: 'Security Ultimate', desc: 'Blindaje Zero-Trust contra DDoS.', price: '1.8M', icon: 'fa-fire-extinguisher' },
+            { cat: 'security', name: 'Dedicated IP', desc: 'Identidad digital exclusiva e inmutable.', price: '45.000', icon: 'fa-map-pin' },
+            { cat: 'security', name: 'VPN Gateway', desc: 'Acceso seguro al núcleo operacional.', price: '120.000', icon: 'fa-mask' },
+            { cat: 'security', name: 'Code Signing', desc: 'Firma de integridad para activos digitales.', price: '1.5M', icon: 'fa-file-signature' },
+            { cat: 'security', name: 'Anti-Phishing Shield', desc: 'Protección proactiva de identidad.', price: '380.000', icon: 'fa-fish' },
+
+            // CATEGORY: IDENTITY - 12 Items
+            { cat: 'identity', name: 'Dominio .CO', desc: 'Presencia nacional de alta autoridad.', price: '90.000', icon: 'fa-globe' },
+            { cat: 'identity', name: 'Dominio .COM', desc: 'Estándar global de soberanía.', price: '75.000', icon: 'fa-earth-americas' },
+            { cat: 'identity', name: 'Dominio .NET', desc: 'Infraestructura tecnológica pura.', price: '85.000', icon: 'fa-ethernet' },
+            { cat: 'identity', name: 'Transferencia SOTA', desc: 'Migración segura hacia nuestro ecosistema.', price: 'Gratis*', icon: 'fa-right-left' },
+            { cat: 'identity', name: 'Backorder Alpha', desc: 'Captura de activos digitales críticos.', price: '250.000', icon: 'fa-hourglass-start' },
+            { cat: 'identity', name: 'Privacidad WHOIS', desc: 'Blindaje de identidad en registros.', price: '25.000', icon: 'fa-eye-slash' },
+            { cat: 'identity', name: 'Premium DNS', desc: 'Resolución acelerada por Anycast.', price: '180.000', icon: 'fa-diagram-project' },
+            { cat: 'identity', name: 'Brokerage Service', desc: 'Negociación de activos de élite.', price: 'VIP', icon: 'fa-handshake' },
+            { cat: 'identity', name: 'Dominio .BIZ', desc: 'Enfoque operativo de negocio.', price: '110.000', icon: 'fa-briefcase' },
+            { cat: 'identity', name: 'Dominio .TECH', desc: 'Identidad para startups disruptivas.', price: '160.000', icon: 'fa-laptop-code' },
+            { cat: 'identity', name: 'Dominio .AI', desc: 'Frontera de innovación inteligente.', price: '350.000', icon: 'fa-brain' },
+            { cat: 'identity', name: 'Registro Masivo', desc: 'Control de múltiples activos de marca.', price: 'VAR', icon: 'fa-list-check' },
+
+            // CATEGORY: EMAIL - 12 Items
+            { cat: 'email', name: 'M365 Email', desc: 'Comunicación corporativa profesional.', price: '18.000', icon: 'fa-envelope' },
+            { cat: 'email', name: 'M365 Business Basic', desc: 'Ecosistema Office con soporte SOTA.', price: '32.000', icon: 'fa-envelope-open-text' },
+            { cat: 'email', name: 'M365 Standard', desc: 'Apps de escritorio e ingeniería total.', price: '65.000', icon: 'fa-file-word' },
+            { cat: 'email', name: 'M365 Premium', desc: 'Máxima seguridad en colaboración.', price: '98.000', icon: 'fa-id-badge' },
+            { cat: 'email', name: 'M365 Apps', desc: 'Solo herramientas de productividad.', price: '45.000', icon: 'fa-window-restore' },
+            { cat: 'email', name: 'Email Marketing Start', desc: 'Alcance estratégico perimetral.', price: '85.000', icon: 'fa-bullhorn' },
+            { cat: 'email', name: 'Email Marketing Pro', desc: 'Automatización autónoma basada en IA.', price: '180.000', icon: 'fa-paper-plane' },
+            { cat: 'email', name: 'Calendario Online', desc: 'Gestión sincronizada de activos tiempo.', price: '15.000', icon: 'fa-calendar-check' },
+            { cat: 'email', name: 'Online Storage 100GB', desc: 'Resiliencia de activos en la nube Gano.', price: '45.000', icon: 'fa-cloud-arrow-up' },
+            { cat: 'email', name: 'Online Storage 1TB', desc: 'Archivo Maestro Soberano.', price: '120.000', icon: 'fa-hard-drive' },
+            { cat: 'email', name: 'Exchange Archiving', desc: 'Preservación de historial corporativo.', price: '25.000', icon: 'fa-box-archive' },
+            { cat: 'email', name: 'M365 Defender', desc: 'Blindaje nativo de emails.', price: '55.000', icon: 'fa-shield-virus' },
+        ];
+
+        const sotaPillars = [
+            "NVMe Gen4", "Zero-Trust", "Predictive AI", "Digital Sovereignty", "Headless WP",
+            "DDoS Immunity", "Containers", "Edge Computing", "Sustainable", "Quantum-Safe",
+            "CI/CD Pipeline", "Real-Time Backup", "UX Acceleration", "Elastic Scaling", "Self-Healing",
+            "Kinetic Design", "HTTP/3 QUIC", "HA Architecture", "Private Analytics", "AI Co-Pilot"
+        ];
+
+        // RENDER FUNCTIONS
+        function renderCatalog(filter = 'all') {
+            const container = document.getElementById('catalog-container');
+            container.innerHTML = '';
+            
+            const filtered = filter === 'all' ? products : products.filter(p => p.cat === filter);
+            
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'product-card reveal-item';
+                card.innerHTML = `
+                    <div class="svg-container">
+                        <svg viewBox="0 0 100 100" style="width:100%; height:100%;">
+                            <rect class="path-anim" x="10" y="10" width="80" height="80" rx="4" />
+                            <foreignObject x="25" y="25" width="50" height="50">
+                                <i class="fa-solid ${p.icon}" style="font-size:30px; color:var(--gano-purple);"></i>
+                            </foreignObject>
+                        </svg>
+                    </div>
+                    <h3 class="p-name">${p.name}</h3>
+                    <p class="p-desc">${p.desc}</p>
+                    <div class="p-price"><span>Inversión Mensual</span>$ ${p.price}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderPillars() {
+            const container = document.getElementById('pillars-preview');
+            sotaPillars.forEach(pillar => {
+                const item = document.createElement('div');
+                item.style = "background:rgba(255,255,255,0.02); border:1px solid var(--gano-border); padding:20px; font-family:var(--font-mono); font-size:11px; text-transform:uppercase;";
+                item.innerText = pillar;
+                container.appendChild(item);
+            });
+        }
+
+        function filterCatalog(cat) {
+            document.querySelectorAll('.nav-item').forEach(nv => nv.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            gsap.to("#catalog-container", {
+                opacity: 0, 
+                y: 20, 
+                duration: 0.3, 
+                onComplete: () => {
+                    renderCatalog(cat);
+                    gsap.to("#catalog-container", {opacity: 1, y: 0, duration: 0.5});
+                }
+            });
+        }
+
+        // INITIALIZE
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCatalog();
+            renderPillars();
+
+            // SCROLL PROGRESS
+            gsap.to("#scroll-progress", {
+                width: "100%",
+                scrollTrigger: { scrub: 0.1, start: "top top", end: "bottom bottom" }
+            });
+
+            // HERO MONOLITH ROTATION
+            gsap.to("#main-monolith", {
+                rotateY: 360,
+                duration: 20,
+                repeat: -1,
+                ease: "none"
+            });
+
+            // REVEAL ANIMATIONS
+            const trigger = { trigger: ".hero", start: "top 80%", toggleActions: "play none none none" };
+            gsap.from(".reveal", { opacity: 0, y: 50, duration: 1, stagger: 0.2, scrollTrigger: trigger });
+
+        });
+
+    </script>
+</body>
+</html>

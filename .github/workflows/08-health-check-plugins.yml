@@ -1,0 +1,172 @@
+# 08 · Health Check · Validar plugins gano-*
+name: "08 · Health Check · Validar plugins gano-*"
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  
+  push:
+    branches: [main, master]
+    paths:
+      - "wp-content/plugins/gano-*/**"
+      - "wp-content/mu-plugins/**"
+  
+  pull_request:
+    branches: [main, master]
+    paths:
+      - "wp-content/plugins/gano-*/**"
+      - "wp-content/mu-plugins/**"
+  
+  workflow_dispatch:
+    inputs:
+      check_phase4:
+        description: "Incluir validación Fase 4"
+        required: false
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-structure:
+    name: "🔍 Validate Plugin Structure"
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v6
+      
+      - name: "Check plugin directories"
+        run: |
+          set -euo pipefail
+          FOUND_ERRORS=0
+          
+          echo "Validating plugin structure..."
+          
+          for plugin_dir in wp-content/plugins/gano-*; do
+            if [ -d "$plugin_dir" ]; then
+              PLUGIN_NAME=$(basename "$plugin_dir")
+              echo ""
+              echo "Checking: $PLUGIN_NAME"
+              
+              MAIN_FILE="${plugin_dir}/${PLUGIN_NAME}.php"
+              if [ ! -f "$MAIN_FILE" ]; then
+                echo "ERROR: Missing $MAIN_FILE"
+                FOUND_ERRORS=1
+              else
+                echo "OK: Main file found"
+              fi
+              
+              if [ ! -f "${plugin_dir}/readme.txt" ]; then
+                echo "WARN: Missing readme.txt"
+              else
+                echo "OK: readme.txt found"
+              fi
+              
+              if grep -q "Plugin Name:" "$MAIN_FILE" 2>/dev/null; then
+                echo "OK: Plugin header found"
+              else
+                echo "ERROR: Missing Plugin header"
+                FOUND_ERRORS=1
+              fi
+            fi
+          done
+          
+          echo ""
+          echo "Checking MU plugins..."
+          for mu_file in wp-content/mu-plugins/gano-*.php; do
+            if [ -f "$mu_file" ]; then
+              echo "OK: $(basename $mu_file)"
+            fi
+          done
+          
+          if [ $FOUND_ERRORS -ne 0 ]; then
+            exit 1
+          else
+            echo ""
+            echo "All plugins validated"
+          fi
+      
+      - name: "PHP Syntax Check"
+        run: |
+          set -euo pipefail
+          FOUND_ERRORS=0
+          
+          echo "Running PHP syntax check..."
+          
+          for php_file in $(find wp-content/plugins/gano-* wp-content/mu-plugins -name "*.php" 2>/dev/null); do
+            if php -l "$php_file" > /dev/null 2>&1; then
+              echo "OK: $(basename $php_file)"
+            else
+              echo "ERROR: Syntax error in $php_file"
+              php -l "$php_file"
+              FOUND_ERRORS=1
+            fi
+          done
+          
+          if [ $FOUND_ERRORS -ne 0 ]; then
+            exit 1
+          else
+            echo ""
+            echo "All PHP files valid"
+          fi
+
+  test-activation:
+    name: "🧪 Test Plugin Activation"
+    runs-on: [self-hosted, gano-production]
+    needs: validate-structure
+    
+    steps:
+      - uses: actions/checkout@v6
+      
+      - name: "Test plugin activation"
+        run: |
+          set -euo pipefail
+          DEPLOY="${{ secrets.DEPLOY_PATH }}"
+          
+          echo "Testing plugin activation..."
+          ssh -i ~/.ssh/id_rsa "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" << 'ENDSCRIPT'
+          set -euo pipefail
+          DEPLOY="${{ secrets.DEPLOY_PATH }}"
+          
+          echo "Testing each plugin..."
+          for plugin_dir in $(find "$DEPLOY/wp-content/plugins/gano-*" -maxdepth 0 -type d 2>/dev/null); do
+            PLUGIN_NAME=$(basename "$plugin_dir")
+            
+            if wp plugin is-active "$PLUGIN_NAME" --allow-root --path="$DEPLOY" 2>/dev/null; then
+              echo "OK: $PLUGIN_NAME active"
+            else
+              if wp plugin activate "$PLUGIN_NAME" --allow-root --path="$DEPLOY" 2>&1 | grep -q "Plugin activated"; then
+                echo "OK: $PLUGIN_NAME activated"
+                wp plugin deactivate "$PLUGIN_NAME" --allow-root --path="$DEPLOY" 2>/dev/null || true
+              else
+                echo "WARN: $PLUGIN_NAME activation"
+              fi
+            fi
+          done
+          
+          echo "Plugin test completed"
+          ENDSCRIPT
+
+  report:
+    name: "📊 Health Report"
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [validate-structure, test-activation]
+    
+    steps:
+      - uses: actions/checkout@v6
+      
+      - name: "Create report"
+        run: |
+          PLUGIN_COUNT=$(find wp-content/plugins/gano-* -maxdepth 0 -type d 2>/dev/null | wc -l)
+          
+          echo "## Plugin Health Check" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Plugins scanned: $PLUGIN_COUNT" >> $GITHUB_STEP_SUMMARY
+          echo "Status: Completed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_STEP_SUMMARY

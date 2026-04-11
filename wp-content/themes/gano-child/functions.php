@@ -377,7 +377,14 @@ add_filter( 'language_attributes', function( string $output ): string {
 add_action( 'admin_init', 'gano_register_shop_page' );
 function gano_register_shop_page() {
     $page_title = 'Ecosistemas';
-    $page_check = get_page_by_title( $page_title );
+    $existing = get_posts( [
+        'post_type'      => 'page',
+        'title'          => $page_title,
+        'posts_per_page' => 1,
+        'post_status'    => 'any',
+        'fields'         => 'ids',
+    ] );
+    $page_check = ! empty( $existing ) ? (object) [ 'ID' => $existing[0] ] : null;
     if ( ! isset( $page_check->ID ) ) {
         wp_insert_post( array(
             'post_type'   => 'page',
