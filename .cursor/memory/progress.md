@@ -10,6 +10,7 @@
 
 ### Hallazgos
 
+- [ ] `.gsd` no pasa `npm test` en el estado actual del repo por fallos del suite `security-scan` (`prompt-injection-scan.sh`, `base64-scan.sh`, `secret-scan.sh`); hallazgo fuera de scope documentado en `deferredItems.md`.
 - [ ] `.gsd/sdk` no compila en el estado actual del repo (`src/event-stream.ts`, conversión `BetaContentBlock[]`); hallazgo fuera de scope documentado en `deferredItems.md`.
 
 ---
