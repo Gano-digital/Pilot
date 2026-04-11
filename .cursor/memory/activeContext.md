@@ -22,6 +22,7 @@ _Última actualización: 2026-04-10 — **`Gano-digital/Pilot` es repositorio P�
   - Graphify seguro (skill `gano-graphify-local`) para mapas de arquitectura.
   - Agent Orchestrator (AO) opcional (skill `gano-agent-orchestrator-local`) para oleadas paralelas (recomendado WSL2).
   - ML‑SSD (Apple) como submodule `vendor/ml-ssd` + skill `gano-ml-ssd` (I+D / evaluación codegen).
+- [x] **Skill cloud bootstrap:** nueva skill `.agents/skills/cloud-agent-starter/SKILL.md` con arranque rápido, matriz de accesos/login, límites del entorno cloud, comandos mínimos por área (`wp-content`, colas GitHub, dispatch Claude, `.gsd`, Ops Hub, comercio) y mantenimiento del runbook.
 - [x] **PR #136** (docs/memoria Fase 4) dejado **merge-ready** (conflictos resueltos, CI verde). Nota: el merge puede quedar bloqueado por ruleset de “Code Quality” en GitHub.
 - [x] **PR #159** — plan vitrina + prechequeo SSH en `deploy.yml` + runbook `publickey` — fusionado en `main`; PR #158 cerrado como sustituido.
 - [x] **PR #160** — troubleshooting SSH (IP) + reporte handoff para Claude — fusionado en `main`.
