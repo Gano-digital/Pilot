@@ -113,6 +113,8 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 ## Skills disponibles
 | Skill | Usar cuando |
 |-------|-------------|
+| `.agents/skills/cloud-agent-starter/` | **Inicio de sesión Cloud agent:** orientación del repo, lint PHP, scripts de verificación, flujo git, checklist de seguridad — cargar al comienzo de cualquier sesión que toque código o CI |
+| `.agents/skills/phase4-commerce/` | Integración GoDaddy Reseller, mapeo PFID, checkout, debugging carrito — Fase 4 |
 | `.gano-skills/gano-wp-security/` | Parches de seguridad WordPress / MU-plugins / tema |
 | `.gano-skills/gano-wompi-fixer/` | **Legacy** — solo si en el entorno aún existe código/plugin antiguo de pasarela local; **no priorizar**; comercio actual = Reseller GoDaddy |
 | `.gano-skills/gano-content-audit/` | Reemplazo de contenido placeholder, copy |

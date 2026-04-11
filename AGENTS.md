@@ -45,6 +45,11 @@ URL: https://gano.digital | Repo: Gano-digital/Pilot
 5. `.cursor/memory/activeContext.md` — Contexto actual Cursor
 6. `memory/ops/homepage-vitrina-launch-plan-2026-04.md` — Plan vitrina gano.digital: fases, RACI (Cursor / Copilot / Claude / humano), enlaces a copy y Fase 4 Reseller
 
+### Starter skill para Cloud agents
+Al iniciar cualquier sesión que toque código o CI, cargar:
+`.agents/skills/cloud-agent-starter/SKILL.md`
+Contiene: lint PHP local, scripts de verificación, flujo git, checklist seguridad, áreas del codebase.
+
 ### Flujo de trabajo
 ```
 Issue en GitHub → Copilot crea PR (draft) → CI verifica → Cursor/Diego revisa → Merge
