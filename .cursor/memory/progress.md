@@ -13,10 +13,27 @@
   - `https://gano.digital/wp-content/gano-deploy/receive.php` responde `405 Method Not Allowed` en GET con user-agent navegador (comportamiento esperado del receiver).
 - [x] Run post-fix exitoso:
   - workflow `04 · Deploy · Producción (webhook HTTPS)` run `24297514353` en verde (security scan + deploy).
+- [x] Hardening post-deploy ejecutado:
+  - workflow `12 · Ops · Eliminar wp-file-manager (SSH)` run `24297554961` en verde (`wp-file-manager` no presente en servidor).
+  - workflow `05 · Ops · Verificar parches en servidor` run `24297554963` en verde, pero con gap por ruta remota (`MISSING_ON_SERVER`).
+  - secreto `DEPLOY_PATH` corregido al docroot real (`/home/f1rml03th382/public_html/gano.digital`).
+  - rerun de `05` con `upload_missing=true`: run `24297613457` en verde con checksums repo/servidor alineados en archivos clave Fase 1-3.
+- [x] Publicación técnica de páginas SOTA faltantes en producción:
+  - detectado `404` inicial en: `/shop-premium/`, `/sota-hub/`, `/seo-landing/`, `/diagnostico-digital/`.
+  - diagnóstico SSH + WP-CLI: templates existían en `wp-content/themes/gano-child/templates/` pero faltaban páginas con esos slugs.
+  - creadas páginas en WP (`publish`) con IDs `1754`–`1757`.
+  - meta `_wp_page_template` corregido/verificado a:
+    - `templates/shop-premium.php`
+    - `templates/page-sota-hub.php`
+    - `templates/page-seo-landing.php`
+    - `templates/page-diagnostico-digital.php`
+  - verificación HTTP final: las cuatro URLs responden `200`.
+- [x] Alineación documental operativa:
+  - `TASKS.md` sincronizado con ejecución real de workflows críticos (`05` y `12`) y estado de rollout SOTA.
+  - memoria Claude actualizada con registro de verificación y ejecución (`memory/claude/2026-04-12-verificacion-tasks-y-ejecucion.md`).
 
 ### Pendiente
 
-- [ ] Ejecutar workflow 05 (verify patches) y 12 (remove wp-file-manager) para completar hardening operativo post-deploy.
 - [ ] Validación manual wp-admin + QA visual/comercial en staging/producción.
 
 ---

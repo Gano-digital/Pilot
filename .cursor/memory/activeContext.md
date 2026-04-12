@@ -1,6 +1,6 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-11 — **`Gano-digital/Pilot` es PÚBLICO** (`gh repo view` → `visibility: PUBLIC`). **Runners en el repo:** API `actions/runners` → **total_count: 0** (verificado 2026-04-11, runner eliminado ✅). Deploy **04** en `main`: **ubuntu-latest** + webhook HTTPS (sin self-hosted en prod). Opcional: un admin de org confirma runners a nivel **organización**; `test-runner.yml` aún declara `runs-on: self-hosted` solo para prueba manual. Triage GitHub actualizado: PRs dependabot + docs + consolidado de Arcana fusionados; PRs conflictivos (#167/#168/#169/#172) cerrados como reemplazados por #182. **Rollout SOTA ejecutado en código (theme/templates/docs) con QA técnica inicial lista.**_
+_Última actualización: 2026-04-12 — **`Gano-digital/Pilot` es PÚBLICO** (`gh repo view` → `visibility: PUBLIC`). **Runners en el repo:** API `actions/runners` → **total_count: 0** (verificado 2026-04-11, runner eliminado ✅). Deploy **04** en `main`: **ubuntu-latest** + webhook HTTPS (sin self-hosted en prod). Opcional: un admin de org confirma runners a nivel **organización**; `test-runner.yml` aún declara `runs-on: self-hosted` solo para prueba manual. Triage GitHub actualizado: PRs dependabot + docs + consolidado de Arcana fusionados; PRs conflictivos (#167/#168/#169/#172) cerrados como reemplazados por #182. **Rollout SOTA ejecutado en código (theme/templates/docs) con QA técnica inicial lista.**_
 
 ## Foco actual (producto y repo)
 
@@ -62,6 +62,26 @@ _Última actualización: 2026-04-11 — **`Gano-digital/Pilot` es PÚBLICO** (`g
   - endpoint `receive.php` validado (GET con user-agent navegador => `405 Method not allowed`),
   - fix en workflow 04 para user-agent permitido en POST webhook (`fix(deploy): enviar webhook con user-agent permitido`, commit `4487e8f1`),
   - deploy exitoso en run **24297514353** (`Security Scan` + `Deploy to production` en verde).
+- [x] **Post-deploy Fase 1.5 (2026-04-12):**
+  - workflow **12 · Ops · Eliminar wp-file-manager (SSH)** run **24297554961** en verde,
+  - validación remota: `wp-file-manager` no está presente en producción (pasos de eliminación quedaron `skipped` por no aplicar),
+  - workflow **05 · Ops · Verificar parches en servidor** run **24297554963** en verde, detectando brecha por ruta remota (`MISSING_ON_SERVER`),
+  - ajuste de secreto GitHub `DEPLOY_PATH` al docroot real de WordPress (`/home/f1rml03th382/public_html/gano.digital`),
+  - rerun de verificación: **24297613457** en verde con checksums sincronizados entre repo y servidor.
+- [x] **Publicación de rutas SOTA faltantes en producción (2026-04-12):**
+  - detectados `404` en URLs: `/shop-premium/`, `/sota-hub/`, `/seo-landing/`, `/diagnostico-digital/`,
+  - causa raíz: templates presentes en servidor, pero páginas WP no creadas para esos slugs,
+  - páginas creadas por WP-CLI y publicadas (IDs `1754`–`1757`),
+  - `_wp_page_template` asignado y verificado:
+    - `1754` -> `templates/shop-premium.php`,
+    - `1755` -> `templates/page-sota-hub.php`,
+    - `1756` -> `templates/page-seo-landing.php`,
+    - `1757` -> `templates/page-diagnostico-digital.php`,
+  - verificación HTTP post-fix: las cuatro rutas responden `200`.
+- [x] **Alineación TASKS + memoria Claude (2026-04-12):**
+  - `TASKS.md` actualizado con estado real de ejecución para bloques críticos (rollout SOTA, workflow 05, workflow 12),
+  - nueva entrada de trazabilidad en `memory/claude/2026-04-12-verificacion-tasks-y-ejecucion.md`,
+  - oleada activa confirmada en GitHub: issues `#183`–`#197`.
 - [x] **Workflow 14 (Ops Hub):** script `--output` relativo corregido en `main` (#157); run manual post-merge: éxito ([24147290218](https://github.com/Gano-digital/Pilot/actions/runs/24147290218)).
 - [ ] SFTP / sync VS Code si aplica al flujo de deploy de Diego.
 - [ ] Deploy de archivos críticos al servidor y tareas solo-wp-admin listadas en `TASKS.md`.

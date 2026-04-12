@@ -51,6 +51,7 @@ Esto es **independiente** de la cola Copilot (`.github/agent-queue/*.json` — *
 
 - **Salida / regreso (cPanel, DNS, reanudar agentes 08):** [`../notes/nota-salida-cpanel-dns-y-agentes-2026-04.md`](../notes/nota-salida-cpanel-dns-y-agentes-2026-04.md)
 - [`../sessions/2026-04-03-noche-continuidad-manana.md`](../sessions/2026-04-03-noche-continuidad-manana.md) — ejemplo: qué se hizo en repo vs qué queda en GitHub (Copilot/Actions).
+- [`2026-04-12-verificacion-tasks-y-ejecucion.md`](2026-04-12-verificacion-tasks-y-ejecucion.md) — verificación cruzada TASKS/memoria Claude + ejecución operativa (post-fase 0).
 
 ## Informes PDF para handoff (Claude / junta)
 
