@@ -137,6 +137,7 @@ jobs:
           echo "📤 Sending to webhook..."
           HTTP_STATUS=$(curl -s -w "%{http_code}" -o /tmp/webhook_response.json \
             -X POST \
+            -A "Mozilla/5.0 (Gano Deploy Hook)" \
             -H "X-Gano-Signature: $SIGNATURE" \
             -H "Content-Type: application/zip" \
             --data-binary @"$ZIP_FILE" \
