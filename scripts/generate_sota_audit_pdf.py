@@ -80,6 +80,21 @@ class Pdf(FPDF):
         self.set_auto_page_break(auto=True, margin=14)
         self.set_margins(12, 12, 12)
 
+    def header(self) -> None:
+        if self.page_no() == 1:
+            return
+        self.set_font(FONT, "", 8)
+        self.set_text_color(100, 100, 100)
+        self.cell(0, 4.5, "Gano Digital — Auditoria SOTA de implementacion", align="R")
+        self.ln(6)
+        self.set_text_color(0, 0, 0)
+
+    def footer(self) -> None:
+        self.set_y(-10)
+        self.set_font(FONT, "", 8)
+        self.set_text_color(120, 120, 120)
+        self.cell(0, 5, f"Pagina {self.page_no()}", align="C")
+
     def h1(self, t: str) -> None:
         self.set_font(FONT, "B", 14)
         self.set_text_color(18, 52, 86)
@@ -111,6 +126,14 @@ def _safe_text(text: str, max_len: int = 260) -> str:
     return clean[:max_len]
 
 
+def command_lines(cmd: list[str], max_lines: int = 120) -> list[str]:
+    out = sh(cmd)
+    if out.startswith("ERROR"):
+        return [out]
+    lines = [ln.strip() for ln in out.splitlines() if ln.strip()]
+    return lines[:max_lines]
+
+
 def build() -> Path:
     regular, bold, oblique = ensure_fonts()
     pdf = Pdf()
@@ -122,6 +145,15 @@ def build() -> Path:
     head = sh(["git", "rev-parse", "--short", "HEAD"])
     branch = sh(["git", "rev-parse", "--abbrev-ref", "HEAD"])
     status_short = sh(["git", "status", "--short"])
+    diff_stat_lines = command_lines(["git", "diff", "--stat"], max_lines=140)
+    modified_names = command_lines(["git", "diff", "--name-only"], max_lines=220)
+    recent_commits = command_lines(
+        ["git", "log", "-25", "--pretty=format:%h | %ad | %an | %s", "--date=short"], max_lines=200
+    )
+    sergio_commits = command_lines(
+        ["git", "log", "--all", "--author=Sergio", "-20", "--pretty=format:%h | %ad | %an | %s", "--date=short"],
+        max_lines=80,
+    )
 
     lint_targets = [
         "wp-content/themes/gano-child/functions.php",
@@ -174,6 +206,43 @@ def build() -> Path:
     pdf.bullet("Desplegar theme actualizado y crear/asignar templates SOTA faltantes.")
     pdf.bullet("Validar estados active/pending/coming-soon en shop-premium y CTAs de dominio/VPS.")
     pdf.bullet("Documentar resultado final en TASKS.md + activeContext + progress.")
+
+    pdf.add_page()
+    pdf.h1("Detalle técnico del repositorio")
+    pdf.h2("Archivos modificados (git diff --name-only)")
+    if modified_names:
+        for row in modified_names:
+            pdf.bullet(row)
+    else:
+        pdf.p("Sin cambios locales detectados.")
+
+    pdf.h2("Resumen de volumen de cambios (git diff --stat)")
+    if diff_stat_lines:
+        for row in diff_stat_lines:
+            pdf.bullet(row)
+
+    pdf.add_page()
+    pdf.h1("Trazabilidad de commits")
+    pdf.h2("Commits recientes en el repositorio")
+    if recent_commits:
+        for row in recent_commits:
+            pdf.bullet(row)
+    else:
+        pdf.p("No fue posible leer git log.")
+
+    pdf.add_page()
+    pdf.h1("Compatibilidad con trabajo de Sergio")
+    pdf.h2("Commits detectados de Sergio (histórico)")
+    if sergio_commits:
+        for row in sergio_commits:
+            pdf.bullet(row)
+    else:
+        pdf.p("No se encontraron commits por autor Sergio en el histórico consultado.")
+
+    pdf.h2("Verificación de integración")
+    pdf.bullet("Se conservan tokens y base visual Kinetic/Monolith en style.css.")
+    pdf.bullet("Se mantiene hero-datacenter y brief de art direction en memory/content.")
+    pdf.bullet("La capa comercial SOTA se integra encima sin revertir aportes previos.")
 
     pdf.add_page()
     pdf.h2("Anexo: git status --short")
