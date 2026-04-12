@@ -1,0 +1,274 @@
+/*
+ * Gano SOTA Convergence Layer
+ * Clases puente entre la identidad base de Gano y el lenguaje "Kinetic Monolith".
+ * Uso: Elementor (Avanzado > Clases CSS) y templates PHP.
+ */
+
+:root {
+    --gano-km-surface: #0b1326;
+    --gano-km-surface-low: #131b2e;
+    --gano-km-surface-high: #2d3449;
+    --gano-km-on-surface: #dae2fd;
+    --gano-km-outline: rgba(144, 143, 160, 0.2);
+    --gano-km-glass: rgba(45, 52, 73, 0.55);
+    --gano-km-primary-soft: rgba(192, 193, 255, 0.2);
+    --gano-km-tertiary-soft: rgba(76, 215, 246, 0.22);
+}
+
+.gano-km-shell {
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(circle at 20% 0%, rgba(128, 131, 255, 0.14), transparent 38%),
+        radial-gradient(circle at 90% 30%, rgba(76, 215, 246, 0.1), transparent 42%),
+        linear-gradient(180deg, var(--gano-km-surface) 0%, #070d1d 100%);
+    color: var(--gano-km-on-surface);
+}
+
+.gano-km-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.42;
+    background-image:
+        linear-gradient(rgba(192, 193, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(192, 193, 255, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+}
+
+.gano-km-container {
+    position: relative;
+    z-index: 1;
+    width: min(1400px, calc(100% - 2.5rem));
+    margin-inline: auto;
+}
+
+.gano-km-live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    border: 1px solid var(--gano-km-outline);
+    border-radius: var(--gano-radius-pill);
+    background: rgba(19, 27, 46, 0.82);
+    color: var(--gano-km-on-surface);
+    padding: 0.45rem 0.9rem;
+    font-size: var(--gano-fs-xs);
+    font-family: var(--gano-font-mono);
+    letter-spacing: var(--gano-ls-wide);
+    text-transform: uppercase;
+}
+
+.gano-km-live-badge::before {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--gano-green);
+    box-shadow: 0 0 0 0 rgba(0, 194, 107, 0.45);
+    animation: ganoKmPulse 2.2s ease-out infinite;
+}
+
+.gano-km-hero {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(1.25rem, 3vw, 3rem);
+    align-items: center;
+    padding-block: clamp(3rem, 7vw, 6rem);
+}
+
+.gano-km-title {
+    font-family: var(--gano-font-heading);
+    font-size: clamp(2.3rem, 6vw, 4.8rem);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    margin: 0 0 1rem;
+    color: var(--gano-km-on-surface);
+    max-width: 12ch;
+}
+
+.gano-km-title-accent {
+    background: linear-gradient(135deg, #c0c1ff 0%, #8083ff 62%, #4cd7f6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.gano-km-lead {
+    color: #c7c4d7;
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    line-height: 1.65;
+    max-width: 52ch;
+}
+
+.gano-km-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 1.4rem;
+}
+
+.gano-km-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.25rem;
+    border: 0;
+    border-radius: var(--gano-radius-lg);
+    text-decoration: none;
+    font-weight: var(--gano-fw-bold);
+    color: #1000a9;
+    background: linear-gradient(135deg, #c0c1ff 0%, #8083ff 100%);
+    box-shadow: 0 0 26px rgba(128, 131, 255, 0.32);
+    transition: transform var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
+}
+
+.gano-km-btn-primary:hover,
+.gano-km-btn-primary:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 0 38px rgba(128, 131, 255, 0.46);
+}
+
+.gano-km-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.25rem;
+    border-radius: var(--gano-radius-lg);
+    border: 1px solid rgba(70, 69, 84, 0.32);
+    background: var(--gano-km-glass);
+    color: var(--gano-km-on-surface);
+    text-decoration: none;
+    font-weight: var(--gano-fw-semibold);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    transition: border-color var(--motion-fast) var(--ease-out), background var(--motion-fast) var(--ease-out);
+}
+
+.gano-km-btn-secondary:hover,
+.gano-km-btn-secondary:focus-visible {
+    border-color: var(--gano-km-primary-soft);
+    background: rgba(45, 52, 73, 0.8);
+}
+
+.gano-km-glass {
+    border: 1px solid rgba(70, 69, 84, 0.28);
+    border-radius: var(--gano-radius-xl);
+    background: rgba(45, 52, 73, 0.52);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+}
+
+.gano-km-prism {
+    min-height: 360px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(180deg, rgba(19, 27, 46, 0.78), rgba(6, 14, 32, 0.88));
+    border: 1px solid var(--gano-km-outline);
+    border-radius: var(--gano-radius-xl);
+    box-shadow: inset 0 0 35px rgba(192, 193, 255, 0.05);
+}
+
+.gano-km-metrics {
+    margin-top: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.65rem;
+}
+
+.gano-km-metric {
+    background: rgba(19, 27, 46, 0.88);
+    border: 1px solid rgba(70, 69, 84, 0.24);
+    border-radius: var(--gano-radius-lg);
+    padding: 0.9rem;
+    text-align: center;
+}
+
+.gano-km-metric__value {
+    font-family: var(--gano-font-heading);
+    font-size: clamp(1.1rem, 2.6vw, 1.8rem);
+    font-weight: var(--gano-fw-extrabold);
+    line-height: 1;
+    color: #c0c1ff;
+}
+
+.gano-km-metric__label {
+    margin-top: 0.35rem;
+    color: #c7c4d7;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-size: 0.72rem;
+}
+
+.gano-km-value-grid {
+    margin-top: clamp(1.5rem, 3vw, 2.3rem);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+}
+
+.gano-km-card {
+    padding: 1rem;
+    border-radius: var(--gano-radius-lg);
+    background: var(--gano-km-surface-low);
+    border: 1px solid rgba(70, 69, 84, 0.25);
+    transition: transform var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out);
+}
+
+.gano-km-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--gano-km-tertiary-soft);
+}
+
+.gano-km-card h3 {
+    margin: 0 0 0.45rem;
+    font-size: var(--gano-fs-lg);
+    color: var(--gano-km-on-surface);
+}
+
+.gano-km-card p {
+    margin: 0;
+    font-size: var(--gano-fs-sm);
+    color: #c7c4d7;
+    line-height: 1.6;
+}
+
+@keyframes ganoKmPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 194, 107, 0.44);
+    }
+    100% {
+        box-shadow: 0 0 0 11px rgba(0, 194, 107, 0);
+    }
+}
+
+@media (max-width: 1024px) {
+    .gano-km-hero {
+        grid-template-columns: 1fr;
+    }
+
+    .gano-km-value-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 680px) {
+    .gano-km-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gano-km-value-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gano-km-live-badge::before {
+        animation: none;
+    }
+
+    .gano-km-btn-primary,
+    .gano-km-btn-secondary,
+    .gano-km-card {
+        transition: none;
+    }
+}

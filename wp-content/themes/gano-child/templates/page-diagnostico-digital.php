@@ -13,13 +13,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 ?>
 
-<main id="gano-main-content" class="gano-sota-surface gano-diagnostico-page">
-	<section class="gano-sota-hero">
+<main id="gano-main-content" class="gano-sota-surface gano-diagnostico-page gano-km-shell gano-on-dark">
+	<section class="gano-sota-hero gano-km-hero">
 		<div class="gano-sota-hero__bg" aria-hidden="true"></div>
-		<div class="gano-sota-hero__content">
-			<span class="gano-sota-label">Diagnóstico Digital</span>
-			<h1 class="gano-sota-hero__title">Evalúa la madurez de tu <span class="gano-sota-hero__title--accent">infraestructura WordPress</span></h1>
-			<p class="gano-sota-hero__sub">
+		<div class="gano-sota-hero__content gano-km-container">
+			<span class="gano-sota-label gano-km-live-badge">Diagnóstico Digital</span>
+			<h1 class="gano-sota-hero__title gano-km-title">Evalúa la madurez de tu <span class="gano-sota-hero__title--accent gano-km-title-accent">infraestructura WordPress</span></h1>
+			<p class="gano-sota-hero__sub gano-km-lead">
 				Responde 6 preguntas para identificar riesgos operativos, nivel de soberanía digital y
 				la arquitectura recomendada para tu etapa.
 			</p>
@@ -57,9 +57,9 @@ get_header();
 				<div class="gano-diagnostico__result" id="gano-quiz-result" hidden>
 					<h3 id="gano-quiz-result-title"></h3>
 					<p id="gano-quiz-result-copy"></p>
-					<div class="gano-sota-hero__cta-row">
-						<a class="gano-btn" href="<?php echo esc_url( home_url( '/ecosistemas' ) ); ?>">Ver arquitecturas recomendadas</a>
-						<a class="gano-btn-outline" href="<?php echo esc_url( home_url( '/contacto' ) ); ?>">Hablar con un especialista</a>
+					<div class="gano-sota-hero__cta-row gano-km-cta-row">
+						<a class="gano-btn gano-km-btn-primary" href="<?php echo esc_url( home_url( '/ecosistemas' ) ); ?>">Ver arquitecturas recomendadas</a>
+						<a class="gano-btn-outline gano-km-btn-secondary" href="<?php echo esc_url( home_url( '/contacto' ) ); ?>">Hablar con un especialista</a>
 					</div>
 				</div>
 			</div>

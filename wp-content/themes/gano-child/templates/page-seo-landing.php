@@ -110,18 +110,19 @@ get_header();
 ?>
 
 <!-- Gano Digital: SEO Landing Page Template -->
-<main id="gano-seo-landing" class="gano-seo-landing" role="main">
+<main id="gano-seo-landing" class="gano-seo-landing gano-km-shell" role="main">
 
     <!-- H1 SEO — Visible para Google y usuarios, estilizado via Elementor o CSS del child theme -->
-    <section class="gano-landing-hero elementor-section">
-        <div class="elementor-container">
-            <h1 class="gano-landing-h1"><?php echo esc_html( $h1_override ); ?></h1>
+    <section class="gano-landing-hero elementor-section gano-km-shell">
+        <div class="elementor-container gano-km-container">
+            <span class="gano-km-live-badge">SEO landing operativa</span>
+            <h1 class="gano-landing-h1 gano-km-title"><?php echo esc_html( $h1_override ); ?></h1>
 
             <?php if ( has_excerpt() ) : ?>
-                <p class="gano-landing-intro"><?php echo esc_html( get_the_excerpt() ); ?></p>
+                <p class="gano-landing-intro gano-km-lead"><?php echo esc_html( get_the_excerpt() ); ?></p>
             <?php endif; ?>
 
-            <a href="<?php echo esc_url( $cta_url ); ?>" class="gano-btn-primary" rel="noopener">
+            <a href="<?php echo esc_url( $cta_url ); ?>" class="gano-btn-primary gano-km-btn-primary" rel="noopener">
                 <?php echo esc_html( $cta_text ); ?>
             </a>
         </div>
@@ -174,7 +175,7 @@ get_header();
                         $price    = $wc_product->get_regular_price();
                         $currency = get_woocommerce_currency_symbol();
                         ?>
-                        <article class="gano-plan-card" itemscope itemtype="https://schema.org/Product">
+                        <article class="gano-plan-card gano-km-card" itemscope itemtype="https://schema.org/Product">
                             <h3 itemprop="name"><?php the_title(); ?></h3>
                             <div class="gano-plan-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                                 <meta itemprop="priceCurrency" content="COP">
@@ -186,7 +187,7 @@ get_header();
                             <?php if ( has_excerpt() ) : ?>
                                 <p class="gano-plan-desc" itemprop="description"><?php the_excerpt(); ?></p>
                             <?php endif; ?>
-                            <a href="<?php the_permalink(); ?>" class="gano-btn-secondary" itemprop="url">
+                            <a href="<?php the_permalink(); ?>" class="gano-btn-secondary gano-km-btn-secondary" itemprop="url">
                                 Ver detalles
                             </a>
                         </article>
@@ -203,7 +204,7 @@ get_header();
                     );
                     foreach ( $static_plans as $plan ) :
                         ?>
-                        <article class="gano-plan-card" itemscope itemtype="https://schema.org/Product">
+                        <article class="gano-plan-card gano-km-card" itemscope itemtype="https://schema.org/Product">
                             <h3 itemprop="name"><?php echo esc_html( $plan['name'] ); ?></h3>
                             <div class="gano-plan-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                                 <meta itemprop="priceCurrency" content="COP">
@@ -211,7 +212,7 @@ get_header();
                                 <span class="gano-plan-period">/mes COP</span>
                             </div>
                             <p class="gano-plan-desc" itemprop="description"><?php echo esc_html( $plan['desc'] ); ?></p>
-                            <a href="<?php echo esc_url( get_site_url() . '/ecosistemas' ); ?>" class="gano-btn-secondary">Ver plan</a>
+                            <a href="<?php echo esc_url( get_site_url() . '/ecosistemas' ); ?>" class="gano-btn-secondary gano-km-btn-secondary">Ver plan</a>
                         </article>
                         <?php
                     endforeach;

@@ -22,13 +22,13 @@ $categories = gano_get_sota_categories();
 $sota_pages = gano_get_sota_hub_pages();
 ?>
 
-<main id="gano-sota-hub" class="gano-sota-surface" role="main" aria-label="Hub de Innovación SOTA">
-	<header class="gano-sota-hero">
+<main id="gano-sota-hub" class="gano-sota-surface gano-km-shell gano-on-dark" role="main" aria-label="Hub de Innovación SOTA">
+	<header class="gano-sota-hero gano-km-hero">
 		<div class="gano-sota-hero__bg" aria-hidden="true"></div>
-		<div class="gano-sota-hero__content">
-			<span class="gano-sota-label">SOTA Knowledge Hub</span>
-			<h1 class="gano-sota-hero__title"><?php echo esc_html( get_the_title() ); ?></h1>
-			<p class="gano-sota-hero__sub">
+		<div class="gano-sota-hero__content gano-km-container">
+			<span class="gano-sota-label gano-km-live-badge">SOTA Knowledge Hub</span>
+			<h1 class="gano-sota-hero__title gano-km-title"><?php echo esc_html( get_the_title() ); ?></h1>
+			<p class="gano-sota-hero__sub gano-km-lead">
 				Ingeniería de vanguardia aplicada a la soberanía digital del siglo XXI.
 				<?php echo esc_html( count( $sota_pages ) ); ?> artículos técnicos.
 			</p>
@@ -112,10 +112,10 @@ $sota_pages = gano_get_sota_hub_pages();
 				<?php endforeach; ?>
 			<?php endif; ?>
 
-			<div class="sota-hub-cta gano-sota-glass-card">
+			<div class="sota-hub-cta gano-sota-glass-card gano-km-glass">
 				<h3>¿Listo para activar tu ecosistema SOTA?</h3>
 				<p>Infraestructura seria, soporte en español y soberanía digital total.</p>
-				<a href="<?php echo esc_url( home_url( '/contacto' ) ); ?>" class="gano-btn">
+				<a href="<?php echo esc_url( home_url( '/contacto' ) ); ?>" class="gano-btn gano-km-btn-primary">
 					Hablar con un especialista
 				</a>
 			</div>

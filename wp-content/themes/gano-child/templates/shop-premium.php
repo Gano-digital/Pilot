@@ -151,7 +151,7 @@ get_header();
 </style>
 <!-- END: SHOP PREMIUM STYLES -->
 
-<div class="sota-wrapper">
+<div class="sota-wrapper gano-km-shell gano-on-dark">
     <div class="mockup-status" id="scroll-progress"></div>
     <div class="badge-fixed">SOTA v3.1 — RESELLER API SYNC</div>
 
@@ -258,11 +258,11 @@ get_header();
         <div class="monolith-wrap"><div class="monolith" id="main-monolith"></div></div>
         
         <div class="hero-content">
-            <span class="accent reveal">Omnipresencia de Datos</span>
-            <h1 class="reveal">gano.digital<span>/</span>sota</h1>
-            <p class="reveal">El fin de la infraestructura pasiva. Ecosistemas (Núcleo Prime, Fortaleza Delta, Bastión SOTA) resilientes y soberanos para activos de alta autoridad.</p>
+            <span class="accent reveal gano-km-live-badge">Omnipresencia de Datos</span>
+            <h1 class="reveal gano-km-title">gano.digital<span class="gano-km-title-accent">/sota</span></h1>
+            <p class="reveal gano-km-lead">El fin de la infraestructura pasiva. Ecosistemas (Núcleo Prime, Fortaleza Delta, Bastión SOTA) resilientes y soberanos para activos de alta autoridad.</p>
             <div class="reveal">
-                <button class="btn-sota" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">Explorar Nodos de Red</button>
+                <button class="btn-sota gano-km-btn-primary" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">Explorar Nodos de Red</button>
             </div>
         </div>
     </section>
@@ -302,7 +302,7 @@ get_header();
 
             <div class="catalog-grid" id="catalog-container">
                 <?php foreach($products as $p): ?>
-                <div class="product-card reveal-item" data-category="<?php echo esc_attr($p['cat']); ?>">
+                <div class="product-card reveal-item gano-km-card" data-category="<?php echo esc_attr($p['cat']); ?>">
                     <?php if ( ! empty( $p['badge'] ) ) : ?>
                         <span class="product-card__badge"><?php echo esc_html( $p['badge'] ); ?></span>
                     <?php endif; ?>
@@ -331,7 +331,7 @@ get_header();
                         'status' => 'pending',
                     ); ?>
                     <a href="<?php echo esc_url( $cta['url'] ); ?>"
-                       class="rstore-add-to-cart rstore-add-to-cart--<?php echo esc_attr( $cta['status'] ); ?>"
+                       class="rstore-add-to-cart rstore-add-to-cart--<?php echo esc_attr( $cta['status'] ); ?> gano-km-btn-secondary"
                        <?php echo $cta['target']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                     ><?php echo esc_html( $cta['label'] ); ?></a>
                     <small class="rstore-status-note">

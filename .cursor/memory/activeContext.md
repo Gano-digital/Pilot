@@ -30,6 +30,21 @@ _Última actualización: 2026-04-11 — **`Gano-digital/Pilot` es PÚBLICO** (`g
   - PRs conflictivos cerrados como superseded: #167 #168 #169 #172.
   - Issues Constellation #137 #139 #140 #143 resueltos y cerrados (commit `542011da` en `main`).
 - [x] **Oleada agentes (2026-04-11):** workflow **08 · Agentes · Sembrar cola Copilot** ejecutado con `queue_file=tasks-wave3.json` + `scope=all`; creados issues #183–#197 para siguiente ciclo de Copilot.
+- [x] **Investigación + plan maestro SOTA de convergencia (2026-04-11):**
+  - rutas externas validadas (`Downloads/_ARCHIVO_WEB` + `Downloads/stitch` + `obsidian-prism`),
+  - plan maestro documentado en `memory/research/sota-plan-maestro-convergencia-2026-04.md`,
+  - code pack en `memory/content/sota-convergence-code-pack-2026-04.md`,
+  - kit multimedia en `memory/content/sota-multimedia-production-kit-2026-04.md`,
+  - nueva capa CSS `css/gano-sota-convergence.css` encolada desde `functions.php`,
+  - clases puente añadidas al playbook Elementor (`elementor-home-classes.md`).
+- [x] **Ejecución técnica del plan de convergencia (2026-04-11):**
+  - clases `gano-km-*` aplicadas en templates: `page-sota-hub.php`, `page-ecosistemas.php`, `shop-premium.php`, `page-seo-landing.php`, `page-diagnostico-digital.php`,
+  - CTAs principales/secundarios alineados al nuevo layer visual en bloques comerciales,
+  - `php -l` validado en todos los templates tocados sin errores.
+- [x] **Alineación con reporte Claude (2026-04-11):**
+  - deploy webhook HTTPS confirmado en `.github/workflows/deploy.yml`,
+  - receiver confirmado en `wp-content/gano-deploy/receive.php`,
+  - creados docs faltantes en repo: `memory/claude/2026-04-11-plan-aprobado-inicio-ejecucion.md`, `memory/ops/2026-04-11-fase0-webhook-validado.md`, `memory/ops/2026-04-11-FASE1-instrucciones-operativas.md`.
 - [x] **Obsidian MCP local (2026-04-11):** `.cursor/mcp.json` actualizado con servidor `obsidian-mcp-server` usando `OBSIDIAN_API_KEY` + `OBSIDIAN_BASE_URL=https://127.0.0.1:27124` para integración con Obsidian Local REST API.
 - [x] **Reporte técnico extenso (handoff Claude):** [`memory/claude/2026-04-10-reporte-tecnico-extenso-claude.md`](../../memory/claude/2026-04-10-reporte-tecnico-extenso-claude.md) — problemas (hosting E-01–E-12, runners, deploy, repo), soluciones, estrategias intentadas, checklist P0–P3; **orden 0** en [`memory/claude/README.md`](../../memory/claude/README.md).
 - [x] **Fase 1 installer — `.htaccess`:** el archivo fuente estaba mal nombrado `htaccest-security.txt` (typo); el código busca `htaccess-security.txt`. Corregido en repo renombrando a [`htaccess-security.txt`](../../wp-content/plugins/gano-phase1-installer/htaccess-security.txt). En staging: sincronizar carpeta del plugin y **desactivar + volver a activar** `gano-phase1-installer` (o subir solo el `.txt` y repetir activación) para regenerar `.htaccess`.
