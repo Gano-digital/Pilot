@@ -6,12 +6,13 @@ Esta carpeta concentra **registros estructurados** para que cualquier instancia 
 
 | Orden | Archivo | Para qué sirve |
 |------:|---------|----------------|
-| 0 | [2026-04-08-reporte-handoff-ssh-deploy-tokens.md](2026-04-08-reporte-handoff-ssh-deploy-tokens.md) | **Handoff SSH/Deploy/CI + tokens** — huella verificada, hipótesis IP, PR #160, enlaces a runs. Leer primero si retomas tras pausa de API/tokens. |
-| 1 | [README.md](README.md) (este) | Navegación y convenciones. |
-| 2 | [01-historial-y-contexto-cursor-2026-04.md](01-historial-y-contexto-cursor-2026-04.md) | Línea de tiempo, decisiones, consolidación de PRs, paso de documentación. |
-| 3 | [02-pendientes-detallados.md](02-pendientes-detallados.md) | Inventario exhaustivo de pendientes por área y prioridad. |
-| 4 | [03-referencia-tecnica-y-faq.md](03-referencia-tecnica-y-faq.md) | Workflows, rutas canónicas, respuestas cortas a dudas recurrentes. |
-| 5 | [dispatch-prompt.md](dispatch-prompt.md) + [dispatch-queue.json](dispatch-queue.json) | **Cola programable para Claude** en el repo: qué puede hacer el agente sin wp-admin ni secrets; scripts en `scripts/claude_dispatch.py`. |
+| 0 | [2026-04-10-reporte-tecnico-extenso-claude.md](2026-04-10-reporte-tecnico-extenso-claude.md) | **Reporte técnico consolidado** — problemas (hosting E-01–E-12, GitHub/runners, deploy, seguridad repo), soluciones, estrategias intentadas, checklist P0–P3, índice de rutas. **Leer primero** para handoff completo a Claude. |
+| 1 | [2026-04-08-reporte-handoff-ssh-deploy-tokens.md](2026-04-08-reporte-handoff-ssh-deploy-tokens.md) | **Handoff SSH/Deploy/CI + tokens** — huella verificada, hipótesis IP, PR #160, enlaces a runs. Útil si el foco es solo deploy/SSH. |
+| 2 | [README.md](README.md) (este) | Navegación y convenciones. |
+| 3 | [01-historial-y-contexto-cursor-2026-04.md](01-historial-y-contexto-cursor-2026-04.md) | Línea de tiempo, decisiones, consolidación de PRs, paso de documentación. |
+| 4 | [02-pendientes-detallados.md](02-pendientes-detallados.md) | Inventario exhaustivo de pendientes por área y prioridad. |
+| 5 | [03-referencia-tecnica-y-faq.md](03-referencia-tecnica-y-faq.md) | Workflows, rutas canónicas, respuestas cortas a dudas recurrentes. |
+| 6 | [dispatch-prompt.md](dispatch-prompt.md) + [dispatch-queue.json](dispatch-queue.json) | **Cola programable para Claude** en el repo: qué puede hacer el agente sin wp-admin ni secrets; scripts en `scripts/claude_dispatch.py`. |
 
 ## Cola dispatch (Claude en el workspace)
 

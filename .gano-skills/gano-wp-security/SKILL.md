@@ -23,6 +23,7 @@ Auditoría Integral de Gano Digital (Marzo 2026). Trabaja sobre el **workspace d
 - **Plugins de pasarela locales** (si existen en el clon): solo auditoría legacy; **no** son el eje del roadmap actual
 - **Tema hijo**: `wp-content/themes/gano-child/` — chat IA sin nonce CSRF
 - **Cierre de sesión / higiene repo:** skill complementaria `gano-session-security-guardian` (checklist, cola `tasks-security-guardian`) — no duplica parches PHP.
+- **Hosting cPanel (SSL, Installatron, segunda app):** no confundir con el WP del repo — ver [`memory/ops/investigacion-servidor-cpanel-evidencias-reparacion-2026-04.md`](../../memory/ops/investigacion-servidor-cpanel-evidencias-reparacion-2026-04.md) y skill `gano-cpanel-ssh-management` (incluye flujo SOTA para instalar WP sin sobrescribir e importar instalaciones existentes en Installatron).
 
 ---
 

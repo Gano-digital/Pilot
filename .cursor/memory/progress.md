@@ -1,11 +1,46 @@
 # Progress Tracker
 
+## 2026-04-10 — Investigación servidor (capturas cPanel + Installatron) + skills
+
+### Completado
+
+- [x] [`memory/ops/investigacion-servidor-cpanel-evidencias-reparacion-2026-04.md`](../../memory/ops/investigacion-servidor-cpanel-evidencias-reparacion-2026-04.md) — problemas evidenciables E-01–E-12, doble pasada SOTA, plan de reparación Fase 0–4.
+- [x] Skill [`.gano-skills/gano-cpanel-ssh-management/SKILL.md`](../../.gano-skills/gano-cpanel-ssh-management/SKILL.md) — § híbrido WordPress + Installatron, checklist y enlaces.
+- [x] Skill [`.gano-skills/gano-wp-security/SKILL.md`](../../.gano-skills/gano-wp-security/SKILL.md) — enlace al informe de hosting.
+
+---
+
 ## 2026-04-10 — Repo Pilot **público** + alerta runner self-hosted
 
 ### Hecho (verificado)
 
 - [x] `Gano-digital/Pilot` — visibilidad **PUBLIC** (`gh repo view`).
-- [ ] **P0 seguridad:** runner **`gano-godaddy-server`** (id **21**, `gano-production`) sigue **online** en el repo público — desregistrar o aislar **urgente** (ver [`sota-investigacion-2026-04-09-ci-supply-chain-agents.md`](../../memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md) §5).
+- [x] **Mitigación aplicada (repo):** `actions/runners` → **0 runners** registrados en `Pilot`; deploy **04** corre en **ubuntu-latest** + webhook HTTPS (sin self-hosted). (La verificación org-level requiere permisos `admin:org`.)
+
+---
+
+## 2026-04-10 — Investigación SOTA cPanel/Installatron (instalar WP sin sobrescribir)
+
+### Completado
+
+- [x] Actualizada skill [`.gano-skills/gano-cpanel-ssh-management/SKILL.md`](../../.gano-skills/gano-cpanel-ssh-management/SKILL.md) con runbooks SOTA:
+  - `Domains → New Document Root` (GoDaddy/cPanel) sin root
+  - Installatron: instalar en **subdominio/subdirectorio** sin sobrescribir
+  - Installatron: **Import existing install** (adoptar WP existente)
+  - WP Toolkit: staging clone/copy (conceptual)
+- [x] Skill [`.gano-skills/gano-wp-security/SKILL.md`](../../.gano-skills/gano-wp-security/SKILL.md) enlaza a los flujos cPanel/Installatron para evitar confusiones entre hosting y repo.
+
+---
+
+## 2026-04-10 — Investigación SOTA SSH en cPanel + automatización en hosting pequeño
+
+### Completado
+
+- [x] Skill [`.gano-skills/gano-cpanel-ssh-management/SKILL.md`](../../.gano-skills/gano-cpanel-ssh-management/SKILL.md) ampliada con:
+  - Modelo mental correcto de **SSH en GoDaddy cPanel** (shared, sin root/sudo)
+  - Checklist de diagnóstico no destructivo
+  - Patrones de deploy automatizado: **Git Version Control + `.cpanel.yml`** y alternativa **webhook HTTPS**
+  - Cómo encaja “Managed Hosting for Node.JS” (PaaS beta) sin mezclar con WordPress
 
 ---
 
