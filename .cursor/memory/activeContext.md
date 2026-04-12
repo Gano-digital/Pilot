@@ -28,7 +28,8 @@ _Última actualización: 2026-04-11 — **`Gano-digital/Pilot` es PÚBLICO** (`g
 - [x] **Triage y limpieza GitHub (2026-04-11):**
   - PRs fusionados: #174 #175 #176 #177 #178 #179 #180 #173 #170 #182.
   - PRs conflictivos cerrados como superseded: #167 #168 #169 #172.
-  - Issues abiertos restantes: #137 #139 #140 #143.
+  - Issues Constellation #137 #139 #140 #143 resueltos y cerrados (commit `542011da` en `main`).
+- [x] **Oleada agentes (2026-04-11):** workflow **08 · Agentes · Sembrar cola Copilot** ejecutado con `queue_file=tasks-wave3.json` + `scope=all`; creados issues #183–#197 para siguiente ciclo de Copilot.
 - [x] **Obsidian MCP local (2026-04-11):** `.cursor/mcp.json` actualizado con servidor `obsidian-mcp-server` usando `OBSIDIAN_API_KEY` + `OBSIDIAN_BASE_URL=https://127.0.0.1:27124` para integración con Obsidian Local REST API.
 - [x] **Reporte técnico extenso (handoff Claude):** [`memory/claude/2026-04-10-reporte-tecnico-extenso-claude.md`](../../memory/claude/2026-04-10-reporte-tecnico-extenso-claude.md) — problemas (hosting E-01–E-12, runners, deploy, repo), soluciones, estrategias intentadas, checklist P0–P3; **orden 0** en [`memory/claude/README.md`](../../memory/claude/README.md).
 - [x] **Fase 1 installer — `.htaccess`:** el archivo fuente estaba mal nombrado `htaccest-security.txt` (typo); el código busca `htaccess-security.txt`. Corregido en repo renombrando a [`htaccess-security.txt`](../../wp-content/plugins/gano-phase1-installer/htaccess-security.txt). En staging: sincronizar carpeta del plugin y **desactivar + volver a activar** `gano-phase1-installer` (o subir solo el `.txt` y repetir activación) para regenerar `.htaccess`.
@@ -46,7 +47,7 @@ _Última actualización: 2026-04-11 — **`Gano-digital/Pilot` es PÚBLICO** (`g
 - [ ] SFTP / sync VS Code si aplica al flujo de deploy de Diego.
 - [ ] Deploy de archivos críticos al servidor y tareas solo-wp-admin listadas en `TASKS.md`.
 - [ ] QA manual en staging para rollout SOTA (visual responsive + smoke comercial RCC): `memory/ops/sota-rollout-qa-wave-2026-04.md`.
-- [ ] Aplicación en servidor de catálogo canónico (`mockup_completo_ignorar.html`) pendiente de acceso SSH local: `ssh_cli.py` reporta falta `GANO_SSH_HOST`.
+- [ ] Aplicación en servidor de catálogo canónico (`mockup_completo_ignorar.html`) pendiente de despliegue remoto; acceso SSH por alias `gano-godaddy` ya verificado operativo.
 
 ## GitHub — PRs y merges
 

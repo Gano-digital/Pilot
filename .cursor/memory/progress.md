@@ -1,5 +1,25 @@
 # Progress Tracker
 
+## 2026-04-11 — Constellation: cierre issues + nueva oleada de agentes
+
+### Completado
+
+- [x] Resueltos y cerrados issues Constellation #137 #139 #140 #143 en `memory/constellation/CONSTELACION-COSMICA.html`.
+- [x] Cambios técnicos aplicados en `main` (commit `542011da`):
+  - click-out del SC menu sin click-through (`.sc-layer.show` + guardas de UI),
+  - refactor UI-vs-canvas con `data-ui-layer="true"` + `closest('[data-ui-layer="true"]')`,
+  - indexer accesible (`idxToggle` tipo botón, foco y teclado Enter/Espacio/ESC),
+  - remapeo de audio por semántica (hover=Rdy, select=Yes, warn/crit diferenciados) con shuffle-bag para menos repetición.
+- [x] Push a `origin/main` realizado.
+- [x] Siguiente oleada de agentes iniciada con workflow 08 (`tasks-wave3.json`, `scope=all`), creando issues #183–#197.
+
+### Pendiente
+
+- [ ] Asignación de Copilot coding agent en issues #183–#197 y seguimiento de PRs de la oleada 3.
+- [ ] Ejecutar el flujo de revisión/merge por lotes conforme a `.github/AGENT-REVIEW-CHECKLIST.md`.
+
+---
+
 ## 2026-04-11 — Integración SOTA base visual + rollout templates
 
 ### Completado
@@ -35,7 +55,7 @@
   - categorías completas (hosting cPanel, WHP, WP administrado, VPS, VPS HP, SSL, M365, seguridad web, creador, marketing, dominios),
   - estrategias de CTA por tipo (PFID Reseller, dominio search, URL externa VPS, coming-soon),
   - badges/tips/precios por producto y filtros dinámicos por categoría.
-- [ ] SSH directo no ejecutado: faltan variables `GANO_SSH_HOST` / `GANO_SSH_USER` / credenciales en entorno local para `ssh_cli.py`.
+- [ ] Deploy remoto pendiente de ejecución (acceso SSH por alias `gano-godaddy` ya validado; falta aplicar sincronización y QA manual en servidor).
 
 ---
 
@@ -57,7 +77,7 @@
 ### Pendiente
 
 - [ ] Ejecutar validación visual en WordPress/Elementor (hero con y sin background inline, contacto y cards premium).
-- [ ] Resolver issues abiertos Constellation: #137 #139 #140 #143.
+- [x] Resolver issues abiertos Constellation: #137 #139 #140 #143.
 
 ---
 
