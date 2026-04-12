@@ -1,5 +1,26 @@
 # Progress Tracker
 
+## 2026-04-12 — Fase 0 webhook deploy ejecutada
+
+### Completado
+
+- [x] Diagnóstico de fallo en workflow 04: deploy fallaba por bloqueo anti-scraper al user-agent `curl` (HTTP 404 en etapa webhook).
+- [x] Corrección aplicada en `.github/workflows/deploy.yml`:
+  - `curl` de webhook ahora envía user-agent permitido (`Mozilla/5.0 (Gano Deploy Hook)`).
+- [x] Commit y push:
+  - `4487e8f1` — `fix(deploy): enviar webhook con user-agent permitido`.
+- [x] Verificación de endpoint:
+  - `https://gano.digital/wp-content/gano-deploy/receive.php` responde `405 Method Not Allowed` en GET con user-agent navegador (comportamiento esperado del receiver).
+- [x] Run post-fix exitoso:
+  - workflow `04 · Deploy · Producción (webhook HTTPS)` run `24297514353` en verde (security scan + deploy).
+
+### Pendiente
+
+- [ ] Ejecutar workflow 05 (verify patches) y 12 (remove wp-file-manager) para completar hardening operativo post-deploy.
+- [ ] Validación manual wp-admin + QA visual/comercial en staging/producción.
+
+---
+
 ## 2026-04-11 — Plan maestro de convergencia visual SOTA (investigación + código base)
 
 ### Completado

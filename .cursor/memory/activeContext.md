@@ -57,7 +57,11 @@ _Última actualización: 2026-04-11 — **`Gano-digital/Pilot` es PÚBLICO** (`g
 
 ## En progreso
 
-- [ ] **CI Deploy (04):** la **huella** de la clave en CI coincide con `id_rsa_deploy` local (misma pareja que el secret). Si sigue `publickey`, revisar **`SERVER_USER` / `SERVER_HOST`** en GitHub y posible **bloqueo por IP** del hosting frente a runners de GitHub — [`memory/ops/github-actions-ssh-secret-troubleshooting.md`](../../memory/ops/github-actions-ssh-secret-troubleshooting.md) § *Huella local = huella en CI*.
+- [x] **Fase 0 webhook deploy ejecutada (2026-04-12):**
+  - secrets `GANO_DEPLOY_HOOK_URL` + `GANO_DEPLOY_HOOK_SECRET` presentes en GitHub,
+  - endpoint `receive.php` validado (GET con user-agent navegador => `405 Method not allowed`),
+  - fix en workflow 04 para user-agent permitido en POST webhook (`fix(deploy): enviar webhook con user-agent permitido`, commit `4487e8f1`),
+  - deploy exitoso en run **24297514353** (`Security Scan` + `Deploy to production` en verde).
 - [x] **Workflow 14 (Ops Hub):** script `--output` relativo corregido en `main` (#157); run manual post-merge: éxito ([24147290218](https://github.com/Gano-digital/Pilot/actions/runs/24147290218)).
 - [ ] SFTP / sync VS Code si aplica al flujo de deploy de Diego.
 - [ ] Deploy de archivos críticos al servidor y tareas solo-wp-admin listadas en `TASKS.md`.
