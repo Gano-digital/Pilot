@@ -52,7 +52,7 @@ get_header(); ?>
         ];
         foreach ($diferenciadores as $d) : ?>
           <article class="gano-el-pillar">
-            <span aria-hidden="true" style="font-size:1.75rem;"><?php echo $d['icon']; ?></span>
+            <span aria-hidden="true" class="gano-nosotros__icon"><?php echo $d['icon']; ?></span>
             <h3><?php echo esc_html($d['titulo']); ?></h3>
             <p><?php echo esc_html($d['texto']); ?></p>
           </article>
@@ -80,7 +80,7 @@ get_header(); ?>
           <a href="https://www.godaddy.com/es/legal" target="_blank" rel="noopener">godaddy.com/es/legal</a>.
         </p>
       </div>
-      <p style="margin-top:1.5rem;">
+      <p class="gano-nosotros__legal-links">
         <a href="/legal/terminos-y-condiciones">Ver Términos y Condiciones</a>
         &nbsp;·&nbsp;
         <a href="/legal/acuerdo-de-nivel-de-servicio">Ver nuestro SLA</a>
@@ -94,36 +94,23 @@ get_header(); ?>
       <h2>El equipo</h2>
       <!-- [NIT_PENDIENTE]: Diego — añadir nombre, rol y bio real cuando esté disponible.
            Omitir esta sección si no hay datos verificables; mejor no tener que tener stock. -->
-      <p style="color:#64748b; font-style:italic;">
+      <p class="gano-nosotros__pending">
         Sección en preparación. Próximamente: el equipo detrás de Gano Digital.
       </p>
     </div>
   </section>
 
   <!-- CTA -->
-  <section class="gano-dark-section" style="text-align:center; padding:4rem 1.5rem;">
+  <section class="gano-dark-section gano-nosotros__cta">
     <div class="gano-container">
       <h2>¿Quieres saber qué arquitectura corresponde a tu etapa?</h2>
-      <p style="color:rgba(255,255,255,.75); margin-bottom:1.5rem;">Habla con el equipo. Sin formularios de ventas agresivos.</p>
+      <p class="gano-nosotros__cta-copy">Habla con el equipo. Sin formularios de ventas agresivos.</p>
       <a href="/contacto" class="gano-btn">Habla con el equipo</a>
       &nbsp;&nbsp;
-      <a href="/ecosistemas" style="color:#fff; text-decoration:underline;">Ver ecosistemas →</a>
+      <a href="/ecosistemas" class="gano-nosotros__cta-link">Ver ecosistemas →</a>
     </div>
   </section>
 
 </main>
-
-<style>
-.gano-trust-hero { padding: 5rem 1.5rem 4rem; text-align: center; }
-.gano-trust-hero h1 { font-size: var(--gano-fs-4xl, 2.25rem); font-weight: 700; line-height: 1.1; max-width: 720px; margin: .75rem auto 1rem; }
-.gano-trust-hero__sub { color: rgba(255,255,255,.75); max-width: 600px; margin: 0 auto; line-height: 1.65; }
-.gano-trust-section { padding: 4rem 1.5rem; }
-.gano-trust-section--alt { background: #f8fafc; }
-.gano-trust-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem; margin-top: 2rem; }
-.gano-trust-disclaimer { background: #f1f5f9; border-left: 4px solid var(--gano-blue, #2952CC); padding: 1.25rem 1.5rem; border-radius: 0 8px 8px 0; line-height: 1.65; }
-.gano-trust-disclaimer p { margin: 0 0 .75rem; }
-.gano-trust-disclaimer p:last-child { margin: 0; }
-@media (max-width: 600px) { .gano-trust-grid { grid-template-columns: 1fr; } }
-</style>
 
 <?php get_footer(); ?>

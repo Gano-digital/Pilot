@@ -2,7 +2,7 @@
 /**
  * Template Name: Gano Premium Shop SOTA
  *
- * Este template reemplaza los viejos bundles (Wompi)
+ * Este template reemplaza los viejos bundles legacy
  * por el catálogo unificado SOTA conectado a GoDaddy Reseller.
  *
  * Las constantes GANO_PFID_* y la función gano_rstore_cart_url() están
@@ -54,10 +54,13 @@ get_header();
     /* DECORATIVE DOODLES */
     .doodle { position: absolute; pointer-events: none; opacity: 0.15; z-index: 0; }
     .constellation { width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, var(--gano-indigo) 0%, transparent 70%); filter: blur(80px); }
+    .doodle--top-right { top: 10%; right: -5%; }
+    .doodle--bottom-left { bottom: 10%; left: -5%; }
 
     /* HERO SECTION */
     .sota-hero { height: 90vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding-top: 60px; }
     .hero-bg-text { position: absolute; font-family: var(--gano-font-mono); font-size: 15vw; font-weight: var(--gano-fw-extrabold); color: rgba(255,255,255,0.02); white-space: nowrap; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 0; }
+    .hero-bg-text--engineering { color: rgba(99, 102, 241, 0.03); }
 
     .monolith-wrap { perspective: 1500px; position: absolute; width: 400px; height: 600px; opacity: 0.8; z-index: 1; }
     .monolith { width: 100%; height: 100%; background: linear-gradient(135deg, var(--gano-indigo-soft), var(--gano-purple-soft)); border: 1px solid var(--gano-border-sota); backdrop-filter: blur(40px); box-shadow: 0 50px 100px rgba(0,0,0,0.5); }
@@ -95,6 +98,27 @@ get_header();
         display: flex; flex-direction: column; transition: var(--motion-slow) var(--ease-spring);
         position: relative; overflow: hidden; border-radius: var(--gano-radius-md);
     }
+    .product-card__badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: rgba(192,193,255,0.15);
+        border: 1px solid rgba(192,193,255,0.45);
+        color: var(--gano-white);
+        font-size: 10px;
+        font-weight: var(--gano-fw-bold);
+        text-transform: uppercase;
+        letter-spacing: var(--gano-ls-wide);
+        padding: 4px 8px;
+        border-radius: var(--gano-radius-pill);
+        z-index: 3;
+    }
+    .product-card__tip {
+        font-size: 11px;
+        line-height: 1.45;
+        color: var(--gano-gray-500);
+        margin-bottom: 12px;
+    }
     .product-card:hover { transform: translateY(-10px); border-color: var(--gano-purple); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
     .product-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: linear-gradient(0deg, var(--gano-purple-soft), transparent); transition: var(--motion-slow); z-index: 0; }
     .product-card:hover::after { height: 100%; }
@@ -102,6 +126,8 @@ get_header();
     .product-card > * { position: relative; z-index: 2; }
 
     .svg-container { position: relative; width: 60px; height: 60px; margin-bottom: 30px; }
+    .svg-container__svg { width: 100%; height: 100%; }
+    .svg-container__icon { font-size: 30px; color: var(--gano-purple); }
     .path-anim { stroke: var(--gano-purple); stroke-width: 1; fill: none; stroke-dasharray: 200; stroke-dashoffset: 200; transition: stroke-dashoffset 2s ease; }
     .product-card:hover .path-anim { stroke-dashoffset: 0; }
 
@@ -112,7 +138,9 @@ get_header();
 
     .rstore-add-to-cart { width: 100%; text-align: center; padding: 12px; font-weight: var(--gano-fw-bold); background: var(--gano-indigo-soft); color: var(--gano-purple); border: 1px solid var(--gano-border-sota); cursor: pointer; transition: var(--gano-transition); font-size: var(--gano-fs-xs); text-transform: uppercase; letter-spacing: var(--gano-ls-wide); }
     .rstore-add-to-cart:hover { background: var(--gano-purple); color: var(--gano-white); }
-    .rstore-add-to-cart--pending { opacity: 0.4; cursor: not-allowed; }
+    .rstore-add-to-cart--pending { background: rgba(255,255,255,0.08); color: var(--gano-white); border-color: rgba(255,255,255,0.2); }
+    .rstore-add-to-cart--coming-soon { opacity: 0.55; cursor: not-allowed; pointer-events: none; }
+    .rstore-status-note { display: block; margin-top: 10px; font-size: 10px; color: var(--gano-gray-500); text-transform: uppercase; letter-spacing: var(--gano-ls-wide); }
 
     /* PILLARS SECTION */
     .pillars-section-bg { background: var(--gano-purple-soft); }
@@ -128,8 +156,8 @@ get_header();
     <div class="badge-fixed">SOTA v3.1 — RESELLER API SYNC</div>
 
     <!-- BACKGROUND DOODLES -->
-    <div class="doodle constellation" style="top: 10%; right: -5%;"></div>
-    <div class="doodle constellation" style="bottom: 10%; left: -5%;"></div>
+    <div class="doodle constellation doodle--top-right"></div>
+    <div class="doodle constellation doodle--bottom-left"></div>
 
     <!-- SC CONSTELLATION OVERLAYS ─────────────────────────────── -->
     <!-- Activados sólo con btnMenu o tecla M. No intrusivos.      -->
@@ -226,7 +254,7 @@ get_header();
 
     <!-- HERO -->
     <section class="sota-hero">
-        <div class="hero-bg-text" style="color: rgba(99, 102, 241, 0.03);">ENGINEERING</div>
+        <div class="hero-bg-text hero-bg-text--engineering">ENGINEERING</div>
         <div class="monolith-wrap"><div class="monolith" id="main-monolith"></div></div>
         
         <div class="hero-content">
@@ -241,22 +269,12 @@ get_header();
 
     <!-- PHP Rendered Catalog -->
     <?php
-    // Catálogo mapeado a constantes GANO_PFID_* (functions.php). Dominios → domain_search.
-    $products = array(
-        array( 'cat' => 'hosting',  'name' => 'Núcleo Prime',       'desc' => 'Soberanía inicial para marcas emergentes.',        'price' => '196.000', 'icon' => 'fa-rocket',          'pfid' => GANO_PFID_HOSTING_ECONOMIA ),
-        array( 'cat' => 'hosting',  'name' => 'Fortaleza Delta',     'desc' => 'Ecosistema administrado por ingenieros.',          'price' => '450.000', 'icon' => 'fa-microchip',        'pfid' => GANO_PFID_HOSTING_DELUXE ),
-        array( 'cat' => 'hosting',  'name' => 'Bastión SOTA',        'desc' => 'Velocidad crítica Gen4 para operaciones masivas.', 'price' => '890.000', 'icon' => 'fa-bolt',             'pfid' => GANO_PFID_HOSTING_PREMIUM ),
-        array( 'cat' => 'hosting',  'name' => 'Ultimate WP',         'desc' => 'Inmunidad ante picos masivos de tráfico.',         'price' => '1.200.000', 'icon' => 'fa-crown',            'pfid' => GANO_PFID_HOSTING_ULTIMATE ),
-
-        array( 'cat' => 'security', 'name' => 'SSL Deluxe',          'desc' => 'Validación corporativa de alta confianza.',        'price' => '680.000', 'icon' => 'fa-shield-halved',    'pfid' => GANO_PFID_SSL_DELUXE ),
-        array( 'cat' => 'security', 'name' => 'Security Ultimate',   'desc' => 'Blindaje Zero-Trust contra DDoS.',                 'price' => '1.800.000', 'icon' => 'fa-fire-extinguisher', 'pfid' => GANO_PFID_SECURITY_ULTIMATE ),
-
-        array( 'cat' => 'identity', 'name' => 'Dominio .CO',         'desc' => 'Presencia nacional de alta autoridad.',           'price' => '90.000',  'icon' => 'fa-globe',            'pfid' => 'domain_search' ),
-        array( 'cat' => 'identity', 'name' => 'Dominio .COM',        'desc' => 'Estándar global de soberanía.',                   'price' => '75.000',  'icon' => 'fa-earth-americas',   'pfid' => 'domain_search' ),
-
-        array( 'cat' => 'email',    'name' => 'M365 Premium',        'desc' => 'Máxima seguridad en colaboración corporativa.',   'price' => '98.000',  'icon' => 'fa-id-badge',         'pfid' => GANO_PFID_M365_PREMIUM ),
-        array( 'cat' => 'email',    'name' => 'Online Storage 1TB',  'desc' => 'Archivo Maestro Soberano.',                       'price' => '120.000', 'icon' => 'fa-hard-drive',       'pfid' => GANO_PFID_ONLINE_STORAGE ),
-    );
+    $products = function_exists( 'gano_get_reseller_catalog_products' )
+        ? gano_get_reseller_catalog_products()
+        : array();
+    $catalog_categories = function_exists( 'gano_get_reseller_catalog_categories' )
+        ? gano_get_reseller_catalog_categories()
+        : array();
 
     $sotaPillars = [
         "NVMe Gen4", "Zero-Trust", "Predictive AI", "Digital Sovereignty", "Headless WP",
@@ -275,46 +293,58 @@ get_header();
 
             <div class="catalog-nav">
                 <div class="nav-item active" data-filter="all">Todos</div>
-                <div class="nav-item" data-filter="hosting">Cómputo (Núcleo)</div>
-                <div class="nav-item" data-filter="security">Blindaje (Zero-Trust)</div>
-                <div class="nav-item" data-filter="identity">Identidad (.CO)</div>
-                <div class="nav-item" data-filter="email">Colaboración</div>
+                <?php foreach ( $catalog_categories as $cat_key => $cat_label ) : ?>
+                    <div class="nav-item" data-filter="<?php echo esc_attr( $cat_key ); ?>">
+                        <?php echo esc_html( $cat_label ); ?>
+                    </div>
+                <?php endforeach; ?>
             </div>
 
             <div class="catalog-grid" id="catalog-container">
                 <?php foreach($products as $p): ?>
                 <div class="product-card reveal-item" data-category="<?php echo esc_attr($p['cat']); ?>">
+                    <?php if ( ! empty( $p['badge'] ) ) : ?>
+                        <span class="product-card__badge"><?php echo esc_html( $p['badge'] ); ?></span>
+                    <?php endif; ?>
+                    <?php if ( ! empty( $p['tip'] ) ) : ?>
+                        <p class="product-card__tip"><?php echo esc_html( $p['tip'] ); ?></p>
+                    <?php endif; ?>
                     <div class="svg-container">
-                        <svg viewBox="0 0 100 100" style="width:100%; height:100%;">
+                        <svg class="svg-container__svg" viewBox="0 0 100 100">
                             <rect class="path-anim" x="10" y="10" width="80" height="80" rx="4" />
                             <foreignObject x="25" y="25" width="50" height="50">
-                                <i class="fa-solid <?php echo esc_attr($p['icon']); ?>" style="font-size:30px; color:var(--gano-purple);"></i>
+                                <i class="fa-solid svg-container__icon <?php echo esc_attr($p['icon']); ?>"></i>
                             </foreignObject>
                         </svg>
                     </div>
                     <h3 class="p-name"><?php echo esc_html($p['name']); ?></h3>
                     <p class="p-desc"><?php echo esc_html($p['desc']); ?></p>
-                    <div class="p-price"><span>Inversión Mensual</span>$ <?php echo esc_html($p['price']); ?></div>
+                    <div class="p-price">
+                        <span><?php echo esc_html( $p['price_context'] ?? 'Precio referencial' ); ?></span>
+                        <?php echo esc_html( $p['price'] ); ?>
+                    </div>
 
-                    <?php
-                    if ( 'domain_search' === $p['pfid'] ) {
-                        $cta_url    = esc_url( home_url( '/dominios/' ) );
-                        $cta_label  = 'Buscar Dominio';
-                        $cta_target = '';
-                    } elseif ( 'PENDING_RCC' === $p['pfid'] ) {
-                        $cta_url    = esc_url( '#' );
-                        $cta_label  = 'Próximamente';
-                        $cta_target = '';
-                    } else {
-                        $cta_url    = gano_rstore_cart_url( $p['pfid'] );
-                        $cta_label  = 'Adquirir Nodo';
-                        $cta_target = 'target="_blank" rel="noopener noreferrer"';
-                    }
-                    ?>
-                    <a href="<?php echo $cta_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"
-                       class="rstore-add-to-cart"
-                       <?php echo $cta_target; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-                    ><?php echo esc_html( $cta_label ); ?></a>
+                    <?php $cta = function_exists( 'gano_resolver_catalog_cta' ) ? gano_resolver_catalog_cta( $p ) : array(
+                        'url'    => '#',
+                        'label'  => 'Próximamente',
+                        'target' => '',
+                        'status' => 'pending',
+                    ); ?>
+                    <a href="<?php echo esc_url( $cta['url'] ); ?>"
+                       class="rstore-add-to-cart rstore-add-to-cart--<?php echo esc_attr( $cta['status'] ); ?>"
+                       <?php echo $cta['target']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                    ><?php echo esc_html( $cta['label'] ); ?></a>
+                    <small class="rstore-status-note">
+                        <?php
+                        if ( 'active' === $cta['status'] ) {
+                            echo 'Estado comercial: activo';
+                        } elseif ( 'pending' === $cta['status'] ) {
+                            echo 'Estado comercial: pendiente de RCC';
+                        } else {
+                            echo 'Estado comercial: próximamente';
+                        }
+                        ?>
+                    </small>
                 </div>
                 <?php endforeach; ?>
             </div>

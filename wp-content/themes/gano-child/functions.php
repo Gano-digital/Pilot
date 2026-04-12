@@ -869,6 +869,627 @@ function gano_rstore_cart_url( $pfid, $duration = 12 ) {
 }
 
 /**
+ * Returns normalized catalog status.
+ *
+ * @param mixed $raw_status Raw status value.
+ * @return string active|pending|coming-soon
+ */
+function gano_normalize_catalog_status( $raw_status ) {
+	$status = is_string( $raw_status ) ? sanitize_key( $raw_status ) : '';
+	if ( in_array( $status, array( 'active', 'pending', 'coming-soon' ), true ) ) {
+		return $status;
+	}
+	return 'pending';
+}
+
+/**
+ * Returns canonical category labels for the premium catalog.
+ *
+ * @return array<string, string>
+ */
+function gano_get_reseller_catalog_categories() {
+	return array(
+		'hostingwebcpanel'      => 'Hosting Web (cPanel)',
+		'webhostingplus'        => 'Web Hosting Plus',
+		'wordpressadministrado' => 'WordPress Administrado',
+		'servidoresvps'         => 'Servidores VPS',
+		'vpshighperformance'    => 'VPS High Performance',
+		'certificadosssl'       => 'Certificados SSL',
+		'correomicrosoft365'    => 'Correo Microsoft 365',
+		'seguridadweb'          => 'Seguridad Web',
+		'creadordesitiosweb'    => 'Creador de Sitios Web',
+		'marketingdigital'      => 'Marketing Digital',
+		'dominios'              => 'Dominios',
+	);
+}
+
+/**
+ * Builds VPS catalog URL for the current reseller storefront.
+ *
+ * @return string
+ */
+function gano_rstore_vps_catalog_url() {
+	$pl_id = function_exists( 'rstore_get_option' ) ? (int) rstore_get_option( 'pl_id' ) : 0;
+	if ( $pl_id <= 0 ) {
+		$pl_id = 599667;
+	}
+	return esc_url( add_query_arg( 'pl_id', $pl_id, 'https://www.secureserver.net/hosting/vps' ) );
+}
+
+/**
+ * Returns the commercial catalog used by premium shop templates.
+ *
+ * Status conventions:
+ * - active: CTA opens Reseller cart
+ * - pending: CTA redirects to contacto while PFID/RCC is pending
+ * - coming-soon: CTA disabled with "Próximamente"
+ *
+ * @return array<int, array<string, string>>
+ */
+function gano_get_reseller_catalog_products() {
+	$vps_url = gano_rstore_vps_catalog_url();
+
+	return array(
+		array(
+			'cat'           => 'hostingwebcpanel',
+			'name'          => 'Hosting Deluxe',
+			'desc'          => '1 sitio web, SSD ilimitado, 1 base MySQL, SSL gratuito y soporte 24/7.',
+			'price'         => '$9.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-server',
+			'pfid'          => '459',
+			'status'        => 'active',
+			'tip'           => 'Mejor si tienes agencia o diseñador propio.',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'hostingwebcpanel',
+			'name'          => 'Hosting Ultimate',
+			'desc'          => 'Sitios y bases ilimitadas, correo incluido y SSL gratuito.',
+			'price'         => '$12.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-server',
+			'pfid'          => '459',
+			'status'        => 'active',
+			'badge'         => 'Popular',
+			'tip'           => 'Escala mejor que el cPanel estándar.',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'webhostingplus',
+			'name'          => 'WHP Inicio',
+			'desc'          => '1 dominio, 10 GB SSD, 10 correos y SSL para pequeñas empresas.',
+			'price'         => '$21.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-rocket',
+			'pfid'          => '459',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'webhostingplus',
+			'name'          => 'WHP Mejora',
+			'desc'          => '3 dominios, 50 GB SSD y 25 cuentas de correo para e-commerce.',
+			'price'         => '$38.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-rocket',
+			'pfid'          => '459',
+			'status'        => 'active',
+			'badge'         => 'Recomendado',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'webhostingplus',
+			'name'          => 'WHP Crecimiento',
+			'desc'          => '5 dominios, 100 GB SSD, correos ilimitados y backups diarios.',
+			'price'         => '$54.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-rocket',
+			'pfid'          => '459',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'webhostingplus',
+			'name'          => 'WHP Expansión',
+			'desc'          => 'Dominios ilimitados y 200 GB SSD para empresas consolidadas.',
+			'price'         => '$76.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-rocket',
+			'pfid'          => '459',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'wordpressadministrado',
+			'name'          => 'WP Básico',
+			'desc'          => '1 sitio WordPress con actualizaciones automáticas y soporte especializado.',
+			'price'         => 'Desde $5.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-wordpress',
+			'pfid'          => '457',
+			'status'        => 'active',
+			'tip'           => 'Ideal cuando no tienes equipo técnico interno.',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'wordpressadministrado',
+			'name'          => 'WP Pro',
+			'desc'          => 'Hasta 3 sitios, staging y backups automáticos con caching avanzado.',
+			'price'         => 'Desde $9.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-wordpress',
+			'pfid'          => '457',
+			'status'        => 'active',
+			'badge'         => 'Popular',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'wordpressadministrado',
+			'name'          => 'WP Developer',
+			'desc'          => 'Sitios ilimitados y panel multi-cliente para agencias.',
+			'price'         => 'Desde $14.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-wordpress',
+			'pfid'          => '457',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'servidoresvps',
+			'name'          => 'VPS 1 vCPU / 1 GB',
+			'desc'          => '20 GB SSD, 1 TB de transferencia y acceso root para desarrollo.',
+			'price'         => '$4.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-microchip',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'servidoresvps',
+			'name'          => 'VPS 2 vCPU / 4 GB',
+			'desc'          => '80 GB SSD y 2 TB para aplicaciones de tráfico medio.',
+			'price'         => '$25.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-microchip',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'servidoresvps',
+			'name'          => 'VPS 4 vCPU / 8 GB',
+			'desc'          => '160 GB SSD y 3 TB para tiendas online y apps empresariales.',
+			'price'         => '$50.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-microchip',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'badge'         => 'Recomendado',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'servidoresvps',
+			'name'          => 'VPS 8 vCPU / 16 GB',
+			'desc'          => '320 GB SSD y 4 TB para alto tráfico y múltiples servicios.',
+			'price'         => '$87.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-microchip',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'servidoresvps',
+			'name'          => 'VPS 16 vCPU / 32 GB',
+			'desc'          => '640 GB SSD y 5 TB para cargas críticas empresariales.',
+			'price'         => '$146.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-microchip',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'vpshighperformance',
+			'name'          => 'HP 2 vCPU / 8 GB',
+			'desc'          => 'Infraestructura NVMe para apps sensibles a latencia.',
+			'price'         => '$38.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-gauge-high',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'vpshighperformance',
+			'name'          => 'HP 4 vCPU / 16 GB',
+			'desc'          => 'Para e-commerce de alto tráfico, SaaS y APIs exigentes.',
+			'price'         => '$63.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-gauge-high',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'badge'         => 'Popular',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'vpshighperformance',
+			'name'          => 'HP 8 vCPU / 32 GB',
+			'desc'          => 'Rendimiento enterprise para plataformas de misión crítica.',
+			'price'         => '$123.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-gauge-high',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'vpshighperformance',
+			'name'          => 'HP 16 vCPU / 64 GB',
+			'desc'          => 'Para IA, ML y procesamiento masivo de datos.',
+			'price'         => '$187.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-gauge-high',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'vpshighperformance',
+			'name'          => 'HP 32 vCPU / 128 GB',
+			'desc'          => 'Nivel datacenter para cargas corporativas máximas.',
+			'price'         => '$255.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-gauge-high',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'badge'         => 'Premium',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'certificadosssl',
+			'name'          => 'SSL DV · 1 sitio',
+			'desc'          => 'Candado HTTPS para dominio único, ideal para pymes.',
+			'price'         => '$33.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-lock',
+			'pfid'          => '75',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'certificadosssl',
+			'name'          => 'SSL DV · 5 sitios',
+			'desc'          => '5 dominios en un solo certificado y gestión centralizada.',
+			'price'         => '$61.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-lock',
+			'pfid'          => '75',
+			'status'        => 'active',
+			'badge'         => 'Popular',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'certificadosssl',
+			'name'          => 'SSL DV Comodín',
+			'desc'          => 'Protege subdominios ilimitados del dominio principal.',
+			'price'         => '$214.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-lock',
+			'pfid'          => '75',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'certificadosssl',
+			'name'          => 'SSL EV · 1 sitio',
+			'desc'          => 'Validación extendida para máxima confianza.',
+			'price'         => '$110.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-lock',
+			'pfid'          => '75',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'certificadosssl',
+			'name'          => 'SSL EV · 5 sitios',
+			'desc'          => '5 dominios con validación extendida para grupos empresariales.',
+			'price'         => '$262.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-lock',
+			'pfid'          => '75',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'certificadosssl',
+			'name'          => 'SSL Administrado',
+			'desc'          => 'GoDaddy instala, renueva y monitorea el certificado por ti.',
+			'price'         => '$144.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-lock',
+			'pfid'          => '75',
+			'status'        => 'active',
+			'badge'         => 'Sin complicaciones',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'correomicrosoft365',
+			'name'          => 'Correo Esencial',
+			'desc'          => 'Correo con dominio propio y buzón de 50 GB.',
+			'price'         => 'Desde $1.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-envelope',
+			'pfid'          => '466',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'correomicrosoft365',
+			'name'          => 'M365 Business Basic',
+			'desc'          => 'Email + Teams + SharePoint + 1 TB OneDrive.',
+			'price'         => 'Desde $5.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-envelope',
+			'pfid'          => '466',
+			'status'        => 'active',
+			'badge'         => 'Popular',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'correomicrosoft365',
+			'name'          => 'M365 Business Standard',
+			'desc'          => 'Suite Office completa + Teams para hasta 300 usuarios.',
+			'price'         => 'Desde $12.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-envelope',
+			'pfid'          => '466',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'correomicrosoft365',
+			'name'          => 'M365 Business Premium',
+			'desc'          => 'Incluye Intune, Defender y seguridad avanzada de identidad.',
+			'price'         => 'Desde $22.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-envelope',
+			'pfid'          => '466',
+			'status'        => 'active',
+			'badge'         => 'Premium',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'seguridadweb',
+			'name'          => 'Seguridad Esencial',
+			'desc'          => 'Escaneo diario de malware y alertas para sitios básicos.',
+			'price'         => '$3.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-shield-halved',
+			'pfid'          => '557',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'seguridadweb',
+			'name'          => 'Seguridad Deluxe',
+			'desc'          => 'Limpieza garantizada de malware con monitoreo continuo.',
+			'price'         => '$7.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-shield-halved',
+			'pfid'          => '557',
+			'status'        => 'active',
+			'badge'         => 'Popular',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'seguridadweb',
+			'name'          => 'Seguridad Ultimate',
+			'desc'          => 'WAF capa 7, anti-DDoS, reparación prioritaria y CDN.',
+			'price'         => '$23.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-shield-halved',
+			'pfid'          => '557',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'creadordesitiosweb',
+			'name'          => 'Constructor Básico',
+			'desc'          => 'Plantillas profesionales con editor drag & drop.',
+			'price'         => 'Desde $6.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-pen-ruler',
+			'status'        => 'coming-soon',
+			'badge'         => 'Pendiente PFID',
+			'cta_label'     => 'Próximamente',
+		),
+		array(
+			'cat'           => 'creadordesitiosweb',
+			'name'          => 'Constructor Comercio',
+			'desc'          => 'Tienda online completa con pagos e inventario.',
+			'price'         => 'Desde $14.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-pen-ruler',
+			'status'        => 'coming-soon',
+			'badge'         => 'Pendiente PFID',
+			'cta_label'     => 'Próximamente',
+		),
+		array(
+			'cat'           => 'marketingdigital',
+			'name'          => 'SEO Básico',
+			'desc'          => 'Palabras clave guiadas y optimización on-page.',
+			'price'         => 'Desde $6.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-chart-line',
+			'status'        => 'coming-soon',
+			'badge'         => 'Pendiente PFID',
+			'cta_label'     => 'Próximamente',
+		),
+		array(
+			'cat'           => 'marketingdigital',
+			'name'          => 'Email Marketing Starter',
+			'desc'          => 'Hasta 500 contactos y plantillas para campañas iniciales.',
+			'price'         => 'Desde $9.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-chart-line',
+			'status'        => 'coming-soon',
+			'badge'         => 'Pendiente PFID',
+			'cta_label'     => 'Próximamente',
+		),
+		array(
+			'cat'           => 'marketingdigital',
+			'name'          => 'Email Marketing Esencial',
+			'desc'          => 'Automatizaciones, segmentación y A/B testing.',
+			'price'         => 'Desde $19.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-chart-line',
+			'status'        => 'coming-soon',
+			'badge'         => 'Pendiente PFID',
+			'cta_label'     => 'Próximamente',
+		),
+		array(
+			'cat'           => 'dominios',
+			'name'          => '.com',
+			'desc'          => 'El dominio más reconocido del mundo para tu marca.',
+			'price'         => '$9.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-globe',
+			'pfid'          => 'domain_search',
+			'status'        => 'active',
+			'badge'         => 'Más buscado',
+			'cta_label'     => 'Buscar dominio',
+		),
+		array(
+			'cat'           => 'dominios',
+			'name'          => '.co',
+			'desc'          => 'La extensión colombiana ideal para posicionamiento local.',
+			'price'         => '$19.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-globe',
+			'pfid'          => 'domain_search',
+			'status'        => 'active',
+			'badge'         => 'Colombia',
+			'cta_label'     => 'Buscar dominio',
+		),
+		array(
+			'cat'           => 'dominios',
+			'name'          => '.net',
+			'desc'          => 'Alternativa sólida para proyectos de tecnología y red.',
+			'price'         => '$12.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-globe',
+			'pfid'          => 'domain_search',
+			'status'        => 'active',
+			'cta_label'     => 'Buscar dominio',
+		),
+		array(
+			'cat'           => 'dominios',
+			'name'          => '.io',
+			'desc'          => 'Preferido para startups tecnológicas y productos SaaS.',
+			'price'         => '$39.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-globe',
+			'pfid'          => 'domain_search',
+			'status'        => 'active',
+			'cta_label'     => 'Buscar dominio',
+		),
+		array(
+			'cat'           => 'dominios',
+			'name'          => '.store',
+			'desc'          => 'Extensión ideal para tiendas online y marcas de comercio.',
+			'price'         => '$2.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-globe',
+			'pfid'          => 'domain_search',
+			'status'        => 'active',
+			'badge'         => 'Oferta',
+			'cta_label'     => 'Buscar dominio',
+		),
+		array(
+			'cat'           => 'dominios',
+			'name'          => '.org',
+			'desc'          => 'Ideal para organizaciones, fundaciones y proyectos sociales.',
+			'price'         => '$9.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-globe',
+			'pfid'          => 'domain_search',
+			'status'        => 'active',
+			'cta_label'     => 'Buscar dominio',
+		),
+	);
+}
+
+/**
+ * Resolves CTA metadata for a commercial catalog item.
+ *
+ * @param array<string, string> $product Product row from catalog.
+ * @return array<string, string> url,label,target,status
+ */
+function gano_resolver_catalog_cta( $product ) {
+	$pfid      = isset( $product['pfid'] ) ? (string) $product['pfid'] : '';
+	$status    = gano_normalize_catalog_status( $product['status'] ?? '' );
+	$cta_label = isset( $product['cta_label'] ) ? (string) $product['cta_label'] : '';
+	$label     = '' !== $cta_label ? $cta_label : 'Adquirir Nodo';
+
+	if ( ! empty( $product['external_url'] ) ) {
+		return array(
+			'url'    => esc_url( (string) $product['external_url'] ),
+			'label'  => $label,
+			'target' => 'target="_blank" rel="noopener noreferrer"',
+			'status' => 'active',
+		);
+	}
+
+	if ( 'domain_search' === $pfid ) {
+		return array(
+			'url'    => esc_url( home_url( '/dominios/' ) ),
+			'label'  => '' !== $cta_label ? $cta_label : 'Buscar Dominio',
+			'target' => '',
+			'status' => 'active',
+		);
+	}
+
+	if ( 'coming-soon' === $status ) {
+		return array(
+			'url'    => '#',
+			'label'  => '' !== $cta_label ? $cta_label : 'Próximamente',
+			'target' => '',
+			'status' => 'coming-soon',
+		);
+	}
+
+	if ( 'pending' === $status || 'PENDING_RCC' === $pfid ) {
+		return array(
+			'url'    => esc_url( home_url( '/contacto/' ) ),
+			'label'  => '' !== $cta_label ? $cta_label : 'Hablar con ventas',
+			'target' => '',
+			'status' => 'pending',
+		);
+	}
+
+	$cart_url = gano_rstore_cart_url( $pfid );
+	if ( '#' === $cart_url ) {
+		return array(
+			'url'    => esc_url( home_url( '/contacto/' ) ),
+			'label'  => 'Hablar con ventas',
+			'target' => '',
+			'status' => 'pending',
+		);
+	}
+
+	return array(
+		'url'    => $cart_url,
+		'label'  => $label,
+		'target' => 'target="_blank" rel="noopener noreferrer"',
+		'status' => 'active',
+	);
+}
+
+/**
  * Returns the SOTA hub page categories (slug => label).
  *
  * @return array<string, string>

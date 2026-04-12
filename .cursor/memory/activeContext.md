@@ -1,6 +1,6 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-11 — **`Gano-digital/Pilot` es PÚBLICO** (`gh repo view` → `visibility: PUBLIC`). **Runners en el repo:** API `actions/runners` → **total_count: 0** (verificado 2026-04-11, runner eliminado ✅). Deploy **04** en `main`: **ubuntu-latest** + webhook HTTPS (sin self-hosted en prod). Opcional: un admin de org confirma runners a nivel **organización**; `test-runner.yml` aún declara `runs-on: self-hosted` solo para prueba manual._
+_Última actualización: 2026-04-11 — **`Gano-digital/Pilot` es PÚBLICO** (`gh repo view` → `visibility: PUBLIC`). **Runners en el repo:** API `actions/runners` → **total_count: 0** (verificado 2026-04-11, runner eliminado ✅). Deploy **04** en `main`: **ubuntu-latest** + webhook HTTPS (sin self-hosted en prod). Opcional: un admin de org confirma runners a nivel **organización**; `test-runner.yml` aún declara `runs-on: self-hosted` solo para prueba manual. Triage GitHub actualizado: PRs dependabot + docs + consolidado de Arcana fusionados; PRs conflictivos (#167/#168/#169/#172) cerrados como reemplazados por #182. **Rollout SOTA ejecutado en código (theme/templates/docs) con QA técnica inicial lista.**_
 
 ## Foco actual (producto y repo)
 
@@ -25,8 +25,19 @@ _Última actualización: 2026-04-11 — **`Gano-digital/Pilot` es PÚBLICO** (`g
 - [x] **PR #136** (docs/memoria Fase 4) dejado **merge-ready** (conflictos resueltos, CI verde). Nota: el merge puede quedar bloqueado por ruleset de “Code Quality” en GitHub.
 - [x] **PR #159** — plan vitrina + prechequeo SSH en `deploy.yml` + runbook `publickey` — fusionado en `main`; PR #158 cerrado como sustituido.
 - [x] **PR #160** — troubleshooting SSH (IP) + reporte handoff para Claude — fusionado en `main`.
+- [x] **Triage y limpieza GitHub (2026-04-11):**
+  - PRs fusionados: #174 #175 #176 #177 #178 #179 #180 #173 #170 #182.
+  - PRs conflictivos cerrados como superseded: #167 #168 #169 #172.
+  - Issues abiertos restantes: #137 #139 #140 #143.
+- [x] **Obsidian MCP local (2026-04-11):** `.cursor/mcp.json` actualizado con servidor `obsidian-mcp-server` usando `OBSIDIAN_API_KEY` + `OBSIDIAN_BASE_URL=https://127.0.0.1:27124` para integración con Obsidian Local REST API.
 - [x] **Reporte técnico extenso (handoff Claude):** [`memory/claude/2026-04-10-reporte-tecnico-extenso-claude.md`](../../memory/claude/2026-04-10-reporte-tecnico-extenso-claude.md) — problemas (hosting E-01–E-12, runners, deploy, repo), soluciones, estrategias intentadas, checklist P0–P3; **orden 0** en [`memory/claude/README.md`](../../memory/claude/README.md).
 - [x] **Fase 1 installer — `.htaccess`:** el archivo fuente estaba mal nombrado `htaccest-security.txt` (typo); el código busca `htaccess-security.txt`. Corregido en repo renombrando a [`htaccess-security.txt`](../../wp-content/plugins/gano-phase1-installer/htaccess-security.txt). En staging: sincronizar carpeta del plugin y **desactivar + volver a activar** `gano-phase1-installer` (o subir solo el `.txt` y repetir activación) para regenerar `.htaccess`.
+- [x] **Integración SOTA base visual (2026-04-11):**
+  - auditoría de mockups (`memory/content/sota-audit-mockups-2026-04.md`),
+  - guía visual canónica (`memory/content/sota-visual-guide-v1.md`) + actualización clases Elementor,
+  - nuevos componentes SOTA en `style.css`,
+  - rollout templates (`page-nosotros`, `page-sota-hub`, `page-seo-landing`, `page-ecosistemas`) y nuevo `page-diagnostico-digital.php`,
+  - capa comercial catálogo en `functions.php` + `shop-premium.php` con estados `active|pending|coming-soon`.
 
 ## En progreso
 
@@ -34,6 +45,8 @@ _Última actualización: 2026-04-11 — **`Gano-digital/Pilot` es PÚBLICO** (`g
 - [x] **Workflow 14 (Ops Hub):** script `--output` relativo corregido en `main` (#157); run manual post-merge: éxito ([24147290218](https://github.com/Gano-digital/Pilot/actions/runs/24147290218)).
 - [ ] SFTP / sync VS Code si aplica al flujo de deploy de Diego.
 - [ ] Deploy de archivos críticos al servidor y tareas solo-wp-admin listadas en `TASKS.md`.
+- [ ] QA manual en staging para rollout SOTA (visual responsive + smoke comercial RCC): `memory/ops/sota-rollout-qa-wave-2026-04.md`.
+- [ ] Aplicación en servidor de catálogo canónico (`mockup_completo_ignorar.html`) pendiente de acceso SSH local: `ssh_cli.py` reporta falta `GANO_SSH_HOST`.
 
 ## GitHub — PRs y merges
 

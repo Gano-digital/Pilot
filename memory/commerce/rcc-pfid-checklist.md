@@ -58,6 +58,24 @@ Una vez configurados los PFIDs y el PLID:
 
 ---
 
+## 5. Estados comerciales normalizados (shop-premium)
+
+La vitrina SOTA usa un estado por producto para evitar CTAs rotos:
+
+| Estado | Comportamiento CTA | Cuándo usar |
+| :--- | :--- | :--- |
+| `active` | Abre `cart.secureserver.net` con PFID + PLID | PFID validado en RCC |
+| `pending` | Redirige a `/contacto/` | PFID aún `PENDING_RCC` o revisión comercial en curso |
+| `coming-soon` | Botón deshabilitado (sin click) | Producto planificado no disponible todavía |
+
+Implementación:
+
+- Fuente de catálogo: `gano_get_reseller_catalog_products()` en `functions.php`.
+- Resolución de CTA: `gano_resolver_catalog_cta()` en `functions.php`.
+- Consumo visual: `templates/shop-premium.php`.
+
+---
+
 ## Referencias Técnicas
 *   **Lógica de URL**: La función `gano_rstore_cart_url()` en `functions.php` construye la URL dinámicamente.
 *   **Tareas Globales**: Ver [TASKS.md](../../TASKS.md) Fase 4.

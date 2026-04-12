@@ -15,6 +15,14 @@ Los **nombres mostrados en la barra lateral** siguen el patrón:
 
 **Orden sugerido al operar (manual):** `06` una vez si faltan etiquetas → `07` al editar colas → `08`/`09` para crear issues → `10` solo si aplica oleada histórica → `04`/`05` cuando toque servidor. **Guía ampliada:** [`memory/ops/agent-playbook-asistentes-2026-04.md`](../../memory/ops/agent-playbook-asistentes-2026-04.md).
 
+## Estado despliegue SOTA (2026-04-11)
+
+- Tras integrar el catálogo canónico y templates SOTA en repo, ejecutar esta secuencia:
+  1. **04 · Deploy · Producción (rsync)** para subir `gano-child`.
+  2. **05 · Ops · Verificar parches en servidor** para validar paridad repo/servidor.
+  3. **12 · Ops · Eliminar wp-file-manager (SSH)** si aún aparece en servidor.
+- No cerrar tareas SOTA sin verificar publicación real de `/shop-premium/` y `/diagnostico-digital/`.
+
 **Workflows que no están en esta carpeta** (los gestiona GitHub): *Copilot coding agent*, *Dependabot Updates* — no usan este esquema de nombres.
 
 **Auditoría y troubleshooting:** [`memory/ops/github-actions-audit-2026-04.md`](../../memory/ops/github-actions-audit-2026-04.md) (fallos conocidos, riesgos, parches).

@@ -65,3 +65,26 @@ Validación rápida en front:
 4. Si el hero cambia a otro widget o estructura, documentar nuevo selector antes de tocar JS.
 
 Tras desplegar `style.css` y `functions.php` al servidor, vacía **caché** (plugin/hosting) y revisa la home en móvil.
+
+## Clases SOTA canónicas (Abril 2026)
+
+Estas clases se pueden usar en Home, Ecosistemas y landings para mantener consistencia sin Tailwind:
+
+- `gano-sota-surface`: fondo oscuro base con contraste de marca.
+- `gano-sota-section`: espaciado vertical consistente por secciones.
+- `gano-sota-container`: contenedor máximo de 1200px.
+- `gano-sota-label`: etiqueta superior tipo badge técnico.
+- `gano-sota-hero`: shell del hero principal.
+- `gano-sota-hero__title` y `gano-sota-hero__title--accent`: heading SOTA con acento degradado.
+- `gano-sota-hero__sub`: subtítulo legible sobre fondos oscuros.
+- `gano-sota-hero__cta-row`: fila de CTAs con wrapping.
+- `gano-sota-glass-card`: superficie glass reutilizable.
+- `gano-sota-status-strip` + `gano-sota-status-strip__grid`: franja de métricas.
+- `gano-sota-cards-grid` + `gano-sota-card`: cards de valor / features.
+- `gano-sota-quiz-shell`: contenedor canónico del diagnóstico digital.
+
+Regla de oro:
+
+- Home en Elementor usa estas clases como capa visual.
+- Templates PHP (`shop-premium`, `ecosistemas`, `diagnóstico`) reutilizan los mismos bloques.
+- Si necesitas un estilo nuevo, primero conviértelo en clase reutilizable en `style.css`.

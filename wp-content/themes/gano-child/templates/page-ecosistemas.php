@@ -235,7 +235,7 @@ get_header();
   </section>
 
   <!-- ── CTA FINAL ───────────────────────────────────────────────── -->
-  <section class="gano-dark-section" style="text-align:center; padding: 5rem 1.5rem;">
+  <section class="gano-dark-section gano-ecosistemas__cta-final">
     <div class="gano-container">
       <h2>¿No sabes cuál elegir?</h2>
       <p>Cuéntanos dónde estás y te decimos qué arquitectura corresponde a tu etapa. Sin presión.</p>

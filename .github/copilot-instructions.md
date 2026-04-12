@@ -20,6 +20,16 @@ Antes de asumir que el repo es idéntico a producción, lee **[`.github/DEV-COOR
 - **Copy listo para homepage:** [`memory/content/homepage-copy-2026-04.md`](../memory/content/homepage-copy-2026-04.md). Sustituir Lorem y métricas falsas en https://gano.digital/ es **prioridad humana en panel**; el repo aporta texto y clases, no sustituye pegar en Elementor.
 - **Comercio:** RCC + Reseller Store; CTAs y `shop-premium.php` según `TASKS.md` Fase 4 y [`memory/commerce/rcc-pfid-checklist.md`](../memory/commerce/rcc-pfid-checklist.md). No inventar PFIDs.
 
+### Estado operativo SOTA (verificado 2026-04-11)
+
+- En repo ya existe integración SOTA (design system + templates + catálogo canónico).
+- En producción aún no está completo el despliegue; tratar toda tarea SOTA como **repo-first + deploy-pending** hasta verificación manual.
+- Catalogo canónico actual:
+  - fuente conceptual: `mockup_completo_ignorar.html` (backup marzo 2026),
+  - implementación viva: `gano_get_reseller_catalog_products()` y `gano_get_reseller_catalog_categories()` en `functions.php`,
+  - render: `templates/shop-premium.php`.
+- Estados comerciales obligatorios por producto: `active`, `pending`, `coming-soon`.
+
 ## Stack tecnológico
 
 - **CMS**: WordPress 6.x + Elementor Pro + Royal Elementor Addons
