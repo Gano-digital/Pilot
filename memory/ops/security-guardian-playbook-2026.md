@@ -65,7 +65,8 @@ Issues desde `tasks-security-guardian.json`:
 ## 7. Referencias
 
 - `.gano-skills/gano-session-security-guardian/SKILL.md` — uso en Cursor al terminar sesión.
-- `memory/ops/security-end-session-checklist.md` — lista corta imprimible.
+- `memory/ops/security-end-session-checklist.md` — lista corta imprimible (incluye atajos Bash/PowerShell).
+- `scripts/security_session_reminder.py` — script de terminal para mostrar el recordatorio (sin red ni borrado).
 - `TASKS.md` — ítem de cola guardián si está sembrado.
 
 _Última revisión: 2026-04._
