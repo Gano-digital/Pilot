@@ -37,7 +37,7 @@ Estos secretos deben configurarse en **GitHub Repo → Settings → Secrets and 
 
 | Secret Name | Descripción | Ejemplo | Dónde obtener |
 |-------------|-----------|---------|---------------|
-| `ADD_TO_PROJECT_PAT` | Personal Access Token (classic, `public_repo`, `read:org`) | `ghp_abc...xyz` | GitHub → Settings → Developer settings → Tokens (classic) → Generate new token |
+| `ADD_TO_PROJECT_PAT` | Personal Access Token (classic, `public_repo`, `read:org`) | `[REDACTED]` — ver secretos del repo | GitHub → Settings → Developer settings → Tokens (classic) → Generate new token |
 
 ---
 
