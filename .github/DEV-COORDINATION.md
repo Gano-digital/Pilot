@@ -20,6 +20,21 @@ Si algo en **servidor** no está reflejado en `TASKS.md` o en un **issue** etiqu
 
 ---
 
+## Estado SOTA verificado (2026-04-11)
+
+- **Repo (implementado):** base visual SOTA, templates actualizados y catálogo canónico integrado en `functions.php` + `shop-premium.php`.
+- **Producción (pendiente):** `gano.digital` todavía corre versión legacy; `/shop-premium/` y `/diagnostico-digital/` no están publicados (404).
+- **Conclusión operativa:** no cerrar issues de rollout SOTA hasta completar despliegue + alta/asignación de páginas en wp-admin.
+
+Checklist mínimo antes de marcar "done":
+
+- [ ] Deploy de tema `gano-child` desde código actualizado.
+- [ ] Página con template `Gano Premium Shop SOTA` publicada y accesible.
+- [ ] Página con template `Diagnostico Digital SOTA` publicada y accesible.
+- [ ] Smoke test comercial (CTAs active/pending/coming-soon + dominio + VPS externo).
+
+---
+
 ## 2. Qué vive dónde (evita expectativas falsas)
 
 | Dónde | Qué hay |

@@ -65,3 +65,47 @@ Validación rápida en front:
 4. Si el hero cambia a otro widget o estructura, documentar nuevo selector antes de tocar JS.
 
 Tras desplegar `style.css` y `functions.php` al servidor, vacía **caché** (plugin/hosting) y revisa la home en móvil.
+
+## Clases SOTA canónicas (Abril 2026)
+
+Estas clases se pueden usar en Home, Ecosistemas y landings para mantener consistencia sin Tailwind:
+
+- `gano-sota-surface`: fondo oscuro base con contraste de marca.
+- `gano-sota-section`: espaciado vertical consistente por secciones.
+- `gano-sota-container`: contenedor máximo de 1200px.
+- `gano-sota-label`: etiqueta superior tipo badge técnico.
+- `gano-sota-hero`: shell del hero principal.
+- `gano-sota-hero__title` y `gano-sota-hero__title--accent`: heading SOTA con acento degradado.
+- `gano-sota-hero__sub`: subtítulo legible sobre fondos oscuros.
+- `gano-sota-hero__cta-row`: fila de CTAs con wrapping.
+- `gano-sota-glass-card`: superficie glass reutilizable.
+- `gano-sota-status-strip` + `gano-sota-status-strip__grid`: franja de métricas.
+- `gano-sota-cards-grid` + `gano-sota-card`: cards de valor / features.
+- `gano-sota-quiz-shell`: contenedor canónico del diagnóstico digital.
+
+Regla de oro:
+
+- Home en Elementor usa estas clases como capa visual.
+- Templates PHP (`shop-premium`, `ecosistemas`, `diagnóstico`) reutilizan los mismos bloques.
+- Si necesitas un estilo nuevo, primero conviértelo en clase reutilizable en `style.css`.
+
+## Clases Kinetic Convergence (Abril 2026)
+
+Bridge visual para converger la identidad base y el lenguaje premium de Obsidian Prism sin usar Tailwind.
+
+- `gano-km-shell`: wrapper de seccion premium (fondo nocturno + grid sutil).
+- `gano-km-container`: contenedor maximo para composicion 2 columnas.
+- `gano-km-live-badge`: badge operativo con pulso.
+- `gano-km-hero`: layout hero convergente.
+- `gano-km-title` + `gano-km-title-accent`: titular editorial con acento gradiente.
+- `gano-km-lead`: parrafo principal del hero.
+- `gano-km-cta-row`: fila flexible de CTAs.
+- `gano-km-btn-primary` / `gano-km-btn-secondary`: botones premium reutilizables.
+- `gano-km-prism`: contenedor visual para pieza insignia (prism/constellation/ilustracion).
+- `gano-km-metrics` + `gano-km-metric*`: franja de metricas de confianza.
+- `gano-km-value-grid` + `gano-km-card`: cards de propuesta de valor.
+
+Fuente tecnica:
+
+- CSS: `wp-content/themes/gano-child/css/gano-sota-convergence.css`
+- Guia de uso: `sota-convergence-code-pack-2026-04.md`

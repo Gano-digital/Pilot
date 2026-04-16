@@ -61,17 +61,27 @@ _Última actualización: Abril 2026_
 
 ## 🔴 Active — Acción manual requerida en servidor real
 
-- [ ] **[CRÍTICO] Sincronizar parches Fases 1–3 con el servidor** — Opciones:
+- [x] **[CRÍTICO] Rollout SOTA en producción (actualizado 2026-04-12):**
+  - Repo: integración completada (design system, templates SOTA y catálogo canónico en `functions.php` + `shop-premium.php`).
+  - Producción:
+    1. Deploy de `gano-child` validado por webhook + verificación de parches (`05`),
+    2. páginas SOTA publicadas con template asignado (`/shop-premium/`, `/sota-hub/`, `/seo-landing/`, `/diagnostico-digital/`),
+    3. verificación HTTP en vivo: rutas responden `200`.
+  - Cierre operativo pendiente:
+    - checklist QA manual visual/comercial en `memory/ops/sota-rollout-qa-wave-2026-04.md`,
+    - aplicación final de clases/copy en Home Elementor (wp-admin).
+
+- [x] **[CRÍTICO] Sincronizar parches Fases 1–3 con el servidor** — Ejecutado 2026-04-12:
   1. **CI:** configurar secrets `SSH`, `SERVER_HOST`, `SERVER_USER`, `DEPLOY_PATH` (ver [`.github/DEV-COORDINATION.md`](.github/DEV-COORDINATION.md)); un push a `main` que toque `gano-child` / `gano-*` / `mu-plugins` dispara [`deploy.yml`](.github/workflows/deploy.yml).
-  2. **Verificación:** Actions → **05 · Ops · Verificar parches en servidor** ([`verify-patches.yml`](.github/workflows/verify-patches.yml)) — compara checksums; opcional subir diferencias.
+  2. **Verificación:** Actions → **05 · Ops · Verificar parches en servidor** ([`verify-patches.yml`](.github/workflows/verify-patches.yml)) — run `24297613457` en verde y checksums alineados.
   3. **Manual:** SFTP/rsync si no usas Actions.
   - `wp-config.php` — **no** va en git; subir solo por SFTP seguro.
   - `wp-content/themes/gano-child/templates/shop-premium.php` — va dentro del deploy del child theme cuando exista en repo.
 
-- [ ] **[CRÍTICO] Eliminar wp-file-manager del servidor** — Ejecutar workflow automatizado:
-  - **Opción A (recomendada)**: GitHub Actions → **12 · Ops · Eliminar wp-file-manager (SSH)** → `Run workflow` → `force_remove: true` (requiere mismos secrets que deploy)
+- [x] **[CRÍTICO] Eliminar wp-file-manager del servidor** — Verificado 2026-04-12:
+  - **Opción A (recomendada)**: GitHub Actions → **12 · Ops · Eliminar wp-file-manager (SSH)** → run `24297554961` en verde.
   - **Opción B (manual)**: wp-admin → Plugins → Desactivar → SFTP eliminar `wp-content/plugins/wp-file-manager/`
-  - Post-eliminación: verificar en wp-admin que la alerta de `gano-security.php` desapareció.
+  - Post-eliminación: verificar en wp-admin que la alerta de `gano-security.php` desapareció (pendiente validación visual humana).
 
 - [ ] **[ALTA] Configurar datos SEO (Empresa Digital)** en wp-admin → Ajustes → Gano SEO:
   - Definir área de cobertura (Colombia) sin dirección física local obligatoria.

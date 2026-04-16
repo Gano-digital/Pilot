@@ -50,6 +50,13 @@ URL: https://gano.digital | Repo: Gano-digital/Pilot
 Issue en GitHub → Copilot crea PR (draft) → CI verifica → Cursor/Diego revisa → Merge
 ```
 
+### Estado operativo SOTA (abril 2026)
+
+- **Repo:** integración SOTA activa en `gano-child` (tokens, templates y catálogo canónico).
+- **Producción:** despliegue parcial/pendiente; no asumir que `gano.digital` ya refleja `main`.
+- **Catálogo canónico actual:** mantener como referencia implementada en `functions.php` + `templates/shop-premium.php` (no reintroducir catálogos alternos sin decisión explícita de Diego).
+- **Regla de agentes:** cualquier cambio comercial debe conservar estados `active|pending|coming-soon` y no inventar PFIDs.
+
 ### Resolucion de conflictos
 - Si dos agentes tocan el mismo archivo: el mas reciente en main gana
 - Si hay conflicto de directivas: `CLAUDE.md` > `copilot-instructions.md` > `AGENTS.md`

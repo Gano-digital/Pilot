@@ -25,8 +25,6 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-get_header();
-
 // Recuperar metadatos SEO específicos de esta landing page
 $post_id        = get_the_ID();
 $keyword        = get_post_meta( $post_id, 'seo_keyword_target', true ) ?: '';
@@ -65,34 +63,34 @@ $service_schema = array(
         'itemListElement' => array(
             array(
                 '@type'           => 'Offer',
-                'name'            => 'Startup Blueprint',
+                'name'            => 'Núcleo Prime',
                 'price'           => '196000',
                 'priceCurrency'   => 'COP',
-                'description'     => 'Hosting WordPress de alto rendimiento con NVMe Gen4, SSL gratuito, Wordfence y soporte 24/7.',
+                'description'     => 'Entrada sólida con NVMe real, SSL y soporte por ticket en español.',
                 'availability'    => 'https://schema.org/InStock',
             ),
             array(
                 '@type'           => 'Offer',
-                'name'            => 'Ecosistema Básico',
-                'price'           => '600000',
+                'name'            => 'Fortaleza Delta',
+                'price'           => '450000',
                 'priceCurrency'   => 'COP',
-                'description'     => 'Hosting WordPress con e-commerce WooCommerce, pasarela Wompi y seguridad avanzada.',
+                'description'     => 'Arquitectura para negocios en crecimiento con hardening activo y mejor capacidad.',
                 'availability'    => 'https://schema.org/InStock',
             ),
             array(
                 '@type'           => 'Offer',
-                'name'            => 'Ecosistema Avanzado',
+                'name'            => 'Bastión SOTA',
+                'price'           => '890000',
+                'priceCurrency'   => 'COP',
+                'description'     => 'Rendimiento premium con monitoreo proactivo y capa de servicio para operaciones críticas.',
+                'availability'    => 'https://schema.org/InStock',
+            ),
+            array(
+                '@type'           => 'Offer',
+                'name'            => 'Ultimate WP',
                 'price'           => '1200000',
                 'priceCurrency'   => 'COP',
-                'description'     => 'Hosting WordPress empresarial con CDN, backups automáticos, monitoring y soporte dedicado.',
-                'availability'    => 'https://schema.org/InStock',
-            ),
-            array(
-                '@type'           => 'Offer',
-                'name'            => 'Soberanía Digital',
-                'price'           => '2000000',
-                'priceCurrency'   => 'COP',
-                'description'     => 'Infraestructura dedicada con Zero-Trust, cifrado post-cuántico y propiedad absoluta de datos.',
+                'description'     => 'Máxima capacidad para agencias y proyectos de alto tráfico con operación en COP.',
                 'availability'    => 'https://schema.org/InStock',
             ),
         ),
@@ -107,21 +105,24 @@ add_action( 'wp_head', function() use ( $service_schema ) {
         . '</script>' . "\n";
 }, 8 );
 
+get_header();
+
 ?>
 
 <!-- Gano Digital: SEO Landing Page Template -->
-<main id="gano-seo-landing" class="gano-seo-landing" role="main">
+<main id="gano-seo-landing" class="gano-seo-landing gano-km-shell" role="main">
 
     <!-- H1 SEO — Visible para Google y usuarios, estilizado via Elementor o CSS del child theme -->
-    <section class="gano-landing-hero elementor-section">
-        <div class="elementor-container">
-            <h1 class="gano-landing-h1"><?php echo esc_html( $h1_override ); ?></h1>
+    <section class="gano-landing-hero elementor-section gano-km-shell">
+        <div class="elementor-container gano-km-container">
+            <span class="gano-km-live-badge">SEO landing operativa</span>
+            <h1 class="gano-landing-h1 gano-km-title"><?php echo esc_html( $h1_override ); ?></h1>
 
             <?php if ( has_excerpt() ) : ?>
-                <p class="gano-landing-intro"><?php echo esc_html( get_the_excerpt() ); ?></p>
+                <p class="gano-landing-intro gano-km-lead"><?php echo esc_html( get_the_excerpt() ); ?></p>
             <?php endif; ?>
 
-            <a href="<?php echo esc_url( $cta_url ); ?>" class="gano-btn-primary" rel="noopener">
+            <a href="<?php echo esc_url( $cta_url ); ?>" class="gano-btn-primary gano-km-btn-primary" rel="noopener">
                 <?php echo esc_html( $cta_text ); ?>
             </a>
         </div>
@@ -169,12 +170,12 @@ add_action( 'wp_head', function() use ( $service_schema ) {
                 if ( $products->have_posts() ) :
                     while ( $products->have_posts() ) :
                         $products->the_post();
-                        $wc_product = wc_get_product( get_the_ID() );
+                        $wc_product = function_exists( 'wc_get_product' ) ? wc_get_product( get_the_ID() ) : null;
                         if ( ! $wc_product ) continue;
                         $price    = $wc_product->get_regular_price();
                         $currency = get_woocommerce_currency_symbol();
                         ?>
-                        <article class="gano-plan-card" itemscope itemtype="https://schema.org/Product">
+                        <article class="gano-plan-card gano-km-card" itemscope itemtype="https://schema.org/Product">
                             <h3 itemprop="name"><?php the_title(); ?></h3>
                             <div class="gano-plan-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                                 <meta itemprop="priceCurrency" content="COP">
@@ -186,7 +187,7 @@ add_action( 'wp_head', function() use ( $service_schema ) {
                             <?php if ( has_excerpt() ) : ?>
                                 <p class="gano-plan-desc" itemprop="description"><?php the_excerpt(); ?></p>
                             <?php endif; ?>
-                            <a href="<?php the_permalink(); ?>" class="gano-btn-secondary" itemprop="url">
+                            <a href="<?php the_permalink(); ?>" class="gano-btn-secondary gano-km-btn-secondary" itemprop="url">
                                 Ver detalles
                             </a>
                         </article>
@@ -196,14 +197,14 @@ add_action( 'wp_head', function() use ( $service_schema ) {
                 else :
                     // Fallback estático si WooCommerce no está activo o no hay productos aún
                     $static_plans = array(
-                        array( 'name' => 'Startup Blueprint',   'price' => '196.000', 'desc' => 'Hosting WordPress NVMe Gen4, SSL, Wordfence, soporte 24/7.' ),
-                        array( 'name' => 'Ecosistema Básico',   'price' => '600.000', 'desc' => 'WooCommerce + Wompi PSE, seguridad avanzada, migraciones incluidas.' ),
-                        array( 'name' => 'Ecosistema Avanzado', 'price' => '1.200.000','desc' => 'CDN, backups automáticos, monitoring, soporte dedicado.' ),
-                        array( 'name' => 'Soberanía Digital',   'price' => '2.000.000','desc' => 'Infraestructura dedicada, Zero-Trust, cifrado post-cuántico.' ),
+                        array( 'name' => 'Núcleo Prime',    'price' => '196.000',  'desc' => 'Entrada sólida con NVMe real, SSL y soporte por ticket.' ),
+                        array( 'name' => 'Fortaleza Delta', 'price' => '450.000',  'desc' => 'Arquitectura para negocios en crecimiento con hardening activo.' ),
+                        array( 'name' => 'Bastión SOTA',    'price' => '890.000',  'desc' => 'Rendimiento premium para operaciones críticas y e-commerce.' ),
+                        array( 'name' => 'Ultimate WP',     'price' => '1.200.000','desc' => 'Máxima capacidad para agencias y alto tráfico.' ),
                     );
                     foreach ( $static_plans as $plan ) :
                         ?>
-                        <article class="gano-plan-card" itemscope itemtype="https://schema.org/Product">
+                        <article class="gano-plan-card gano-km-card" itemscope itemtype="https://schema.org/Product">
                             <h3 itemprop="name"><?php echo esc_html( $plan['name'] ); ?></h3>
                             <div class="gano-plan-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                                 <meta itemprop="priceCurrency" content="COP">
@@ -211,7 +212,7 @@ add_action( 'wp_head', function() use ( $service_schema ) {
                                 <span class="gano-plan-period">/mes COP</span>
                             </div>
                             <p class="gano-plan-desc" itemprop="description"><?php echo esc_html( $plan['desc'] ); ?></p>
-                            <a href="<?php echo esc_url( get_site_url() . '/ecosistemas' ); ?>" class="gano-btn-secondary">Ver plan</a>
+                            <a href="<?php echo esc_url( get_site_url() . '/ecosistemas' ); ?>" class="gano-btn-secondary gano-km-btn-secondary">Ver plan</a>
                         </article>
                         <?php
                     endforeach;
@@ -229,7 +230,7 @@ add_action( 'wp_head', function() use ( $service_schema ) {
                 <li><strong>Facturación en COP</strong> — Sin conversiones de divisas ni cargos internacionales.</li>
                 <li><strong>Soporte en español 24/7</strong> — Agentes en Colombia, no bots ni formularios.</li>
                 <li><strong>Seguridad empresarial</strong> — WAF, Wordfence, MU Plugin hardening, 2FA y backups diarios.</li>
-                <li><strong>Paga con PSE, Nequi o tarjeta</strong> — Procesamiento vía Wompi Colombia.</li>
+                <li><strong>Checkout validado en Reseller Store</strong> — Flujo comercial conectado al programa de GoDaddy Reseller.</li>
                 <li><strong>Migraciones incluidas</strong> — Traemos tu sitio sin tiempo de inactividad.</li>
                 <li><strong>Cumplimiento Ley 1581</strong> — Protección de datos colombiana garantizada.</li>
             </ul>
@@ -238,35 +239,4 @@ add_action( 'wp_head', function() use ( $service_schema ) {
 
 </main><!-- #gano-seo-landing -->
 
-<?php
-// Estilos mínimos inline para el template (el diseño real lo toma Elementor)
-add_action( 'wp_footer', function() {
-    ?>
-    <style id="gano-landing-css">
-    .gano-seo-landing { font-family: inherit; }
-    .gano-landing-hero { padding: 60px 20px; text-align: center; background: var(--e-global-color-primary, #0a0a0a); color: #fff; }
-    .gano-landing-h1   { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; margin: 0 0 1rem; }
-    .gano-landing-intro { font-size: 1.1rem; max-width: 640px; margin: 0 auto 2rem; opacity: .85; }
-    .gano-btn-primary   { display: inline-block; padding: .9rem 2.2rem; background: #f5a623; color: #000; font-weight: 700; border-radius: 6px; text-decoration: none; transition: opacity .2s; }
-    .gano-btn-primary:hover { opacity: .85; }
-    .gano-btn-secondary { display: inline-block; padding: .6rem 1.4rem; border: 2px solid currentColor; border-radius: 6px; text-decoration: none; font-weight: 600; margin-top: .5rem; }
-    .gano-landing-pricing, .gano-landing-trust, .gano-landing-content { padding: 60px 20px; }
-    .gano-landing-pricing { background: #f8f8f8; }
-    .gano-landing-pricing h2, .gano-landing-trust h2 { text-align: center; margin-bottom: .5rem; }
-    .gano-pricing-subtitle { text-align: center; color: #666; margin-bottom: 2.5rem; }
-    .gano-plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
-    .gano-plan-card   { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 1.5rem; text-align: center; }
-    .gano-plan-card h3 { margin: 0 0 .75rem; font-size: 1.1rem; }
-    .gano-plan-price  { font-size: 1.5rem; font-weight: 700; color: #0a0a0a; margin-bottom: .5rem; }
-    .gano-plan-period { font-size: .85rem; font-weight: 400; color: #666; }
-    .gano-plan-desc   { font-size: .9rem; color: #555; margin: .75rem 0; }
-    .gano-trust-list  { max-width: 700px; margin: 0 auto; padding-left: 1.2rem; line-height: 2; }
-    @media (prefers-color-scheme: dark) {
-        .gano-plan-card { background: #1a1a1a; border-color: #333; color: #eee; }
-        .gano-landing-pricing { background: #111; }
-    }
-    </style>
-    <?php
-} );
-
-get_footer();
+<?php get_footer();

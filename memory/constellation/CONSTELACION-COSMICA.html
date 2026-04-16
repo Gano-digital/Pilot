@@ -646,7 +646,7 @@
     :root{ --motion-fast:1ms; --motion-med:1ms; --motion-slow:1ms; }
   }
   .sc-layer{position:fixed;inset:0;z-index:18;pointer-events:none}
-  .sc-layer.show{pointer-events:none}
+  .sc-layer.show{pointer-events:auto}
   .sc-corner{
     position:absolute;
     background:linear-gradient(180deg, rgba(8,12,18,.88), rgba(4,7,12,.72));
@@ -1154,13 +1154,13 @@
 
 <div id="app"></div>
 
-<div class="loader" id="loader">
+<div class="loader" id="loader" data-ui-layer="true">
   <div class="ring"></div>
   <div class="txt">Calibrando sistema · Gano Digital</div>
   <div class="txt txt-sub">COMMAND CONSOLE · ENGAGED</div>
 </div>
 
-<div class="hud hud-top">
+<div class="hud hud-top" data-ui-layer="true">
   <div class="brand">
     <div class="eyebrow">COMMAND · GALACTIC MAP · v3.0</div>
     <h1>Sistema <b>Gano Digital</b></h1>
@@ -1173,15 +1173,15 @@
   </div>
 </div>
 
-<div class="legend" id="legend"></div>
+<div class="legend" id="legend" data-ui-layer="true"></div>
 
-<div class="scale-legend">
+<div class="scale-legend" data-ui-layer="true">
   <div><b>↓ ESCALA ORBITAL</b></div>
   <div>Núcleo → Cinturón → Periferia</div>
   <div>Distancia ≈ Independencia operacional</div>
 </div>
 
-<div class="controls">
+<div class="controls" data-ui-layer="true">
   <button class="ctrl" id="btnReset" title="Reset view">⌂</button>
   <button class="ctrl active" id="btnRotate" title="Auto rotate">↻</button>
   <button class="ctrl active" id="btnLines" title="Connections">≋</button>
@@ -1192,7 +1192,7 @@
 </div>
 
 <!-- =========== SC MENU MOTION LAYER (conceptos del video) =========== -->
-<div class="sc-layer" id="scLayer" aria-hidden="true">
+<div class="sc-layer" id="scLayer" aria-hidden="true" data-ui-layer="true">
   <div class="sc-corner sc-corner--tl" id="scTL">
     <div class="sc-grid" aria-hidden="true"></div>
     <div class="sc-corner-title">TACTICAL GRID</div>
@@ -1261,8 +1261,8 @@
 </div>
 
 <!-- =========== INDEXER (top-left master menu) =========== -->
-<div class="indexer" id="indexer">
-  <button class="idx-toggle" id="idxToggle">
+<div class="indexer" id="indexer" data-ui-layer="true">
+  <button class="idx-toggle" id="idxToggle" type="button" aria-controls="idxPanel" aria-expanded="false">
     <span class="dot"></span>
     <span class="lbl">INDEX · SYSTEMS REGISTRY</span>
     <span class="tri">▶</span>
@@ -1281,7 +1281,7 @@
 </div>
 
 <!-- =========== BRIEF PANEL (Dead Space diegetic HUD) =========== -->
-<aside class="panel" id="panel">
+<aside class="panel" id="panel" data-ui-layer="true">
   <div class="brackets"></div>
   <button class="p-close" id="closePanel">×</button>
   <div class="panel-inner">
@@ -2744,33 +2744,35 @@ const SFX_NAV = {
   navMenuClose: 'tadUpd02.wav',
   navPanelClose: 'PAdUpd06.wav',
 };
-/** Núcleo — pools para variedad (siempre misma familia SC: confirm/advisor) */
+/** Núcleo/neutral: sin sesgo de raza; hover=Rdy, select=Yes, crit=Err */
 const SFX_STAR = {
-  hoverPool: ['TSCRdy00.wav', 'TSCYes01.wav'],
-  brief: 'pprRdy00.wav',
+  hoverPool: ['TSCRdy00.wav', 'pprRdy00.wav', 'zdrRdy00.wav'],
+  briefOk: ['TSCUpd00.wav', 'PAdUpd02.wav'],
+  briefWarn: ['tadUpd02.wav', 'PAdUpd06.wav'],
+  briefCrit: ['tadErr01.wav', 'PAdErr00.wav', 'ZAdErr00.wav'],
   selectPool: ['TSCYes00.wav', 'TSCYes03.wav'],
 };
-/** Por facción: hover = ready scans; select = “ataque”/ack combate; brief* = estado misión */
+/** Por facción: hover=Rdy, select=Yes, warn/crit distintos (Err reservado a crit) */
 const SFX_RACE = {
   terran: {
-    hoverPool: ['marine-TMaRdy00.wav', 'ghost-tghrdy00.wav', 'TSCYes01.wav'],
+    hoverPool: ['marine-TMaRdy00.wav', 'ghost-tghrdy00.wav', 'TSCRdy00.wav'],
     selectPool: ['tank-ttayes00.wav', 'ghost-tghyes00.wav', 'vulture-tvuyes00.wav'],
-    briefOk: ['TSCYes01.wav', 'TSCYes00.wav'],
-    briefWarn: ['tadErr01.wav', 'TSCYes03.wav'],
-    briefCrit: ['tadErr01.wav', 'ghost-tghyes00.wav'],
+    briefOk: ['TSCYes01.wav', 'TSCYes00.wav', 'TSCUpd00.wav'],
+    briefWarn: ['TSCUpd00.wav', 'tadUpd02.wav'],
+    briefCrit: ['tadErr01.wav'],
   },
   protoss: {
-    hoverPool: ['pzeRdy00.wav', 'probe-pprYes00.wav', 'pprRdy00.wav'],
+    hoverPool: ['pzeRdy00.wav', 'pprRdy00.wav'],
     selectPool: ['zealot-PZeYes00.wav', 'dragoon-PDrYes00.wav', 'shuttle-PShYes00.wav'],
     briefOk: ['probe-pprYes00.wav', 'PAdUpd02.wav'],
-    briefWarn: ['PAdUpd02.wav', 'PAdErr06.wav'],
+    briefWarn: ['PAdUpd02.wav', 'PAdUpd06.wav'],
     briefCrit: ['PAdErr00.wav', 'PAdErr06.wav'],
   },
   zerg: {
     hoverPool: ['zdrRdy00.wav', 'hydra-zhyRdy00.wav', 'zergling-ZZeRdy00.wav'],
-    selectPool: ['zergling-ZZeYes00.wav', 'hydra-zhyRdy00.wav'],
+    selectPool: ['zergling-ZZeYes00.wav', 'zdrYes01.wav'],
     briefOk: ['zdrYes01.wav', 'zergling-ZZeYes00.wav'],
-    briefWarn: ['zergling-ZZeRdy00.wav', 'hydra-zhyRdy00.wav'],
+    briefWarn: ['tadUpd02.wav', 'PAdUpd06.wav'],
     briefCrit: ['ZAdErr00.wav', 'ZAdErr06.wav'],
   },
 };
@@ -2787,12 +2789,28 @@ let lastHoverSfxAt = 0;
 const UI_HOVER_GAP_MS = 420;
 let lastUiHoverKey = '';
 let lastUiHoverAt = 0;
+const sfxShuffleState = new Map();
 function sfxPickPool(pool, seed){
   if(pool == null) return null;
   if(typeof pool === 'string') return pool;
   if(!Array.isArray(pool) || pool.length === 0) return null;
-  const n = Math.floor(Math.abs(Number(seed)) || performance.now()) % pool.length;
-  return pool[n];
+  const key = pool.join('|');
+  let state = sfxShuffleState.get(key);
+  if(!state || !Array.isArray(state.bag) || state.bag.length === 0){
+    const bag = pool.slice();
+    for(let i=bag.length-1;i>0;i--){
+      const j = Math.floor((Math.abs(Number(seed)) + performance.now() + i*17) % (i+1));
+      [bag[i], bag[j]] = [bag[j], bag[i]];
+    }
+    state = { bag, last: null };
+  }
+  let pick = state.bag.pop();
+  if(pool.length > 1 && pick === state.last){
+    pick = state.bag.pop() || pick;
+  }
+  state.last = pick;
+  sfxShuffleState.set(key, state);
+  return pick;
 }
 function sfxMasterGain(){
   if(sfxMuted) return 0;
@@ -2829,7 +2847,10 @@ function hudSfxNav(key){
 function sfxBriefOpen(sys){
   if(!sfxUnlocked || sfxMuted) return;
   if(sys.type === 'star' || sys.id === '00'){
-    sfxPlayFile(SFX_STAR.brief, sfxMasterGain());
+    const st = hudStatusFor(sys);
+    const tier = st === 'crit' ? 'briefCrit' : st === 'warn' ? 'briefWarn' : 'briefOk';
+    const rel = sfxPickPool(SFX_STAR[tier], String(sys.id) + tier);
+    if(rel) sfxPlayFile(rel, sfxMasterGain());
     return;
   }
   const st = hudStatusFor(sys);
@@ -2925,9 +2946,7 @@ addEventListener('pointerdown', (e)=>{
 
 /** Clics en canvas vs UI: inspeccionar DOM no debe disparar raycast; coords sincronizadas en pointerdown */
 function isEventOnUiLayer(el){
-  return !!(el && el.closest && el.closest(
-    '.legend, .controls, .panel, .indexer, .hud-top, .scale-legend, #loader, .loader, aside.panel, .sc-layer, .sc-modal, .sc-portals'
-  ));
+  return !!(el && el.closest && el.closest('[data-ui-layer="true"]'));
 }
 
 addEventListener('pointermove', e=>{ syncPointer(e); }, { passive: true });
@@ -3173,6 +3192,9 @@ function buildIndexer(){
     const pc = portraitConfigFor(sys);
     const item = document.createElement('div');
     item.className = 'idx-item idx-item--race-' + pc.race;
+    item.setAttribute('role', 'button');
+    item.setAttribute('tabindex', '0');
+    item.setAttribute('aria-label', `Abrir sistema ${sys.name}`);
     item.innerHTML = `
       <div class="idx-portrait-wrap race-${pc.race}">
         <img class="idx-portrait" src="${PORTRAIT_BASE}${pc.file}" alt="" />
@@ -3191,6 +3213,12 @@ function buildIndexer(){
         if(idx>=0) focusPlanet(idx);
       }
     };
+    item.addEventListener('keydown', (ev)=>{
+      if(ev.key === 'Enter' || ev.key === ' '){
+        ev.preventDefault();
+        item.click();
+      }
+    });
     item.addEventListener('pointerenter', ()=>{
       sfxUiHoverRace(pc.race, 'idx:'+sys.id);
     });
@@ -3200,10 +3228,14 @@ function buildIndexer(){
 function openIndexer(){
   idxPanel.classList.add('open');
   idxToggle.classList.add('open');
+  idxToggle.setAttribute('aria-expanded', 'true');
+  const first = idxList.querySelector('.idx-item');
+  first && first.focus();
 }
 function closeIndexer(){
   idxPanel.classList.remove('open');
   idxToggle.classList.remove('open');
+  idxToggle.setAttribute('aria-expanded', 'false');
 }
 idxToggle.onclick = (e)=>{
   e.stopPropagation();
@@ -3212,6 +3244,9 @@ idxToggle.onclick = (e)=>{
 };
 document.addEventListener('click', (e)=>{
   if(!document.getElementById('indexer').contains(e.target)) closeIndexer();
+});
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape' && idxPanel.classList.contains('open')) closeIndexer();
 });
 buildIndexer();
 
@@ -3335,6 +3370,7 @@ function scOpenPortals(){
 // Cerrar por overlay click (si está activo)
 if(scLayer){
   scLayer.addEventListener('click', (e)=>{
+    e.stopPropagation();
     // clicks en botones internos no cierran
     if(e.target && e.target.closest && e.target.closest('.sc-modal, .sc-portal')) return;
     scCloseMenu();

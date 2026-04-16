@@ -107,14 +107,12 @@ get_header(); ?>
 
         <div class="gano-contacto__item">
           <strong>Horario de atención</strong>
-          <span><!-- [NIT_PENDIENTE]: confirmar horario real antes de publicar -->
-            Por confirmar — soporte por ticket disponible 24/7
-          </span>
+          <span>Soporte por ticket disponible 24/7</span>
         </div>
 
-        <hr style="margin:1.5rem 0; border-color:#e2e8f0;">
+        <hr class="gano-contacto__divider">
 
-        <p style="font-size:.875rem; color:#64748b;">
+        <p class="gano-contacto__cta-link">
           ¿Ya sabes qué necesitas?<br>
           <a href="/ecosistemas">Ver planes y precios →</a>
         </p>
@@ -124,26 +122,5 @@ get_header(); ?>
   </section>
 
 </main>
-
-<style>
-.gano-contacto__layout { display: grid; grid-template-columns: 1fr 360px; gap: 3rem; align-items: start; }
-.gano-contacto__info { background: #f8fafc; border-radius: 12px; padding: 2rem; }
-.gano-contacto__item { margin-bottom: 1.25rem; }
-.gano-contacto__item strong { display: block; font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: #64748b; margin-bottom: .25rem; }
-.gano-contacto__item a { color: var(--gano-blue, #2952CC); text-decoration: none; font-weight: 600; }
-.gano-contacto__item a:hover { text-decoration: underline; }
-.gano-form { display: flex; flex-direction: column; gap: 1.25rem; }
-.gano-form__group { display: flex; flex-direction: column; gap: .375rem; }
-.gano-form__group label { font-size: .875rem; font-weight: 600; }
-.gano-form__optional { font-weight: 400; color: #94a3b8; }
-.gano-form__group input,
-.gano-form__group select,
-.gano-form__group textarea { padding: .625rem .875rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; font-family: inherit; width: 100%; box-sizing: border-box; }
-.gano-form__group input:focus,
-.gano-form__group select:focus,
-.gano-form__group textarea:focus { outline: 3px solid var(--gano-blue, #2952CC); outline-offset: 2px; border-color: var(--gano-blue, #2952CC); }
-.gano-form__privacy { font-size: .8125rem; color: #64748b; margin: 0; }
-@media (max-width: 768px) { .gano-contacto__layout { grid-template-columns: 1fr; } }
-</style>
 
 <?php get_footer(); ?>

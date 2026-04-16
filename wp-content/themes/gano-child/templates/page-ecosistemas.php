@@ -14,14 +14,14 @@
 get_header();
 ?>
 
-<main id="gano-main-content" class="gano-ecosistemas-page">
+<main id="gano-main-content" class="gano-ecosistemas-page gano-km-shell">
 
   <!-- ── HERO DE SECCIÓN ─────────────────────────────────────────── -->
-  <section class="gano-ecosistemas-hero gano-dark-section">
-    <div class="gano-container">
-      <p class="gano-label-pill">Arquitecturas Gano Digital</p>
-      <h1>Elige la infraestructura que merece tu proyecto.</h1>
-      <p class="gano-ecosistemas-hero__sub">
+  <section class="gano-ecosistemas-hero gano-dark-section gano-km-shell">
+    <div class="gano-container gano-km-container">
+      <p class="gano-label-pill gano-km-live-badge">Arquitecturas Gano Digital</p>
+      <h1 class="gano-km-title">Elige la infraestructura que merece tu proyecto.</h1>
+      <p class="gano-ecosistemas-hero__sub gano-km-lead">
         Cuatro planes construidos sobre el programa Reseller de GoDaddy, operados en español
         y facturados en pesos colombianos. Elige el que corresponde a tu etapa; cambia cuando crezcas.
       </p>
@@ -149,7 +149,7 @@ get_header();
         if ( $plan['tag'] ) $card_classes .= ' gano-plan-card--featured';
         ?>
 
-        <article class="<?php echo esc_attr( $card_classes ); ?>" id="<?php echo esc_attr( $plan['id'] ); ?>">
+        <article class="<?php echo esc_attr( $card_classes ); ?> gano-km-card" id="<?php echo esc_attr( $plan['id'] ); ?>">
 
           <?php if ( $plan['tag'] ) : ?>
             <span class="gano-plan-badge"><?php echo esc_html( $plan['tag'] ); ?></span>
@@ -176,17 +176,17 @@ get_header();
 
           <div class="gano-plan-ctas">
             <?php if ( $is_pending ) : ?>
-              <a href="/contacto" class="gano-btn" aria-label="<?php echo esc_attr( $plan['cta_primario'] ); ?> — contactar para precio">
+              <a href="/contacto" class="gano-btn gano-km-btn-primary" aria-label="<?php echo esc_attr( $plan['cta_primario'] ); ?> — contactar para precio">
                 <?php echo esc_html( $plan['cta_primario'] ); ?>
               </a>
               <small class="gano-plan-pending-note">Carrito en configuración · Contacta para activar</small>
             <?php else : ?>
-              <a href="<?php echo esc_url( $cart_url ); ?>" class="gano-btn" target="_blank" rel="noopener">
+              <a href="<?php echo esc_url( $cart_url ); ?>" class="gano-btn gano-km-btn-primary" target="_blank" rel="noopener">
                 <?php echo esc_html( $plan['cta_primario'] ); ?>
               </a>
             <?php endif; ?>
 
-            <a href="<?php echo esc_url( $plan['enlace_detalle'] ); ?>" class="gano-link-secundario">
+            <a href="<?php echo esc_url( $plan['enlace_detalle'] ); ?>" class="gano-link-secundario gano-km-btn-secondary">
               <?php echo esc_html( $plan['cta_secundario'] ); ?> →
             </a>
           </div>
@@ -201,7 +201,7 @@ get_header();
   <!-- ── NOTA DE PRECIOS ─────────────────────────────────────────── -->
   <section class="gano-ecosistemas-nota">
     <div class="gano-container">
-      <p><small>Precios indicativos en COP (pesos colombianos), IVA incluido. Sujetos a variación. Consulta el carrito para el valor final. Facturación a través del programa Reseller de GoDaddy.</small></p>
+      <p class="gano-km-glass"><small>Precios indicativos en COP (pesos colombianos), IVA incluido. Sujetos a variación. Consulta el carrito para el valor final. Facturación a través del programa Reseller de GoDaddy.</small></p>
     </div>
   </section>
 
@@ -235,11 +235,11 @@ get_header();
   </section>
 
   <!-- ── CTA FINAL ───────────────────────────────────────────────── -->
-  <section class="gano-dark-section" style="text-align:center; padding: 5rem 1.5rem;">
-    <div class="gano-container">
+  <section class="gano-dark-section gano-ecosistemas__cta-final gano-km-shell">
+    <div class="gano-container gano-km-container">
       <h2>¿No sabes cuál elegir?</h2>
       <p>Cuéntanos dónde estás y te decimos qué arquitectura corresponde a tu etapa. Sin presión.</p>
-      <a href="/contacto" class="gano-btn">Hablar con el equipo</a>
+      <a href="/contacto" class="gano-btn gano-km-btn-primary">Hablar con el equipo</a>
     </div>
   </section>
 
