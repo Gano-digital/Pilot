@@ -27,6 +27,29 @@ Auditoría Integral de Gano Digital (Marzo 2026). Trabaja sobre el **workspace d
 
 ---
 
+## Contexto SOTA 2026 — Amenazas y defensas emergentes
+
+### AI-Driven Attacks (+45% desde early 2025)
+- **Estadística clave:** Ataques brute force aumentaron 45% desde enero 2025
+- **Novedad:** 1 de 6 breaches incluye componente IA
+- **Defensa principal 2026:** Passkeys + 2FA (reemplazando contraseñas) — ver sección V-06
+
+### Plugin Vulnerabilities (96-97% de riesgos)
+- **SOTA Mitigación:** Software Bill of Materials (SBOM) tracking
+- **Acción:** Auditar proveedor de plugins ANTES de instalar
+- **Recomendación:** Mantener solo plugins necesarios; desinstalar unused
+
+### Zero-Trust Architecture (Fase 2+)
+Gano Digital ya implementa:
+1. Server-level PHP hardening (WP_DEBUG=false ✓)
+2. Application config (CSP headers ✓, Rate limiting ✓)
+3. Modern auth (Passkeys, 2FA) — **FASE 5+ RECOMENDADO**
+4. Database protection (prepared statements en plugins)
+5. WAF deployment (Wordfence ✓)
+6. Continuous monitoring (logs + alerts)
+
+---
+
 ## Vulnerabilidades por prioridad
 
 > **Nota (2026):** Los ítems **V-02 / V-03** que citan `gano-wompi-integration/` solo aplican **si ese plugin sigue en el entorno**. El checkout objetivo del negocio es **GoDaddy Reseller**; no priorizar mantener pasarelas locales.
@@ -206,6 +229,49 @@ register_rest_route('gano-agent/v1', '/log', array(
 
 ---
 
+### V-06 ALTA — Passkeys para admin (FASE 5+ / Opcional post-MVP)
+
+**Archivo**: `wp-config.php` + plugin Wordfence (ya instalado)
+
+Passkeys reemplazan contraseñas como autenticación de nivel empresarial. **Recomendado para post-MVP** (no prioritario antes de Go-Live FASE 2-4).
+
+Implementación futura:
+```php
+// Wordfence soporta passkeys nativamente en versión 7.13+
+// WPSEC → Wordfence → Two-Factor Auth → Enable Passkey Support
+```
+
+**Beneficios SOTA 2026:**
+- Imposible de fuerza bruta (cryptographic binding)
+- Previene ataques phishing (validación por dominio)
+- Compatible con navegadores modernos + U2F tokens físicos
+- Reduce carga de soporte (sin resets de password)
+
+**Cuando activar:** Post-deploy estable (FASE 5) o cuando Diego lo indique.
+
+---
+
+### V-07 MEDIA — VSI (Visual Stability Index) Monitoring
+
+**Herramientas**: Google PageSpeed Insights 2026 edition + DebugBear (opcional)
+
+VSI es la nueva métrica SOTA 2026 que mide estabilidad layout durante **TODA la sesión** (no solo load).
+Reemplaza a CLS como métrica más precisa.
+
+**Monitoreo:**
+1. PageSpeed Insights → tab "Lab Data" → buscar "Visual Stability Index"
+2. Grabar baseline en FASE 2
+3. Configurar alertas si VSI > 0.15 (umbral recomendado)
+
+**Herramienta avanzada (opcional):**
+```bash
+# DebugBear: tracking automático diario
+# Setup: https://www.debugbear.com/dashboard
+# Integración: URL gano.digital → monitoreo 24/7
+```
+
+---
+
 ## Checklist de verificación post-parche
 
 Antes de considerar completada la fase de seguridad, verificar:
@@ -220,6 +286,9 @@ Antes de considerar completada la fase de seguridad, verificar:
 - [ ] 2FA activo en todas las cuentas admin (usar Wordfence 2FA — ya instalado)
 - [ ] Permisos de archivos auditados: wp-config.php → 400, directorios → 755, archivos → 644
 - [ ] Transacción de pago completa testeada en sandbox Wompi
+- [ ] Passkeys activadas en Wordfence (FASE 5+, opcional)
+- [ ] VSI monitoreado en PageSpeed Insights (baseline grabado FASE 2)
+- [ ] SBOM de plugins documentado (auditar proveedores activos)
 
 ## Herramientas de verificación
 

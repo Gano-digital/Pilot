@@ -18,6 +18,37 @@ billing panel, facturación DIAN, portal de cliente, soporte, dominios y VPS.
 
 ---
 
+## ACTUALIZACIÓN SOTA 2026-04-12 — GoDaddy Reseller Integration
+
+### Good as Gold Account (Requisito para procesamiento de pagos)
+- **Estado actual:** Necesario validar en Reseller Control Center (RCC)
+- **Requisito:** Good as Gold account status activo (creó antes de procesar pagos transaccionales)
+- **Acción FASE 3:** Confirmar en RCC → GoDaddy Developer Portal
+- **Webhook HTTPS:** Ya implementado en deploy.yml (validado SOTA 2026)
+
+### RCC Advanced Features (Fase 3+)
+- **Bundle Selector:** Mapear SKUs GoDaddy → 3-year bundles Gano Digital
+- **Catálogo Dinámico:** Sincronización automática de productos GoDaddy
+- **Pricing Override:** ACF + meta campos técnicos en gano-reseller-enhancements.php
+- **Marca Blanca Completa:** Checkout, carrito, facturación bajo dominio gano.digital
+
+### Integración Webhook HTTPS (SOTA Validado)
+```javascript
+// Ya implementado en GitHub Actions workflow 04
+// Alternativa a SSH directo (más seguro, recomendado 2026)
+Trigger: Push a main → Webhook → Servidor gano.digital
+Validación: HMAC SHA256 signature
+Payload: código comprimido, parches aplicados automáticamente
+```
+
+### Alternativa API Developer (Opcional, NOT prioritaria)
+**Developer API de GoDaddy:** Disponible para automatizaciones avanzadas FUERA del núcleo vitrina.
+- **Requisito:** Key/Secret en GitHub Secrets (no hardcodeado)
+- **Good as Gold:** Solo necesario si API va a **comprar productos** (debita prepago)
+- **Prioridad SOTA 2026:** Reseller Store + RCC satisface MVP; API es anexo
+
+---
+
 ## Pivot comercial (Abril 2026)
 
 La estrategia vigente en `memory/projects/gano-digital.md` y **`TASKS.md`** prioriza **marca blanca GoDaddy Reseller**
@@ -166,11 +197,47 @@ sites:
 
 ---
 
+## Checklist Reseller Control Center (RCC) — FASE 3
+
+### Pre-Requisitos
+- [ ] Good as Gold account activo en GoDaddy
+- [ ] API Key + Secret en GitHub Secrets (para automatizaciones opcionales)
+- [ ] Webhook HTTPS validado (deploy.yml workflow 04)
+
+### RCC Configuration Steps
+1. **Login RCC:** https://reseller.godaddy.com/
+2. **Catálogo:** Revisar productos disponibles, verificar precios en COP
+3. **Bundle Mapping:** Crear equivalencias entre SKUs GoDaddy → planes Gano
+   - GANO-STARTER-3YR → [SKU de WordPress Hosting 3-year]
+   - GANO-PRO-3YR → [SKU de Pro plan equivalente]
+   - GANO-ENTERPRISE-3YR → [SKU Enterprise]
+4. **Marca Blanca:** Verificar que checkout redirige a gano.digital (no godaddy.com)
+5. **Smoke Test:** Comprar bundle completo → verificar carrito → confirmar factura
+
+### Validación GoDaddy Reseller Integration
+```bash
+# Verificar que Reseller Store plugin es detectado
+wp plugin list --status=active | grep -i reseller
+
+# Verificar webhooks HTTPS funcionan
+curl -X POST https://gano.digital/wp-json/gano-reseller/v1/webhook-test \
+  -H "Content-Type: application/json" \
+  -d '{"test": true}'
+
+# Verificar buenas prácticas
+- Good as Gold: [Confirmar sí/no]
+- Webhooks firmados: [SHA256 HMAC validado]
+- Catálogo sincronizado: [Últimas 24h]
+```
+
+---
+
 ## Contactos clave Fase 4
 
 | Contacto | Para qué | Datos |
 |---------|---------|-------|
+| GoDaddy Reseller Support | RCC, webhooks, Good as Gold | https://reseller.godaddy.com/support |
 | ESTUPENDO (Ismary Lara) | DIAN facturación | ismary.lara@estupendo.com.co / +57 3132323588 |
-| WHMCS Support | Licencia y soporte | https://whmcs.com/support |
-| Wompi Soporte | Módulo WHMCS | Panel Wompi → Soporte |
-| Hetzner | VPS provider | https://www.hetzner.com/support |
+| WHMCS Support | Licencia y soporte (si se implementa) | https://whmcs.com/support |
+| Wompi Soporte | Módulo WHMCS (si se implementa) | Panel Wompi → Soporte |
+| Hetzner | VPS provider (si se implementa) | https://www.hetzner.com/support |

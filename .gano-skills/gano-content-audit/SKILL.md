@@ -225,6 +225,60 @@ El chat (`gano-chat.js`) capta leads (nombre + WhatsApp). El texto del nudge aut
 "detecté una vulnerabilidad en tu sitio" puede ser alarmista. Evaluar cambio a algo
 más empático: "¿Cómo podemos ayudarte con tu proyecto digital?"
 
+### Core Web Vitals Auditing (SOTA 2026)
+
+**Tres métricas constantes desde 2024 — NO cambiaron en 2026:**
+
+| Métrica | Target 2026 | Herramienta | Acción |
+|---------|-----------|-------------|--------|
+| **LCP** (Largest Contentful Paint) | < 2.5s | Lighthouse / PageSpeed | Optimizar image loading + font strategy |
+| **INP** (Interaction to Next Paint) | < 200ms | Lighthouse / PageSpeed | Reducir JavaScript blocking |
+| **CLS** (Cumulative Layout Shift) | < 0.1 | Lighthouse / PageSpeed | Fijar dimensiones en widgets Elementor |
+
+**NUEVA métrica 2026: VSI (Visual Stability Index)**
+- **Qué mide:** Estabilidad layout durante **TODA la sesión** (no solo load)
+- **Target:** < 0.15 (tighter que CLS)
+- **Ubicación:** PageSpeed Insights 2026 → "Lab Data" → "Visual Stability Index"
+- **Acción:** Monitorear baseline en FASE 2 + configurar alertas
+
+**Ranking Impact SOTA 2026:**
+- **Scenario 1:** Contenido similar → **CWV decide ranking** 
+- **Scenario 2:** Contenido diferente → **E-E-A-T primero**, CWV segunda
+- **Dato importante:** AMP ya no da ventaja (standard HTML optimizado es igual)
+
+**Auditoría paso a paso:**
+```bash
+# 1. Ir a PageSpeed Insights
+# URL: https://pagespeed.web.dev/
+
+# 2. Ingresar: https://gano.digital (+ todos los SOTA URLs)
+
+# 3. Anotar valores en FASE 2:
+#   - LCP
+#   - INP
+#   - CLS
+#   - VSI (nuevo)
+
+# 4. Si alguno es rojo (>80ms de threshold):
+#   - Elementor: revisar Flexbox vs Section (DOM bloat)
+#   - Imágenes: comprimir + WebP format + lazy loading
+#   - Fonts: máx 2-3 familias, limitar weights
+#   - JavaScript: defer no-critical scripts
+
+# 5. Target: todos VERDE (90+) en Lighthouse
+```
+
+**Herramienta avanzada (opcional post-MVP):**
+```
+DebugBear: https://www.debugbear.com
+- Monitoreo automático diario
+- Alertas si métricas se degradan
+- Historiales de cambio por deploy
+- Reporte ejecutivo para stakeholders
+```
+
+---
+
 ### Homepage Elementor y clases SOTA (Abril 2026)
 
 - **Clases y mapeo** (repo): `memory/content/elementor-home-classes.md` — qué clase CSS va en cada widget; alinear con `gano-child` (`style.css` v1.0.1+).
@@ -232,3 +286,17 @@ más empático: "¿Cómo podemos ayudarte con tu proyecto digital?"
 - **Menú:** el tema hijo registra `primary` además de `main` (Hello/Royal); en Elementor asignar el menú correcto al **Header** si el sitio no muestra navegación.
 - **Git vs servidor:** cambios en Elementor viven en **BD**; el agente en GitHub solo puede preparar **código** (tema, MU-plugins, docs). Issues `[sync]` o solo servidor: dejar checklist en el issue o en `DEV-COORDINATION.md`.
 - Orquestación masiva de issues: skill **`gano-github-copilot-orchestration`**.
+
+---
+
+### Arquitectura Elementor SOTA 2026 — Flexbox vs Legacy
+
+**Descobrimiento SOTA 2026:** Flexbox Container reduce DOM 30-40% vs legacy Section/Column nesting.
+
+**Impacto en Core Web Vitals:**
+- Fewer DOM nodes → faster parsing → mejor LCP
+- Menos CSS payload → mejor INP
+- Animaciones CSS optimizadas en Flexbox → mejor CLS/VSI
+
+**Recomendación:** Migrar hero de Section → Flexbox Container.
+**Skill dedicada:** `.gano-skills/gano-elementor-flexbox-migration/` (crear FASE 2).
