@@ -183,7 +183,7 @@ Antes de mergear cambios en `.github/workflows/`:
 |---------|-------------|
 | [GitHub Docs — Permisos del `GITHUB_TOKEN`](https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication#permissions-for-the-github_token) | Tabla oficial de permisos |
 | [GitHub Docs — `pull_request_target` seguro](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions#understanding-the-risk-of-script-injections) | Inyección de scripts y forks |
-| [GitHub Docs — Hardenling for Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions) | Guía completa de hardening |
+| [GitHub Docs — Hardening for Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions) | Guía completa de hardening |
 | [`github-actions-audit-2026-04.md`](github-actions-audit-2026-04.md) | Auditoría de workflows Gano Digital (inventario + fallos) |
 | [`security-guardian-playbook-2026.md`](security-guardian-playbook-2026.md) | Playbook del guardián de seguridad (sesiones + repo) |
 | [`../research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md`](../research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md) | SOTA: cadena de suministro CI, runners self-hosted |
