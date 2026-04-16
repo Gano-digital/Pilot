@@ -116,7 +116,7 @@ jobs:
 
   test-activation:
     name: "🧪 Test Plugin Activation"
-    runs-on: [self-hosted, gano-production]
+    runs-on: ubuntu-latest
     needs: validate-structure
     
     steps:

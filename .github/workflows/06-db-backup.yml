@@ -20,7 +20,7 @@ permissions:
 jobs:
   backup:
     name: 💾 Database Backup
-    runs-on: [self-hosted, gano-production]
+    runs-on: ubuntu-latest
     
     steps:
       - uses: actions/checkout@v6

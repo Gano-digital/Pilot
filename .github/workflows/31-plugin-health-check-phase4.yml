@@ -106,7 +106,7 @@ jobs:
 
   test-activation:
     name: "🧪 Test Activation with Reseller"
-    runs-on: [self-hosted, gano-production]
+    runs-on: ubuntu-latest
     
     steps:
       - uses: actions/checkout@v6
