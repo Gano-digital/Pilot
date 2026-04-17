@@ -105,6 +105,8 @@ _Última actualización: Abril 2026_
 
 **ESTRATEGIA ACTUALIZADA**: Toda la facturación y el checkout recaen sobre el **carrito y el programa nativos** del GoDaddy Reseller (RCC + Reseller Store), no sobre la **API REST** del Developer Portal. Esa API es **opcional** solo como herramienta complementaria (scripts, back-office, futuro billing); **Good as Gold** aplica cuando haya **compras** vía API, no para uso meramente consultivo. Se elimina el overhead de mantener paneles de facturación locales (WHMCS) **mientras** el modelo activo sea Reseller; `memory/research/fase4-plataforma.md` queda como referencia para expansiones posteriores.
 
+**Referencias operativas API GoDaddy Reseller:** [`memory/research/godaddy-api-reseller-operations-2026.md`](memory/research/godaddy-api-reseller-operations-2026.md) — ToU resumidos, flujo OTE → producción → Good as Gold, matriz acción/requisito/riesgo.
+
 - [ ] **Depurar Catálogo en GoDaddy Reseller Control Center**:
   - Asegurar que los productos (Hosting, VPS, SSL) tengan el precio base en el RCC (Reseller Control Center).
 - [ ] **Mapeo de UI SOTA -> Reseller**:
