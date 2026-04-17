@@ -17,10 +17,41 @@
 /wp-content/upgrade/
 
 # ─── Credenciales y Archivos Sensibles ────────────────────────────────────────
-# Credenciales locales — NUNCA en git
+# Variables de entorno — NUNCA en git
 .env
 .env.*
 !.env.example
+
+# Certificados y claves criptográficas
+# Nota: archivos ya trackeados de Wordfence (*.pem/*.key en wp-content/plugins/wordfence/)
+# no se ven afectados porque gitignore solo actúa sobre archivos NO trackeados.
+# Se añaden excepciones explícitas para los archivos del plugin Wordfence (claves públicas,
+# no credenciales) en caso de que alguien haga "git rm --cached" y los quiera reincorporar.
+*.pem
+*.key
+*.p12
+*.pfx
+*.ovpn
+*.ppk
+!wp-content/plugins/wordfence/**/*.pem
+!wp-content/plugins/wordfence/**/*.key
+
+# Claves SSH
+id_rsa
+id_rsa.pub
+id_rsa.*
+id_ed25519
+id_ed25519.pub
+id_ed25519.*
+id_ecdsa
+id_ecdsa.pub
+id_dsa
+id_dsa.pub
+
+# Configuración local de herramientas (p.ej. Azure Functions, VSCode, etc.)
+local.settings.json
+appsettings.local.json
+
 gano_sftp_manager.py
 # Scripts de operaciones destructivas / one-off (mantener solo en local)
 run_cleanup.py
@@ -42,6 +73,11 @@ deploy.ps1
 
 # ─── Base de Datos ────────────────────────────────────────────────────────────
 *.sql
+*.sql.gz
+*.sql.bz2
+*.sqlite
+*.sqlite3
+*.db
 CREATE_STAGING_DB.sql
 
 # ─── Dependencias (no subir vendor de PHP/Node) ───────────────────────────────
@@ -66,6 +102,10 @@ wp-content/debug.log
 ../configs/
 *.bak
 *.backup
+*.orig
+
+# Directorio de reportes generados (PDFs/HTML locales; no versionar)
+reports/
 
 # Progreso local cola Claude dispatch (no commitear)
 memory/claude/dispatch-state.json
