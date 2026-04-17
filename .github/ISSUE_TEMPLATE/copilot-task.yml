@@ -7,6 +7,7 @@ body:
     attributes:
       value: |
         Usa **una issue por tarea concreta** (p. ej. “asignar menú primary”, “reemplazar Lorem en pilares”). Así los agentes y el CI pueden cerrar hitos sin solaparse.
+        **⚠️ No pegues contraseñas, tokens ni credenciales** en ningún campo de este formulario.
 
   - type: dropdown
     id: area

@@ -1,7 +1,12 @@
 # Nota Crítica: Plugins de Fase — NO eliminar prematuramente
 
 **Fecha de nota**: Marzo 18, 2026
+**Última revisión**: 2026-04-17
 **Confirmado por**: Diego (instrucción explícita)
+
+> **Runbook operativo**: ver `memory/ops/runbook-activacion-wp-admin-2026-04-16.md`
+> **Orden oficial**: `phase1 → phase2 → phase3 → content-importer → phase6 → phase7 → reseller-enhancements` (permanente).
+> **Script WP-CLI**: `scripts/activate-gano-phases.sh` (úsese sólo cuando haya SSH + secretos configurados).
 
 ## Cuáles son
 
@@ -48,14 +53,28 @@ historial de CVEs críticos (CVE-2020-25213, CVSS 10.0). Eliminar inmediatamente
 
 ## Estado de verificación de cada fase
 
-| Plugin | ¿Activado en WP? | ¿Contenido confirmado? | ¿Listo para eliminar? |
-|--------|-----------------|------------------------|----------------------|
-| phase1-installer | ❓ Por verificar | ❓ | ❌ NO |
-| phase2-business | ❓ Por verificar | ❓ | ❌ NO |
-| phase3-content | ❓ Por verificar | ❓ | ❌ NO |
-| phase6-catalog | ❓ Por verificar | ❓ Los 4 ecosistemas existen | ❌ NO |
-| phase7-activator | ❓ Por verificar | ❓ | ❌ NO |
-| **wp-file-manager** | ✅ Activo (problema) | N/A | ✅ **SÍ ELIMINAR YA** |
+Última revisión: **2026-04-17**. El runbook wp-admin actualiza esta tabla tras cada corrida.
+
+| Plugin | Rol | ¿Activado en WP? | ¿Contenido confirmado? | ¿Listo para desactivar? | ¿Listo para eliminar? |
+|--------|-----|-----------------|------------------------|------------------------|----------------------|
+| phase1-installer | one-shot | ❓ Por verificar | ❓ MU gano-security.php + .htaccess | ❌ NO (hasta confirmar) | ❌ NO |
+| phase2-business | one-shot | ❓ Por verificar | ❓ WooCommerce COP/Bogotá | ❌ NO | ❌ NO |
+| phase3-content | one-shot | ❓ Por verificar | ❓ Páginas base (Home/Contacto/etc.) | ❌ NO | ❌ NO |
+| content-importer | one-shot | ❓ Por verificar | ❓ 20 páginas SOTA en Borrador | ❌ NO | ❌ NO |
+| phase6-catalog | persistente | ❓ Por verificar | ❓ Los 4 ecosistemas WooCommerce | 🔒 Mantener activo | ❌ NO |
+| phase7-activator | persistente | ❓ Por verificar | ❓ Menú + templates | 🔒 Mantener activo | ❌ NO |
+| reseller-enhancements | persistente | ✅ Activo (2026-04-17) | ✅ Filtros carrito + panel PFID | 🔒 Mantener activo | ❌ NO |
+| **wp-file-manager** | ⚠️ CVE | ❓ Verificar | N/A | ✅ DESACTIVAR YA | ✅ **ELIMINAR YA** |
+
+**Información que falta** (tras esta revisión):
+- 8 PFIDs de RCC — introducir vía `Ajustes → Gano Reseller` (panel creado 2026-04-17).
+- `GANO_API_TOKEN` + `GANO_AGENT_API_KEY` — opcionales, en `wp-config.php` del servidor.
+
+**Fixes aplicados 2026-04-17** (rama main):
+- `functions.php` — PFIDs ahora leen de `get_option(...)` con fallback `PENDING_RCC`.
+- `functions.php` — eliminada referencia literal `TU_TOKEN_AQUÍ`.
+- `gano-p6-security-audit.php` — default `dev-local-key-123` eliminado; 503 si no configurada + admin notice.
+- `page-ecosistemas.php` — eliminadas 9 cadenas placeholder ("por confirmar", "a definir", etc.).
 
 ## Referencia de código (phase6-catalog como ejemplo)
 

@@ -184,6 +184,8 @@ Implica que cuentas “pequeñas” pueden **no** tener acceso completo a cierta
 
 Se creó cola versionada **`.github/agent-queue/tasks-api-integrations-research.json`** para profundizar: inventario de endpoints GoDaddy desde `developer.godaddy.com/doc`, mapa de recursos ML por caso de uso, matriz de oportunidades Gano, y anexo de higiene de secretos. Sembrar con workflow **08** y `queue_file: tasks-api-integrations-research.json`.
 
+**Mapa navegable ML (site MCO):** disponible en [`mercadolibre-api-resource-map-2026.md`](mercadolibre-api-resource-map-2026.md) — tabla por área/URL/métodos/caso de uso, anti-patterns para WP hosting, y referencias cruzadas. Generado 2026-04-16.
+
 ---
 
 ## 7. Fuentes (URLs consultadas)

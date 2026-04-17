@@ -51,7 +51,11 @@ Issues desde `tasks-security-guardian.json`:
 - Proponer **mejoras** a `.gitignore` y exclusiones.
 - Mantener **documentación** alineada a `gano-security.php` y políticas del repo.
 
-**No puede:** borrar secretos de GitHub, vaciar historial git remoto, ni desactivar cuentas; eso es humano o soporte Git.
+### Qué NO hace el agente
+
+- **No borra secretos de GitHub ni revoca tokens:** eso requiere acceso a GitHub Settings o CLI del administrador del repositorio.
+- **No vacía historial git remoto:** purgar commits con datos sensibles exige `git filter-repo` y coordinación con el equipo; hacerlo mal puede corromper el historial.
+- **No accede ni desactiva cuentas** (cPanel, GoDaddy, Wordfence, wp-admin): esas acciones son estrictamente responsabilidad humana o del soporte de hosting.
 
 ---
 
@@ -64,9 +68,9 @@ Issues desde `tasks-security-guardian.json`:
 
 ## 7. Referencias
 
-- `.gano-skills/gano-session-security-guardian/SKILL.md` — uso en Cursor al terminar sesión.
-- `memory/ops/security-end-session-checklist.md` — lista corta imprimible (incluye atajos Bash/PowerShell).
-- `scripts/security_session_reminder.py` — script de terminal para mostrar el recordatorio (sin red ni borrado).
-- `TASKS.md` — ítem de cola guardián si está sembrado.
+- [`.gano-skills/gano-session-security-guardian/SKILL.md`](../../.gano-skills/gano-session-security-guardian/SKILL.md) — uso en Cursor al terminar sesión.
+- [`memory/ops/security-end-session-checklist.md`](security-end-session-checklist.md) — lista corta imprimible (incluye atajos Bash/PowerShell).
+- [`scripts/security_session_reminder.py`](../../scripts/security_session_reminder.py) — script de terminal para mostrar el recordatorio (sin red ni borrado).
+- [`TASKS.md`](../../TASKS.md) — ítem de cola guardián si está sembrado.
 
-_Última revisión: 2026-04._
+_Última revisión: 2026-04-16._

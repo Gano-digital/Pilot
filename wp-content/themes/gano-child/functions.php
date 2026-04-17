@@ -528,12 +528,13 @@ function gano_chat_response_callback( WP_REST_Request $request ): WP_REST_Respon
 
     /**
      * ESTRATEGIA: IA DINÁMICA VS ESTÁTICA
-     * Si GANO_API_TOKEN está definido en wp-config.php y no es el valor por defecto,
+     * Si GANO_API_TOKEN está definido en wp-config.php con un valor no vacío,
      * se intenta una llamada a un LLM (modelo: gpt-3.5-turbo o superior).
+     * Sin token, cae al fallback estático al final de la función.
      */
-    $api_token = defined( 'GANO_API_TOKEN' ) ? GANO_API_TOKEN : '';
+    $api_token = defined( 'GANO_API_TOKEN' ) ? (string) GANO_API_TOKEN : '';
 
-    if ( ! empty( $api_token ) && 'TU_TOKEN_AQUÍ' !== $api_token ) {
+    if ( ! empty( $api_token ) ) {
         // --- LLAMADA A LLM (OpenAI API) ---
         $response = wp_remote_post( 'https://api.openai.com/v1/chat/completions', array(
             'timeout' => 15,
@@ -796,41 +797,43 @@ add_filter( 'rest_authentication_errors', function ( $result ) {
 // NOTA: Los dominios (.CO / .COM) NO tienen pfid de carrito directo.
 //   Para dominios usar el shortcode [rstore-domain-search].
 //
-// TODO: Reemplazar los valores 'PENDING_RCC' con los pfids reales desde el RCC
-//       antes de activar el flujo de checkout en producción.
+// Los valores se leen desde wp_options (`gano_pfid_*`) gestionadas en
+// Ajustes → Gano Reseller (plugin gano-reseller-enhancements). Si no hay option
+// guardada, el fallback es 'PENDING_RCC' y `gano_rstore_cart_url()` devuelve '#'.
+// Definir la constante en wp-config.php gana sobre la option (útil para staging).
 // =============================================================================
 
 // --- Hosting WordPress ---
 // Fuente: RCC → Productos → Web Hosting → WordPress Hosting
 if ( ! defined( 'GANO_PFID_HOSTING_ECONOMIA' ) ) {
-	define( 'GANO_PFID_HOSTING_ECONOMIA', 'PENDING_RCC' ); // WordPress Hosting Economy  — Núcleo Prime
+	define( 'GANO_PFID_HOSTING_ECONOMIA', get_option( 'gano_pfid_hosting_economia', 'PENDING_RCC' ) ); // Núcleo Prime
 }
 if ( ! defined( 'GANO_PFID_HOSTING_DELUXE' ) ) {
-	define( 'GANO_PFID_HOSTING_DELUXE', 'PENDING_RCC' );   // WordPress Hosting Deluxe   — Fortaleza Delta
+	define( 'GANO_PFID_HOSTING_DELUXE', get_option( 'gano_pfid_hosting_deluxe', 'PENDING_RCC' ) );     // Fortaleza Delta
 }
 if ( ! defined( 'GANO_PFID_HOSTING_PREMIUM' ) ) {
-	define( 'GANO_PFID_HOSTING_PREMIUM', 'PENDING_RCC' );  // WordPress Hosting Premium  — Bastión SOTA
+	define( 'GANO_PFID_HOSTING_PREMIUM', get_option( 'gano_pfid_hosting_premium', 'PENDING_RCC' ) );   // Bastión SOTA
 }
 if ( ! defined( 'GANO_PFID_HOSTING_ULTIMATE' ) ) {
-	define( 'GANO_PFID_HOSTING_ULTIMATE', 'PENDING_RCC' ); // WordPress Hosting Ultimate — Ultimate WP
+	define( 'GANO_PFID_HOSTING_ULTIMATE', get_option( 'gano_pfid_hosting_ultimate', 'PENDING_RCC' ) ); // Ultimate WP
 }
 
 // --- Seguridad / SSL ---
 // Fuente: RCC → Productos → SSL & Seguridad
 if ( ! defined( 'GANO_PFID_SSL_DELUXE' ) ) {
-	define( 'GANO_PFID_SSL_DELUXE', 'PENDING_RCC' );        // SSL DV Deluxe              — SSL Deluxe
+	define( 'GANO_PFID_SSL_DELUXE', get_option( 'gano_pfid_ssl_deluxe', 'PENDING_RCC' ) );
 }
 if ( ! defined( 'GANO_PFID_SECURITY_ULTIMATE' ) ) {
-	define( 'GANO_PFID_SECURITY_ULTIMATE', 'PENDING_RCC' ); // Website Security Premium   — Security Ultimate
+	define( 'GANO_PFID_SECURITY_ULTIMATE', get_option( 'gano_pfid_security_ultimate', 'PENDING_RCC' ) );
 }
 
 // --- Email / Colaboración ---
 // Fuente: RCC → Productos → Email & Office
 if ( ! defined( 'GANO_PFID_M365_PREMIUM' ) ) {
-	define( 'GANO_PFID_M365_PREMIUM', 'PENDING_RCC' );   // Microsoft 365 Business Premium — M365 Premium
+	define( 'GANO_PFID_M365_PREMIUM', get_option( 'gano_pfid_m365_premium', 'PENDING_RCC' ) );
 }
 if ( ! defined( 'GANO_PFID_ONLINE_STORAGE' ) ) {
-	define( 'GANO_PFID_ONLINE_STORAGE', 'PENDING_RCC' ); // Online Storage 1 TB            — Online Storage
+	define( 'GANO_PFID_ONLINE_STORAGE', get_option( 'gano_pfid_online_storage', 'PENDING_RCC' ) );
 }
 
 /**
