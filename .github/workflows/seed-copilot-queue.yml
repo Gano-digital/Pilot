@@ -48,7 +48,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Create issues from queue (deduplicado)
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           SEED_QUEUE_FILE: ${{ github.event.inputs.queue_file }}
           SEED_SCOPE: ${{ github.event.inputs.scope }}

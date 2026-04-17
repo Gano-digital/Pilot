@@ -16,9 +16,10 @@ require_once GANO_RESELLER_PATH . 'includes/acf-reseller-fields.php';
 require_once GANO_RESELLER_PATH . 'includes/class-sandbox.php';
 require_once GANO_RESELLER_PATH . 'includes/class-bundle-handler.php';
 
-// Load smoke-test page only in admin context.
+// Load smoke-test page and PFID admin panel only in admin context.
 if ( is_admin() ) {
 	require_once GANO_RESELLER_PATH . 'includes/class-smoke-test.php';
+	require_once GANO_RESELLER_PATH . 'includes/class-pfid-admin.php';
 }
 
 /**

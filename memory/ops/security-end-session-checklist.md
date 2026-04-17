@@ -13,4 +13,4 @@ Marca mentalmente antes de irte:
 
 ---
 
-_Ver `memory/ops/security-guardian-playbook-2026.md` para contexto completo._
+_Ver [`memory/ops/security-guardian-playbook-2026.md`](security-guardian-playbook-2026.md) para contexto completo._
