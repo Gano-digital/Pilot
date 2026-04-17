@@ -42,7 +42,7 @@ jobs:
           GITHUB_PROJECT_TOKEN: ${{ secrets.ADD_TO_PROJECT_PAT }}
         run: python scripts/generate_gano_ops_progress.py --output tools/gano-ops-hub/public/data/progress.json
 
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: tools/gano-ops-hub/public
 
