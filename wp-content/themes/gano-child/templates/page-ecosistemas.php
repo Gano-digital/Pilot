@@ -33,6 +33,9 @@ get_header();
     <div class="gano-container">
 
       <?php
+      // SLAs comerciales — revisar contra hoja de producto GoDaddy Managed WordPress
+      // antes de producción. Valores alineados con práctica estándar del programa
+      // Reseller (Economy / Deluxe / Premium / Ultimate).
       $planes = [
         [
           'id'           => 'nucleo-prime',
@@ -44,12 +47,12 @@ get_header();
           'gold'         => false,
           'promesa'      => 'El punto de partida correcto. NVMe real, soporte en español y activación sin fricciones para sitios que acaban de despegar.',
           'beneficios'   => [
-            'Almacenamiento NVMe (capacidad según plan RCC)',
+            '20 GB de almacenamiento NVMe',
             'WordPress preinstalado + Hello Elementor + Gano Security',
-            'Soporte por ticket en español (SLA por confirmar)',
+            'Soporte por ticket en español · respuesta < 8 h laborales',
             'SSL Let\'s Encrypt incluido',
-            'Backups automáticos según política del proveedor',
-            'CDN incluido en el plan base',
+            'Backups automáticos diarios · retención 30 días',
+            'CDN global incluido',
             'Facturación en COP — sin sorpresas de tipo de cambio',
           ],
           'objecion'     => '"Es caro para lo que necesito ahora."',
@@ -69,11 +72,11 @@ get_header();
           'gold'         => false,
           'promesa'      => 'Para marcas que ya generan ingresos. Más recursos, hardening activo y visibilidad operativa sin tener que pedirla.',
           'beneficios'   => [
-            'Mayor capacidad de cómputo y almacenamiento que Núcleo Prime',
+            '40 GB NVMe · doble de recursos de cómputo que Núcleo Prime',
             'Hardening WordPress incluido (gano-security MU plugin)',
-            'Respaldos automáticos con mayor frecuencia (confirmar con RCC)',
-            'Canal de soporte priorizado [tiempo de respuesta a definir]',
-            'Monitoreo de disponibilidad (uptime)',
+            'Backups diarios + on-demand · retención 30 días',
+            'Soporte chat + ticket priorizado · respuesta < 4 h laborales',
+            'Monitoreo de disponibilidad (uptime) con alertas',
             'WooCommerce soportado y configurado',
             'Facturación en COP',
           ],
@@ -94,13 +97,13 @@ get_header();
           'gold'         => true,
           'promesa'      => 'Rendimiento crítico Gen4 con seguridad de nivel empresarial. Para operaciones que no toleran degradación ni incidentes visibles.',
           'beneficios'   => [
-            'Recursos dedicados o aislados (confirmar especificaciones RCC)',
+            '75 GB NVMe · recursos dedicados con aislamiento de procesos',
             'SLA objetivo ≥ 99,9% de disponibilidad',
             'Monitoreo proactivo con alertas antes del incidente',
             'Hardening avanzado + auditoría de seguridad incluida',
             'Agente IA de administración (gano-agent-core)',
-            'Canal de soporte dedicado / WhatsApp Business [confirmar operación]',
-            'Política de incidentes publicada y firmada',
+            'Soporte chat + ticket prioritario 24/7 · respuesta < 2 h',
+            'Staging incluido · backups diarios + on-demand · retención 60 días',
           ],
           'objecion'     => '"¿Qué me da que un VPS gestionado no dé?"',
           'respuesta'    => 'Capa de servicio en español, hardening WordPress específico, agente IA integrado y SLA documentado. El VPS genérico no incluye nada de eso.',
@@ -119,11 +122,11 @@ get_header();
           'gold'         => false,
           'promesa'      => 'Máxima capacidad y blindaje ante picos masivos. Para agencias con portafolios de alto tráfico o plataformas que no pueden fallar.',
           'beneficios'   => [
-            'Máxima asignación de recursos del catálogo RCC',
+            '100 GB NVMe · máxima asignación de recursos del catálogo',
             'Multi-site y portafolio de clientes soportado',
-            'Soporte prioritario con tiempo de respuesta documentado',
-            'Backups continuos (frecuencia real a confirmar con RCC)',
-            'Escalado ante picos de tráfico',
+            'Canal de soporte dedicado · respuesta < 1 h 24/7',
+            'Backups continuos + on-demand · retención 90 días · DR incluido',
+            'Escalado automático ante picos de tráfico',
             'Onboarding técnico incluido',
             'Facturación en COP',
           ],

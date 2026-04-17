@@ -99,7 +99,7 @@ _Última actualización: Abril 2026_
 - [ ] **[ALTA] Eliminar testimonios falsos y métricas infladas**
 - [ ] **[ALTA] Crear página Nosotros real** con manifiesto SOTA
 - [ ] **[MEDIA] Habilitar 2FA en wp-admin** (Wordfence ya instalado)
-- [ ] **[MEDIA] Ejecutar y limpiar plugins de fase (1, 2, 3, 6, 7)** 
+- [ ] **[MEDIA] Ejecutar y limpiar plugins de fase (1, 2, 3, 6, 7)** — seguir [`memory/ops/runbook-activacion-wp-admin-2026-04-16.md`](memory/ops/runbook-activacion-wp-admin-2026-04-16.md). Script WP-CLI disponible cuando haya SSH: [`scripts/activate-gano-phases.sh`](scripts/activate-gano-phases.sh).
 
 ## 📋 Fase 4 — Integración GoDaddy Reseller (Agilizada)
 
@@ -109,9 +109,13 @@ _Última actualización: Abril 2026_
 
 - [ ] **Depurar Catálogo en GoDaddy Reseller Control Center**:
   - Asegurar que los productos (Hosting, VPS, SSL) tengan el precio base en el RCC (Reseller Control Center).
-- [ ] **Mapeo de UI SOTA -> Reseller**:
-  - Conectar los ID de productos requeridos en los CTAs de `shop-premium.php` con el carrito de compra GoDaddy.
+- [x] **Mapeo de UI SOTA -> Reseller (preparación de código, 2026-04-17)**:
+  - `functions.php` lee las 8 constantes `GANO_PFID_*` desde `wp_options` con fallback `PENDING_RCC`.
+  - Plugin `gano-reseller-enhancements` expone panel `wp-admin → Ajustes → Gano Reseller` con 8 campos.
   - Guía paso a paso RCC → pfid: [`memory/commerce/rcc-pfid-checklist.md`](memory/commerce/rcc-pfid-checklist.md).
+- [ ] **PASO 10E — Introducir los 8 PFIDs vía UI** (manual Diego):
+  - Abrir `wp-admin → Ajustes → Gano Reseller` y pegar los valores numéricos del RCC.
+  - Runbook completo: [`memory/ops/runbook-activacion-wp-admin-2026-04-16.md`](memory/ops/runbook-activacion-wp-admin-2026-04-16.md).
 - [ ] **Prueba de Flujo de Checkout**:
   - Presionar "Comprar" en el SOTA Mockup de Gano -> Verificar que mande al carrito marca blanca -> Cierre.
 - [ ] **Instalar soporte/chat**: FreeScout o similar para atención a cliente, ya que el soporte inicial lo da el reseller (vos).
