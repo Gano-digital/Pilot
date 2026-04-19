@@ -8,245 +8,280 @@
 get_header();
 ?>
 
-<div class="gano-home">
-    <section class="hero-gano gano-hero-overlay" id="gano-main-content">
-        <div class="hero-content">
-            <p class="overline">Soberanía Digital · Nodo Bogotá</p>
-            <h1>Infraestructura NVMe blindada y un agente IA que trabaja antes de que algo falle.</h1>
-            <p>Hosting WordPress de alto rendimiento con seguridad de nivel empresarial, soporte en español y operación en pesos colombianos. Menos ruido, más continuidad.</p>
+<main class="gano-home" id="gano-home-main" data-gano-homepage>
+    <section class="hero-gano gano-hero-overlay">
+        <div class="gano-shell hero-content">
+            <p class="overline">Soberanía Digital · Operación Colombia</p>
+            <h1>Infraestructura WordPress premium con acompañamiento real de inicio a escala.</h1>
+            <p>
+                Diseñamos, implementamos y acompañamos tu operación digital con soporte experto en español, asesoría continua,
+                capacitación del equipo y seguimiento técnico para que conviertas más sin fricción operativa.
+            </p>
             <div class="hero-cta-row">
-                <a href="#ecosistemas" class="btn-holo"><span class="label">Ver arquitecturas y planes</span><span class="arrow">→</span></a>
-                <a href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>" class="btn-gano btn-gano--secondary">Hablar con el equipo</a>
+                <a href="#ecosistemas" class="btn-holo">
+                    <span class="label">Ver arquitecturas y planes</span>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>" class="btn-gano btn-gano--secondary">Explorar catálogo inteligente</a>
             </div>
-            <p class="hero-microcopy">NVMe · Monitoreo proactivo · Facturación en COP</p>
+            <ul class="hero-proof-bar" aria-label="Prueba social y operativa">
+                <li><strong>99.9%</strong><span>Disponibilidad operativa</span></li>
+                <li><strong>24/7</strong><span>Soporte y seguimiento</span></li>
+                <li><strong>COP</strong><span>Operación comercial local</span></li>
+            </ul>
         </div>
     </section>
 
-    <section class="section-gano" style="text-align: center;">
-        <div class="section-title-gano">
-            <h2>Encuentra tu Dominio</h2>
-            <p>Búsqueda instantánea de TLDs disponibles</p>
+    <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="dominios-heading">
+        <div class="gano-shell">
+            <div class="section-title-gano">
+                <h2 id="dominios-heading">Encuentra tu dominio ideal</h2>
+                <p>Búsqueda instantánea de TLDs disponibles para lanzar tu operación.</p>
+            </div>
+            <div class="gano-domain-search-wrap">
+                <?php echo do_shortcode( '[rstore_domain_search]' ); ?>
+            </div>
         </div>
-        <?php echo do_shortcode('[rstore_domain_search]'); ?>
     </section>
 
-    <section class="section-gano gano-catalog-shell" id="ecosistemas" data-gano-catalog>
-        <div class="section-title-gano">
-            <h2>Ecosistemas SOTA 2026</h2>
-            <p>Elige el nivel de blindaje y potencia que tu proyecto merece</p>
-        </div>
-        <div class="gano-catalog-mode-switch" role="group" aria-label="Modo de navegación del catálogo">
-            <?php
-            $home_modes = function_exists( 'gano_get_catalog_nav_modes' ) ? gano_get_catalog_nav_modes() : array();
-            foreach ( $home_modes as $mode_key => $mode_meta ) :
-                ?>
-                <button type="button" class="gano-catalog-mode-btn" data-gano-mode="<?php echo esc_attr( $mode_key ); ?>" aria-pressed="false">
-                    <?php echo esc_html( $mode_meta['label'] ); ?>
-                </button>
-            <?php endforeach; ?>
-        </div>
-        <p class="gano-catalog-mode-desc" data-gano-mode-description>
-            Navega por vista general, familias o asistente guiado según tu contexto.
-        </p>
-        <section class="gano-catalog-guided-panel" data-gano-guided-panel aria-label="Asistente de selección">
-            <ul class="gano-catalog-guided-list" data-gano-guided-list></ul>
-        </section>
-        <div class="ecosistemas-grid" id="catalog-container">
-            <?php
-            $ecosistemas = [
-                [
-                    'nombre' => 'Núcleo Prime',
-                    'slug' => 'wordpress-basico',
-                    'precio' => '$196.000',
-                    'features' => ['NVMe Gen4', 'WAF Capa 7', 'Soporte Standard']
-                ],
-                [
-                    'nombre' => 'Fortaleza Delta',
-                    'slug' => 'wordpress-deluxe',
-                    'precio' => '$450.000',
-                    'features' => ['50GB NVMe', 'Agente IA', 'Soporte 24/7']
-                ],
-                [
-                    'nombre' => 'Bastión SOTA',
-                    'slug' => 'wordpress-ultimate',
-                    'precio' => '$890.000',
-                    'features' => ['150GB NVMe', 'Dedicado', 'Seguridad Militar']
-                ],
-                [
-                    'nombre' => 'Soberanía Total',
-                    'slug' => 'cpanel-ultimate',
-                    'precio' => '$2.5M+',
-                    'features' => ['Recursos Ilimitados', 'Infraestructura Custom', 'Consultoría']
-                ]
-            ];
-
-            foreach ($ecosistemas as $eco) {
-                $product_query = new WP_Query([
-                    'post_type' => 'reseller_product',
-                    'name' => $eco['slug'],
-                    'posts_per_page' => 1,
-                ]);
-
-                $post_id = $product_query->have_posts() ? $product_query->posts[0]->ID : null;
-                wp_reset_postdata();
-                ?>
-                <div class="ecosystem-card"
-                     data-category="wordpressadministrado"
-                     data-product-id="<?php echo esc_attr( sanitize_title( $eco['slug'] ) ); ?>"
-                     data-product-name="<?php echo esc_attr( $eco['nombre'] ); ?>"
-                     data-product-price="<?php echo esc_attr( $eco['precio'] ); ?>">
-                    <h3><?php echo esc_html($eco['nombre']); ?></h3>
-                    <div class="price"><?php echo esc_html($eco['precio']); ?></div>
-                    <ul>
-                        <?php foreach ($eco['features'] as $feature) { ?>
-                            <li><?php echo esc_html($feature); ?></li>
-                        <?php } ?>
-                    </ul>
-                    <?php
-                    if ($post_id) {
-                        echo do_shortcode("[rstore_product post_id={$post_id} show_price=1 redirect=1 button_label='Elegir Plan']");
-                    } else {
-                        echo '<a href="/contacto/" class="btn-gano">Consultar</a>';
+    <section class="section-gano gano-home-section" id="ecosistemas" data-gano-catalog aria-labelledby="ecosistemas-heading">
+        <div class="gano-shell">
+            <div class="section-title-gano">
+                <h2 id="ecosistemas-heading">Ecosistemas SOTA 2026</h2>
+                <p>Elige el nivel de soporte, arquitectura y crecimiento que tu negocio necesita.</p>
+            </div>
+            <div class="gano-catalog-mode-switch" role="group" aria-label="Modo de navegación del catálogo">
+                <?php
+                $home_modes = function_exists( 'gano_get_catalog_nav_modes' ) ? gano_get_catalog_nav_modes() : array();
+                $home_primary_modes = array( 'grid', 'family' );
+                foreach ( $home_primary_modes as $mode_key ) :
+                    if ( ! isset( $home_modes[ $mode_key ] ) ) {
+                        continue;
                     }
                     ?>
-                    <button type="button" class="gano-catalog-compare-toggle" data-gano-compare-toggle aria-pressed="false">
-                        Comparar
+                    <button type="button" class="gano-catalog-mode-btn" data-gano-mode="<?php echo esc_attr( $mode_key ); ?>" aria-pressed="false">
+                        <?php echo esc_html( $home_modes[ $mode_key ]['label'] ); ?>
                     </button>
-                </div>
-                <?php
-            }
-            ?>
-        </div>
-        <section class="gano-catalog-comparator" data-gano-compare hidden>
-            <h3 class="gano-catalog-comparator-title">Comparador inteligente (hasta 3)</h3>
-            <ul class="gano-catalog-compare-list" data-gano-compare-list></ul>
-            <div class="gano-catalog-compare-grid" data-gano-compare-grid></div>
-        </section>
-    </section>
-
-    <section class="section-gano">
-        <div class="section-title-gano">
-            <h2>¿Por qué Gano Digital?</h2>
-            <p>Soberanía tecnológica para PYMEs colombianas</p>
-        </div>
-        <div class="value-section">
-            <div class="value-grid">
-                <div class="value-item">
-                    <h4>Velocidad SOTA</h4>
-                    <p>NVMe Gen4 con latencia cero. 7.500 MB/s vs. 20% de hosting convencional.</p>
-                </div>
-                <div class="value-item">
-                    <h4>Blindaje Military-Grade</h4>
-                    <p>WAF Capa 7, cifrado post-cuántico, DDoS immunity. Tu infraestructura protegida.</p>
-                </div>
-                <div class="value-item">
-                    <h4>IA Consultiva</h4>
-                    <p>Agente SOTA 24/7 para optimización, escalado y estrategia técnica.</p>
-                </div>
-                <div class="value-item">
-                    <h4>Nodos Bogota</h4>
-                    <p>Infraestructura soberana. Datos en Colombia. Cumplimiento normativo asegurado.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section-gano metrics-section">
-        <div class="section-title-gano">
-            <h2>Nuestros Compromisos</h2>
-            <p>Benchmarks SOTA garantizados</p>
-        </div>
-        <div class="metrics-grid">
-            <div class="metric-box">
-                <div class="number">99.99%</div>
-                <div class="label">Uptime SLA</div>
-            </div>
-            <div class="metric-box">
-                <div class="number">&lt;50ms</div>
-                <div class="label">Latencia Bogotá</div>
-            </div>
-            <div class="metric-box">
-                <div class="number">7.500MB/s</div>
-                <div class="label">Velocidad I/O</div>
-            </div>
-            <div class="metric-box">
-                <div class="number">24/7</div>
-                <div class="label">Soporte Premium</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section-gano" style="text-align: center;">
-        <div style="background: var(--gano-glass); border: 1px solid var(--gano-glass-border); border-radius: 20px; padding: 60px; max-width: 700px; margin: 0 auto;">
-            <h2 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2rem; margin-bottom: 20px;">Primero — Descarga la Guía SOTA</h2>
-            <p style="color: #94a3b8; margin-bottom: 30px;">Recibe estrategias de infraestructura SOTA directo a tu correo (gratis).</p>
-
-            <form id="gano-lead-magnet" style="display: flex; flex-direction: column; gap: 16px;">
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="tu@empresa.com"
-                    required
-                    style="padding: 12px 16px; background: rgba(255,255,255,0.05); border: 1px solid var(--gano-glass-border); border-radius: 6px; color: #e2e8f0; font-size: 1rem;"
-                />
-                <input type="hidden" name="nonce" value="<?php echo esc_attr(gano_lead_capture_nonce()); ?>" />
-                <input type="hidden" name="plan" value="general" />
-                <button
-                    type="submit"
-                    style="padding: 12px 24px; background: var(--gc-primary); color: white; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; transition: all 0.2s;"
-                    onmouseover="this.style.background='var(--gc-secondary)';"
-                    onmouseout="this.style.background='var(--gc-primary)';"
-                >
-                    Recibir Guía Gratis
+                <?php endforeach; ?>
+                <button type="button" class="gano-catalog-advanced-toggle" data-gano-advanced-toggle aria-expanded="false">
+                    Modos avanzados
                 </button>
-            </form>
-
-            <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 16px;">Sin spam. Desuscríbete en cualquier momento.</p>
-        </div>
-    </section>
-
-    <section class="section-gano" style="text-align: center;" id="cta-final">
-        <div style="background: var(--gano-glass); border: 1px solid var(--gano-glass-border); border-radius: 20px; padding: 60px; max-width: 700px; margin: 0 auto;">
-            <h2 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2rem; margin-bottom: 20px;">¿Listo para una infraestructura que no te pida disculpas?</h2>
-            <?php echo do_shortcode( '[gano_cta_icons]' ); ?>
-            <p style="margin-top: 2rem;">
-                <a href="#ecosistemas" class="btn-gano">Elegir mi arquitectura</a>
+            </div>
+            <div class="gano-catalog-advanced-modes" data-gano-advanced-modes hidden>
+                <?php
+                if ( isset( $home_modes['guided'] ) ) :
+                    ?>
+                    <button type="button" class="gano-catalog-mode-btn" data-gano-mode="guided" aria-pressed="false">
+                        <?php echo esc_html( $home_modes['guided']['label'] ); ?>
+                    </button>
+                <?php endif; ?>
+            </div>
+            <p class="gano-catalog-mode-desc" data-gano-mode-description>
+                Navega por vista general, familias o asistente guiado según tu contexto.
             </p>
+            <section class="gano-catalog-guided-panel" data-gano-guided-panel aria-label="Asistente de selección">
+                <ul class="gano-catalog-guided-list" data-gano-guided-list></ul>
+            </section>
+            <div class="ecosistemas-grid" id="catalog-container">
+                <?php
+                $ecosistemas = array(
+                    array(
+                        'nombre'    => 'Lanzamiento Sólido',
+                        'slug'      => 'wordpress-basico',
+                        'precio'    => '$196.000',
+                        'categoria' => 'hostingwebcpanel',
+                        'features'  => array(
+                            'Acompañamiento de arranque',
+                            'Implementación WordPress optimizada',
+                            'Soporte técnico en español'
+                        )
+                    ),
+                    array(
+                        'nombre'    => 'Escala Inteligente',
+                        'slug'      => 'wordpress-deluxe',
+                        'precio'    => '$450.000',
+                        'categoria' => 'wordpressadministrado',
+                        'features'  => array(
+                            'Capacitación operativa del equipo',
+                            'Monitoreo y seguimiento continuo',
+                            'Soporte 24/7 priorizado'
+                        )
+                    ),
+                    array(
+                        'nombre'    => 'Conversión Segura',
+                        'slug'      => 'wordpress-ultimate',
+                        'precio'    => '$890.000',
+                        'categoria' => 'seguridadweb',
+                        'features'  => array(
+                            'Blindaje avanzado de superficie',
+                            'Optimización comercial por campañas',
+                            'Asesoría de continuidad tecnológica'
+                        )
+                    ),
+                    array(
+                        'nombre'    => 'Operación Crítica',
+                        'slug'      => 'cpanel-ultimate',
+                        'precio'    => '$2.5M+',
+                        'categoria' => 'servidoresvps',
+                        'features'  => array(
+                            'Arquitectura a medida y escalable',
+                            'Acompañamiento ejecutivo',
+                            'Seguimiento técnico y estratégico'
+                        )
+                    ),
+                );
+
+                foreach ( $ecosistemas as $eco ) :
+                    $product_query = new WP_Query(
+                        array(
+                            'post_type'      => 'reseller_product',
+                            'name'           => $eco['slug'],
+                            'posts_per_page' => 1,
+                        )
+                    );
+                    $post_id = $product_query->have_posts() ? $product_query->posts[0]->ID : null;
+                    wp_reset_postdata();
+                    ?>
+                    <article
+                        class="ecosystem-card"
+                        data-category="<?php echo esc_attr( $eco['categoria'] ); ?>"
+                        data-product-id="<?php echo esc_attr( sanitize_title( $eco['slug'] ) ); ?>"
+                        data-product-name="<?php echo esc_attr( $eco['nombre'] ); ?>"
+                        data-product-price="<?php echo esc_attr( $eco['precio'] ); ?>"
+                    >
+                        <h3><?php echo esc_html( $eco['nombre'] ); ?></h3>
+                        <div class="price"><?php echo esc_html( $eco['precio'] ); ?></div>
+                        <ul>
+                            <?php foreach ( $eco['features'] as $feature ) : ?>
+                                <li><?php echo esc_html( $feature ); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                        <?php
+                        if ( $post_id ) {
+                            echo do_shortcode( "[rstore_product post_id={$post_id} show_price=1 redirect=1 button_label='Elegir Plan']" );
+                        } else {
+                            echo '<a href="' . esc_url( home_url( '/contacto/' ) ) . '" class="btn-gano">Consultar</a>';
+                        }
+                        ?>
+                        <button type="button" class="gano-catalog-compare-toggle" data-gano-compare-toggle aria-pressed="false">
+                            Comparar
+                        </button>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+            <div class="gano-catalog-mobile-actions">
+                <button type="button" class="btn-gano btn-gano--secondary" data-gano-mobile-more aria-expanded="false">
+                    Ver más planes
+                </button>
+            </div>
+            <section class="gano-catalog-comparator" data-gano-compare hidden>
+                <h3 class="gano-catalog-comparator-title">Comparador inteligente (hasta 3)</h3>
+                <ul class="gano-catalog-compare-list" data-gano-compare-list></ul>
+                <div class="gano-catalog-compare-grid" data-gano-compare-grid></div>
+            </section>
         </div>
     </section>
 
-    <?php echo do_shortcode('[gano_socio_tecnologico]'); ?>
-    <?php echo do_shortcode('[gano_metrics]'); ?>
-</div>
+    <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="valor-heading">
+        <div class="gano-shell">
+            <div class="section-title-gano">
+                <h2 id="valor-heading">Acompañamiento que sí mueve resultados</h2>
+                <p>Soporte, asesoría, capacitación y seguimiento continuo en una sola operación.</p>
+            </div>
+            <div class="value-section">
+                <div class="value-grid">
+                    <article class="value-item">
+                        <h3>Soporte técnico experto</h3>
+                        <p>Atención especializada para incidentes, ajustes y evolución de tu stack WordPress sin respuestas genéricas.</p>
+                    </article>
+                    <article class="value-item">
+                        <h3>Asesoría comercial y técnica</h3>
+                        <p>Traducimos objetivos de negocio en decisiones de infraestructura, seguridad y conversión con ruta clara.</p>
+                    </article>
+                    <article class="value-item">
+                        <h3>Capacitación operativa</h3>
+                        <p>Tu equipo aprende a operar mejor la plataforma con guías prácticas, estándares y buenas prácticas reales.</p>
+                    </article>
+                    <article class="value-item">
+                        <h3>Seguimiento continuo</h3>
+                        <p>Monitoreo, recomendaciones y roadmap evolutivo para sostener crecimiento sin sacrificar estabilidad.</p>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<script>
-document.getElementById('gano-lead-magnet')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const email = form.email.value;
-    const nonce = form.nonce.value;
-    const plan = form.plan.value;
+    <section class="section-gano gano-home-section" aria-labelledby="compromisos-heading">
+        <div class="gano-shell">
+            <div class="section-title-gano">
+                <h2 id="compromisos-heading">Compromisos operativos</h2>
+                <p>Métricas de servicio enfocadas en continuidad, respuesta y acompañamiento.</p>
+            </div>
+            <div class="metrics-grid">
+                <article class="metric-box">
+                    <div class="number">99.9%</div>
+                    <div class="label">Disponibilidad esperada</div>
+                </article>
+                <article class="metric-box">
+                    <div class="number">24/7</div>
+                    <div class="label">Soporte y seguimiento</div>
+                </article>
+                <article class="metric-box">
+                    <div class="number">&lt;2h</div>
+                    <div class="label">Respuesta inicial prioritaria</div>
+                </article>
+                <article class="metric-box">
+                    <div class="number">COP</div>
+                    <div class="label">Operación comercial local</div>
+                </article>
+            </div>
+        </div>
+    </section>
 
-    try {
-        const response = await fetch('/wp-json/gano/v1/lead-capture', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, nonce, plan })
-        });
-        const data = await response.json();
+    <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="lead-heading">
+        <div class="gano-shell">
+            <div class="gano-panel gano-panel--compact">
+                <h2 id="lead-heading">Primero: recibe la guía SOTA de crecimiento digital</h2>
+                <p>Buenas prácticas de infraestructura, seguridad y conversión para equipos que necesitan resultados sostenibles.</p>
+                <form id="gano-lead-magnet" class="gano-lead-form" novalidate>
+                    <label for="gano-lead-email" class="screen-reader-text">Correo corporativo</label>
+                    <input
+                        id="gano-lead-email"
+                        type="email"
+                        name="email"
+                        placeholder="tu@empresa.com"
+                        autocomplete="email"
+                        required
+                    />
+                    <input type="hidden" name="nonce" value="<?php echo esc_attr( gano_lead_capture_nonce() ); ?>" />
+                    <input type="hidden" name="plan" value="homepage-sota" />
+                    <button type="submit" class="btn-gano">Recibir guía gratis</button>
+                    <p class="gano-form-status" data-gano-form-status aria-live="polite"></p>
+                </form>
+                <small>Sin spam. Puedes cancelar en cualquier momento.</small>
+            </div>
+        </div>
+    </section>
 
-        if (response.ok) {
-            form.innerHTML = '<p style="color: var(--gc-secondary); font-weight: 600;">✓ Revisa tu correo</p>';
-            // GA4 event
-            gtag?.('event', 'gano_lead_capture', { email_domain: email.split('@')[1] });
-        } else {
-            alert('Error: ' + (data.error || 'No se pudo capturar el lead'));
-        }
-    } catch (err) {
-        console.error('Lead capture error:', err);
-        alert('Error de red. Intenta de nuevo.');
-    }
-});
-</script>
+    <section class="section-gano gano-home-section" id="cta-final" aria-labelledby="cierre-heading">
+        <div class="gano-shell">
+            <div class="gano-panel gano-panel--compact">
+                <h2 id="cierre-heading">¿Listo para diseñar una operación digital que escale contigo?</h2>
+                <?php echo do_shortcode( '[gano_cta_icons]' ); ?>
+                <p class="gano-panel-cta">
+                    <a href="#ecosistemas" class="btn-gano">Elegir mi arquitectura</a>
+                </p>
+            </div>
+        </div>
+    </section>
 
-<?php get_footer(); ?>
+    <section class="section-gano gano-home-section gano-home-section--surface" aria-label="Confianza y respaldo">
+        <div class="gano-shell">
+            <?php echo do_shortcode( '[gano_socio_tecnologico]' ); ?>
+            <?php echo do_shortcode( '[gano_metrics]' ); ?>
+        </div>
+    </section>
+</main>
+<?php
+get_footer();
+?>

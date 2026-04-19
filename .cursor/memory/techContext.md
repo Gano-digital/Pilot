@@ -28,6 +28,7 @@
 7. **Tooling opcional (no runtime)** — graphify (mapa conocimiento), AO (orquestación), ML‑SSD (I+D evaluación)
 8. **Plan vitrina gano.digital** — documento canónico de fases, RACI y procesos: `memory/ops/homepage-vitrina-launch-plan-2026-04.md` (complementa `TASKS.md`; copy fuente en `memory/content/`).
 9. **SOTA CI / supply chain (abr 2026)** — OWASP A03:2025 + uso seguro de Actions y runners self-hosted; checklist en `memory/research/sota-investigacion-2026-04-09-ci-supply-chain-agents.md`; skills `gano-github-copilot-orchestration` y `gano-github-ops` enlazan la síntesis.
+10. **Homepage SOTA runtime budget (abr 2026)** — baseline SSH validado en hosting y objetivo `LCP <= 3.0s`; en front-page se prioriza motion CSS sutil y se evita carga innecesaria de GSAP/Constellation cuando no aporta conversión directa.
 
 ## Tooling opcional (repo)
 

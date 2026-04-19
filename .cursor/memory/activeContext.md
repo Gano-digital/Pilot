@@ -10,6 +10,11 @@ _Última actualización: 2026-04-12 — **`Gano-digital/Pilot` es PÚBLICO** (`g
 - **Fase 4:** catálogo Reseller, mapeo CTAs en `shop-premium.php`, smoke test checkout — [`memory/commerce/rcc-pfid-checklist.md`](../../memory/commerce/rcc-pfid-checklist.md).
 - **Constellation / Battle Map:** plan de **diseño + fine tuning + fases + alineación agentes** — [`memory/constellation/BATTLE-MAP-PLAN-DISENO-FINE-TUNING-2026-04.md`](../../memory/constellation/BATTLE-MAP-PLAN-DISENO-FINE-TUNING-2026-04.md); config ejemplo JSON — [`battle-map-config.example.json`](../../memory/constellation/battle-map-config.example.json); `CONSTELACION-COSMICA.html` expone `window.__GANO_BATTLE_MAP__` (build/plan). Oleada GitHub `copilot/cx-*` sigue playbook; no duplicar PRs masivos.
 - **Investigación SOTA UX:** [`memory/research/sota-ux-rts-fps-constellation-steal-2026-04.md`](../../memory/research/sota-ux-rts-fps-constellation-steal-2026-04.md). **Inventario recursos:** [`memory/constellation/INVENTARIO-RECURSOS-DESARROLLO-2026-04.md`](../../memory/constellation/INVENTARIO-RECURSOS-DESARROLLO-2026-04.md).
+- **Homepage SOTA 2026 (implementación en curso):**
+  - baseline técnico por SSH y budget en [`memory/ops/homepage-sota-hosting-baseline-2026-04-17.md`](../../memory/ops/homepage-sota-hosting-baseline-2026-04-17.md),
+  - blueprint UX/copy en [`memory/content/homepage-sota-blueprint-2026-04-17.md`](../../memory/content/homepage-sota-blueprint-2026-04-17.md),
+  - refactor de `front-page.php` + `css/homepage.css` + `js/gano-homepage.js` con uniformidad visual y sin estilos/scripts inline.
+  - workflows de agentes en paralelo (docs + content_seo) ejecutados con éxito: runs `24635536377` y `24635542040`.
 
 ## Completado recientemente (entorno + gobernanza agentes)
 

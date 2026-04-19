@@ -111,6 +111,23 @@ function gano_child_enqueue_styles() {
         $homepage_css_path = get_stylesheet_directory() . '/css/homepage.css';
         $homepage_css_ver  = file_exists( $homepage_css_path ) ? (string) filemtime( $homepage_css_path ) : wp_get_theme()->get( 'Version' );
         wp_enqueue_style( 'gano-homepage-css', get_stylesheet_directory_uri() . '/css/homepage.css', array( 'gano-child-style' ), $homepage_css_ver );
+
+        $homepage_js_path = get_stylesheet_directory() . '/js/gano-homepage.js';
+        $homepage_js_ver  = file_exists( $homepage_js_path ) ? (string) filemtime( $homepage_js_path ) : wp_get_theme()->get( 'Version' );
+        wp_enqueue_script(
+            'gano-homepage-js',
+            get_stylesheet_directory_uri() . '/js/gano-homepage.js',
+            array(),
+            $homepage_js_ver,
+            true
+        );
+        wp_localize_script(
+            'gano-homepage-js',
+            'ganoHomepageConfig',
+            array(
+                'leadEndpoint' => rest_url( 'gano/v1/lead-capture' ),
+            )
+        );
     }
 
     // Navegación sticky — todas las páginas
@@ -137,8 +154,7 @@ function gano_child_enqueue_styles() {
     wp_enqueue_script( 'gano-cursor-js', get_stylesheet_directory_uri() . '/js/gano-cursor.js', array(), '1.1.0', true );
 
     // GSAP 3 Core & Plugins — Solo en páginas que lo necesitan (Phase 5 - SOTA Animation)
-    $needs_gsap = is_front_page()
-        || is_page_template( 'templates/page-sota-hub.php' )
+    $needs_gsap = is_page_template( 'templates/page-sota-hub.php' )
         || is_page_template( 'templates/sota-single-template.php' )
         || is_page_template( 'templates/shop-premium.php' )
         || is_page_template( 'templates/page-ecosistemas.php' );
@@ -173,7 +189,6 @@ function gano_child_enqueue_styles() {
     // Detecta la clase .gano-constellation-wrap en páginas/templates que la incluyan.
     wp_register_script( 'gano-constellation', get_stylesheet_directory_uri() . '/js/gano-constellation.js', array(), '1.0.0', true );
     if (
-        is_front_page() ||
         is_page_template( 'templates/page-sota-hub.php' ) ||
         is_page_template( 'templates/sota-single-template.php' )
     ) {
