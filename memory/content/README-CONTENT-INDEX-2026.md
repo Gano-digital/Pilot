@@ -59,6 +59,7 @@
 |---------|------------------------|-----------------|
 | [`faq-schema-candidates-wave3.md`](faq-schema-candidates-wave3.md) | Lista de preguntas y respuestas candidatas para el bloque `FAQPage` de `gano-seo.php`. | Ampliar el schema JSON-LD de FAQ en el MU plugin o en Rank Math. |
 | [`site-ia-wave3-proposed.md`](site-ia-wave3-proposed.md) | *(ver §1)* Incluye las 20 páginas de pilares SEO (`/pilares/…`) con sus slugs canónicos. | Crear o renombrar páginas de pilares en wp-admin. |
+| [`pilares-seo-narrative-clusters-2026.md`](pilares-seo-narrative-clusters-2026.md) | 5 clusters narrativos (Infra, Seguridad, Rendimiento, IA, Estrategia), orden de publicación P0→P4 y mapa de enlaces editoriales entre pilares. | Priorizar qué pilares publicar primero o definir enlaces internos entre artículos. |
 
 ---
 
