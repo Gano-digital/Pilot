@@ -36,17 +36,33 @@
     });
   }
 
-  // Mobile hamburger
+  // Mobile hamburger — WCAG 4.1.2 (aria-expanded/controls) + Esc
   const hamburger = document.querySelector('.gano-hamburger');
   const drawer = document.querySelector('.gano-nav-drawer');
   if (hamburger && drawer) {
+    if (!drawer.id) drawer.id = 'gano-mobile-menu';
+    hamburger.setAttribute('aria-controls', 'gano-mobile-menu');
+    hamburger.setAttribute('aria-expanded', 'false');
+
+    const openMenu = () => {
+      drawer.classList.add('open');
+      hamburger.setAttribute('aria-expanded', 'true');
+    };
+    const closeMenu = () => {
+      drawer.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    };
+
     hamburger.addEventListener('click', () => {
-      drawer.classList.toggle('open');
+      drawer.classList.contains('open') ? closeMenu() : openMenu();
     });
     document.addEventListener('click', (e) => {
       if (!hamburger.contains(e.target) && !drawer.contains(e.target)) {
-        drawer.classList.remove('open');
+        closeMenu();
       }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMenu();
     });
   }
 })();

@@ -158,7 +158,7 @@ get_header();
         $pfid       = defined( $plan['pfid_const'] ) ? constant( $plan['pfid_const'] ) : 'PENDING_RCC';
         $cart_url   = ( $pfid !== 'PENDING_RCC' && function_exists( 'gano_rstore_cart_url' ) )
                         ? gano_rstore_cart_url( $pfid )
-                        : '#ecosistemas-proximamente';
+                        : '/contacto';
         $is_pending = ( $pfid === 'PENDING_RCC' ) && ! $rcc_product_id;
 
         $card_classes = 'gano-plan-card';
@@ -194,10 +194,9 @@ get_header();
 
           <div class="gano-plan-ctas">
             <?php if ( $is_pending ) : ?>
-              <a href="/contacto" class="gano-btn gano-km-btn-primary" aria-label="<?php echo esc_attr( $plan['cta_primario'] ); ?> — contactar para precio">
+              <a href="/contacto" class="gano-btn gano-km-btn-primary" aria-label="<?php echo esc_attr( $plan['cta_primario'] ); ?>">
                 <?php echo esc_html( $plan['cta_primario'] ); ?>
               </a>
-              <small class="gano-plan-pending-note">Carrito en configuración · Contacta para activar</small>
             <?php elseif ( $rcc_product_id ) : ?>
               <!-- NUEVO: Si se encontró el producto RCC, usar shortcode rstore_product -->
               <?php echo do_shortcode( "[rstore_product post_id={$rcc_product_id} show_price=1 redirect=1 button_label='" . esc_attr( $plan['cta_primario'] ) . "']" ); ?>

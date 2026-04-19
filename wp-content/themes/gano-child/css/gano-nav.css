@@ -101,15 +101,22 @@ header.site-header .site-logo a {
  * RESPONSIVE
  * ============================================================ */
 
+@media (max-width: 1024px) {
+  #site-header nav ul,
+  header.site-header nav ul {
+    gap: 20px !important;
+  }
+
+  #site-header nav a,
+  header.site-header nav a {
+    font-size: 0.9rem !important;
+  }
+}
+
 @media (max-width: 768px) {
   #site-header,
   header.site-header {
     padding: 12px 5% !important;
-  }
-
-  #site-header nav ul,
-  header.site-header nav ul {
-    gap: 20px !important;
   }
 
   #site-header nav a,
@@ -129,5 +136,17 @@ body {
 @media (max-width: 768px) {
   body {
     padding-top: 60px !important;
+  }
+}
+
+/* WCAG 2.2 §2.4.11 Focus Not Obscured — evita que el foco quede oculto
+   bajo el header sticky al navegar con Tab */
+html {
+  scroll-padding-top: 80px;
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 70px;
   }
 }

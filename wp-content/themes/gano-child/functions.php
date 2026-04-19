@@ -26,6 +26,12 @@ require_once get_stylesheet_directory() . '/inc/lead-magnet-handler.php';
  *
  * Solo en homepage para no contaminar el resto del sitio.
  */
+add_action( 'wp_head', 'gano_font_preconnect', 1 );
+function gano_font_preconnect() {
+    echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
+    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+}
+
 add_action( 'wp_head', 'gano_critical_css', 1 );
 function gano_critical_css() {
     if ( ! is_front_page() ) {
