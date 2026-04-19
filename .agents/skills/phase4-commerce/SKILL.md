@@ -19,43 +19,31 @@ Automatically loaded when prompt contains:
 4. **3-year bundle** = Discounted multi-year plan (must be handled as single SKU in cart)
 5. **OTE** = Official Test Environment (sandbox before production)
 
-### Current Phase 4 State
-- **Completed**: Architecture decision (Reseller vs API), security hardening (Phase 2)
-- **In Progress**: PFID mapping, CTA wiring, staging tests
-- **Blocked By**: None currently
-- **Next**: Full cart/checkout test in staging, then production migration
+### Current Phase 4 State (abr 2026 — actualizar tras cada deploy)
+- **Completed**: Arquitectura Reseller-only; vitrina y CTAs en `gano-child`; catálogo `/ecosistemas/` operativo en producción; opciones `gano_pfid_*` pobladas en servidor (WP-CLI) desde IDs de catálogo Reseller (`rstore_id` / slugs).
+- **In Progress**: Validación **RCC** de que los valores en `gano_pfid_*` son los PFIDs correctos (numéricos si RCC lo exige); mapeo `gano_pfid_online_storage` (hoy `PENDING_RCC`); smoke checkout end-to-end documentado.
+- **Blocked By**: Validación humana RCC + copy estable antes de activar Rank Math de forma agresiva.
+- **Next**: Revisar carrito real por producto clave; ajustar opciones en `wp-admin → Ajustes → Gano Reseller`; ver `TASKS.md` Fase 4 y `memory/commerce/rcc-pfid-checklist.md`.
 
 ### Critical Files
 | File | Purpose | Last Updated |
 |------|---------|--------------|
 | `memory/commerce/rcc-pfid-checklist.md` | PFID mapping tracker | Phase 4 start |
-| `wp-content/plugins/gano-reseller-enhancements/` | Price overrides, bundle logic | 2026-03 |
-| `wp-content/themes/gano-child/templates/shop-premium.php` | CTA template | 2026-03 |
+| `wp-content/plugins/gano-reseller-enhancements/` | Price overrides, PFID admin UI | 2026-04 |
+| `wp-content/themes/gano-child/functions.php` | `gano_rstore_cart_url()`, constantes `GANO_PFID_*` desde `wp_options` | 2026-04 |
+| `wp-content/themes/gano-child/templates/shop-premium.php` | CTA template | 2026-04 |
 | `wp-content/mu-plugins/gano-security.php` | CSP headers, rate limiting | Phase 2 |
 | `TASKS.md` | Sprint-level tasks | Daily |
 
 ### Reseller Integration Pattern
 
-#### CTA Structure
+#### CTA Structure (tema — fuente canónica)
+En el child theme, la URL de carrito Reseller se construye con **`gano_rstore_cart_url( $pfid, $duration )`** en `wp-content/themes/gano-child/functions.php` (usa `rstore_get_option('pl_id')` y `https://cart.secureserver.net/`). Los PFIDs por defecto vienen de constantes `GANO_PFID_*` alimentadas por **`wp_options`** `gano_pfid_*` (panel *Ajustes → Gano Reseller*).
+
 ```php
-<!-- shop-premium.php -->
-<a href="<?php echo esc_url(gano_reseller_cart_url('PFID_3YEAR_WP')); ?>" class="btn btn-primary">
-    Get Started
+<a href="<?php echo esc_url( gano_rstore_cart_url( GANO_PFID_HOSTING_DELUXE, 12 ) ); ?>" class="btn btn-primary">
+    Comprar
 </a>
-```
-
-#### Plugin Function (gano-reseller-enhancements)
-```php
-function gano_reseller_cart_url($pfid) {
-    $base = defined('GANO_RESELLER_BASE') ? GANO_RESELLER_BASE : 'https://reseller.godaddy.com/cart';
-    $shopper_id = get_option('gano_reseller_shopper_id');
-
-    return add_query_arg([
-        'plid' => $pfid,
-        'domreg' => 1,
-        'psid' => $shopper_id
-    ], $base);
-}
 ```
 
 #### PFID Mapping Example

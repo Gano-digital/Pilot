@@ -25,6 +25,17 @@ Guía con más detalle: [`.github/workflows/README.md`](../../.github/workflows/
 
 ---
 
+## 1b. Producción `gano.digital` (snapshot 2026-04-19)
+
+- **Código crítico alineado con `main`:** 8 rutas (tema `gano-child` + MU `gano-seo.php` / `gano-security.php` + `class-pfid-admin.php`); verificación MD5 tras SCP.
+- **Checkout:** modelo **Reseller Store**; WooCommerce **no** está en producción; no asumir pasarela local.
+- **Menú:** **Inicio → /** (home canónica); `/home/` en borrador.
+- **Bots:** `.htaccess` bloquea solo escáneres abusivos; existen `llms.txt` y `bot-seo-context.md` en raíz.
+- **Plugins activos típicos:** `reseller-store`, `gano-phase6-catalog`, `gano-phase7-activator`, `gano-reseller-enhancements`; Rank Math y Wordfence **inactivos** hasta decisión.
+- **Handoff:** [`../sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`](../sessions/2026-04-19-trazabilidad-ops-wave-handoff.md).
+
+---
+
 ## 2. Rutas canónicas
 
 | Tema | Ruta |

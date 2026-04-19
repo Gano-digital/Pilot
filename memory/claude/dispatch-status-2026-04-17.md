@@ -1,5 +1,7 @@
 # Estado dispatch Claude — 2026-04-17
 
+**Actualización:** ver también [`dispatch-status-2026-04-19.md`](dispatch-status-2026-04-19.md) (ola ops producción + convergencia repo).
+
 Objetivo: dejar una referencia versionada (no local) del estado de ejecución de la cola `memory/claude/dispatch-queue.json`.
 
 ## Completado (bloque repo/documentación)
