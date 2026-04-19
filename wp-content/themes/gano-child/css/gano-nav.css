@@ -139,7 +139,33 @@ body {
   }
 }
 
-/* WCAG 2.2 §2.4.11 Focus Not Obscured — evita que el foco quede oculto
+/* ============================================================
+ * ARIA-CURRENT — Ítem activo en la nav
+ * ============================================================ */
+
+#site-header nav a[aria-current="page"],
+header.site-header nav a[aria-current="page"] {
+  color: var(--gc-secondary, #00C26B) !important;
+  font-weight: 700 !important;
+}
+
+/* ============================================================
+ * PRICING HINTS — Precio secundario en sub-ítems dropdown
+ * ============================================================ */
+
+#site-header nav .nav-plan-price,
+header.site-header nav .nav-plan-price {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--gc-secondary, #00C26B);
+  opacity: 0.85;
+  margin-top: 1px;
+  letter-spacing: 0;
+}
+
+/* ============================================================
+ * WCAG 2.2 §2.4.11 Focus Not Obscured — evita que el foco quede oculto
    bajo el header sticky al navegar con Tab */
 html {
   scroll-padding-top: 80px;

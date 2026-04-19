@@ -83,6 +83,67 @@ get_header();
         </div>
     </section>
 
+    <!-- Trust bar — señales de confianza post-hero -->
+    <div class="gano-trust-bar" role="complementary" aria-label="Señales de confianza">
+        <div class="gano-trust-bar__inner">
+            <span class="gano-trust-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Reseller oficial GoDaddy
+            </span>
+            <span class="gano-trust-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                SLA objetivo ≥ 99,9% uptime
+            </span>
+            <span class="gano-trust-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Soporte en español
+            </span>
+            <span class="gano-trust-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                NVMe Gen4 real
+            </span>
+            <span class="gano-trust-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Facturación en COP
+            </span>
+        </div>
+    </div>
+
+    <style>
+    .gano-trust-bar {
+        background: rgba(27, 79, 216, 0.06);
+        border-top: 1px solid rgba(27, 79, 216, 0.15);
+        border-bottom: 1px solid rgba(27, 79, 216, 0.15);
+        padding: 14px 5%;
+    }
+    .gano-trust-bar__inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px 32px;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+    .gano-trust-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #94a3b8;
+        font-size: 0.83rem;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+    .gano-trust-item svg {
+        color: var(--gano-green, #00C26B);
+        flex-shrink: 0;
+    }
+    @media (max-width: 640px) {
+        .gano-trust-bar__inner { gap: 8px 20px; }
+        .gano-trust-item { font-size: 0.78rem; }
+    }
+    </style>
+
     <section class="section-gano" style="text-align: center;">
         <div class="section-title-gano">
             <h2>Encuentra tu Dominio</h2>
