@@ -7,7 +7,7 @@ header, nav {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 999;
+  z-index: 1001;
   width: 100%;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   background: transparent;
@@ -111,7 +111,7 @@ header.nav-solid, nav.nav-solid {
   transform: translateY(-10px);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
-  z-index: 1000;
+  z-index: 1002;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 }
 

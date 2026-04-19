@@ -73,6 +73,7 @@
     animation: moveGrid 20s linear infinite;
     opacity: 0.3;
     z-index: 0;
+    pointer-events: none;
 }
 
 @keyframes moveGrid {
