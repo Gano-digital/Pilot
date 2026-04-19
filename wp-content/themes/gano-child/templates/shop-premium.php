@@ -88,8 +88,9 @@ get_header();
     .section-header h2 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 20px; }
 
     .catalog-nav { display: flex; justify-content: center; gap: 30px; margin-bottom: 80px; flex-wrap: wrap; }
-    .nav-item { cursor: pointer; font-family: var(--gano-font-mono); font-size: var(--gano-fs-xs); font-weight: var(--gano-fw-bold); text-transform: uppercase; color: var(--gano-gray-500); transition: var(--gano-transition); padding: 10px 20px; border-bottom: 2px solid transparent; }
+    .nav-item { background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-family: var(--gano-font-mono); font-size: var(--gano-fs-xs); font-weight: var(--gano-fw-bold); text-transform: uppercase; color: var(--gano-gray-500); transition: var(--gano-transition); padding: 10px 20px; }
     .nav-item.active, .nav-item:hover { color: var(--gano-purple); border-color: var(--gano-purple); }
+    .nav-item:focus-visible { outline: 3px solid var(--gano-gold, #D4AF37); outline-offset: 3px; }
 
     .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; transition: var(--motion-slow) var(--ease-out); }
 
@@ -138,6 +139,7 @@ get_header();
 
     .rstore-add-to-cart { width: 100%; text-align: center; padding: 12px; font-weight: var(--gano-fw-bold); background: var(--gano-indigo-soft); color: var(--gano-purple); border: 1px solid var(--gano-border-sota); cursor: pointer; transition: var(--gano-transition); font-size: var(--gano-fs-xs); text-transform: uppercase; letter-spacing: var(--gano-ls-wide); }
     .rstore-add-to-cart:hover { background: var(--gano-purple); color: var(--gano-white); }
+    .rstore-add-to-cart:focus-visible { outline: 3px solid var(--gano-gold, #D4AF37); outline-offset: 3px; box-shadow: 0 0 0 5px rgba(212, 175, 55, 0.28); }
     .rstore-add-to-cart--pending { background: rgba(255,255,255,0.08); color: var(--gano-white); border-color: rgba(255,255,255,0.2); }
     .rstore-add-to-cart--coming-soon { opacity: 0.55; cursor: not-allowed; pointer-events: none; }
     .rstore-status-note { display: block; margin-top: 10px; font-size: 10px; color: var(--gano-gray-500); text-transform: uppercase; letter-spacing: var(--gano-ls-wide); }
@@ -153,7 +155,7 @@ get_header();
 
 <div class="sota-wrapper gano-km-shell gano-on-dark">
     <div class="mockup-status" id="scroll-progress"></div>
-    <div class="badge-fixed">SOTA v3.1 — RESELLER API SYNC</div>
+    <div class="badge-fixed" aria-hidden="true">SOTA v3.1 — RESELLER API SYNC</div>
 
     <!-- BACKGROUND DOODLES -->
     <div class="doodle constellation doodle--top-right"></div>
@@ -262,7 +264,7 @@ get_header();
             <h1 class="reveal gano-km-title">gano.digital<span class="gano-km-title-accent">/sota</span></h1>
             <p class="reveal gano-km-lead">El fin de la infraestructura pasiva. Ecosistemas (Núcleo Prime, Fortaleza Delta, Bastión SOTA) resilientes y soberanos para activos de alta autoridad.</p>
             <div class="reveal">
-                <button class="btn-sota gano-km-btn-primary" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">Explorar Nodos de Red</button>
+                <button type="button" class="btn-sota gano-km-btn-primary" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">Explorar Nodos de Red</button>
             </div>
         </div>
     </section>
@@ -291,12 +293,12 @@ get_header();
                 <h2>Sincronización de Ecosistemas</h2>
             </div>
 
-            <div class="catalog-nav">
-                <div class="nav-item active" data-filter="all">Todos</div>
+            <div class="catalog-nav" role="group" aria-label="Filtrar productos por categoría">
+                <button type="button" class="nav-item active" data-filter="all">Todos</button>
                 <?php foreach ( $catalog_categories as $cat_key => $cat_label ) : ?>
-                    <div class="nav-item" data-filter="<?php echo esc_attr( $cat_key ); ?>">
+                    <button type="button" class="nav-item" data-filter="<?php echo esc_attr( $cat_key ); ?>">
                         <?php echo esc_html( $cat_label ); ?>
-                    </div>
+                    </button>
                 <?php endforeach; ?>
             </div>
 
@@ -310,10 +312,10 @@ get_header();
                         <p class="product-card__tip"><?php echo esc_html( $p['tip'] ); ?></p>
                     <?php endif; ?>
                     <div class="svg-container">
-                        <svg class="svg-container__svg" viewBox="0 0 100 100">
+                        <svg class="svg-container__svg" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
                             <rect class="path-anim" x="10" y="10" width="80" height="80" rx="4" />
                             <foreignObject x="25" y="25" width="50" height="50">
-                                <i class="fa-solid svg-container__icon <?php echo esc_attr($p['icon']); ?>"></i>
+                                <i class="fa-solid svg-container__icon <?php echo esc_attr($p['icon']); ?>" aria-hidden="true"></i>
                             </foreignObject>
                         </svg>
                     </div>
@@ -333,6 +335,8 @@ get_header();
                     <a href="<?php echo esc_url( $cta['url'] ); ?>"
                        class="rstore-add-to-cart rstore-add-to-cart--<?php echo esc_attr( $cta['status'] ); ?> gano-km-btn-secondary"
                        <?php echo $cta['target']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                       aria-label="<?php echo esc_attr( $cta['label'] . ': ' . $p['name'] ); ?>"
+                       <?php if ( 'coming-soon' === $cta['status'] ) : ?>tabindex="-1" aria-disabled="true"<?php endif; ?>
                     ><?php echo esc_html( $cta['label'] ); ?></a>
                     <small class="rstore-status-note">
                         <?php
@@ -405,12 +409,12 @@ get_header();
         const productCards = document.querySelectorAll('.product-card');
 
         navItems.forEach(item => {
-            item.addEventListener('click', (e) => {
+            item.addEventListener('click', () => {
                 // Update active state
                 navItems.forEach(nav => nav.classList.remove('active'));
-                e.target.classList.add('active');
+                item.classList.add('active');
 
-                const filter = e.target.getAttribute('data-filter');
+                const filter = item.getAttribute('data-filter');
 
                 // Animate out
                 if (typeof gsap !== 'undefined') {
