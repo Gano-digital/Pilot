@@ -475,6 +475,26 @@ add_action( 'wp_head', function() {
 }, 2 );
 
 /**
+ * Fix #222 — Fallback de imagen hero para el widget Imagen de Elementor.
+ *
+ * Cuando Elementor almacena attachment_id = 0 (imagen sin registro en la BD),
+ * el widget renderiza sin <img> o con el placeholder genérico de Elementor.
+ * Este filtro sustituye el placeholder URL por hero-datacenter.jpg del tema,
+ * asegurando que la sección hero siempre muestre una imagen coherente con la
+ * marca hasta que el admin registre la imagen definitiva en la Biblioteca.
+ *
+ * Elementor: 'elementor/image_placeholder' (desde Elementor 3.x).
+ * Solo actúa en el frontend, no en el editor wp-admin.
+ */
+add_filter( 'elementor/image_placeholder', 'gano_elementor_image_placeholder', 10, 1 );
+function gano_elementor_image_placeholder( string $placeholder ): string {
+    if ( is_admin() ) {
+        return $placeholder;
+    }
+    return esc_url( get_stylesheet_directory_uri() . '/assets/images/hero-datacenter.jpg' );
+}
+
+/**
  * Agregar etiqueta de idioma y charset explícito (mejora SEO y accesibilidad).
  */
 add_filter( 'language_attributes', function( string $output ): string {

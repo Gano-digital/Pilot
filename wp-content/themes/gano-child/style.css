@@ -2751,6 +2751,102 @@ select:focus-visible {
 }
 /* END: HERO IMAGE FALLBACK */
 
+/* START: HERO BLOCK SHORTCODE — [gano_hero] */
+.gano-hero-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+    padding: clamp(4rem, 8vw, 6rem) 0;
+}
+
+.gano-hero-block__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.gano-hero-block__sub {
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    color: rgba(255, 255, 255, 0.82);
+    line-height: var(--gano-lh-body, 1.6);
+    max-width: 52ch;
+}
+
+.gano-hero-block__cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.gano-hero-block__img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gano-hero-block__img-el {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--gano-radius-lg, 12px);
+    object-fit: cover;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+}
+
+/* Hero CTA row para front-page.php */
+.hero-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.hero-microcopy {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.03em;
+}
+
+/* Botón secundario del hero */
+.btn-gano--secondary {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--gano-white, #ffffff);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--gano-radius-sm, 6px);
+    font-weight: 600;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+}
+
+.btn-gano--secondary:hover,
+.btn-gano--secondary:focus-visible {
+    border-color: var(--gano-green, #00C26B);
+    background: rgba(0, 194, 107, 0.08);
+    outline: 2px solid var(--gano-green, #00C26B);
+    outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+    .gano-hero-block {
+        grid-template-columns: 1fr;
+    }
+
+    .gano-hero-block__img {
+        order: -1;
+    }
+
+    .gano-hero-block__img-el {
+        max-height: 280px;
+        object-position: center top;
+    }
+}
+/* END: HERO BLOCK SHORTCODE */
+
 /* START: SKELETON LOADERS — Wave 3 UX */
 @keyframes gano-shimmer {
     0%   { background-position: -400px 0; }
