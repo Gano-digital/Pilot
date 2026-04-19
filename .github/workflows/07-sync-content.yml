@@ -1,5 +1,5 @@
-# 07 · Content Sync · Sincronizar páginas/posts staging ↔ producción
-name: "07 · Content Sync · Staging ↔ Producción"
+# 17 · Ops · Content Sync · Sincronizar páginas/posts staging ↔ producción
+name: "17 · Ops · Content Sync · Staging ↔ Producción"
 
 on:
   schedule:
@@ -28,12 +28,69 @@ permissions:
   contents: read
 
 jobs:
+  ssh-preflight:
+    name: 🔐 SSH Preflight
+    runs-on: ubuntu-latest
+    outputs:
+      run_remote: ${{ steps.preflight.outputs.run_remote }}
+    
+    steps:
+      - name: Check SSH readiness
+        id: preflight
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          set -euo pipefail
+          echo "run_remote=false" >> "$GITHUB_OUTPUT"
+
+          if [ -z "${SSH_PRIVATE_KEY:-}" ] || [ -z "${SERVER_HOST:-}" ] || [ -z "${SERVER_USER:-}" ] || [ -z "${DEPLOY_PATH:-}" ]; then
+            echo "::notice title=SSH preflight::Skipping content sync (missing SSH secrets)."
+            exit 0
+          fi
+
+          if ! printf '%s\n' "$SSH_PRIVATE_KEY" | grep -q "BEGIN .* PRIVATE KEY"; then
+            echo "::notice title=SSH preflight::Skipping content sync (invalid SSH key format)."
+            exit 0
+          fi
+
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          if ! ssh-keyscan -H "$SERVER_HOST" >> ~/.ssh/known_hosts 2>/dev/null; then
+            echo "::notice title=SSH preflight::Skipping content sync (cannot resolve host key)."
+            exit 0
+          fi
+
+          if ssh -i ~/.ssh/id_rsa -o BatchMode=yes -o ConnectTimeout=10 "${SERVER_USER}@${SERVER_HOST}" "echo ok" >/dev/null 2>&1; then
+            echo "run_remote=true" >> "$GITHUB_OUTPUT"
+            echo "SSH preflight passed."
+          else
+            echo "::notice title=SSH preflight::Skipping content sync (SSH auth/connectivity failed)."
+          fi
+
   sync:
     name: 🔄 Content Sync
+    if: ${{ needs.ssh-preflight.outputs.run_remote == 'true' }}
+    needs: ssh-preflight
     runs-on: ubuntu-latest
     
     steps:
       - uses: actions/checkout@v6
+
+      - name: 🔐 Setup SSH key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "$SERVER_HOST" >> ~/.ssh/known_hosts
       
       - name: 📊 Fetch staging content
         run: |
@@ -151,3 +208,16 @@ jobs:
           else
             echo "> ⚠️  **Content was synced.** Verify gano.digital for correctness." >> $GITHUB_STEP_SUMMARY
           fi
+
+  report-skip:
+    name: 📊 Content Sync Skip Report
+    if: ${{ needs.ssh-preflight.outputs.run_remote != 'true' }}
+    needs: ssh-preflight
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Summarize skipped content sync"
+        run: |
+          echo "## 🔄 Content Sync Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ⏭️ Skipped (SSH preflight not ready)" >> $GITHUB_STEP_SUMMARY
+          echo "**Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
