@@ -414,17 +414,14 @@ add_filter( 'script_loader_tag', function( string $tag, string $handle ): string
 }, 10, 2 );
 
 /**
- * Precargar fuentes críticas para evitar FOIT (flash of invisible text).
- * Ajustar las URLs si se cambia la tipografía en Elementor.
+ * Prioridad de fetch para el hero image de Elementor y fetchpriority alto en img LCP.
+ * Ajustar los selectores si cambia la estructura del hero en Elementor.
  */
 add_action( 'wp_head', function() {
     // Solo en frontend (no wp-admin)
     if ( is_admin() ) {
         return;
     }
-    // Fuente principal — si se usa Google Fonts vía Elementor, agregar aquí la URL del woff2
-    // $font_url = 'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hiA.woff2';
-    // echo '<link rel="preload" href="' . esc_url( $font_url ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
 
     // fetchpriority en img hero via JavaScript inline mínimo (Elementor no expone PHP hook para esto)
     // Solo se aplica en homepage para no afectar otras páginas ni el admin
