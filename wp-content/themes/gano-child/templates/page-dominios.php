@@ -1,0 +1,358 @@
+<?php
+/**
+ * Template Name: Dominios — Registra tu Presencia
+ * Description: Página de búsqueda y registro de dominios TLD con integración GoDaddy Reseller
+ * SOTA aesthetic — buscador + grid de TLDs populares
+ */
+
+get_header();
+?>
+
+<style>
+:root {
+    --gc-primary: #1B4FD8;
+    --gc-secondary: #00C26B;
+    --gc-accent: #D4AF37;
+    --gc-dark: #05080b;
+    --gc-text: #e2e8f0;
+    --gc-text-muted: #94a3b8;
+}
+
+.dominios-page {
+    background: var(--gc-dark);
+    color: var(--gc-text);
+}
+
+.dominios-hero {
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 50%, #1e2530 0%, #05080b 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 60px 5% 0;
+}
+
+.dominios-hero h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    text-align: center;
+    max-width: 900px;
+    margin-bottom: 20px;
+    animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+.dominios-hero p {
+    font-size: 1.1rem;
+    color: #94a3b8;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 50px;
+    animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* BUSCADOR SECTION */
+.dominios-search-section {
+    padding: 80px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.dominios-search-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 30px;
+    color: #fff;
+}
+
+.search-container {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 80px;
+}
+
+/* GRID DE TLDS */
+.tlds-section {
+    padding: 60px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tlds-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 50px;
+    text-align: center;
+    color: #fff;
+}
+
+.tlds-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.tld-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.tld-card:hover {
+    transform: translateY(-8px);
+    border-color: #D4AF37;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.tld-card h3 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.tld-price {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #00C26B;
+    margin-bottom: 15px;
+}
+
+.tld-price small {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    display: block;
+    font-weight: 400;
+}
+
+.tld-description {
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    margin-bottom: 20px;
+    min-height: 40px;
+}
+
+.tld-button {
+    background: linear-gradient(135deg, #1B4FD8, #00C26B);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 700;
+    display: inline-block;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.tld-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(27, 79, 216, 0.3);
+}
+
+/* CTA FINAL */
+.dominios-cta-final {
+    background: rgba(255, 255, 255, 0.03);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 60px 5%;
+    text-align: center;
+    margin-top: 80px;
+}
+
+.dominios-cta-final h2 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.dominios-cta-final p {
+    color: #94a3b8;
+    margin-bottom: 30px;
+    font-size: 1.05rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #1B4FD8, #00C26B);
+    color: #fff;
+    padding: 16px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    display: inline-block;
+    box-shadow: 0 10px 30px rgba(27, 79, 216, 0.3);
+    transition: all 0.4s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 194, 107, 0.4);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .dominios-hero {
+        height: 60vh;
+        padding-top: 40px;
+    }
+
+    .dominios-hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .dominios-search-section {
+        padding: 50px 5%;
+    }
+
+    .search-container {
+        padding: 30px 20px;
+    }
+
+    .tlds-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .tld-card {
+        padding: 20px;
+    }
+
+    .tld-card h3 {
+        font-size: 1.2rem;
+    }
+
+    .tld-price {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .dominios-hero h1 {
+        font-size: 1.5rem;
+    }
+
+    .dominios-search-section {
+        padding: 40px 4%;
+    }
+
+    .tlds-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dominios-cta-final h2 {
+        font-size: 1.4rem;
+    }
+}
+
+</style>
+
+<main class="dominios-page">
+    <!-- HERO -->
+    <section class="dominios-hero">
+        <div class="hero-content">
+            <h1>Tu Identidad Digital Comienza Aquí</h1>
+            <p>Busca, registra y gestiona dominios con la máxima libertad. Precios en COP, soporte en español y control total.</p>
+        </div>
+    </section>
+
+    <!-- BUSCADOR DE DOMINIOS -->
+    <section class="dominios-search-section">
+        <h2 class="dominios-search-title">Busca tu Dominio Ideal</h2>
+        <div class="search-container">
+            <?php echo do_shortcode('[rstore_domain_search page_size="5"]'); ?>
+        </div>
+    </section>
+
+    <!-- TLDS POPULARES -->
+    <section class="tlds-section">
+        <h2 class="tlds-title">Extensiones Populares</h2>
+        <div class="tlds-grid">
+            <?php
+            $tlds = [
+                [
+                    'extension' => '.CO',
+                    'nombre' => 'Colombia',
+                    'precio' => '$90.000',
+                    'desc' => 'Presencia nacional de máxima autoridad',
+                ],
+                [
+                    'extension' => '.COM',
+                    'nombre' => 'Global',
+                    'precio' => '$75.000',
+                    'desc' => 'El estándar internacional de credibilidad',
+                ],
+                [
+                    'extension' => '.NET',
+                    'nombre' => 'Infraestructura',
+                    'precio' => '$85.000',
+                    'desc' => 'La red técnica de confianza',
+                ],
+                [
+                    'extension' => '.TECH',
+                    'nombre' => 'Tecnología',
+                    'precio' => '$160.000',
+                    'desc' => 'Para startups e innovadores',
+                ],
+                [
+                    'extension' => '.BIZ',
+                    'nombre' => 'Negocio',
+                    'precio' => '$110.000',
+                    'desc' => 'Enfoque operativo y profesional',
+                ],
+                [
+                    'extension' => '.AI',
+                    'nombre' => 'Inteligencia Artificial',
+                    'precio' => '$350.000',
+                    'desc' => 'La frontera de la innovación',
+                ],
+            ];
+
+            foreach ($tlds as $tld) {
+                ?>
+                <div class="tld-card">
+                    <h3><?php echo esc_html($tld['extension']); ?></h3>
+                    <div class="tld-price"><?php echo esc_html($tld['precio']); ?><small>/año</small></div>
+                    <p class="tld-description"><?php echo esc_html($tld['desc']); ?></p>
+                    <a href="#" class="tld-button">Registrar</a>
+                </div>
+                <?php
+            }
+            ?>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="dominios-cta-final">
+        <div style="max-width: 700px; margin: 0 auto;">
+            <h2>¿Necesitas Ayuda para Elegir?</h2>
+            <p>Nuestro equipo te asesorará en la mejor estrategia de dominios para tu marca.</p>
+            <a href="/contacto/" class="btn-primary">Contactar Equipo</a>
+        </div>
+    </section>
+
+</main>
+
+<?php get_footer(); ?>

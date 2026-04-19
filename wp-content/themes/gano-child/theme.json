@@ -1,0 +1,76 @@
+{
+  "version": 2,
+  "name": "Gano Digital Child",
+  "description": "Child theme para gano.digital con paleta SOTA",
+  "settings": {
+    "color": {
+      "palette": [
+        {
+          "slug": "gc-primary",
+          "color": "#1B4FD8",
+          "name": "Gano Blue — CTAs"
+        },
+        {
+          "slug": "gc-secondary",
+          "color": "#00C26B",
+          "name": "Gano Green — Éxito"
+        },
+        {
+          "slug": "gc-accent",
+          "color": "#D4AF37",
+          "name": "Gano Gold — Bastión SOTA"
+        },
+        {
+          "slug": "gc-dark",
+          "color": "#05080b",
+          "name": "Gano Dark — Abyss"
+        },
+        {
+          "slug": "gc-content-bg",
+          "color": "#f8fafc",
+          "name": "Content Light — Fondos claros"
+        },
+        {
+          "slug": "gc-text",
+          "color": "#e2e8f0",
+          "name": "Gano Text — Texto claro"
+        },
+        {
+          "slug": "gc-text-muted",
+          "color": "#94a3b8",
+          "name": "Text Muted — Secundario"
+        },
+        {
+          "slug": "gc-text-light",
+          "color": "#1e293b",
+          "name": "Text Light — En fondos claros"
+        }
+      ]
+    },
+    "typography": {
+      "defaultFontSizes": true,
+      "fontSizes": [
+        {
+          "size": "12px",
+          "slug": "small"
+        },
+        {
+          "size": "16px",
+          "slug": "normal"
+        },
+        {
+          "size": "20px",
+          "slug": "large"
+        },
+        {
+          "size": "32px",
+          "slug": "xlarge"
+        },
+        {
+          "size": "48px",
+          "slug": "xxlarge"
+        }
+      ]
+    }
+  }
+}

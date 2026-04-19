@@ -14,6 +14,100 @@
 
 require_once get_stylesheet_directory() . '/inc/homepage-blocks.php';
 require_once get_stylesheet_directory() . '/inc/contact-form-handler.php';
+require_once get_stylesheet_directory() . '/inc/lead-magnet-handler.php';
+
+// =============================================================================
+// 0.5 CSS CRÍTICO — Prioridad 1 (inline en wp_head antes de Elementor)
+// =============================================================================
+/**
+ * Inyecta estilos críticos inline con prioridad 1.
+ * Esto asegura que nuestras variables y estilos fundamentales ganen
+ * contra la especificidad de Elementor (que corre a prioridad 10).
+ *
+ * Solo en homepage para no contaminar el resto del sitio.
+ */
+add_action( 'wp_head', 'gano_critical_css', 1 );
+function gano_critical_css() {
+    if ( ! is_front_page() ) {
+        return;
+    }
+
+    echo '<style id="gano-critical">';
+    echo ':root {';
+    echo '  --gc-primary: #1B4FD8;';
+    echo '  --gc-secondary: #00C26B;';
+    echo '  --gc-accent: #D4AF37;';
+    echo '  --gc-dark: #05080b;';
+    echo '  --gc-dark-card: rgba(255,255,255,0.03);';
+    echo '  --gc-dark-border: rgba(255,255,255,0.08);';
+    echo '  --gc-content-bg: #f8fafc;';
+    echo '  --gc-text: #e2e8f0;';
+    echo '  --gc-text-muted: #94a3b8;';
+    echo '  --gc-text-light: #1e293b;';
+    echo '  --gc-glow: rgba(27,79,216,0.4);';
+    echo '}';
+    echo '.gano-home { background: var(--gc-dark) !important; color: var(--gc-text) !important; }';
+    echo '.hero-gano { background: radial-gradient(circle at 50% 50%, #1e2530 0%, var(--gc-dark) 100%) !important; }';
+    echo '</style>';
+}
+
+// =============================================================================
+// 0.6 ADMIN PAGE — Ver leads capturados
+// =============================================================================
+
+add_action( 'admin_menu', 'gano_add_leads_admin_page' );
+function gano_add_leads_admin_page(): void {
+    add_menu_page(
+        'Leads Capturados',
+        'Leads',
+        'manage_options',
+        'gano-leads',
+        'gano_render_leads_page',
+        'dashicons-email-alt',
+        20
+    );
+}
+
+function gano_render_leads_page(): void {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_die( 'No tienes permiso para acceder a esta página.' );
+    }
+    ?>
+    <div class="wrap">
+        <h1><?php esc_html_e( 'Leads Capturados', 'gano-child' ); ?></h1>
+        <?php
+        $leads = (array) get_option( 'gano_leads', array() );
+        if ( empty( $leads ) ) {
+            echo '<p><em>' . esc_html__( 'No hay leads capturados aún.', 'gano-child' ) . '</em></p>';
+            return;
+        }
+        ?>
+        <table class="widefat striped">
+            <thead>
+                <tr>
+                    <th><?php esc_html_e( 'Email', 'gano-child' ); ?></th>
+                    <th><?php esc_html_e( 'Plan', 'gano-child' ); ?></th>
+                    <th><?php esc_html_e( 'Fecha', 'gano-child' ); ?></th>
+                    <th><?php esc_html_e( 'IP', 'gano-child' ); ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ( array_reverse( $leads ) as $lead ) : ?>
+                    <tr>
+                        <td><?php echo esc_html( $lead['email'] ); ?></td>
+                        <td><?php echo esc_html( $lead['plan'] ); ?></td>
+                        <td><?php echo esc_html( $lead['time'] ); ?></td>
+                        <td><?php echo esc_html( $lead['ip'] ); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">
+            <?php echo esc_html( sprintf( __( 'Total: %d leads', 'gano-child' ), count( $leads ) ) ); ?>
+        </p>
+    </div>
+    <?php
+}
 
 // =============================================================================
 // 1. ENQUEUE DE ESTILOS Y SCRIPTS
@@ -24,6 +118,14 @@ function gano_child_enqueue_styles() {
     // Estilos del tema padre y hijo
     wp_enqueue_style( 'royal-elementor-kit-parent', get_template_directory_uri() . '/style.css' );
     wp_enqueue_style( 'gano-child-style', get_stylesheet_uri(), array( 'royal-elementor-kit-parent' ), wp_get_theme()->get( 'Version' ) );
+
+    // Homepage SOTA — solo en front page
+    if ( is_front_page() ) {
+        wp_enqueue_style( 'gano-homepage-css', get_stylesheet_directory_uri() . '/css/homepage.css', array( 'gano-child-style' ), '1.0.0' );
+    }
+
+    // Navegación sticky — todas las páginas
+    wp_enqueue_style( 'gano-nav-css', get_stylesheet_directory_uri() . '/css/gano-nav.css', array( 'gano-child-style' ), '1.0.0' );
 
     // Chat IA — se carga con nonce CSRF (V-05 Fix)
     wp_enqueue_style( 'gano-chat-css', get_stylesheet_directory_uri() . '/css/gano-chat.css', array(), '1.2.0' );
@@ -114,6 +216,9 @@ function gano_child_enqueue_styles() {
             true
         );
     }
+
+    // Navegación sticky + mega-dropdown — todas las páginas
+    wp_enqueue_script( 'gano-nav', get_stylesheet_directory_uri() . '/js/gano-nav.js', array(), '1.0.0', true );
 }
 
 /**

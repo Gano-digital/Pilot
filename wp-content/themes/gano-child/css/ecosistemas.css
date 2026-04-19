@@ -3,6 +3,16 @@
    Tokens visuales definidos en :root de style.css.
    ────────────────────────────────────────────────────────────────── */
 
+:root {
+  /* Asegurar que tenemos variables --gc-* disponibles aquí también */
+  --gc-primary: #1B4FD8;
+  --gc-secondary: #00C26B;
+  --gc-accent: #D4AF37;
+  --gc-dark: #05080b;
+  --gc-text: #e2e8f0;
+  --gc-text-muted: #94a3b8;
+}
+
 /* ── Hero sección ──────────────────────────────────────────────── */
 .gano-ecosistemas-hero {
     padding: 5rem 1.5rem 4rem;

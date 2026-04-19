@@ -36,6 +36,7 @@ get_header();
       // SLAs comerciales — revisar contra hoja de producto GoDaddy Managed WordPress
       // antes de producción. Valores alineados con práctica estándar del programa
       // Reseller (Economy / Deluxe / Premium / Ultimate).
+      // **NUEVO:** Slugs RCC para integración dinámica con WP_Query
       $planes = [
         [
           'id'           => 'nucleo-prime',
@@ -59,6 +60,7 @@ get_header();
           'respuesta'    => 'Incluye NVMe real (no HDD compartido), soporte en tu idioma y activación rápida. Más que un hosting genérico al mismo precio.',
           'cta_primario' => 'Elegir Núcleo Prime',
           'cta_secundario' => 'Ver especificaciones',
+          'rcc_slug'     => 'wordpress-basico',
           'pfid_const'   => 'GANO_PFID_HOSTING_ECONOMIA',
           'enlace_detalle' => '/ecosistemas/nucleo-prime',
         ],
@@ -84,6 +86,7 @@ get_header();
           'respuesta'    => 'El salto de precio compra hardening activo, más recursos y visibilidad operativa: no es pagar dos veces el mismo servicio.',
           'cta_primario' => 'Activar Fortaleza Delta',
           'cta_secundario' => 'Comparar planes',
+          'rcc_slug'     => 'wordpress-deluxe',
           'pfid_const'   => 'GANO_PFID_HOSTING_DELUXE',
           'enlace_detalle' => '/ecosistemas/fortaleza-delta',
         ],
@@ -109,6 +112,7 @@ get_header();
           'respuesta'    => 'Capa de servicio en español, hardening WordPress específico, agente IA integrado y SLA documentado. El VPS genérico no incluye nada de eso.',
           'cta_primario' => 'Solicitar Bastión SOTA',
           'cta_secundario' => 'Hablar con ventas',
+          'rcc_slug'     => 'wordpress-ultimate',
           'pfid_const'   => 'GANO_PFID_HOSTING_PREMIUM',
           'enlace_detalle' => '/ecosistemas/bastion-sota',
         ],
@@ -134,17 +138,28 @@ get_header();
           'respuesta'    => 'Sin overhead de DevOps, sin gestión de infraestructura. Tú operas, nosotros sostenemos el piso técnico con SLA documentado.',
           'cta_primario' => 'Cotizar Ultimate WP',
           'cta_secundario' => 'Hablar con ventas',
+          'rcc_slug'     => 'cpanel-ultimate',
           'pfid_const'   => 'GANO_PFID_HOSTING_ULTIMATE',
           'enlace_detalle' => '/ecosistemas/ultimate-wp',
         ],
       ];
 
       foreach ( $planes as $plan ) :
+        // NUEVO: Buscar producto RCC dinámicamente via WP_Query
+        $product_query = new WP_Query([
+          'post_type'      => 'reseller_product',
+          'name'           => $plan['rcc_slug'],
+          'posts_per_page' => 1,
+        ]);
+        $rcc_product_id = $product_query->have_posts() ? $product_query->posts[0]->ID : null;
+        wp_reset_postdata();
+
+        // Fallback a PFID constante si no encuentra el producto RCC
         $pfid       = defined( $plan['pfid_const'] ) ? constant( $plan['pfid_const'] ) : 'PENDING_RCC';
         $cart_url   = ( $pfid !== 'PENDING_RCC' && function_exists( 'gano_rstore_cart_url' ) )
                         ? gano_rstore_cart_url( $pfid )
                         : '#ecosistemas-proximamente';
-        $is_pending = ( $pfid === 'PENDING_RCC' );
+        $is_pending = ( $pfid === 'PENDING_RCC' ) && ! $rcc_product_id;
 
         $card_classes = 'gano-plan-card';
         if ( $plan['dark'] ) $card_classes .= ' gano-plan-card--dark';
@@ -183,6 +198,9 @@ get_header();
                 <?php echo esc_html( $plan['cta_primario'] ); ?>
               </a>
               <small class="gano-plan-pending-note">Carrito en configuración · Contacta para activar</small>
+            <?php elseif ( $rcc_product_id ) : ?>
+              <!-- NUEVO: Si se encontró el producto RCC, usar shortcode rstore_product -->
+              <?php echo do_shortcode( "[rstore_product post_id={$rcc_product_id} show_price=1 redirect=1 button_label='" . esc_attr( $plan['cta_primario'] ) . "']" ); ?>
             <?php else : ?>
               <a href="<?php echo esc_url( $cart_url ); ?>" class="gano-btn gano-km-btn-primary" target="_blank" rel="noopener">
                 <?php echo esc_html( $plan['cta_primario'] ); ?>
