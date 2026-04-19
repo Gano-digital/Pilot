@@ -95,7 +95,8 @@ def strip_emojis_for_pdf(s: str) -> str:
     }
     for a, b in repl.items():
         s = s.replace(a, b)
-    return s
+    # Quitar emoji restantes del plano suplementario (Arial no los trae)
+    return "".join(ch for ch in s if ord(ch) < 0x1F000 or ord(ch) > 0x1FFFF)
 
 
 def md_to_plain(md: str, max_chars: int | None = None) -> str:
