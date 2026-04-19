@@ -91,6 +91,7 @@ function gano_seo_config(): array {
         'longitude'       => get_option( 'gano_seo_lng',          '' ),
         'logo_url'        => get_option( 'gano_seo_logo',         get_site_url() . '/wp-content/uploads/logo.png' ),
         'hero_image_url'  => get_option( 'gano_seo_hero_image',   '' ),
+        'lcp_font_url'    => get_option( 'gano_seo_lcp_font_url', '' ),
         'founded_year'    => get_option( 'gano_seo_founded',      '2024' ),
         'site_url'        => get_site_url(),
         'description'     => 'Infraestructura soberana y misiones críticas en Colombia. Gano Digital orquesta ecosistemas WordPress de alta disponibilidad con ingeniería NVMe Gen4, seguridad Zero-Trust y soberanía de datos absoluta.',
@@ -522,12 +523,11 @@ function gano_output_breadcrumb_schema(): void {
 add_action( 'wp_head', 'gano_resource_hints', 1 );
 function gano_resource_hints(): void {
     $hints = array(
-        // Google Fonts (Elementor las carga habitualmente)
+        // Google Fonts — Plus Jakarta Sans (headings) e Inter (body) cargadas por Elementor.
+        // El preconnect a googleapis.com cubre la petición CSS; el de gstatic.com (con crossorigin)
+        // cubre los archivos woff2, estableciendo la conexión antes de que el parser procese el CSS.
         array( 'href' => 'https://fonts.googleapis.com', 'rel' => 'preconnect' ),
         array( 'href' => 'https://fonts.gstatic.com',    'rel' => 'preconnect', 'crossorigin' => true ),
-
-        // Wompi — necesario antes del checkout
-        array( 'href' => 'https://checkout.wompi.co',    'rel' => 'preconnect' ),
 
         // Google Analytics / GTM — prefetch DNS si no es preconnect
         array( 'href' => 'https://www.google-analytics.com', 'rel' => 'dns-prefetch' ),
@@ -548,6 +548,14 @@ function gano_resource_hints(): void {
     if ( is_front_page() && ! empty( $hero_url ) ) {
         echo '<link rel="preload" as="image" href="' . esc_url( $hero_url ) . '" fetchpriority="high">' . "\n";
     }
+
+    // LCP Font preload — fuente crítica (configura la URL woff2 en wp-admin → Ajustes → Gano SEO).
+    // Obtener la URL exacta: Chrome DevTools → Network → Fonts → buscar el .woff2 de fonts.gstatic.com
+    // cargado por Elementor (Plus Jakarta Sans o Inter).  Copiar la URL Request URL y pegarla aquí.
+    $font_url = get_option( 'gano_seo_lcp_font_url', '' );
+    if ( ! empty( $font_url ) ) {
+        echo '<link rel="preload" href="' . esc_url( $font_url ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+    }
 }
 
 // =============================================================================
@@ -564,6 +572,30 @@ function gano_resource_hints(): void {
  */
 function gano_sanitize_gsc_token( string $value ): string {
     return (string) preg_replace( '/[^A-Za-z0-9]/', '', $value );
+}
+
+/**
+ * Sanitiza la URL de la fuente crítica LCP.
+ * Solo acepta URLs HTTPS de fonts.gstatic.com que terminen en .woff2.
+ *
+ * @param string $value URL cruda ingresada por el administrador.
+ * @return string URL limpia, o cadena vacía si no cumple los criterios de seguridad.
+ */
+function gano_sanitize_lcp_font_url( string $value ): string {
+    $url = esc_url_raw( trim( $value ) );
+    if ( empty( $url ) ) {
+        return '';
+    }
+    $parsed = wp_parse_url( $url );
+    // Solo HTTPS de fonts.gstatic.com terminando en .woff2
+    if (
+        ( $parsed['scheme'] ?? '' ) !== 'https'
+        || ( $parsed['host'] ?? '' ) !== 'fonts.gstatic.com'
+        || ! str_ends_with( $parsed['path'] ?? '', '.woff2' )
+    ) {
+        return '';
+    }
+    return $url;
 }
 
 add_action( 'wp_head', 'gano_gsc_verification_meta', 2 );
@@ -644,13 +676,18 @@ function gano_seo_register_settings(): void {
         'gano_seo_postal'     => 'Código postal',
         'gano_seo_logo'       => 'URL del logo (ruta completa)',
         'gano_seo_hero_image'        => 'URL del hero image (para preload LCP)',
+        'gano_seo_lcp_font_url'      => 'URL woff2 fuente crítica LCP (preload font)',
         'gano_seo_founded'           => 'Año de fundación',
         'gano_seo_gsc_verification'  => 'Google Search Console — código de verificación',
     );
     foreach ( $fields as $option_name => $label ) {
-        $callback = ( 'gano_seo_gsc_verification' === $option_name )
-            ? 'gano_sanitize_gsc_token'
-            : 'sanitize_text_field';
+        if ( 'gano_seo_gsc_verification' === $option_name ) {
+            $callback = 'gano_sanitize_gsc_token';
+        } elseif ( 'gano_seo_lcp_font_url' === $option_name ) {
+            $callback = 'gano_sanitize_lcp_font_url';
+        } else {
+            $callback = 'sanitize_text_field';
+        }
         register_setting( 'gano_seo_settings', $option_name, array( 'sanitize_callback' => $callback ) );
     }
 }
@@ -664,13 +701,17 @@ function gano_seo_settings_page(): void {
         $fields = array(
             'gano_seo_business_type', 'gano_seo_legal_name', 'gano_seo_nit', 'gano_seo_phone', 'gano_seo_whatsapp',
             'gano_seo_email', 'gano_seo_street', 'gano_seo_city', 'gano_seo_region',
-            'gano_seo_postal', 'gano_seo_logo', 'gano_seo_hero_image', 'gano_seo_founded',
+            'gano_seo_postal', 'gano_seo_logo', 'gano_seo_hero_image', 'gano_seo_lcp_font_url', 'gano_seo_founded',
             'gano_seo_gsc_verification',
         );
         foreach ( $fields as $f ) {
-            $value = $f === 'gano_seo_gsc_verification'
-                ? gano_sanitize_gsc_token( $_POST[ $f ] ?? '' )
-                : sanitize_text_field( $_POST[ $f ] ?? '' );
+            if ( 'gano_seo_gsc_verification' === $f ) {
+                $value = gano_sanitize_gsc_token( $_POST[ $f ] ?? '' );
+            } elseif ( 'gano_seo_lcp_font_url' === $f ) {
+                $value = gano_sanitize_lcp_font_url( $_POST[ $f ] ?? '' );
+            } else {
+                $value = sanitize_text_field( $_POST[ $f ] ?? '' );
+            }
             update_option( $f, $value );
         }
         echo '<div class="notice notice-success"><p>¡Ajustes guardados!</p></div>';
@@ -716,8 +757,9 @@ function gano_seo_settings_page(): void {
                     'gano_seo_region'     => array( 'Departamento',     'Cundinamarca',             'address_region' ),
                     'gano_seo_postal'     => array( 'Código postal (opcional)', '110111',           'address_postal' ),
                     'gano_seo_logo'       => array( 'URL Logo',         get_site_url() . '/wp-content/uploads/logo.png', 'logo_url' ),
-                    'gano_seo_hero_image' => array( 'URL Hero (LCP)',   'URL de la imagen principal del home', 'hero_image_url' ),
-                    'gano_seo_founded'    => array( 'Año de fundación', '2024',                     'founded_year' ),
+                    'gano_seo_hero_image'    => array( 'URL Hero (LCP)',              'URL de la imagen principal del home', 'hero_image_url' ),
+                    'gano_seo_lcp_font_url'  => array( 'URL Fuente LCP (preload woff2)', 'https://fonts.gstatic.com/s/plusjakartasans/v8/LDI...woff2', 'lcp_font_url' ),
+                    'gano_seo_founded'       => array( 'Año de fundación',               '2024',                                'founded_year' ),
                 );
                 foreach ( $fields_labels as $opt => $meta ) :
                     [$label, $placeholder, $cfg_key] = $meta;
@@ -734,6 +776,14 @@ function gano_seo_settings_page(): void {
                             placeholder="<?php echo esc_attr( $placeholder ); ?>"
                             class="regular-text"
                         >
+                        <?php if ( 'gano_seo_lcp_font_url' === $opt ) : ?>
+                        <p class="description">
+                            URL exacta del archivo <code>.woff2</code> de la fuente crítica (p.ej. Plus Jakarta Sans Regular 400).
+                            Solo se acepta <code>https://fonts.gstatic.com/…woff2</code>.
+                            Para obtenerla: Chrome DevTools → Network → filtrar por <em>Font</em> → buscar el
+                            <code>.woff2</code> cargado desde <code>fonts.gstatic.com</code> → copiar <em>Request URL</em>.
+                        </p>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
