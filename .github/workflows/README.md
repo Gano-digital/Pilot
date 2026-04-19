@@ -28,6 +28,26 @@ Los **nombres mostrados en la barra lateral** siguen el patrón:
 
 **Workflows que no están en esta carpeta** (los gestiona GitHub): *Copilot coding agent*, *Dependabot Updates* — no usan este esquema de nombres.
 
+## Auditoría de versiones de actions (post-Dependabot)
+
+Última verificación: **2026-04-19** · Issue #235 · PRs Dependabot #14–#16 fusionados.
+
+| Action | Versión actual | Workflows que la usan |
+|--------|---------------|----------------------|
+| `actions/checkout` | `@v6` | Todos los workflows que requieren código del repo |
+| `actions/github-script` | `@v9` | `orchestrate-copilot-waves.yml`, `seed-copilot-queue.yml`, `seed-homepage-issues.yml`, `setup-repo-labels.yml` |
+| `actions/setup-node` | `@v6` | `copilot-setup-steps.yml` |
+| `actions/setup-python` | `@v6` | `gano-ops-hub.yml` |
+| `actions/upload-artifact` | `@v7` | `30-reseller-catalog-sync.yml`, `31-plugin-health-check-phase4.yml` |
+| `actions/upload-pages-artifact` | `@v5` | `gano-ops-hub.yml` |
+| `actions/deploy-pages` | `@v5` | `gano-ops-hub.yml` |
+| `actions/labeler` | `@v6` | `labeler.yml` |
+| `actions/add-to-project` | `@v1.0.2` | `project-add-to-project.yml` |
+| `shivammathur/setup-php` | `@v2` | `copilot-setup-steps.yml`, `php-lint-gano.yml` |
+| `webfactory/ssh-agent` | `@v0.10.0` | `verify-patches.yml`, `verify-remove-wp-file-manager.yml` |
+
+**Resultado:** ✅ No se encontraron referencias `@v4` obsoletas para `actions/checkout` ni `actions/github-script`. Todos los workflows son consistentes con las actualizaciones de Dependabot.
+
 **Auditoría y troubleshooting:** [`memory/ops/github-actions-audit-2026-04.md`](../../memory/ops/github-actions-audit-2026-04.md) (fallos conocidos, riesgos, parches).
 
 **GitHub Ops (Copilot, rulesets, Dependabot, plan de pago):** [`memory/ops/github-github-ops-sota-2026-04.md`](../../memory/ops/github-github-ops-sota-2026-04.md).
