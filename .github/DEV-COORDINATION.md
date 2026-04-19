@@ -23,8 +23,8 @@ Estos secretos deben configurarse en **GitHub Repo → Settings → Secrets and 
 |-------------|-----------|---------|---------------|
 | `SSH` | Clave privada SSH (id_rsa en PEM format) | `-----BEGIN OPENSSH PRIVATE KEY-----...` | GoDaddy cPanel → SSH Keys → Descargar Private Key |
 | `SERVER_HOST` | IP o FQDN del servidor | `123.45.67.89` o `managed-wp.godaddy.com` | GoDaddy Account → Hosting → IP/Domain |
-| `SERVER_USER` | Usuario SSH del servidor | `f1rml03th382` o `root` (no recomendado) | GoDaddy cPanel → SSH Keys → Username |
-| `DEPLOY_PATH` | Path al WordPress public_html en servidor | `/home/f1rml03th382/public_html/gano.digital` | GoDaddy cPanel → File Manager (raíz pública) |
+| `SERVER_USER` | Usuario SSH del servidor | `$SERVER_USER` o `root` (no recomendado) | GoDaddy cPanel → SSH Keys → Username |
+| `DEPLOY_PATH` | Path al WordPress public_html en servidor | `/home/$SERVER_USER/public_html/gano.digital` | GoDaddy cPanel → File Manager (raíz pública) |
 
 ### 1.3 Secretos GoDaddy Reseller API (Workflow 30 · Reseller Catalog Sync)
 

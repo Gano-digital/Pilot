@@ -76,7 +76,7 @@ Click imagen → Upload
 
 ## 📁 Estructura de Archivos
 
-Ubicación en servidor: `/home/f1rml03th382/public_html/gano.digital/`
+Ubicación en servidor: `/home/$SERVER_USER/public_html/gano.digital/`
 
 ```
 gano.digital/
