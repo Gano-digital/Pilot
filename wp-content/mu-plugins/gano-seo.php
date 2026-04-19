@@ -412,6 +412,13 @@ function gano_output_base_schema(): void {
 
 add_action( 'wp_head', 'gano_output_product_schema', 6 );
 function gano_output_product_schema(): void {
+    // Rank Math genera schema Product nativo para WooCommerce — evitar duplicar.
+    // Los datos de pago (PSE, Nequi) están en el nodo Organization via gano_extend_rankmath_schema.
+    // Ver: memory/content/seo-canonical-og-analysis-2026.md §2.5
+    if ( class_exists( 'RankMath' ) ) {
+        return;
+    }
+
     if ( ! function_exists( 'is_product' ) || ! is_product() ) {
         return;
     }
