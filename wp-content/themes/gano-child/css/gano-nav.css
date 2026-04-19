@@ -1,269 +1,133 @@
 /**
- * GANO NAV — Sticky Navigation + Mega Dropdown Styles
+ * GANO NAV — Sticky Navigation Styles
+ * Compatible with Hello Elementor Kit theme structure
  */
 
-header, nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1001;
-  width: 100%;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  background: transparent;
-  backdrop-filter: none;
+/* ============================================================
+ * FIX HEADER — Make it sticky and above everything
+ * ============================================================ */
+
+#site-header,
+header.site-header {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1001 !important;
+  width: 100% !important;
+  background: transparent !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  padding: 16px 5% !important;
+  box-sizing: border-box !important;
 }
 
-/* Cuando el hero sale de pantalla */
-header.nav-solid, nav.nav-solid {
-  background: rgba(5, 8, 11, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+/* When hero scrolls out of view */
+#site-header.nav-solid,
+header.site-header.nav-solid {
+  background: rgba(5, 8, 11, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
 }
 
-/* Container nav */
-.gano-nav-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 16px 5%;
-  height: 70px;
+/* ============================================================
+ * NAVIGATION MENU
+ * ============================================================ */
+
+#site-header nav,
+header.site-header nav {
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-/* Logo */
-.gano-logo {
-  font-size: 1.4rem;
-  font-weight: 900;
-  color: #fff;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+#site-header nav ul,
+header.site-header nav ul {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 40px !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-.gano-logo::before {
-  content: '●';
-  color: var(--gc-primary);
-  font-size: 1.2rem;
+#site-header nav li,
+header.site-header nav li {
+  position: relative !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-/* Menu principal */
-.gano-menu {
-  display: flex;
-  align-items: center;
-  gap: 40px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+#site-header nav a,
+header.site-header nav a {
+  color: #e2e8f0 !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  font-size: 0.95rem !important;
+  transition: color 0.2s !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
 }
 
-.gano-menu-item {
-  position: relative;
+#site-header nav a:hover,
+header.site-header nav a:hover {
+  color: var(--gc-secondary, #00C26B) !important;
 }
 
-.gano-menu-link {
-  color: #e2e8f0;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 0.95rem;
-  transition: color 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+/* ============================================================
+ * LOGO STYLING
+ * ============================================================ */
+
+#site-header .site-logo,
+header.site-header .site-logo {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
-.gano-menu-link:hover {
-  color: var(--gc-secondary);
+#site-header .site-logo a,
+header.site-header .site-logo a {
+  display: inline-block !important;
+  font-size: 1.4rem !important;
+  font-weight: 900 !important;
+  color: #fff !important;
+  text-decoration: none !important;
 }
 
-/* Mega dropdown Ecosistemas */
-.gano-menu-item[data-dropdown="ecosistemas"] .gano-menu-link {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+/* ============================================================
+ * RESPONSIVE
+ * ============================================================ */
 
-.gano-dropdown-toggle::after {
-  content: '▼';
-  font-size: 0.6rem;
-  transition: transform 0.3s;
-}
-
-.gano-menu-item[data-dropdown="ecosistemas"].active .gano-dropdown-toggle::after {
-  transform: rotate(180deg);
-}
-
-.gano-megadrop {
-  position: absolute;
-  top: calc(100% + 10px);
-  left: 0;
-  background: rgba(5, 8, 11, 0.98);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-  padding: 20px;
-  min-width: 500px;
-  display: none;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
-  z-index: 1002;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-}
-
-.gano-menu-item[data-dropdown="ecosistemas"].active .gano-megadrop {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.gano-megadrop-plan {
-  padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-bottom: 12px;
-}
-
-.gano-megadrop-plan:last-child {
-  margin-bottom: 0;
-}
-
-.gano-megadrop-plan:hover {
-  background: rgba(27, 79, 216, 0.1);
-  border-color: var(--gc-primary);
-}
-
-.gano-megadrop-plan-title {
-  font-weight: 700;
-  color: #fff;
-  font-size: 1rem;
-  margin-bottom: 4px;
-}
-
-.gano-megadrop-plan-price {
-  font-size: 0.85rem;
-  color: var(--gc-accent);
-  font-weight: 600;
-}
-
-.gano-megadrop-plan-features {
-  font-size: 0.75rem;
-  color: #94a3b8;
-  margin-top: 4px;
-}
-
-/* CTA Button */
-.gano-cta-button {
-  background: var(--gc-primary);
-  color: white;
-  padding: 10px 24px;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: all 0.2s;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
-}
-
-.gano-cta-button:hover {
-  background: var(--gc-secondary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--gc-glow);
-}
-
-/* Hamburger (mobile) */
-.gano-hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 6px;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-  width: 30px;
-}
-
-.gano-hamburger span {
-  width: 100%;
-  height: 2px;
-  background: #e2e8f0;
-  transition: all 0.3s;
-  border-radius: 1px;
-}
-
-.gano-hamburger.open span:nth-child(1) {
-  transform: rotate(45deg) translate(10px, 10px);
-}
-
-.gano-hamburger.open span:nth-child(2) {
-  opacity: 0;
-}
-
-.gano-hamburger.open span:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -7px);
-}
-
-/* Drawer (mobile) */
-.gano-nav-drawer {
-  position: fixed;
-  top: 70px;
-  right: 0;
-  width: 100%;
-  height: calc(100vh - 70px);
-  background: rgba(5, 8, 11, 0.98);
-  backdrop-filter: blur(10px);
-  display: none;
-  flex-direction: column;
-  padding: 20px;
-  gap: 16px;
-  z-index: 999;
-  overflow-y: auto;
-  transform: translateX(100%);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.gano-nav-drawer.open {
-  transform: translateX(0);
-}
-
-.gano-nav-drawer .gano-menu-link {
-  padding: 12px 16px;
-  font-size: 1rem;
-  display: block;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-  .gano-hamburger {
-    display: flex;
+  #site-header,
+  header.site-header {
+    padding: 12px 5% !important;
   }
 
-  .gano-menu {
-    display: none;
+  #site-header nav ul,
+  header.site-header nav ul {
+    gap: 20px !important;
   }
 
-  .gano-nav-drawer {
-    display: flex;
+  #site-header nav a,
+  header.site-header nav a {
+    font-size: 0.85rem !important;
   }
+}
 
-  .gano-megadrop {
-    position: static;
-    min-width: auto;
-    background: rgba(255, 255, 255, 0.05);
-    margin-top: 12px;
-  }
+/* ============================================================
+ * ENSURE BODY HAS TOP PADDING FOR STICKY HEADER
+ * ============================================================ */
 
-  .gano-cta-button {
-    width: 100%;
-    text-align: center;
+body {
+  padding-top: 70px !important;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 60px !important;
   }
 }
