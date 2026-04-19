@@ -1771,44 +1771,48 @@ function gano_get_sota_hub_pages(): array {
 }
 
 /**
- * Localizar textos de rstore a español
- * Traduce botones, placeholders y mensajes del widget de búsqueda de dominios
+ * Localizar Reseller Store — Domain Search Widget
+ * Aplica filtros específicos de rstore para traducir textos a español
  */
-add_filter( 'the_content', 'gano_localize_rstore_content' );
-function gano_localize_rstore_content( $content ): string {
-	if ( ! is_page( [ 'dominios', 'inicio', 'home' ] ) && ! is_front_page() ) {
-		return $content;
-	}
+add_filter( 'rstore_domain_text_placeholder', function() {
+	return esc_html__( 'Encuentra tu dominio perfecto', 'gano-child' );
+});
 
-	$translations = [
-		// Placeholders y texto de búsqueda
-		'Find your perfect domain name'   => 'Encuentra tu dominio perfecto',
-		'Search'                          => 'Buscar',
-		'search'                          => 'buscar',
+add_filter( 'rstore_domain_text_search', function() {
+	return esc_html__( 'Buscar', 'gano-child' );
+});
 
-		// Resultados
-		'Congrats'                        => 'Felicidades',
-		'is available'                    => 'está disponible',
-		'is taken'                        => 'ya está en uso',
-		'Sorry'                           => 'Lo sentimos',
+add_filter( 'rstore_domain_text_available', function() {
+	return esc_html__( '¡Felicidades! {domain_name} está disponible', 'gano-child' );
+});
 
-		// Botones de carrito
-		'Continue to cart'                => 'Continuar al carrito',
-		'Add to cart'                     => 'Añadir al carrito',
-		'Continue'                        => 'Continuar',
-		'Select'                          => 'Seleccionar',
-		'Add'                             => 'Agregar',
+add_filter( 'rstore_domain_text_not_available', function() {
+	return esc_html__( 'Lo sentimos, {domain_name} ya está en uso', 'gano-child' );
+});
 
-		// Mensajes
-		'Your domain'                     => 'Tu dominio',
-		'is registered'                   => 'está registrado',
-		'was not found'                   => 'no fue encontrado',
-	];
+add_filter( 'rstore_domain_text_cart', function() {
+	return esc_html__( 'Continuar al carrito', 'gano-child' );
+});
 
-	foreach ( $translations as $english => $spanish ) {
-		// Reemplazar en placeholders data-* (si es posible)
-		$content = str_ireplace( $english, $spanish, $content );
-	}
+add_filter( 'rstore_text_select', function() {
+	return esc_html__( 'Seleccionar', 'gano-child' );
+});
 
-	return $content;
-}
+add_filter( 'rstore_text_selected', function() {
+	return esc_html__( 'Seleccionado', 'gano-child' );
+});
+
+/**
+ * Localizar Reseller Store — Product Widget
+ */
+add_filter( 'rstore_product_button_label', function() {
+	return esc_html__( 'Añadir al carrito', 'gano-child' );
+});
+
+add_filter( 'rstore_product_text_cart', function() {
+	return esc_html__( 'Continuar al carrito', 'gano-child' );
+});
+
+add_filter( 'rstore_product_text_more', function() {
+	return esc_html__( 'Más información', 'gano-child' );
+});
