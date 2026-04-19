@@ -1373,6 +1373,24 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
     background-color: var(--gano-blue);
 }
 
+.gano-socio-block__cta-link {
+    margin-top: 1.25rem;
+}
+
+.gano-socio-block__cta-link a {
+    color: var(--gano-blue);
+    font-size: var(--gano-fs-base);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+}
+
+.gano-socio-block__cta-link a:hover,
+.gano-socio-block__cta-link a:focus-visible {
+    border-bottom-color: var(--gano-blue);
+}
+
 /* Franja de métricas (números cortos, sin inflar cifras) */
 .gano-el-metrics {
     display: flex;
