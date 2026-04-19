@@ -178,11 +178,13 @@ get_header();
         </div>
     </section>
 
-    <section class="section-gano" style="text-align: center;">
+    <section class="section-gano" style="text-align: center;" id="cta-final">
         <div style="background: var(--gano-glass); border: 1px solid var(--gano-glass-border); border-radius: 20px; padding: 60px; max-width: 700px; margin: 0 auto;">
-            <h2 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2rem; margin-bottom: 20px;">¿Listo para Escalar?</h2>
-            <p style="color: #94a3b8; margin-bottom: 30px;">Contacta a nuestro equipo de especialistas para una consultoría personalizada.</p>
-            <a href="/contacto/" class="btn-gano">Agendar Llamada</a>
+            <h2 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2rem; margin-bottom: 20px;">¿Listo para una infraestructura que no te pida disculpas?</h2>
+            <?php echo do_shortcode( '[gano_cta_icons]' ); ?>
+            <p style="margin-top: 2rem;">
+                <a href="#ecosistemas" class="btn-gano">Elegir mi arquitectura</a>
+            </p>
         </div>
     </section>
 
