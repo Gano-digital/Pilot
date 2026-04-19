@@ -85,7 +85,7 @@ Fusionar primero lo que otros PRs toman como **base visual o funcional**.
 | Situación | Qué escribir en el merge |
 |-----------|--------------------------|
 | El PR resuelve el issue completamente en repo | `Closes #NN` en el cuerpo del commit de squash |
-| El issue requiere acción adicional en wp-admin / Elementor | Comentar en el issue: `[sync] Código en repo (PR #NN). Pendiente: <pasos manuales>` y cerrar con etiqueta `needs-manual-deploy` |
+| El issue requiere acción adicional en wp-admin / Elementor | Comentar en el issue: `[sync] Código en repo (PR #NN). Pendiente: <pasos manuales>` y cerrar con etiqueta `needs-manual-deploy` (crearla si no existe con **06 · Repo · Crear etiquetas** o manualmente en Issues → Labels) |
 | El issue era 100% wp-admin (no hay cambio en repo) | Cerrar con comentario: `[sync] Sin cambio en repo. Acción requerida en servidor: <pasos>` |
 | El PR cubre parcialmente el issue | Dejar el issue abierto; añadir comentario con lo que queda pendiente |
 
@@ -114,7 +114,7 @@ Todos en **borrador** al momento de este documento. Actualizar tras cada fusión
 | PR | Issue | Título corto | Dependencia previa | Archivos clave | Riesgo |
 |----|-------|--------------|-------------------|----------------|--------|
 | [#236](https://github.com/Gano-digital/Pilot/pull/236) | #221 | Menú → ubicación `primary` | ninguna | `functions.php` | Bajo |
-| [#237](https://github.com/Gano-digital/Pilot/pull/237) | #222 | Hero: imagen + CTA Elementor | #236 (header base) | `functions.php`, datos Elementor | Medio — requiere attachment_id real en servidor |
+| [#237](https://github.com/Gano-digital/Pilot/pull/237) | #222 | Hero: imagen + CTA Elementor | #236 (header base) | `functions.php`, datos Elementor | Medio — verificar attachment_id en wp-admin → Medios antes de fusionar; si no existe, usar fallback o dejar checklist `[sync]` |
 | [#238](https://github.com/Gano-digital/Pilot/pull/238) | #224 | Copy "Un Socio Tecnológico" | ninguna | `functions.php` o template | Bajo |
 | [#240](https://github.com/Gano-digital/Pilot/pull/240) | #226 | Iconos en CTA final (quitar ★) | #238 (copy base) | CSS / shortcode | Bajo |
 | [#241](https://github.com/Gano-digital/Pilot/pull/241) | #227 | Coming soon → borrador | ninguna | `functions.php` o WP-CLI | Bajo |
