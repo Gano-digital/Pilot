@@ -102,14 +102,178 @@ function gano_seo_config(): array {
 
 // =============================================================================
 // 2. SCHEMA JSON-LD — ORGANIZACIÓN + LOCAL BUSINESS + WEBSITE (todas las páginas)
+//
+// Estrategia de coexistencia con Rank Math (issue #229):
+//   - Si Rank Math está activo: Organization y WebSite son gestionados por RM.
+//     Este plugin extiende el schema de RM con campos extra vía rank_math/json_ld
+//     (ver gano_extend_rankmath_schema). Solo emite FAQPage (homepage) que RM no genera.
+//   - Si Rank Math no está activo: este plugin emite el schema completo propio.
+// Análisis técnico: memory/content/seo-canonical-og-analysis-2026.md
 // =============================================================================
+
+// ── Integración con Rank Math ─────────────────────────────────────────────────
+// Se registra en `init` (no al nivel de carga del MU plugin) porque los plugins
+// regulares aún no están activos cuando se carga el MU plugin.
+add_action( 'init', 'gano_seo_init_rankmath_integration' );
+
+/**
+ * Registra el filtro rank_math/json_ld si Rank Math está activo.
+ * Extiende el nodo `publisher` de RM con campos que RM no genera por defecto.
+ */
+function gano_seo_init_rankmath_integration(): void {
+    if ( ! class_exists( 'RankMath' ) ) {
+        return;
+    }
+    // Prioridad 5: se registra antes de que Rank Math aplique sus propios filtros.
+    add_filter( 'rank_math/json_ld', 'gano_extend_rankmath_schema', 5, 2 );
+}
+
+/**
+ * Extiende el schema JSON-LD del publisher de Rank Math con datos de Gano Digital.
+ * Inyecta: areaServed, currenciesAccepted, paymentAccepted, legalName y taxID.
+ * Solo actúa sobre nodos de tipo Organization; omite si el publisher es Person.
+ *
+ * Rank Math almacena el schema de organización bajo el key 'publisher' en el array $data.
+ *
+ * @param array<string, mixed> $data   Array de schemas gestionado por Rank Math.
+ * @param object               $jsonld Instancia de JsonLD de Rank Math.
+ * @return array<string, mixed>
+ */
+function gano_extend_rankmath_schema( array $data, $jsonld ): array {
+    if ( empty( $data['publisher'] ) || ! is_array( $data['publisher'] ) ) {
+        return $data;
+    }
+
+    $type   = $data['publisher']['@type'] ?? '';
+    $is_org = 'Organization' === $type
+        || ( is_array( $type ) && in_array( 'Organization', $type, true ) );
+
+    if ( ! $is_org ) {
+        return $data;
+    }
+
+    $cfg = gano_seo_config();
+
+    $data['publisher']['areaServed'] = array(
+        array( '@type' => 'Country',   'name' => 'Colombia' ),
+        array( '@type' => 'Country',   'name' => 'México' ),
+        array( '@type' => 'Continent', 'name' => 'América Latina' ),
+    );
+    $data['publisher']['currenciesAccepted'] = 'COP';
+    $data['publisher']['paymentAccepted']    = 'PSE, Tarjeta de Crédito, Tarjeta de Débito, Nequi, Daviplata';
+
+    if ( ! empty( $cfg['legal_name'] ) ) {
+        $data['publisher']['legalName'] = $cfg['legal_name'];
+    }
+    if ( ! empty( $cfg['nit'] ) ) {
+        $data['publisher']['taxID'] = $cfg['nit'];
+    }
+
+    return $data;
+}
+
+/**
+ * Construye el schema FAQPage para la homepage.
+ * Las preguntas base se pueden ampliar con el filtro 'gano_faq_questions'.
+ * Ver candidatos en memory/content/faq-schema-candidates-wave3.md.
+ *
+ * Ejemplo de uso en functions.php del tema hijo:
+ *   add_filter( 'gano_faq_questions', function( array $q ): array {
+ *       $q[] = array( 'question' => '¿…?', 'answer' => '…' );
+ *       return $q;
+ *   } );
+ *
+ * @param string $url URL base del sitio.
+ * @return array<string, mixed>|null Schema FAQPage o null si no aplica.
+ */
+function gano_build_faq_schema( string $url ): ?array {
+    if ( ! is_front_page() ) {
+        return null;
+    }
+
+    $faq_base = array(
+        array(
+            'question' => '¿Qué define la infraestructura SOTA de Gano Digital?',
+            'answer'   => 'Definimos el Estado del Arte (SOTA) mediante la convergencia de latencia cero (NVMe Gen4), soberanía jurídica de datos en Colombia e inmunidad perimetral Zero-Trust. No somos hosting; somos tu socio de infraestructura soberana.',
+        ),
+        array(
+            'question' => '¿Cómo garantizan la soberanía de mis activos digitales?',
+            'answer'   => 'Operamos bajo jurisdicción colombiana, asegurando que tus datos y hardware residan en bóvedas digitales locales, blindadas contra la dependencia de nubes públicas opacas y legislación extranjera.',
+        ),
+        array(
+            'question' => '¿Qué ecosistemas de resiliencia ofrecen?',
+            'answer'   => 'Orquestamos tres niveles de blindaje soberano: Núcleo Prime (Infraestructura base de alta velocidad), Fortaleza Delta (Seguridad predictiva avanzada) y Bastión SOTA (Resiliencia total y alta disponibilidad).',
+        ),
+        array(
+            'question' => '¿Incluyen blindaje de seguridad avanzado?',
+            'answer'   => 'Todos los ecosistemas incluyen certificación TLS avanzada, firewall de aplicación (WAF) activo y un sistema inmunológico digital basado en principios Zero-Trust para neutralizar amenazas en tiempo real.',
+        ),
+        array(
+            'question' => '¿Realizan migraciones de infraestructura crítica?',
+            'answer'   => 'Sí, orquestamos la migración completa de tus activos digitales hacia nuestra infraestructura soberana sin interrupciones de servicio, garantizando la integridad de cada byte durante el proceso.',
+        ),
+    );
+
+    /**
+     * Filtra las preguntas FAQ del schema homepage.
+     *
+     * Cada elemento debe ser: array( 'question' => string, 'answer' => string ).
+     *
+     * @param array<int, array{question: string, answer: string}> $faq_base Preguntas base.
+     */
+    $faq_items   = apply_filters( 'gano_faq_questions', $faq_base );
+    $main_entity = array();
+
+    foreach ( $faq_items as $item ) {
+        if ( empty( $item['question'] ) || empty( $item['answer'] ) ) {
+            continue;
+        }
+        $main_entity[] = array(
+            '@type'          => 'Question',
+            'name'           => sanitize_text_field( $item['question'] ),
+            'acceptedAnswer' => array(
+                '@type' => 'Answer',
+                'text'  => wp_strip_all_tags( $item['answer'] ),
+            ),
+        );
+    }
+
+    if ( empty( $main_entity ) ) {
+        return null;
+    }
+
+    return array(
+        '@type'      => 'FAQPage',
+        '@id'        => $url . '/#faqpage',
+        'mainEntity' => $main_entity,
+    );
+}
 
 add_action( 'wp_head', 'gano_output_base_schema', 5 );
 function gano_output_base_schema(): void {
-    // Si Rank Math ya genera Organization, solo agregar WebSite y datos faltantes.
-    // Usamos rank_math_json_ld filter para complementar en lugar de duplicar.
     $cfg = gano_seo_config();
     $url = $cfg['site_url'];
+
+    // ── Coexistencia con Rank Math ────────────────────────────────────────────
+    // Rank Math gestiona Organization y WebSite cuando está activo.
+    // Los campos extra (areaServed, legalName, etc.) se inyectan en el nodo
+    // `publisher` de RM vía filtro rank_math/json_ld (gano_extend_rankmath_schema).
+    // Solo se emite FAQPage para la homepage ya que RM no lo genera por defecto.
+    // Ver análisis: memory/content/seo-canonical-og-analysis-2026.md
+    if ( class_exists( 'RankMath' ) ) {
+        $faq_schema = gano_build_faq_schema( $url );
+        if ( $faq_schema ) {
+            $schema = array(
+                '@context' => 'https://schema.org',
+                '@graph'   => array( $faq_schema ),
+            );
+            echo "\n<!-- Gano Digital: Schema JSON-LD FAQPage -->\n";
+            echo '<script type="application/ld+json">'
+                . wp_json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT )
+                . '</script>' . "\n";
+        }
+        return; // Organization + WebSite son gestionados por Rank Math.
+    }
 
     // ── Tipo de schema: Organization (digital) o LocalBusiness (con local físico) ────────
     // Para modelo 100 % digital sin dirección verificable → ['Organization'].
@@ -211,72 +375,9 @@ function gano_output_base_schema(): void {
     );
 
     // ── FAQ en homepage (mejora CTR en SERPs) ─────────────────────────────────
-    // Las preguntas base se pueden ampliar con el filtro 'gano_faq_questions'.
-    // Estructura de cada elemento: array( 'question' => '…', 'answer' => '…' ).
-    // Ejemplo de uso en functions.php del tema hijo:
-    //
-    //   add_filter( 'gano_faq_questions', function( array $q ): array {
-    //       $q[] = array( 'question' => '¿…?', 'answer' => '…' );
-    //       return $q;
-    //   } );
-    $faq_schema = null;
-    if ( is_front_page() ) {
-        $faq_base = array(
-            array(
-                'question' => '¿Qué define la infraestructura SOTA de Gano Digital?',
-                'answer'   => 'Definimos el Estado del Arte (SOTA) mediante la convergencia de latencia cero (NVMe Gen4), soberanía jurídica de datos en Colombia e inmunidad perimetral Zero-Trust. No somos hosting; somos tu socio de infraestructura soberana.',
-            ),
-            array(
-                'question' => '¿Cómo garantizan la soberanía de mis activos digitales?',
-                'answer'   => 'Operamos bajo jurisdicción colombiana, asegurando que tus datos y hardware residan en bóvedas digitales locales, blindadas contra la dependencia de nubes públicas opacas y legislación extranjera.',
-            ),
-            array(
-                'question' => '¿Qué ecosistemas de resiliencia ofrecen?',
-                'answer'   => 'Orquestamos tres niveles de blindaje soberano: Núcleo Prime (Infraestructura base de alta velocidad), Fortaleza Delta (Seguridad predictiva avanzada) y Bastión SOTA (Resiliencia total y alta disponibilidad).',
-            ),
-            array(
-                'question' => '¿Incluyen blindaje de seguridad avanzado?',
-                'answer'   => 'Todos los ecosistemas incluyen certificación TLS avanzada, firewall de aplicación (WAF) activo y un sistema inmunológico digital basado en principios Zero-Trust para neutralizar amenazas en tiempo real.',
-            ),
-            array(
-                'question' => '¿Realizan migraciones de infraestructura crítica?',
-                'answer'   => 'Sí, orquestamos la migración completa de tus activos digitales hacia nuestra infraestructura soberana sin interrupciones de servicio, garantizando la integridad de cada byte durante el proceso.',
-            ),
-        );
-
-        /**
-         * Filtra las preguntas FAQ del schema homepage.
-         *
-         * Cada elemento debe ser: array( 'question' => string, 'answer' => string ).
-         * Ver candidatos en memory/content/faq-schema-candidates-wave3.md.
-         *
-         * @param array<int, array{question: string, answer: string}> $faq_base Preguntas base.
-         */
-        $faq_items = apply_filters( 'gano_faq_questions', $faq_base );
-
-        $main_entity = array();
-        foreach ( $faq_items as $item ) {
-            if ( empty( $item['question'] ) || empty( $item['answer'] ) ) {
-                continue;
-            }
-            $main_entity[] = array(
-                '@type'          => 'Question',
-                'name'           => sanitize_text_field( $item['question'] ),
-                'acceptedAnswer' => array(
-                    '@type' => 'Answer',
-                    'text'  => wp_strip_all_tags( $item['answer'] ),
-                ),
-            );
-        }
-
-        if ( ! empty( $main_entity ) ) {
-            $faq_schema = array(
-                '@type'      => 'FAQPage',
-                '@id'        => $url . '/#faqpage',
-                'mainEntity' => $main_entity,
-            );
-        }
-    }
+    // Delegado a gano_build_faq_schema(). Las preguntas se extienden con
+    // el filtro 'gano_faq_questions'. Ver memory/content/faq-schema-candidates-wave3.md.
+    $faq_schema = gano_build_faq_schema( $url );
 
     // ── Compilar y emitir ──────────────────────────────────────────────────────
     $graph = array( $organization, $website );
