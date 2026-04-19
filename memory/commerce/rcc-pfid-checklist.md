@@ -1,156 +1,129 @@
-# RCC → PFID Checklist (Mapping GoDaddy Reseller to Gano Digital)
+# RCC → PFID / PLID Checklist — Gano Digital
 
-**Documento técnico para mapear catálogo GoDaddy Reseller (RCC) a constantes PFID**
+**Guía operativa para configurar el checkout GoDaddy Reseller en gano.digital**
 
-_Última actualización: 2026-04-16_  
-_Responsable: Diego (Gano Digital) + Antigravity tests_
+_Última actualización: 2026-04-19 (convergencia con código real — issue #264)_  
+_Responsable: Diego (datos RCC) · Agentes (documentación)_
 
----
-
-## 1. ¿Qué es PFID?
-
-**PFID** = **Private Family ID** (GoDaddy Reseller Store)
-
-- Identificador único del producto en tu catálogo Reseller
-- Se obtiene en GoDaddy Reseller Control Center (RCC)
-- Se mapea a constantes PHP (`GANO_PFID_*`) en el código
-- Se usa en CTAs (Calls-to-Action) de la tienda para redirigir a checkout
+> **Cambio v2:** tabla de mapeo alineada con los **8 campos reales** del panel
+> `wp-admin → Ajustes → Gano Reseller` (plugin `gano-reseller-enhancements`) y las
+> constantes actuales en `functions.php`. Se retiraron referencias a constantes obsoletas
+> (`GANO_PFID_ESSENTIAL_HOSTING`, etc.) y al flujo "Antigravity + 9 PFIDs".
 
 ---
 
-## 2. ¿Dónde están los PFIDs en el código?
+## 1. ¿Qué son PFID y PLID?
 
-**Archivo**: `wp-content/themes/gano-child/functions.php`
+| Término | Significado | Dónde se obtiene |
+|---------|-------------|-----------------|
+| **PFID** (Private Family ID) | Identificador numérico del producto en tu catálogo Reseller | GoDaddy RCC → Products → Product Catalog |
+| **PLID** (Private Label ID) | Identificador de tu cuenta Reseller; aparece en la URL del carrito como `?plid=…` | GoDaddy RCC → Account → Private Label ID |
 
-**Líneas aproximadas**: 662–696
+Ambos son necesarios para que el botón "Adquirir Nodo" lleve al carrito correcto.
 
-**Estructura**:
+---
+
+## 2. Dónde viven estos valores en el código
+
+### PFID — 8 constantes en `functions.php` (~líneas 965–993)
+
+Los valores se leen de `wp_options` (escritos por el panel wp-admin). Si una opción no está
+configurada, el fallback es `'PENDING_RCC'` y el CTA redirige a `/contacto` en lugar del carrito.
+
 ```php
-// Hosting Plans (Gano Ecosystems)
-define('GANO_PFID_ESSENTIAL_HOSTING', 'PENDING_RCC');    // Essential: 1 dominio, 50 GB NVMe, CDN
-define('GANO_PFID_PROFESSIONAL_HOSTING', 'PENDING_RCC'); // Professional: 3 dominios, 150 GB NVMe, CDN
-define('GANO_PFID_PREMIUM_HOSTING', 'PENDING_RCC');      // Premium: 5 dominios, 300 GB NVMe, CDN, staging
-define('GANO_PFID_ENTERPRISE_HOSTING', 'PENDING_RCC');   // Enterprise: Dominios ilimitados, 600 GB NVMe, etc.
-
-// SSL Certificates
-define('GANO_PFID_SSL_SINGLE', 'PENDING_RCC');           // Single domain SSL
-define('GANO_PFID_SSL_WILDCARD', 'PENDING_RCC');         // Wildcard SSL
-
-// Add-ons
-define('GANO_PFID_BACKUP_ADDON', 'PENDING_RCC');         // Backup & Disaster Recovery
-define('GANO_PFID_SECURITY_ADDON', 'PENDING_RCC');       // Advanced Security
-define('GANO_PFID_PERFORMANCE_ADDON', 'PENDING_RCC');    // Performance Optimization
+define('GANO_PFID_HOSTING_ECONOMIA',  get_option('gano_pfid_hosting_economia',  'PENDING_RCC')); // Núcleo Prime
+define('GANO_PFID_HOSTING_DELUXE',    get_option('gano_pfid_hosting_deluxe',    'PENDING_RCC')); // Fortaleza Delta
+define('GANO_PFID_HOSTING_PREMIUM',   get_option('gano_pfid_hosting_premium',   'PENDING_RCC')); // Bastión SOTA
+define('GANO_PFID_HOSTING_ULTIMATE',  get_option('gano_pfid_hosting_ultimate',  'PENDING_RCC')); // Ultimate WP
+define('GANO_PFID_SSL_DELUXE',        get_option('gano_pfid_ssl_deluxe',        'PENDING_RCC'));
+define('GANO_PFID_SECURITY_ULTIMATE', get_option('gano_pfid_security_ultimate', 'PENDING_RCC'));
+define('GANO_PFID_M365_PREMIUM',      get_option('gano_pfid_m365_premium',      'PENDING_RCC'));
+define('GANO_PFID_ONLINE_STORAGE',    get_option('gano_pfid_online_storage',    'PENDING_RCC'));
 ```
 
----
+### PLID — plugin Reseller Store
 
-## 3. Cómo Obtener PFIDs de RCC
-
-### Paso 1: Acceder a GoDaddy Reseller Control Center
-
-1. Ve a: https://reseller.godaddy.com/
-2. Inicia sesión con tu cuenta Reseller
-3. Navega a: **Products → Product Catalog**
-
-### Paso 2: Localizar el Producto
-
-1. Busca (ej.) "Managed WordPress" o "Essential Hosting"
-2. Haz clic en el producto para abrirlo
-3. En la página de detalles, copia el **PFID** (visible en la URL o en los metadatos)
-
-### Paso 3: Validación de PFID
-
-- **Formato**: Número único, generalmente 4-6 dígitos (ej. `123456`)
-- **No incluyas**: prefijos, sufijos o formatos especiales
-- **Ejemplo válido**: `123456`
-- **Ejemplo inválido**: `PFID_123456`, `123456_ESSENTIAL`
+El PLID se leen con `rstore_get_option('pl_id')` desde el plugin `reseller-store`.
+Configuración: `wp-admin → Ajustes → Reseller Store → Private Label ID`.
 
 ---
 
-## 4. Tabla de Mapeo: Catálogo → PFID → PHP Constante
+## 3. Tabla de mapeo: 8 campos reales
 
-| # | Producto (RCC) | Descripción | PFID (del RCC) | PHP Constante | Estado |
+> ⚠️ No commitear valores PFID/PLID reales en el repositorio. Configurar solo en wp-admin.
+
+| # | Etiqueta en wp-admin | Ecosistema Gano | Constante PHP | Campo `wp_options` | Estado |
 |---|---|---|---|---|---|
-| 1 | Managed WordPress Essential | 1 dominio, 50 GB NVMe, CDN | `ENTER_RCC_PFID` | `GANO_PFID_ESSENTIAL_HOSTING` | ⏳ Pendiente |
-| 2 | Managed WordPress Professional | 3 dominios, 150 GB NVMe, CDN | `ENTER_RCC_PFID` | `GANO_PFID_PROFESSIONAL_HOSTING` | ⏳ Pendiente |
-| 3 | Managed WordPress Premium | 5 dominios, 300 GB NVMe, CDN, staging | `ENTER_RCC_PFID` | `GANO_PFID_PREMIUM_HOSTING` | ⏳ Pendiente |
-| 4 | Managed WordPress Enterprise | Dominios ilimitados, 600 GB NVMe, etc. | `ENTER_RCC_PFID` | `GANO_PFID_ENTERPRISE_HOSTING` | ⏳ Pendiente |
-| 5 | SSL Certificate (Single) | Dominio único | `ENTER_RCC_PFID` | `GANO_PFID_SSL_SINGLE` | ⏳ Pendiente |
-| 6 | SSL Certificate (Wildcard) | Wildcard domain coverage | `ENTER_RCC_PFID` | `GANO_PFID_SSL_WILDCARD` | ⏳ Pendiente |
-| 7 | Backup & Disaster Recovery | Add-on de backup continuo | `ENTER_RCC_PFID` | `GANO_PFID_BACKUP_ADDON` | ⏳ Pendiente |
-| 8 | Advanced Security | Add-on de seguridad avanzada | `ENTER_RCC_PFID` | `GANO_PFID_SECURITY_ADDON` | ⏳ Pendiente |
-| 9 | Performance Optimization | Add-on de optimización | `ENTER_RCC_PFID` | `GANO_PFID_PERFORMANCE_ADDON` | ⏳ Pendiente |
+| 1 | WordPress Hosting Economy (Núcleo Prime) | Núcleo Prime | `GANO_PFID_HOSTING_ECONOMIA` | `gano_pfid_hosting_economia` | ⏳ Pendiente Diego |
+| 2 | WordPress Hosting Deluxe (Fortaleza Delta) | Fortaleza Delta | `GANO_PFID_HOSTING_DELUXE` | `gano_pfid_hosting_deluxe` | ⏳ Pendiente Diego |
+| 3 | WordPress Hosting Premium (Bastión SOTA) | Bastión SOTA | `GANO_PFID_HOSTING_PREMIUM` | `gano_pfid_hosting_premium` | ⏳ Pendiente Diego |
+| 4 | WordPress Hosting Ultimate (Ultimate WP) | Ultimate WP | `GANO_PFID_HOSTING_ULTIMATE` | `gano_pfid_hosting_ultimate` | ⏳ Pendiente Diego |
+| 5 | SSL DV Deluxe | Add-on SSL | `GANO_PFID_SSL_DELUXE` | `gano_pfid_ssl_deluxe` | ⏳ Pendiente Diego |
+| 6 | Website Security Premium | Add-on seguridad | `GANO_PFID_SECURITY_ULTIMATE` | `gano_pfid_security_ultimate` | ⏳ Pendiente Diego |
+| 7 | Microsoft 365 Business Premium | Add-on email | `GANO_PFID_M365_PREMIUM` | `gano_pfid_m365_premium` | ⏳ Pendiente Diego |
+| 8 | Online Storage 1 TB | Add-on almacenamiento | `GANO_PFID_ONLINE_STORAGE` | `gano_pfid_online_storage` | ⏳ Pendiente Diego |
 
 ---
 
-## 5. Cómo Validar PFIDs (Post-Mapping)
+## 4. Cómo obtener PFIDs desde el RCC
 
-### Validación en Staging
+1. Ir a <https://reseller.godaddy.com/> → iniciar sesión.
+2. Navegar a **Products → Product Catalog**.
+3. Buscar el producto (ej. "WordPress Hosting Economy").
+4. Copiar el **PFID** de los detalles del producto (número puro, 3–10 dígitos).
+5. Repetir para los 8 productos de la tabla.
+6. Anotar el **PLID** en **Account → Private Label ID** (aparece también en la URL del storefront).
 
-1. **Abre staging site**: https://gano.digital/staging/ (o URL staging en servidor GoDaddy)
-2. **Navega a un CTA**: (ej.) "Comprar Essential" en landing page
-3. **Verifica**:
-   - ¿El carrito se abre?
-   - ¿Aparece el producto correcto?
-   - ¿El precio es correcto?
-4. **Captura screenshot** si es exitoso
-
-### Validación en Producción
-
-**Posteror a staging exitoso**:
-
-1. **Repite en producción**: https://gano.digital/
-2. **Verifica con Antigravity test**: `/reseller-cart-test production`
-3. **Monitorea**:
-   - Órdenes en RCC dashboard dentro de 5 min
-   - Emails de confirmación al cliente
-   - Zero CORS/500 errors en logs
+**Formato válido:** `123456` (solo dígitos, sin prefijos ni guiones).
 
 ---
 
-## 6. Seguridad: Mantener PFIDs Privados
+## 5. Cómo ingresar los valores en wp-admin (PASO 10E del runbook)
 
-⚠️ **NO hacer**:
-- Pastear PFIDs en chat público, GitHub issues, o PR comments sin protección
-- Commitear `GANO_PFID_*` valores reales en el repositorio (usar servidor/mu-plugin)
-- Compartir credenciales RCC en registros de compilación
+1. Ir a `wp-admin → Ajustes → Gano Reseller`.
+2. Pegar cada PFID en el campo correspondiente.
+3. Clic en **Guardar PFIDs**.
+4. Verificar: aparece banner **"✓ Checkout listo"** cuando los 8 estén configurados.
+5. Ir a `wp-admin → Ajustes → Reseller Store` → ingresar el **PLID** en el campo "Private Label ID".
 
-✅ **Hacer**:
-- Guardar PFIDs en `wp-config.php` o archivo de configuración privado del servidor
-- Usar `wp-content/mu-plugins/` para valores sensibles
-- Validar PFIDs localmente en staging antes de producción
-- Documentar cambios en TASKS.md sin valores explícitos
+> Runbook completo (con plugins de fase y validación final):
+> `memory/ops/runbook-activacion-wp-admin-2026-04-16.md`
 
 ---
 
-## 7. Workflow Recomendado (Antigravity + Diego)
+## 6. Validación (smoke test)
 
-### Fase 1: Discovery (Diego humano)
-1. Diego accede a RCC
-2. Copia los 9 PFIDs en orden
-3. Comparte lista en privado (chat directo, no público)
+Pasos reproducibles en `memory/research/reseller-smoke-test.md`.
 
-### Fase 2: Mapeo (Claude)
-1. Claude actualiza `wp-content/themes/gano-child/functions.php`
-2. Reemplaza `PENDING_RCC` con valores reales
-3. Commit y push a rama `feature/phase4-pfid-mapping`
+Verificaciones clave:
+- URL del carrito tiene `cart.secureserver.net` + PFID + `plid=<tu_PLID>` + `currencyType=COP`.
+- Precio aparece en **COP** (no USD).
+- No hay mensaje "Configuración pendiente".
+- Abandono del carrito sin cargo (no ingresar datos de pago en producción).
 
-### Fase 3: Testing (Antigravity + Diego)
-1. Diego en Agent Manager: `/reseller-cart-test staging`
-2. Antigravity prueba cada CTA
-3. Test report: ¿PASS 9/9 steps?
-4. Si PASS: merge a main, luego production test
+---
+
+## 7. Seguridad
+
+⚠️ **No hacer:**
+- Pegar PFIDs o PLID en issues, PR comments o archivos del repo.
+- Commitear valores reales en `functions.php` o cualquier otro archivo del repo.
+
+✅ **Hacer:**
+- Configurar solo desde `wp-admin → Ajustes → Gano Reseller` (los valores quedan en `wp_options`).
+- Si algo falla, verificar con `wp-admin → Ajustes → Gano Reseller` que los valores no sean `PENDING_RCC`.
 
 ---
 
 ## 8. Troubleshooting
 
-| Problema | Síntoma | Solución |
-|----------|---------|----------|
-| PFID incorrecto | Carrito muestra producto diferente | Verifica PFID en RCC; copiar exactamente sin caracteres extra |
-| PFID expirado | Carrito retorna 404 | Producto descontinuado en RCC; reemplazar o deprecar en código |
-| Precio mismatch | Carrito muestra precio diferente al sitio | Sincronizar precios en RCC con código (o usar override en ACF) |
-| Redirect timeout | Carrito no se abre | Verifica red/CORS; revisa logs servidor `wp-content/gano-deploy/` |
+| Síntoma | Causa probable | Solución |
+|---------|----------------|---------|
+| CTA dice "Configuración pendiente" o abre `#` | PFID sigue en `PENDING_RCC` | Ajustes → Gano Reseller → ingresar valor |
+| URL del carrito tiene `plid=0` | PLID no configurado | Ajustes → Reseller Store → Private Label ID |
+| Precios en USD en el carrito | Locale incorrecto | Verificar `es-CO` / `COP` en `gano-reseller-enhancements.php` |
+| Panel "Gano Reseller" no aparece | Plugin desactivado | Plugins → activar `gano-reseller-enhancements` |
+| PFID rechazado al guardar | Formato inválido | Solo dígitos, 3–10 caracteres; sin prefijos |
 
 ---
 
@@ -158,42 +131,33 @@ define('GANO_PFID_PERFORMANCE_ADDON', 'PENDING_RCC');    // Performance Optimiza
 
 | Documento | Propósito |
 |-----------|-----------|
-| `TASKS.md` § Fase 4 | Estado operativo Reseller, CTA mapping |
-| `wp-content/themes/gano-child/functions.php` (L. 662–696) | Ubicación exacta constantes PFID |
-| `memory/integration/antigravity-integration-2026-04-06.md` | Setup Antigravity, test syntax |
-| `.github/DEV-COORDINATION.md` | Secretos GoDaddy API (si se necesita) |
+| `TASKS.md` § Fase 4 | Estado operativo y pasos PASO 10E |
+| `memory/ops/runbook-activacion-wp-admin-2026-04-16.md` | Runbook completo de activación |
+| `memory/research/reseller-smoke-test.md` | Pasos del smoke test checkout |
+| `wp-content/plugins/gano-reseller-enhancements/includes/class-pfid-admin.php` | Código del panel PFID |
+| `wp-content/themes/gano-child/functions.php` (~L. 965–993) | Constantes PFID + función `gano_rstore_cart_url()` |
+| `.github/DEV-COORDINATION.md` | Secretos GoDaddy API (si aplica) |
 
 ---
 
-## 10. Checklist Final (Post-Mapping)
+## 10. Checklist de cierre (issue #264)
 
 ```
-PFID Discovery:
-  [ ] 9 PFIDs extraídos de RCC
-  [ ] Validados contra catálogo actual
-  [ ] Formato correcto (números sin prefijos)
-
-Code Integration:
-  [ ] wp-content/themes/gano-child/functions.php actualizado
-  [ ] Todos los PENDING_RCC reemplazados
-  [ ] Syntax validado (no breaks en PHP)
-  [ ] Commit: feature/phase4-pfid-mapping creado
-
-Staging Testing:
-  [ ] Antigravity `/reseller-cart-test staging` ejecutado
-  [ ] Test report PASS 9/9 steps
-  [ ] Screenshots capturados de cada CTA
-
-Production Testing:
-  [ ] Staging PASS antes de production
-  [ ] Antigravity `/reseller-cart-test production` ejecutado
-  [ ] Órdenes en RCC dentro de 5 min
-  [ ] Emails de confirmación recibidos
-  [ ] Phase 4 → "Ready to ship"
+BLOQUEADO por acción humana (Diego):
+  [ ] 0. Pre-check: backup en GoDaddy → Managed WordPress → Back Up Now
+  [ ] 1. Reseller Store activo en wp-admin → Plugins
+  [ ] 2. gano-reseller-enhancements activo en wp-admin → Plugins
+  [ ] 3. Obtener PLID desde RCC → Account → Private Label ID
+  [ ] 4. Ingresar PLID en wp-admin → Ajustes → Reseller Store
+  [ ] 5. Obtener los 8 PFIDs desde RCC → Products → Product Catalog
+  [ ] 6. Ingresar los 8 PFIDs en wp-admin → Ajustes → Gano Reseller → Guardar
+  [ ] 7. Banner "✓ Checkout listo" visible (8/8 configurados)
+  [ ] 8. Smoke test: clic en CTA → URL cart.secureserver.net con plid y pfid reales
+  [ ] 9. Verificar precio en COP en el carrito GoDaddy
+  [ ] 10. Anotar fecha y resultado en issue #264
 ```
 
 ---
 
-**Documento creado**: 2026-04-16  
-**Propósito**: Guía técnica para mapeo RCC → PFID → Gano Digital  
-**Responsable**: Diego (datos RCC) + Claude (integración) + Antigravity (testing)  
+**Creado:** 2026-04-16 · **Actualizado:** 2026-04-19 (v2 — alineado con código real)  
+**Referencia issue:** [#264](https://github.com/Gano-digital/Pilot/issues/264)

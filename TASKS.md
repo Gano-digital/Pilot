@@ -112,10 +112,11 @@ _Última actualización: Abril 2026_
 - [x] **Mapeo de UI SOTA -> Reseller (preparación de código, 2026-04-17)**:
   - `functions.php` lee las 8 constantes `GANO_PFID_*` desde `wp_options` con fallback `PENDING_RCC`.
   - Plugin `gano-reseller-enhancements` expone panel `wp-admin → Ajustes → Gano Reseller` con 8 campos.
-  - Guía paso a paso RCC → pfid: [`memory/commerce/rcc-pfid-checklist.md`](memory/commerce/rcc-pfid-checklist.md).
-- [ ] **PASO 10E — Introducir los 8 PFIDs vía UI** (manual Diego):
-  - Abrir `wp-admin → Ajustes → Gano Reseller` y pegar los valores numéricos del RCC.
-  - Runbook completo: [`memory/ops/runbook-activacion-wp-admin-2026-04-16.md`](memory/ops/runbook-activacion-wp-admin-2026-04-16.md).
+  - Guía paso a paso RCC → pfid: [`memory/commerce/rcc-pfid-checklist.md`](memory/commerce/rcc-pfid-checklist.md) (v2 — alineada con código real, 2026-04-19).
+- [ ] **PASO 10E — Introducir los 8 PFIDs + PLID vía UI** (manual Diego — issue #264):
+  - Abrir `wp-admin → Ajustes → Gano Reseller` y pegar los 8 valores numéricos del RCC.
+  - Abrir `wp-admin → Ajustes → Reseller Store` y pegar el PLID.
+  - Runbook completo: [`memory/ops/runbook-activacion-wp-admin-2026-04-16.md`](memory/ops/runbook-activacion-wp-admin-2026-04-16.md) §3.
 - [ ] **Prueba de Flujo de Checkout**:
   - Presionar "Comprar" en el SOTA Mockup de Gano -> Verificar que mande al carrito marca blanca -> Cierre.
   - Pasos reproducibles: [`memory/research/reseller-smoke-test.md`](memory/research/reseller-smoke-test.md)
@@ -160,7 +161,7 @@ _Activar cuando:_ parches F1–3 desplegados de forma estable, flujo Fase 4 Rese
 - [x] Fusionar PR #13 y verificar checks en `main` (squash merge 2026-04-02)
 - [x] Actions → ejecutar **09 · Sembrar issues homepage** (ciclo inicial ya corrido; no re-ejecutar salvo apertura de nuevo lote).
 - [x] Actions → **08 · Sembrar cola Copilot** (ciclo inicial completado; resembrar solo si existe backlog nuevo y validado para evitar duplicados).
-- [ ] Rotación de tokens y limpieza de remotes con credenciales (al cierre del workflow de despliegue)
+- [ ] Rotación de tokens y limpieza de remotes con credenciales (al cierre del workflow de despliegue) — runbook en `memory/ops/token-rotation-runbook-2026-04.md` (issue #267)
 
 ### Contenido homepage (Elementor en servidor)
 

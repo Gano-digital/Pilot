@@ -131,20 +131,35 @@ Hacer un commit directo en la rama `main` (o abrir un PR rápido) con los estado
 
 ---
 
-## Decisión pendiente de Diego — Slugs canónicos para las 20 páginas SOTA
+## Decisión adoptada — Slugs canónicos para las 20 páginas SOTA
 
-Antes de publicar las páginas SOTA, tomar la siguiente decisión:
+_Actualizado 2026-04-19 (issue #265 — cierre de brecha IA vs live)_
 
-> **¿Se adoptan los slugs de `site-ia-wave3-proposed.md` o los que genera el importer?**
+> **Decisión: Opción C — Combinación.**  
+> Mantener el slug corto del importer, asignar cada página como hija de su categoría padre
+> dentro del hub `/pilares/`. Para los 4 casos con divergencia conceptual grave (marcados ⚠️),
+> usar el slug del importer pero actualizar el título para alinearlo con el concepto del IA doc.
 
-| Opción | Ventaja | Desventaja |
+### Tabla de resolución de casos ⚠️
+
+| Ruta IA propuesta | Slug importer | Decisión |
 |---|---|---|
-| **A — Slugs del IA doc** | Coherentes con la jerarquía `/pilares/categoria/slug` propuesta; mejores para SEO con categoría en URL | Requiere editar los slugs en wp-admin o ejecutar script WP-CLI tras importar |
-| **B — Slugs del importer** | Se generan automáticamente; sin trabajo extra post-importación | No respetan la jerarquía `/pilares/categoria/`; menos descriptivos en algunos casos |
-| **C — Combinación** | Usar slugs del importer pero asignarlos como hijos de las páginas de categoría dentro de `/pilares/` | Requiere editar "Página padre" en wp-admin para cada una de las 20 páginas |
+| `/pilares/infraestructura/la-muerte-del-hosting-compartido-el-riesgo-invisible` | `contenedores-aislados-tu-isla-de-rendimiento` | **Mantener slug importer.** El concepto "contenedores aislados" es más preciso técnicamente. Actualizar IA doc para reflejar este slug. |
+| `/pilares/seguridad/mitigacion-ddos-inteligente-firewall-de-nueva-generacion` | `inmunidad-ddos-blindaje-ia-en-el-perimetro` | **Mantener slug importer.** "Blindaje IA en el perímetro" refuerza la narrativa SOTA. |
+| `/pilares/rendimiento/micro-animaciones-e-interacciones-hapticas-diseno-que-se-siente` | `experiencias-cineticas-diseno-que-se-siente-premium` | **Mantener slug importer.** "Experiencias Cinéticas" es coherente con la marca premium. |
+| `/pilares/inteligencia-artificial/el-agente-ia-de-administracion-tu-infraestructura-habla-espanol` | `co-piloto-de-ia-soberana-administracion-por-conversacion` | **Mantener slug importer.** "Co-piloto de IA Soberana" alinea con narrativa de soberanía digital. |
 
-**Recomendación:** Opción C. Mantener el contenido del importer, editar el slug corto si hay divergencia conceptual grave (ver filas marcadas con ⚠️ en la tabla de arriba), y asignar cada página como hija de su categoría dentro del hub `/pilares/`.
+### Pasos para cerrar la brecha (BLOQUEADO por acción humana — Diego)
+
+1. Activar `gano-content-importer` en wp-admin (ver runbook `memory/ops/runbook-activacion-wp-admin-2026-04-16.md` §2).
+2. Verificar que las 20 páginas aparecen como **Borradores** en `wp-admin → Páginas → Todos`.
+3. Para cada página:
+   - Abrir la página → editar **Atributos de página → Padre**: seleccionar la categoría correcta dentro de `/pilares/`.
+   - Ejemplo: "Arquitectura NVMe…" → Padre: `Pilares > Infraestructura`.
+4. Para los 4 casos ⚠️: no cambiar el slug del importer, pero verificar que el **título** sea el del importer (ya están en ese texto).
+5. Publicar (o dejar como Borrador hasta que el copy final sea aprobado por Diego).
+6. Actualizar `site-ia-wave3-proposed.md` §7 reemplazando las 4 rutas ⚠️ con los slugs del importer.
 
 ---
 
-_Mantener este documento sincronizado con `site-ia-wave3-proposed.md` y `TASKS.md` al tomar decisiones de slugs o publicación. Última revisión: Abril 2026 — Wave 4 SOTA (plantillas PHP actualizadas)._
+_Mantener este documento sincronizado con `site-ia-wave3-proposed.md` y `TASKS.md` al tomar decisiones de slugs o publicación. Última revisión: 2026-04-19 — issue #265 (decisión canónica adoptada)._
