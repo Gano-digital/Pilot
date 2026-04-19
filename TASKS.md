@@ -118,6 +118,7 @@ _Última actualización: Abril 2026_
   - Runbook completo: [`memory/ops/runbook-activacion-wp-admin-2026-04-16.md`](memory/ops/runbook-activacion-wp-admin-2026-04-16.md).
 - [ ] **Prueba de Flujo de Checkout**:
   - Presionar "Comprar" en el SOTA Mockup de Gano -> Verificar que mande al carrito marca blanca -> Cierre.
+  - Pasos reproducibles: [`memory/research/reseller-smoke-test.md`](memory/research/reseller-smoke-test.md)
 - [ ] **Instalar soporte/chat**: FreeScout o similar para atención a cliente, ya que el soporte inicial lo da el reseller (vos).
 
 ## 📋 Someday — Fase 5
