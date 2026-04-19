@@ -255,7 +255,7 @@ get_header();
   </section>
 
   <!-- ── CTA FINAL ───────────────────────────────────────────────── -->
-  <section class="gano-dark-section gano-ecosistemas__cta-final gano-km-shell">
+  <section class="gano-dark-section gano-ecosistemas__cta-final gano-km-shell" id="gano-cta-final-sentinel">
     <div class="gano-container gano-km-container">
       <h2>¿No sabes cuál elegir?</h2>
       <p>Cuéntanos dónde estás y te decimos qué arquitectura corresponde a tu etapa. Sin presión.</p>
@@ -263,6 +263,45 @@ get_header();
     </div>
   </section>
 
+  <!-- ── CTA STICKY MOBILE ────────────────────────────────────────── -->
+  <div class="gano-sticky-cta-mobile"
+       role="complementary"
+       aria-label="Acciones rápidas">
+    <a href="#nucleo-prime"
+       class="gano-sticky-cta__primary"
+       aria-label="Elegir plan — ir a los planes">
+      Elegir plan →
+    </a>
+    <a href="/contacto"
+       class="gano-sticky-cta__secondary"
+       aria-label="Hablar con el equipo de ventas">
+      Contactar
+    </a>
+  </div>
+
 </main>
+
+<script>
+(function () {
+  // Ocultar la barra sticky cuando el CTA final entra en viewport
+  var sentinel = document.getElementById('gano-cta-final-sentinel');
+  var bar = document.querySelector('.gano-sticky-cta-mobile');
+  if (!sentinel || !bar) return;
+
+  document.body.classList.add('has-mobile-cta');
+
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        bar.classList.add('is-hidden');
+      } else {
+        bar.classList.remove('is-hidden');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  obs.observe(sentinel);
+})();
+</script>
 
 <?php get_footer(); ?>

@@ -184,6 +184,7 @@ function gano_child_enqueue_styles() {
     // Ecosistemas — catálogo de planes (cd-content-002)
     if ( is_page_template( 'templates/page-ecosistemas.php' ) ) {
         wp_enqueue_style( 'gano-ecosistemas-css', get_stylesheet_directory_uri() . '/css/ecosistemas.css', array( 'gano-child-style' ), '1.0.0' );
+        wp_enqueue_style( 'gano-mobile-cta-css', get_stylesheet_directory_uri() . '/css/gano-mobile-cta.css', array( 'gano-child-style' ), '1.0.0' );
     }
 
     // Constellation 3D Hero — se carga cuando el template o shortcode lo necesite
