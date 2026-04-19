@@ -49,6 +49,11 @@ function gano_render_socio_tecnologico(): string {
             <li><?php esc_html_e( 'Monitoreo y respuesta con foco en negocio, no en excusas.', 'gano-child' ); ?></li>
             <li><?php esc_html_e( 'Roadmap claro hacia soberanía digital y cumplimiento en Colombia.', 'gano-child' ); ?></li>
         </ul>
+        <p class="gano-socio-block__cta-link">
+            <a href="<?php echo esc_url( home_url( '/nosotros' ) ); ?>">
+                <?php esc_html_e( 'Conoce nuestra historia →', 'gano-child' ); ?>
+            </a>
+        </p>
     </div>
     <?php
     return ob_get_clean();
