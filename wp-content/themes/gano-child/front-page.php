@@ -30,12 +30,28 @@ get_header();
         <?php echo do_shortcode('[rstore_domain_search]'); ?>
     </section>
 
-    <section class="section-gano" id="ecosistemas">
+    <section class="section-gano gano-catalog-shell" id="ecosistemas" data-gano-catalog>
         <div class="section-title-gano">
             <h2>Ecosistemas SOTA 2026</h2>
             <p>Elige el nivel de blindaje y potencia que tu proyecto merece</p>
         </div>
-        <div class="ecosistemas-grid">
+        <div class="gano-catalog-mode-switch" role="group" aria-label="Modo de navegación del catálogo">
+            <?php
+            $home_modes = function_exists( 'gano_get_catalog_nav_modes' ) ? gano_get_catalog_nav_modes() : array();
+            foreach ( $home_modes as $mode_key => $mode_meta ) :
+                ?>
+                <button type="button" class="gano-catalog-mode-btn" data-gano-mode="<?php echo esc_attr( $mode_key ); ?>" aria-pressed="false">
+                    <?php echo esc_html( $mode_meta['label'] ); ?>
+                </button>
+            <?php endforeach; ?>
+        </div>
+        <p class="gano-catalog-mode-desc" data-gano-mode-description>
+            Navega por vista general, familias o asistente guiado según tu contexto.
+        </p>
+        <section class="gano-catalog-guided-panel" data-gano-guided-panel aria-label="Asistente de selección">
+            <ul class="gano-catalog-guided-list" data-gano-guided-list></ul>
+        </section>
+        <div class="ecosistemas-grid" id="catalog-container">
             <?php
             $ecosistemas = [
                 [
@@ -74,7 +90,11 @@ get_header();
                 $post_id = $product_query->have_posts() ? $product_query->posts[0]->ID : null;
                 wp_reset_postdata();
                 ?>
-                <div class="ecosystem-card">
+                <div class="ecosystem-card"
+                     data-category="wordpressadministrado"
+                     data-product-id="<?php echo esc_attr( sanitize_title( $eco['slug'] ) ); ?>"
+                     data-product-name="<?php echo esc_attr( $eco['nombre'] ); ?>"
+                     data-product-price="<?php echo esc_attr( $eco['precio'] ); ?>">
                     <h3><?php echo esc_html($eco['nombre']); ?></h3>
                     <div class="price"><?php echo esc_html($eco['precio']); ?></div>
                     <ul>
@@ -89,11 +109,19 @@ get_header();
                         echo '<a href="/contacto/" class="btn-gano">Consultar</a>';
                     }
                     ?>
+                    <button type="button" class="gano-catalog-compare-toggle" data-gano-compare-toggle aria-pressed="false">
+                        Comparar
+                    </button>
                 </div>
                 <?php
             }
             ?>
         </div>
+        <section class="gano-catalog-comparator" data-gano-compare hidden>
+            <h3 class="gano-catalog-comparator-title">Comparador inteligente (hasta 3)</h3>
+            <ul class="gano-catalog-compare-list" data-gano-compare-list></ul>
+            <div class="gano-catalog-compare-grid" data-gano-compare-grid></div>
+        </section>
     </section>
 
     <section class="section-gano">

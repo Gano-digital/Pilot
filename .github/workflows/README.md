@@ -13,7 +13,7 @@ Los **nombres mostrados en la barra lateral** siguen el patrón:
 | **07–11** | Agentes | Cola Copilot, semillas y orquestación |
 | **13** | Projects | Añadir issues `[agent]` / `copilot` al tablero @Gano.digital (opcional) |
 | **16–18** | Ops SSH | Backups/sync/health con SSH (saltan si faltan secrets) |
-| **30–31** | Comercio F4 | Validación catálogo Reseller y salud plugins Fase 4 |
+| **30–32** | Comercio F4 | Validación catálogo Reseller, salud plugins y secuencia de release |
 | **99** | Debug | Workflow manual de prueba rápida |
 
 **Orden sugerido al operar (manual):** `06` una vez si faltan etiquetas → `07` al editar colas → `08`/`09` para crear issues → `10` solo si aplica oleada histórica → `04`/`05` cuando toque servidor. **Guía ampliada:** [`memory/ops/agent-playbook-asistentes-2026-04.md`](../../memory/ops/agent-playbook-asistentes-2026-04.md).
@@ -73,6 +73,7 @@ Archivo | Nombre en UI
 `08-health-check-plugins.yml` | 18 · Ops · Health Check · Validar plugins gano-*
 `30-reseller-catalog-sync.yml` | 30 · Reseller Catalog Sync
 `31-plugin-health-check-phase4.yml` | 31 · Plugin Health Phase 4
+`32-commerce-release-sequence.yml` | 32 · Release · Commerce Sequence
 `test-runner.yml` | 99 · Debug · Test Runner
 
 **Tablero GitHub Projects (@Gano.digital):** [`.github/GITHUB-PROJECT-GANO-DIGITAL.md`](../GITHUB-PROJECT-GANO-DIGITAL.md) · playbook [`memory/ops/github-projects-gano-digital-playbook-2026-04.md`](../../memory/ops/github-projects-gano-digital-playbook-2026-04.md).

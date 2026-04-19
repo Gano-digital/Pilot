@@ -153,7 +153,7 @@ get_header();
 </style>
 <!-- END: SHOP PREMIUM STYLES -->
 
-<div class="sota-wrapper gano-km-shell gano-on-dark">
+<div class="sota-wrapper gano-km-shell gano-on-dark gano-catalog-shell" data-gano-catalog>
     <div class="mockup-status" id="scroll-progress"></div>
     <div class="badge-fixed" aria-hidden="true">SOTA v3.1 — RESELLER API SYNC</div>
 
@@ -293,6 +293,24 @@ get_header();
                 <h2>Sincronización de Ecosistemas</h2>
             </div>
 
+            <div class="gano-catalog-mode-switch" role="group" aria-label="Modo de navegación del catálogo">
+                <?php
+                $catalog_modes = function_exists( 'gano_get_catalog_nav_modes' ) ? gano_get_catalog_nav_modes() : array();
+                foreach ( $catalog_modes as $mode_key => $mode_meta ) :
+                    ?>
+                    <button type="button" class="gano-catalog-mode-btn" data-gano-mode="<?php echo esc_attr( $mode_key ); ?>" aria-pressed="false">
+                        <?php echo esc_html( $mode_meta['label'] ); ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+            <p class="gano-catalog-mode-desc" data-gano-mode-description>
+                Selecciona una vista de navegación para explorar el catálogo completo.
+            </p>
+
+            <section class="gano-catalog-guided-panel" data-gano-guided-panel aria-label="Asistente de selección">
+                <ul class="gano-catalog-guided-list" data-gano-guided-list></ul>
+            </section>
+
             <div class="catalog-nav" role="group" aria-label="Filtrar productos por categoría">
                 <button type="button" class="nav-item active" data-filter="all">Todos</button>
                 <?php foreach ( $catalog_categories as $cat_key => $cat_label ) : ?>
@@ -304,7 +322,23 @@ get_header();
 
             <div class="catalog-grid" id="catalog-container">
                 <?php foreach($products as $p): ?>
-                <div class="product-card reveal-item gano-km-card" data-category="<?php echo esc_attr($p['cat']); ?>">
+                <?php
+                $cta = function_exists( 'gano_resolver_catalog_cta' ) ? gano_resolver_catalog_cta( $p ) : array(
+                    'url'    => '#',
+                    'label'  => 'Próximamente',
+                    'target' => '',
+                    'status' => 'pending',
+                );
+                $status_classes = 'product-card reveal-item gano-km-card';
+                if ( 'sync-missing' === ( $cta['status'] ?? '' ) ) {
+                    $status_classes .= ' gano-catalog-sync-missing';
+                }
+                ?>
+                <div class="<?php echo esc_attr( $status_classes ); ?>"
+                     data-category="<?php echo esc_attr($p['cat']); ?>"
+                     data-product-id="<?php echo esc_attr( sanitize_title( $p['cat'] . '-' . $p['name'] ) ); ?>"
+                     data-product-name="<?php echo esc_attr( $p['name'] ); ?>"
+                     data-product-price="<?php echo esc_attr( $p['price'] ); ?>">
                     <?php if ( ! empty( $p['badge'] ) ) : ?>
                         <span class="product-card__badge"><?php echo esc_html( $p['badge'] ); ?></span>
                     <?php endif; ?>
@@ -326,22 +360,21 @@ get_header();
                         <?php echo esc_html( $p['price'] ); ?>
                     </div>
 
-                    <?php $cta = function_exists( 'gano_resolver_catalog_cta' ) ? gano_resolver_catalog_cta( $p ) : array(
-                        'url'    => '#',
-                        'label'  => 'Próximamente',
-                        'target' => '',
-                        'status' => 'pending',
-                    ); ?>
                     <a href="<?php echo esc_url( $cta['url'] ); ?>"
                        class="rstore-add-to-cart rstore-add-to-cart--<?php echo esc_attr( $cta['status'] ); ?> gano-km-btn-secondary"
                        <?php echo $cta['target']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                        aria-label="<?php echo esc_attr( $cta['label'] . ': ' . $p['name'] ); ?>"
                        <?php if ( 'coming-soon' === $cta['status'] ) : ?>tabindex="-1" aria-disabled="true"<?php endif; ?>
                     ><?php echo esc_html( $cta['label'] ); ?></a>
+                    <button type="button" class="gano-catalog-compare-toggle" data-gano-compare-toggle aria-pressed="false">
+                        Comparar
+                    </button>
                     <small class="rstore-status-note">
                         <?php
                         if ( 'active' === $cta['status'] ) {
                             echo 'Estado comercial: activo';
+                        } elseif ( 'sync-missing' === $cta['status'] ) {
+                            echo 'Estado comercial: sincronizando catálogo';
                         } elseif ( 'pending' === $cta['status'] ) {
                             echo 'Estado comercial: pendiente de RCC';
                         } else {
@@ -349,9 +382,18 @@ get_header();
                         }
                         ?>
                     </small>
+                    <?php if ( 'sync-missing' === $cta['status'] ) : ?>
+                        <span class="gano-catalog-sync-note">Precio temporalmente no disponible</span>
+                    <?php endif; ?>
                 </div>
                 <?php endforeach; ?>
             </div>
+
+            <section class="gano-catalog-comparator" data-gano-compare hidden>
+                <h3 class="gano-catalog-comparator-title">Comparador inteligente (hasta 3)</h3>
+                <ul class="gano-catalog-compare-list" data-gano-compare-list></ul>
+                <div class="gano-catalog-compare-grid" data-gano-compare-grid></div>
+            </section>
         </div>
     </section>
 
@@ -404,42 +446,6 @@ get_header();
             });
         }
 
-        // Filtering Logic
-        const navItems = document.querySelectorAll('.nav-item');
-        const productCards = document.querySelectorAll('.product-card');
-
-        navItems.forEach(item => {
-            item.addEventListener('click', () => {
-                // Update active state
-                navItems.forEach(nav => nav.classList.remove('active'));
-                item.classList.add('active');
-
-                const filter = item.getAttribute('data-filter');
-
-                // Animate out
-                if (typeof gsap !== 'undefined') {
-                    gsap.to(productCards, {
-                        opacity: 0, 
-                        y: 20, 
-                        duration: 0.3, 
-                        onComplete: () => {
-                            // Filter displays
-                            productCards.forEach(card => {
-                                if (filter === 'all' || card.getAttribute('data-category') === filter) {
-                                    card.style.display = 'flex';
-                                } else {
-                                    card.style.display = 'none';
-                                }
-                            });
-                            // Animate in
-                            gsap.to(document.querySelectorAll('.product-card[style*="display: flex"]'), {
-                                opacity: 1, y: 0, duration: 0.4, stagger: 0.05
-                            });
-                        }
-                    });
-                }
-            });
-        });
     });
 </script>
 

@@ -145,6 +145,21 @@ header.site-header nav {
   }
 }
 
+@media (max-width: 900px) {
+  #site-header nav ul,
+  header.site-header nav ul {
+    display: none !important;
+  }
+
+  #site-header,
+  header.site-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0.75rem !important;
+  }
+}
+
 /* ============================================================
  * ENSURE BODY HAS TOP PADDING FOR STICKY HEADER
  * ============================================================ */

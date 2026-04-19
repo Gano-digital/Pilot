@@ -33,21 +33,8 @@ function gano_critical_css() {
     }
 
     echo '<style id="gano-critical">';
-    echo ':root {';
-    echo '  --gc-primary: #1B4FD8;';
-    echo '  --gc-secondary: #00C26B;';
-    echo '  --gc-accent: #D4AF37;';
-    echo '  --gc-dark: #05080b;';
-    echo '  --gc-dark-card: rgba(255,255,255,0.03);';
-    echo '  --gc-dark-border: rgba(255,255,255,0.08);';
-    echo '  --gc-content-bg: #f8fafc;';
-    echo '  --gc-text: #e2e8f0;';
-    echo '  --gc-text-muted: #94a3b8;';
-    echo '  --gc-text-light: #1e293b;';
-    echo '  --gc-glow: rgba(27,79,216,0.4);';
-    echo '}';
-    echo '.gano-home { background: var(--gc-dark) !important; color: var(--gc-text) !important; }';
-    echo '.hero-gano { background: radial-gradient(circle at 50% 50%, #1e2530 0%, var(--gc-dark) 100%) !important; }';
+    echo '.gano-home { background: var(--gano-color-surface-dark, #05080b) !important; color: var(--gano-color-text-on-dark, #e2e8f0) !important; }';
+    echo '.hero-gano { background: radial-gradient(circle at 50% 50%, var(--gano-gray-900, #1e2530) 0%, var(--gano-color-surface-dark, #05080b) 100%) !important; }';
     echo '</style>';
 }
 
@@ -216,6 +203,37 @@ function gano_child_enqueue_styles() {
             array(),
             '1.0.0',
             true
+        );
+    }
+
+    // Smart catalog UX — shared by commercial templates (grid/family/guided + comparator + analytics hooks)
+    $is_commerce_template =
+        is_front_page() ||
+        is_page_template( 'templates/shop-premium.php' ) ||
+        is_page_template( 'templates/page-ecosistemas.php' ) ||
+        is_page_template( 'templates/page-seo-landing.php' );
+    if ( $is_commerce_template ) {
+        wp_enqueue_style(
+            'gano-catalog-intelligence-css',
+            get_stylesheet_directory_uri() . '/css/gano-catalog-intelligence.css',
+            array( 'gano-child-style', 'gano-sota-convergence' ),
+            '1.0.0'
+        );
+        wp_enqueue_script(
+            'gano-catalog-intelligence-js',
+            get_stylesheet_directory_uri() . '/js/gano-catalog-intelligence.js',
+            array(),
+            '1.0.0',
+            true
+        );
+        wp_localize_script(
+            'gano-catalog-intelligence-js',
+            'ganoCatalogConfig',
+            array(
+                'defaultMode' => gano_resolve_catalog_mode( $_GET['catalog_mode'] ?? null ),
+                'modes'       => gano_get_catalog_nav_modes(),
+                'guided'      => gano_get_catalog_guided_intents(),
+            )
         );
     }
 
@@ -1007,14 +1025,66 @@ function gano_rstore_cart_url( $pfid, $duration = 12 ) {
  * Returns normalized catalog status.
  *
  * @param mixed $raw_status Raw status value.
- * @return string active|pending|coming-soon
+ * @return string active|pending|coming-soon|sync-missing
  */
 function gano_normalize_catalog_status( $raw_status ) {
 	$status = is_string( $raw_status ) ? sanitize_key( $raw_status ) : '';
-	if ( in_array( $status, array( 'active', 'pending', 'coming-soon' ), true ) ) {
+	if ( in_array( $status, array( 'active', 'pending', 'coming-soon', 'sync-missing' ), true ) ) {
 		return $status;
 	}
 	return 'pending';
+}
+
+/**
+ * Determines if a catalog price string can be treated as commercially valid.
+ *
+ * @param mixed $raw_price Price string.
+ * @return bool
+ */
+function gano_catalog_price_is_valid( $raw_price ) {
+	$price = is_string( $raw_price ) ? trim( $raw_price ) : '';
+	if ( '' === $price ) {
+		return false;
+	}
+
+	$normalized = sanitize_text_field( wp_strip_all_tags( strtolower( $price ) ) );
+	if ( str_contains( $normalized, 'pendiente' ) || str_contains( $normalized, 'consultar' ) ) {
+		return false;
+	}
+
+	return (bool) preg_match( '/\d/', $normalized );
+}
+
+/**
+ * Resolves robust commercial status for catalog item.
+ *
+ * @param array<string, mixed> $product Product row.
+ * @return string active|pending|coming-soon|sync-missing
+ */
+function gano_catalog_product_status( array $product ) {
+	$status = gano_normalize_catalog_status( $product['status'] ?? '' );
+	if ( 'coming-soon' === $status ) {
+		return $status;
+	}
+
+	$pfid = isset( $product['pfid'] ) ? (string) $product['pfid'] : '';
+	$has_external = ! empty( $product['external_url'] );
+	$is_domain = 'domain_search' === $pfid;
+	$has_price = gano_catalog_price_is_valid( $product['price'] ?? '' );
+
+	if ( ! $has_price ) {
+		return 'sync-missing';
+	}
+
+	if ( $has_external || $is_domain ) {
+		return 'active';
+	}
+
+	if ( '' === $pfid || 'PENDING_RCC' === $pfid ) {
+		return 'pending';
+	}
+
+	return $status;
 }
 
 /**
@@ -1039,6 +1109,71 @@ function gano_get_reseller_catalog_categories() {
 }
 
 /**
+ * Returns available navigation modes for the commercial catalog.
+ *
+ * @return array<string, array<string, string>>
+ */
+function gano_get_catalog_nav_modes() {
+	return array(
+		'grid'   => array(
+			'label'       => 'Vista general',
+			'description' => 'Todos los productos en una sola grilla filtrable.',
+		),
+		'family' => array(
+			'label'       => 'Por familia',
+			'description' => 'Organiza la navegación por familias comerciales.',
+		),
+		'guided' => array(
+			'label'       => 'Asistente',
+			'description' => 'Flujo guiado por objetivo del negocio.',
+		),
+	);
+}
+
+/**
+ * Sanitizes and resolves a valid catalog navigation mode.
+ *
+ * @param string|null $candidate Candidate mode.
+ * @return string grid|family|guided
+ */
+function gano_resolve_catalog_mode( $candidate = null ) {
+	$modes = array_keys( gano_get_catalog_nav_modes() );
+	$mode  = is_string( $candidate ) ? sanitize_key( $candidate ) : '';
+	if ( in_array( $mode, $modes, true ) ) {
+		return $mode;
+	}
+	return 'grid';
+}
+
+/**
+ * Builds guided intents for smart catalog navigation.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function gano_get_catalog_guided_intents() {
+	return array(
+		array(
+			'id'          => 'launch',
+			'label'       => 'Lanzar o validar',
+			'description' => 'Iniciar rápido con costos controlados y base sólida.',
+			'categories'  => array( 'hostingwebcpanel', 'wordpressadministrado', 'dominios' ),
+		),
+		array(
+			'id'          => 'scale',
+			'label'       => 'Escalar conversiones',
+			'description' => 'Más capacidad, resiliencia y seguridad para e-commerce o campañas.',
+			'categories'  => array( 'webhostingplus', 'vpshighperformance', 'seguridadweb', 'certificadosssl' ),
+		),
+		array(
+			'id'          => 'enterprise',
+			'label'       => 'Operación crítica',
+			'description' => 'Alta disponibilidad, soporte prioritario y controles empresariales.',
+			'categories'  => array( 'servidoresvps', 'vpshighperformance', 'correomicrosoft365', 'seguridadweb' ),
+		),
+	);
+}
+
+/**
  * Builds VPS catalog URL for the current reseller storefront.
  *
  * @return string
@@ -1058,6 +1193,7 @@ function gano_rstore_vps_catalog_url() {
  * - active: CTA opens Reseller cart
  * - pending: CTA redirects to contacto while PFID/RCC is pending
  * - coming-soon: CTA disabled with "Próximamente"
+ * - sync-missing: product remains visible, price not trusted, CTA opens details/contact
  *
  * @return array<int, array<string, string>>
  */
@@ -1566,7 +1702,7 @@ function gano_get_reseller_catalog_products() {
  */
 function gano_resolver_catalog_cta( $product ) {
 	$pfid      = isset( $product['pfid'] ) ? (string) $product['pfid'] : '';
-	$status    = gano_normalize_catalog_status( $product['status'] ?? '' );
+	$status    = gano_catalog_product_status( is_array( $product ) ? $product : array() );
 	$cta_label = isset( $product['cta_label'] ) ? (string) $product['cta_label'] : '';
 	$label     = '' !== $cta_label ? $cta_label : 'Adquirir Nodo';
 
@@ -1597,6 +1733,18 @@ function gano_resolver_catalog_cta( $product ) {
 		);
 	}
 
+	if ( 'sync-missing' === $status ) {
+		$details_url = ! empty( $product['details_url'] )
+			? esc_url( (string) $product['details_url'] )
+			: esc_url( home_url( '/contacto/' ) );
+		return array(
+			'url'    => $details_url,
+			'label'  => 'Ver detalles',
+			'target' => '',
+			'status' => 'sync-missing',
+		);
+	}
+
 	if ( 'pending' === $status || 'PENDING_RCC' === $pfid ) {
 		return array(
 			'url'    => esc_url( home_url( '/contacto/' ) ),
@@ -1610,9 +1758,9 @@ function gano_resolver_catalog_cta( $product ) {
 	if ( '#' === $cart_url ) {
 		return array(
 			'url'    => esc_url( home_url( '/contacto/' ) ),
-			'label'  => 'Hablar con ventas',
+			'label'  => 'Ver detalles',
 			'target' => '',
-			'status' => 'pending',
+			'status' => 'sync-missing',
 		);
 	}
 

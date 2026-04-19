@@ -3,17 +3,17 @@
  * SOTA Aesthetic: Glassmorphism + Cyberpunk Luxury
  * ============================================================ */
 
-:root {
-    /* Homepage aliases mapped to global design tokens (style.css). */
-    --gc-primary: var(--gano-blue);
-    --gc-secondary: var(--gano-green);
-    --gc-accent: var(--gano-gold);
-    --gc-dark: var(--gano-dark-deep);
+.gano-home {
+    /* Homepage aliases consume semantic tokens from style.css. */
+    --gc-primary: var(--gano-color-primary);
+    --gc-secondary: var(--gano-color-secondary);
+    --gc-accent: var(--gano-color-accent);
+    --gc-dark: var(--gano-color-surface-dark);
     --gc-dark-card: rgba(255,255,255,0.03);
-    --gc-dark-border: rgba(255,255,255,0.08);
+    --gc-dark-border: var(--gano-color-outline-on-dark);
     --gc-content-bg: var(--gano-bg-alt);
-    --gc-text: var(--gano-gray-300);
-    --gc-text-muted: var(--gano-text-slate);
+    --gc-text: var(--gano-color-text-on-dark);
+    --gc-text-muted: var(--gano-color-text-muted-on-dark);
     --gc-text-light: var(--gano-gray-900);
     --gc-glow: rgba(27,79,216,0.4);
 

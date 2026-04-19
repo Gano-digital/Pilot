@@ -5,11 +5,11 @@
  */
 
 :root {
-    --gano-km-surface: #0b1326;
+    --gano-km-surface: var(--gano-color-surface-dark);
     --gano-km-surface-low: #131b2e;
-    --gano-km-surface-high: #2d3449;
-    --gano-km-on-surface: #dae2fd;
-    --gano-km-outline: rgba(144, 143, 160, 0.2);
+    --gano-km-surface-high: var(--gano-color-surface-dark-soft);
+    --gano-km-on-surface: var(--gano-color-text-on-dark);
+    --gano-km-outline: var(--gano-color-outline-on-dark);
     --gano-km-glass: rgba(45, 52, 73, 0.55);
     --gano-km-primary-soft: rgba(192, 193, 255, 0.2);
     --gano-km-tertiary-soft: rgba(76, 215, 246, 0.22);
