@@ -123,7 +123,58 @@ class Gano_Reseller_Smoke_Test {
 				: __( 'No se puede construir la URL sin pl_id.', 'gano-reseller' ),
 		);
 
-		// ── 5. Bundles SKU → URL ──────────────────────────────────────────────
+		// ── 5. PFIDs configurados ────────────────────────────────────────────
+		$pfid_fields = array(
+			'gano_pfid_hosting_economia'  => 'WordPress Hosting Economy (Núcleo Prime)',
+			'gano_pfid_hosting_deluxe'    => 'WordPress Hosting Deluxe (Fortaleza Delta)',
+			'gano_pfid_hosting_premium'   => 'WordPress Hosting Premium (Bastión SOTA)',
+			'gano_pfid_hosting_ultimate'  => 'WordPress Hosting Ultimate (Ultimate WP)',
+			'gano_pfid_ssl_deluxe'        => 'SSL DV Deluxe',
+			'gano_pfid_security_ultimate' => 'Website Security Premium',
+			'gano_pfid_m365_premium'      => 'Microsoft 365 Business Premium',
+			'gano_pfid_online_storage'    => 'Online Storage 1 TB',
+		);
+		$pfid_configured = 0;
+		$pfid_detail_rows = '';
+		foreach ( $pfid_fields as $opt_key => $pfid_label ) {
+			$pfid_val = get_option( $opt_key, 'PENDING_RCC' );
+			$is_set   = ( 'PENDING_RCC' !== $pfid_val && '' !== $pfid_val );
+			if ( $is_set ) {
+				$pfid_configured++;
+			}
+			$status_icon      = $is_set ? '✅' : '⏳';
+			$pfid_detail_rows .= sprintf(
+				'<tr><td>%s</td><td>%s</td><td><code>%s</code></td></tr>',
+				$status_icon,
+				esc_html( $pfid_label ),
+				esc_html( $is_set ? $pfid_val : 'PENDING_RCC' )
+			);
+		}
+		$pfid_total  = count( $pfid_fields );
+		$pfid_all_ok = ( $pfid_configured === $pfid_total );
+		$pfid_table  = sprintf(
+			'<table class="widefat" style="margin-top:4px;"><tbody>%s</tbody></table>',
+			$pfid_detail_rows
+		);
+		$results[] = array(
+			'label'  => sprintf(
+				/* translators: 1: configured count, 2: total count */
+				__( 'PFIDs configurados en Ajustes → Gano Reseller (%1$d / %2$d)', 'gano-reseller' ),
+				$pfid_configured,
+				$pfid_total
+			),
+			'ok'     => $pfid_all_ok,
+			'detail' => $pfid_all_ok
+				? __( 'Todos los PFIDs están listos. Ejecuta un CTA real en /ecosistemas.', 'gano-reseller' ) . $pfid_table
+				: sprintf(
+					/* translators: link to PFID settings page */
+					__( 'Faltan %1$d PFID(s). Ve a <a href="%2$s">Ajustes → Gano Reseller</a> para completarlos.', 'gano-reseller' ),
+					$pfid_total - $pfid_configured,
+					esc_url( admin_url( 'options-general.php?page=gano-reseller-pfid' ) )
+				) . $pfid_table,
+		);
+
+		// ── 6. Bundles SKU → URL ──────────────────────────────────────────────
 		$bundle_skus = array( 'GANO-STARTER-3YR', 'GANO-PRO-3YR', 'GANO-ENTERPRISE-3YR' );
 		foreach ( $bundle_skus as $sku ) {
 			$bundle_url = add_query_arg(
@@ -140,7 +191,7 @@ class Gano_Reseller_Smoke_Test {
 			);
 		}
 
-		// ── 6. Shortcode [rstore_product] registrado ──────────────────────────
+		// ── 7. Shortcode [rstore_product] registrado ──────────────────────────
 		$sc_ok = shortcode_exists( 'rstore_product' );
 		$results[] = array(
 			'label'  => __( 'Shortcode [rstore_product] registrado', 'gano-reseller' ),
@@ -234,12 +285,16 @@ class Gano_Reseller_Smoke_Test {
 							<td><?php echo esc_html( $row['label'] ); ?></td>
 							<td>
 								<?php
-								// El campo 'detail' puede contener HTML seguro (enlaces, <code>).
+								// El campo 'detail' puede contener HTML seguro (enlaces, código, tabla de PFIDs).
 								echo wp_kses(
 									$row['detail'],
 									array(
-										'a'    => array( 'href' => true, 'target' => true, 'rel' => true ),
-										'code' => array(),
+										'a'     => array( 'href' => true, 'target' => true, 'rel' => true ),
+										'code'  => array(),
+										'table' => array( 'class' => true, 'style' => true ),
+										'tbody' => array(),
+										'tr'    => array(),
+										'td'    => array( 'style' => true ),
 									)
 								);
 								?>
@@ -253,8 +308,9 @@ class Gano_Reseller_Smoke_Test {
 			<ol>
 				<li><?php esc_html_e( 'Activa "Modo sandbox" arriba y guarda.', 'gano-reseller' ); ?></li>
 				<li><?php esc_html_e( 'Confirma que el pl_id esté configurado (check 1 en verde).', 'gano-reseller' ); ?></li>
+				<li><?php esc_html_e( 'Confirma que los 8 PFIDs están configurados (check 5 en verde). Si faltan, ve a Ajustes → Gano Reseller.', 'gano-reseller' ); ?></li>
 				<li><?php esc_html_e( 'Haz clic en la URL de checkout generada (check 4) — debe abrir el carrito de test-godaddy.com sin requerir pago real.', 'gano-reseller' ); ?></li>
-				<li><?php esc_html_e( 'Prueba la URL de activación de cada bundle (checks 5a-c) — debe redirigir al carrito sandbox con los productos incluidos.', 'gano-reseller' ); ?></li>
+				<li><?php esc_html_e( 'Prueba la URL de activación de cada bundle (checks 6a-c) — debe redirigir al carrito sandbox con los productos incluidos.', 'gano-reseller' ); ?></li>
 				<li><?php esc_html_e( 'Anota cualquier fallo (pl_id incorrecto, redirección a URL de producción, 404 en carrito) en el issue de GitHub.', 'gano-reseller' ); ?></li>
 				<li><?php esc_html_e( 'Desactiva "Modo sandbox" antes de ir a producción.', 'gano-reseller' ); ?></li>
 			</ol>
