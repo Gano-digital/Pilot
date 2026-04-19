@@ -51,7 +51,8 @@ Ruta para acceder: `wp-admin/tools.php?page=gano-reseller-smoke-test`
 3. Copiar el número (ej. `599667`)
 4. En wp-admin: `Ajustes → Reseller Store → Private Label ID` → pegar y guardar.
 
-> ⚠️ Verificar que el valor existente `599667` en el código corresponde a la cuenta real.
+> ⚠️ Verificar que el valor existente `599667` en el código corresponde a la cuenta real
+> (fallback definido en `wp-content/plugins/gano-reseller-enhancements/includes/class-bundle-handler.php` L. 58).
 > Si es incorrecto, todos los carritos fallarán con carrito vacío.
 
 ### Paso 2 — Obtener los 8 PFIDs del RCC

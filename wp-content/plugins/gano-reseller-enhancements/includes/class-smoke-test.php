@@ -145,7 +145,7 @@ class Gano_Reseller_Smoke_Test {
 			$status_icon      = $is_set ? '✅' : '⏳';
 			$pfid_detail_rows .= sprintf(
 				'<tr><td>%s</td><td>%s</td><td><code>%s</code></td></tr>',
-				$status_icon,
+				esc_html( $status_icon ),
 				esc_html( $pfid_label ),
 				esc_html( $is_set ? $pfid_val : 'PENDING_RCC' )
 			);
