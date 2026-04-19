@@ -168,28 +168,34 @@ define('GANO_PFID_PERFORMANCE_ADDON', 'PENDING_RCC');    // Performance Optimiza
 ## 10. Checklist Final (Post-Mapping)
 
 ```
-PFID Discovery:
-  [ ] 9 PFIDs extraídos de RCC
-  [ ] Validados contra catálogo actual
-  [ ] Formato correcto (números sin prefijos)
+Infraestructura de código (ya completo — no repetir):
+  [x] Panel wp-admin → Ajustes → Gano Reseller implementado (class-pfid-admin.php)
+  [x] Smoke test wp-admin → Herramientas → Smoke Test Reseller (class-smoke-test.php)
+  [x] Constantes GANO_PFID_* en functions.php leen wp_options con fallback PENDING_RCC
+  [x] Locale API corregido a es-CO / COP
+  [x] CTAs con fallback seguro a /contacto cuando PFID no configurado
+  [x] Check de PFIDs añadido al smoke test (verifica 8/8 en una tabla)
 
-Code Integration:
-  [ ] wp-content/themes/gano-child/functions.php actualizado
-  [ ] Todos los PENDING_RCC reemplazados
-  [ ] Syntax validado (no breaks en PHP)
-  [ ] Commit: feature/phase4-pfid-mapping creado
+PFID Discovery (acción humana — Diego):
+  [ ] Verificar pl_id en RCC → Account → Private Label ID (confirmar que 599667 es correcto)
+  [ ] Configurar pl_id en wp-admin → Ajustes → Reseller Store
+  [ ] 8 PFIDs extraídos de RCC → Products → Product Catalog
+  [ ] Formato correcto (3-10 dígitos sin prefijos)
+  [ ] Ingresados en wp-admin → Ajustes → Gano Reseller → Guardar PFIDs
+  [ ] Banner verde "✓ Checkout listo" visible (8/8 configurados)
 
-Staging Testing:
-  [ ] Antigravity `/reseller-cart-test staging` ejecutado
-  [ ] Test report PASS 9/9 steps
-  [ ] Screenshots capturados de cada CTA
+Smoke Test Sandbox (acción humana — Diego):
+  [ ] wp-admin → Herramientas → Smoke Test Reseller → checks 1-5 en verde
+  [ ] Modo sandbox activado
+  [ ] URL de carrito abre cart.test-godaddy.com con producto y precio COP
+  [ ] Carrito abandonado antes de pagar (sin cargo real)
 
-Production Testing:
-  [ ] Staging PASS antes de production
-  [ ] Antigravity `/reseller-cart-test production` ejecutado
-  [ ] Órdenes en RCC dentro de 5 min
-  [ ] Emails de confirmación recibidos
-  [ ] Phase 4 → "Ready to ship"
+Production Testing (tras sandbox OK):
+  [ ] Modo sandbox desactivado
+  [ ] CTA en /ecosistemas → carrito cart.secureserver.net con pl_id real
+  [ ] Precio en COP correcto
+  [ ] Carrito abandonado antes de pagar
+  [ ] Issue #264 cerrado con evidencia en memory/ops/rcc-checkout-issue-264-status.md
 ```
 
 ---
