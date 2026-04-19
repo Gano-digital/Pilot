@@ -86,14 +86,26 @@ _Última actualización: 2026-04-19_
   - Post-eliminación: verificar en wp-admin que la alerta de `gano-security.php` desapareció (pendiente validación visual humana).
 
 - [ ] **[ALTA] Configurar datos SEO (Empresa Digital)** en wp-admin → Ajustes → Gano SEO:
-  - Definir área de cobertura (Colombia) sin dirección física local obligatoria.
+  - Completar nombre legal, NIT, teléfono, WhatsApp, email, URL logo.
+  - Dejar dirección física en blanco (negocio 100 % digital).
+  - Checklist paso a paso: [`memory/ops/gano-seo-rankmath-gsc-checklist.md`](memory/ops/gano-seo-rankmath-gsc-checklist.md) §A.
+  - **Bloqueado por acción humana** (wp-admin).
 
 - [ ] **[ALTA] Configurar Google Search Console**
   - Añadir propiedad: https://gano.digital
+  - Pegar token de verificación en wp-admin → Ajustes → Gano SEO → Google Search Console.
+  - Enviar sitemap: `https://gano.digital/sitemap_index.xml`
+  - Checklist paso a paso: [`memory/ops/gano-seo-rankmath-gsc-checklist.md`](memory/ops/gano-seo-rankmath-gsc-checklist.md) §C.
+  - **Bloqueado por acción humana** (GSC + wp-admin).
 
 - [ ] **[ALTA] Configurar Rank Math en WordPress**
-  - Ir a: wp-admin → Rank Math → Setup Wizard
+  - Ir a: wp-admin → Rank Math → Dashboard → "Re-run Setup Wizard"
   - Ajustar para modelo de servicios digitales (no tienda física).
+  - Tipo de sitio: "Empresa/Organización" — NO "Negocio local".
+  - Checklist paso a paso: [`memory/ops/gano-seo-rankmath-gsc-checklist.md`](memory/ops/gano-seo-rankmath-gsc-checklist.md) §B.
+  - **Bloqueado por acción humana** (wp-admin).
+
+- [x] **[MEDIO] Fix schema Product duplicado con Rank Math activo** — `gano_output_product_schema()` → guard `class_exists('RankMath')` añadido (issue #266). Ver `memory/content/seo-canonical-og-analysis-2026.md` §2.5.
 
 ## 🟡 Pending — Contenido y Sinergia
 

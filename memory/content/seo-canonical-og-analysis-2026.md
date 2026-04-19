@@ -95,13 +95,14 @@ Rank Math genera BreadcrumbList automáticamente.
 
 ### 2.5 Schema JSON-LD — Producto WooCommerce
 
-`gano_output_product_schema()` no tiene guard contra Rank Math.
+`gano_output_product_schema()` no tenía guard contra Rank Math.
 Rank Math también genera schema Product para productos WooCommerce.
-**Riesgo**: schema Product duplicado en páginas de producto.
+**Riesgo resuelto**: schema Product duplicado en páginas de producto.
 
-**Estado**: No corregido en este PR (fuera del alcance del issue #229).
-**Recomendación**: Agregar `class_exists('RankMath')` en `gano_output_product_schema()`
-en un issue separado, o preferir el schema de RM que incluye soporte WooCommerce nativo.
+**Estado**: ✅ Corregido en issue #266 (PR ops-seo-configurar-rank-math).
+`gano_output_product_schema()` ahora retorna temprano si `class_exists('RankMath')`.
+Los datos de pago colombianos (PSE, Nequi, Daviplata) se mantienen en el nodo
+Organization vía `gano_extend_rankmath_schema` (`paymentAccepted`).
 
 ---
 
@@ -161,6 +162,7 @@ Para que la integración funcione óptimamente:
 
 ## 6. Pendientes (fuera de este PR)
 
-- [ ] Agregar guard RM en `gano_output_product_schema()` (schema Product duplicado)
+- [x] ~~Agregar guard RM en `gano_output_product_schema()` (schema Product duplicado)~~ → corregido issue #266
 - [ ] Completar datos NIT y teléfono en wp-admin → Ajustes → Gano SEO (acción humana)
 - [ ] Ejecutar Rank Math Setup Wizard (acción humana en wp-admin)
+- [ ] Verificar propiedad en Google Search Console (acción humana)
