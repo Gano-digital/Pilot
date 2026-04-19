@@ -1,5 +1,5 @@
 # Brecha IA propuesta vs inventario real — Gano Digital
-_Generado: Abril 2026 · Wave 4_  
+_Generado: Abril 2026 · Wave 4 · Actualizado: Abril 2026 (Wave 4 SOTA)_  
 _Fuente IA: `memory/content/site-ia-wave3-proposed.md`_
 
 ---
@@ -18,18 +18,18 @@ _Fuente IA: `memory/content/site-ia-wave3-proposed.md`_
 | Ruta IA propuesta | Estado (git) | Fuente de verdad | Acción sugerida |
 |---|---|---|---|
 | `/` (Home) | `desconocido` | `site-ia-wave3-proposed.md` §7 indica "publicada (Elementor, pendiente copy final)" — no verificable desde git sin acceso a BD | Verificar en wp-admin → Páginas; aplicar copy de `homepage-copy-2026-04.md` |
-| `/ecosistemas` | `existe` (plantilla PHP en repo) | `wp-content/themes/gano-child/templates/shop-premium.php` | Asignar la plantilla `shop-premium.php` a la página en wp-admin; verificar que esté publicada |
+| `/ecosistemas` | `existe` (2 plantillas PHP en repo) | `wp-content/themes/gano-child/templates/shop-premium.php` (catálogo animado) + `wp-content/themes/gano-child/templates/page-ecosistemas.php` (versión simplificada) | Asignar la plantilla correcta en wp-admin; `page-ecosistemas.php` es la recomendada para la vitrina principal; verificar que esté publicada |
 | `/ecosistemas/nucleo-prime` | `desconocido` | `site-ia-wave3-proposed.md` §7 "Pendiente — Crear página Elementor" | Crear página en wp-admin → Elementor; slug sugerido: `nucleo-prime`; padre: página `/ecosistemas` |
 | `/ecosistemas/fortaleza-delta` | `desconocido` | `site-ia-wave3-proposed.md` §7 "Pendiente — Crear página Elementor" | Crear página en wp-admin → Elementor; slug sugerido: `fortaleza-delta`; padre: `/ecosistemas` |
 | `/ecosistemas/bastion-sota` | `desconocido` | `site-ia-wave3-proposed.md` §7 "Pendiente — Crear página Elementor" | Crear página en wp-admin → Elementor; slug sugerido: `bastion-sota`; padre: `/ecosistemas` |
-| `/pilares` (índice) | `desconocido` | `site-ia-wave3-proposed.md` §7 "Pendiente — Crear página índice Elementor" | Crear página índice en wp-admin → Elementor con grid de 5 categorías |
+| `/pilares` (índice) | `existe` (plantilla PHP en repo) | `wp-content/themes/gano-child/templates/page-sota-hub.php` — "Hub de Innovación SOTA" | Asignar `page-sota-hub.php` a la página `/pilares` en wp-admin; verificar que esté publicada con slug correcto |
 | `/hosting-wordpress-colombia` | `existe` (plantilla PHP en repo) | `wp-content/themes/gano-child/templates/page-seo-landing.php` + `seo-pages/hosting-wordpress-colombia.php` | Asignar la plantilla `page-seo-landing.php` a la página; verificar que esté publicada con el slug correcto |
-| `/nosotros` | `desconocido` | `site-ia-wave3-proposed.md` §7 "Pendiente contenido real"; TASKS.md "Crear página Nosotros real" | Crear página Elementor; mantener en borrador hasta tener copy real (sin placeholders visibles) |
-| `/contacto` | `desconocido` | `site-ia-wave3-proposed.md` §7 "Pendiente — Crear página Elementor con formulario" | Crear página Elementor; añadir CF7/formulario nativo; rellenar `[teléfono]` y `[email]` reales |
-| `/legal` (hub) | `desconocido` | `site-ia-wave3-proposed.md` §7 "Pendiente — Crear 3 sub-páginas bajo `/legal`" | Crear página padre `/legal` y sus 3 hijos (ver sección siguiente) |
-| `/legal/terminos-y-condiciones` | `desconocido` | `site-ia-wave3-proposed.md` §4 Hub Legal | Crear sub-página bajo `/legal`; incluir NIT real (placeholder `[NIT]`) y legislación SIC Colombia |
-| `/legal/politica-de-privacidad` | `desconocido` | `site-ia-wave3-proposed.md` §4 Hub Legal | Crear sub-página bajo `/legal`; cumplimiento RGPD + normativa SIC Colombia |
-| `/legal/acuerdo-de-nivel-de-servicio` | `desconocido` | `site-ia-wave3-proposed.md` §4 Hub Legal | Crear sub-página bajo `/legal`; redactar con formulaciones prudentes ("objetivo de disponibilidad del 99,9%") |
+| `/nosotros` | `existe` (plantilla PHP en repo) | `wp-content/themes/gano-child/templates/page-nosotros.php` — "Nosotros — Quiénes somos" | Asignar `page-nosotros.php` a la página en wp-admin; revisar y reemplazar placeholders `[nombre]`, `[foto]` antes de publicar |
+| `/contacto` | `existe` (plantilla PHP en repo) | `wp-content/themes/gano-child/templates/page-contacto.php` — "Contacto" | Asignar `page-contacto.php` a la página en wp-admin; rellenar `[teléfono]` y `[email]` reales antes de publicar |
+| `/legal` (hub) | `desconocido` | `site-ia-wave3-proposed.md` §7 "Pendiente — Crear 3 sub-páginas bajo `/legal`" | Crear página padre `/legal` en wp-admin como contenedor; sus 3 hijos ya tienen plantillas (ver filas siguientes) |
+| `/legal/terminos-y-condiciones` | `existe` (plantilla PHP en repo) | `wp-content/themes/gano-child/templates/page-terminos.php` — "Términos y Condiciones" | Crear sub-página bajo `/legal` en wp-admin, asignar `page-terminos.php`; completar NIT real (placeholder `[NIT]`) |
+| `/legal/politica-de-privacidad` | `existe` (plantilla PHP en repo) | `wp-content/themes/gano-child/templates/page-privacidad.php` — "Política de Privacidad" | Crear sub-página bajo `/legal` en wp-admin, asignar `page-privacidad.php`; fecha actualización `2026-04-06` ya incluida |
+| `/legal/acuerdo-de-nivel-de-servicio` | `existe` (plantilla PHP en repo) | `wp-content/themes/gano-child/templates/page-sla.php` — "Acuerdo de Nivel de Servicio (SLA)" | Crear sub-página bajo `/legal` en wp-admin, asignar `page-sla.php`; fecha actualización `2026-04-06` ya incluida |
 
 ---
 
@@ -70,15 +70,27 @@ _Fuente IA: `memory/content/site-ia-wave3-proposed.md`_
 
 ---
 
+## Páginas con plantilla PHP en repo sin ruta en IA propuesta
+
+> Estas páginas tienen template PHP listo pero **no aparecen** en el árbol de rutas de `site-ia-wave3-proposed.md`. Diego debe decidir si se integran en la IA oficial o si son páginas complementarias.
+
+| Slug sugerido | Plantilla PHP | Estado (git) | Nota / Acción |
+|---|---|---|---|
+| `/dominios` | `page-dominios.php` — "Dominios — Registra tu Presencia" | `existe` (plantilla en repo) | Mencionada en `products-services-pages-matrix-2026.md` como destino para CTAs de búsqueda de dominio (shortcode `[rstore-domain-search]`). Añadir al árbol IA bajo el nivel 1 o como sección de `/ecosistemas`. |
+| `/diagnostico-digital` | `page-diagnostico-digital.php` — "Diagnostico Digital SOTA" | `existe` (plantilla en repo) | Quiz de diagnóstico SOTA; pendiente de publicación según `sota-rollout-qa-wave-2026-04.md`. Considerar añadir al árbol IA como flujo de conversión (`/diagnostico-digital` o CTA en Home). |
+| `/contacto/gracias` (o slug a definir) | `page-contacto-gracias.php` — "Contacto — Gracias" | `existe` (plantilla en repo) | Página de confirmación de formulario (redirect post-envío). No necesita ruta pública en el menú; definir slug en wp-admin para el redirect. |
+
+---
+
 ## Resumen de brechas críticas
 
 | Tipo de brecha | Cantidad | Acción prioritaria |
 |---|---|---|
-| Páginas Elementor pendientes de crear (nivel 1) | 7 (`/ecosistemas/*` ×3, `/pilares` índice, `/nosotros`, `/contacto`, `/legal` hub) | Crear en wp-admin una vez por una |
-| Páginas legales pendientes | 3 | Crear sub-páginas bajo `/legal` con copy legal real |
-| Plantillas PHP en repo sin confirmar publicación | 2 (`/ecosistemas`, `/hosting-wordpress-colombia`) | Asignar plantilla + publicar en wp-admin |
+| Páginas Elementor pendientes de crear (nivel 1, sin plantilla PHP) | 4 (`/ecosistemas/*` ×3, `/legal` hub padre) | Crear en wp-admin una a una |
+| Plantillas PHP en repo sin confirmar publicación en WP | 9 (`/ecosistemas`, `/pilares`, `/hosting-wordpress-colombia`, `/nosotros`, `/contacto`, `/legal/terminos`, `/legal/privacidad`, `/legal/sla`, `/dominios`) | Asignar plantilla + publicar en wp-admin; verificar slug |
 | Páginas SOTA con slug drift (importer ≠ IA doc) | 20 | Decidir slug canónico (IA doc **o** importer) y unificar |
 | Títulos conceptualmente divergentes | 4 (Hosting Compartido/Contenedores, DDoS, Micro-animaciones/Cinéticas, Agente IA) | Diego decide cuál título es definitivo; actualizar el documento que no sea fuente de verdad |
+| Páginas en repo sin ruta equivalente en IA propuesta | 3 (`/dominios`, `/diagnostico-digital`, `/contacto/gracias`) | Decidir si se añaden al árbol IA o si son complementarias; actualizar `site-ia-wave3-proposed.md` si aplica |
 
 ---
 
@@ -135,4 +147,4 @@ Antes de publicar las páginas SOTA, tomar la siguiente decisión:
 
 ---
 
-_Mantener este documento sincronizado con `site-ia-wave3-proposed.md` y `TASKS.md` al tomar decisiones de slugs o publicación._
+_Mantener este documento sincronizado con `site-ia-wave3-proposed.md` y `TASKS.md` al tomar decisiones de slugs o publicación. Última revisión: Abril 2026 — Wave 4 SOTA (plantillas PHP actualizadas)._
