@@ -80,7 +80,7 @@ Generados vía PRs Copilot desde [`.github/agent-queue/tasks-wave4-ia-content.js
 
 | Archivo | Propósito en una línea | Léelo antes de… |
 |---------|------------------------|-----------------|
-| [`content-master-plan-2026.md`](content-master-plan-2026.md) | Plan maestro de narrativa, capas y prioridad de páginas (P0–P3). | Reordenar el sitio o abrir nuevas landings. |
+| [`content-master-plan-2026.md`](content-master-plan-2026.md) | **Plan maestro v1.1:** narrativa, capas, orden de lectura, prioridad P0–P3 y tabla maestra de páginas (incluye /dominios, /seguridad, /colaboracion). | Reordenar el sitio o abrir nuevas landings. |
 | [`products-services-pages-matrix-2026.md`](products-services-pages-matrix-2026.md) | Matriz vitrina ↔ slugs ↔ `GANO_PFID_*` ↔ notas RCC. | Tocar `shop-premium.php` o CTAs de producto. |
 | [`gap-ia-vs-live-inventory-2026.md`](gap-ia-vs-live-inventory-2026.md) | Brecha entre IA propuesta e inventario real (marcar *desconocido* donde aplique). | Auditar páginas en wp-admin y alinear slugs. |
 | [`homepage-section-order-spec-2026.md`](homepage-section-order-spec-2026.md) | Orden ejecutable de bloques homepage (AIDA + CTA a ecosistemas). | Reordenar secciones en Elementor. |
