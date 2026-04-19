@@ -12,6 +12,7 @@ Documento **índice** para humanos y agentes: qué quedó hecho en servidor y re
 | 4 | [`.cursor/memory/techContext.md`](../../.cursor/memory/techContext.md) | Decisiones de stack y políticas |
 | 5 | Este archivo + [`2026-04-19-auditoria-ssh-inventario-sota.md`](2026-04-19-auditoria-ssh-inventario-sota.md) | Detalle de auditoría SSH, backups y MD5 |
 | 6 | GitHub **Issue [#263](https://github.com/Gano-digital/Pilot/issues/263)** | Tablero operativo P0–P1 (comentarios con estado de olas) |
+| 7 | **`memory/claude/README.md`** + **`dispatch-status-2026-04-19.md`** | Handoff Claude: orden de lectura y prioridades P0–P2 post-ola |
 
 Issues de apoyo (oleada documentada en conversación): [#264](https://github.com/Gano-digital/Pilot/issues/264) RCC/PFID, [#265](https://github.com/Gano-digital/Pilot/issues/265) IA/slugs, [#266](https://github.com/Gano-digital/Pilot/issues/266) SEO/bots, [#267](https://github.com/Gano-digital/Pilot/issues/267) rotación tokens.
 
