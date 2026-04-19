@@ -12,24 +12,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-      uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: "8.2"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
 
       - name: PHP lint (templates + functions)
-      run: |
-        php -l wp-content/themes/gano-child/functions.php
-        php -l wp-content/themes/gano-child/front-page.php
-        php -l wp-content/themes/gano-child/templates/shop-premium.php
-        php -l wp-content/themes/gano-child/templates/page-ecosistemas.php
-        php -l wp-content/themes/gano-child/templates/page-seo-landing.php
-        php -l wp-content/themes/gano-child/templates/page-sota-hub.php
-        php -l wp-content/themes/gano-child/templates/page-diagnostico-digital.php
-        php -l wp-content/themes/gano-child/templates/page-nosotros.php
-        php -l wp-content/themes/gano-child/templates/page-contacto.php
+        run: |
+          php -l wp-content/themes/gano-child/functions.php
+          php -l wp-content/themes/gano-child/front-page.php
+          php -l wp-content/themes/gano-child/templates/shop-premium.php
+          php -l wp-content/themes/gano-child/templates/page-ecosistemas.php
+          php -l wp-content/themes/gano-child/templates/page-seo-landing.php
+          php -l wp-content/themes/gano-child/templates/page-sota-hub.php
+          php -l wp-content/themes/gano-child/templates/page-diagnostico-digital.php
+          php -l wp-content/themes/gano-child/templates/page-nosotros.php
+          php -l wp-content/themes/gano-child/templates/page-contacto.php
 
   uiux_gate:
     name: "2) UI/UX Gate"
@@ -37,15 +37,15 @@ jobs:
     needs: security_quality
     steps:
       - name: Checkout
-      uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.12"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
       - name: Run UI/UX static checks
-      run: python scripts/qa_catalog_release.py --gate uiux
+        run: python scripts/qa_catalog_release.py --gate uiux
 
   content_gate:
     name: "3) Content Gate"
@@ -53,15 +53,15 @@ jobs:
     needs: uiux_gate
     steps:
       - name: Checkout
-      uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.12"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
       - name: Run content static checks
-      run: python scripts/qa_catalog_release.py --gate content
+        run: python scripts/qa_catalog_release.py --gate content
 
   verification:
     name: "4) Final Verification"
@@ -69,4 +69,4 @@ jobs:
     needs: content_gate
     steps:
       - name: Final summary
-      run: echo "Commerce release sequence completed successfully."
+        run: echo "Commerce release sequence completed successfully."
