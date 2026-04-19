@@ -1,6 +1,8 @@
 name: "99 · Debug · Test Runner"
 on:
   workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   test:
     runs-on: ubuntu-latest
