@@ -6,6 +6,11 @@
 **Gano Digital** — Plataforma de hosting WordPress para Colombia.
 URL: https://gano.digital | Repo: Gano-digital/Pilot
 
+## Skills disponibles en este repo
+- `phase4-commerce` (`.agents/skills/phase4-commerce/SKILL.md`)
+- `cloud-runbook` (`.agents/skills/cloud-runbook/SKILL.md`)
+- `ui-ux-pro-max` (`.cursor/skills/ui-ux-pro-max/SKILL.md`) - puente local al motor clonado en `external/ui-ux-pro-max-skill`
+
 ## Stack
 - WordPress 6.x + Elementor Pro + WooCommerce
 - Pagos / checkout cliente: **GoDaddy Reseller Store** (COP); sin priorizar integraciones de pasarela fuera de ese ecosistema
