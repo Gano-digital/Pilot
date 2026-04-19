@@ -4,7 +4,8 @@ Documento de arquitectura de información para la homepage de Gano Digital.
 Define el **orden canónico de secciones**, su justificación narrativa (marco AIDA adaptado) y el mapeo a bloques existentes en Elementor.
 
 Copy completo de cada sección → [`homepage-copy-2026-04.md`](homepage-copy-2026-04.md)  
-Clases CSS Elementor → [`elementor-home-classes.md`](elementor-home-classes.md)
+Clases CSS Elementor → [`elementor-home-classes.md`](elementor-home-classes.md)  
+**Spec ejecutable (AIDA + CTA a ecosistemas + accesibilidad) →** [`homepage-section-order-spec-2026.md`](homepage-section-order-spec-2026.md)
 
 ---
 

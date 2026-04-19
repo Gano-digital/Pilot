@@ -15,7 +15,8 @@
 | Archivo | Propósito en una línea | Léelo antes de… |
 |---------|------------------------|-----------------|
 | [`site-ia-wave3-proposed.md`](site-ia-wave3-proposed.md) | Árbol de rutas completo del sitio (Home → Pilares → Legal), regla de 3 clics y mapa de conversión. | Cualquier cambio de menú, slugs o estructura de páginas. |
-| [`homepage-story-arc-wave3.md`](homepage-story-arc-wave3.md) | Orden canónico de secciones en Home con justificación AIDA y mapeo a bloques Elementor existentes. | Reordenar secciones de la homepage o añadir nuevos bloques. |
+| [`homepage-story-arc-wave3.md`](homepage-story-arc-wave3.md) | Justificación narrativa AIDA y reglas de coherencia para la homepage. Ver spec ejecutable → `homepage-section-order-spec-2026.md`. | Entender el *por qué* detrás de cada bloque de la homepage. |
+| [`homepage-section-order-spec-2026.md`](homepage-section-order-spec-2026.md) | **Spec ejecutable**: orden numerado de bloques (Hero → CTA ecosistemas), etapa AIDA, objetivo de conversión, copy fuente, clases CSS y accesibilidad §7. | Reordenar secciones de la homepage o añadir nuevos bloques en Elementor. |
 | [`elementor-architecture-wave3.md`](elementor-architecture-wave3.md) | Guía de arquitectura Elementor: tema activo, jerarquía de templates, notas sobre handle legacy. | Tocar `functions.php`, crear templates Elementor o migrar el tema padre. |
 
 ---
@@ -24,6 +25,7 @@
 
 | Archivo | Propósito en una línea | Léelo antes de… |
 |---------|------------------------|-----------------|
+| [`homepage-section-order-spec-2026.md`](homepage-section-order-spec-2026.md) | **Spec ejecutable**: orden numerado de bloques (Hero → CTA ecosistemas), etapa AIDA, objetivo de conversión, copy fuente, clases CSS y accesibilidad §7. | Implementar o reordenar bloques de la homepage en Elementor. |
 | [`homepage-copy-2026-04.md`](homepage-copy-2026-04.md) | Bloques de texto definitivos (Hero, Pilares, CTAs) listos para pegar en Elementor. | Sustituir Lorem o placeholders en la homepage en wp-admin. |
 | [`elementor-home-classes.md`](elementor-home-classes.md) | Tabla de clases CSS por sección (`gano-el-stack`, `gano-el-layer-*`) con auditoría de uso. | Aplicar o auditar clases CSS del child theme en la homepage. |
 | [`microcopy-wave3-kit.md`](microcopy-wave3-kit.md) | Kit completo de microcopy (botones, tooltips, validaciones, mensajes de error) en es-CO. | Escribir texto de interfaz en cualquier página del sitio. |
@@ -83,7 +85,7 @@ Generados vía PRs Copilot desde [`.github/agent-queue/tasks-wave4-ia-content.js
 | [`content-master-plan-2026.md`](content-master-plan-2026.md) | Plan maestro de narrativa, capas y prioridad de páginas (P0–P3). | Reordenar el sitio o abrir nuevas landings. |
 | [`products-services-pages-matrix-2026.md`](products-services-pages-matrix-2026.md) | Matriz vitrina ↔ slugs ↔ `GANO_PFID_*` ↔ notas RCC. | Tocar `shop-premium.php` o CTAs de producto. |
 | [`gap-ia-vs-live-inventory-2026.md`](gap-ia-vs-live-inventory-2026.md) | Brecha entre IA propuesta e inventario real (marcar *desconocido* donde aplique). | Auditar páginas en wp-admin y alinear slugs. |
-| [`homepage-section-order-spec-2026.md`](homepage-section-order-spec-2026.md) | Orden ejecutable de bloques homepage (AIDA + CTA a ecosistemas). | Reordenar secciones en Elementor. |
+| [`homepage-section-order-spec-2026.md`](homepage-section-order-spec-2026.md) | *(ver §1 y §2)* Orden ejecutable de bloques homepage (AIDA + CTA a ecosistemas). | *(ver §2 · Homepage)* |
 | [`pilares-seo-narrative-clusters-2026.md`](pilares-seo-narrative-clusters-2026.md) | Clusters de pilares SEO y orden de publicación sugerido. | Publicar o priorizar artículos `/pilares/…`. |
 | [`navigation-primary-spec-2026.md`](navigation-primary-spec-2026.md) | Especificación del menú `primary` (orden, etiquetas ES-CO, destinos). | Editar menú en Theme Builder / wp-admin. |
 | [`trust-pages-bundle-2026.md`](trust-pages-bundle-2026.md) | Coherencia Nosotros + Contacto + Legal (enlaces cruzados, disclaimer Reseller). | Actualizar páginas de confianza o legales. |
