@@ -824,7 +824,7 @@ function gano_render_cta_icons() {
         ),
         array(
             'icon'  => 'fa-circle-check',
-            'label' => 'Uptime 99,9 %',
+            'label' => 'Uptime 99,9%',
             'url'   => '',
             'title' => '',
         ),
