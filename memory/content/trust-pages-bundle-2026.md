@@ -254,22 +254,32 @@ historia_origen:   "[PENDIENTE DIEGO]"   # ¿Por qué existe Gano Digital?
 
 ## 6. Notas de implementación
 
-1. **Elementor vs. PHP:** las páginas `/nosotros`, `/contacto` y `/legal/*` son páginas Elementor (ver `site-ia-wave3-proposed.md` §3.1). Los cambios de contenido requieren wp-admin → Elementor editor. Los agentes de código no modifican Elementor/BD directamente.
+1. **PHP templates disponibles:** el child theme ya contiene templates PHP listos para uso en WordPress:
+   - `wp-content/themes/gano-child/templates/page-nosotros.php` — `/nosotros`
+   - `wp-content/themes/gano-child/templates/page-contacto.php` — `/contacto`
+   - `wp-content/themes/gano-child/templates/page-terminos.php` — `/legal/terminos-y-condiciones`
+   - `wp-content/themes/gano-child/templates/page-privacidad.php` — `/legal/politica-de-privacidad`
+   - `wp-content/themes/gano-child/templates/page-sla.php` — `/legal/acuerdo-de-nivel-de-servicio`
 
-2. **gano-phase3-content:** si el plugin aún no ha sido activado, editar primero:
+   Cada template ya implementa los enlaces cruzados y el disclaimer Reseller de este bundle.
+   Asignar cada página a su template en wp-admin → Página → Atributos de página → Template.
+
+2. **Elementor vs. PHP:** si las páginas anteriores están construidas en Elementor, el template PHP se ignora. En ese caso los cambios de contenido requieren wp-admin → Elementor editor. Si se migra a template PHP, no son necesarios cambios de código (solo activar el template).
+
+3. **gano-phase3-content:** si el plugin aún no ha sido activado, editar primero:
    - `gano_p3_contact_content()` — reemplazar `Calle 184 #18-22` con dirección real.
    - Función de política de privacidad en el mismo archivo — misma dirección fiscal.
 
-3. **Tono:** secciones de disclaimer y términos → `usted`; secciones hero y bullets de beneficio en `/nosotros` y `/contacto` → `tú`. No mezclar en la misma sección.
+4. **Tono:** secciones de disclaimer y términos → `usted`; secciones hero y bullets de beneficio en `/nosotros` y `/contacto` → `tú`. No mezclar en la misma sección.
 
-4. **Coherencia de nombres de ecosistemas:** en todo el copy de este bundle, usar siempre:
+5. **Coherencia de nombres de ecosistemas:** en todo el copy de este bundle, usar siempre:
    - **Núcleo Prime** · **Fortaleza Delta** · **Bastión SOTA**
 
-5. **Logos de medios de pago:** no incluir logos de PSE/Nequi/Daviplata en ninguna página de este bundle hasta que el checkout Wompi esté activo end-to-end.
+6. **Logos de medios de pago:** no incluir logos de PSE/Nequi/Daviplata en ninguna página de este bundle hasta que el checkout Wompi esté activo end-to-end.
 
-6. **SLA:** no publicar el `/legal/acuerdo-de-nivel-de-servicio` con porcentajes de disponibilidad hasta confirmar el SLA real del plan GoDaddy contratado.
+7. **SLA:** no publicar el `/legal/acuerdo-de-nivel-de-servicio` con porcentajes de disponibilidad hasta confirmar el SLA real del plan GoDaddy contratado.
 
-7. **Revisión legal:** antes de publicar Términos y Política de Privacidad, someter a revisión de un abogado con conocimiento de Ley 1581/2012 y normativa SIC Colombia.
+8. **Revisión legal:** antes de publicar Términos y Política de Privacidad, someter a revisión de un abogado con conocimiento de Ley 1581/2012 y normativa SIC Colombia.
 
 ---
 
