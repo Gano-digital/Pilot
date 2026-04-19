@@ -13,9 +13,11 @@ header.site-header {
   top: 0 !important;
   left: 0 !important;
   right: 0 !important;
-  z-index: 1001 !important;
+  z-index: 1200 !important;
   width: 100% !important;
-  background: transparent !important;
+  background: rgba(5, 8, 11, 0.92) !important;
+  backdrop-filter: blur(10px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
   padding: 16px 5% !important;
   box-sizing: border-box !important;
@@ -86,15 +88,40 @@ header.site-header .site-logo {
   padding: 0 !important;
   display: flex !important;
   align-items: center !important;
+  max-width: min(46vw, 240px) !important;
+  overflow: hidden !important;
+  flex: 0 0 auto !important;
+  position: relative !important;
+  z-index: 2 !important;
 }
 
 #site-header .site-logo a,
 header.site-header .site-logo a {
   display: inline-block !important;
+  line-height: 1 !important;
   font-size: 1.4rem !important;
   font-weight: 900 !important;
   color: #fff !important;
   text-decoration: none !important;
+  max-width: 100% !important;
+}
+
+#site-header .site-logo img,
+#site-header img.custom-logo,
+header.site-header .site-logo img,
+header.site-header img.custom-logo {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  max-height: 48px !important;
+  max-width: 220px !important;
+  object-fit: contain !important;
+}
+
+#site-header nav,
+header.site-header nav {
+  position: relative !important;
+  z-index: 3 !important;
 }
 
 /* ============================================================
