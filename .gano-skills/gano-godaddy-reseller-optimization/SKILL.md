@@ -303,7 +303,7 @@ Servidor Gano recibe y procesa (debe responder HTTP 200)
 ### Logs de Webhook (En servidor)
 ```bash
 # Ver ultimos eventos recibidos:
-tail -f /home/f1rml03th382/public_html/gano.digital/wp-content/debug.log | grep -i webhook
+tail -f /home/$SERVER_USER/public_html/gano.digital/wp-content/debug.log | grep -i webhook
 
 # Esperado (si funciona):
 [2026-04-12 14:30:45] Webhook received: ORDER_CREATED (signature valid)

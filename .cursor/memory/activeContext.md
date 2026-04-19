@@ -71,7 +71,7 @@ _Última actualización: 2026-04-12 — **`Gano-digital/Pilot` es PÚBLICO** (`g
   - workflow **12 · Ops · Eliminar wp-file-manager (SSH)** run **24297554961** en verde,
   - validación remota: `wp-file-manager` no está presente en producción (pasos de eliminación quedaron `skipped` por no aplicar),
   - workflow **05 · Ops · Verificar parches en servidor** run **24297554963** en verde, detectando brecha por ruta remota (`MISSING_ON_SERVER`),
-  - ajuste de secreto GitHub `DEPLOY_PATH` al docroot real de WordPress (`/home/f1rml03th382/public_html/gano.digital`),
+  - ajuste de secreto GitHub `DEPLOY_PATH` al docroot real de WordPress (`/home/$SERVER_USER/public_html/gano.digital`),
   - rerun de verificación: **24297613457** en verde con checksums sincronizados entre repo y servidor.
 - [x] **Publicación de rutas SOTA faltantes en producción (2026-04-12):**
   - detectados `404` en URLs: `/shop-premium/`, `/sota-hub/`, `/seo-landing/`, `/diagnostico-digital/`,
