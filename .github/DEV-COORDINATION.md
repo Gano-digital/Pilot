@@ -82,24 +82,14 @@ ADD_TO_PROJECT_PAT         Updated 2026-04-16
 **Estado actual**: Runners \`gano-production\` fueron eliminados el 2026-04-11.
 
 **Workflows afectados**:
-- Workflow 06 · DB Backup
-- Workflow 07 · Content Sync
-- Workflow 08 · Health Check
-- Workflow 31 · Phase 4 Health
+- Workflow **16 · Ops · Backup · BD Automático** (`06-db-backup.yml`)
+- Workflow **17 · Ops · Content Sync · Staging ↔ Producción** (`07-sync-content.yml`)
+- Workflow **18 · Ops · Health Check · Validar plugins gano-*** (`08-health-check-plugins.yml`)
+- Workflow **31 · Plugin Health Phase 4** (`31-plugin-health-check-phase4.yml`)
 
-### 3.2 Opción Recomendada: Migración a ubuntu-latest
+### 3.2 Estado actual (2026-04-19)
 
-Edita \`.github/workflows/{06-db-backup,07-sync-content,08-health-check-plugins,31-plugin-health-check-phase4}.yml\`:
-
-**Cambiar de**:
-\`\`\`yaml
-runs-on: [self-hosted, gano-production]
-\`\`\`
-
-**A**:
-\`\`\`yaml
-runs-on: ubuntu-latest
-\`\`\`
+Los workflows anteriores ya corren en **`ubuntu-latest`** y los jobs SSH se **saltan** si faltan los secrets `SSH`, `SERVER_HOST`, `SERVER_USER`, `DEPLOY_PATH` (evita colas eternas y reduce ruido en repos públicos sin runner dedicado).
 
 ---
 

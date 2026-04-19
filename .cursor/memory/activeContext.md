@@ -11,7 +11,7 @@ _Última actualización: 2026-04-19._
 
 _Contexto histórico 2026-04-12 (repo público, runners, vitrina):_
 
-_**`Gano-digital/Pilot` es PÚBLICO** (`gh repo view` → `visibility: PUBLIC`). **Runners en el repo:** API `actions/runners` → **total_count: 0** (verificado 2026-04-11, runner eliminado ✅). Deploy **04** en `main`: **ubuntu-latest** + webhook HTTPS (sin self-hosted en prod). Opcional: un admin de org confirma runners a nivel **organización**; `test-runner.yml` aún declara `runs-on: self-hosted` solo para prueba manual. Triage GitHub actualizado: PRs dependabot + docs + consolidado de Arcana fusionados; PRs conflictivos (#167/#168/#169/#172) cerrados como reemplazados por #182. **Rollout SOTA ejecutado en código (theme/templates/docs) con QA técnica inicial lista.**_
+_**`Gano-digital/Pilot` es PÚBLICO** (`gh repo view` → `visibility: PUBLIC`). **Runners en el repo:** API `actions/runners` → **total_count: 0** (verificado 2026-04-11, runner eliminado ✅). Deploy **04** en `main`: **ubuntu-latest** + webhook HTTPS (sin self-hosted en prod). Opcional: un admin de org confirma runners a nivel **organización**; `test-runner.yml` es un smoke manual en **`ubuntu-latest`** (no requiere runner self-hosted). Triage GitHub actualizado: PRs dependabot + docs + consolidado de Arcana fusionados; PRs conflictivos (#167/#168/#169/#172) cerrados como reemplazados por #182. **Rollout SOTA ejecutado en código (theme/templates/docs) con QA técnica inicial lista.**_
 
 ## Foco actual (producto y repo)
 
