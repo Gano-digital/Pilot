@@ -16,6 +16,7 @@
 | 7 | 2026-04-09 | SOTA / supply chain | Opcional: análisis estático de workflows (`zizmor` u homólogo) antes de merge masivo YAML; inventario plugins WP en prod como tabla en `memory/ops/` | BAJA |
 | 8 | 2026-04-10 | Repo público + Actions | ~~Runner self-hosted en `Pilot`~~ — **verificado 2026-04-10:** API `repos/.../actions/runners` → **0 runners** en el repo; `deploy.yml` usa **ubuntu-latest** + webhook HTTPS. **Pendiente solo con permisos org:** confirmar que no queden runners a nivel **organización** (`admin:org`); workflow `test-runner.yml` sigue pidiendo `self-hosted` (dispatch manual quedaría sin runner si no hay org runner). | MITIGADO (repo) |
 | 9 | 2026-04-10 | cPanel / Installatron | Errores `noconfigfile` + logs “Unable to read source install configuration file” + updates 400 — ticket GoDaddy o reparación Installatron; decidir si Drupal `/123/` se elimina; SSL Force HTTPS en dominios activos — ver [`investigacion-servidor-cpanel-evidencias-reparacion-2026-04.md`](../../memory/ops/investigacion-servidor-cpanel-evidencias-reparacion-2026-04.md) | ALTA |
+| 10 | 2026-04-19 | CSP / Reseller UI | Reportes `CSP_VIOLATION` hacia recursos `gui.secureserver.net` (flujos GoDaddy) — revisar directivas en `gano-security.php` o documentar como ruido aceptable si no rompe UX | MEDIA |
 
 ## Resueltos
 *Mover items aqui cuando se completen.*

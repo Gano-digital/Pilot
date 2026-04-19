@@ -80,10 +80,13 @@ Validar en servidor real:
 
 ## Pendientes recomendados (siguiente ola)
 
-1. Convergencia repo-servidor
-   - Ejecutar diff estructurado y decidir direccion canónica (`repo -> server` o `server -> repo`) por archivo critico.
-
-2. QA comercial post-cambios
+1. QA comercial post-cambios
    - Smoke en `/ecosistemas/`, `/shop-premium/`, `/dominios/`, `/contacto/`.
    - Verificar que no haya regresion por el cambio de item Home y la baja de `/home/`.
 
+2. Convergencia repo-servidor — **hecha 2026-04-19**
+   - Fuente canonica = `main`; despliegue SCP de 8 archivos criticos + MD5 verificado; ver [`2026-04-19-trazabilidad-ops-wave-handoff.md`](2026-04-19-trazabilidad-ops-wave-handoff.md).
+
+## Indice maestro (post-ola)
+
+[`2026-04-19-trazabilidad-ops-wave-handoff.md`](2026-04-19-trazabilidad-ops-wave-handoff.md) — estado hecho/pendiente, alineacion de herramientas, enlaces a GitHub [#263](https://github.com/Gano-digital/Pilot/issues/263).

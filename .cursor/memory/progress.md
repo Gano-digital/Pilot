@@ -1,5 +1,24 @@
 # Progress Tracker
 
+## 2026-04-19 — Ola ops producción + convergencia repo ↔ servidor
+
+### Completado
+
+- [x] Auditoría / inventario SSH documentado ([`memory/sessions/2026-04-19-auditoria-ssh-inventario-sota.md`](../../memory/sessions/2026-04-19-auditoria-ssh-inventario-sota.md)).
+- [x] Backups en servidor (DB, `.htaccess`, archivos pre-convergencia).
+- [x] Ajustes operativos: home canónica, menú **Inicio → /**, limpieza de duplicados de página, `gano_pfid_*` en `wp_options`, política bots balanceada, archivos `llms.txt` / `bot-seo-context.md`.
+- [x] Eliminación controlada de plugins inactivos no críticos en producción.
+- [x] Convergencia de 8 archivos críticos: repo `main` → producción por SCP, verificación MD5, flush de caché y rewrites WP-CLI.
+- [x] Índice de trazabilidad y herramientas: [`memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`](../../memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md).
+
+### Pendiente (alta prioridad)
+
+- [ ] Validar PFIDs contra RCC (numéricos vs slugs actuales) y cerrar `gano_pfid_online_storage`.
+- [ ] Contenido final / Elementor sin placeholders; luego Rank Math + GSC.
+- [ ] Wordfence + 2FA en ventana acordada; rotación de tokens (issue [#267](https://github.com/Gano-digital/Pilot/issues/267)).
+
+---
+
 ## 2026-04-19 — Homepage SOTA (fase de implementación técnica)
 
 ### Completado

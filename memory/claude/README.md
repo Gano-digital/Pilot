@@ -54,6 +54,7 @@ Esto es **independiente** de la cola Copilot (`.github/agent-queue/*.json` — *
 - [`../sessions/2026-04-03-noche-continuidad-manana.md`](../sessions/2026-04-03-noche-continuidad-manana.md) — ejemplo: qué se hizo en repo vs qué queda en GitHub (Copilot/Actions).
 - [`2026-04-12-verificacion-tasks-y-ejecucion.md`](2026-04-12-verificacion-tasks-y-ejecucion.md) — verificación cruzada TASKS/memoria Claude + ejecución operativa (post-fase 0).
 - [`../sessions/2026-04-17-claude-dispatch-continuacion.md`](../sessions/2026-04-17-claude-dispatch-continuacion.md) — continuidad de dispatch en repo: alineación `TASKS.md`, validaciones técnicas y cierre operativo de tareas `cd-repo-*`.
+- [`../sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`](../sessions/2026-04-19-trazabilidad-ops-wave-handoff.md) — **ola ops producción (abr 2026):** trazabilidad hecho/pendiente, política bots, limpieza plugins, convergencia repo↔servidor; enlaza auditoría SSH y issue [#263](https://github.com/Gano-digital/Pilot/issues/263).
 
 ## Informes PDF para handoff (Claude / junta)
 

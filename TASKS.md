@@ -1,9 +1,11 @@
 # Tasks — Gano Digital
-_Última actualización: Abril 2026_
+_Última actualización: 2026-04-19_
 
 ## REGRESAR AQUÍ (pendiente tu acción)
 
 **Si saliste y vuelves:** nota de continuidad **cPanel/DNS + agentes GitHub** → [`memory/notes/nota-salida-cpanel-dns-y-agentes-2026-04.md`](memory/notes/nota-salida-cpanel-dns-y-agentes-2026-04.md).
+
+**Handoff ola ops + trazabilidad (2026-04-19):** [`memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`](memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md) · Detalle auditoría SSH: [`memory/sessions/2026-04-19-auditoria-ssh-inventario-sota.md`](memory/sessions/2026-04-19-auditoria-ssh-inventario-sota.md) · Tablero GitHub: [#263](https://github.com/Gano-digital/Pilot/issues/263)
 
 **Recordatorio personal (prioridades y workflows):** [`memory/notes/nota-diego-recomendaciones-2026-04.md`](memory/notes/nota-diego-recomendaciones-2026-04.md) · **Contexto para Claude (carpeta dedicada):** [`memory/claude/README.md`](memory/claude/README.md) · **Mapa de archivos digitales y contenido (`memory/`, constelación, handoff):** [`memory/content/digital-files-and-content-setup.md`](memory/content/digital-files-and-content-setup.md) · **Ops Hub (métricas + Actions):** [`tools/gano-ops-hub/README.md`](tools/gano-ops-hub/README.md) · **Playbook agentes + asistentes (arranque, troubleshooting, offloading):** [`memory/ops/agent-playbook-asistentes-2026-04.md`](memory/ops/agent-playbook-asistentes-2026-04.md)
 
@@ -98,8 +100,8 @@ _Última actualización: Abril 2026_
 - [ ] **[ALTA] Reemplazar todo el Lorem ipsum y texto placeholder** — Requiere acceso al panel de Elementor
 - [ ] **[ALTA] Eliminar testimonios falsos y métricas infladas**
 - [ ] **[ALTA] Crear página Nosotros real** con manifiesto SOTA
-- [ ] **[MEDIA] Habilitar 2FA en wp-admin** (Wordfence ya instalado)
-- [ ] **[MEDIA] Ejecutar y limpiar plugins de fase (1, 2, 3, 6, 7)** — seguir [`memory/ops/runbook-activacion-wp-admin-2026-04-16.md`](memory/ops/runbook-activacion-wp-admin-2026-04-16.md). Script WP-CLI disponible cuando haya SSH: [`scripts/activate-gano-phases.sh`](scripts/activate-gano-phases.sh).
+- [ ] **[MEDIA] Habilitar 2FA en wp-admin** (Wordfence instalado; **inactivo** en prod abr 2026 — activar en ventana acordada)
+- [x] ~~**[MEDIA] Ejecutar y limpiar plugins de fase (1, 2, 3, 6, 7)**~~ — Limpieza parcial **servidor 2026-04-19:** eliminados plugins inactivos no críticos (Elementor stack, WooCommerce, fases 1–3 legacy, wompi inactivo, etc.); runtime activo = Reseller + fases 6/7 + enhancements. Runbook sigue válido para **activación** y futuras ventanas.
 
 ## 📋 Fase 4 — Integración GoDaddy Reseller (Agilizada)
 
@@ -113,8 +115,9 @@ _Última actualización: Abril 2026_
   - `functions.php` lee las 8 constantes `GANO_PFID_*` desde `wp_options` con fallback `PENDING_RCC`.
   - Plugin `gano-reseller-enhancements` expone panel `wp-admin → Ajustes → Gano Reseller` con 8 campos.
   - Guía paso a paso RCC → pfid: [`memory/commerce/rcc-pfid-checklist.md`](memory/commerce/rcc-pfid-checklist.md).
-- [ ] **PASO 10E — Introducir los 8 PFIDs vía UI** (manual Diego):
-  - Abrir `wp-admin → Ajustes → Gano Reseller` y pegar los valores numéricos del RCC.
+- [ ] **PASO 10E — Introducir / validar los 8 PFIDs** (RCC + UI):
+  - **2026-04-19 (WP-CLI):** opciones `gano_pfid_*` pobladas en producción con identificadores del catálogo Reseller (`rstore_id` / slugs: `wordpress-basic`, `wordpress-deluxe`, etc.); `gano_pfid_online_storage` sigue `PENDING_RCC`.
+  - **Pendiente:** validar en RCC que esos valores coinciden con el **PFID numérico** esperado por familia de producto; ajustar en `wp-admin → Ajustes → Gano Reseller` si RCC exige solo numéricos.
   - Runbook completo: [`memory/ops/runbook-activacion-wp-admin-2026-04-16.md`](memory/ops/runbook-activacion-wp-admin-2026-04-16.md).
 - [ ] **Prueba de Flujo de Checkout**:
   - Presionar "Comprar" en el SOTA Mockup de Gano -> Verificar que mande al carrito marca blanca -> Cierre.
@@ -141,6 +144,15 @@ _Activar cuando:_ parches F1–3 desplegados de forma estable, flujo Fase 4 Rese
 
 ## 🔄 Abril 2026 — Progreso (homepage + GitHub)
 
+### Producción — ola hardening + convergencia (2026-04-19)
+
+- [x] Auditoría SSH + inventario documentado ([`memory/sessions/2026-04-19-auditoria-ssh-inventario-sota.md`](memory/sessions/2026-04-19-auditoria-ssh-inventario-sota.md)).
+- [x] Home canónica `/`, menú **Inicio → /** (WP-CLI), `/home/` legacy en borrador, duplicado `dominios-2` en papelera.
+- [x] Política bots balanceada (`.htaccess`); archivos raíz `llms.txt` + `bot-seo-context.md` con CTA.
+- [x] Limpieza plugins inactivos (13 eliminados); stack mínimo comercial Reseller preservado.
+- [x] Convergencia **8 archivos** críticos repo → servidor (SCP + MD5 + flush caché/rewrites) — índice [`memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`](memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md).
+- [ ] Validación humana RCC + PFID numérico; mapeo `online_storage`; copy Elementor; Rank Math/GSC cuando cierre contenido.
+
 ### GitHub / automatización
 
 - [x] **Oleada 4 — narrativa y páginas (Copilot):** cola [`.github/agent-queue/tasks-wave4-ia-content.json`](.github/agent-queue/tasks-wave4-ia-content.json) — entregas markdown fusionadas en `main` (2026-04-03, PRs #100–#109). *Pendiente humano:* aplicar en Elementor / wp-admin según §Contenido homepage.
@@ -165,7 +177,7 @@ _Activar cuando:_ parches F1–3 desplegados de forma estable, flujo Fase 4 Rese
 ### Contenido homepage (Elementor en servidor)
 
 - [x] **Repo:** ubicación de menú `primary` registrada en `gano-child` + utilidades CSS Elementor (`gano-el-*`) — desplegar al servidor
-- [ ] Menú principal asignado en wp-admin (y/o header Elementor) tras despliegue
+- [x] Menú principal coherente con home canónica **2026-04-19** (ítem custom **Inicio → /** vía WP-CLI); revisar header Elementor si aún enlaza a rutas legacy.
 - [ ] Sustituir Lorem / placeholders usando `memory/content/homepage-copy-2026-04.md` como fuente
 - [ ] Hero: imagen + attachment coherente con diseño
 - [ ] Ajustes de layout: aplicar clases `gano-el-stack` / `gano-el-layer-*` + CTA final con iconos reales

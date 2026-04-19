@@ -134,6 +134,16 @@ gh workflow run verify-remove-wp-file-manager.yml --field force_remove=true
 
 ---
 
+## 6. Agentes (Cursor) — shell local y GitHub CLI
+
+- **Windows PowerShell:** los comandos remotos con `$(date ...)` o regex complejos pueden romperse por el parser local; usar `ssh --% usuario@host comando` (stop-parsing) o comillas simples en el bloque remoto.
+- **`gh issue comment` / API write:** si el comentario no aparece en GitHub, re-ejecutar fuera de sandbox (entorno con red y permisos completos hacia `api.github.com`).
+- **Parche urgente servidor:** si Actions 04/05 no alcanzan, copiar archivos con **SCP/rsync** solo tras backup en el servidor y verificar checksums; la fuente canónica de código sigue siendo `main` en el repo.
+
+**Handoff ola ops (hecho/pendiente + herramientas):** [`memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`](../memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md)
+
+---
+
 **Documento**: Gano Digital Dev Coordination  
-**Fecha**: 2026-04-16  
+**Fecha**: 2026-04-19  
 **Estado**: Implementación en progreso  

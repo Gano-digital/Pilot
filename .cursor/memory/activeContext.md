@@ -1,6 +1,17 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-12 — **`Gano-digital/Pilot` es PÚBLICO** (`gh repo view` → `visibility: PUBLIC`). **Runners en el repo:** API `actions/runners` → **total_count: 0** (verificado 2026-04-11, runner eliminado ✅). Deploy **04** en `main`: **ubuntu-latest** + webhook HTTPS (sin self-hosted en prod). Opcional: un admin de org confirma runners a nivel **organización**; `test-runner.yml` aún declara `runs-on: self-hosted` solo para prueba manual. Triage GitHub actualizado: PRs dependabot + docs + consolidado de Arcana fusionados; PRs conflictivos (#167/#168/#169/#172) cerrados como reemplazados por #182. **Rollout SOTA ejecutado en código (theme/templates/docs) con QA técnica inicial lista.**_
+_Última actualización: 2026-04-19._
+
+## Snapshot 2026-04-19 (producción + repo)
+
+- **Ola ops en `gano.digital`:** auditoría SSH, home canónica (`/`), menú corregido, duplicados de página reducidos, opciones `gano_pfid_*` cargadas desde catálogo Reseller (queda `online_storage` en `PENDING_RCC`), política **bots balanceada** en `.htaccess`, `llms.txt` + `bot-seo-context.md` en raíz, limpieza de **13 plugins** inactivos (sin Elementor/Woo en disco).
+- **Convergencia código:** `main` del repo es fuente canónica para 8 archivos críticos (tema + MU `gano-seo` / `gano-security` + `class-pfid-admin.php`); desplegado por **SCP** con backup y **MD5** verificado; `wp cache flush` + `rewrite flush`.
+- **Trazabilidad consolidada:** [`memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`](../../memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md) + detalle técnico [`memory/sessions/2026-04-19-auditoria-ssh-inventario-sota.md`](../../memory/sessions/2026-04-19-auditoria-ssh-inventario-sota.md); tablero GitHub [#263](https://github.com/Gano-digital/Pilot/issues/263).
+- **Pendiente inmediato:** validación RCC de PFIDs numéricos vs slugs actuales, copy/Elementor sin placeholders, Rank Math/GSC cuando cierre contenido, Wordfence+2FA en ventana, rotación tokens [#267](https://github.com/Gano-digital/Pilot/issues/267), opcional versionar archivos raíz bot en repo.
+
+_Contexto histórico 2026-04-12 (repo público, runners, vitrina):_
+
+_**`Gano-digital/Pilot` es PÚBLICO** (`gh repo view` → `visibility: PUBLIC`). **Runners en el repo:** API `actions/runners` → **total_count: 0** (verificado 2026-04-11, runner eliminado ✅). Deploy **04** en `main`: **ubuntu-latest** + webhook HTTPS (sin self-hosted en prod). Opcional: un admin de org confirma runners a nivel **organización**; `test-runner.yml` aún declara `runs-on: self-hosted` solo para prueba manual. Triage GitHub actualizado: PRs dependabot + docs + consolidado de Arcana fusionados; PRs conflictivos (#167/#168/#169/#172) cerrados como reemplazados por #182. **Rollout SOTA ejecutado en código (theme/templates/docs) con QA técnica inicial lista.**_
 
 ## Foco actual (producto y repo)
 
@@ -89,7 +100,8 @@ _Última actualización: 2026-04-12 — **`Gano-digital/Pilot` es PÚBLICO** (`g
   - oleada activa confirmada en GitHub: issues `#183`–`#197`.
 - [x] **Workflow 14 (Ops Hub):** script `--output` relativo corregido en `main` (#157); run manual post-merge: éxito ([24147290218](https://github.com/Gano-digital/Pilot/actions/runs/24147290218)).
 - [ ] SFTP / sync VS Code si aplica al flujo de deploy de Diego.
-- [ ] Deploy de archivos críticos al servidor y tareas solo-wp-admin listadas en `TASKS.md`.
+- [x] Deploy de archivos críticos al servidor (2026-04-19: convergencia SCP + MD5) — seguir usando webhook **04**/**05** para rutina futura.
+- [ ] Tareas solo-wp-admin listadas en `TASKS.md` (Elementor, Rank Math, Wordfence/2FA, datos Gano SEO).
 - [ ] QA manual en staging para rollout SOTA (visual responsive + smoke comercial RCC): `memory/ops/sota-rollout-qa-wave-2026-04.md`.
 - [ ] Aplicación en servidor de catálogo canónico (`mockup_completo_ignorar.html`) pendiente de despliegue remoto; acceso SSH por alias `gano-godaddy` ya verificado operativo.
 
