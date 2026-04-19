@@ -1,6 +1,7 @@
 # Brecha IA propuesta vs inventario real — Gano Digital
-_Generado: Abril 2026 · Wave 4 · Actualizado: Abril 2026 (Wave 4 SOTA)_  
-_Fuente IA: `memory/content/site-ia-wave3-proposed.md`_
+_Generado: Abril 2026 · Wave 4 · Actualizado: Abril 2026 (issue #265 — política de slugs SOTA: **Opción C adoptada**)_  
+_Fuente IA: `memory/content/site-ia-wave3-proposed.md`_  
+_Fuente de slugs canónicos: `gano-content-importer.php` v2.0 (verificado en código)_
 
 ---
 
@@ -88,9 +89,11 @@ _Fuente IA: `memory/content/site-ia-wave3-proposed.md`_
 |---|---|---|
 | Páginas Elementor pendientes de crear (nivel 1, sin plantilla PHP) | 4 (`/ecosistemas/*` ×3, `/legal` hub padre) | Crear en wp-admin una a una |
 | Plantillas PHP en repo sin confirmar publicación en WP | 9 (`/ecosistemas`, `/pilares`, `/hosting-wordpress-colombia`, `/nosotros`, `/contacto`, `/legal/terminos`, `/legal/privacidad`, `/legal/sla`, `/dominios`) | Asignar plantilla + publicar en wp-admin; verificar slug |
-| Páginas SOTA con slug drift (importer ≠ IA doc) | 20 | Decidir slug canónico (IA doc **o** importer) y unificar |
-| Títulos conceptualmente divergentes | 4 (Hosting Compartido/Contenedores, DDoS, Micro-animaciones/Cinéticas, Agente IA) | Diego decide cuál título es definitivo; actualizar el documento que no sea fuente de verdad |
+| Páginas SOTA con slug drift (importer ≠ IA doc) | 20 | **✅ Decidido:** Opción C — slugs del importer, jerarquía `/pilares/[cat]/[slug]` via "Página padre" en wp-admin. Ver tabla canónica arriba. |
+| Títulos conceptualmente divergentes | 4 (Hosting Compartido/Contenedores, DDoS, Micro-animaciones/Cinéticas, Agente IA) | Diego confirma: el título del importer v2.0 es el oficial; `site-ia-wave3-proposed.md` es solo referencia de IA, no fuente de verdad de slugs. |
+| Categoría divergente | 1 ("Ingeniería Sostenible": `estrategia` en importer vs `rendimiento` en IA doc) | Diego decide cuál es la categoría canónica. Ver nota en tabla canónica fila 9. |
 | Páginas en repo sin ruta equivalente en IA propuesta | 3 (`/dominios`, `/diagnostico-digital`, `/contacto/gracias`) | Decidir si se añaden al árbol IA o si son complementarias; actualizar `site-ia-wave3-proposed.md` si aplica |
+| Estado real de páginas (existe/borrador/falta) en producción | Todos | ⛔ **Bloqueado:** requiere acceso wp-admin. Seguir checklist "Exportar inventario final" al final de este documento. |
 
 ---
 
@@ -131,20 +134,122 @@ Hacer un commit directo en la rama `main` (o abrir un PR rápido) con los estado
 
 ---
 
-## Decisión pendiente de Diego — Slugs canónicos para las 20 páginas SOTA
+## Decisión adoptada — Slugs canónicos para las 20 páginas SOTA
 
-Antes de publicar las páginas SOTA, tomar la siguiente decisión:
-
-> **¿Se adoptan los slugs de `site-ia-wave3-proposed.md` o los que genera el importer?**
+> **✅ DECISIÓN OFICIAL (Abril 2026):** Se adopta la **Opción C** como política canónica de slugs.
 
 | Opción | Ventaja | Desventaja |
 |---|---|---|
 | **A — Slugs del IA doc** | Coherentes con la jerarquía `/pilares/categoria/slug` propuesta; mejores para SEO con categoría en URL | Requiere editar los slugs en wp-admin o ejecutar script WP-CLI tras importar |
 | **B — Slugs del importer** | Se generan automáticamente; sin trabajo extra post-importación | No respetan la jerarquía `/pilares/categoria/`; menos descriptivos en algunos casos |
-| **C — Combinación** | Usar slugs del importer pero asignarlos como hijos de las páginas de categoría dentro de `/pilares/` | Requiere editar "Página padre" en wp-admin para cada una de las 20 páginas |
+| **C — Combinación** ✅ | Usar slugs del importer pero asignarlos como hijos de las páginas de categoría dentro de `/pilares/` | Requiere editar "Página padre" en wp-admin para cada una de las 20 páginas |
 
-**Recomendación:** Opción C. Mantener el contenido del importer, editar el slug corto si hay divergencia conceptual grave (ver filas marcadas con ⚠️ en la tabla de arriba), y asignar cada página como hija de su categoría dentro del hub `/pilares/`.
+**Rationale:** los slugs del importer v2.0 son descriptivos y SEO-friendly por sí mismos. La jerarquía `/pilares/[categoria]/[slug]` se obtiene simplemente asignando la "Página padre" correcta en wp-admin, sin reescribir slugs manualmente. Los 4 casos con divergencia conceptual grave (marcados ⚠️ arriba) deben resolverse antes de publicar.
 
 ---
 
-_Mantener este documento sincronizado con `site-ia-wave3-proposed.md` y `TASKS.md` al tomar decisiones de slugs o publicación. Última revisión: Abril 2026 — Wave 4 SOTA (plantillas PHP actualizadas)._
+## Tabla canónica de slugs — 20 páginas SOTA (Opción C)
+
+> **Fuente de slugs:** `gano-content-importer.php` v2.0 — títulos y categorías verificados en el código.  
+> **Estructura:** `/pilares/[categoria-importer]/[slug-generado-por-importer]`
+
+| # | Título (importer v2.0) | Slug importer | Categoría (importer) | URL canónica (Opción C) | Estado |
+|---|---|---|---|---|---|
+| 1 | Arquitectura NVMe: El Manifiesto de la Velocidad Crítica | `arquitectura-nvme-el-manifiesto-de-la-velocidad-critica` | infraestructura | `/pilares/infraestructura/arquitectura-nvme-el-manifiesto-de-la-velocidad-critica` | `borrador` si importer activado |
+| 2 | Zero-Trust: El Fin de la Confianza Implícita | `zero-trust-el-fin-de-la-confianza-implicita` | seguridad | `/pilares/seguridad/zero-trust-el-fin-de-la-confianza-implicita` | `borrador` si importer activado |
+| 3 | IA Predictiva: La Mente que Anticipa el Fallo | `ia-predictiva-la-mente-que-anticipa-el-fallo` | inteligencia-artificial | `/pilares/inteligencia-artificial/ia-predictiva-la-mente-que-anticipa-el-fallo` | `borrador` si importer activado |
+| 4 | Soberanía Digital: Jurisdicción y Control Total | `soberania-digital-jurisdiccion-y-control-total` | estrategia | `/pilares/estrategia/soberania-digital-jurisdiccion-y-control-total` | `borrador` si importer activado |
+| 5 | Arquitectura Headless: Desacoplando el Futuro | `arquitectura-headless-desacoplando-el-futuro` | rendimiento | `/pilares/rendimiento/arquitectura-headless-desacoplando-el-futuro` | `borrador` si importer activado |
+| 6 | Inmunidad DDoS: Blindaje IA en el Perímetro | `inmunidad-ddos-blindaje-ia-en-el-perimetro` | seguridad | `/pilares/seguridad/inmunidad-ddos-blindaje-ia-en-el-perimetro` | `borrador` si importer activado |
+| 7 | Contenedores Aislados: Tu Isla de Rendimiento | `contenedores-aislados-tu-isla-de-rendimiento` | infraestructura | `/pilares/infraestructura/contenedores-aislados-tu-isla-de-rendimiento` | `borrador` si importer activado |
+| 8 | Edge Computing: Colapsando la Latencia Geográfica | `edge-computing-colapsando-la-latencia-geografica` | infraestructura | `/pilares/infraestructura/edge-computing-colapsando-la-latencia-geografica` | `borrador` si importer activado |
+| 9 | Ingeniería Sostenible: Rendimiento con Conciencia | `ingenieria-sostenible-rendimiento-con-conciencia` | **estrategia** ⚠️ | `/pilares/estrategia/ingenieria-sostenible-rendimiento-con-conciencia` | `borrador` si importer activado |
+| 10 | Blindaje Post-Cuántico: Cifrado para la Próxima Década | `blindaje-post-cuantico-cifrado-para-la-proxima-decada` | seguridad | `/pilares/seguridad/blindaje-post-cuantico-cifrado-para-la-proxima-decada` | `borrador` si importer activado |
+| 11 | Orquestación CI/CD: Evolución sin Interrupción | `orquestacion-cicd-evolucion-sin-interrupcion` | rendimiento | `/pilares/rendimiento/orquestacion-cicd-evolucion-sin-interrupcion` | `borrador` si importer activado |
+| 12 | Resiliencia de Datos: Máquina del Tiempo Digital | `resiliencia-de-datos-maquina-del-tiempo-digital` | infraestructura | `/pilares/infraestructura/resiliencia-de-datos-maquina-del-tiempo-digital` | `borrador` si importer activado |
+| 13 | Skeleton Screens: Psicología del Rendimiento | `skeleton-screens-psicologia-del-rendimiento` | rendimiento | `/pilares/rendimiento/skeleton-screens-psicologia-del-rendimiento` | `borrador` si importer activado |
+| 14 | Escalamiento Elástico: El Ecosistema Infinito | `escalamiento-elastico-el-ecosistema-infinito` | infraestructura | `/pilares/infraestructura/escalamiento-elastico-el-ecosistema-infinito` | `borrador` si importer activado |
+| 15 | Self-Healing: Resiliencia Autónoma | `self-healing-resiliencia-autonoma` | inteligencia-artificial | `/pilares/inteligencia-artificial/self-healing-resiliencia-autonoma` | `borrador` si importer activado |
+| 16 | Experiencias Cinéticas: Diseño que se Siente Premium | `experiencias-cineticas-diseno-que-se-siente-premium` | rendimiento | `/pilares/rendimiento/experiencias-cineticas-diseno-que-se-siente-premium` | `borrador` si importer activado |
+| 17 | Protocolos de Vanguardia: HTTP/3 & QUIC Transmisión | `protocolos-de-vanguardia-http3-quic-transmision` | rendimiento | `/pilares/rendimiento/protocolos-de-vanguardia-http3-quic-transmision` | `borrador` si importer activado |
+| 18 | Arquitectura Indestructible: Alta Disponibilidad Enterprise | `arquitectura-indestructible-alta-disponibilidad-enterprise` | infraestructura | `/pilares/infraestructura/arquitectura-indestructible-alta-disponibilidad-enterprise` | `borrador` si importer activado |
+| 19 | Soberanía de Datos: Analytics Privado Server-Side | `soberania-de-datos-analytics-privado-server-side` | estrategia | `/pilares/estrategia/soberania-de-datos-analytics-privado-server-side` | `borrador` si importer activado |
+| 20 | Co-Piloto de IA Soberana: Administración por Conversación | `co-piloto-de-ia-soberana-administracion-por-conversacion` | inteligencia-artificial | `/pilares/inteligencia-artificial/co-piloto-de-ia-soberana-administracion-por-conversacion` | `borrador` si importer activado |
+
+> **⚠️ Nota fila 9 — Ingeniería Sostenible:** el importer v2.0 asigna `category = estrategia`; el IA doc la situaba bajo `rendimiento` (como "Green Hosting"). Diego debe confirmar si se mueve a rendimiento (requiere editar el metadato `_gano_sota_category` en wp-admin o ajustar el importer) o se deja en estrategia.
+
+> **Campo `_gano_sota_category`:** metadato custom creado por `gano-content-importer.php` en la línea `'_gano_sota_category' => sanitize_key( $page['category'] )`. Almacena la categoría del pilar (`infraestructura`, `seguridad`, `rendimiento`, `inteligencia-artificial` o `estrategia`). Lo usa el hub `page-sota-hub.php` para agrupar las páginas por categoría.
+
+> **Página adicional del importer:** el plugin también crea la página `hub-sota` (slug `hub-sota`) como borrador. Es el índice del hub SOTA; en producción se asignará al slug `/pilares` con la plantilla `page-sota-hub.php`.
+
+---
+
+## Checklist wp-admin — Ejecución Opción C ⛔ BLOQUEADO POR ACCIÓN HUMANA
+
+> Las siguientes acciones solo pueden realizarse con acceso a **wp-admin**. No son automatizables desde el repositorio.
+
+### Pre-requisito: activar el importer
+
+- [ ] Ir a **wp-admin → Plugins → Plugins instalados**
+- [ ] Activar `Gano Digital — Content Hub Importer v2.0`
+- [ ] Verificar que se crearon 20 páginas nuevas como borradores (aparece aviso de confirmación)
+- [ ] Desactivar el plugin tras la importación (no eliminar aún hasta confirmar que todo funciona)
+
+### Crear páginas de categoría (páginas padre)
+
+Estas páginas son necesarias para la jerarquía `/pilares/[categoria]/`. Crear como borradores primero:
+
+- [ ] **wp-admin → Páginas → Añadir nueva** — Título: `Infraestructura`, slug: `infraestructura`, Página padre: `Pilares`
+- [ ] **wp-admin → Páginas → Añadir nueva** — Título: `Seguridad`, slug: `seguridad`, Página padre: `Pilares`
+- [ ] **wp-admin → Páginas → Añadir nueva** — Título: `Rendimiento`, slug: `rendimiento`, Página padre: `Pilares`
+- [ ] **wp-admin → Páginas → Añadir nueva** — Título: `Inteligencia Artificial`, slug: `inteligencia-artificial`, Página padre: `Pilares`
+- [ ] **wp-admin → Páginas → Añadir nueva** — Título: `Estrategia`, slug: `estrategia`, Página padre: `Pilares`
+
+### Asignar página padre a cada una de las 20 páginas SOTA
+
+Para cada página de la tabla canónica de arriba:
+1. **wp-admin → Páginas → Todas las páginas** (filtro: Borradores)
+2. Click en "Editar rápidamente" (Quick Edit) junto al título
+3. En "Padre" (Parent), seleccionar la categoría correspondiente (ej. `Infraestructura`)
+4. Guardar
+
+Orden recomendado: todas las de `infraestructura` primero, luego `seguridad`, `rendimiento`, `inteligencia-artificial`, `estrategia`.
+
+### Asignar plantilla SOTA a cada página
+
+- [ ] Abrir cada página → en el panel lateral "Atributos de página" → "Plantilla": seleccionar **`Sota Single Template`**
+  - ⚠️ Si la plantilla no aparece, verificar que `sota-single-template.php` tiene el header `Template Name:` correcto y el child theme está activo.
+
+### Verificar URLs resultantes
+
+Una vez publicadas (o antes de publicar, revisando los permalinks en borrador):
+
+```bash
+# Con WP-CLI (si tienes acceso SSH):
+wp post list --post_type=page --fields=post_name,post_title,post_status,post_parent --format=csv | head -30
+```
+
+Confirmar que las 20 páginas tienen `post_parent` distinto de `0` y apuntan a la categoría correcta.
+
+### Resolver decisión fila 9 — Ingeniería Sostenible
+
+- [ ] Diego decide: ¿`estrategia` (como en el plugin) o `rendimiento` (como en la IA doc)?
+  - Si `rendimiento`: editar "Página padre" a `Rendimiento`; actualizar `_gano_sota_category` (WP-CLI: primero obtener ID con `wp post list --post_type=page --name='ingenieria-sostenible-rendimiento-con-conciencia' --field=ID`, luego `wp post meta update [ID] _gano_sota_category rendimiento`)
+  - Si `estrategia`: no requiere cambio adicional; solo asignar padre `Estrategia`
+
+### Exportar inventario final desde wp-admin
+
+> ⛔ **Bloqueado por acción humana** — requiere acceso a wp-admin con estado real de producción.
+
+Una vez completados los pasos anteriores, exportar la lista final para actualizar las columnas "Estado" de este documento:
+
+```bash
+# WP-CLI (SSH):
+wp post list --post_type=page --fields=ID,post_name,post_title,post_status,post_parent --format=csv > /tmp/pages-export.csv
+```
+
+O vía wp-admin → Herramientas → Exportar → Páginas → Descargar. Buscar `<wp:post_name>` y `<wp:status>` en el XML.
+
+---
+
+_Mantener este documento sincronizado con `site-ia-wave3-proposed.md` y `TASKS.md` al tomar decisiones de slugs o publicación. Última revisión: Abril 2026 — issue #265 SOTA slug policy: **Opción C adoptada** · fuente de verdad de slugs: `gano-content-importer.php` v2.0 · estados de producción: pendiente verificación wp-admin._
