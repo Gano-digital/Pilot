@@ -9,17 +9,16 @@ get_header();
 ?>
 
 <div class="gano-home">
-    <section class="hero-gano">
+    <section class="hero-gano gano-hero-overlay" id="gano-main-content">
         <div class="hero-content">
-            <p class="overline">Soberania Digital · Nodo Bogota</p>
-            <h1>Tu <span>Soberanía Digital</span> Comienza Aquí</h1>
-            <p>Infraestructura NVMe de alta gama, ciberseguridad SOTA y acompañamiento consultivo para escalar tu visión.</p>
-            <a href="#ecosistemas" class="btn-holo"><span class="label">Explorar Ecosistemas</span><span class="arrow">→</span></a>
-            <div class="hero-stats">
-                <div class="stat"><b>99.9%</b><small>Uptime SLA</small></div>
-                <div class="stat"><b>7500MB/s</b><small>I/O NVMe Gen4</small></div>
-                <div class="stat"><b>&lt;50ms</b><small>Latencia Bogota</small></div>
+            <p class="overline">Soberanía Digital · Nodo Bogotá</p>
+            <h1>Infraestructura NVMe blindada y un agente IA que trabaja antes de que algo falle.</h1>
+            <p>Hosting WordPress de alto rendimiento con seguridad de nivel empresarial, soporte en español y operación en pesos colombianos. Menos ruido, más continuidad.</p>
+            <div class="hero-cta-row">
+                <a href="#ecosistemas" class="btn-holo"><span class="label">Ver arquitecturas y planes</span><span class="arrow">→</span></a>
+                <a href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>" class="btn-gano btn-gano--secondary">Hablar con el equipo</a>
             </div>
+            <p class="hero-microcopy">NVMe · Monitoreo proactivo · Facturación en COP</p>
         </div>
     </section>
 
