@@ -154,12 +154,21 @@ function gano_extend_rankmath_schema( array $data, $jsonld ): array {
 
     $cfg = gano_seo_config();
 
-    $data['publisher']['areaServed'] = array(
+    /**
+     * Filtra las áreas de servicio inyectadas en el schema de Rank Math.
+     * Cada elemento: array( '@type' => 'Country'|'Continent', 'name' => string ).
+     *
+     * @param array<int, array{@type: string, name: string}> $areas Áreas predeterminadas.
+     */
+    $area_served = apply_filters( 'gano_schema_area_served', array(
         array( '@type' => 'Country',   'name' => 'Colombia' ),
         array( '@type' => 'Country',   'name' => 'México' ),
         array( '@type' => 'Continent', 'name' => 'América Latina' ),
-    );
-    $data['publisher']['currenciesAccepted'] = 'COP';
+    ) );
+
+    $data['publisher']['areaServed']        = $area_served;
+    // COP (Colombia) y MXN (México) según las áreas de servicio declaradas.
+    $data['publisher']['currenciesAccepted'] = get_option( 'gano_seo_currencies', 'COP, MXN' );
     $data['publisher']['paymentAccepted']    = 'PSE, Tarjeta de Crédito, Tarjeta de Débito, Nequi, Daviplata';
 
     if ( ! empty( $cfg['legal_name'] ) ) {
