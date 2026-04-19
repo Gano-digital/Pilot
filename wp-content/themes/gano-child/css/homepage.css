@@ -4,31 +4,26 @@
  * ============================================================ */
 
 :root {
-    /* Legacy variables (mantenidas para compatibilidad) */
-    --gano-blue: #1B4FD8;
-    --gano-green: #00C26B;
-    --gano-orange: #FF6B35;
-    --gano-gold: #D4AF37;
-    --gano-dark: #0F1923;
-    --gano-darker: #05080b;
-    --gano-glass: rgba(255, 255, 255, 0.03);
-    --gano-glass-border: rgba(255, 255, 255, 0.08);
-
-    /* New SOTA variables (gc-*) */
-    --gc-primary: #1B4FD8;
-    --gc-secondary: #00C26B;
-    --gc-accent: #D4AF37;
-    --gc-dark: #05080b;
+    /* Homepage aliases mapped to global design tokens (style.css). */
+    --gc-primary: var(--gano-blue);
+    --gc-secondary: var(--gano-green);
+    --gc-accent: var(--gano-gold);
+    --gc-dark: var(--gano-dark-deep);
     --gc-dark-card: rgba(255,255,255,0.03);
     --gc-dark-border: rgba(255,255,255,0.08);
-    --gc-content-bg: #f8fafc;
-    --gc-text: #e2e8f0;
-    --gc-text-muted: #94a3b8;
-    --gc-text-light: #1e293b;
+    --gc-content-bg: var(--gano-bg-alt);
+    --gc-text: var(--gano-gray-300);
+    --gc-text-muted: var(--gano-text-slate);
+    --gc-text-light: var(--gano-gray-900);
     --gc-glow: rgba(27,79,216,0.4);
 
     /* Timing */
-    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition:
+        transform var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
+        box-shadow var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
+        background-color var(--motion-normal, 220ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
+        border-color var(--motion-normal, 220ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
+        color var(--motion-normal, 220ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -42,9 +37,9 @@
 }
 
 .gano-home {
-    background: var(--gano-darker);
-    color: #e2e8f0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--gc-dark);
+    color: var(--gc-text);
+    font-family: var(--gano-font-body);
     overflow-x: hidden;
     line-height: 1.6;
 }
@@ -60,7 +55,7 @@
     justify-content: center;
     position: relative;
     overflow: hidden;
-    background: radial-gradient(circle at 50% 50%, #1e2530 0%, var(--gano-darker) 100%);
+    background: radial-gradient(circle at 50% 50%, var(--gano-gray-900) 0%, var(--gc-dark) 100%);
     padding-top: 60px;
 }
 
@@ -105,7 +100,7 @@
 }
 
 .hero-gano h1 {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: var(--gano-font-heading);
     font-size: clamp(2.5rem, 8vw, 5rem);
     font-weight: 800;
     line-height: 1.1;
@@ -122,7 +117,7 @@
 
 .hero-gano p {
     font-size: 1.2rem;
-    color: #94a3b8;
+    color: var(--gc-text-muted);
     margin-bottom: 40px;
     max-width: 600px;
     margin-left: auto;
@@ -131,13 +126,23 @@
     animation: fadeInUp 1s ease-out 0.6s both;
 }
 
+.overline {
+    font-family: var(--gano-font-mono);
+    font-size: var(--gano-fs-xs);
+    font-weight: var(--gano-fw-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gano-gold);
+    margin: 0 0 14px;
+}
+
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 /* BUTTONS */
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 .btn-gano {
     background: linear-gradient(135deg, var(--gano-blue), var(--gano-green));
-    color: #fff;
+    color: var(--gano-white);
     padding: 18px 40px;
     border-radius: 50px;
     text-decoration: none;
@@ -156,6 +161,111 @@
     box-shadow: 0 15px 40px rgba(0, 194, 107, 0.4);
 }
 
+.btn-holo {
+    --holo-a: var(--gano-gold);
+    --holo-b: var(--gano-blue);
+    --holo-c: var(--gano-purple);
+    --holo-d: var(--gano-green);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 32px;
+    border-radius: 10px;
+    font-family: var(--gano-font-heading);
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #0a0d14;
+    text-decoration: none;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid rgba(212, 175, 55, 0.55);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.6),
+      inset 0 -1px 0 rgba(0,0,0,0.15),
+      0 10px 30px rgba(212, 175, 55, 0.28);
+    background:
+      linear-gradient(115deg,
+        var(--holo-a) 0%,
+        #f5e7a0 18%,
+        var(--holo-b) 38%,
+        var(--holo-c) 58%,
+        var(--holo-d) 78%,
+        var(--holo-a) 100%);
+    background-size: 280% 280%;
+    animation: holo-drift 7s ease-in-out infinite;
+    transition: var(--transition);
+}
+
+.btn-holo::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.14) 0 1px, transparent 1px 4px),
+      repeating-linear-gradient(-45deg, rgba(0,0,0,0.10) 0 1px, transparent 1px 4px);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.btn-holo .label,
+.btn-holo .arrow {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-holo .arrow {
+    font-weight: 900;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.btn-holo:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.7),
+      inset 0 -1px 0 rgba(0,0,0,0.2),
+      0 18px 48px rgba(212, 175, 55, 0.45);
+}
+
+@keyframes holo-drift {
+    0%,100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.hero-stats {
+    display: flex;
+    gap: 36px;
+    margin-top: 42px;
+    padding-top: 26px;
+    border-top: 1px solid rgba(99, 102, 241, 0.18);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.hero-stats .stat b {
+    display: block;
+    font-family: var(--gano-font-heading);
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--gano-white);
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.hero-stats .stat small {
+    display: block;
+    margin-top: 8px;
+    font-family: var(--gano-font-mono);
+    font-size: 11px;
+    color: var(--gc-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 /* SECTIONS */
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -172,15 +282,15 @@
 }
 
 .section-title-gano h2 {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: var(--gano-font-heading);
     font-size: 2.5rem;
     font-weight: 800;
-    color: #fff;
+    color: var(--gano-white);
     margin-bottom: 10px;
 }
 
 .section-title-gano p {
-    color: #94a3b8;
+    color: var(--gc-text-muted);
     font-size: 1.1rem;
 }
 
@@ -231,11 +341,11 @@
 }
 
 .ecosystem-card h3 {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: var(--gano-font-heading);
     font-size: 1.5rem;
     margin-bottom: 15px;
     font-weight: 800;
-    color: #fff;
+    color: var(--gano-white);
     position: relative;
     z-index: 2;
 }
@@ -252,7 +362,7 @@
 
 .ecosystem-card .price small {
     font-size: 0.6rem;
-    color: #94a3b8;
+    color: var(--gc-text-muted);
     display: block;
     font-weight: 400;
     margin-top: 5px;
@@ -261,7 +371,7 @@
 .ecosystem-card ul {
     list-style: none;
     margin-bottom: 30px;
-    color: #94a3b8;
+    color: var(--gc-text-muted);
     font-size: 0.9rem;
     position: relative;
     z-index: 2;
@@ -316,7 +426,7 @@
 }
 
 .value-item p {
-    color: #cbd5e1;
+    color: var(--gc-text);
     line-height: 1.6;
     font-size: 0.95rem;
 }
@@ -357,7 +467,7 @@
 }
 
 .metric-box .label {
-    color: #94a3b8;
+    color: var(--gc-text-muted);
     font-size: 0.9rem;
 }
 
@@ -475,5 +585,18 @@
     .btn-gano {
         padding: 14px 30px;
         font-size: 0.9rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-holo {
+        animation: none;
+    }
+
+    .btn-holo:hover,
+    .btn-gano:hover,
+    .ecosystem-card:hover,
+    .metric-box:hover {
+        transform: none;
     }
 }

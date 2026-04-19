@@ -121,7 +121,9 @@ function gano_child_enqueue_styles() {
 
     // Homepage SOTA — solo en front page
     if ( is_front_page() ) {
-        wp_enqueue_style( 'gano-homepage-css', get_stylesheet_directory_uri() . '/css/homepage.css', array( 'gano-child-style' ), '1.0.0' );
+        $homepage_css_path = get_stylesheet_directory() . '/css/homepage.css';
+        $homepage_css_ver  = file_exists( $homepage_css_path ) ? (string) filemtime( $homepage_css_path ) : wp_get_theme()->get( 'Version' );
+        wp_enqueue_style( 'gano-homepage-css', get_stylesheet_directory_uri() . '/css/homepage.css', array( 'gano-child-style' ), $homepage_css_ver );
     }
 
     // Navegación sticky — todas las páginas
