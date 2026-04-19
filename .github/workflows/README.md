@@ -12,6 +12,9 @@ Los **nombres mostrados en la barra lateral** siguen el patrón:
 | **06** | Repo | Configuración puntual del repositorio |
 | **07–11** | Agentes | Cola Copilot, semillas y orquestación |
 | **13** | Projects | Añadir issues `[agent]` / `copilot` al tablero @Gano.digital (opcional) |
+| **16–18** | Ops SSH | Backups/sync/health con SSH (saltan si faltan secrets) |
+| **30–31** | Comercio F4 | Validación catálogo Reseller y salud plugins Fase 4 |
+| **99** | Debug | Workflow manual de prueba rápida |
 
 **Orden sugerido al operar (manual):** `06` una vez si faltan etiquetas → `07` al editar colas → `08`/`09` para crear issues → `10` solo si aplica oleada histórica → `04`/`05` cuando toque servidor. **Guía ampliada:** [`memory/ops/agent-playbook-asistentes-2026-04.md`](../../memory/ops/agent-playbook-asistentes-2026-04.md).
 
@@ -45,6 +48,12 @@ Archivo | Nombre en UI
 `verify-remove-wp-file-manager.yml` | 12 · Ops · Eliminar wp-file-manager (SSH)
 `project-add-to-project.yml` | 13 · Projects · Añadir issues al tablero Gano.digital
 `gano-ops-hub.yml` | 14 · Ops · Gano Ops Hub (TASKS + dispatch + Project API + GitHub Pages)
+`06-db-backup.yml` | 16 · Ops · Backup · BD Automático
+`07-sync-content.yml` | 17 · Ops · Content Sync · Staging ↔ Producción
+`08-health-check-plugins.yml` | 18 · Ops · Health Check · Validar plugins gano-*
+`30-reseller-catalog-sync.yml` | 30 · Reseller Catalog Sync
+`31-plugin-health-check-phase4.yml` | 31 · Plugin Health Phase 4
+`test-runner.yml` | 99 · Debug · Test Runner
 
 **Tablero GitHub Projects (@Gano.digital):** [`.github/GITHUB-PROJECT-GANO-DIGITAL.md`](../GITHUB-PROJECT-GANO-DIGITAL.md) · playbook [`memory/ops/github-projects-gano-digital-playbook-2026-04.md`](../../memory/ops/github-projects-gano-digital-playbook-2026-04.md).
 
