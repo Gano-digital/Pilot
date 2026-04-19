@@ -1,8 +1,29 @@
 # Plan Maestro de Contenidos — Gano Digital 2026
 
-**Versión:** 1.0 · Abril 2026  
+**Versión:** 1.1 · Abril 2026  
 **Autor:** Agente Copilot (revisión pendiente Diego)  
-**Fuentes:** `site-ia-wave3-proposed.md` · `homepage-story-arc-wave3.md` · `TASKS.md` · `microcopy-wave3-kit.md` · `ecosystems-copy-matrix-wave3.md` · `trust-and-reseller-copy-wave3.md`
+**Fuentes:** `site-ia-wave3-proposed.md` · `homepage-story-arc-wave3.md` · `TASKS.md` · `microcopy-wave3-kit.md` · `ecosystems-copy-matrix-wave3.md` · `trust-and-reseller-copy-wave3.md` · `gap-ia-vs-live-inventory-2026.md` · `products-services-pages-matrix-2026.md`
+
+> **Changelog v1.1:** Añadido §0 Orden de lectura; ampliada tabla maestra con páginas de /dominios, /seguridad y /colaboracion; incorporado bloqueo PLID/PENDING_RCC al camino crítico; añadida nota sobre slug drift de las 20 páginas SOTA; actualizadas referencias cruzadas.
+
+---
+
+## 0. Orden de lectura recomendado
+
+> Para agentes y colaboradores que se incorporan al proyecto. Leer en este orden antes de tocar copy, slugs o comercio.
+
+| Paso | Documento | Por qué leerlo primero |
+|------|-----------|------------------------|
+| 1 | [`memory/research/gano-wave3-brand-ux-master-brief.md`](../research/gano-wave3-brand-ux-master-brief.md) | Brief maestro: voz, sistema visual, IA base, criterios de aceptación — fuente de verdad raíz |
+| 2 | **Este documento** (`content-master-plan-2026.md`) | Resumen ejecutivo + capas + estado + tabla maestra |
+| 3 | [`site-ia-wave3-proposed.md`](site-ia-wave3-proposed.md) | Árbol de rutas completo, mapa de clics y tecnología por página |
+| 4 | [`homepage-story-arc-wave3.md`](homepage-story-arc-wave3.md) | Orden canónico de secciones de la home; checklist de publicación |
+| 5 | [`homepage-copy-2026-04.md`](homepage-copy-2026-04.md) | Copy final listo para pegar en Elementor |
+| 6 | [`products-services-pages-matrix-2026.md`](products-services-pages-matrix-2026.md) | Vitrina ↔ slugs ↔ `GANO_PFID_*` ↔ notas RCC |
+| 7 | [`gap-ia-vs-live-inventory-2026.md`](gap-ia-vs-live-inventory-2026.md) | Brecha entre IA propuesta e inventario real; decisiones de slug pendientes |
+| 8 | [`TASKS.md`](../../TASKS.md) | Estado del proyecto por fases; Fase 4 Reseller con PFIDs |
+
+**Principio de no duplicación:** si ya existe un documento detallado para un tema, este plan apunta a él con un enlace — no lo reitera.
 
 ---
 
@@ -175,13 +196,19 @@ Cada pilar termina con un bloque CTA que enlaza al plan recomendado (slugs: `/ec
 | Página | Capa | Rol narrativo | Prioridad | Depende de |
 |--------|------|---------------|-----------|------------|
 | `/` (Home) | 1 — Home | Primer contacto; AIDA completo; hub de entrada a todo el sitio | **P0** | Copy `homepage-copy-2026-04.md` aplicado en Elementor; menú asignado |
-| `/ecosistemas` | 2 — Ecosistemas | Catálogo de conversión; tabla comparativa de planes; CTA a carrito Reseller | **P0** | Plantilla `shop-premium.php` asignada; IDs RCC confirmados |
+| `/ecosistemas` | 2 — Ecosistemas | Catálogo de conversión; tabla comparativa de planes; CTA a carrito Reseller | **P0** | Plantilla `shop-premium.php` asignada; IDs RCC confirmados; PLID válido |
 | `/ecosistemas/nucleo-prime` | 2 — Ecosistemas | Detalle del plan de entrada; argumento "primera infraestructura seria" | **P1** | Página padre `/ecosistemas`; copy de plan confirmado |
 | `/ecosistemas/fortaleza-delta` | 2 — Ecosistemas | Detalle del plan medio; argumento "seguridad para negocios en crecimiento" | **P1** | Página padre `/ecosistemas`; copy de plan confirmado |
 | `/ecosistemas/bastion-sota` | 2 — Ecosistemas | Detalle del plan premium; argumento "ecosistema completo sin compromisos" | **P1** | Página padre `/ecosistemas`; copy de plan confirmado |
+| `/ecosistemas/ultimate-wp` | 2 — Ecosistemas | Cuarto plan (nombre "Ultimate WP" pendiente renombrar); up-sell máximo | **P2** | Decisión de Diego sobre nombre de ecosistema; IDs RCC |
+| `/dominios/` | 2 — Ecosistemas | Búsqueda y registro de dominios; onboarding de nuevos clientes | **P2** | Shortcode `[rstore-domain-search]` configurado en wp-admin |
+| `/seguridad/ssl-deluxe` | 2 — Ecosistemas | Upsell SSL; complementa cualquier plan de hosting | **P3** | `GANO_PFID_SSL_DELUXE` confirmado en RCC; página creada |
+| `/seguridad/security-ultimate` | 2 — Ecosistemas | Upsell seguridad avanzada; diferenciador vs. competencia | **P3** | `GANO_PFID_SECURITY_ULTIMATE` confirmado en RCC |
+| `/colaboracion/m365-premium` | 2 — Ecosistemas | Cross-sell Microsoft 365; valor añadido para empresas | **P3** | `GANO_PFID_M365_PREMIUM` confirmado en RCC |
+| `/colaboracion/online-storage-1tb` | 2 — Ecosistemas | Cross-sell almacenamiento; complemento a planes | **P3** | `GANO_PFID_ONLINE_STORAGE` confirmado en RCC |
 | `/hosting-wordpress-colombia` | 3 — Pilares SEO | Landing SEO primaria; keyword principal del negocio | **P1** | Plantilla `page-seo-landing.php` asignada en wp-admin |
 | `/pilares` (índice) | 3 — Pilares SEO | Hub SEO de las 5 categorías; breadcrumb de entrada a los artículos | **P2** | Las 20 páginas SOTA publicadas |
-| 20 páginas SOTA (infraestructura) | 3 — Pilares SEO | Posicionamiento orgánico por keyword técnica; enlace interno a planes | **P1** | Plugin `gano-content-importer` activado; plantilla `sota-single-template.php` |
+| 20 páginas SOTA (infraestructura) | 3 — Pilares SEO | Posicionamiento orgánico por keyword técnica; enlace interno a planes | **P1** | Plugin `gano-content-importer` activado; plantilla `sota-single-template.php`; slugs canónicos decididos (ver `gap-ia-vs-live-inventory-2026.md`) |
 | `/contacto` | 4 — Confianza | Reducir fricción pre-venta; canal directo con el equipo | **P1** | Datos de contacto reales `[teléfono]`, `[email]`; formulario CF7 configurado |
 | `/nosotros` | 4 — Confianza | Credibilidad; transparencia del modelo Reseller; manifiesto de marca | **P2** | Copy real disponible (sin placeholders visibles en producción) |
 | `/legal/terminos-y-condiciones` | 4 — Legal | Cumplimiento contractual; requerido antes del checkout | **P2** | Redacción por abogado/Diego; `[NIT]` confirmado |
@@ -195,7 +222,9 @@ Cada pilar termina con un bloque CTA que enlaza al plan recomendado (slugs: `/ec
 ```
 [Datos reales de Diego]
   └── NIT confirmado → textos legales del footer y formularios
-  └── IDs RCC de GoDaddy → shop-premium.php → /ecosistemas funcional
+  └── IDs RCC (8 PFIDs) → functions.php / wp-admin → Ajustes → Gano Reseller
+  └── PLID (Private Label ID) → wp-admin → Ajustes → Reseller Store → Private Label ID
+       (sin PLID válido, gano_rstore_cart_url() retorna '#' aunque los PFIDs sean correctos)
 
 [wp-admin — tareas obligatorias antes de lanzar]
   ├── Asignar menú a ubicación "primary"
@@ -207,8 +236,13 @@ Cada pilar termina con un bloque CTA que enlaza al plan recomendado (slugs: `/ec
   ├── Plantillas PHP en gano-child/templates/
   ├── MU-plugins (seguridad + SEO)
   ├── Plugin gano-content-importer (20 páginas SOTA como draft)
+  ├── Plugin gano-reseller-enhancements (panel PFID en wp-admin)
   └── Chat IA, animaciones GSAP, Quiz
 ```
+
+> ⚠️ **Slug drift en 20 páginas SOTA:** los slugs generados por `gano-content-importer` difieren de los propuestos en `site-ia-wave3-proposed.md`. Antes de publicar, Diego debe decidir cuál slug es canónico. Ver análisis completo y opciones A/B/C → [`gap-ia-vs-live-inventory-2026.md`](gap-ia-vs-live-inventory-2026.md).
+
+> ⚠️ **Nombre "Ultimate WP":** el cuarto plan de hosting no sigue la nomenclatura de ecosistema (Núcleo/Fortaleza/Bastión). Decidir si adoptar un nombre propio (ej. `Comando Sigma`) o mantener "Ultimate WP". Ver §4.3 → [`products-services-pages-matrix-2026.md`](products-services-pages-matrix-2026.md).
 
 ---
 
@@ -222,8 +256,10 @@ Cada pilar termina con un bloque CTA que enlaza al plan recomendado (slugs: `/ec
 | [`microcopy-wave3-kit.md`](microcopy-wave3-kit.md) | CTAs primarios/secundarios, errores, estados vacíos, consentimientos |
 | [`ecosystems-copy-matrix-wave3.md`](ecosystems-copy-matrix-wave3.md) | Promesas, objeciones, coherencia con `shop-premium.php` |
 | [`trust-and-reseller-copy-wave3.md`](trust-and-reseller-copy-wave3.md) | Footer, nosotros, disclaimer reseller |
-| [`../../TASKS.md`](../../TASKS.md) | Estado del proyecto por fases; Fase 4 Reseller |
+| [`products-services-pages-matrix-2026.md`](products-services-pages-matrix-2026.md) | Matriz vitrina ↔ slugs ↔ `GANO_PFID_*` ↔ notas RCC; incluye dominios, seguridad, colaboración |
+| [`gap-ia-vs-live-inventory-2026.md`](gap-ia-vs-live-inventory-2026.md) | Brecha entre IA propuesta e inventario real; slug drift de las 20 páginas SOTA; decisión pendiente Diego |
+| [`../../TASKS.md`](../../TASKS.md) | Estado del proyecto por fases; Fase 4 Reseller — PFIDs, PLID, gano-reseller-enhancements |
 
 ---
 
-_Fin del documento · Actualizar cuando cambie el estado de páginas en wp-admin o se confirmen datos legales (NIT, teléfono, IDs RCC)._
+_Fin del documento · Actualizar cuando cambie el estado de páginas en wp-admin o se confirmen datos legales (NIT, teléfono, IDs RCC, PLID)._
