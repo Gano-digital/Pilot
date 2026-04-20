@@ -1,6 +1,6 @@
-/* Gano — Cursor WC3 (guantelete): atlas 256×128, fila 0 = idle 8 fps, fila inferior = estados UI */
+/* Gano — Cursor WC3 (guantelete): atlas 256×128 — fila 0 idle, fila 1 miras, fila 3 estados / flechas */
 
-@media (pointer: fine) {
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
     body:not(.gano-cursor--text),
     body:not(.gano-cursor--text) a,
     body:not(.gano-cursor--text) button,
@@ -16,6 +16,21 @@
     body.gano-cursor--text input,
     body.gano-cursor--text textarea {
         cursor: text !important;
+    }
+}
+
+@media (pointer: fine) and (prefers-reduced-motion: reduce) {
+    .gano-cursor-wrapper {
+        display: none !important;
+    }
+
+    body,
+    body a,
+    body button,
+    body [role='button'],
+    body label,
+    body select {
+        cursor: auto !important;
     }
 }
 
@@ -63,16 +78,12 @@ body.gano-cursor--text .gano-cursor-wrapper {
     }
 }
 
-body.gano-cursor--nomotion .gano-cursor-gauntlet {
-    animation: none;
-    background-position: 0 0;
-}
-
+/* Hover: fila central del atlas = mira (lectura “clicable”), no la celda inferior que era otro icono */
 body.gano-cursor--hover:not(.gano-cursor--invalid):not(.gano-cursor--click) .gano-cursor-gauntlet {
     --gano-cursor-hx: 16px;
     --gano-cursor-hy: 16px;
     animation: none;
-    background-position: -32px -96px;
+    background-position: 0 -32px;
 }
 
 body.gano-cursor--invalid .gano-cursor-gauntlet {
@@ -82,20 +93,26 @@ body.gano-cursor--invalid .gano-cursor-gauntlet {
     background-position: -64px -96px;
 }
 
+/* Click: guantelete en pose distinta (fila inferior), no otro frame idéntico de la fila 0 */
 body.gano-cursor--click:not(.gano-cursor--invalid) .gano-cursor-gauntlet {
+    --gano-cursor-hx: 16px;
+    --gano-cursor-hy: 16px;
     animation: none;
-    background-position: -128px 0;
+    background-position: -96px -96px;
     transform: translate(calc(-1 * var(--gano-cursor-hx)), calc(-1 * var(--gano-cursor-hy))) scale(0.92);
 }
 
 @media (max-width: 1024px) {
     .gano-cursor-wrapper {
-        display: none;
+        display: none !important;
     }
 
     body,
-    a,
-    button {
+    body a,
+    body button,
+    body [role='button'],
+    body label,
+    body select {
         cursor: auto !important;
     }
 }
