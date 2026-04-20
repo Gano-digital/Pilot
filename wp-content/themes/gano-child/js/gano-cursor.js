@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const hoverSelector =
-        'a[href], button, [role="button"], [role="link"], label, select, .gano-quiz-option, input[type="submit"], .rstore-add-to-cart, summary, [data-gano-cursor-hover]';
+        'a[href], button, [role="button"], [role="link"], label, select, i, .gano-quiz-option, input[type="submit"], .rstore-add-to-cart, summary, [data-gano-cursor-hover]';
 
     const textCursorSelector =
         'input[type="text"], input[type="email"], input[type="search"], input[type="url"], input[type="tel"], input[type="password"], input[type="number"], textarea, [contenteditable="true"]';
