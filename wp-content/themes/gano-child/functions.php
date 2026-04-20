@@ -47,7 +47,71 @@ if ( ! function_exists( 'gano_resolve_page_url' ) ) {
 
 // =============================================================================
 // 0.5 CSS CRÍTICO — Prioridad 1 (inline en wp_head antes de Elementor)
+// FIX: Homepage blanca - garantizar visibilidad del hero sobre especificidad CSS de Royal Elementor
 // =============================================================================
+
+if ( ! function_exists( 'gano_critical_css_hero_visibility' ) ) {
+    /**
+     * Inyecta CSS crítico para garantizar visibilidad del hero.
+     * Prioridad 99 = después de Elementor, pero antes de otros plugins.
+     *
+     * Issue: Royal Elementor Addons aplica estilos con ! important que ocultan el hero.
+     * Solución: usar especificidad alta + !important para garantizar visibilidad.
+     */
+    add_action( 'wp_head', function() {
+        if ( ! is_home() && ! is_front_page() ) {
+            return;
+        }
+        ?>
+        <style id="gano-hero-critical">
+        /* Hero visibility fix: garantizar que el hero es visible sobre Royal Elementor */
+        body #gano-main-content,
+        body .gano-el-stack.gano-hero-block {
+            display: flex !important;
+            align-items: center !important;
+            min-height: 100vh !important;
+            background: linear-gradient(135deg, #1B4FD8 0%, #00C26B 50%, #FF6B35 100%) !important;
+            color: white !important;
+        }
+
+        .gano-el-stack.gano-hero-block .gano-el-layer-top {
+            display: block !important;
+            z-index: 10 !important;
+        }
+
+        .gano-el-stack.gano-hero-block h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem) !important;
+            font-weight: 800 !important;
+            line-height: 1.1 !important;
+            color: white !important;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .gano-hero-block__sub {
+            font-size: 1.125rem !important;
+            color: rgba(255,255,255,0.95) !important;
+            line-height: 1.6 !important;
+            margin-bottom: 2rem !important;
+            max-width: 600px !important;
+        }
+
+        .gano-hero-block__cta-row {
+            display: flex !important;
+            gap: 1rem !important;
+            flex-wrap: wrap !important;
+            margin-bottom: 2rem !important;
+        }
+
+        .gano-el-hero-microcopy {
+            font-size: 0.875rem !important;
+            color: rgba(255,255,255,0.8) !important;
+            letter-spacing: 0.1em !important;
+        }
+        </style>
+        <?php
+    }, 99 );
+}
 /**
  * Inyecta estilos críticos inline con prioridad 1.
  * Esto asegura que nuestras variables y estilos fundamentales ganen
@@ -1920,7 +1984,7 @@ function gano_child_empty_cart_message(): string {
       </a>
       &ensp;
       <a href="<?php echo esc_url( home_url( '/contacto' ) ); ?>"
-         style="font-weight:600; color:var(--gano-blue,#2952CC);">
+         style="font-weight:600; color:var(--gano-blue,#1B4FD8);">
         Hablar con el equipo
       </a>
     </div>

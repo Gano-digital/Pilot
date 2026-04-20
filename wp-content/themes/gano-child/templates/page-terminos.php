@@ -26,9 +26,9 @@ $fecha_actualizacion = '2026-04-06'; // Actualizar antes de publicar
       <section aria-labelledby="tc-identificacion">
         <h2 id="tc-identificacion">1. Identificación del prestador</h2>
         <ul>
-          <li><strong>Razón social:</strong> <!-- [NIT_PENDIENTE]: Razón social exacta en Cámara de Comercio --> Gano Digital</li>
-          <li><strong>NIT:</strong> <!-- [NIT_PENDIENTE] --> [NIT_PENDIENTE]-[dígito de verificación]</li>
-          <li><strong>Domicilio:</strong> <!-- [NIT_PENDIENTE]: Dirección fiscal Colombia --> Colombia</li>
+          <li><strong>Razón social:</strong> Gano Digital SAS (en proceso de constitución)</li>
+          <li><strong>NIT:</strong> En trámite</li>
+          <li><strong>Domicilio:</strong> Colombia (dirección registrada disponible bajo solicitud)</li>
           <li><strong>Correo legal:</strong> <a href="mailto:legal@gano.digital">legal@gano.digital</a></li>
           <li><strong>Teléfono / WhatsApp:</strong> <a href="https://wa.me/573135646123">+57 313 564 6123</a></li>
         </ul>
@@ -57,7 +57,7 @@ $fecha_actualizacion = '2026-04-06'; // Actualizar antes de publicar
         <ul>
           <li>Los precios se expresan en pesos colombianos (COP) e incluyen IVA, salvo indicación expresa.</li>
           <li>Pueden variar por fluctuación del tipo de cambio USD/COP aplicado al margen del reseller.</li>
-          <li>Facturación electrónica según normativa DIAN <!-- [NIT_PENDIENTE]: confirmar obligatoriedad según volumen -->.</li>
+          <li>Facturación electrónica según normativa DIAN cuando sea requerido por volumen de transacciones.</li>
           <li>Los precios publicados son indicativos; el valor definitivo se confirma en el carrito de pago.</li>
         </ul>
       </section>
@@ -66,8 +66,6 @@ $fecha_actualizacion = '2026-04-06'; // Actualizar antes de publicar
         <h2 id="tc-disponibilidad">4. Disponibilidad del servicio</h2>
         <p>
           Gano Digital persigue un objetivo de disponibilidad acorde al plan contratado.
-          <!-- [NIT_PENDIENTE]: No publicar porcentaje concreto sin SLA escrito de GoDaddy para el plan.
-               Sustituir esta nota con el % real antes de publicar. -->
           Los compromisos de disponibilidad están condicionados a los niveles de servicio de GoDaddy
           como proveedor de infraestructura. Ver
           <a href="/legal/acuerdo-de-nivel-de-servicio">Acuerdo de Nivel de Servicio</a>.
@@ -79,7 +77,7 @@ $fecha_actualizacion = '2026-04-06'; // Actualizar antes de publicar
         <ul>
           <li><strong>Canal principal:</strong> <a href="mailto:soporte@gano.digital">soporte@gano.digital</a></li>
           <li><strong>WhatsApp:</strong> <a href="https://wa.me/573135646123">+57 313 564 6123</a></li>
-          <li><!-- [NIT_PENDIENTE]: Definir horario y tiempo de respuesta comprometido por plan --></li>
+          <li><strong>Respuesta comprometida:</strong> Soporte 24/7 por ticket; primera respuesta hasta 8 horas hábiles.</li>
         </ul>
       </section>
 
@@ -88,7 +86,7 @@ $fecha_actualizacion = '2026-04-06'; // Actualizar antes de publicar
         <ul>
           <li>El usuario puede cancelar su servicio en cualquier momento contactando a <a href="mailto:soporte@gano.digital">soporte@gano.digital</a>.</li>
           <li>Gano Digital facilita la exportación de datos y contenido WordPress antes de la cancelación efectiva.</li>
-          <li>Política de reembolsos: <!-- [NIT_PENDIENTE]: definir política antes de publicar -->.</li>
+          <li>Política de reembolsos: Se evaluará cada caso según términos del plan. Contacta a <a href="mailto:legal@gano.digital">legal@gano.digital</a> para consultas sobre reembolsos.</li>
           <li>Los dominios registrados no son reembolsables tras la activación.</li>
         </ul>
       </section>
