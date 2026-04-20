@@ -19,6 +19,7 @@ URL: https://gano.digital | Repo: Gano-digital/Pilot
 - SEO: **gano-seo.php** (MU, activo) + Rank Math (**instalado, inactivo** hasta cerrar copy)
 - Tema: gano-child (Hello Elementor child)
 - Animaciones: GSAP 3 + ScrollTrigger
+- **Cursor WC3 (gano-child):** puntero personalizado; apagar con filtro `gano_enable_wc3_cursor` — ver [`memory/ops/gano-wc3-cursor-maintenance.md`](memory/ops/gano-wc3-cursor-maintenance.md) y `.github/copilot-instructions.md` (sección Cursor WC3).
 - PHP 8.3 en GoDaddy Managed WordPress
 
 ## Reglas Universales (TODOS los agentes)
