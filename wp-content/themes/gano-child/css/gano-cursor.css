@@ -1,71 +1,101 @@
-/* Gano Premium Custom Cursor - Styles */
+/* Gano — Cursor WC3 (guantelete): atlas 256×128, fila 0 = idle 8 fps, fila inferior = estados UI */
 
-/* Solo ocultar cursor en dispositivos con puntero fino (mouse/trackpad), no en touch */
 @media (pointer: fine) {
-    body, a, button, [role="button"], label, select {
-        cursor: none !important; /* Hide default cursor */
+    body:not(.gano-cursor--text),
+    body:not(.gano-cursor--text) a,
+    body:not(.gano-cursor--text) button,
+    body:not(.gano-cursor--text) [role="button"],
+    body:not(.gano-cursor--text) label,
+    body:not(.gano-cursor--text) select {
+        cursor: none !important;
+    }
+
+    body.gano-cursor--text,
+    body.gano-cursor--text a,
+    body.gano-cursor--text button,
+    body.gano-cursor--text input,
+    body.gano-cursor--text textarea {
+        cursor: text !important;
     }
 }
 
 .gano-cursor-wrapper {
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
     pointer-events: none;
     z-index: 999999;
 }
 
-#gano-cursor-dot {
+body.gano-cursor--text .gano-cursor-wrapper {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.gano-cursor-gauntlet {
+    --gano-cursor-hx: 10px;
+    --gano-cursor-hy: 22px;
     position: fixed;
-    width: 6px;
-    height: 6px;
-    background-color: var(--gano-gold);
-    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    padding: 0;
     pointer-events: none;
     z-index: 1000000;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s, height 0.3s, background-color 0.3s;
+    transform: translate(calc(-1 * var(--gano-cursor-hx)), calc(-1 * var(--gano-cursor-hy)));
+    background-image: url('../assets/cursor/wc3-human-atlas.png');
+    background-repeat: no-repeat;
+    background-size: 256px 128px;
+    background-position: 0 0;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+    animation: gano-wc3-idle 0.64s steps(7) infinite;
 }
 
-#gano-cursor-ring {
-    position: fixed;
-    width: 35px;
-    height: 35px;
-    border: 1px solid rgba(212, 175, 55, 0.5);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 999999;
-    transform: translate(-50%, -50%);
-    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-                height 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-                border-color 0.4s, 
-                background-color 0.4s;
+@keyframes gano-wc3-idle {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: -224px 0;
+    }
 }
 
-/* Interaction States */
-body.is-hovering #gano-cursor-ring {
-    width: 70px;
-    height: 70px;
-    background-color: rgba(212, 175, 55, 0.1);
-    border-color: var(--gano-gold);
+body.gano-cursor--nomotion .gano-cursor-gauntlet {
+    animation: none;
+    background-position: 0 0;
 }
 
-body.is-hovering #gano-cursor-dot {
-    width: 12px;
-    height: 12px;
-    background-color: #fff;
+body.gano-cursor--hover:not(.gano-cursor--invalid):not(.gano-cursor--click) .gano-cursor-gauntlet {
+    --gano-cursor-hx: 16px;
+    --gano-cursor-hy: 16px;
+    animation: none;
+    background-position: -32px -96px;
 }
 
-body.is-clicking #gano-cursor-ring {
-    width: 30px;
-    height: 30px;
-    background-color: var(--gano-gold-soft);
+body.gano-cursor--invalid .gano-cursor-gauntlet {
+    --gano-cursor-hx: 16px;
+    --gano-cursor-hy: 16px;
+    animation: none;
+    background-position: -64px -96px;
 }
 
-/* Hide cursor on mobile */
+body.gano-cursor--click:not(.gano-cursor--invalid) .gano-cursor-gauntlet {
+    animation: none;
+    background-position: -128px 0;
+    transform: translate(calc(-1 * var(--gano-cursor-hx)), calc(-1 * var(--gano-cursor-hy))) scale(0.92);
+}
+
 @media (max-width: 1024px) {
-    .gano-cursor-wrapper { display: none; }
-    body, a, button { cursor: auto !important; }
+    .gano-cursor-wrapper {
+        display: none;
+    }
+
+    body,
+    a,
+    button {
+        cursor: auto !important;
+    }
 }
