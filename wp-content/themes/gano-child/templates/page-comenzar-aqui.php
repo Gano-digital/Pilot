@@ -75,12 +75,15 @@ add_action(
 get_header();
 ?>
 
-<main id="gano-main-content" class="gano-start-journey gano-trust-page gano-km-shell">
+<main id="gano-main-content" class="gano-start-journey gano-trust-page gano-km-shell gano-on-dark">
 
 	<section class="gano-dark-section gano-trust-hero gano-start-journey__hero">
-		<div class="gano-container">
+		<div class="gano-container gano-start-journey__hero-inner">
 			<p class="gano-label-pill gano-km-live-badge"><?php esc_html_e( 'Flujo comercial', 'gano-child' ); ?></p>
-			<h1><?php esc_html_e( 'De la duda al plan: cómo comprar con claridad', 'gano-child' ); ?></h1>
+			<h1>
+				<?php esc_html_e( 'De la duda al plan:', 'gano-child' ); ?>
+				<span class="gano-start-journey__h1-gradient"><?php esc_html_e( 'cómo comprar con claridad', 'gano-child' ); ?></span>
+			</h1>
 			<p class="gano-trust-hero__sub gano-start-journey__lede">
 				<?php esc_html_e( 'Aquí no hay letra pequeña escondida: te contamos qué ocurre cuando eliges un producto, en qué página se cobra y qué hace Gano Digital frente a eso. Objetivo simple — que avances o pidas ayuda con confianza.', 'gano-child' ); ?>
 			</p>
