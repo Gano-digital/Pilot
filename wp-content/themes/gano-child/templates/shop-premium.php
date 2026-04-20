@@ -266,6 +266,14 @@ get_header();
             <div class="reveal">
                 <button type="button" class="btn-sota gano-km-btn-primary" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">Explorar Nodos de Red</button>
             </div>
+            <?php
+            $url_comenzar_shop = function_exists( 'gano_resolve_page_url' )
+                ? gano_resolve_page_url( 'comenzar-aqui', 'comenzar', 'registro-y-compra' )
+                : home_url( '/comenzar-aqui/' );
+            ?>
+            <p class="gano-shop-comenzar-hint reveal">
+                <a href="<?php echo esc_url( $url_comenzar_shop ); ?>"><?php esc_html_e( '¿Primera vez aquí? Cómo funciona el checkout →', 'gano-child' ); ?></a>
+            </p>
         </div>
     </section>
 

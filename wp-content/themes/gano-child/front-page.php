@@ -29,6 +29,14 @@ get_header();
                 <li><strong>24/7</strong><span>Soporte y seguimiento</span></li>
                 <li><strong>COP</strong><span>Operación comercial local</span></li>
             </ul>
+            <?php
+            $url_comenzar = function_exists( 'gano_resolve_page_url' )
+                ? gano_resolve_page_url( 'comenzar-aqui', 'comenzar', 'registro-y-compra' )
+                : home_url( '/comenzar-aqui/' );
+            ?>
+            <p class="gano-home-comenzar-link">
+                <a href="<?php echo esc_url( $url_comenzar ); ?>"><?php esc_html_e( '¿Primera compra? Guía del checkout y registro →', 'gano-child' ); ?></a>
+            </p>
         </div>
     </section>
 

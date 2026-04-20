@@ -17,6 +17,35 @@ require_once get_stylesheet_directory() . '/inc/contact-form-handler.php';
 require_once get_stylesheet_directory() . '/inc/lead-magnet-handler.php';
 
 // =============================================================================
+// 0.4 URL HELPERS — slugs comerciales (catálogo, contacto, esta página, etc.)
+// =============================================================================
+if ( ! function_exists( 'gano_resolve_page_url' ) ) {
+    /**
+     * Resuelve la URL de una página probando varios slugs (p. ej. staging vs producción).
+     *
+     * @param string ...$path_variants Slugs sin barra inicial.
+     * @return string URL absoluta.
+     */
+    function gano_resolve_page_url( string ...$path_variants ): string {
+        foreach ( $path_variants as $slug ) {
+            $slug = trim( $slug, '/' );
+            if ( '' === $slug ) {
+                continue;
+            }
+            $page = get_page_by_path( $slug );
+            if ( $page instanceof WP_Post && 'publish' === $page->post_status ) {
+                return get_permalink( $page );
+            }
+        }
+        $fallback = isset( $path_variants[0] ) ? trim( (string) $path_variants[0], '/' ) : '';
+        if ( '' === $fallback || 'inicio' === $fallback ) {
+            return home_url( '/' );
+        }
+        return home_url( '/' . $fallback . '/' );
+    }
+}
+
+// =============================================================================
 // 0.5 CSS CRÍTICO — Prioridad 1 (inline en wp_head antes de Elementor)
 // =============================================================================
 /**
@@ -133,6 +162,17 @@ function gano_child_enqueue_styles() {
     // Navegación sticky — todas las páginas
     wp_enqueue_style( 'gano-nav-css', get_stylesheet_directory_uri() . '/css/gano-nav.css', array( 'gano-child-style' ), '1.0.0' );
 
+    // Página de conversión — registro / flujo de compra Reseller
+    if ( is_page_template( 'templates/page-comenzar-aqui.php' ) ) {
+        $gano_start_css = get_stylesheet_directory() . '/css/gano-start-journey.css';
+        wp_enqueue_style(
+            'gano-start-journey',
+            get_stylesheet_directory_uri() . '/css/gano-start-journey.css',
+            array( 'gano-child-style' ),
+            file_exists( $gano_start_css ) ? (string) filemtime( $gano_start_css ) : '1.0.0'
+        );
+    }
+
     // Chat IA — se carga con nonce CSRF (V-05 Fix)
     wp_enqueue_style( 'gano-chat-css', get_stylesheet_directory_uri() . '/css/gano-chat.css', array(), '1.2.0' );
     wp_enqueue_script( 'gano-chat-js', get_stylesheet_directory_uri() . '/js/gano-chat.js', array(), '1.4.0', true );
@@ -219,7 +259,7 @@ function gano_child_enqueue_styles() {
         wp_enqueue_script( 'gano-bundle-quiz-js', get_stylesheet_directory_uri() . '/js/gano-bundle-quiz.js', array(), '1.0.0', true );
     }
 
-    // Constellation SC Overlays — responsive TL/TR/modal/portals (cx-06)
+    // Constellation SC Overlays — experimental: solo shop-premium; ampliar al sitio cuando se valide.
     if ( is_page_template( 'templates/shop-premium.php' ) ) {
         wp_enqueue_style(
             'gano-constellation-overlay',
@@ -233,6 +273,14 @@ function gano_child_enqueue_styles() {
             array(),
             '1.0.0',
             true
+        );
+
+        $gano_shop_cold = get_stylesheet_directory() . '/css/gano-shop-cold-tokens.css';
+        wp_enqueue_style(
+            'gano-shop-cold-tokens',
+            get_stylesheet_directory_uri() . '/css/gano-shop-cold-tokens.css',
+            array( 'gano-child-style' ),
+            file_exists( $gano_shop_cold ) ? (string) filemtime( $gano_shop_cold ) : '1.0.0'
         );
     }
 
@@ -574,6 +622,37 @@ function gano_register_shop_page() {
             'post_author' => 1,
             'meta_input'  => array( '_wp_page_template' => 'templates/shop-premium.php' ),
         ) );
+    }
+}
+
+/**
+ * Crea la página “Cómo comprar” si no existe (admin, una vez por carga hasta existir).
+ * Herramienta principal de conversión: explica checkout Reseller y reduce fricción.
+ */
+add_action( 'admin_init', 'gano_register_comenzar_aqui_page', 26 );
+function gano_register_comenzar_aqui_page(): void {
+    if ( ! current_user_can( 'publish_pages' ) ) {
+        return;
+    }
+    if ( get_page_by_path( 'comenzar-aqui' ) instanceof WP_Post ) {
+        return;
+    }
+    $created = wp_insert_post(
+        array(
+            'post_type'    => 'page',
+            'post_title'   => __( 'Cómo comprar — registro y checkout', 'gano-child' ),
+            'post_name'    => 'comenzar-aqui',
+            'post_content' => '',
+            'post_status'  => 'publish',
+            'post_author'  => get_current_user_id() ?: 1,
+            'meta_input'   => array(
+                '_wp_page_template' => 'templates/page-comenzar-aqui.php',
+            ),
+        ),
+        true
+    );
+    if ( is_wp_error( $created ) ) {
+        return;
     }
 }
 

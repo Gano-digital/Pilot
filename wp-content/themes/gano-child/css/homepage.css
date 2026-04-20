@@ -543,6 +543,23 @@
     }
 }
 
+/* Enlace secundario a la guía de checkout (conversión) */
+.gano-home-comenzar-link {
+    margin-top: 1.25rem;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.gano-home-comenzar-link a {
+    color: rgba(226, 232, 240, 0.88);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+.gano-home-comenzar-link a:hover {
+    color: #fff;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .hero-content,
     .hero-gano::before,
