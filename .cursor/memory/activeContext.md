@@ -1,6 +1,13 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-19._
+_Última actualización: 2026-04-20._
+
+## Snapshot 2026-04-20 (PRs + babysit)
+
+- **PR [#273](https://github.com/Gano-digital/Pilot/pull/273)** (UX/A11y, rama `claude/gifted-dewdney-b958c5`): merge de `main` completado; conflictos resueltos; home incluye **barra de confianza** post-hero + CTA catálogo con `gano_resolve_page_url`. Estado GitHub: **mergeable**, puede quedar **BLOCKED** por ruleset/review.
+- **PR [#278](https://github.com/Gano-digital/Pilot/pull/278)** (landing comenzar-aqui + CSS): ajustes Copilot (a11y gradiente, motion tokens, reduced motion); tema **1.0.6**.
+- **PR [#279](https://github.com/Gano-digital/Pilot/pull/279)** (Constellation v3.2): limpio respecto a `main`; listo cuando toque revisión humana.
+- **Handoff detallado:** [`memory/sessions/2026-04-20-babysit-pr-alignment.md`](../../memory/sessions/2026-04-20-babysit-pr-alignment.md).
 
 ## Snapshot 2026-04-19 (producción + repo)
 
