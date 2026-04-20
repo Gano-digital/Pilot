@@ -17,6 +17,35 @@ require_once get_stylesheet_directory() . '/inc/contact-form-handler.php';
 require_once get_stylesheet_directory() . '/inc/lead-magnet-handler.php';
 
 // =============================================================================
+// 0.4 URL HELPERS — slugs comerciales (catálogo, contacto, esta página, etc.)
+// =============================================================================
+if ( ! function_exists( 'gano_resolve_page_url' ) ) {
+    /**
+     * Resuelve la URL de una página probando varios slugs (p. ej. staging vs producción).
+     *
+     * @param string ...$path_variants Slugs sin barra inicial.
+     * @return string URL absoluta.
+     */
+    function gano_resolve_page_url( string ...$path_variants ): string {
+        foreach ( $path_variants as $slug ) {
+            $slug = trim( $slug, '/' );
+            if ( '' === $slug ) {
+                continue;
+            }
+            $page = get_page_by_path( $slug );
+            if ( $page instanceof WP_Post && 'publish' === $page->post_status ) {
+                return get_permalink( $page );
+            }
+        }
+        $fallback = isset( $path_variants[0] ) ? trim( (string) $path_variants[0], '/' ) : '';
+        if ( '' === $fallback || 'inicio' === $fallback ) {
+            return home_url( '/' );
+        }
+        return home_url( '/' . $fallback . '/' );
+    }
+}
+
+// =============================================================================
 // 0.5 CSS CRÍTICO — Prioridad 1 (inline en wp_head antes de Elementor)
 // =============================================================================
 /**
@@ -39,21 +68,8 @@ function gano_critical_css() {
     }
 
     echo '<style id="gano-critical">';
-    echo ':root {';
-    echo '  --gc-primary: #1B4FD8;';
-    echo '  --gc-secondary: #00C26B;';
-    echo '  --gc-accent: #D4AF37;';
-    echo '  --gc-dark: #05080b;';
-    echo '  --gc-dark-card: rgba(255,255,255,0.03);';
-    echo '  --gc-dark-border: rgba(255,255,255,0.08);';
-    echo '  --gc-content-bg: #f8fafc;';
-    echo '  --gc-text: #e2e8f0;';
-    echo '  --gc-text-muted: #94a3b8;';
-    echo '  --gc-text-light: #1e293b;';
-    echo '  --gc-glow: rgba(27,79,216,0.4);';
-    echo '}';
-    echo '.gano-home { background: var(--gc-dark) !important; color: var(--gc-text) !important; }';
-    echo '.hero-gano { background: radial-gradient(circle at 50% 50%, #1e2530 0%, var(--gc-dark) 100%) !important; }';
+    echo '.gano-home { background: var(--gano-color-surface-dark, #05080b) !important; color: var(--gano-color-text-on-dark, #e2e8f0) !important; }';
+    echo '.hero-gano { background: radial-gradient(circle at 50% 50%, var(--gano-gray-900, #1e2530) 0%, var(--gano-color-surface-dark, #05080b) 100%) !important; }';
     echo '</style>';
 }
 
@@ -127,11 +143,41 @@ function gano_child_enqueue_styles() {
 
     // Homepage SOTA — solo en front page
     if ( is_front_page() ) {
-        wp_enqueue_style( 'gano-homepage-css', get_stylesheet_directory_uri() . '/css/homepage.css', array( 'gano-child-style' ), '1.0.0' );
+        $homepage_css_path = get_stylesheet_directory() . '/css/homepage.css';
+        $homepage_css_ver  = file_exists( $homepage_css_path ) ? (string) filemtime( $homepage_css_path ) : wp_get_theme()->get( 'Version' );
+        wp_enqueue_style( 'gano-homepage-css', get_stylesheet_directory_uri() . '/css/homepage.css', array( 'gano-child-style' ), $homepage_css_ver );
+
+        $homepage_js_path = get_stylesheet_directory() . '/js/gano-homepage.js';
+        $homepage_js_ver  = file_exists( $homepage_js_path ) ? (string) filemtime( $homepage_js_path ) : wp_get_theme()->get( 'Version' );
+        wp_enqueue_script(
+            'gano-homepage-js',
+            get_stylesheet_directory_uri() . '/js/gano-homepage.js',
+            array(),
+            $homepage_js_ver,
+            true
+        );
+        wp_localize_script(
+            'gano-homepage-js',
+            'ganoHomepageConfig',
+            array(
+                'leadEndpoint' => rest_url( 'gano/v1/lead-capture' ),
+            )
+        );
     }
 
     // Navegación sticky — todas las páginas
     wp_enqueue_style( 'gano-nav-css', get_stylesheet_directory_uri() . '/css/gano-nav.css', array( 'gano-child-style' ), '1.0.0' );
+
+    // Página de conversión — registro / flujo de compra Reseller
+    if ( is_page_template( 'templates/page-comenzar-aqui.php' ) ) {
+        $gano_start_css = get_stylesheet_directory() . '/css/gano-start-journey.css';
+        wp_enqueue_style(
+            'gano-start-journey',
+            get_stylesheet_directory_uri() . '/css/gano-start-journey.css',
+            array( 'gano-child-style' ),
+            file_exists( $gano_start_css ) ? (string) filemtime( $gano_start_css ) : '1.0.0'
+        );
+    }
 
     // Chat IA — se carga con nonce CSRF (V-05 Fix)
     wp_enqueue_style( 'gano-chat-css', get_stylesheet_directory_uri() . '/css/gano-chat.css', array(), '1.2.0' );
@@ -149,13 +195,27 @@ function gano_child_enqueue_styles() {
     wp_enqueue_style( 'gano-quiz-css', get_stylesheet_directory_uri() . '/css/gano-quiz.css', array(), '1.0.0' );
     wp_enqueue_script( 'gano-quiz-js', get_stylesheet_directory_uri() . '/js/gano-sovereignty-quiz.js', array(), '1.0.0', true );
 
-    // Custom Cursor (Phase 4 - Visual Polish)
-    wp_enqueue_style( 'gano-cursor-style', get_stylesheet_directory_uri() . '/css/gano-cursor.css', array(), '1.1.0' );
-    wp_enqueue_script( 'gano-cursor-js', get_stylesheet_directory_uri() . '/js/gano-cursor.js', array(), '1.1.0', true );
+    // Custom Cursor — WC3 guantelete (atlas en assets/cursor). Mitigar: add_filter( 'gano_enable_wc3_cursor', '__return_false' ); (MU-plugin o snippets).
+    if ( apply_filters( 'gano_enable_wc3_cursor', true ) ) {
+        $gano_cursor_css = get_stylesheet_directory() . '/css/gano-cursor.css';
+        $gano_cursor_js  = get_stylesheet_directory() . '/js/gano-cursor.js';
+        wp_enqueue_style(
+            'gano-cursor-style',
+            get_stylesheet_directory_uri() . '/css/gano-cursor.css',
+            array(),
+            file_exists( $gano_cursor_css ) ? (string) filemtime( $gano_cursor_css ) : '2.0.0'
+        );
+        wp_enqueue_script(
+            'gano-cursor-js',
+            get_stylesheet_directory_uri() . '/js/gano-cursor.js',
+            array(),
+            file_exists( $gano_cursor_js ) ? (string) filemtime( $gano_cursor_js ) : '2.0.0',
+            true
+        );
+    }
 
     // GSAP 3 Core & Plugins — Solo en páginas que lo necesitan (Phase 5 - SOTA Animation)
-    $needs_gsap = is_front_page()
-        || is_page_template( 'templates/page-sota-hub.php' )
+    $needs_gsap = is_page_template( 'templates/page-sota-hub.php' )
         || is_page_template( 'templates/sota-single-template.php' )
         || is_page_template( 'templates/shop-premium.php' )
         || is_page_template( 'templates/page-ecosistemas.php' );
@@ -191,7 +251,6 @@ function gano_child_enqueue_styles() {
     // Detecta la clase .gano-constellation-wrap en páginas/templates que la incluyan.
     wp_register_script( 'gano-constellation', get_stylesheet_directory_uri() . '/js/gano-constellation.js', array(), '1.0.0', true );
     if (
-        is_front_page() ||
         is_page_template( 'templates/page-sota-hub.php' ) ||
         is_page_template( 'templates/sota-single-template.php' )
     ) {
@@ -207,7 +266,7 @@ function gano_child_enqueue_styles() {
         wp_enqueue_script( 'gano-bundle-quiz-js', get_stylesheet_directory_uri() . '/js/gano-bundle-quiz.js', array(), '1.0.0', true );
     }
 
-    // Constellation SC Overlays — responsive TL/TR/modal/portals (cx-06)
+    // Constellation SC Overlays — experimental: solo shop-premium; ampliar al sitio cuando se valide.
     if ( is_page_template( 'templates/shop-premium.php' ) ) {
         wp_enqueue_style(
             'gano-constellation-overlay',
@@ -221,6 +280,45 @@ function gano_child_enqueue_styles() {
             array(),
             '1.0.0',
             true
+        );
+
+        $gano_shop_cold = get_stylesheet_directory() . '/css/gano-shop-cold-tokens.css';
+        wp_enqueue_style(
+            'gano-shop-cold-tokens',
+            get_stylesheet_directory_uri() . '/css/gano-shop-cold-tokens.css',
+            array( 'gano-child-style' ),
+            file_exists( $gano_shop_cold ) ? (string) filemtime( $gano_shop_cold ) : '1.0.0'
+        );
+    }
+
+    // Smart catalog UX — shared by commercial templates (grid/family/guided + comparator + analytics hooks)
+    $is_commerce_template =
+        is_front_page() ||
+        is_page_template( 'templates/shop-premium.php' ) ||
+        is_page_template( 'templates/page-ecosistemas.php' ) ||
+        is_page_template( 'templates/page-seo-landing.php' );
+    if ( $is_commerce_template ) {
+        wp_enqueue_style(
+            'gano-catalog-intelligence-css',
+            get_stylesheet_directory_uri() . '/css/gano-catalog-intelligence.css',
+            array( 'gano-child-style', 'gano-sota-convergence' ),
+            '1.0.0'
+        );
+        wp_enqueue_script(
+            'gano-catalog-intelligence-js',
+            get_stylesheet_directory_uri() . '/js/gano-catalog-intelligence.js',
+            array(),
+            '1.0.0',
+            true
+        );
+        wp_localize_script(
+            'gano-catalog-intelligence-js',
+            'ganoCatalogConfig',
+            array(
+                'defaultMode' => gano_resolve_catalog_mode( $_GET['catalog_mode'] ?? null ),
+                'modes'       => gano_get_catalog_nav_modes(),
+                'guided'      => gano_get_catalog_guided_intents(),
+            )
         );
     }
 
@@ -419,17 +517,14 @@ add_filter( 'script_loader_tag', function( string $tag, string $handle ): string
 }, 10, 2 );
 
 /**
- * Precargar fuentes críticas para evitar FOIT (flash of invisible text).
- * Ajustar las URLs si se cambia la tipografía en Elementor.
+ * Prioridad de fetch para el hero image de Elementor y fetchpriority alto en img LCP.
+ * Ajustar los selectores si cambia la estructura del hero en Elementor.
  */
 add_action( 'wp_head', function() {
     // Solo en frontend (no wp-admin)
     if ( is_admin() ) {
         return;
     }
-    // Fuente principal — si se usa Google Fonts vía Elementor, agregar aquí la URL del woff2
-    // $font_url = 'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hiA.woff2';
-    // echo '<link rel="preload" href="' . esc_url( $font_url ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
 
     // fetchpriority en img hero via JavaScript inline mínimo (Elementor no expone PHP hook para esto)
     // Solo se aplica en homepage para no afectar otras páginas ni el admin
@@ -480,6 +575,26 @@ add_action( 'wp_head', function() {
 }, 2 );
 
 /**
+ * Fix #222 — Fallback de imagen hero para el widget Imagen de Elementor.
+ *
+ * Cuando Elementor almacena attachment_id = 0 (imagen sin registro en la BD),
+ * el widget renderiza sin <img> o con el placeholder genérico de Elementor.
+ * Este filtro sustituye el placeholder URL por hero-datacenter.jpg del tema,
+ * asegurando que la sección hero siempre muestre una imagen coherente con la
+ * marca hasta que el admin registre la imagen definitiva en la Biblioteca.
+ *
+ * Elementor: 'elementor/image_placeholder' (desde Elementor 3.x).
+ * Solo actúa en el frontend, no en el editor wp-admin.
+ */
+add_filter( 'elementor/image_placeholder', 'gano_elementor_image_placeholder', 10, 1 );
+function gano_elementor_image_placeholder( string $placeholder ): string {
+    if ( is_admin() ) {
+        return $placeholder;
+    }
+    return esc_url( get_stylesheet_directory_uri() . '/assets/images/hero-datacenter.jpg' );
+}
+
+/**
  * Agregar etiqueta de idioma y charset explícito (mejora SEO y accesibilidad).
  */
 add_filter( 'language_attributes', function( string $output ): string {
@@ -514,6 +629,37 @@ function gano_register_shop_page() {
             'post_author' => 1,
             'meta_input'  => array( '_wp_page_template' => 'templates/shop-premium.php' ),
         ) );
+    }
+}
+
+/**
+ * Crea la página “Cómo comprar” si no existe (admin, una vez por carga hasta existir).
+ * Herramienta principal de conversión: explica checkout Reseller y reduce fricción.
+ */
+add_action( 'admin_init', 'gano_register_comenzar_aqui_page', 26 );
+function gano_register_comenzar_aqui_page(): void {
+    if ( ! current_user_can( 'publish_pages' ) ) {
+        return;
+    }
+    if ( get_page_by_path( 'comenzar-aqui' ) instanceof WP_Post ) {
+        return;
+    }
+    $created = wp_insert_post(
+        array(
+            'post_type'    => 'page',
+            'post_title'   => __( 'Cómo comprar — registro y checkout', 'gano-child' ),
+            'post_name'    => 'comenzar-aqui',
+            'post_content' => '',
+            'post_status'  => 'publish',
+            'post_author'  => get_current_user_id() ?: 1,
+            'meta_input'   => array(
+                '_wp_page_template' => 'templates/page-comenzar-aqui.php',
+            ),
+        ),
+        true
+    );
+    if ( is_wp_error( $created ) ) {
+        return;
     }
 }
 
@@ -812,7 +958,7 @@ function gano_render_cta_icons() {
         ),
         array(
             'icon'  => 'fa-circle-check',
-            'label' => 'Uptime 99,9 %',
+            'label' => 'Uptime 99,9%',
             'url'   => '',
             'title' => '',
         ),
@@ -995,14 +1141,66 @@ function gano_rstore_cart_url( $pfid, $duration = 12 ) {
  * Returns normalized catalog status.
  *
  * @param mixed $raw_status Raw status value.
- * @return string active|pending|coming-soon
+ * @return string active|pending|coming-soon|sync-missing
  */
 function gano_normalize_catalog_status( $raw_status ) {
 	$status = is_string( $raw_status ) ? sanitize_key( $raw_status ) : '';
-	if ( in_array( $status, array( 'active', 'pending', 'coming-soon' ), true ) ) {
+	if ( in_array( $status, array( 'active', 'pending', 'coming-soon', 'sync-missing' ), true ) ) {
 		return $status;
 	}
 	return 'pending';
+}
+
+/**
+ * Determines if a catalog price string can be treated as commercially valid.
+ *
+ * @param mixed $raw_price Price string.
+ * @return bool
+ */
+function gano_catalog_price_is_valid( $raw_price ) {
+	$price = is_string( $raw_price ) ? trim( $raw_price ) : '';
+	if ( '' === $price ) {
+		return false;
+	}
+
+	$normalized = sanitize_text_field( wp_strip_all_tags( strtolower( $price ) ) );
+	if ( str_contains( $normalized, 'pendiente' ) || str_contains( $normalized, 'consultar' ) ) {
+		return false;
+	}
+
+	return (bool) preg_match( '/\d/', $normalized );
+}
+
+/**
+ * Resolves robust commercial status for catalog item.
+ *
+ * @param array<string, mixed> $product Product row.
+ * @return string active|pending|coming-soon|sync-missing
+ */
+function gano_catalog_product_status( array $product ) {
+	$status = gano_normalize_catalog_status( $product['status'] ?? '' );
+	if ( 'coming-soon' === $status ) {
+		return $status;
+	}
+
+	$pfid = isset( $product['pfid'] ) ? (string) $product['pfid'] : '';
+	$has_external = ! empty( $product['external_url'] );
+	$is_domain = 'domain_search' === $pfid;
+	$has_price = gano_catalog_price_is_valid( $product['price'] ?? '' );
+
+	if ( ! $has_price ) {
+		return 'sync-missing';
+	}
+
+	if ( $has_external || $is_domain ) {
+		return 'active';
+	}
+
+	if ( '' === $pfid || 'PENDING_RCC' === $pfid ) {
+		return 'pending';
+	}
+
+	return $status;
 }
 
 /**
@@ -1027,6 +1225,71 @@ function gano_get_reseller_catalog_categories() {
 }
 
 /**
+ * Returns available navigation modes for the commercial catalog.
+ *
+ * @return array<string, array<string, string>>
+ */
+function gano_get_catalog_nav_modes() {
+	return array(
+		'grid'   => array(
+			'label'       => 'Vista general',
+			'description' => 'Todos los productos en una sola grilla filtrable.',
+		),
+		'family' => array(
+			'label'       => 'Por familia',
+			'description' => 'Organiza la navegación por familias comerciales.',
+		),
+		'guided' => array(
+			'label'       => 'Asistente',
+			'description' => 'Flujo guiado por objetivo del negocio.',
+		),
+	);
+}
+
+/**
+ * Sanitizes and resolves a valid catalog navigation mode.
+ *
+ * @param string|null $candidate Candidate mode.
+ * @return string grid|family|guided
+ */
+function gano_resolve_catalog_mode( $candidate = null ) {
+	$modes = array_keys( gano_get_catalog_nav_modes() );
+	$mode  = is_string( $candidate ) ? sanitize_key( $candidate ) : '';
+	if ( in_array( $mode, $modes, true ) ) {
+		return $mode;
+	}
+	return 'grid';
+}
+
+/**
+ * Builds guided intents for smart catalog navigation.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function gano_get_catalog_guided_intents() {
+	return array(
+		array(
+			'id'          => 'launch',
+			'label'       => 'Lanzar o validar',
+			'description' => 'Iniciar rápido con costos controlados y base sólida.',
+			'categories'  => array( 'hostingwebcpanel', 'wordpressadministrado', 'dominios' ),
+		),
+		array(
+			'id'          => 'scale',
+			'label'       => 'Escalar conversiones',
+			'description' => 'Más capacidad, resiliencia y seguridad para e-commerce o campañas.',
+			'categories'  => array( 'webhostingplus', 'vpshighperformance', 'seguridadweb', 'certificadosssl' ),
+		),
+		array(
+			'id'          => 'enterprise',
+			'label'       => 'Operación crítica',
+			'description' => 'Alta disponibilidad, soporte prioritario y controles empresariales.',
+			'categories'  => array( 'servidoresvps', 'vpshighperformance', 'correomicrosoft365', 'seguridadweb' ),
+		),
+	);
+}
+
+/**
  * Builds VPS catalog URL for the current reseller storefront.
  *
  * @return string
@@ -1046,6 +1309,7 @@ function gano_rstore_vps_catalog_url() {
  * - active: CTA opens Reseller cart
  * - pending: CTA redirects to contacto while PFID/RCC is pending
  * - coming-soon: CTA disabled with "Próximamente"
+ * - sync-missing: product remains visible, price not trusted, CTA opens details/contact
  *
  * @return array<int, array<string, string>>
  */
@@ -1554,7 +1818,7 @@ function gano_get_reseller_catalog_products() {
  */
 function gano_resolver_catalog_cta( $product ) {
 	$pfid      = isset( $product['pfid'] ) ? (string) $product['pfid'] : '';
-	$status    = gano_normalize_catalog_status( $product['status'] ?? '' );
+	$status    = gano_catalog_product_status( is_array( $product ) ? $product : array() );
 	$cta_label = isset( $product['cta_label'] ) ? (string) $product['cta_label'] : '';
 	$label     = '' !== $cta_label ? $cta_label : 'Adquirir Nodo';
 
@@ -1585,6 +1849,18 @@ function gano_resolver_catalog_cta( $product ) {
 		);
 	}
 
+	if ( 'sync-missing' === $status ) {
+		$details_url = ! empty( $product['details_url'] )
+			? esc_url( (string) $product['details_url'] )
+			: esc_url( home_url( '/contacto/' ) );
+		return array(
+			'url'    => $details_url,
+			'label'  => 'Ver detalles',
+			'target' => '',
+			'status' => 'sync-missing',
+		);
+	}
+
 	if ( 'pending' === $status || 'PENDING_RCC' === $pfid ) {
 		return array(
 			'url'    => esc_url( home_url( '/contacto/' ) ),
@@ -1598,9 +1874,9 @@ function gano_resolver_catalog_cta( $product ) {
 	if ( '#' === $cart_url ) {
 		return array(
 			'url'    => esc_url( home_url( '/contacto/' ) ),
-			'label'  => 'Hablar con ventas',
+			'label'  => 'Ver detalles',
 			'target' => '',
-			'status' => 'pending',
+			'status' => 'sync-missing',
 		);
 	}
 

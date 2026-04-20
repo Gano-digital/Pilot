@@ -6,13 +6,15 @@ Esta carpeta concentra **registros estructurados** para que cualquier instancia 
 
 | Orden | Archivo | Para qué sirve |
 |------:|---------|----------------|
-| 0 | [2026-04-10-reporte-tecnico-extenso-claude.md](2026-04-10-reporte-tecnico-extenso-claude.md) | **Reporte técnico consolidado** — problemas (hosting E-01–E-12, GitHub/runners, deploy, seguridad repo), soluciones, estrategias intentadas, checklist P0–P3, índice de rutas. **Leer primero** para handoff completo a Claude. |
-| 1 | [2026-04-08-reporte-handoff-ssh-deploy-tokens.md](2026-04-08-reporte-handoff-ssh-deploy-tokens.md) | **Handoff SSH/Deploy/CI + tokens** — huella verificada, hipótesis IP, PR #160, enlaces a runs. Útil si el foco es solo deploy/SSH. |
-| 2 | [README.md](README.md) (este) | Navegación y convenciones. |
-| 3 | [01-historial-y-contexto-cursor-2026-04.md](01-historial-y-contexto-cursor-2026-04.md) | Línea de tiempo, decisiones, consolidación de PRs, paso de documentación. |
-| 4 | [02-pendientes-detallados.md](02-pendientes-detallados.md) | Inventario exhaustivo de pendientes por área y prioridad. |
-| 5 | [03-referencia-tecnica-y-faq.md](03-referencia-tecnica-y-faq.md) | Workflows, rutas canónicas, respuestas cortas a dudas recurrentes. |
-| 6 | [dispatch-prompt.md](dispatch-prompt.md) + [dispatch-queue.json](dispatch-queue.json) | **Cola programable para Claude** en el repo: qué puede hacer el agente sin wp-admin ni secrets; scripts en `scripts/claude_dispatch.py`. |
+| 0 | [../sessions/2026-04-19-trazabilidad-ops-wave-handoff.md](../sessions/2026-04-19-trazabilidad-ops-wave-handoff.md) | **Estado actual (abr 2026):** hecho/pendiente post-ola ops, prioridades, enlaces GitHub **#263**, herramientas (PowerShell/`gh`/SCP). **Leer primero** si vas a retomar trabajo en abril 2026. |
+| 1 | [2026-04-10-reporte-tecnico-extenso-claude.md](2026-04-10-reporte-tecnico-extenso-claude.md) | **Reporte técnico consolidado** — problemas (hosting E-01–E-12, GitHub/runners, deploy, seguridad repo), soluciones, estrategias intentadas, checklist P0–P3, índice de rutas. Contexto histórico profundo. |
+| 2 | [2026-04-08-reporte-handoff-ssh-deploy-tokens.md](2026-04-08-reporte-handoff-ssh-deploy-tokens.md) | **Handoff SSH/Deploy/CI + tokens** — huella verificada, hipótesis IP, PR #160, enlaces a runs. Útil si el foco es solo deploy/SSH. |
+| 3 | [README.md](README.md) (este) | Navegación y convenciones. |
+| 4 | [01-historial-y-contexto-cursor-2026-04.md](01-historial-y-contexto-cursor-2026-04.md) | Línea de tiempo, decisiones, consolidación de PRs, paso de documentación. |
+| 5 | [02-pendientes-detallados.md](02-pendientes-detallados.md) | Inventario exhaustivo de pendientes por área y prioridad. |
+| 6 | [03-referencia-tecnica-y-faq.md](03-referencia-tecnica-y-faq.md) | Workflows, rutas canónicas, respuestas cortas a dudas recurrentes. |
+| 7 | [dispatch-status-2026-04-19.md](dispatch-status-2026-04-19.md) | Estado post-ola ops; prioridades P0–P2 para handoff. |
+| 8 | [dispatch-prompt.md](dispatch-prompt.md) + [dispatch-queue.json](dispatch-queue.json) | **Cola programable para Claude** en el repo: qué puede hacer el agente sin wp-admin ni secrets; scripts en `scripts/claude_dispatch.py`. |
 
 ## Cola dispatch (Claude en el workspace)
 
@@ -53,6 +55,9 @@ Esto es **independiente** de la cola Copilot (`.github/agent-queue/*.json` — *
 - **Salida / regreso (cPanel, DNS, reanudar agentes 08):** [`../notes/nota-salida-cpanel-dns-y-agentes-2026-04.md`](../notes/nota-salida-cpanel-dns-y-agentes-2026-04.md)
 - [`../sessions/2026-04-03-noche-continuidad-manana.md`](../sessions/2026-04-03-noche-continuidad-manana.md) — ejemplo: qué se hizo en repo vs qué queda en GitHub (Copilot/Actions).
 - [`2026-04-12-verificacion-tasks-y-ejecucion.md`](2026-04-12-verificacion-tasks-y-ejecucion.md) — verificación cruzada TASKS/memoria Claude + ejecución operativa (post-fase 0).
+- [`../sessions/2026-04-17-claude-dispatch-continuacion.md`](../sessions/2026-04-17-claude-dispatch-continuacion.md) — continuidad de dispatch en repo: alineación `TASKS.md`, validaciones técnicas y cierre operativo de tareas `cd-repo-*`.
+- [`../sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`](../sessions/2026-04-19-trazabilidad-ops-wave-handoff.md) — **ola ops producción (abr 2026):** trazabilidad hecho/pendiente, política bots, limpieza plugins, convergencia repo↔servidor; enlaza auditoría SSH y issue [#263](https://github.com/Gano-digital/Pilot/issues/263).
+- [`dispatch-status-2026-04-19.md`](dispatch-status-2026-04-19.md) — prioridades P0–P2 para Claude tras cerrar cola `cd-repo-*`.
 
 ## Informes PDF para handoff (Claude / junta)
 
@@ -66,7 +71,7 @@ Los `.pdf` suelen estar en `.gitignore`; no esperes el binario en el remoto.
 
 Cuando se cierre un bloque grande (deploy, RCC, eliminación de wp-file-manager, cierre masivo de issues), actualizar:
 
-1. [`02-pendientes-detallados.md`](02-pendientes-detallados.md) y [`TASKS.md`](../../TASKS.md).
+1. [`02-pendientes-detallados.md`](02-pendientes-detallados.md), [`TASKS.md`](../../TASKS.md), [`.cursor/memory/activeContext.md`](../../.cursor/memory/activeContext.md) y [`dispatch-status-YYYY-MM-DD.md`](dispatch-status-2026-04-19.md) (nueva fecha si aplica).
 2. Opcionalmente añadir una entrada datada al final de [`01-historial-y-contexto-cursor-2026-04.md`](01-historial-y-contexto-cursor-2026-04.md) o crear `memory/sessions/YYYY-MM-DD-*.md` y enlazarlo aquí.
 
 ## Tooling opcional incorporado (abril 2026)

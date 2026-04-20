@@ -1,0 +1,239 @@
+/**
+ * Página “Cómo comprar” — registro y checkout (conversión).
+ * Carga solo con templates/page-comenzar-aqui.php
+ */
+
+.gano-start-journey__hero .gano-trust-hero__sub {
+    max-width: 42rem;
+}
+
+.gano-start-journey__lede {
+    font-size: 1.05rem;
+    line-height: 1.65;
+}
+
+.gano-start-journey__hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1.75rem;
+}
+
+.gano-start-journey__trust {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+}
+
+.gano-start-journey__trust-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.25rem 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.gano-start-journey__trust-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 1.1rem;
+    border-radius: var(--gano-radius-md, 12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.gano-start-journey__trust-list strong {
+    font-family: var(--gano-font-heading, inherit);
+    font-size: 0.95rem;
+    color: var(--gano-purple, #8b5cf6);
+    letter-spacing: 0.02em;
+}
+
+.gano-start-journey__trust-list span {
+    font-size: 0.82rem;
+    color: var(--gano-text-slate, #94a3b8);
+    line-height: 1.4;
+}
+
+.gano-start-journey__intro {
+    margin-bottom: 2rem;
+}
+
+.gano-start-journey__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.5rem;
+    counter-reset: gano-step;
+}
+
+@media (min-width: 900px) {
+    .gano-start-journey__steps {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+    }
+}
+
+.gano-start-journey__steps > li {
+    position: relative;
+    margin: 0;
+    padding: 1.5rem 1.35rem 1.35rem;
+    border-radius: var(--gano-radius-lg, 16px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: linear-gradient(165deg, rgba(23, 31, 51, 0.45), rgba(11, 17, 24, 0.6));
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.gano-start-journey__steps > li::before {
+    counter-increment: gano-step;
+    content: counter(gano-step);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 0.85rem;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: #0b1326;
+    background: linear-gradient(135deg, #c0c1ff, #4cd7f6);
+}
+
+.gano-start-journey__steps h3 {
+    font-size: 1.05rem;
+    margin: 0 0 0.65rem;
+    color: var(--gano-white, #fff);
+}
+
+.gano-start-journey__steps p {
+    margin: 0 0 0.5rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--gano-text-slate, #94a3b8);
+}
+
+.gano-start-journey__step-link {
+    margin: 0.75rem 0 0 !important;
+    font-size: 0.88rem !important;
+}
+
+.gano-start-journey__step-link a {
+    color: var(--gano-purple, #a78bfa);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(167, 139, 250, 0.35);
+}
+
+.gano-start-journey__step-link a:hover {
+    color: var(--gano-white, #fff);
+    border-bottom-color: rgba(255, 255, 255, 0.35);
+}
+
+.gano-start-journey__paths {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .gano-start-journey__paths {
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+    }
+}
+
+.gano-start-journey__path {
+    padding: 1.75rem 1.5rem;
+    border-radius: var(--gano-radius-lg, 16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.gano-start-journey__path--primary {
+    border-color: rgba(192, 193, 255, 0.35);
+    background: linear-gradient(160deg, rgba(128, 131, 255, 0.08), rgba(11, 19, 38, 0.5));
+}
+
+.gano-start-journey__path h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    color: var(--gano-white, #fff);
+}
+
+.gano-start-journey__path p {
+    color: var(--gano-text-slate, #94a3b8);
+    line-height: 1.55;
+    margin-bottom: 1.25rem;
+}
+
+.gano-start-journey__path-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.gano-start-journey__faq .gano-start-journey__details {
+    margin-bottom: 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--gano-radius-md, 12px);
+    background: rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.gano-start-journey__faq .gano-start-journey__details summary {
+    cursor: pointer;
+    padding: 1rem 1.15rem;
+    font-weight: 600;
+    color: var(--gano-white, #fff);
+    list-style: none;
+}
+
+.gano-start-journey__faq .gano-start-journey__details summary::-webkit-details-marker {
+    display: none;
+}
+
+.gano-start-journey__faq .gano-start-journey__details summary::after {
+    content: "+";
+    float: right;
+    opacity: 0.6;
+    font-weight: 400;
+}
+
+.gano-start-journey__faq .gano-start-journey__details[open] summary::after {
+    content: "−";
+}
+
+.gano-start-journey__faq .gano-start-journey__details summary:focus-visible {
+    outline: 2px solid var(--gano-gold, #d4af37);
+    outline-offset: -2px;
+}
+
+.gano-start-journey__faq .gano-start-journey__details p {
+    margin: 0;
+    padding: 0 1.15rem 1.1rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--gano-text-slate, #94a3b8);
+}
+
+.gano-start-journey__faq .gano-start-journey__details p a {
+    color: var(--gano-purple, #a78bfa);
+}
+
+.gano-start-journey__final-cta {
+    text-align: center;
+}
+
+.gano-start-journey__final-copy {
+    max-width: 36rem;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0.9;
+}
+
+.gano-start-journey__final-cta .gano-start-journey__hero-cta {
+    justify-content: center;
+}

@@ -14,7 +14,7 @@
 get_header();
 ?>
 
-<main id="gano-main-content" class="gano-ecosistemas-page gano-km-shell">
+<main id="gano-main-content" class="gano-ecosistemas-page gano-km-shell gano-catalog-shell" data-gano-catalog>
 
   <!-- ── HERO DE SECCIÓN ─────────────────────────────────────────── -->
   <section class="gano-ecosistemas-hero gano-dark-section gano-km-shell">
@@ -61,6 +61,7 @@ get_header();
           'cta_primario' => 'Elegir Núcleo Prime',
           'cta_secundario' => 'Ver especificaciones',
           'rcc_slug'     => 'wordpress-basico',
+          'catalog_cat'  => 'wordpressadministrado',
           'pfid_const'   => 'GANO_PFID_HOSTING_ECONOMIA',
           'enlace_detalle' => '/ecosistemas/nucleo-prime',
         ],
@@ -87,6 +88,7 @@ get_header();
           'cta_primario' => 'Activar Fortaleza Delta',
           'cta_secundario' => 'Comparar planes',
           'rcc_slug'     => 'wordpress-deluxe',
+          'catalog_cat'  => 'wordpressadministrado',
           'pfid_const'   => 'GANO_PFID_HOSTING_DELUXE',
           'enlace_detalle' => '/ecosistemas/fortaleza-delta',
         ],
@@ -113,6 +115,7 @@ get_header();
           'cta_primario' => 'Solicitar Bastión SOTA',
           'cta_secundario' => 'Hablar con ventas',
           'rcc_slug'     => 'wordpress-ultimate',
+          'catalog_cat'  => 'webhostingplus',
           'pfid_const'   => 'GANO_PFID_HOSTING_PREMIUM',
           'enlace_detalle' => '/ecosistemas/bastion-sota',
         ],
@@ -139,11 +142,31 @@ get_header();
           'cta_primario' => 'Cotizar Ultimate WP',
           'cta_secundario' => 'Hablar con ventas',
           'rcc_slug'     => 'cpanel-ultimate',
+          'catalog_cat'  => 'hostingwebcpanel',
           'pfid_const'   => 'GANO_PFID_HOSTING_ULTIMATE',
           'enlace_detalle' => '/ecosistemas/ultimate-wp',
         ],
       ];
 
+      $catalog_modes = function_exists( 'gano_get_catalog_nav_modes' ) ? gano_get_catalog_nav_modes() : array();
+      ?>
+
+      <div class="gano-catalog-mode-switch" role="group" aria-label="Modo de navegación de ecosistemas">
+        <?php foreach ( $catalog_modes as $mode_key => $mode_meta ) : ?>
+          <button type="button" class="gano-catalog-mode-btn" data-gano-mode="<?php echo esc_attr( $mode_key ); ?>" aria-pressed="false">
+            <?php echo esc_html( $mode_meta['label'] ); ?>
+          </button>
+        <?php endforeach; ?>
+      </div>
+      <p class="gano-catalog-mode-desc" data-gano-mode-description>
+        Cambia la forma de explorar los ecosistemas según tu nivel de madurez.
+      </p>
+      <section class="gano-catalog-guided-panel" data-gano-guided-panel aria-label="Asistente de selección">
+        <ul class="gano-catalog-guided-list" data-gano-guided-list></ul>
+      </section>
+
+      <div id="catalog-container" class="gano-catalog-grid gano-cards-grid">
+      <?php
       foreach ( $planes as $plan ) :
         // NUEVO: Buscar producto RCC dinámicamente via WP_Query
         $product_query = new WP_Query([
@@ -167,7 +190,12 @@ get_header();
         if ( $plan['tag'] ) $card_classes .= ' gano-plan-card--featured';
         ?>
 
-        <article class="<?php echo esc_attr( $card_classes ); ?> gano-km-card" id="<?php echo esc_attr( $plan['id'] ); ?>">
+        <article class="<?php echo esc_attr( $card_classes ); ?> gano-km-card"
+                 id="<?php echo esc_attr( $plan['id'] ); ?>"
+                 data-category="<?php echo esc_attr( $plan['catalog_cat'] ?? 'wordpressadministrado' ); ?>"
+                 data-product-id="<?php echo esc_attr( sanitize_title( $plan['id'] ) ); ?>"
+                 data-product-name="<?php echo esc_attr( $plan['nombre'] ); ?>"
+                 data-product-price="<?php echo esc_attr( $plan['precio'] ); ?>">
 
           <?php if ( $plan['tag'] ) : ?>
             <span class="gano-plan-badge"><?php echo esc_html( $plan['tag'] ); ?></span>
@@ -209,12 +237,21 @@ get_header();
             <a href="<?php echo esc_url( $plan['enlace_detalle'] ); ?>" class="gano-link-secundario gano-km-btn-secondary">
               <?php echo esc_html( $plan['cta_secundario'] ); ?> →
             </a>
+            <button type="button" class="gano-catalog-compare-toggle" data-gano-compare-toggle aria-pressed="false">
+              Comparar
+            </button>
           </div>
 
         </article>
 
       <?php endforeach; ?>
+      </div>
 
+      <section class="gano-catalog-comparator" data-gano-compare hidden>
+        <h3 class="gano-catalog-comparator-title">Comparador inteligente (hasta 3)</h3>
+        <ul class="gano-catalog-compare-list" data-gano-compare-list></ul>
+        <div class="gano-catalog-compare-grid" data-gano-compare-grid></div>
+      </section>
     </div><!-- .gano-container -->
   </section>
 

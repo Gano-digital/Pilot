@@ -1,102 +1,135 @@
 /* ============================================================
- * GANO DIGITAL — HOMEPAGE STYLES
- * SOTA Aesthetic: Glassmorphism + Cyberpunk Luxury
+ * GANO DIGITAL — HOMEPAGE SOTA 2026
+ * Uniformidad visual + continuidad entre secciones
  * ============================================================ */
 
-:root {
-    /* Legacy variables (mantenidas para compatibilidad) */
-    --gano-blue: #1B4FD8;
-    --gano-green: #00C26B;
-    --gano-orange: #FF6B35;
-    --gano-gold: #D4AF37;
-    --gano-dark: #0F1923;
-    --gano-darker: #05080b;
-    --gano-glass: rgba(255, 255, 255, 0.03);
-    --gano-glass-border: rgba(255, 255, 255, 0.08);
-
-    /* New SOTA variables (gc-*) */
-    --gc-primary: #1B4FD8;
-    --gc-secondary: #00C26B;
-    --gc-accent: #D4AF37;
-    --gc-dark: #05080b;
-    --gc-dark-card: rgba(255,255,255,0.03);
-    --gc-dark-border: rgba(255,255,255,0.08);
-    --gc-content-bg: #f8fafc;
-    --gc-text: #e2e8f0;
-    --gc-text-muted: #94a3b8;
-    --gc-text-light: #1e293b;
-    --gc-glow: rgba(27,79,216,0.4);
-
-    /* Timing */
-    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-/* RESET & GLOBAL */
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-
+.gano-home,
 .gano-home * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
 .gano-home {
-    background: var(--gano-darker);
-    color: #e2e8f0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --gc-primary: var(--gano-color-primary);
+    --gc-secondary: var(--gano-color-secondary);
+    --gc-accent: var(--gano-color-accent);
+    --gc-dark: var(--gano-color-surface-dark);
+    --gc-text: var(--gano-color-text-on-dark);
+    --gc-muted: var(--gano-color-text-muted-on-dark);
+    --gc-outline: var(--gano-color-outline-on-dark);
+    --gc-surface: rgba(11, 17, 24, 0.82);
+    --gc-surface-soft: rgba(15, 25, 35, 0.68);
+    --gc-shell: min(1200px, 92vw);
+    --gc-section-y: clamp(56px, 7vw, 96px);
+    --transition:
+        transform var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
+        box-shadow var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
+        background-color var(--motion-normal, 220ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
+        border-color var(--motion-normal, 220ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
+        color var(--motion-normal, 220ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1));
+    font-family: var(--gano-font-body);
+    color: var(--gc-text);
     overflow-x: hidden;
-    line-height: 1.6;
+    line-height: 1.65;
+    background:
+        radial-gradient(circle at 10% 0%, rgba(212, 175, 55, 0.12), transparent 32%),
+        radial-gradient(circle at 90% 10%, rgba(27, 79, 216, 0.18), transparent 38%),
+        linear-gradient(180deg, #070d14 0%, #0b1118 45%, #0a0f16 100%);
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-/* HERO SECTION */
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.gano-shell {
+    width: var(--gc-shell);
+    margin-inline: auto;
+}
+
+.section-gano.gano-home-section {
+    margin: 0;
+    max-width: none;
+    padding: var(--gc-section-y) 0;
+    border: 0;
+}
+
+.gano-home-section--surface {
+    background: linear-gradient(180deg, rgba(11, 17, 24, 0.72), rgba(15, 25, 35, 0.64));
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.section-title-gano {
+    text-align: center;
+    margin: 0 0 clamp(28px, 3.5vw, 48px);
+}
+
+.section-title-gano h2 {
+    margin: 0 0 10px;
+    font-family: var(--gano-font-heading);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #f8fbff;
+}
+
+.section-title-gano p {
+    margin: 0 auto;
+    max-width: 760px;
+    color: var(--gc-muted);
+    font-size: clamp(0.98rem, 1.7vw, 1.12rem);
+}
 
 .hero-gano {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-height: min(820px, 100vh);
+    display: grid;
+    place-items: center;
     position: relative;
+    isolation: isolate;
     overflow: hidden;
-    background: radial-gradient(circle at 50% 50%, #1e2530 0%, var(--gano-darker) 100%);
-    padding-top: 60px;
 }
 
-.hero-gano::before {
-    content: '';
+.hero-gano::before,
+.hero-gano::after {
+    content: "";
     position: absolute;
-    width: 200%;
-    height: 200%;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231B4FD8' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    animation: moveGrid 20s linear infinite;
-    opacity: 0.3;
-    z-index: 0;
+    inset: -20%;
     pointer-events: none;
 }
 
-@keyframes moveGrid {
-    from {
-        transform: translateY(0);
+.hero-gano::before {
+    background:
+        radial-gradient(circle at 70% 25%, rgba(27, 79, 216, 0.35), transparent 35%),
+        radial-gradient(circle at 25% 70%, rgba(212, 175, 55, 0.2), transparent 42%);
+    filter: blur(6px);
+    animation: ganoHeroPulse 18s ease-in-out infinite;
+}
+
+.hero-gano::after {
+    opacity: 0.2;
+    background-image:
+        linear-gradient(transparent 96%, rgba(148, 163, 184, 0.3) 97%),
+        linear-gradient(90deg, transparent 96%, rgba(148, 163, 184, 0.2) 97%);
+    background-size: 38px 38px;
+}
+
+@keyframes ganoHeroPulse {
+    0%,
+    100% {
+        transform: scale(1) translateY(0);
     }
-    to {
-        transform: translateY(-60px);
+    50% {
+        transform: scale(1.06) translateY(-12px);
     }
 }
 
 .hero-content {
     position: relative;
-    z-index: 2;
-    max-width: 900px;
+    z-index: 1;
     text-align: center;
-    animation: fadeInUp 1s ease-out 0.3s both;
+    max-width: 920px;
+    animation: ganoEnterUp 680ms ease-out both;
 }
 
-@keyframes fadeInUp {
+@keyframes ganoEnterUp {
     from {
         opacity: 0;
-        transform: translateY(40px);
+        transform: translateY(26px);
     }
     to {
         opacity: 1;
@@ -104,376 +137,482 @@
     }
 }
 
-.hero-gano h1 {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: clamp(2.5rem, 8vw, 5rem);
-    font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 20px;
-    letter-spacing: -1px;
+.overline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--gano-font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    color: var(--gc-accent);
+    margin: 0 0 16px;
 }
 
-.hero-gano h1 span {
-    background: linear-gradient(135deg, var(--gano-blue), var(--gano-green));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.hero-content h1 {
+    margin: 0 0 18px;
+    font-family: var(--gano-font-heading);
+    font-size: clamp(2rem, 4.9vw, 4.1rem);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    text-wrap: balance;
 }
 
-.hero-gano p {
-    font-size: 1.2rem;
-    color: #94a3b8;
-    margin-bottom: 40px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.6;
-    animation: fadeInUp 1s ease-out 0.6s both;
+.hero-content p {
+    margin: 0 auto;
+    max-width: 760px;
+    color: var(--gc-muted);
+    font-size: clamp(1rem, 1.7vw, 1.2rem);
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-/* BUTTONS */
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.hero-cta-row {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+.btn-gano,
+.btn-holo {
+    text-decoration: none;
+    border: 0;
+    cursor: pointer;
+}
 
 .btn-gano {
-    background: linear-gradient(135deg, var(--gano-blue), var(--gano-green));
+    background: linear-gradient(120deg, var(--gc-primary), var(--gc-secondary));
     color: #fff;
-    padding: 18px 40px;
-    border-radius: 50px;
-    text-decoration: none;
+    border-radius: 999px;
     font-weight: 700;
-    display: inline-block;
-    box-shadow: 0 10px 30px rgba(27, 79, 216, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0.78rem 1.4rem;
+    box-shadow: 0 10px 28px rgba(27, 79, 216, 0.28);
     transition: var(--transition);
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    animation: fadeInUp 1s ease-out 0.9s both;
 }
 
 .btn-gano:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 194, 107, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 38px rgba(27, 79, 216, 0.34);
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-/* SECTIONS */
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.btn-gano--secondary {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--gc-text);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    box-shadow: none;
+}
 
-.section-gano {
-    padding: 100px 5%;
-    max-width: 1400px;
+.btn-holo {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 46px;
+    border-radius: 999px;
+    padding: 0.78rem 1.4rem;
+    font-weight: 800;
+    font-size: 0.84rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #121212;
+    background:
+        linear-gradient(120deg,
+            var(--gc-accent) 0%,
+            #f3df95 21%,
+            #87a7ff 52%,
+            #7f60ff 79%,
+            var(--gc-accent) 100%);
+    background-size: 240% 240%;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.6),
+        0 10px 30px rgba(212, 175, 55, 0.35);
+    animation: ganoHolo 8s ease-in-out infinite;
+}
+
+@keyframes ganoHolo {
+    0%,
+    100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.hero-proof-bar {
+    margin: 34px 0 0;
+    padding: 16px 18px;
+    list-style: none;
+    border-radius: 16px;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    background: rgba(11, 17, 24, 0.7);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.hero-proof-bar li {
+    display: grid;
+    gap: 2px;
+}
+
+.hero-proof-bar strong {
+    font-family: var(--gano-font-heading);
+    font-size: clamp(1.05rem, 2vw, 1.42rem);
+    color: #fff;
+}
+
+.hero-proof-bar span {
+    font-size: 0.82rem;
+    color: var(--gc-muted);
+}
+
+/* Barra de confianza post-hero (PR #273 — UX) */
+.gano-trust-bar {
+    background: rgba(27, 79, 216, 0.06);
+    border-top: 1px solid rgba(27, 79, 216, 0.15);
+    border-bottom: 1px solid rgba(27, 79, 216, 0.15);
+    padding: 14px clamp(16px, 4vw, 5%);
+}
+
+.gano-trust-bar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px 32px;
+    max-width: var(--gc-shell);
     margin: 0 auto;
 }
 
-.section-title-gano {
-    text-align: center;
-    margin-bottom: 60px;
+.gano-trust-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--gc-muted);
+    font-size: 0.83rem;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
-.section-title-gano h2 {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #fff;
-    margin-bottom: 10px;
+.gano-trust-item svg {
+    color: var(--gano-color-secondary, #00c26b);
+    flex-shrink: 0;
 }
 
-.section-title-gano p {
-    color: #94a3b8;
-    font-size: 1.1rem;
+@media (max-width: 640px) {
+    .gano-trust-bar__inner {
+        gap: 8px 20px;
+    }
+
+    .gano-trust-item {
+        font-size: 0.78rem;
+    }
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-/* ECOSISTEMAS GRID */
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.gano-domain-search-wrap {
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 18px;
+    padding: clamp(16px, 2.2vw, 30px);
+    background: var(--gc-surface-soft);
+}
+
+.gano-catalog-mode-switch {
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.gano-catalog-advanced-toggle {
+    border: 1px dashed rgba(148, 163, 184, 0.36);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--gc-text);
+    border-radius: 999px;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.gano-catalog-advanced-toggle[aria-expanded="true"] {
+    border-color: rgba(212, 175, 55, 0.5);
+    color: var(--gc-accent);
+}
+
+.gano-catalog-advanced-modes {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
 
 .ecosistemas-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin-bottom: 80px;
+    margin-bottom: 20px;
 }
 
 .ecosystem-card {
-    background: var(--gano-glass);
-    border: 1px solid var(--gano-glass-border);
-    border-radius: 20px;
-    padding: 40px;
+    background: var(--gc-surface);
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    border-radius: 18px;
+    padding: clamp(20px, 2.8vw, 32px);
     transition: var(--transition);
-    text-align: center;
-    position: relative;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
-}
-
-.ecosystem-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-    transition: left 0.6s;
-    z-index: 1;
-}
-
-.ecosystem-card:hover::before {
-    left: 100%;
+    min-height: 100%;
 }
 
 .ecosystem-card:hover {
-    transform: translateY(-10px);
-    border-color: var(--gano-gold);
-    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-4px);
+    border-color: rgba(212, 175, 55, 0.55);
+    box-shadow: 0 18px 40px rgba(3, 8, 16, 0.45);
 }
 
 .ecosystem-card h3 {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    font-weight: 800;
-    color: #fff;
-    position: relative;
-    z-index: 2;
+    margin: 0 0 12px;
+    font-family: var(--gano-font-heading);
+    font-size: clamp(1.3rem, 2.1vw, 1.55rem);
+    color: #f9fbff;
 }
 
 .ecosystem-card .price {
-    font-size: 2rem;
+    margin: 0 0 16px;
+    color: var(--gc-accent);
+    font-family: var(--gano-font-heading);
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
     font-weight: 800;
-    color: var(--gano-gold);
-    margin-bottom: 20px;
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    position: relative;
-    z-index: 2;
-}
-
-.ecosystem-card .price small {
-    font-size: 0.6rem;
-    color: #94a3b8;
-    display: block;
-    font-weight: 400;
-    margin-top: 5px;
 }
 
 .ecosystem-card ul {
+    margin: 0 0 20px;
+    padding: 0;
     list-style: none;
-    margin-bottom: 30px;
-    color: #94a3b8;
-    font-size: 0.9rem;
-    position: relative;
-    z-index: 2;
+    display: grid;
+    gap: 8px;
+    color: var(--gc-muted);
+    font-size: 0.95rem;
 }
 
 .ecosystem-card ul li {
-    margin-bottom: 10px;
-    padding-left: 20px;
     position: relative;
+    padding-left: 18px;
 }
 
 .ecosystem-card ul li::before {
-    content: '→';
+    content: "•";
     position: absolute;
     left: 0;
-    color: var(--gano-green);
-    font-weight: bold;
+    color: var(--gc-secondary);
 }
 
-.ecosystem-card .btn-gano {
+.ecosystem-card .btn-gano,
+.ecosystem-card .rstore-add-to-cart {
     width: 100%;
-    animation: none;
     margin-top: auto;
-    position: relative;
-    z-index: 2;
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-/* VALUE PROPOSITION */
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.gano-catalog-mobile-actions {
+    display: none;
+}
 
-.value-section {
-    background: var(--gano-glass);
-    border: 1px solid var(--gano-glass-border);
-    border-radius: 20px;
-    padding: 60px;
-    margin-bottom: 80px;
+.value-section,
+.gano-panel {
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    border-radius: 18px;
+    background: var(--gc-surface);
+    padding: clamp(22px, 3vw, 42px);
 }
 
 .value-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(14px, 2vw, 24px);
 }
 
-.value-item h4 {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 1.2rem;
-    color: var(--gano-gold);
-    margin-bottom: 10px;
-    font-weight: 800;
+.value-item {
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 18px;
+}
+
+.value-item h3 {
+    margin: 0 0 8px;
+    font-family: var(--gano-font-heading);
+    font-size: 1.08rem;
+    color: #f8fbff;
 }
 
 .value-item p {
-    color: #cbd5e1;
-    line-height: 1.6;
+    margin: 0;
+    color: var(--gc-muted);
     font-size: 0.95rem;
-}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-/* METRICS / SLA */
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-
-.metrics-section {
-    text-align: center;
 }
 
 .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(12px, 2vw, 24px);
 }
 
 .metric-box {
-    background: var(--gano-glass);
-    border: 1px solid var(--gano-glass-border);
-    border-radius: 15px;
-    padding: 40px 20px;
+    border-radius: 14px;
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    background: var(--gc-surface);
+    padding: 24px 16px;
+    text-align: center;
     transition: var(--transition);
 }
 
 .metric-box:hover {
-    border-color: var(--gano-green);
-    background: rgba(0, 194, 107, 0.05);
+    border-color: rgba(212, 175, 55, 0.48);
 }
 
 .metric-box .number {
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: var(--gano-green);
-    margin-bottom: 10px;
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0 0 4px;
+    font-size: clamp(1.45rem, 2.5vw, 2.05rem);
+    font-family: var(--gano-font-heading);
+    font-weight: 800;
+    color: var(--gc-accent);
 }
 
 .metric-box .label {
-    color: #94a3b8;
-    font-size: 0.9rem;
+    color: var(--gc-muted);
+    font-size: 0.86rem;
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-/* RESPONSIVE DESIGN */
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-
-@media (max-width: 992px) {
-    .hero-gano {
-        padding-top: 50px;
-    }
-    .section-gano {
-        padding: 80px 5%;
-    }
-    .section-title-gano h2 {
-        font-size: 2rem;
-    }
+.gano-panel {
+    text-align: center;
 }
 
-@media (max-width: 768px) {
-    .hero-gano {
-        height: 90vh;
-        padding-top: 40px;
-    }
+.gano-panel h2 {
+    margin: 0 0 10px;
+    font-size: clamp(1.5rem, 2.8vw, 2.15rem);
+    color: #f8fbff;
+}
 
-    .hero-gano h1 {
-        font-size: 2.5rem;
-    }
+.gano-panel p {
+    margin: 0 auto 20px;
+    color: var(--gc-muted);
+    max-width: 660px;
+}
 
-    .hero-gano p {
-        font-size: 1rem;
-    }
+.gano-lead-form {
+    max-width: 560px;
+    margin: 0 auto;
+    display: grid;
+    gap: 12px;
+}
 
-    .section-gano {
-        padding: 60px 5%;
-    }
+.gano-lead-form input[type="email"] {
+    width: 100%;
+    min-height: 46px;
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.34);
+    background: rgba(255, 255, 255, 0.04);
+    color: #f5f8ff;
+    padding: 0.75rem 0.95rem;
+    font-size: 0.98rem;
+}
 
-    .section-title-gano h2 {
-        font-size: 1.8rem;
-    }
+.gano-lead-form input::placeholder {
+    color: rgba(148, 163, 184, 0.86);
+}
 
-    .value-section {
-        padding: 40px;
-    }
+.gano-lead-form .btn-gano {
+    width: 100%;
+}
 
-    .ecosistemas-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
+.gano-form-status {
+    min-height: 1.3em;
+    margin: 0;
+    color: var(--gc-muted);
+    font-size: 0.86rem;
+}
 
-    .ecosystem-card {
-        padding: 30px;
-    }
+.gano-panel small {
+    color: var(--gc-muted);
+}
 
-    .metrics-grid {
-        grid-template-columns: 1fr 1fr;
-    }
+.gano-panel-cta {
+    margin: 1.6rem 0 0;
+}
 
+@media (max-width: 1024px) {
     .value-grid {
-        gap: 30px;
-    }
-}
-
-@media (max-width: 600px) {
-    .hero-gano {
-        height: 80vh;
-        padding-top: 30px;
-    }
-
-    .hero-gano h1 {
-        font-size: 2rem;
-    }
-
-    .hero-gano p {
-        font-size: 0.95rem;
-    }
-
-    .section-gano {
-        padding: 50px 4%;
-    }
-
-    .section-title-gano h2 {
-        font-size: 1.5rem;
-    }
-
-    .section-title-gano p {
-        font-size: 0.95rem;
-    }
-
-    .ecosystem-card {
-        padding: 20px;
-    }
-
-    .ecosystem-card h3 {
-        font-size: 1.2rem;
-    }
-
-    .ecosystem-card .price {
-        font-size: 1.5rem;
-    }
-
-    .value-section {
-        padding: 30px 20px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .hero-proof-bar {
         grid-template-columns: 1fr;
-        gap: 20px;
+        text-align: left;
     }
 
-    .metric-box .number {
-        font-size: 2rem;
+    .hero-cta-row {
+        flex-direction: column;
+        align-items: stretch;
     }
 
-    .btn-gano {
-        padding: 14px 30px;
-        font-size: 0.9rem;
+    .hero-cta-row .btn-gano,
+    .hero-cta-row .btn-holo {
+        width: 100%;
+    }
+
+    .value-grid,
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ecosistemas-grid .ecosystem-card:nth-child(n + 3) {
+        display: none;
+    }
+
+    .gano-home.catalog-mobile-expanded .ecosistemas-grid .ecosystem-card:nth-child(n + 3) {
+        display: flex;
+    }
+
+    .gano-catalog-mobile-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 8px;
+    }
+}
+
+/* Enlace secundario a la guía de checkout (conversión) */
+.gano-home-comenzar-link {
+    margin-top: 1.25rem;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.gano-home-comenzar-link a {
+    color: rgba(226, 232, 240, 0.88);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+.gano-home-comenzar-link a:hover {
+    color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-content,
+    .hero-gano::before,
+    .btn-holo {
+        animation: none !important;
+    }
+
+    .btn-gano:hover,
+    .btn-holo:hover,
+    .ecosystem-card:hover {
+        transform: none;
     }
 }

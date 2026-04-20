@@ -1,5 +1,49 @@
 # Progress Tracker
 
+## 2026-04-19 — Ola ops producción + convergencia repo ↔ servidor
+
+### Completado
+
+- [x] Auditoría / inventario SSH documentado ([`memory/sessions/2026-04-19-auditoria-ssh-inventario-sota.md`](../../memory/sessions/2026-04-19-auditoria-ssh-inventario-sota.md)).
+- [x] Backups en servidor (DB, `.htaccess`, archivos pre-convergencia).
+- [x] Ajustes operativos: home canónica, menú **Inicio → /**, limpieza de duplicados de página, `gano_pfid_*` en `wp_options`, política bots balanceada, archivos `llms.txt` / `bot-seo-context.md`.
+- [x] Eliminación controlada de plugins inactivos no críticos en producción.
+- [x] Convergencia de 8 archivos críticos: repo `main` → producción por SCP, verificación MD5, flush de caché y rewrites WP-CLI.
+- [x] Índice de trazabilidad y herramientas: [`memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`](../../memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md).
+
+### Pendiente (alta prioridad)
+
+- [ ] Validar PFIDs contra RCC (numéricos vs slugs actuales) y cerrar `gano_pfid_online_storage`.
+- [ ] Contenido final / Elementor sin placeholders; luego Rank Math + GSC.
+- [ ] Wordfence + 2FA en ventana acordada; rotación de tokens (issue [#267](https://github.com/Gano-digital/Pilot/issues/267)).
+
+---
+
+## 2026-04-19 — Homepage SOTA (fase de implementación técnica)
+
+### Completado
+
+- [x] Baseline de hosting por SSH y presupuesto técnico documentado en [`memory/ops/homepage-sota-hosting-baseline-2026-04-17.md`](../../memory/ops/homepage-sota-hosting-baseline-2026-04-17.md).
+- [x] Blueprint UX del homepage en [`memory/content/homepage-sota-blueprint-2026-04-17.md`](../../memory/content/homepage-sota-blueprint-2026-04-17.md).
+- [x] Refactor de [`wp-content/themes/gano-child/front-page.php`](../../wp-content/themes/gano-child/front-page.php):
+  - narrativa de soporte/asesoría/capacitación/seguimiento,
+  - catálogo inteligente con modos avanzados progresivos,
+  - comparador activo y adaptación móvil de cards,
+  - eliminación total de estilos inline y script inline.
+- [x] Rediseño de [`wp-content/themes/gano-child/css/homepage.css`](../../wp-content/themes/gano-child/css/homepage.css) con continuidad visual entre secciones y sin huecos blancos no intencionales.
+- [x] Nuevo handler frontend [`wp-content/themes/gano-child/js/gano-homepage.js`](../../wp-content/themes/gano-child/js/gano-homepage.js) para lead capture y toggles de interacción.
+- [x] Optimización de performance en [`wp-content/themes/gano-child/functions.php`](../../wp-content/themes/gano-child/functions.php):
+  - `gano-homepage.js` encolado solo en front page,
+  - exclusión de GSAP/Constellation en front page cuando no son necesarios.
+- [x] QA técnico en verde:
+  - `php -l front-page.php` y `php -l functions.php`,
+  - `python scripts/qa_catalog_release.py --gate uiux`,
+  - `python scripts/qa_catalog_release.py --gate content`.
+- [x] Paralelización de carga pesada en GitHub:
+  - workflow `seed-copilot-queue.yml` habilitado y ejecutado para `tasks-wave4-ia-content.json` en scopes `docs` y `content_seo`.
+
+---
+
 ## 2026-04-10 — Investigación servidor (capturas cPanel + Installatron) + skills
 
 ### Completado

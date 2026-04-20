@@ -5,7 +5,7 @@ Description:  Child theme de Royal Elementor Kit para Gano Digital. Contiene la 
 Author:       Gano Digital
 Author URI:   https://gano.digital
 Template:     royal-elementor-kit
-Version:      1.0.1
+Version:      1.0.3
 License:      GNU General Public License v3 or later
 Text Domain:  gano-child
 Tags:         hosting, digital-services, colombia
@@ -60,6 +60,19 @@ Tags:         hosting, digital-services, colombia
     --gano-bg-alt:       #F8FAFC;
     --gano-bg-dark:      #0F1923;
 
+    /* Semantic color system (single source of truth) */
+    --gano-color-primary:            var(--gano-blue);
+    --gano-color-primary-strong:     var(--gano-blue-dark);
+    --gano-color-secondary:          var(--gano-green);
+    --gano-color-secondary-strong:   var(--gano-green-dark);
+    --gano-color-accent:             var(--gano-gold);
+    --gano-color-accent-soft:        var(--gano-gold-soft);
+    --gano-color-surface-dark:       var(--gano-dark-deep);
+    --gano-color-surface-dark-soft:  var(--gano-card-sota);
+    --gano-color-text-on-dark:       #E2E8F0;
+    --gano-color-text-muted-on-dark: #94A3B8;
+    --gano-color-outline-on-dark:    rgba(148, 163, 184, 0.28);
+
     /* Tipografía */
     --gano-font-heading: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
     --gano-font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -97,16 +110,10 @@ Tags:         hosting, digital-services, colombia
     --gano-ls-wide:    0.04em;  /* badges, etiquetas */
     --gano-ls-wider:   0.08em;  /* all-caps, overline */
 
-    /* Oro — disponible globalmente (ver también Phase 6) */
-    --gano-gold:      #D4AF37;            /* Acento SOTA — ratio ≥ 7:1 sobre dark-bg */
-    --gano-gold-glow: rgba(212, 175, 55, 0.20); /* Brillo sutil para sombras */
-
     /* Tokens faltantes usados con fallback en css/*.css */
-    --gano-text-primary:  #e8eaf0;
+    --gano-text-primary:  var(--gano-color-text-on-dark);
     --gano-radius:        12px;
     --gano-container-sm:  800px;
-    --gano-gold-soft: rgba(212, 175, 55, 0.10); /* Fondo sutil tarjetas premium */
-    --gano-gold-glow: rgba(212, 175, 55, 0.20); /* Sombra hover cards premium */
 
     /* START: KINETIC MONOLITH — Cyber-Cold Palette (shop SOTA / dark templates) */
     --gano-purple:        #8B5CF6;               /* Violeta tech — acento Kinetic Monolith */
@@ -297,6 +304,28 @@ code, pre, kbd {
 .gano-bg-light :focus-visible,
 .elementor-section.bg-light :focus-visible {
     outline-color: var(--gano-blue);
+}
+
+/* WCAG 2.2 — Focus Not Obscured with sticky headers */
+html {
+    scroll-padding-top: 96px;
+}
+
+[id] {
+    scroll-margin-top: 96px;
+}
+
+/* WCAG 2.2 — minimum target size baseline */
+button,
+.gano-btn,
+.gano-btn-primary,
+.gano-btn-secondary,
+.gano-catalog-mode-btn,
+.gano-catalog-compare-toggle,
+.gano-mobile-nav-panel a,
+nav a {
+    min-height: 24px;
+    min-width: 24px;
 }
 
 /* ============================================================
@@ -1371,6 +1400,24 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
     height: 0.5rem;
     border-radius: 50%;
     background-color: var(--gano-blue);
+}
+
+.gano-socio-block__cta-link {
+    margin-top: 1.25rem;
+}
+
+.gano-socio-block__cta-link a {
+    color: var(--gano-blue);
+    font-size: var(--gano-fs-base);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+}
+
+.gano-socio-block__cta-link a:hover,
+.gano-socio-block__cta-link a:focus-visible {
+    border-bottom-color: var(--gano-blue);
 }
 
 /* Franja de métricas (números cortos, sin inflar cifras) */
@@ -2750,6 +2797,102 @@ select:focus-visible {
     background-image: url("assets/images/hero-datacenter.jpg");
 }
 /* END: HERO IMAGE FALLBACK */
+
+/* START: HERO BLOCK SHORTCODE — [gano_hero] */
+.gano-hero-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+    padding: clamp(4rem, 8vw, 6rem) 0;
+}
+
+.gano-hero-block__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.gano-hero-block__sub {
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    color: rgba(255, 255, 255, 0.82);
+    line-height: var(--gano-lh-body, 1.6);
+    max-width: 52ch;
+}
+
+.gano-hero-block__cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.gano-hero-block__img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gano-hero-block__img-el {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--gano-radius-lg, 12px);
+    object-fit: cover;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+}
+
+/* Hero CTA row para front-page.php */
+.hero-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.hero-microcopy {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.03em;
+}
+
+/* Botón secundario del hero */
+.btn-gano--secondary {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--gano-white, #ffffff);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--gano-radius-sm, 6px);
+    font-weight: 600;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+}
+
+.btn-gano--secondary:hover,
+.btn-gano--secondary:focus-visible {
+    border-color: var(--gano-green, #00C26B);
+    background: rgba(0, 194, 107, 0.08);
+    outline: 2px solid var(--gano-green, #00C26B);
+    outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+    .gano-hero-block {
+        grid-template-columns: 1fr;
+    }
+
+    .gano-hero-block__img {
+        order: -1;
+    }
+
+    .gano-hero-block__img-el {
+        max-height: 280px;
+        object-position: center top;
+    }
+}
+/* END: HERO BLOCK SHORTCODE */
 
 /* START: SKELETON LOADERS — Wave 3 UX */
 @keyframes gano-shimmer {

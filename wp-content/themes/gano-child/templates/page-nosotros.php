@@ -5,12 +5,12 @@
  */
 get_header(); ?>
 
-<main id="gano-main-content" class="gano-trust-page gano-nosotros">
+<main id="gano-main-content" class="gano-trust-page gano-nosotros gano-km-shell">
 
   <!-- HERO -->
   <section class="gano-dark-section gano-trust-hero">
     <div class="gano-container">
-      <p class="gano-label-pill">Quiénes somos</p>
+      <p class="gano-label-pill gano-km-live-badge">Quiénes somos</p>
       <h1>Hosting en serio. Sin rodeos.</h1>
       <p class="gano-trust-hero__sub">
         El mercado colombiano merece opciones de hosting que no requieran leer la letra pequeña tres veces para entender qué compraste.

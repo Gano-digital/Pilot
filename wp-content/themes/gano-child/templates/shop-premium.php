@@ -88,8 +88,9 @@ get_header();
     .section-header h2 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 20px; }
 
     .catalog-nav { display: flex; justify-content: center; gap: 30px; margin-bottom: 80px; flex-wrap: wrap; }
-    .nav-item { cursor: pointer; font-family: var(--gano-font-mono); font-size: var(--gano-fs-xs); font-weight: var(--gano-fw-bold); text-transform: uppercase; color: var(--gano-gray-500); transition: var(--gano-transition); padding: 10px 20px; border-bottom: 2px solid transparent; }
+    .nav-item { background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-family: var(--gano-font-mono); font-size: var(--gano-fs-xs); font-weight: var(--gano-fw-bold); text-transform: uppercase; color: var(--gano-gray-500); transition: var(--gano-transition); padding: 10px 20px; }
     .nav-item.active, .nav-item:hover { color: var(--gano-purple); border-color: var(--gano-purple); }
+    .nav-item:focus-visible { outline: 3px solid var(--gano-gold, #D4AF37); outline-offset: 3px; }
 
     .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; transition: var(--motion-slow) var(--ease-out); }
 
@@ -138,6 +139,7 @@ get_header();
 
     .rstore-add-to-cart { width: 100%; text-align: center; padding: 12px; font-weight: var(--gano-fw-bold); background: var(--gano-indigo-soft); color: var(--gano-purple); border: 1px solid var(--gano-border-sota); cursor: pointer; transition: var(--gano-transition); font-size: var(--gano-fs-xs); text-transform: uppercase; letter-spacing: var(--gano-ls-wide); }
     .rstore-add-to-cart:hover { background: var(--gano-purple); color: var(--gano-white); }
+    .rstore-add-to-cart:focus-visible { outline: 3px solid var(--gano-gold, #D4AF37); outline-offset: 3px; box-shadow: 0 0 0 5px rgba(212, 175, 55, 0.28); }
     .rstore-add-to-cart--pending { background: rgba(255,255,255,0.08); color: var(--gano-white); border-color: rgba(255,255,255,0.2); }
     .rstore-add-to-cart--coming-soon { opacity: 0.55; cursor: not-allowed; pointer-events: none; }
     .rstore-status-note { display: block; margin-top: 10px; font-size: 10px; color: var(--gano-gray-500); text-transform: uppercase; letter-spacing: var(--gano-ls-wide); }
@@ -151,9 +153,9 @@ get_header();
 </style>
 <!-- END: SHOP PREMIUM STYLES -->
 
-<div class="sota-wrapper gano-km-shell gano-on-dark">
+<div class="sota-wrapper gano-km-shell gano-on-dark gano-catalog-shell" data-gano-catalog>
     <div class="mockup-status" id="scroll-progress"></div>
-    <div class="badge-fixed">SOTA v3.1 — RESELLER API SYNC</div>
+    <div class="badge-fixed" aria-hidden="true">SOTA v3.1 — RESELLER API SYNC</div>
 
     <!-- BACKGROUND DOODLES -->
     <div class="doodle constellation doodle--top-right"></div>
@@ -262,8 +264,16 @@ get_header();
             <h1 class="reveal gano-km-title">gano.digital<span class="gano-km-title-accent">/sota</span></h1>
             <p class="reveal gano-km-lead">El fin de la infraestructura pasiva. Ecosistemas (Núcleo Prime, Fortaleza Delta, Bastión SOTA) resilientes y soberanos para activos de alta autoridad.</p>
             <div class="reveal">
-                <button class="btn-sota gano-km-btn-primary" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">Explorar Nodos de Red</button>
+                <button type="button" class="btn-sota gano-km-btn-primary" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">Explorar Nodos de Red</button>
             </div>
+            <?php
+            $url_comenzar_shop = function_exists( 'gano_resolve_page_url' )
+                ? gano_resolve_page_url( 'comenzar-aqui', 'comenzar', 'registro-y-compra' )
+                : home_url( '/comenzar-aqui/' );
+            ?>
+            <p class="gano-shop-comenzar-hint reveal">
+                <a href="<?php echo esc_url( $url_comenzar_shop ); ?>"><?php esc_html_e( '¿Primera vez aquí? Cómo funciona el checkout →', 'gano-child' ); ?></a>
+            </p>
         </div>
     </section>
 
@@ -291,18 +301,52 @@ get_header();
                 <h2>Sincronización de Ecosistemas</h2>
             </div>
 
-            <div class="catalog-nav">
-                <div class="nav-item active" data-filter="all">Todos</div>
+            <div class="gano-catalog-mode-switch" role="group" aria-label="Modo de navegación del catálogo">
+                <?php
+                $catalog_modes = function_exists( 'gano_get_catalog_nav_modes' ) ? gano_get_catalog_nav_modes() : array();
+                foreach ( $catalog_modes as $mode_key => $mode_meta ) :
+                    ?>
+                    <button type="button" class="gano-catalog-mode-btn" data-gano-mode="<?php echo esc_attr( $mode_key ); ?>" aria-pressed="false">
+                        <?php echo esc_html( $mode_meta['label'] ); ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+            <p class="gano-catalog-mode-desc" data-gano-mode-description>
+                Selecciona una vista de navegación para explorar el catálogo completo.
+            </p>
+
+            <section class="gano-catalog-guided-panel" data-gano-guided-panel aria-label="Asistente de selección">
+                <ul class="gano-catalog-guided-list" data-gano-guided-list></ul>
+            </section>
+
+            <div class="catalog-nav" role="group" aria-label="Filtrar productos por categoría">
+                <button type="button" class="nav-item active" data-filter="all">Todos</button>
                 <?php foreach ( $catalog_categories as $cat_key => $cat_label ) : ?>
-                    <div class="nav-item" data-filter="<?php echo esc_attr( $cat_key ); ?>">
+                    <button type="button" class="nav-item" data-filter="<?php echo esc_attr( $cat_key ); ?>">
                         <?php echo esc_html( $cat_label ); ?>
-                    </div>
+                    </button>
                 <?php endforeach; ?>
             </div>
 
             <div class="catalog-grid" id="catalog-container">
                 <?php foreach($products as $p): ?>
-                <div class="product-card reveal-item gano-km-card" data-category="<?php echo esc_attr($p['cat']); ?>">
+                <?php
+                $cta = function_exists( 'gano_resolver_catalog_cta' ) ? gano_resolver_catalog_cta( $p ) : array(
+                    'url'    => '#',
+                    'label'  => 'Próximamente',
+                    'target' => '',
+                    'status' => 'pending',
+                );
+                $status_classes = 'product-card reveal-item gano-km-card';
+                if ( 'sync-missing' === ( $cta['status'] ?? '' ) ) {
+                    $status_classes .= ' gano-catalog-sync-missing';
+                }
+                ?>
+                <div class="<?php echo esc_attr( $status_classes ); ?>"
+                     data-category="<?php echo esc_attr($p['cat']); ?>"
+                     data-product-id="<?php echo esc_attr( sanitize_title( $p['cat'] . '-' . $p['name'] ) ); ?>"
+                     data-product-name="<?php echo esc_attr( $p['name'] ); ?>"
+                     data-product-price="<?php echo esc_attr( $p['price'] ); ?>">
                     <?php if ( ! empty( $p['badge'] ) ) : ?>
                         <span class="product-card__badge"><?php echo esc_html( $p['badge'] ); ?></span>
                     <?php endif; ?>
@@ -310,10 +354,10 @@ get_header();
                         <p class="product-card__tip"><?php echo esc_html( $p['tip'] ); ?></p>
                     <?php endif; ?>
                     <div class="svg-container">
-                        <svg class="svg-container__svg" viewBox="0 0 100 100">
+                        <svg class="svg-container__svg" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
                             <rect class="path-anim" x="10" y="10" width="80" height="80" rx="4" />
                             <foreignObject x="25" y="25" width="50" height="50">
-                                <i class="fa-solid svg-container__icon <?php echo esc_attr($p['icon']); ?>"></i>
+                                <i class="fa-solid svg-container__icon <?php echo esc_attr($p['icon']); ?>" aria-hidden="true"></i>
                             </foreignObject>
                         </svg>
                     </div>
@@ -324,20 +368,21 @@ get_header();
                         <?php echo esc_html( $p['price'] ); ?>
                     </div>
 
-                    <?php $cta = function_exists( 'gano_resolver_catalog_cta' ) ? gano_resolver_catalog_cta( $p ) : array(
-                        'url'    => '#',
-                        'label'  => 'Próximamente',
-                        'target' => '',
-                        'status' => 'pending',
-                    ); ?>
                     <a href="<?php echo esc_url( $cta['url'] ); ?>"
                        class="rstore-add-to-cart rstore-add-to-cart--<?php echo esc_attr( $cta['status'] ); ?> gano-km-btn-secondary"
                        <?php echo $cta['target']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                       aria-label="<?php echo esc_attr( $cta['label'] . ': ' . $p['name'] ); ?>"
+                       <?php if ( 'coming-soon' === $cta['status'] ) : ?>tabindex="-1" aria-disabled="true"<?php endif; ?>
                     ><?php echo esc_html( $cta['label'] ); ?></a>
+                    <button type="button" class="gano-catalog-compare-toggle" data-gano-compare-toggle aria-pressed="false">
+                        Comparar
+                    </button>
                     <small class="rstore-status-note">
                         <?php
                         if ( 'active' === $cta['status'] ) {
                             echo 'Estado comercial: activo';
+                        } elseif ( 'sync-missing' === $cta['status'] ) {
+                            echo 'Estado comercial: sincronizando catálogo';
                         } elseif ( 'pending' === $cta['status'] ) {
                             echo 'Estado comercial: pendiente de RCC';
                         } else {
@@ -345,9 +390,18 @@ get_header();
                         }
                         ?>
                     </small>
+                    <?php if ( 'sync-missing' === $cta['status'] ) : ?>
+                        <span class="gano-catalog-sync-note">Precio temporalmente no disponible</span>
+                    <?php endif; ?>
                 </div>
                 <?php endforeach; ?>
             </div>
+
+            <section class="gano-catalog-comparator" data-gano-compare hidden>
+                <h3 class="gano-catalog-comparator-title">Comparador inteligente (hasta 3)</h3>
+                <ul class="gano-catalog-compare-list" data-gano-compare-list></ul>
+                <div class="gano-catalog-compare-grid" data-gano-compare-grid></div>
+            </section>
         </div>
     </section>
 
@@ -400,42 +454,6 @@ get_header();
             });
         }
 
-        // Filtering Logic
-        const navItems = document.querySelectorAll('.nav-item');
-        const productCards = document.querySelectorAll('.product-card');
-
-        navItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                // Update active state
-                navItems.forEach(nav => nav.classList.remove('active'));
-                e.target.classList.add('active');
-
-                const filter = e.target.getAttribute('data-filter');
-
-                // Animate out
-                if (typeof gsap !== 'undefined') {
-                    gsap.to(productCards, {
-                        opacity: 0, 
-                        y: 20, 
-                        duration: 0.3, 
-                        onComplete: () => {
-                            // Filter displays
-                            productCards.forEach(card => {
-                                if (filter === 'all' || card.getAttribute('data-category') === filter) {
-                                    card.style.display = 'flex';
-                                } else {
-                                    card.style.display = 'none';
-                                }
-                            });
-                            // Animate in
-                            gsap.to(document.querySelectorAll('.product-card[style*="display: flex"]'), {
-                                opacity: 1, y: 0, duration: 0.4, stagger: 0.05
-                            });
-                        }
-                    });
-                }
-            });
-        });
     });
 </script>
 

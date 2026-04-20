@@ -6,13 +6,20 @@
 **Gano Digital** — Plataforma de hosting WordPress para Colombia.
 URL: https://gano.digital | Repo: Gano-digital/Pilot
 
+## Skills disponibles en este repo
+- `phase4-commerce` (`.agents/skills/phase4-commerce/SKILL.md`)
+- `cloud-runbook` (`.agents/skills/cloud-runbook/SKILL.md`)
+- `ui-ux-pro-max` (`.cursor/skills/ui-ux-pro-max/SKILL.md`) - puente local al motor clonado en `external/ui-ux-pro-max-skill`
+
 ## Stack
-- WordPress 6.x + Elementor Pro + WooCommerce
-- Pagos / checkout cliente: **GoDaddy Reseller Store** (COP); sin priorizar integraciones de pasarela fuera de ese ecosistema
-- Seguridad: Wordfence + gano-security.php (MU-plugin)
-- SEO: Rank Math + gano-seo.php (MU-plugin)
+- WordPress 6.x + **gano-child** (vitrina SOTA: PHP/CSS/JS; homepage sin depender de Elementor en prod)
+- **Producción (2026-04-19):** Elementor y WooCommerce **no instalados** (retirados en ola hardening); no reinstalar sin decisión explícita
+- Pagos / checkout cliente: **GoDaddy Reseller Store** (RCC + PLID/PFID); sin priorizar pasarelas locales fuera de ese ecosistema
+- Seguridad: **gano-security.php** (MU, activo) + Wordfence (**instalado, inactivo** en prod hasta ventana acordada)
+- SEO: **gano-seo.php** (MU, activo) + Rank Math (**instalado, inactivo** hasta cerrar copy)
 - Tema: gano-child (Hello Elementor child)
 - Animaciones: GSAP 3 + ScrollTrigger
+- **Cursor WC3 (gano-child):** puntero personalizado; apagar con filtro `gano_enable_wc3_cursor` — ver [`memory/ops/gano-wc3-cursor-maintenance.md`](memory/ops/gano-wc3-cursor-maintenance.md) y `.github/copilot-instructions.md` (sección Cursor WC3).
 - PHP 8.3 en GoDaddy Managed WordPress
 
 ## Reglas Universales (TODOS los agentes)
@@ -29,7 +36,7 @@ URL: https://gano.digital | Repo: Gano-digital/Pilot
 ### NO HACER
 - NO commitear credenciales, tokens, keys, passwords
 - NO modificar wp-config.php
-- NO eliminar plugins de fase (gano-phase*)
+- NO eliminar plugins **activos** del runtime comercial (`gano-phase6-catalog`, `gano-phase7-activator`, `reseller-store`, `gano-reseller-enhancements`) sin decisión explícita; installers fase 1–3 ya fueron retirados del **servidor** en 2026-04-19 (ver `memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`)
 - NO usar Tailwind CSS (solo Vanilla CSS + variables)
 - NO usar jQuery para codigo nuevo (Vanilla JS)
 - NO ejecutar comandos destructivos sin permiso explicito
@@ -45,6 +52,14 @@ URL: https://gano.digital | Repo: Gano-digital/Pilot
 5. `.cursor/memory/activeContext.md` — Contexto actual Cursor
 6. `memory/ops/homepage-vitrina-launch-plan-2026-04.md` — Plan vitrina gano.digital: fases, RACI (Cursor / Copilot / Claude / humano), enlaces a copy y Fase 4 Reseller
 
+### Biblioteca local Gano-Wiki (fuera de git)
+
+- **Ruta:** `C:\Users\diego\OneDrive\Documentos\Gano-Wiki\` (OneDrive; **no** es el repo `Pilot`).
+- **Para qué sirve:** conocimiento curado (playbooks, troubleshooting, ángulos de contenido, design system exportado, snapshots), consumo por IAs y producción de contenido.
+- **No sustituye** `TASKS.md` ni `.cursor/memory/` para desarrollo activo. Jerarquía ante conflicto: `CLAUDE.md` > `copilot-instructions.md` > este `AGENTS.md` > `Gano-Wiki/AGENTS.md`.
+- **Entrada rápida:** `Gano-Wiki/STATUS-AND-ROADMAP.md` (hecho/pendiente), `Gano-Wiki/skills/super-skill/gano-digital-master.md` (contexto operativo narrativo).
+- **Regla:** no commitear el wiki al repo sin aprobación explícita (puede contener copias de material sensible indexado aparte).
+
 ### Flujo de trabajo
 ```
 Issue en GitHub → Copilot crea PR (draft) → CI verifica → Cursor/Diego revisa → Merge
@@ -53,9 +68,11 @@ Issue en GitHub → Copilot crea PR (draft) → CI verifica → Cursor/Diego rev
 ### Estado operativo SOTA (abril 2026)
 
 - **Repo:** integración SOTA activa en `gano-child` (tokens, templates y catálogo canónico).
-- **Producción:** despliegue parcial/pendiente; no asumir que `gano.digital` ya refleja `main`.
+- **Producción (2026-04-19):** **8 archivos críticos** alineados con `main` (MD5 verificado tras SCP); home canónica `/`; menú Inicio corregido; política bots balanceada; `gano_pfid_*` en `wp_options` (validar RCC); plugins inactivos de riesgo/eliminables retirados.
 - **Catálogo canónico actual:** mantener como referencia implementada en `functions.php` + `templates/shop-premium.php` (no reintroducir catálogos alternos sin decisión explícita de Diego).
-- **Regla de agentes:** cualquier cambio comercial debe conservar estados `active|pending|coming-soon` y no inventar PFIDs.
+- **Regla de agentes:** cualquier cambio comercial debe conservar estados `active|pending|coming-soon` y no inventar PFIDs; validar contra RCC antes de publicar IDs nuevos.
+
+**Handoff actualizado:** `memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md` · `memory/claude/dispatch-status-2026-04-19.md` · GitHub [#263](https://github.com/Gano-digital/Pilot/issues/263)
 
 ### Resolucion de conflictos
 - Si dos agentes tocan el mismo archivo: el mas reciente en main gana

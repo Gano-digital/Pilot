@@ -1,9 +1,11 @@
 # Tasks — Gano Digital
-_Última actualización: Abril 2026_
+_Última actualización: 2026-04-19_
 
 ## REGRESAR AQUÍ (pendiente tu acción)
 
 **Si saliste y vuelves:** nota de continuidad **cPanel/DNS + agentes GitHub** → [`memory/notes/nota-salida-cpanel-dns-y-agentes-2026-04.md`](memory/notes/nota-salida-cpanel-dns-y-agentes-2026-04.md).
+
+**Handoff ola ops + trazabilidad (2026-04-19):** [`memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`](memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md) · Detalle auditoría SSH: [`memory/sessions/2026-04-19-auditoria-ssh-inventario-sota.md`](memory/sessions/2026-04-19-auditoria-ssh-inventario-sota.md) · Tablero GitHub: [#263](https://github.com/Gano-digital/Pilot/issues/263)
 
 **Recordatorio personal (prioridades y workflows):** [`memory/notes/nota-diego-recomendaciones-2026-04.md`](memory/notes/nota-diego-recomendaciones-2026-04.md) · **Contexto para Claude (carpeta dedicada):** [`memory/claude/README.md`](memory/claude/README.md) · **Mapa de archivos digitales y contenido (`memory/`, constelación, handoff):** [`memory/content/digital-files-and-content-setup.md`](memory/content/digital-files-and-content-setup.md) · **Ops Hub (métricas + Actions):** [`tools/gano-ops-hub/README.md`](tools/gano-ops-hub/README.md) · **Playbook agentes + asistentes (arranque, troubleshooting, offloading):** [`memory/ops/agent-playbook-asistentes-2026-04.md`](memory/ops/agent-playbook-asistentes-2026-04.md)
 
@@ -84,22 +86,34 @@ _Última actualización: Abril 2026_
   - Post-eliminación: verificar en wp-admin que la alerta de `gano-security.php` desapareció (pendiente validación visual humana).
 
 - [ ] **[ALTA] Configurar datos SEO (Empresa Digital)** en wp-admin → Ajustes → Gano SEO:
-  - Definir área de cobertura (Colombia) sin dirección física local obligatoria.
+  - Completar nombre legal, NIT, teléfono, WhatsApp, email, URL logo.
+  - Dejar dirección física en blanco (negocio 100 % digital).
+  - Checklist paso a paso: [`memory/ops/gano-seo-rankmath-gsc-checklist.md`](memory/ops/gano-seo-rankmath-gsc-checklist.md) §A.
+  - **Bloqueado por acción humana** (wp-admin).
 
 - [ ] **[ALTA] Configurar Google Search Console**
   - Añadir propiedad: https://gano.digital
+  - Pegar token de verificación en wp-admin → Ajustes → Gano SEO → Google Search Console.
+  - Enviar sitemap: `https://gano.digital/sitemap_index.xml`
+  - Checklist paso a paso: [`memory/ops/gano-seo-rankmath-gsc-checklist.md`](memory/ops/gano-seo-rankmath-gsc-checklist.md) §C.
+  - **Bloqueado por acción humana** (GSC + wp-admin).
 
 - [ ] **[ALTA] Configurar Rank Math en WordPress**
-  - Ir a: wp-admin → Rank Math → Setup Wizard
+  - Ir a: wp-admin → Rank Math → Dashboard → "Re-run Setup Wizard"
   - Ajustar para modelo de servicios digitales (no tienda física).
+  - Tipo de sitio: "Empresa/Organización" — NO "Negocio local".
+  - Checklist paso a paso: [`memory/ops/gano-seo-rankmath-gsc-checklist.md`](memory/ops/gano-seo-rankmath-gsc-checklist.md) §B.
+  - **Bloqueado por acción humana** (wp-admin).
+
+- [x] **[MEDIO] Fix schema Product duplicado con Rank Math activo** — `gano_output_product_schema()` → guard `class_exists('RankMath')` añadido (issue #266). Ver `memory/content/seo-canonical-og-analysis-2026.md` §2.5.
 
 ## 🟡 Pending — Contenido y Sinergia
 
 - [ ] **[ALTA] Reemplazar todo el Lorem ipsum y texto placeholder** — Requiere acceso al panel de Elementor
 - [ ] **[ALTA] Eliminar testimonios falsos y métricas infladas**
 - [ ] **[ALTA] Crear página Nosotros real** con manifiesto SOTA
-- [ ] **[MEDIA] Habilitar 2FA en wp-admin** (Wordfence ya instalado)
-- [ ] **[MEDIA] Ejecutar y limpiar plugins de fase (1, 2, 3, 6, 7)** — seguir [`memory/ops/runbook-activacion-wp-admin-2026-04-16.md`](memory/ops/runbook-activacion-wp-admin-2026-04-16.md). Script WP-CLI disponible cuando haya SSH: [`scripts/activate-gano-phases.sh`](scripts/activate-gano-phases.sh).
+- [ ] **[MEDIA] Habilitar 2FA en wp-admin** (Wordfence instalado; **inactivo** en prod abr 2026 — activar en ventana acordada)
+- [x] ~~**[MEDIA] Ejecutar y limpiar plugins de fase (1, 2, 3, 6, 7)**~~ — Limpieza parcial **servidor 2026-04-19:** eliminados plugins inactivos no críticos (Elementor stack, WooCommerce, fases 1–3 legacy, wompi inactivo, etc.); runtime activo = Reseller + fases 6/7 + enhancements. Runbook sigue válido para **activación** y futuras ventanas.
 
 ## 📋 Fase 4 — Integración GoDaddy Reseller (Agilizada)
 
@@ -113,11 +127,13 @@ _Última actualización: Abril 2026_
   - `functions.php` lee las 8 constantes `GANO_PFID_*` desde `wp_options` con fallback `PENDING_RCC`.
   - Plugin `gano-reseller-enhancements` expone panel `wp-admin → Ajustes → Gano Reseller` con 8 campos.
   - Guía paso a paso RCC → pfid: [`memory/commerce/rcc-pfid-checklist.md`](memory/commerce/rcc-pfid-checklist.md).
-- [ ] **PASO 10E — Introducir los 8 PFIDs vía UI** (manual Diego):
-  - Abrir `wp-admin → Ajustes → Gano Reseller` y pegar los valores numéricos del RCC.
+- [ ] **PASO 10E — Introducir / validar los 8 PFIDs** (RCC + UI):
+  - **2026-04-19 (WP-CLI):** opciones `gano_pfid_*` pobladas en producción con identificadores del catálogo Reseller (`rstore_id` / slugs: `wordpress-basic`, `wordpress-deluxe`, etc.); `gano_pfid_online_storage` sigue `PENDING_RCC`.
+  - **Pendiente:** validar en RCC que esos valores coinciden con el **PFID numérico** esperado por familia de producto; ajustar en `wp-admin → Ajustes → Gano Reseller` si RCC exige solo numéricos.
   - Runbook completo: [`memory/ops/runbook-activacion-wp-admin-2026-04-16.md`](memory/ops/runbook-activacion-wp-admin-2026-04-16.md).
 - [ ] **Prueba de Flujo de Checkout**:
   - Presionar "Comprar" en el SOTA Mockup de Gano -> Verificar que mande al carrito marca blanca -> Cierre.
+  - Pasos reproducibles: [`memory/research/reseller-smoke-test.md`](memory/research/reseller-smoke-test.md)
 - [ ] **Instalar soporte/chat**: FreeScout o similar para atención a cliente, ya que el soporte inicial lo da el reseller (vos).
 
 ## 📋 Someday — Fase 5
@@ -140,33 +156,46 @@ _Activar cuando:_ parches F1–3 desplegados de forma estable, flujo Fase 4 Rese
 
 ## 🔄 Abril 2026 — Progreso (homepage + GitHub)
 
+### Producción — ola hardening + convergencia (2026-04-19)
+
+- [x] Auditoría SSH + inventario documentado ([`memory/sessions/2026-04-19-auditoria-ssh-inventario-sota.md`](memory/sessions/2026-04-19-auditoria-ssh-inventario-sota.md)).
+- [x] Home canónica `/`, menú **Inicio → /** (WP-CLI), `/home/` legacy en borrador, duplicado `dominios-2` en papelera.
+- [x] Política bots balanceada (`.htaccess`); archivos raíz `llms.txt` + `bot-seo-context.md` con CTA.
+- [x] Limpieza plugins inactivos (13 eliminados); stack mínimo comercial Reseller preservado.
+- [x] Convergencia **8 archivos** críticos repo → servidor (SCP + MD5 + flush caché/rewrites) — índice [`memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`](memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md).
+- [ ] Validación humana RCC + PFID numérico; mapeo `online_storage`; copy Elementor; Rank Math/GSC cuando cierre contenido.
+
 ### GitHub / automatización
 
 - [x] **Oleada 4 — narrativa y páginas (Copilot):** cola [`.github/agent-queue/tasks-wave4-ia-content.json`](.github/agent-queue/tasks-wave4-ia-content.json) — entregas markdown fusionadas en `main` (2026-04-03, PRs #100–#109). *Pendiente humano:* aplicar en Elementor / wp-admin según §Contenido homepage.
 - [x] **Cola infra DNS/HTTPS (Copilot + humano):** [`.github/agent-queue/tasks-infra-dns-ssl.json`](.github/agent-queue/tasks-infra-dns-ssl.json) — runbooks y plantillas en `memory/ops/` en `main` (2026-04-03, PRs #105–#107, #110–#113). *Pendiente humano:* ejecutar cambios DNS/SSL en GoDaddy; verificación local: `python scripts/check_dns_https_gano.py`.
-- [ ] **Cola API Mercado Libre + GoDaddy (research):** [`.github/agent-queue/tasks-api-integrations-research.json`](.github/agent-queue/tasks-api-integrations-research.json) — profundiza [`memory/research/sota-apis-mercadolibre-godaddy-2026-04.md`](memory/research/sota-apis-mercadolibre-godaddy-2026-04.md). Sembrar: **08** → `queue_file: tasks-api-integrations-research.json` → `scope: all` (o `docs` / `coordination`). Prompt: bloque **API integrations** en [`.github/prompts/copilot-bulk-assign.md`](.github/prompts/copilot-bulk-assign.md).
-- [ ] **Cola Guardián seguridad (higiene + cierre de sesión):** [`.github/agent-queue/tasks-security-guardian.json`](.github/agent-queue/tasks-security-guardian.json) — purga documental, `.gitignore`, instrucciones; skill [`.gano-skills/gano-session-security-guardian/SKILL.md`](.gano-skills/gano-session-security-guardian/SKILL.md). Sembrar: **08** → `tasks-security-guardian.json` → `scope: security` o `all`. Prompt: **Guardián seguridad**. Checklist humano: [`memory/ops/security-end-session-checklist.md`](memory/ops/security-end-session-checklist.md) · `python scripts/security_session_reminder.py`.
+- [x] **Cola API Mercado Libre + GoDaddy (research):** [`.github/agent-queue/tasks-api-integrations-research.json`](.github/agent-queue/tasks-api-integrations-research.json) — backlog sin ejecución inmediata; queda como cola reutilizable para investigación futura cuando se abra un nuevo lote.
+- [x] **Cola Guardián seguridad (higiene + cierre de sesión):** [`.github/agent-queue/tasks-security-guardian.json`](.github/agent-queue/tasks-security-guardian.json) — backlog sin ejecución inmediata; se conserva para hardening operativo al cierre de sesión o nuevas oleadas.
 - [x] **Consolidación PRs Copilot (2026-04-03):** cola de PRs vaciada en `main` (squash + cierre duplicados). Detalle: [`memory/sessions/2026-04-03-consolidacion-prs-copilot.md`](memory/sessions/2026-04-03-consolidacion-prs-copilot.md). Revisar en GitHub **issues** aún abiertos y cerrarlos con comentario si el trabajo ya está en `main`.
 - [x] **Oleada 2+:** `.github/agent-queue/tasks-wave2.json` + workflow **08 · Sembrar cola Copilot** con input `queue_file`: `tasks.json` | `tasks-wave2.json` | `tasks-wave3.json` | `tasks-wave4-ia-content.json` | `tasks-infra-dns-ssl.json` | `tasks-api-integrations-research.json` | `tasks-security-guardian.json` (siete archivos validados en CI).
 - [x] **Validación cola:** workflow **Validate agent queue JSON** + `scripts/validate_agent_queue.py` (CI al tocar `.github/agent-queue/`).
 - [x] **Oleada 3 — issues creados en GitHub (#54–#68)** — Seed con `tasks-wave3.json` ejecutado.
-- [ ] **Prompt Copilot:** en **#54–#68** usa el bloque **“oleada 3”** en [`.github/prompts/copilot-bulk-assign.md`](.github/prompts/copilot-bulk-assign.md); en **#17–#33** usa el bloque **“oleada 1”** (no priorizar brief wave3 en hero/menú/Lorem). Si ya asignaste con el prompt largo mezclado, no pasa nada grave: el prompt unificado ahora lo matiza por número de issue.
-- [x] ~~**Consolidar oleada 1 (merge PRs)**~~ — hecho 2026-04-03. **10 · Orquestar oleadas** solo si en el futuro vuelves a tener un lote de PRs oleada 1 y quieres automatizar merge + **seed oleada 2**. *Trabajo repetible en repo sin GitHub (dispatch Claude): ver [memory/claude/dispatch-queue.json](memory/claude/dispatch-queue.json).*
+- [x] **Prompt Copilot:** prompts por oleada consolidados en [`.github/prompts/copilot-bulk-assign.md`](.github/prompts/copilot-bulk-assign.md) y aplicados en el ciclo de consolidación.
+- [x] ~~**Consolidar oleada 1 (merge PRs)**~~ — hecho 2026-04-03. **10 · Orquestar oleadas:** solo si en el futuro vuelves a tener un lote de PRs oleada 1 y quieres automatizar merge + **seed oleada 2**. 
+  - _Nota:_ Trabajo repetible **en repo sin necesidad de GitHub Actions** (dispatch Claude automático vía queue): ver [memory/claude/dispatch-queue.json](memory/claude/dispatch-queue.json) + `python scripts/claude_dispatch.py next` en local o `.vscode/tasks.json` (task **Claude Dispatch: next**). Este es el modelo actual post-consolidación (abr 2026).
 - [x] PR #13: CI TruffleHog + PHP lint + plantillas Copilot + `ssh_cli` sin credenciales en archivo
 - [x] Dependabot (GitHub Actions) + plantilla de PR; `labeler.yml` (workflow) retirado hasta crear etiquetas `area:*` en el repo o reactivar con permisos
 - [x] `.github/labeler.yml` conserva reglas; workflow `labeler.yml` restaurado tras ejecutar **06 · Repo · Crear etiquetas** en Actions
 - [x] **06 · Repo · Crear etiquetas** — workflow disparado vía push de [`.github/label-bootstrap`](.github/label-bootstrap) (o manual en Actions)
 - [x] Fusionar PR #13 y verificar checks en `main` (squash merge 2026-04-02)
-- [ ] Actions → ejecutar **09 · Sembrar issues homepage** una vez (7 issues `homepage-fixplan`)  
-  - *Nota: marcar este ítem [x] solo tras confirmar en github.com que los 7 issues homepage-fixplan existen.*
-- [ ] Actions → **08 · Sembrar cola Copilot** (`all` o por ámbito) → asignar Copilot coding agent en issues generados  
-  - *Nota: no re-ejecutar sin revisar duplicados por `agent-task-id` — el workflow omite si el cuerpo ya tiene el mismo ID.*
+- [ ] **09 · Sembrar issues homepage** — _Marcar [x] **solo tras confirmar en GitHub** que existen 7 issues etiquetados `homepage-fixplan` en el repo (ir a github.com/Gano-digital/Pilot/issues y filtrar por label)._ Ciclo inicial completado 2026-04-03; re-ejecución: Actions → **09** → solo si hay nuevo lote de tareas homepage-fixplan validado.
+- [x] **08 · Sembrar cola Copilot** (ciclo inicial completado 2026-04-03) — _Condición para re-ejecutar:_ solo si existe backlog nuevo en `dispatch-queue.json` **validado** contra duplicados por `agent-task-id` (script: `python scripts/validate_agent_queue.py`). Ejecutar: Actions → **08 · Sembrar cola Copilot** → input `queue_file` con archivo JSON (ej. `tasks-wave4-ia-content.json`). _Trabajo repetible sin GitHub:_ ver [memory/claude/dispatch-queue.json](memory/claude/dispatch-queue.json).
 - [ ] Rotación de tokens y limpieza de remotes con credenciales (al cierre del workflow de despliegue)
+
+**📌 Criterios de verificación para GitHub workflows (08, 09, 10):**
+- **08 · Sembrar cola Copilot:** [ ] JSON válido (`python scripts/validate_agent_queue.py` = OK) → [ ] sin duplicados por `agent-task-id` → [ ] workflow disparado exitosamente → [ ] issues aparecen en GitHub (etiqueta correspondiente).
+- **09 · Sembrar issues homepage:** [ ] 7 issues con label `homepage-fixplan` existentes en GitHub → [ ] cada issue contiene descripción coherente y `agent-task-id` único → [ ] Copilot asignado o waiting for assignment.
+- **10 · Orquestar oleadas:** Deprecado en flujo manual GitHub; **modelo actual:** dispatch Claude vía `memory/claude/dispatch-queue.json` + `python scripts/claude_dispatch.py`. Ver `memory/claude/README.md` para continuidad local.
 
 ### Contenido homepage (Elementor en servidor)
 
 - [x] **Repo:** ubicación de menú `primary` registrada en `gano-child` + utilidades CSS Elementor (`gano-el-*`) — desplegar al servidor
-- [ ] Menú principal asignado en wp-admin (y/o header Elementor) tras despliegue
+- [x] Menú principal coherente con home canónica **2026-04-19** (ítem custom **Inicio → /** vía WP-CLI); revisar header Elementor si aún enlaza a rutas legacy.
 - [ ] Sustituir Lorem / placeholders usando `memory/content/homepage-copy-2026-04.md` como fuente
 - [ ] Hero: imagen + attachment coherente con diseño
 - [ ] Ajustes de layout: aplicar clases `gano-el-stack` / `gano-el-layer-*` + CTA final con iconos reales

@@ -302,20 +302,38 @@ add_filter( 'rest_authentication_errors', function( $result ) {
 } );
 
 // ==============================================================================
-// 9. SECURITY HEADERS ADICIONALES VIA PHP — V-001 a V-009
+// 9. SECURITY HEADERS VIA PHP — V-001 a V-009
+// FUENTE AUTORITATIVA para GoDaddy Managed WordPress
+// ------------------------------------------------------------------------------
+// En GoDaddy Managed WordPress los headers HTTP se gestionan EXCLUSIVAMENTE
+// desde este MU plugin. El archivo htaccess-security.txt del instalador Phase 1
+// es solo referencia documental; NO debe aplicarse junto con este plugin
+// (causaría headers duplicados/conflictivos). Ver issue #232.
 // ==============================================================================
 
 add_action( 'send_headers', function() {
     if ( ! headers_sent() ) {
-        // ── Content Security Policy — ENFORCED (Fase 2) ─────────────────────
+        // ── HSTS — forzar HTTPS por 2 años (V-001) ──────────────────────────
+        // GoDaddy Managed WordPress termina SSL en el proxy inverso, por lo
+        // que is_ssl() puede ser false aunque la conexión del cliente sea HTTPS.
+        // Se comprueba también HTTP_X_FORWARDED_PROTO para cubrir ese caso.
+        $is_https = is_ssl()
+            || ( isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] )
+                 && 'https' === strtolower( sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) ) ) );
+        if ( $is_https ) {
+            header( 'Strict-Transport-Security: max-age=63072000; includeSubDomains; preload' );
+        }
+
+        // ── Content Security Policy — ENFORCED (Fase 2) (V-002) ─────────────
         // Política ajustada para Elementor (unsafe-inline/eval requeridos),
-        // WooCommerce, Wompi checkout y Google Fonts/Analytics.
+        // WooCommerce, GoDaddy Reseller checkout y Google Fonts/Analytics.
         //
         // Notas de compatibilidad:
         //   • 'unsafe-inline' en script-src: requerido por Elementor y WC.
         //     Migrar a nonces de CSP en Fase 3+ para eliminar este permiso.
         //   • 'unsafe-eval': requerido por Elementor Pro y algunos widgets.
         //   • upgrade-insecure-requests fuerza HTTPS en todos los sub-recursos.
+        //   • frame-src incluye reseller.godaddy.com para el carrito Reseller.
         //
         $csp = implode( '; ', [
             "default-src 'self'",

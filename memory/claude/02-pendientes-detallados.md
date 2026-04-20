@@ -2,6 +2,8 @@
 
 Este documento **complementa** [`TASKS.md`](../../TASKS.md) y [`../notes/nota-diego-recomendaciones-2026-04.md`](../notes/nota-diego-recomendaciones-2026-04.md) con una vista **por área** y notas de **coherencia** (qué está hecho solo en git, qué requiere servidor o panel).
 
+**Índice rápido ola 2026-04-19:** [`../sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`](../sessions/2026-04-19-trazabilidad-ops-wave-handoff.md) · Tablero [#263](https://github.com/Gano-digital/Pilot/issues/263)
+
 **Leyenda de estado**
 
 | Etiqueta | Significado                                                                     |
@@ -16,8 +18,8 @@ Este documento **complementa** [`TASKS.md`](../../TASKS.md) y [`../notes/nota-di
 
 | ID  | Tarea                           | Dónde             | Notas                                                                                                                                                                                                      |
 | --- | ------------------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A1  | ~~Configurar secrets SSH~~      | ✅ **RESUELTO**   | Deploy migrado a **webhook HTTPS** (`wp-content/gano-deploy/receive.php` + HMAC). Ya no usa SSH desde runners. Ver `deploy.yml` — `runs-on: ubuntu-latest`, dispara en push a `main` sobre `gano-child/**`. Verificado 2026-04-19. |
-| A2  | Desplegar Fases 1–3 al servidor | **Prod**          | Push a `main` que toque `gano-child/**` / `gano-*/**` / `mu-plugins/**` dispara webhook automáticamente. `wp-config.php` **no** va en git — subir por canal seguro aparte.                                 |
+| A1  | ~~Configurar secrets SSH / deploy runner~~ | ✅ **RESUELTO** | Deploy vía **webhook HTTPS** (`wp-content/gano-deploy/receive.php` + HMAC) en el flujo activo; no depende de SSH desde GitHub Actions. Documentación histórica SSH: [`2026-04-08-reporte-handoff-ssh-deploy-tokens.md`](2026-04-08-reporte-handoff-ssh-deploy-tokens.md). |
+| A2  | Desplegar código al servidor | **Prod** | Push a `main` que toque `gano-child/**` / `gano-*/**` / `mu-plugins/**` dispara webhook. **2026-04-19:** convergencia manual puntual (tema + MU + `class-pfid-admin.php`) cuando haga falta paridad repo↔prod; rutina: **04**/**05** según runbooks. `wp-config.php` **no** va en git. |
 | A3  | Verificar parches (checksums)   | **GH**            | Workflow **05 · Ops · Verificar parches en servidor** — manual; opción subir faltantes.                                                                                                                    |
 | A4  | Eliminar **wp-file-manager**    | **Prod**          | **12 · Ops · Eliminar wp-file-manager (SSH)** con `force_remove` **o** wp-admin + SFTP. Riesgo histórico documentado en auditorías; la alerta en `gano-security.php` depende de que el plugin desaparezca. |
 
@@ -37,7 +39,7 @@ Este documento **complementa** [`TASKS.md`](../../TASKS.md) y [`../notes/nota-di
 
 | ID  | Tarea                                             | Dónde    | Notas                                                                                                                                                                         |
 | --- | ------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| C1  | Asignar menú **primary** en header                | **Prod** | El tema registra la ubicación en **Repo**; falta asignación en panel / canvas Elementor.                                                                                      |
+| C1  | Menú **primary** + home canónica                    | **Prod** | **2026-04-19:** ítem **Inicio → /** aplicado vía WP-CLI; revisar si **header Elementor** aún enlaza a `/home/` u otras rutas legacy.                                                                          |
 | C2  | Sustituir Lorem y placeholders                    | **Prod** | Fuente: [`../content/homepage-copy-2026-04.md`](../content/homepage-copy-2026-04.md); clases: [`../content/elementor-home-classes.md`](../content/elementor-home-classes.md). |
 | C3  | Hero: imagen y attachment coherentes              | **Prod** |                                                                                                                                                                               |
 | C4  | Layout: clases `gano-el-*`, CTA con iconos reales | **Prod** |                                                                                                                                                                               |
@@ -52,7 +54,7 @@ Este documento **complementa** [`TASKS.md`](../../TASKS.md) y [`../notes/nota-di
 | ID  | Tarea                                                       | Dónde               | Notas                                                                                                                            |
 | --- | ----------------------------------------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | D1  | Depurar catálogo y precios en **RCC**                       | **Prod** (GoDaddy)  | Hosting, VPS, SSL alineados a lo que vende la vitrina.                                                                           |
-| D2  | Sustituir **PENDING_RCC** / pfids en código                 | **Repo** + **Prod** | Tras merge #52, el modelo es **GANO*PFID*\***; valores reales vienen del RCC / Private Label.                                    |
+| D2  | **PFIDs** (`gano_pfid_*` / carrito)                         | **Prod** + **RCC**  | **2026-04-19:** `wp_options` pobladas vía WP-CLI con IDs del catálogo Reseller (`rstore_id` / slugs, p. ej. `wordpress-basic`). **Pendiente:** validar contra RCC que el carrito acepta esos identificadores o sustituir por **PFID numérico**; `gano_pfid_online_storage` sigue `PENDING_RCC`. |
 | D3  | Prueba de flujo **Comprar → carrito marca blanca → cierre** | **Prod**            | Smoke manual; referencia [`../smoke-tests/checkout-reseller-2026-04.md`](../smoke-tests/checkout-reseller-2026-04.md) si aplica. |
 | D4  | Canal de soporte (FreeScout u otro)                         | **Decisión**        | TASKS menciona FreeScout; no bloquea merge en git.                                                                               |
 
@@ -63,10 +65,10 @@ Este documento **complementa** [`TASKS.md`](../../TASKS.md) y [`../notes/nota-di
 | ID  | Tarea                                                                    | Dónde          | Notas                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | --- | ------------------------------------------------------------------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | E1  | **Cerrar issues** ya cubiertos por `main`                                | **GH**         | Tras consolidación 2026-04-03, muchos issues pueden cerrarse con comentario “resuelto en main”. Revisión **manual** lista por lista.                                                                                                                                                                                                                                                                                                                                                  |
-| E2  | **09 · Sembrar issues homepage**                                         | **GH**         | En `TASKS.md` sigue como `[ ]`: ejecutar **solo si** los 7 issues `homepage-fixplan` **no** existen. Marcar hecho solo tras confirmar existencia en github.com.                                                                                                                                                                                                                                                                                    |
-| E3  | **08 · Sembrar cola Copilot**                                            | **GH**         | Solo para **nuevos** issues desde JSON; deduplicación por `agent-task-id`. No re-sembrar sin revisar duplicados.                                                                                                                                                                                                                                                                                                                      |
+| E2  | **09 · Sembrar issues homepage**                                         | **GH**         | ⏳ **Criterio de verificación (TASKS.md línea 185):** Marcar [x] solo tras confirmar en github.com/Gano-digital/Pilot/issues que existen **7 issues etiquetados `homepage-fixplan`**. Ciclo inicial: 2026-04-03 completado. Re-ejecutar (Actions → **09**): solo si nuevo lote `homepage-fixplan` validado. Bloqueante: 0 issues = [ ]; 7+ issues = [x].                                                   |
+| E3  | **08 · Sembrar cola Copilot**                                            | **GH**         | ✅ Ciclo inicial: 2026-04-03 completado (oleadas 1–4, infra, API, guardián sembradas). **Re-ejecutar solo si:** (a) JSON validado `python scripts/validate_agent_queue.py` = OK, (b) sin duplicados por `agent-task-id`, (c) nuevo archivo `.github/agent-queue/` diferente al anterior. Mantener deduplicación para evitar issues duplicados. Integrado en CI.                                  |
 | E4  | Prompt Copilot por lote                                                  | **GH**         | Un solo archivo: [`.github/prompts/copilot-bulk-assign.md`](../../.github/prompts/copilot-bulk-assign.md) — tablas y bloques para oleadas **1, 2, 3, 4**, **infra** DNS/HTTPS, **API** (ML + GoDaddy research) y **guardián seguridad**. Índice de colas: [`.github/COPILOT-AGENT-QUEUE.md`](../../.github/COPILOT-AGENT-QUEUE.md).                                                                                                                                                   |
-| E5  | **10 · Orquestar oleadas**                                               | **GH**         | **No** requerido para la oleada ya fusionada. Solo si reaparece un lote “oleada 1” y se desea automatizar. Para trabajo repetible sin tocar GitHub: `memory/claude/dispatch-queue.json` + `python scripts/claude_dispatch.py next`.                                                                                                                                                                                                                                                   |
+| E5  | **10 · Orquestar oleadas**                                               | **GH**         | ✅ **Deprecado en flujo manual GitHub** (oleada 1 fusionada 2026-04-03). **Modelo actual:** trabajo repetible sin Actions via dispatch Claude local: [`dispatch-queue.json`](../claude/dispatch-queue.json) + `python scripts/claude_dispatch.py next` O `.vscode/tasks.json` → **Claude Dispatch: next**. Ver [`memory/claude/README.md`](../claude/README.md).                                                                                                                                                                                                                                                   |
 | E6  | Rotación de tokens / remotes sin credenciales en URL                     | **GH** + local | Buena práctica post-deploy.                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | E7  | Sembrar colas **oleada 4**, **infra**, **API** o **guardián** (opcional) | **GH**         | Oleadas 1–3 y muchas tareas 4/infra ya pueden estar **sembradas** o resueltas en `main`. Ejecutar **08** solo si necesitas **nuevos** issues desde los JSON (sin duplicar `agent-task-id`). Archivos válidos: `tasks.json`, `tasks-wave2.json`, `tasks-wave3.json`, `tasks-wave4-ia-content.json`, `tasks-infra-dns-ssl.json`, `tasks-api-integrations-research.json`, `tasks-security-guardian.json` — ver [`.github/COPILOT-AGENT-QUEUE.md`](../../.github/COPILOT-AGENT-QUEUE.md). |
 | E8  | **CI** estable (labeler **03**, setup **11**)                            | **GH**         | Si un PR falla en etiquetas o PHP lint, revisar `memory/ops/github-actions-audit-2026-04.md` antes de “arreglar” a ciegas.                                                                                                                                                                                                                                                                                                                                                            |
@@ -77,8 +79,8 @@ Este documento **complementa** [`TASKS.md`](../../TASKS.md) y [`../notes/nota-di
 
 | ID  | Tarea                                                           | Dónde    | Notas                                                                                                                                         |
 | --- | --------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| F1  | **2FA** en wp-admin                                             | **Prod** | Wordfence presente; activación recomendada.                                                                                                   |
-| F2  | **Plugins de fase** — ejecutar y luego limpiar con confirmación | **Prod** | **No borrar** `gano-phase*` hasta confirmar que su trabajo quedó aplicado — ver [`../notes/plugins-de-fase.md`](../notes/plugins-de-fase.md). |
+| F1  | **2FA** en wp-admin                                             | **Prod** | Wordfence **instalado, inactivo** (abr 2026); activar en ventana acordada.                                                                       |
+| F2  | **Plugins de fase / basura**                                    | **Prod** | **2026-04-19:** en producción se **eliminaron del disco** plugins inactivos (installers fase 1–3, Elementor stack, WooCommerce, wompi inactivo, etc.). Siguen activos `gano-phase6-catalog`, `gano-phase7-activator`, `gano-reseller-enhancements`, `reseller-store`. **No reinstalar** Woo/Elementor sin decisión explícita. Repo puede aún contener carpetas de plugins no desplegados. |
 | F3  | Fase 5 (status page, chat LLM real, afiliados)                  | Backlog  | `TASKS.md` — someday.                                                                                                                         |
 
 ---
@@ -97,14 +99,13 @@ Este documento **complementa** [`TASKS.md`](../../TASKS.md) y [`../notes/nota-di
 
 ## H. Orden sugerido de ejecución (Diego / operador)
 
-1. Secrets **A1** → **A2** o deploy manual equivalente.
-2. **A3** para validar.
-3. **A4** wp-file-manager.
-4. **B1–B3** SEO en panel.
-5. **D1–D2** RCC + pfids.
-6. **C1–C7** Elementor y copy.
-7. **E1** limpieza de issues en GitHub en paralelo cuando haya tiempo.
-8. **E7** solo si hace falta **nueva** semilla de issues (oleada 4, infra, API o guardián); si no, priorizar **Fase 4** según `TASKS.md` y research de plataforma.
+1. **D2** validación RCC + PFID numérico (y `online_storage`) — bloquea confianza total en checkout.
+2. **C1–C7** copy y Elementor sin placeholders.
+3. **B1–B3** SEO panel cuando el contenido esté estable (acuerdo abril 2026: Rank Math después del copy).
+4. **F1** Wordfence + 2FA en ventana.
+5. **E6** rotación tokens / remotes.
+6. **A3** periódico tras cambios (checksums **05**).
+7. **E1** / **E7** solo si hace falta nueva semilla de issues; tablero operativo **#263**.
 
 ---
 
@@ -118,4 +119,4 @@ Debe imprimir `OK` si las colas en `.github/agent-queue/` son JSON válido segú
 
 ---
 
-_Ultima revisión: **2026-04-03** — 7 colas `agent-queue`, prompts API/guardián en `copilot-bulk-assign.md`, auditoría Actions y playbook guardián._
+_Ultima revisión: **2026-04-19** — alineado con `TASKS.md`, ola ops producción (bots, plugins, convergencia repo↔servidor) y [`2026-04-19-trazabilidad-ops-wave-handoff.md`](../sessions/2026-04-19-trazabilidad-ops-wave-handoff.md)._

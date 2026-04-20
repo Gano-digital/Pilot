@@ -17,13 +17,13 @@ Contraseña: (Diego te proporciona)
 
 ### Acceso SSH al Servidor
 ```bash
-ssh -i ~/.ssh/id_rsa_deploy f1rml03th382@72.167.102.145
+ssh -i ~/.ssh/id_rsa_deploy $SERVER_USER@$SERVER_HOST
 # O vía GitHub Secrets: SSH (privada), SERVER_HOST, SERVER_USER
 ```
 
 ### Directorio Web
 ```
-/home/f1rml03th382/public_html/gano.digital
+/home/$SERVER_USER/public_html/gano.digital
 ```
 
 ---
@@ -68,7 +68,7 @@ ssh -i ~/.ssh/id_rsa_deploy f1rml03th382@72.167.102.145
 
 ### SSH + WP-CLI
 ```bash
-ssh -i ~/.ssh/id_rsa_deploy f1rml03th382@72.167.102.145
+ssh -i ~/.ssh/id_rsa_deploy $SERVER_USER@$SERVER_HOST
 cd ~/public_html/gano.digital
 
 # WordPress
@@ -82,7 +82,7 @@ mysql -u gano_dev -pGanoDev2024\!Secure gano_staging -e "SHOW TABLES;"
 
 ### cPanel
 - URL: https://gano.digital:2083 (o panel.godaddy.com)
-- Usuario: f1rml03th382
+- Usuario: $SERVER_USER
 - Tareas: SSL, Backups, Dominios, File Manager, phpMyAdmin
 
 ### GitHub Actions
@@ -104,7 +104,7 @@ mysql -u gano_dev -pGanoDev2024\!Secure gano_staging -e "SHOW TABLES;"
 
 ### Revisar Logs (Weekly)
 ```bash
-ssh -i ~/.ssh/id_rsa_deploy f1rml03th382@72.167.102.145
+ssh -i ~/.ssh/id_rsa_deploy $SERVER_USER@$SERVER_HOST
 tail -50 ~/public_html/gano.digital/error.log
 # Busca: PHP errors, DB connection issues, permission denied
 ```
@@ -143,7 +143,7 @@ curl -X POST \
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa_deploy_new -N ""
 
 # Copiar nueva public key al servidor
-cat ~/.ssh/id_rsa_deploy_new.pub | ssh -i ~/.ssh/id_rsa_deploy f1rml03th382@72.167.102.145 "cat >> ~/.ssh/authorized_keys"
+cat ~/.ssh/id_rsa_deploy_new.pub | ssh -i ~/.ssh/id_rsa_deploy $SERVER_USER@$SERVER_HOST "cat >> ~/.ssh/authorized_keys"
 
 # Actualizar GitHub Secrets con nueva private key
 gh secret set SSH --body "$(cat ~/.ssh/id_rsa_deploy_new)"
@@ -235,11 +235,11 @@ head -20 ~/public_html/gano.digital/.htaccess
 | Secret | Valor | Uso |
 |--------|-------|-----|
 | `SSH` | Private RSA key | Deploy workflow SSH steps |
-| `SERVER_HOST` | 72.167.102.145 | SSH conexión |
-| `SERVER_USER` | f1rml03th382 | SSH usuario |
-| `DEPLOY_PATH` | /home/.../gano.digital | Rsync destination |
-| `GANO_DEPLOY_HOOK_URL` | https://gano.digital/wp-content/gano-deploy/receive.php | Webhook endpoint |
-| `GANO_DEPLOY_HOOK_SECRET` | (64 chars) | HMAC firma |
+| `SERVER_HOST` | (IP servidor — ver GoDaddy cPanel) | SSH conexión |
+| `SERVER_USER` | (usuario cPanel — ver GoDaddy cPanel) | SSH usuario |
+| `DEPLOY_PATH` | (ruta absoluta en servidor — ver GoDaddy cPanel) | Rsync destination |
+| `GANO_DEPLOY_HOOK_URL` | (URL webhook — ver Settings → Secrets) | Webhook endpoint |
+| `GANO_DEPLOY_HOOK_SECRET` | (64 chars — ver Settings → Secrets) | HMAC firma |
 
 **NUNCA** compartir en público. Rotar `SSH` cada 90 días.
 
