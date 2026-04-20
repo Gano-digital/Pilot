@@ -15,6 +15,38 @@
 require_once get_stylesheet_directory() . '/inc/homepage-blocks.php';
 require_once get_stylesheet_directory() . '/inc/contact-form-handler.php';
 require_once get_stylesheet_directory() . '/inc/lead-magnet-handler.php';
+require_once get_stylesheet_directory() . '/inc/gano-premium-components.php';
+
+// =============================================================================
+// 0.3 ENQUEUE CSS PREMIUM (Frontend Design + UI/UX Pro Max merged)
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_premium_styles', 11 );
+function gano_enqueue_premium_styles() {
+    // CSS Premium: Frontend Design con patrones Trust & Authority de UI/UX Pro Max
+    wp_enqueue_style(
+        'gano-frontend-design-premium',
+        get_stylesheet_directory_uri() . '/css/gano-frontend-design-premium.css',
+        array(),
+        '1.0.0'
+    );
+
+    // CSS de páginas consolidadas
+    wp_enqueue_style(
+        'gano-pages',
+        get_stylesheet_directory_uri() . '/css/gano-pages.css',
+        array(),
+        '1.0.0'
+    );
+
+    // CSS de ecosistemas (mejorado)
+    wp_enqueue_style(
+        'gano-ecosistemas',
+        get_stylesheet_directory_uri() . '/css/ecosistemas.css',
+        array(),
+        '1.0.0'
+    );
+}
 
 // =============================================================================
 // 0.4 URL HELPERS — slugs comerciales (catálogo, contacto, esta página, etc.)
