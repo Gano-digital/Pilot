@@ -4,6 +4,12 @@
  */
 
 document.addEventListener('DOMContentLoaded', function () {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finePointer = window.matchMedia('(pointer: fine)').matches;
+    if (reduceMotion || !finePointer) {
+        return;
+    }
+
     const wrapper = document.createElement('div');
     wrapper.className = 'gano-cursor-wrapper';
     wrapper.innerHTML = '<div id="gano-cursor-gauntlet" class="gano-cursor-gauntlet" aria-hidden="true"></div>';
@@ -18,15 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
     let mouseY = 0;
     let drawX = 0;
     let drawY = 0;
-    const lerpFollow = 1;
-
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) {
-        document.body.classList.add('gano-cursor--nomotion');
-    }
+    const lerpFollow = 0.22;
 
     const hoverSelector =
-        'a[href], button, [role="button"], [role="link"], label, select, i, .gano-quiz-option, input[type="submit"], .rstore-add-to-cart, summary, [data-gano-cursor-hover]';
+        'a[href], button, [role="button"], [role="link"], label, select, .gano-quiz-option, input[type="submit"], input[type="button"], input[type="reset"], .rstore-add-to-cart, summary, [data-gano-cursor-hover], a[href] i, button i, [role="button"] i';
 
     const textCursorSelector =
         'input[type="text"], input[type="email"], input[type="search"], input[type="url"], input[type="tel"], input[type="password"], input[type="number"], textarea, [contenteditable="true"]';
@@ -43,12 +44,18 @@ document.addEventListener('DOMContentLoaded', function () {
         mouseY = e.clientY;
 
         const t = e.target instanceof Element ? e.target : null;
-        document.body.classList.toggle('gano-cursor--text', !!targetMatches(t, textCursorSelector));
-        document.body.classList.toggle('gano-cursor--invalid', !!targetMatches(t, invalidSelector));
+        const onText = !!targetMatches(t, textCursorSelector);
+        const onInvalid = !!targetMatches(t, invalidSelector);
+        document.body.classList.toggle('gano-cursor--text', onText);
+        document.body.classList.toggle('gano-cursor--invalid', onInvalid);
         document.body.classList.toggle(
             'gano-cursor--hover',
-            !!targetMatches(t, hoverSelector) && !targetMatches(t, invalidSelector)
+            !onText && !!targetMatches(t, hoverSelector) && !onInvalid
         );
+    });
+
+    document.documentElement.addEventListener('mouseleave', function () {
+        document.body.classList.remove('gano-cursor--hover', 'gano-cursor--click', 'gano-cursor--invalid', 'gano-cursor--text');
     });
 
     function animate() {
