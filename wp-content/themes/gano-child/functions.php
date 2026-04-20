@@ -149,9 +149,22 @@ function gano_child_enqueue_styles() {
     wp_enqueue_style( 'gano-quiz-css', get_stylesheet_directory_uri() . '/css/gano-quiz.css', array(), '1.0.0' );
     wp_enqueue_script( 'gano-quiz-js', get_stylesheet_directory_uri() . '/js/gano-sovereignty-quiz.js', array(), '1.0.0', true );
 
-    // Custom Cursor (Phase 4 - Visual Polish)
-    wp_enqueue_style( 'gano-cursor-style', get_stylesheet_directory_uri() . '/css/gano-cursor.css', array(), '1.1.0' );
-    wp_enqueue_script( 'gano-cursor-js', get_stylesheet_directory_uri() . '/js/gano-cursor.js', array(), '1.1.0', true );
+    // Custom Cursor — WC3 guantelete (atlas en assets/cursor)
+    $gano_cursor_css = get_stylesheet_directory() . '/css/gano-cursor.css';
+    $gano_cursor_js  = get_stylesheet_directory() . '/js/gano-cursor.js';
+    wp_enqueue_style(
+        'gano-cursor-style',
+        get_stylesheet_directory_uri() . '/css/gano-cursor.css',
+        array(),
+        file_exists( $gano_cursor_css ) ? (string) filemtime( $gano_cursor_css ) : '2.0.0'
+    );
+    wp_enqueue_script(
+        'gano-cursor-js',
+        get_stylesheet_directory_uri() . '/js/gano-cursor.js',
+        array(),
+        file_exists( $gano_cursor_js ) ? (string) filemtime( $gano_cursor_js ) : '2.0.0',
+        true
+    );
 
     // GSAP 3 Core & Plugins — Solo en páginas que lo necesitan (Phase 5 - SOTA Animation)
     $needs_gsap = is_page_template( 'templates/page-sota-hub.php' )
