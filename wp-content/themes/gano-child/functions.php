@@ -19,6 +19,16 @@ require_once get_stylesheet_directory() . '/inc/lead-magnet-handler.php';
 // =============================================================================
 // 0.4 URL HELPERS — slugs comerciales (catálogo, contacto, esta página, etc.)
 // =============================================================================
+add_filter(
+    'body_class',
+    static function ( array $classes ): array {
+        if ( is_page_template( 'templates/page-comenzar-aqui.php' ) ) {
+            $classes[] = 'gano-page-start-journey';
+        }
+        return $classes;
+    }
+);
+
 if ( ! function_exists( 'gano_resolve_page_url' ) ) {
     /**
      * Resuelve la URL de una página probando varios slugs (p. ej. staging vs producción).
