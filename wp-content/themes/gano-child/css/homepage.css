@@ -84,6 +84,111 @@
     overflow: hidden;
 }
 
+/* `gano-hero-overlay` (style.css) está pensado para Elementor y tapa nuestro hero custom.
+   En `front-page.php` subimos el contenido por encima del overlay. */
+.hero-gano.gano-hero-overlay::before {
+    z-index: 0;
+}
+
+.hero-gano.gano-hero-overlay .hero-content {
+    z-index: 2;
+}
+
+/* Ghost headline — detrás del copy, encima del fondo animado */
+.hero-gano__ghost {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.25rem, 1.2vw, 0.75rem);
+    padding: clamp(1rem, 4vw, 2.5rem);
+    overflow: hidden;
+}
+
+.hero-gano__ghost-line {
+    font-family: var(--gano-font-mono);
+    font-weight: 800;
+    font-size: clamp(3.25rem, 14vw, 11rem);
+    line-height: 0.88;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.035);
+    text-shadow: 0 0 42px rgba(27, 79, 216, 0.08);
+    user-select: none;
+}
+
+.hero-gano__ghost-line--accent {
+    color: rgba(212, 175, 55, 0.06);
+    letter-spacing: 0.28em;
+}
+
+@media (max-width: 520px) {
+    .hero-gano__ghost-line {
+        letter-spacing: 0.12em;
+    }
+    .hero-gano__ghost-line--accent {
+        letter-spacing: 0.18em;
+    }
+}
+
+/* Tarjeta glass — prueba de autoridad (SLA / Hardening / COP) */
+.hero-gano__proof-glass {
+    margin: 34px auto 0;
+    max-width: min(920px, 100%);
+    padding: clamp(14px, 2vw, 20px) clamp(16px, 2.4vw, 22px) clamp(18px, 2.2vw, 22px);
+    border-radius: 20px;
+    border: 1px solid rgba(192, 193, 255, 0.22);
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.07) 0%, rgba(11, 17, 24, 0.45) 45%, rgba(5, 8, 12, 0.55) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+        0 24px 64px rgba(0, 0, 0, 0.35),
+        0 0 48px rgba(27, 79, 216, 0.12);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-gano__proof-glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0.85;
+    background:
+        radial-gradient(circle at 12% 0%, rgba(212, 175, 55, 0.14), transparent 42%),
+        radial-gradient(circle at 88% 100%, rgba(27, 79, 216, 0.18), transparent 48%);
+}
+
+.hero-gano__proof-label {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 10px;
+    font-family: var(--gano-font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(226, 232, 240, 0.55);
+    text-align: center;
+}
+
+.hero-gano__proof-glass .hero-proof-bar {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    border: 0;
+    border-radius: 14px;
+    background: rgba(5, 8, 12, 0.35);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
 .hero-gano::before,
 .hero-gano::after {
     content: "";

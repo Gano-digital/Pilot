@@ -1,5 +1,8 @@
 /**
- * Landing “Cómo comprar” — shell visual unificado (paleta fría SOTA, sin franjas claras rotas).
+ * Landing “Cómo comprar” — acabado tipo mockup (Liquid Glass + neón frío).
+ * Estrategia: reutilizar el design system ya presente (`gano-sota-convergence.css`)
+ * y ajustar solo lo específico de esta página.
+ *
  * Carga solo con templates/page-comenzar-aqui.php
  */
 
@@ -27,16 +30,9 @@ main.gano-start-journey.gano-on-dark {
     --gano-landing-ice: #c0c1ff;
     --gano-landing-cyan: #4cd7f6;
     --gano-landing-indigo: #8083ff;
-    --gano-landing-surface: rgba(15, 23, 42, 0.55);
-    --gano-landing-edge: rgba(148, 163, 184, 0.14);
 
     position: relative;
     overflow-x: clip;
-    background:
-        radial-gradient(ellipse 90% 60% at 50% -30%, rgba(128, 131, 255, 0.2), transparent 55%),
-        radial-gradient(ellipse 50% 40% at 100% 30%, rgba(76, 215, 246, 0.08), transparent 50%),
-        radial-gradient(ellipse 45% 35% at 0% 60%, rgba(192, 193, 255, 0.06), transparent 45%),
-        linear-gradient(180deg, #05080c 0%, #0b1326 35%, #080d14 100%);
 }
 
 main.gano-start-journey.gano-on-dark::before {
@@ -44,14 +40,12 @@ main.gano-start-journey.gano-on-dark::before {
     pointer-events: none;
     position: absolute;
     inset: 0;
-    background-image: linear-gradient(
-            rgba(255, 255, 255, 0.02) 1px,
-            transparent 1px
-        ),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, #000 20%, transparent 70%);
-    opacity: 0.45;
+    opacity: 0.22;
+    background-image:
+        linear-gradient(rgba(192, 193, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(192, 193, 255, 0.05) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(ellipse 68% 56% at 50% 18%, #000 18%, transparent 68%);
     z-index: 0;
 }
 
@@ -62,57 +56,233 @@ main.gano-start-journey.gano-on-dark > section {
 
 /* Anular franja clara del patrón .gano-trust-section--alt (#F8FAFC) */
 .gano-start-journey .gano-trust-section--alt {
-    background: rgba(30, 27, 75, 0.22) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(19, 27, 46, 0.55) !important;
+    border-top: 1px solid rgba(192, 193, 255, 0.08);
+    border-bottom: 1px solid rgba(192, 193, 255, 0.08);
 }
 
 .gano-start-journey .gano-trust-section:not(.gano-dark-section) {
     background: transparent;
 }
 
-/* Hero */
+/* Hero (layout `.gano-km-hero`) */
 .gano-start-journey__hero {
-    padding-top: clamp(4rem, 12vw, 6rem);
-    padding-bottom: clamp(3rem, 8vw, 4.5rem);
-    text-align: center;
+    padding-top: clamp(3.25rem, 7vw, 5.25rem);
+    padding-bottom: clamp(2.25rem, 6vw, 3.5rem);
     border-bottom: 1px solid rgba(192, 193, 255, 0.12);
-    background: linear-gradient(165deg, rgba(11, 19, 38, 0.75), rgba(5, 8, 12, 0.4)) !important;
 }
 
-.gano-start-journey__hero-inner {
-    max-width: 46rem;
-    margin-left: auto;
-    margin-right: auto;
+.gano-start-journey__hero::after {
+    content: "CHECKOUT / REGISTRO";
+    position: absolute;
+    inset: auto 0 1.25rem 0;
+    text-align: center;
+    font-family: var(--gano-font-mono);
+    font-size: clamp(2.75rem, 7vw, 6.5rem);
+    letter-spacing: 0.22em;
+    color: rgba(255, 255, 255, 0.03);
+    pointer-events: none;
+    user-select: none;
 }
 
-.gano-start-journey__hero h1 {
-    max-width: none;
-    font-size: clamp(1.75rem, 4.5vw, 2.75rem);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    color: #f8fafc !important;
+/* El hero del DS tiene `max-width: 12ch`; en landing necesitamos más presencia */
+.gano-start-journey .gano-km-title {
+    max-width: 18ch;
 }
 
-.gano-start-journey__h1-gradient {
-    display: block;
-    margin-top: 0.35rem;
-    background: linear-gradient(135deg, var(--gano-landing-ice) 0%, var(--gano-landing-cyan) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent !important;
+.gano-start-journey .gano-km-lead {
+    color: rgba(226, 232, 240, 0.88);
+    font-size: clamp(1rem, 1.8vw, 1.18rem);
 }
 
-.gano-start-journey__hero .gano-trust-hero__sub {
-    max-width: 38rem;
-    margin-left: auto;
-    margin-right: auto;
-    color: rgba(226, 232, 240, 0.88) !important;
-    font-size: 1.0625rem;
+.gano-start-journey .gano-km-cta-row {
+    margin-top: 1.65rem;
 }
 
-.gano-start-journey__lede {
-    line-height: 1.65;
+.gano-start-journey .gano-km-btn-primary,
+.gano-start-journey .gano-km-btn-secondary,
+.gano-start-journey .gano-km-btn-tertiary {
+    min-height: 44px;
+    padding: 0.9rem 1.35rem;
+}
+
+.gano-start-journey .gano-km-btn-primary {
+    box-shadow:
+        0 0 26px rgba(128, 131, 255, 0.32),
+        0 12px 44px rgba(0, 0, 0, 0.35);
+    position: relative;
+    overflow: hidden;
+}
+
+/* “Sheen” tipo mockup en CTA principal */
+.gano-start-journey .gano-km-btn-primary::before {
+    content: "";
+    position: absolute;
+    inset: -40% -30%;
+    transform: translateX(-60%) rotate(18deg);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+    opacity: 0.0;
+    transition: opacity 220ms var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.gano-start-journey .gano-km-btn-primary:hover::before {
+    opacity: 1;
+    animation: ganoSheen 950ms var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)) both;
+}
+
+@keyframes ganoSheen {
+    0% { transform: translateX(-60%) rotate(18deg); }
+    100% { transform: translateX(60%) rotate(18deg); }
+}
+
+.gano-start-journey .gano-km-btn-primary:hover {
+    box-shadow:
+        0 0 38px rgba(76, 215, 246, 0.18),
+        0 0 38px rgba(128, 131, 255, 0.46);
+}
+
+.gano-start-journey .gano-km-btn-primary:focus-visible {
+    outline: 3px solid rgba(212, 175, 55, 0.9);
+    outline-offset: 3px;
+}
+
+.gano-start-journey__microcopy {
+    margin-top: 1rem;
+    color: rgba(199, 196, 215, 0.92);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    max-width: 52ch;
+}
+
+/* Glass card (checklist) */
+.gano-start-journey__glass {
+    border-radius: 18px;
+    border: 1px solid rgba(70, 69, 84, 0.3);
+    background: rgba(45, 52, 73, 0.42);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    box-shadow: 0 22px 70px rgba(0, 0, 0, 0.38);
+    padding: 1.4rem 1.35rem;
+}
+
+.gano-start-journey__glass {
+    filter: drop-shadow(0 24px 64px rgba(0, 0, 0, 0.35));
+}
+
+.gano-start-journey__glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0.9;
+    background:
+        radial-gradient(circle at 20% 10%, rgba(192, 193, 255, 0.18), transparent 45%),
+        radial-gradient(circle at 95% 0%, rgba(76, 215, 246, 0.12), transparent 40%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 40%);
+}
+
+.gano-start-journey__glass {
+    position: relative;
+    overflow: hidden;
+}
+
+.gano-start-journey__glass-title {
+    margin: 0 0 0.85rem;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    color: rgba(241, 245, 249, 0.95);
+}
+
+.gano-start-journey__checklist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+    color: rgba(226, 232, 240, 0.88);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.gano-start-journey__checklist li {
+    position: relative;
+    padding-left: 1.35rem;
+}
+
+.gano-start-journey__checklist li::before {
+    content: "";
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 999px;
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    background: linear-gradient(135deg, var(--gano-landing-ice), var(--gano-landing-cyan));
+    box-shadow: 0 0 18px rgba(128, 131, 255, 0.28);
+}
+
+.gano-start-journey__glass-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 1.1rem;
+}
+
+/* Botón tertiary local (DS KM define primary/secondary) */
+.gano-start-journey .gano-km-btn-tertiary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.1rem;
+    border-radius: var(--gano-radius-lg);
+    border: 1px solid rgba(76, 215, 246, 0.28);
+    background: rgba(76, 215, 246, 0.08);
+    color: rgba(226, 232, 240, 0.92);
+    text-decoration: none;
+    font-weight: var(--gano-fw-semibold);
+    transition: border-color var(--motion-fast) var(--ease-out), background var(--motion-fast) var(--ease-out);
+}
+
+.gano-start-journey .gano-km-btn-tertiary:hover {
+    border-color: rgba(76, 215, 246, 0.45);
+    background: rgba(76, 215, 246, 0.12);
+}
+
+.gano-start-journey .gano-km-btn-tertiary:focus-visible {
+    outline: 3px solid var(--gano-gold, #D4AF37);
+    outline-offset: 3px;
+}
+
+/* Responsive hero: que no quede “micro” ni apretado */
+@media (max-width: 980px) {
+    .gano-start-journey__hero::after {
+        display: none;
+    }
+
+    .gano-start-journey .gano-km-hero {
+        grid-template-columns: 1fr;
+        padding-block: 0;
+    }
+
+    .gano-start-journey .gano-km-title,
+    .gano-start-journey .gano-km-lead,
+    .gano-start-journey__microcopy {
+        max-width: 60ch;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+
+    .gano-start-journey .gano-km-cta-row {
+        justify-content: center;
+    }
+
+    .gano-start-journey__glass {
+        width: min(680px, 100%);
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
 /* Trust strip */
@@ -362,41 +532,7 @@ main.gano-start-journey.gano-on-dark > section {
     color: rgba(226, 232, 240, 0.9) !important;
 }
 
-/* CTAs — gradiente frío (coherente con shop), no dorado genérico */
-.gano-start-journey .gano-btn.gano-btn-primary {
-    background: linear-gradient(135deg, #4cd7f6 0%, #8083ff 55%, #a5b4fc 100%) !important;
-    border: none !important;
-    color: #0b1326 !important;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    padding: 0.9rem 1.75rem;
-    box-shadow: 0 10px 36px rgba(128, 131, 255, 0.35);
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.gano-start-journey .gano-btn.gano-btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 14px 44px rgba(76, 215, 246, 0.25);
-    opacity: 1;
-    filter: brightness(1.05);
-}
-
-.gano-start-journey a.gano-btn-outline {
-    border: 2px solid rgba(192, 193, 255, 0.45) !important;
-    color: #e8eaff !important;
-    background: rgba(255, 255, 255, 0.04) !important;
-}
-
-.gano-start-journey a.gano-btn-outline:hover {
-    background: rgba(192, 193, 255, 0.12) !important;
-    border-color: rgba(192, 193, 255, 0.65) !important;
-    color: #fff !important;
-}
-
+/* CTAs: estética y estados vienen de `gano-sota-convergence.css` (KM buttons). */
 .gano-start-journey__hero-cta {
     display: flex;
     flex-wrap: wrap;
@@ -404,10 +540,6 @@ main.gano-start-journey.gano-on-dark > section {
     align-items: center;
     justify-content: center;
     margin-top: 2rem;
-}
-
-.gano-start-journey__final-cta .gano-start-journey__hero-cta {
-    justify-content: center;
 }
 
 /* Enlaces inline en secciones de lectura */
@@ -420,7 +552,7 @@ main.gano-start-journey.gano-on-dark > section {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .gano-start-journey .gano-btn.gano-btn-primary:hover {
+    .gano-start-journey .gano-km-btn-primary:hover {
         transform: none;
     }
 }
