@@ -2248,6 +2248,17 @@ select:focus-visible {
 }
 
 /* ==========================================================================
+   Dark sections — contenedor base para secciones con fondo oscuro
+   Usado en: nosotros, contacto, ecosistemas, comenzar-aqui, dashboard
+   ========================================================================== */
+.gano-dark-section {
+    background: var(--gano-bg-dark);
+    color: rgba(255, 255, 255, 0.9);
+    position: relative;
+    overflow: hidden;
+}
+
+/* ==========================================================================
    Nosotros template
    ========================================================================== */
 .gano-trust-hero {

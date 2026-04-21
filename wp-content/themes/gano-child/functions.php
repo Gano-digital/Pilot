@@ -24,6 +24,7 @@ require_once get_stylesheet_directory() . '/inc/gano-premium-components.php';
 require_once get_stylesheet_directory() . '/components/icon.php';
 require_once get_stylesheet_directory() . '/components/button.php';
 require_once get_stylesheet_directory() . '/components/card.php';
+require_once get_stylesheet_directory() . '/components/cta-registro.php';
 
 // =============================================================================
 // 0.3 ENQUEUE CSS PREMIUM (Frontend Design + UI/UX Pro Max merged + Design System)
@@ -59,6 +60,22 @@ function gano_enqueue_premium_styles() {
     wp_enqueue_style(
         'gano-ecosistemas',
         get_stylesheet_directory_uri() . '/css/ecosistemas.css',
+        array(),
+        '1.0.0'
+    );
+
+    // CSS de página Dominios
+    wp_enqueue_style(
+        'gano-dominios',
+        get_stylesheet_directory_uri() . '/css/dominios.css',
+        array(),
+        '1.0.0'
+    );
+
+    // CSS de CTA Registro (Fase 2)
+    wp_enqueue_style(
+        'gano-cta-registro',
+        get_stylesheet_directory_uri() . '/css/gano-cta-registro.css',
         array(),
         '1.0.0'
     );

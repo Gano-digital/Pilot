@@ -37,6 +37,16 @@ get_header();
         </div>
     </section>
 
+    <?php
+    gano_cta_registro(array(
+        'heading'     => '¿No sabes por dónde empezar?',
+        'description' => '¿no sabes por dónde empezar? registra tu cuenta y recibe soporte inmediato. Nosotros te agendamos. Acompañamos tu empresa en cada decisión: siempre donde verdaderamente importa.',
+        'button_text' => 'Registra tu cuenta',
+        'button_url'  => home_url( '/register/' ),
+        'class'       => 'gano-cta-registro--hero-section'
+    ));
+    ?>
+
     <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="dominios-heading">
         <div class="gano-shell">
             <div class="section-title-gano">
@@ -186,6 +196,15 @@ get_header();
             </section>
         </div>
     </section>
+
+    <?php
+    gano_cta_registro(array(
+        'heading'     => '¿Aún tienes dudas?',
+        'description' => 'Nuestro equipo te acompaña en cada decisión. Registra tu cuenta y accede a soporte inmediato.',
+        'button_text' => 'Crear cuenta',
+        'button_url'  => home_url( '/register/' )
+    ));
+    ?>
 
     <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="valor-heading">
         <div class="gano-shell">

@@ -293,13 +293,16 @@ get_header();
   </section>
 
   <!-- ── CTA FINAL ───────────────────────────────────────────────── -->
-  <section class="gano-dark-section gano-ecosistemas__cta-final gano-km-shell">
-    <div class="gano-container gano-km-container">
-      <h2>¿No sabes cuál elegir?</h2>
-      <p>Cuéntanos dónde estás y te decimos qué arquitectura corresponde a tu etapa. Sin presión.</p>
-      <a href="/contacto" class="gano-btn gano-km-btn-primary">Hablar con el equipo</a>
-    </div>
-  </section>
+  <div class="gano-container">
+    <?php
+    gano_cta_registro(array(
+      'heading'     => '¿No sabes por dónde empezar?',
+      'description' => '¿no sabes por dónde empezar? registra tu cuenta y recibe soporte inmediato. Nosotros te agendamos. Acompañamos tu empresa en cada decisión: siempre donde verdaderamente importa.',
+      'button_text' => 'Registra tu cuenta',
+      'button_url'  => home_url( '/register/' )
+    ));
+    ?>
+  </div>
 
 </main>
 
