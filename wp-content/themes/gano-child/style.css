@@ -291,7 +291,7 @@ code, pre, kbd {
 /* ============================================================
    ACCESIBILIDAD — FOCUS VISIBLE
    Anillo de foco dorado sobre fondos oscuros (WCAG 2.4.7 / 2.4.11).
-   Ratio: --gano-gold (#D4AF37) sobre --gano-bg-dark (#0F1115) ≈ 7.5:1.
+   Ratio: --gano-gold (#D4AF37) sobre --gano-bg-dark (#0F1923) ≈ 7.5:1.
    ============================================================ */
 :focus-visible {
     outline: 3px solid var(--gano-gold);
@@ -937,7 +937,7 @@ body.woocommerce-checkout #customer_details {
 }
 
 /* Hover Mastery: Magnetic Interaction Smoothness */
-.gano-buy-button, .gano-btn-primary {
+.gano-buy-button {
     transition:
         transform     var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
         box-shadow    var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
@@ -982,14 +982,18 @@ body.woocommerce-checkout #customer_details {
     border-top: 1px solid rgba(255,255,255,0.08);
 }
 
+/* ─ CANONICAL BUTTON DEFINITION ─ Single source of truth for .gano-btn-primary
+   Decisión Q7 confirmada: naranja sólido #FF6B35, border-radius: 8px
+   Usado en CTAs, páginas SOTA, y llamadas a acción comerciales.
+   ────────────────────────────────────────────────────────────────── */
 .gano-btn-primary {
     display: inline-block;
-    background: #FF6B35;    /* CTA canónica: naranja decisión Q7 */
-    color: #fff !important;
-    font-weight: 700;
-    font-size: 1rem;
+    background: var(--gano-orange);
+    color: var(--gano-white) !important;
+    font-weight: var(--gano-fw-bold);
+    font-size: var(--gano-fs-base);
     padding: 0.85rem 2rem;
-    border-radius: 8px;     /* Decisión Q7: border-radius cuadrado suave */
+    border-radius: var(--gano-radius-md);
     border: none;
     text-decoration: none !important;
     letter-spacing: 0.03em;
@@ -998,13 +1002,14 @@ body.woocommerce-checkout #customer_details {
         background  var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
         transform   var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
         box-shadow  var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1));
+    cursor: pointer;
 }
 
 .gano-btn-primary:hover {
-    background: #E55520;    /* Hover más oscuro */
+    background: var(--gano-orange-dark);
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(255, 107, 53, 0.4);
-    color: #fff !important;
+    color: var(--gano-white) !important;
 }
 
 /* Sticky Mobile CTA — individual pages can use JS to activate */
@@ -1594,7 +1599,7 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
 
 /* Sección oscura tipo SOTA/Bastión */
 .gano-dark-section {
-    background: var(--gano-bg-dark, #0F1115);
+    background: var(--gano-bg-dark);
     color: #FFFFFF;
 }
 
