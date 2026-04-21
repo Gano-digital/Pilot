@@ -113,21 +113,29 @@ if ( ! function_exists( 'gano_critical_css_hero_visibility' ) ) {
         ?>
         <style id="gano-hero-critical">
         /* Hero visibility fix: garantizar que el hero es visible sobre Royal Elementor */
-        body #gano-main-content,
-        body .gano-el-stack.gano-hero-block {
-            display: flex !important;
-            align-items: center !important;
-            min-height: 100vh !important;
-            background: linear-gradient(135deg, #1B4FD8 0%, #00C26B 50%, #FF6B35 100%) !important;
-            color: white !important;
+        body .gano-home {
+            display: block !important;
         }
 
-        .gano-el-stack.gano-hero-block .gano-el-layer-top {
-            display: block !important;
+        .gano-home .hero-gano {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: flex-start !important;
+            min-height: 100vh !important;
+            background: radial-gradient(circle at 50% 50%, var(--gano-gray-900, #1e2530) 0%, var(--gano-color-surface-dark, #05080b) 100%) !important;
+            color: white !important;
+            position: relative !important;
+            z-index: 1 !important;
+        }
+
+        .hero-gano .hero-content {
+            display: flex !important;
+            flex-direction: column !important;
             z-index: 10 !important;
         }
 
-        .gano-el-stack.gano-hero-block h1 {
+        .hero-gano h1 {
             font-size: clamp(2rem, 5vw, 3.5rem) !important;
             font-weight: 800 !important;
             line-height: 1.1 !important;
@@ -136,26 +144,30 @@ if ( ! function_exists( 'gano_critical_css_hero_visibility' ) ) {
             margin-bottom: 1rem !important;
         }
 
-        .gano-hero-block__sub {
+        .hero-gano > p {
             font-size: 1.125rem !important;
             color: rgba(255,255,255,0.95) !important;
             line-height: 1.6 !important;
             margin-bottom: 2rem !important;
-            max-width: 600px !important;
+            max-width: 700px !important;
         }
 
-        .gano-hero-block__cta-row {
+        .hero-cta-row {
             display: flex !important;
             gap: 1rem !important;
             flex-wrap: wrap !important;
             margin-bottom: 2rem !important;
+            z-index: 10 !important;
         }
 
-        .gano-el-hero-microcopy {
-            font-size: 0.875rem !important;
+        .hero-proof-bar {
             color: rgba(255,255,255,0.8) !important;
-            letter-spacing: 0.1em !important;
+            font-size: 0.875rem !important;
         }
+
+        /* Asegurar que el hero sea visible sobre cualquier overlay de Elementor */
+        .royal-elementor-style-wrapper { display: none !important; }
+        body.elementor .hero-gano { z-index: 999 !important; }
         </style>
         <?php
     }, 99 );
