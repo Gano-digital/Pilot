@@ -12,17 +12,14 @@ get_header();
     <section class="hero-gano gano-hero-overlay">
         <div class="gano-shell hero-content">
             <p class="overline">Soberanía Digital · Operación Colombia</p>
-            <h1>Infraestructura WordPress premium con acompañamiento real de inicio a escala.</h1>
-            <p>
-                Diseñamos, implementamos y acompañamos tu operación digital con soporte experto en español, asesoría continua,
-                capacitación del equipo y seguimiento técnico para que conviertas más sin fricción operativa.
-            </p>
+            <h1>Infraestructura NVMe blindada y un agente IA que trabaja antes de que algo falle.</h1>
+            <p>Hosting WordPress de alto rendimiento con seguridad de nivel empresarial, soporte en español y operación en pesos colombianos. Menos ruido, más continuidad.</p>
             <div class="hero-cta-row">
                 <a href="#ecosistemas" class="btn-holo">
                     <span class="label">Ver arquitecturas y planes</span>
                     <span class="arrow">→</span>
                 </a>
-                <a href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>" class="btn-gano btn-gano--secondary">Explorar catálogo inteligente</a>
+                <a href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>" class="btn-gano btn-gano--secondary">Hablar con el equipo</a>
             </div>
             <ul class="hero-proof-bar" aria-label="Prueba social y operativa">
                 <li><strong>99.9%</strong><span>Disponibilidad operativa</span></li>
@@ -94,47 +91,47 @@ get_header();
                 <?php
                 $ecosistemas = array(
                     array(
-                        'nombre'    => 'Lanzamiento Sólido',
+                        'nombre'    => 'Núcleo Prime',
                         'slug'      => 'wordpress-basico',
                         'precio'    => '$196.000',
                         'categoria' => 'hostingwebcpanel',
                         'features'  => array(
-                            'Acompañamiento de arranque',
-                            'Implementación WordPress optimizada',
-                            'Soporte técnico en español'
+                            'Almacenamiento NVMe',
+                            'Soporte en español por ticket',
+                            'Activación rápida'
                         )
                     ),
                     array(
-                        'nombre'    => 'Escala Inteligente',
+                        'nombre'    => 'Fortaleza Delta',
                         'slug'      => 'wordpress-deluxe',
                         'precio'    => '$450.000',
                         'categoria' => 'wordpressadministrado',
                         'features'  => array(
-                            'Capacitación operativa del equipo',
-                            'Monitoreo y seguimiento continuo',
-                            'Soporte 24/7 priorizado'
+                            'Hardening activo incluido',
+                            'Mayor capacidad de recursos',
+                            'Respaldos automatizados'
                         )
                     ),
                     array(
-                        'nombre'    => 'Conversión Segura',
+                        'nombre'    => 'Bastión SOTA',
                         'slug'      => 'wordpress-ultimate',
                         'precio'    => '$890.000',
                         'categoria' => 'seguridadweb',
                         'features'  => array(
-                            'Blindaje avanzado de superficie',
-                            'Optimización comercial por campañas',
-                            'Asesoría de continuidad tecnológica'
+                            'Recursos dedicados',
+                            'SLA ≥ 99.9%',
+                            'Monitoreo proactivo'
                         )
                     ),
                     array(
-                        'nombre'    => 'Operación Crítica',
+                        'nombre'    => 'Ultimate WP',
                         'slug'      => 'cpanel-ultimate',
-                        'precio'    => '$2.5M+',
+                        'precio'    => '$1.200.000',
                         'categoria' => 'servidoresvps',
                         'features'  => array(
-                            'Arquitectura a medida y escalable',
-                            'Acompañamiento ejecutivo',
-                            'Seguimiento técnico y estratégico'
+                            'Máxima capacidad de recursos',
+                            'Blindaje ante picos masivos',
+                            'Soporte prioritario'
                         )
                     ),
                 );
@@ -274,7 +271,7 @@ get_header();
     <section class="section-gano gano-home-section" id="cta-final" aria-labelledby="cierre-heading">
         <div class="gano-shell">
             <div class="gano-panel gano-panel--compact">
-                <h2 id="cierre-heading">¿Listo para diseñar una operación digital que escale contigo?</h2>
+                <h2 id="cierre-heading">¿Listo para una infraestructura que no te pida disculpas?</h2>
                 <?php echo do_shortcode( '[gano_cta_icons]' ); ?>
                 <p class="gano-panel-cta">
                     <a href="#ecosistemas" class="btn-gano">Elegir mi arquitectura</a>
