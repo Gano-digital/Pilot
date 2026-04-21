@@ -209,26 +209,26 @@ get_header();
     <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="valor-heading">
         <div class="gano-shell">
             <div class="section-title-gano">
-                <h2 id="valor-heading">Acompañamiento que sí mueve resultados</h2>
-                <p>Soporte, asesoría, capacitación y seguimiento continuo en una sola operación.</p>
+                <h2 id="valor-heading">Cuatro pilares de la infraestructura SOTA</h2>
+                <p>Lo que diferencia a Gano Digital en el mercado colombiano.</p>
             </div>
             <div class="value-section">
                 <div class="value-grid">
                     <article class="value-item">
-                        <h3>Soporte técnico experto</h3>
-                        <p>Atención especializada para incidentes, ajustes y evolución de tu stack WordPress sin respuestas genéricas.</p>
+                        <h3>Velocidad real (NVMe)</h3>
+                        <p>Almacenamiento de nueva generación y stack optimizado para WordPress: menos espera, más conversión. Tu sitio carga cuando el cliente ya decidió quedarse.</p>
                     </article>
                     <article class="value-item">
-                        <h3>Asesoría comercial y técnica</h3>
-                        <p>Traducimos objetivos de negocio en decisiones de infraestructura, seguridad y conversión con ruta clara.</p>
+                        <h3>WordPress blindada</h3>
+                        <p>Hardening continuo, controles de acceso y visibilidad sobre lo que ocurre en tu instalación. Menos superficie de ataque, más tranquilidad operativa.</p>
                     </article>
                     <article class="value-item">
-                        <h3>Capacitación operativa</h3>
-                        <p>Tu equipo aprende a operar mejor la plataforma con guías prácticas, estándares y buenas prácticas reales.</p>
+                        <h3>Zero-Trust operativo</h3>
+                        <p>Confianza cero por defecto: identidad, sesiones y permisos bajo control. La seguridad no es un cartel: es política aplicada en capas.</p>
                     </article>
                     <article class="value-item">
-                        <h3>Seguimiento continuo</h3>
-                        <p>Monitoreo, recomendaciones y roadmap evolutivo para sostener crecimiento sin sacrificar estabilidad.</p>
+                        <h3>Edge y latencia</h3>
+                        <p>Contenido más cerca del usuario sin magia barata. Arquitectura pensada para entregar experiencias rápidas donde vive tu audiencia.</p>
                     </article>
                 </div>
             </div>
