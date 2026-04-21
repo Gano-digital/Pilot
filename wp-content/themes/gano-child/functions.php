@@ -18,11 +18,27 @@ require_once get_stylesheet_directory() . '/inc/lead-magnet-handler.php';
 require_once get_stylesheet_directory() . '/inc/gano-premium-components.php';
 
 // =============================================================================
-// 0.3 ENQUEUE CSS PREMIUM (Frontend Design + UI/UX Pro Max merged)
+// 0.1 INCLUDES — Componentes reutilizables (Shadcn-inspired, WordPress)
+// =============================================================================
+
+require_once get_stylesheet_directory() . '/components/icon.php';
+require_once get_stylesheet_directory() . '/components/button.php';
+require_once get_stylesheet_directory() . '/components/card.php';
+
+// =============================================================================
+// 0.3 ENQUEUE CSS PREMIUM (Frontend Design + UI/UX Pro Max merged + Design System)
 // =============================================================================
 
 add_action( 'wp_enqueue_scripts', 'gano_enqueue_premium_styles', 11 );
 function gano_enqueue_premium_styles() {
+    // CSS Design System: Componentes + Tokens + Grid + Motion
+    wp_enqueue_style(
+        'gano-design-system',
+        get_stylesheet_directory_uri() . '/css/gano-design-system.css',
+        array(),
+        '1.0.0'
+    );
+
     // CSS Premium: Frontend Design con patrones Trust & Authority de UI/UX Pro Max
     wp_enqueue_style(
         'gano-frontend-design-premium',
