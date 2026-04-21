@@ -1435,30 +1435,62 @@ function gano_get_reseller_catalog_products() {
 
 	return array(
 		array(
-			'cat'           => 'hostingwebcpanel',
-			'name'          => 'Hosting Deluxe',
-			'desc'          => '1 sitio web, SSD ilimitado, 1 base MySQL, SSL gratuito y soporte 24/7.',
-			'price'         => '$9.99/mes',
-			'price_context' => 'Precio desde',
+			'cat'           => 'ecosistemas',
+			'name'          => 'Núcleo Prime',
+			'desc'          => 'El punto de partida correcto para sitios en crecimiento.',
+			'price'         => '$196.000',
+			'price_context' => 'COP/mes',
 			'icon'          => 'fa-server',
-			'pfid'          => '459',
+			'pfid'          => GANO_PFID_HOSTING_ECONOMIA,
 			'status'        => 'active',
-			'tip'           => 'Mejor si tienes agencia o diseñador propio.',
-			'cta_label'     => 'Agregar al carrito',
+			'cta_label'     => 'Elegir Núcleo Prime',
 		),
 		array(
-			'cat'           => 'hostingwebcpanel',
-			'name'          => 'Hosting Ultimate',
-			'desc'          => 'Sitios y bases ilimitadas, correo incluido y SSL gratuito.',
-			'price'         => '$12.99/mes',
-			'price_context' => 'Precio desde',
-			'icon'          => 'fa-server',
-			'pfid'          => '459',
+			'cat'           => 'ecosistemas',
+			'name'          => 'Fortaleza Delta',
+			'desc'          => 'Para marcas que ya generan ingresos con hardening activo.',
+			'price'         => '$450.000',
+			'price_context' => 'COP/mes',
+			'icon'          => 'fa-shield',
+			'pfid'          => GANO_PFID_HOSTING_DELUXE,
 			'status'        => 'active',
-			'badge'         => 'Popular',
-			'tip'           => 'Escala mejor que el cPanel estándar.',
-			'cta_label'     => 'Agregar al carrito',
+			'badge'         => 'Más popular',
+			'cta_label'     => 'Activar Fortaleza Delta',
 		),
+		array(
+			'cat'           => 'ecosistemas',
+			'name'          => 'Bastión SOTA',
+			'desc'          => 'Rendimiento crítico con seguridad de nivel empresarial.',
+			'price'         => '$890.000',
+			'price_context' => 'COP/mes',
+			'icon'          => 'fa-fort',
+			'pfid'          => GANO_PFID_HOSTING_PREMIUM,
+			'status'        => 'active',
+			'badge'         => 'Recomendado',
+			'cta_label'     => 'Solicitar Bastión SOTA',
+		),
+		array(
+			'cat'           => 'ecosistemas',
+			'name'          => 'Ultimate WP',
+			'desc'          => 'Máxima capacidad para agencias y alto tráfico.',
+			'price'         => '$1.200.000',
+			'price_context' => 'COP/mes',
+			'icon'          => 'fa-crown',
+			'pfid'          => GANO_PFID_HOSTING_ULTIMATE,
+			'status'        => 'active',
+			'cta_label'     => 'Cotizar Ultimate WP',
+		),
+	);
+}
+
+/**
+ * LEGACY — Commented out for reference.
+ * Old gano_get_reseller_catalog_products featured generic GoDaddy products
+ * (Hosting, WordPress, VPS, Domains). Now replaced with Gano 4-plan ecosistema.
+ * If you need GoDaddy full catalog, contact reseller support for direct integration.
+ */
+/*
+	Old products (commented):
 		array(
 			'cat'           => 'webhostingplus',
 			'name'          => 'WHP Inicio',
