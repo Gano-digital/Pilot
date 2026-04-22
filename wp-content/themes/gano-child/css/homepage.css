@@ -374,6 +374,49 @@
     color: var(--gc-muted);
 }
 
+/* Barra de confianza post-hero (PR #273 — UX) */
+.gano-trust-bar {
+    background: rgba(27, 79, 216, 0.06);
+    border-top: 1px solid rgba(27, 79, 216, 0.15);
+    border-bottom: 1px solid rgba(27, 79, 216, 0.15);
+    padding: 14px clamp(16px, 4vw, 5%);
+}
+
+.gano-trust-bar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px 32px;
+    max-width: var(--gc-shell);
+    margin: 0 auto;
+}
+
+.gano-trust-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--gc-muted);
+    font-size: 0.83rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.gano-trust-item svg {
+    color: var(--gano-color-secondary, #00c26b);
+    flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+    .gano-trust-bar__inner {
+        gap: 8px 20px;
+    }
+
+    .gano-trust-item {
+        font-size: 0.78rem;
+    }
+}
+
 .gano-domain-search-wrap {
     border: 1px solid rgba(148, 163, 184, 0.22);
     border-radius: 18px;
