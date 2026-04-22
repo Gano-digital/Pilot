@@ -185,7 +185,7 @@ _Activar cuando:_ parches F1–3 desplegados de forma estable, flujo Fase 4 Rese
 - [x] Fusionar PR #13 y verificar checks en `main` (squash merge 2026-04-02)
 - [ ] **09 · Sembrar issues homepage** — _Marcar [x] **solo tras confirmar en GitHub** que existen 7 issues etiquetados `homepage-fixplan` en el repo (ir a github.com/Gano-digital/Pilot/issues y filtrar por label)._ Ciclo inicial completado 2026-04-03; re-ejecución: Actions → **09** → solo si hay nuevo lote de tareas homepage-fixplan validado.
 - [x] **08 · Sembrar cola Copilot** (ciclo inicial completado 2026-04-03) — _Condición para re-ejecutar:_ solo si existe backlog nuevo en `dispatch-queue.json` **validado** contra duplicados por `agent-task-id` (script: `python scripts/validate_agent_queue.py`). Ejecutar: Actions → **08 · Sembrar cola Copilot** → input `queue_file` con archivo JSON (ej. `tasks-wave4-ia-content.json`). _Trabajo repetible sin GitHub:_ ver [memory/claude/dispatch-queue.json](memory/claude/dispatch-queue.json).
-- [ ] Rotación de tokens y limpieza de remotes con credenciales (al cierre del workflow de despliegue)
+- [ ] Rotación de tokens y limpieza de remotes con credenciales (al cierre del workflow de despliegue) — runbook: [`memory/ops/token-rotation-runbook-2026-04.md`](memory/ops/token-rotation-runbook-2026-04.md)
 
 **📌 Criterios de verificación para GitHub workflows (08, 09, 10):**
 - **08 · Sembrar cola Copilot:** [ ] JSON válido (`python scripts/validate_agent_queue.py` = OK) → [ ] sin duplicados por `agent-task-id` → [ ] workflow disparado exitosamente → [ ] issues aparecen en GitHub (etiqueta correspondiente).
