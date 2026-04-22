@@ -191,13 +191,61 @@
 </article>`;
   }
 
+  function sortedProducts() {
+    const cats = (window.GANO_CATEGORIES || []).filter(function (c) { return c.id !== 'all'; });
+    const rank = {};
+    cats.forEach(function (c, i) { rank[c.id] = i; });
+    return window.GANO_PRODUCTS.slice().sort(function (a, b) {
+      const ra = rank[a.category] != null ? rank[a.category] : 999;
+      const rb = rank[b.category] != null ? rank[b.category] : 999;
+      if (ra !== rb) return ra - rb;
+      return (a.name || '').localeCompare(b.name || '');
+    });
+  }
+
+  function renderCategoryHeader(catId) {
+    const meta = (window.GANO_CATEGORIES || []).find(function (c) { return c.id === catId; });
+    const title = meta ? meta.label : catId;
+    const icon = meta ? meta.icon : 'fa-layer-group';
+    const count = window.GANO_PRODUCTS.filter(function (x) { return x.category === catId; }).length;
+    return (
+      '<div class="gano-cat-header" data-cat-head="' + catId + '" role="presentation">' +
+      '<div class="gano-cat-header-icon"><i class="fa-solid ' + icon + '"></i></div>' +
+      '<span class="gano-cat-header-name">' + title + '</span>' +
+      '<span class="gano-cat-header-count">' + count + ' productos</span></div>'
+    );
+  }
+
+  function syncCategoryHeaders() {
+    document.querySelectorAll('.gano-cat-header').forEach(function (h) {
+      const cat = h.getAttribute('data-cat-head');
+      if (!cat) return;
+      const n = document.querySelectorAll('.pcard[data-cat="' + cat + '"]:not(.hidden)').length;
+      h.classList.toggle('gano-cat-header--empty', n === 0);
+    });
+  }
+
   /* ── Render all cards ── */
   function renderGrid() {
     const grid = document.getElementById('product-grid');
     if (!grid || !window.GANO_PRODUCTS) return;
-    grid.innerHTML = window.GANO_PRODUCTS.map(renderCard).join('');
+    if (activeCategory === 'all') {
+      const parts = [];
+      let lastCat = null;
+      sortedProducts().forEach(function (p) {
+        if (p.category !== lastCat) {
+          lastCat = p.category;
+          parts.push(renderCategoryHeader(p.category));
+        }
+        parts.push(renderCard(p));
+      });
+      grid.innerHTML = parts.join('');
+    } else {
+      grid.innerHTML = window.GANO_PRODUCTS.map(renderCard).join('');
+    }
     updateCount();
     bindGlossaryTips();
+    syncCategoryHeaders();
   }
 
   /* ── Filter logic ── */
@@ -215,6 +263,7 @@
       card.classList.toggle('hidden', shouldHide(p));
     });
     updateCount();
+    syncCategoryHeaders();
   }
 
   function updateCount() {
@@ -325,7 +374,7 @@
     document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     activeCategory = id;
-    applyFilters();
+    renderGrid();
   };
 
   window.setObj = function (btn, id) {
