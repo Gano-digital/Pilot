@@ -454,6 +454,36 @@
     margin-bottom: 1rem;
 }
 
+.gano-home-section--atlas-below-hero {
+    padding-block: clamp(1rem, 2.5vw, 1.75rem);
+}
+
+/* Teaser comercial home: sin grid rStore (catálogo vive en /ecosistemas/) */
+.gano-home-section--commerce-teaser {
+    border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.gano-home-commerce-teaser {
+    text-align: center;
+    max-width: 46rem;
+    margin-inline: auto;
+}
+
+.gano-home-commerce-teaser .section-title-gano p {
+    color: rgba(203, 213, 225, 0.92);
+    font-size: clamp(0.95rem, 1.6vw, 1.05rem);
+    line-height: 1.65;
+}
+
+.gano-home-commerce-teaser__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
 .ecosistemas-grid {
     margin-bottom: 20px;
 }

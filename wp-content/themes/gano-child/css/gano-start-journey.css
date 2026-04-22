@@ -19,8 +19,22 @@ body.gano-page-start-journey .site,
 body.gano-page-start-journey #content,
 body.gano-page-start-journey .site-content,
 body.gano-page-start-journey #primary,
-body.gano-page-start-journey .content-area {
+body.gano-page-start-journey .content-area,
+body.gano-page-start-journey .site-main {
     background: transparent !important;
+}
+
+/* Vence fondos claros de Elementor / wrappers en la plantilla de página */
+body.gano-page-start-journey .site-content .entry-content,
+body.gano-page-start-journey .elementor-widget-container {
+    background: transparent !important;
+}
+
+body.gano-page-start-journey main.gano-start-journey.gano-km-shell {
+    background: radial-gradient(circle at 20% 0%, rgba(128, 131, 255, 0.14), transparent 38%),
+        radial-gradient(circle at 90% 30%, rgba(76, 215, 246, 0.1), transparent 42%),
+        linear-gradient(180deg, #0b1120 0%, #05080c 100%) !important;
+    color: rgba(226, 232, 240, 0.96) !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -67,6 +81,7 @@ main.gano-start-journey.gano-on-dark > section {
 
 /* Hero (layout `.gano-km-hero`) */
 .gano-start-journey__hero {
+    position: relative;
     padding-top: clamp(3.25rem, 7vw, 5.25rem);
     padding-bottom: clamp(2.25rem, 6vw, 3.5rem);
     border-bottom: 1px solid rgba(192, 193, 255, 0.12);
@@ -87,12 +102,88 @@ main.gano-start-journey.gano-on-dark > section {
 
 /* El hero del DS tiene `max-width: 12ch`; en landing necesitamos más presencia */
 .gano-start-journey .gano-km-title {
-    max-width: 18ch;
+    max-width: 22ch;
+    color: #f8fafc !important;
 }
 
 .gano-start-journey .gano-km-lead {
-    color: rgba(226, 232, 240, 0.88);
-    font-size: clamp(1rem, 1.8vw, 1.18rem);
+    color: rgba(226, 232, 240, 0.94) !important;
+    font-size: clamp(1.02rem, 1.85vw, 1.2rem);
+    font-weight: 500;
+}
+
+.gano-start-journey__hero-main {
+    position: relative;
+    z-index: 1;
+}
+
+/* Pasos visibles: registro ocurre en checkout GoDaddy */
+.gano-start-journey__register-track {
+    list-style: none;
+    margin: 1.35rem 0 0;
+    padding: 1rem 1.1rem;
+    border-radius: 14px;
+    border: 1px solid rgba(192, 193, 255, 0.2);
+    background: rgba(2, 6, 23, 0.45);
+    display: grid;
+    gap: 0.75rem;
+    max-width: 52ch;
+}
+
+.gano-start-journey__register-track li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.65rem 0.85rem;
+    align-items: start;
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: rgba(226, 232, 240, 0.95);
+}
+
+.gano-start-journey__register-track-step {
+    font-family: var(--gano-font-mono, ui-monospace, monospace);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gano-landing-cyan, #4cd7f6);
+    padding-top: 0.2rem;
+    white-space: nowrap;
+}
+
+.gano-start-journey__register-track-text {
+    color: rgba(241, 245, 249, 0.96);
+}
+
+.gano-start-journey__hero-ctas {
+    margin-top: 1.5rem;
+}
+
+.gano-start-journey__cta-quiet {
+    border-style: dashed;
+    opacity: 0.95;
+}
+
+@media (min-width: 981px) {
+    .gano-start-journey__register-track {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.75rem 1.25rem;
+        max-width: none;
+        padding: 1.1rem 1.25rem;
+    }
+
+    .gano-start-journey__register-track li {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+        padding-left: 1rem;
+        border-left: 1px solid rgba(148, 163, 184, 0.22);
+    }
+
+    .gano-start-journey__register-track li:first-child {
+        border-left: 0;
+        padding-left: 0;
+    }
 }
 
 /* Acento del H1: color legible por defecto; gradiente solo con soporte de clip (WCAG / forced-colors) */
@@ -215,6 +306,8 @@ main.gano-start-journey.gano-on-dark > section {
 }
 
 .gano-start-journey__glass-title {
+    position: relative;
+    z-index: 1;
     margin: 0 0 0.85rem;
     font-size: 1.05rem;
     letter-spacing: -0.01em;
@@ -222,12 +315,14 @@ main.gano-start-journey.gano-on-dark > section {
 }
 
 .gano-start-journey__checklist {
+    position: relative;
+    z-index: 1;
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
     gap: 0.6rem;
-    color: rgba(226, 232, 240, 0.88);
+    color: rgba(226, 232, 240, 0.92);
     font-size: 0.95rem;
     line-height: 1.5;
 }
@@ -250,6 +345,8 @@ main.gano-start-journey.gano-on-dark > section {
 }
 
 .gano-start-journey__glass-cta {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-wrap: wrap;
     gap: 0.65rem;
@@ -483,6 +580,11 @@ main.gano-start-journey.gano-on-dark > section {
     display: flex;
     flex-wrap: wrap;
     gap: 0.65rem;
+}
+
+.gano-start-journey__path-row--stack {
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 /* FAQ */
