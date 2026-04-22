@@ -1,0 +1,54 @@
+{
+  "name": "Gano Digital - Antigravity Workspace",
+  "description": "WordPress Hosting Colombia - Phase 4 Integration",
+  "path": "C:\\Users\\diego\\Downloads\\Gano.digital-copia",
+  "projectType": "wordpress-plugin-theme-development",
+  "currentPhase": "Fase 4 - Integración GoDaddy Reseller",
+  "focusArea": "Server-side integration, REST API, deployment automation",
+  "priorities": [
+    {
+      "priority": "P0",
+      "task": "SSH deployment validation + GitHub Actions workflow #04 trigger",
+      "status": "READY"
+    },
+    {
+      "priority": "P1",
+      "task": "Production server monitoring (error logs, performance, CSS rendering)",
+      "status": "READY"
+    },
+    {
+      "priority": "P2",
+      "task": "Reseller API integration - test RCC catalog, PFIDs, checkout",
+      "status": "READY"
+    },
+    {
+      "priority": "P3",
+      "task": "Security audit - SSH keys rotation, CSP headers, Wordfence sync",
+      "status": "PENDING"
+    }
+  ],
+  "recentSessions": [
+    "2026-04-21: Auditoría UX/Visual - 6 bloques completados, PR #279 abierto",
+    "2026-04-08: Sincronización Fases 1-3 - SSH deploy exitoso"
+  ],
+  "remoteConnections": [
+    {
+      "name": "gano.digital production",
+      "host": "72.167.102.145",
+      "user": "f1rml03th382",
+      "keyPath": "~/.ssh/id_rsa_deploy",
+      "deployPath": "/home/f1rml03th382/public_html/gano.digital",
+      "syncEnabled": true
+    }
+  ],
+  "syncSettings": {
+    "enabled": true,
+    "targetBrain": "C:\\Users\\diego\\Downloads\\Gano.digital-copia\\wiki",
+    "autoDocument": {
+      "enabled": true,
+      "captureSSH": true,
+      "captureGit": true,
+      "location": "wiki/dev-sessions"
+    }
+  }
+}

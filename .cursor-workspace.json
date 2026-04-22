@@ -1,0 +1,80 @@
+{
+  "name": "Gano Digital - Cursor Workspace",
+  "description": "WordPress Hosting Colombia - Phase 4 Integration",
+  "path": "C:\\Users\\diego\\Downloads\\Gano.digital-copia",
+  "projectType": "wordpress-plugin-theme-development",
+  "currentPhase": "Fase 4 - Integración GoDaddy Reseller",
+  "priorities": [
+    {
+      "priority": "P0",
+      "status": "BLOCKING",
+      "task": "PR #279 merge to main (Auditoría UX/Visual completada)",
+      "blocker": "GitHub branch protection - requires admin review",
+      "linkedResource": "wiki/dev-sessions/deployment_complete_2026_04_21.md"
+    },
+    {
+      "priority": "P1",
+      "status": "IN_PROGRESS",
+      "task": "Production validation post-deployment (CSS, animations, error logs)",
+      "blocker": "Depends on PR #279 merge + workflow #04 execution",
+      "linkedResource": "wiki/dev-sessions/"
+    },
+    {
+      "priority": "P2",
+      "status": "READY",
+      "task": "Fase 4: Integración GoDaddy Reseller - catálogo, PFIDs, checkout flow",
+      "linkedResource": "wiki/content-library/reseller/"
+    },
+    {
+      "priority": "P3",
+      "status": "PENDING",
+      "task": "Optional: FAQ schema, menu dropdown, footer audit",
+      "linkedResource": "wiki/content-library/copy/"
+    }
+  ],
+  "recentFiles": [
+    "wp-content/themes/gano-child/front-page.php",
+    "wp-content/themes/gano-child/components/cta-registro.php",
+    "wp-content/themes/gano-child/css/gano-cta-registro.css",
+    "wp-content/themes/gano-child/functions.php"
+  ],
+  "settings": {
+    "theme": "dark",
+    "editorMode": "code",
+    "autoSave": true,
+    "gitAutoFetch": true,
+    "showGitGraph": true
+  },
+  "extensions": [
+    "WordPress extension",
+    "PHP intellisense",
+    "CSS language features",
+    "Git graph",
+    "Thunder Client (API testing)",
+    "Claude Code integration"
+  ],
+  "syncSettings": {
+    "syncToSecondBrain": true,
+    "secondBrainPath": "C:\\Users\\diego\\Downloads\\Gano.digital-copia\\wiki",
+    "autoCapture": {
+      "enabled": true,
+      "captureOnSave": true,
+      "captureOnSessionEnd": true,
+      "location": "wiki/dev-sessions"
+    },
+    "updateMemory": {
+      "enabled": true,
+      "targets": [
+        "C:\\Users\\diego\\.claude\\projects\\C--Users-diego\\memory\\project_gano_digital.md",
+        "C:\\Users\\diego\\.claude\\projects\\C--Users-diego\\memory\\deployment_complete_2026_04_21.md"
+      ]
+    }
+  },
+  "excludePatterns": [
+    "**/node_modules/**",
+    "**/.git/**",
+    "**/*.log",
+    "**/wp-content/cache/**",
+    "**/wp-content/backup-*/**"
+  ]
+}
