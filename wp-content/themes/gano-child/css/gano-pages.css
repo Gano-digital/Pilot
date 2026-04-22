@@ -1,0 +1,105 @@
+/* ──────────────────────────────────────────────────────────────
+   GANO-PAGES — Estilos consolidados de templates legales y de contenido
+   Extraídos desde estilos inline en page-sla.php y otros templates
+   ────────────────────────────────────────────────────────────── */
+
+/* ── SLA Page ──────────────────────────────────────────────────── */
+.gano-sla-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    margin-top: 1rem;
+}
+
+.gano-sla-table th,
+.gano-sla-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+.gano-sla-table thead th {
+    background: #f8fafc;
+    font-weight: 600;
+}
+
+.gano-legal__body h2 {
+    font-size: var(--gano-fs-xl, 1.25rem);
+    margin: 2rem 0 0.75rem;
+}
+
+.gano-legal__body p,
+.gano-legal__body li {
+    line-height: 1.75;
+}
+
+.gano-legal__body ul {
+    padding-left: 1.25rem;
+}
+
+.gano-legal__footer-links {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.gano-legal__footer-links a {
+    color: var(--gano-blue, #1B4FD8);
+}
+
+/* ── Trust Page Styles ─────────────────────────────────────────── */
+.gano-trust-page {
+    background: var(--gano-bg-primary);
+}
+
+.gano-trust-disclaimer {
+    background: var(--gano-bg-alt);
+    border-left: 4px solid var(--gano-blue);
+    padding: 1.5rem;
+    border-radius: var(--gano-radius-md);
+    margin-bottom: 2rem;
+}
+
+.gano-trust-disclaimer p {
+    margin: 0;
+}
+
+.gano-trust-disclaimer p:not(:last-child) {
+    margin-bottom: 0.75rem;
+}
+
+.gano-trust-disclaimer a {
+    color: var(--gano-blue);
+    text-decoration: underline;
+}
+
+/* ── Grid para pilares / diferenciadores ───────────────────────── */
+.gano-trust-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.gano-el-pillar {
+    text-align: center;
+}
+
+.gano-el-pillar h3 {
+    margin-top: 0.75rem;
+}
+
+/* ── Responsive ────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .gano-trust-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gano-sla-table {
+        font-size: 0.75rem;
+    }
+
+    .gano-sla-table th,
+    .gano-sla-table td {
+        padding: 0.5rem 0.75rem;
+    }
+}

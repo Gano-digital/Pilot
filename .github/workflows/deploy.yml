@@ -22,6 +22,9 @@ on:
           - production
           - staging
 
+permissions:
+  contents: read
+
 concurrency:
   group: deploy-${{ github.ref }}
   cancel-in-progress: true

@@ -7,7 +7,7 @@ real de hosting WordPress en Colombia. Workspace: esta carpeta raíz del proyect
 ## Proyecto actual
 | Nombre | Qué es |
 |--------|--------|
-| **gano.digital** | Sitio web de hosting WordPress en Colombia (WP + Elementor + WooCommerce; checkout vía **GoDaddy Reseller**) |
+| **gano.digital** | Sitio WordPress Colombia — vitrina SOTA en **`gano-child`** (PHP/CSS/JS); checkout cliente vía **GoDaddy Reseller Store**; Elementor/WooCommerce **no** están en producción desde ola ops **2026-04-19** (solo si se reinstalan con decisión explícita) |
 | **Plan Maestro** | Auditoría integral + roadmap de 5 fases generado en Marzo 2026 |
 
 → Detalles completos: `memory/projects/gano-digital.md`
@@ -15,12 +15,14 @@ real de hosting WordPress en Colombia. Workspace: esta carpeta raíz del proyect
 ## Stack tecnológico
 | Componente | Detalle |
 |-----------|---------|
-| **CMS** | WordPress + Elementor + Royal Elementor Addons |
-| **E-commerce** | WooCommerce (moneda COP, zona Bogotá) |
-| **Pago / checkout cliente** | **GoDaddy Reseller Store** (carrito marca blanca, facturación del lado Reseller). Sin priorizar pasarelas locales ajenas al ecosistema GoDaddy. |
-| **Seguridad** | Wordfence + MU Plugin gano-security.php |
-| **SEO** | Rank Math |
-| **Tema** | Hello Elementor → gano-child |
+| **CMS** | WordPress 6.x |
+| **Vitrina / tema** | **gano-child** — homepage y páginas comerciales en templates PHP + CSS (`homepage.css`) + JS (`gano-homepage.js`) |
+| **Builder (opcional)** | Elementor — **no instalado en prod** (abr 2026); legado solo si se decide reinstalar |
+| **E-commerce local** | WooCommerce — **no instalado en prod** (abr 2026) |
+| **Pago / checkout cliente** | **GoDaddy Reseller Store** (carrito marca blanca, PLID/PFID, moneda mercado vía RCC). |
+| **Seguridad** | MU `gano-security.php` activo; Wordfence **instalado, inactivo** en prod hasta ventana acordada |
+| **SEO** | MU `gano-seo.php` activo; Rank Math **instalado, inactivo** hasta cerrar copy |
+| **Tema padre** | Hello Elementor (child: gano-child) |
 | **UX** | Chat IA (gano-chat.js) + Quiz Soberanía Digital |
 | **Hosting actual** | **Managed WordPress Deluxe** (plan activo del servidor donde corre gano.digital) |
 
@@ -46,14 +48,13 @@ Plan actual donde está alojado gano.digital. Relevante para saber qué tenemos 
 | **skills** | Scripts de guía en .gano-skills/ |
 
 ## ⚠️ NOTA CRÍTICA — Plugins de fase
-Los plugins `gano-phase1-installer`, `gano-phase2-business`, `gano-phase3-content`,
-`gano-phase6-catalog`, `gano-phase7-activator` **NO deben eliminarse** hasta que:
-1. Cada uno haya sido **activado en WordPress** (ejecuta el instalador)
-2. Se confirme que su contenido/configuración aparece en el sitio
-Estos plugins **despliegan el sitio web**. Eliminarlos antes = perder la instalación.
-Solo `wp-file-manager` debe eliminarse inmediatamente (es un plugin de riesgo diferente).
+En **producción (2026-04-19)** se eliminaron del disco los installers **inactivos** `gano-phase1-installer`, `gano-phase2-business`, `gano-phase3-content` tras ola de hardening (backup previo en servidor). Siguen activos **`gano-phase6-catalog`** y **`gano-phase7-activator`** junto con **`gano-reseller-enhancements`** y **`reseller-store`**.
 
-→ Detalles: `memory/notes/plugins-de-fase.md`
+En el **repo**: no borrar carpetas de plugin sin decisión y PR; la nota histórica sigue siendo: los installers despliegan configuración — no eliminar en un entorno nuevo **antes** de ejecutarlos si aún no aplicaron su trabajo.
+
+Solo `wp-file-manager` debe eliminarse inmediatamente si reaparece (riesgo).
+
+→ Detalles: `memory/notes/plugins-de-fase.md` · Trazabilidad: `memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`
 
 ## Nuevos plugins (Diego adelantado)
 | Plugin | Qué hace | Fase |
@@ -84,6 +85,13 @@ Plugin que instala contenido de posicionamiento estratégico. Cada página inclu
 18. Alta Disponibilidad (HA): La Infraestructura Indestructible
 19. Analytics Server-Side: Privacidad, Velocidad y Datos Reales
 20. El Agente IA de Administración: Tu Infraestructura Habla Español
+
+## Snapshot operativo (2026-04-19)
+
+- **Producción:** ola ops — home canónica, menú, PFIDs en `wp_options` (validar RCC), bots balanceados, limpieza plugins, archivos `llms.txt` / `bot-seo-context.md`.
+- **Repo ↔ servidor:** 8 archivos críticos con **MD5** alineado a `main`; rutina futura **04**/**05**; parches urgentes con SCP + backup (ver `.github/DEV-COORDINATION.md` §6).
+- **Pendiente P0:** validación PFID numérico RCC, copy sin placeholders, luego SEO formal; Wordfence+2FA; rotación tokens (issue #267).
+- **Claude:** leer `memory/claude/README.md` (orden 0 = trazabilidad 2026-04-19) y `memory/claude/dispatch-status-2026-04-19.md`.
 
 ## Dónde nos quedamos (Marzo 2026)
 
@@ -150,7 +158,8 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `memory/content/digital-files-and-content-setup.md` | **Setup digital:** mapa de `memory/`, contenido vs Elementor, handoff, GitHub, constelación — continuidad agentes/humanos. |
 | `tools/gano-ops-hub/README.md` | **Ops Hub:** dashboard progreso + acciones GitHub; `scripts/generate_gano_ops_progress.py`; workflow **14** → Pages opcional. |
 | `memory/research/aegis-patterns-for-gano-ops-2026-04.md` | Patrones inspirados en [AEGIS](https://github.com/Ouroboros1984/AEGIS) para ops (sin copiar código AGPL). |
-| `memory/claude/README.md` | **Contexto para Claude** — historial abril 2026, pendientes, FAQ; [`memory/claude/dispatch-queue.json`](memory/claude/dispatch-queue.json) + [`dispatch-prompt.md`](memory/claude/dispatch-prompt.md) cola ejecutable con `scripts/claude_dispatch.py`. |
+| `memory/claude/README.md` | **Contexto para Claude** — orden de lectura abril 2026 (empezar por `memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`); [`dispatch-queue.json`](memory/claude/dispatch-queue.json) + [`dispatch-prompt.md`](memory/claude/dispatch-prompt.md); [`dispatch-status-2026-04-19.md`](memory/claude/dispatch-status-2026-04-19.md). |
+| `memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md` | **Índice ops** — hecho/pendiente, herramientas, issue #263. |
 | `memory/ops/agent-playbook-asistentes-2026-04.md` | **Agentes + Actions + asistentes:** arranque, troubleshooting, cerrar issues, re-lanzar colas 08/09, offloading solo humano. |
 | `.vscode/tasks.json` | Tareas **Run Task** para dispatch (`next`, `list`, `validate`, `show`, `complete`) y validación cola Copilot. |
 | `scripts/generate_claude_audit_report_pdf.py` | **Informe PDF** de auditoría de desarrollo (estado repo, workflows, dispatch, PRs, riesgos). Salida: `reports/Gano-Digital-Auditoria-Desarrollo-YYYY-MM-DD.pdf` (`*.pdf` en gitignore). |
@@ -161,4 +170,4 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 - Comunicación en español
 - Prefiere documentación en .docx para reportes formales
 - Quiere cerrar la vitrina y el flujo comercial **dentro del ecosistema GoDaddy** (Reseller + hosting actual); investigaciones WHMCS/DIAN quedan como referencia, no como prioridad mientras Reseller cubra checkout
-- No eliminar plugins de fase sin confirmación explícita
+- No eliminar plugins **activos** (`gano-phase6`, `gano-phase7`, `reseller-store`, `gano-reseller-enhancements`) sin confirmación explícita; no reintroducir Woo/Elementor sin decisión de negocio

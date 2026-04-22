@@ -7,10 +7,10 @@
 
 ### SSH Server
 ```
-Host: 72.167.102.145
-User: f1rml03th382
+Host: $SERVER_HOST
+User: $SERVER_USER
 Key: ~/.ssh/id_rsa_deploy (600 permissions)
-Deploy path: /home/f1rml03th382/public_html/gano.digital
+Deploy path: /home/$SERVER_USER/public_html/gano.digital
 ```
 
 ### GitHub PAT
@@ -64,11 +64,11 @@ jobs:
 
 ```bash
 # SSH into server
-ssh -i ~/.ssh/id_rsa_deploy f1rml03th382@72.167.102.145
+ssh -i ~/.ssh/id_rsa_deploy $SERVER_USER@$SERVER_HOST
 
 # Flush WordPress cache + rewrite rules
-wp cache flush --path=/home/f1rml03th382/public_html/gano.digital
-wp rewrite flush --path=/home/f1rml03th382/public_html/gano.digital
+wp cache flush --path=/home/$SERVER_USER/public_html/gano.digital
+wp rewrite flush --path=/home/$SERVER_USER/public_html/gano.digital
 
 # Verify deployment
 curl -s https://gano.digital/ | grep "gc-dark"  # Should output > 0
@@ -187,7 +187,7 @@ ls -la ~/.ssh/id_rsa_deploy
 chmod 600 ~/.ssh/id_rsa_deploy
 
 # Test connection
-ssh -i ~/.ssh/id_rsa_deploy f1rml03th382@72.167.102.145 'echo OK'
+ssh -i ~/.ssh/id_rsa_deploy $SERVER_USER@$SERVER_HOST 'echo OK'
 ```
 
 ### GitHub Actions Fails
@@ -250,7 +250,7 @@ grep "add_menu_page.*gano-leads" wp-content/themes/gano-child/functions.php
 
 ```bash
 # 1. Verify SSH + PAT connections
-ssh -i ~/.ssh/id_rsa_deploy f1rml03th382@72.167.102.145 'ls -la public_html/gano.digital/wp-content/themes/gano-child/'
+ssh -i ~/.ssh/id_rsa_deploy $SERVER_USER@$SERVER_HOST 'ls -la public_html/gano.digital/wp-content/themes/gano-child/'
 
 # 2. Create feature branch and test workflows
 git checkout -b test/sprint-deployment
@@ -263,13 +263,13 @@ git push origin test/sprint-deployment
 ```bash
 # 1. Use WordPress staging site to test
 wp wp-staging create --name=gano-main-test \
-  --path=/home/f1rml03th382/public_html/gano.digital
+  --path=/home/$SERVER_USER/public_html/gano.digital
 
 # 2. Deploy to staging (manual rsync with --dry-run)
 rsync -avz --dry-run \
   -e "ssh -i ~/.ssh/id_rsa_deploy" \
   wp-content/themes/gano-child/ \
-  f1rml03th382@72.167.102.145:public_html/gano.digital-staging/wp-content/themes/gano-child/
+  $SERVER_USER@$SERVER_HOST:public_html/gano.digital-staging/wp-content/themes/gano-child/
 
 # 3. Verify in browser: gano.digital/staging or staging.gano.digital
 ```
@@ -286,7 +286,7 @@ git push origin main
 # 3. Monitor workflow: github.com/gano-digital/pilot/actions
 
 # 4. SSH to server post-deploy
-ssh -i ~/.ssh/id_rsa_deploy f1rml03th382@72.167.102.145 << 'EOF'
+ssh -i ~/.ssh/id_rsa_deploy $SERVER_USER@$SERVER_HOST << 'EOF'
   cd public_html/gano.digital
   wp cache flush
   wp rewrite flush

@@ -141,59 +141,73 @@ get_header();
     </section>
 
     <!-- Tabla de precios en COP — visible solo en páginas de landing de hosting -->
-    <section class="gano-landing-pricing" aria-label="Planes de hosting">
+    <section class="gano-landing-pricing gano-catalog-shell" aria-label="Planes de hosting" data-gano-catalog>
         <div class="elementor-container">
             <h2>Planes de Hosting WordPress en Colombia</h2>
             <p class="gano-pricing-subtitle">Todos los precios en pesos colombianos (COP). Sin cargos por conversión de divisas.</p>
-
-            <div class="gano-plans-grid">
+            <div class="gano-catalog-mode-switch" role="group" aria-label="Modo de navegación del catálogo">
                 <?php
-                // Obtener los 4 productos WooCommerce (ecosistemas) por SKU o categoría
-                $plan_skus = array( 'GD-STARTUP-01', 'GD-BASIC-01', 'GD-ADVANCED-01', 'GD-SOBERANIA-01' );
-                $args = array(
-                    'post_type'      => 'product',
-                    'posts_per_page' => 4,
-                    'post_status'    => 'publish',
-                    'meta_query'     => array(
-                        array(
-                            'key'     => '_sku',
-                            'value'   => $plan_skus,
-                            'compare' => 'IN',
-                        ),
-                    ),
-                    'orderby'       => 'meta_value',
-                    'meta_key'      => '_price',
-                    'order'         => 'ASC',
-                );
-                $products = new WP_Query( $args );
+                $landing_modes = function_exists( 'gano_get_catalog_nav_modes' ) ? gano_get_catalog_nav_modes() : array();
+                foreach ( $landing_modes as $mode_key => $mode_meta ) :
+                    ?>
+                    <button type="button" class="gano-catalog-mode-btn" data-gano-mode="<?php echo esc_attr( $mode_key ); ?>" aria-pressed="false">
+                        <?php echo esc_html( $mode_meta['label'] ); ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+            <p class="gano-catalog-mode-desc" data-gano-mode-description>
+                Navega por vista general, familias o asistente según tu objetivo comercial.
+            </p>
+            <section class="gano-catalog-guided-panel" data-gano-guided-panel aria-label="Asistente de selección">
+                <ul class="gano-catalog-guided-list" data-gano-guided-list></ul>
+            </section>
 
-                if ( $products->have_posts() ) :
-                    while ( $products->have_posts() ) :
-                        $products->the_post();
-                        $wc_product = function_exists( 'wc_get_product' ) ? wc_get_product( get_the_ID() ) : null;
-                        if ( ! $wc_product ) continue;
-                        $price    = $wc_product->get_regular_price();
-                        $currency = get_woocommerce_currency_symbol();
+            <div class="gano-plans-grid" id="catalog-container">
+                <?php
+                $catalog_rows = function_exists( 'gano_get_reseller_catalog_products' ) ? gano_get_reseller_catalog_products() : array();
+                if ( ! empty( $catalog_rows ) ) :
+                    foreach ( $catalog_rows as $catalog_row ) :
+                        if ( ! in_array( $catalog_row['cat'], array( 'hostingwebcpanel', 'webhostingplus', 'wordpressadministrado' ), true ) ) {
+                            continue;
+                        }
+                        $cta = function_exists( 'gano_resolver_catalog_cta' ) ? gano_resolver_catalog_cta( $catalog_row ) : array(
+                            'url'    => '#',
+                            'label'  => 'Ver detalles',
+                            'target' => '',
+                            'status' => 'sync-missing',
+                        );
+                        $card_class = 'gano-plan-card gano-km-card';
+                        if ( 'sync-missing' === $cta['status'] ) {
+                            $card_class .= ' gano-catalog-sync-missing';
+                        }
                         ?>
-                        <article class="gano-plan-card gano-km-card" itemscope itemtype="https://schema.org/Product">
-                            <h3 itemprop="name"><?php the_title(); ?></h3>
-                            <div class="gano-plan-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                        <article class="<?php echo esc_attr( $card_class ); ?>"
+                                 data-category="<?php echo esc_attr( $catalog_row['cat'] ); ?>"
+                                 data-product-id="<?php echo esc_attr( sanitize_title( $catalog_row['cat'] . '-' . $catalog_row['name'] ) ); ?>"
+                                 data-product-name="<?php echo esc_attr( $catalog_row['name'] ); ?>"
+                                 data-product-price="<?php echo esc_attr( $catalog_row['price'] ); ?>"
+                                 itemscope itemtype="https://schema.org/Product">
+                            <h3 itemprop="name"><?php echo esc_html( $catalog_row['name'] ); ?></h3>
+                            <div class="gano-plan-price p-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                                 <meta itemprop="priceCurrency" content="COP">
-                                <span itemprop="price" content="<?php echo esc_attr( $price ); ?>">
-                                    <?php echo esc_html( $currency ); ?>&nbsp;<?php echo esc_html( number_format( (float) $price, 0, ',', '.' ) ); ?>
+                                <span itemprop="price" content="<?php echo esc_attr( preg_replace( '/[^\d\.]/', '', (string) $catalog_row['price'] ) ); ?>">
+                                    <?php echo esc_html( $catalog_row['price'] ); ?>
                                 </span>
-                                <span class="gano-plan-period">/mes</span>
+                                <span class="gano-plan-period"><?php echo esc_html( $catalog_row['price_context'] ?? 'Precio desde' ); ?></span>
                             </div>
-                            <?php if ( has_excerpt() ) : ?>
-                                <p class="gano-plan-desc" itemprop="description"><?php the_excerpt(); ?></p>
-                            <?php endif; ?>
-                            <a href="<?php the_permalink(); ?>" class="gano-btn-secondary gano-km-btn-secondary" itemprop="url">
-                                Ver detalles
+                            <p class="gano-plan-desc p-desc" itemprop="description"><?php echo esc_html( $catalog_row['desc'] ); ?></p>
+                            <a href="<?php echo esc_url( $cta['url'] ); ?>" class="gano-btn-secondary gano-km-btn-secondary rstore-add-to-cart--<?php echo esc_attr( $cta['status'] ); ?>" itemprop="url" <?php echo $cta['target']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+                                <?php echo esc_html( $cta['label'] ); ?>
                             </a>
+                            <button type="button" class="gano-catalog-compare-toggle" data-gano-compare-toggle aria-pressed="false">
+                                Comparar
+                            </button>
+                            <?php if ( 'sync-missing' === $cta['status'] ) : ?>
+                                <span class="gano-catalog-sync-note">Precio temporalmente no disponible</span>
+                            <?php endif; ?>
                         </article>
                         <?php
-                    endwhile;
-                    wp_reset_postdata();
+                    endforeach;
                 else :
                     // Fallback estático si WooCommerce no está activo o no hay productos aún
                     $static_plans = array(
@@ -204,7 +218,12 @@ get_header();
                     );
                     foreach ( $static_plans as $plan ) :
                         ?>
-                        <article class="gano-plan-card gano-km-card" itemscope itemtype="https://schema.org/Product">
+                        <article class="gano-plan-card gano-km-card gano-catalog-sync-missing"
+                                 data-category="wordpressadministrado"
+                                 data-product-id="<?php echo esc_attr( sanitize_title( $plan['name'] ) ); ?>"
+                                 data-product-name="<?php echo esc_attr( $plan['name'] ); ?>"
+                                 data-product-price="<?php echo esc_attr( $plan['price'] ); ?>"
+                                 itemscope itemtype="https://schema.org/Product">
                             <h3 itemprop="name"><?php echo esc_html( $plan['name'] ); ?></h3>
                             <div class="gano-plan-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                                 <meta itemprop="priceCurrency" content="COP">
@@ -213,12 +232,20 @@ get_header();
                             </div>
                             <p class="gano-plan-desc" itemprop="description"><?php echo esc_html( $plan['desc'] ); ?></p>
                             <a href="<?php echo esc_url( get_site_url() . '/ecosistemas' ); ?>" class="gano-btn-secondary gano-km-btn-secondary">Ver plan</a>
+                            <button type="button" class="gano-catalog-compare-toggle" data-gano-compare-toggle aria-pressed="false">
+                                Comparar
+                            </button>
                         </article>
                         <?php
                     endforeach;
                 endif;
                 ?>
             </div><!-- .gano-plans-grid -->
+            <section class="gano-catalog-comparator" data-gano-compare hidden>
+                <h3 class="gano-catalog-comparator-title">Comparador inteligente (hasta 3)</h3>
+                <ul class="gano-catalog-compare-list" data-gano-compare-list></ul>
+                <div class="gano-catalog-compare-grid" data-gano-compare-grid></div>
+            </section>
         </div>
     </section>
 

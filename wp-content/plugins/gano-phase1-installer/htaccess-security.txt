@@ -3,6 +3,21 @@
 # Generado: 2026-03-11 | Versión: 1.0.0
 # Aplica: V-001 a V-010, V-016, V-021, V-022, V-023, V-026, V-027, V-028
 # ==============================================================================
+#
+# AVISO — DUPLICACIÓN DE HEADERS (issue #232)
+# --------------------------------------------
+# En GoDaddy Managed WordPress los HTTP security headers (Sección 1: HSTS, CSP,
+# X-Frame-Options, etc.) son gestionados por el MU plugin gano-security.php.
+# El instalador gano-phase1-installer.php omite automáticamente la Sección 1
+# al escribir en .htaccess para evitar headers duplicados o conflictivos.
+#
+# Este archivo sirve como REFERENCIA DOCUMENTAL de las reglas de seguridad.
+# Solo las secciones 2–7 (protección de archivos, bloqueo de endpoints,
+# rate-limiting, caché, directory listing) se aplican vía .htaccess.
+#
+# Si en el futuro se cambia a un hosting con mod_headers.c sin MU plugin activo,
+# habilitar la Sección 1 manualmente y desactivar los headers en PHP.
+# ==============================================================================
 
 # ------------------------------------------------------------------------------
 # 1. HTTP SECURITY HEADERS (V-001 a V-009)
@@ -215,6 +230,8 @@ Options -Indexes -Includes -ExecCGI
 ServerSignature Off
 
 # Prevenir ataques de clickjacking en iframes embebidos
+# NOTA: Este bloque es omitido por el instalador (gestionado por MU plugin).
+# El MU plugin usa X-Frame-Options: SAMEORIGIN (compatible con Elementor iframes).
 <IfModule mod_headers.c>
     Header always append X-Frame-Options "DENY"
 </IfModule>

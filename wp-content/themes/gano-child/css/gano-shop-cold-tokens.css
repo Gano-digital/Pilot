@@ -1,0 +1,63 @@
+/**
+ * Gano Shop — tokens “fríos / morado neón” (mockup canónico mockup_completo_ignorar.html).
+ * Alcance: solo `.sota-wrapper` en plantilla shop-premium (no tiñe el header global).
+ *
+ * El template inline usa `var(--gano-*)`; aquí redefinimos esas variables en `.sota-wrapper`.
+ * Algunas reglas con !important corrigen sombras o `color` fijados en el bloque inline del template.
+ */
+
+body.page-template-templates-shop-premium-php .sota-wrapper {
+    --gano-blue: #4cd7f6;
+    --gano-blue-dark: #2eb8e0;
+    --gano-purple: #c0c1ff;
+    --gano-purple-soft: rgba(192, 193, 255, 0.12);
+    --gano-purple-glow: rgba(128, 131, 255, 0.45);
+    --gano-indigo: #8083ff;
+    --gano-indigo-soft: rgba(128, 131, 255, 0.14);
+    --gano-cold-cyan: #4cd7f6;
+    --gano-cold-cyan-soft: rgba(76, 215, 246, 0.12);
+    --gano-dark-deep: #0b1326;
+    --gano-card-sota: rgba(23, 31, 51, 0.92);
+    --gano-border-sota: rgba(70, 69, 84, 0.35);
+    --gano-text-slate: #dae2fd;
+    --gano-gray-500: #c7c4d7;
+}
+
+body.page-template-templates-shop-premium-php .sota-wrapper .btn-sota {
+    box-shadow: 0 10px 32px rgba(128, 131, 255, 0.35) !important;
+}
+
+body.page-template-templates-shop-premium-php .sota-wrapper .btn-sota:hover {
+    box-shadow: 0 15px 44px var(--gano-purple-glow) !important;
+}
+
+body.page-template-templates-shop-premium-php .sota-wrapper .sota-hero h1 span {
+    color: transparent !important;
+    background: linear-gradient(135deg, #c0c1ff, #4cd7f6);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+body.page-template-templates-shop-premium-php .sota-wrapper .nav-item.active,
+body.page-template-templates-shop-premium-php .sota-wrapper .nav-item:hover {
+    color: var(--gano-cold-cyan) !important;
+    border-color: rgba(76, 215, 246, 0.45) !important;
+}
+
+/* Guía de checkout (CTA secundaria bajo hero del catálogo) */
+body.page-template-templates-shop-premium-php .sota-wrapper .gano-shop-comenzar-hint {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+body.page-template-templates-shop-premium-php .sota-wrapper .gano-shop-comenzar-hint a {
+    color: rgba(255, 255, 255, 0.65);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(192, 193, 255, 0.35);
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+body.page-template-templates-shop-premium-php .sota-wrapper .gano-shop-comenzar-hint a:hover {
+    color: #c0c1ff;
+    border-bottom-color: rgba(192, 193, 255, 0.6);
+}

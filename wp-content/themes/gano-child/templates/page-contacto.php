@@ -5,11 +5,11 @@
  */
 get_header(); ?>
 
-<main id="gano-main-content" class="gano-trust-page gano-contacto">
+<main id="gano-main-content" class="gano-trust-page gano-contacto gano-km-shell">
 
   <section class="gano-dark-section gano-trust-hero">
     <div class="gano-container">
-      <p class="gano-label-pill">Contacto</p>
+      <p class="gano-label-pill gano-km-live-badge">Contacto</p>
       <h1>Antes de comprar, habla con nosotros.</h1>
       <p class="gano-trust-hero__sub">
         Resolvemos dudas técnicas y comerciales sin presión de ventas.

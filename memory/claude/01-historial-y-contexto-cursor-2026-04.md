@@ -6,12 +6,12 @@ Documento narrativo para **Claude**: resume trabajo hecho en sesiones de Cursor 
 
 ## 1. Marco del proyecto (recordatorio breve)
 
-**gano.digital** es el sitio WordPress + Elementor + WooCommerce (Colombia) de Gano Digital. Este repositorio (**Pilot** en GitHub) contiene sobre todo:
+**gano.digital** es el sitio WordPress (Colombia) de Gano Digital: vitrina **gano-child** (templates + CSS/JS), checkout cliente vía **GoDaddy Reseller Store**. En **producción (2026-04-19)** Elementor y WooCommerce **no** están instalados (retirados en ola hardening). Este repositorio (**Pilot**) contiene sobre todo:
 
 - Tema child (`gano-child`), MU-plugins de seguridad/SEO, plugins `gano-*`, scripts y documentación.
 - Automatización: GitHub Actions numerados **01–12**, colas JSON para issues Copilot, playbooks de merge y coordinación con servidor.
 
-Las **fases 1–3** (seguridad, hardening, SEO/performance en código) están **aplicadas en el repo**; la brecha operativa típica es **sincronizar con el servidor real**, **configurar paneles** (SEO, GSC, Rank Math) y **contenido en Elementor**.
+Las **fases 1–3** en código están en **repo y producción** para los archivos críticos sincronizados; la brecha típica ahora es **validación RCC/PFID**, **contenido final** (copy / Elementor opcional), **SEO en panel** (tras copy) y **seguridad operativa** (Wordfence/2FA).
 
 ---
 
@@ -85,6 +85,16 @@ Tras el merge masivo del **2026-04-03**, el equipo siguió en `main` con trabajo
 
 Issues/PRs posteriores en la serie **#108–#113** cubrieron copy coherencia, índice `memory/content/`, DNS/HTTPS y enlaces en `TASKS` / FAQ según el historial de merge.
 
+### 2.4 Ola ops producción + convergencia repo — **2026-04-19**
+
+Ejecutada vía SSH/WP-CLI/SCP y documentada en:
+
+- [`../sessions/2026-04-19-auditoria-ssh-inventario-sota.md`](../sessions/2026-04-19-auditoria-ssh-inventario-sota.md)
+- [`../sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`](../sessions/2026-04-19-trazabilidad-ops-wave-handoff.md)
+- [`dispatch-status-2026-04-19.md`](dispatch-status-2026-04-19.md)
+
+Incluye: inventario servidor, home canónica y menú, opciones `gano_pfid_*`, política bots, archivos para crawlers, limpieza de plugins inactivos, alineación **MD5** de 8 archivos críticos con `main`, actualización de `TASKS.md`, memory bank Cursor y comentarios en GitHub **#263**.
+
 ---
 
 ## 3. Implicaciones para el trabajo futuro de un agente
@@ -95,9 +105,9 @@ Issues/PRs posteriores en la serie **#108–#113** cubrieron copy coherencia, í
 
 3. **Workflows 08 / 09:** Ejecutar **solo si** hace falta **crear** nuevos issues desde JSON o el fixplan homepage aún no existe en el repo (deduplicación y estado real del remoto).
 
-4. **RCC / pfids:** El código en `main` puede seguir con placeholders (`PENDING_RCC` u homólogos); completar en `functions.php` / shop es **tarea humana + RCC**, no solo merge.
+4. **RCC / pfids:** En producción las opciones `gano_pfid_*` pueden tener valores del catálogo importado (**slugs** `rstore_id`). Validar en RCC si deben ser **PFID numérico**; cerrar `gano_pfid_online_storage`. Ver `TASKS.md` Fase 4 y [`dispatch-status-2026-04-19.md`](dispatch-status-2026-04-19.md).
 
-5. **Plugins de fase** (`gano-phase1-installer`, …): **No eliminar** hasta confirmar activación y contenido en sitio — ver [`../notes/plugins-de-fase.md`](../notes/plugins-de-fase.md) y [`CLAUDE.md`](../../CLAUDE.md).
+5. **Plugins de fase:** En **servidor (2026-04-19)** se retiraron installers **inactivos** fase 1–3; permanecen **`gano-phase6-catalog`** y **`gano-phase7-activator`**. En un **nuevo** entorno no eliminar installers antes de ejecutarlos — ver [`../notes/plugins-de-fase.md`](../notes/plugins-de-fase.md) y [`CLAUDE.md`](../../CLAUDE.md).
 
 ---
 
@@ -109,4 +119,4 @@ Issues/PRs posteriores en la serie **#108–#113** cubrieron copy coherencia, í
 
 ---
 
-_Ultima actualización del contenido de este archivo: **2026-04-04**._
+_Ultima actualización del contenido de este archivo: **2026-04-19**._

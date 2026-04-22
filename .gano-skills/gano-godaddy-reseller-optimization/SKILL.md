@@ -17,6 +17,12 @@ incluyendo bundle mapping, pricing overrides y validación de flujo de checkout.
 
 ## Contexto SOTA 2026
 
+### Producción gano.digital (2026-04-19)
+
+- Checkout activo vía **Reseller Store** + **`cart.secureserver.net`** con `plid` de Private Label.
+- **`gano_pfid_*`** en `wp_options` pobladas desde catálogo importado (slugs `rstore_id`); falta validación explícita contra **PFID** en RCC para todos los SKUs y cerrar almacenamiento online (`PENDING_RCC`).
+- **WooCommerce no está instalado** en producción; no documentar flujos de carrito local como primarios.
+
 ### GoDaddy Reseller Integration (Validado)
 - **Plugin oficial:** `wp-reseller-store` (WordPress.org)
 - **API Reseller:** Soporta integraciones directas vía webhooks
@@ -303,7 +309,7 @@ Servidor Gano recibe y procesa (debe responder HTTP 200)
 ### Logs de Webhook (En servidor)
 ```bash
 # Ver ultimos eventos recibidos:
-tail -f /home/f1rml03th382/public_html/gano.digital/wp-content/debug.log | grep -i webhook
+tail -f /home/$SERVER_USER/public_html/gano.digital/wp-content/debug.log | grep -i webhook
 
 # Esperado (si funciona):
 [2026-04-12 14:30:45] Webhook received: ORDER_CREATED (signature valid)

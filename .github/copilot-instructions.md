@@ -72,6 +72,14 @@ Antes de asumir que el repo es idéntico a producción, lee **[`.github/DEV-COOR
 - Vanilla JS preferido sobre jQuery para código nuevo
 - IntersectionObserver para scroll reveals (`scroll-reveal.js`)
 
+### Cursor personalizado WC3 (tema `gano-child`)
+
+- **Qué es:** puntero estilo *Warcraft III* (guantelete) implementado con DOM + sprite (`assets/cursor/wc3-human-atlas.png`), no con `cursor: url(*.ani)`.
+- **Archivos:** `wp-content/themes/gano-child/js/gano-cursor.js`, `css/gano-cursor.css`; el enqueue vive en `functions.php` y solo corre si el filtro devuelve verdadero.
+- **Apagar sin borrar código (producción o staging):** `add_filter( 'gano_enable_wc3_cursor', '__return_false' );` en un MU-plugin o plugin de snippets. Evita duplicar otro cursor global que ponga `cursor: none` en conflicto.
+- **Runbook (pruebas, SSH, rollback, conflictos típicos):** [`memory/ops/gano-wc3-cursor-maintenance.md`](../memory/ops/gano-wc3-cursor-maintenance.md).
+- **PRs de referencia:** [#274](https://github.com/Gano-digital/Pilot/pull/274), [#275](https://github.com/Gano-digital/Pilot/pull/275), [#276](https://github.com/Gano-digital/Pilot/pull/276).
+
 ## Arquitectura de archivos clave
 
 ```

@@ -14,7 +14,7 @@
 get_header();
 ?>
 
-<main id="gano-main-content" class="gano-ecosistemas-page gano-km-shell">
+<main id="gano-main-content" class="gano-ecosistemas-page gano-km-shell gano-catalog-shell" data-gano-catalog>
 
   <!-- ── HERO DE SECCIÓN ─────────────────────────────────────────── -->
   <section class="gano-ecosistemas-hero gano-dark-section gano-km-shell">
@@ -61,6 +61,7 @@ get_header();
           'cta_primario' => 'Elegir Núcleo Prime',
           'cta_secundario' => 'Ver especificaciones',
           'rcc_slug'     => 'wordpress-basico',
+          'catalog_cat'  => 'wordpressadministrado',
           'pfid_const'   => 'GANO_PFID_HOSTING_ECONOMIA',
           'enlace_detalle' => '/ecosistemas/nucleo-prime',
         ],
@@ -87,6 +88,7 @@ get_header();
           'cta_primario' => 'Activar Fortaleza Delta',
           'cta_secundario' => 'Comparar planes',
           'rcc_slug'     => 'wordpress-deluxe',
+          'catalog_cat'  => 'wordpressadministrado',
           'pfid_const'   => 'GANO_PFID_HOSTING_DELUXE',
           'enlace_detalle' => '/ecosistemas/fortaleza-delta',
         ],
@@ -113,6 +115,7 @@ get_header();
           'cta_primario' => 'Solicitar Bastión SOTA',
           'cta_secundario' => 'Hablar con ventas',
           'rcc_slug'     => 'wordpress-ultimate',
+          'catalog_cat'  => 'webhostingplus',
           'pfid_const'   => 'GANO_PFID_HOSTING_PREMIUM',
           'enlace_detalle' => '/ecosistemas/bastion-sota',
         ],
@@ -139,11 +142,31 @@ get_header();
           'cta_primario' => 'Cotizar Ultimate WP',
           'cta_secundario' => 'Hablar con ventas',
           'rcc_slug'     => 'cpanel-ultimate',
+          'catalog_cat'  => 'hostingwebcpanel',
           'pfid_const'   => 'GANO_PFID_HOSTING_ULTIMATE',
           'enlace_detalle' => '/ecosistemas/ultimate-wp',
         ],
       ];
 
+      $catalog_modes = function_exists( 'gano_get_catalog_nav_modes' ) ? gano_get_catalog_nav_modes() : array();
+      ?>
+
+      <div class="gano-catalog-mode-switch" role="group" aria-label="Modo de navegación de ecosistemas">
+        <?php foreach ( $catalog_modes as $mode_key => $mode_meta ) : ?>
+          <button type="button" class="gano-catalog-mode-btn" data-gano-mode="<?php echo esc_attr( $mode_key ); ?>" aria-pressed="false">
+            <?php echo esc_html( $mode_meta['label'] ); ?>
+          </button>
+        <?php endforeach; ?>
+      </div>
+      <p class="gano-catalog-mode-desc" data-gano-mode-description>
+        Cambia la forma de explorar los ecosistemas según tu nivel de madurez.
+      </p>
+      <section class="gano-catalog-guided-panel" data-gano-guided-panel aria-label="Asistente de selección">
+        <ul class="gano-catalog-guided-list" data-gano-guided-list></ul>
+      </section>
+
+      <div id="catalog-container" class="gano-catalog-grid gano-cards-grid">
+      <?php
       foreach ( $planes as $plan ) :
         // NUEVO: Buscar producto RCC dinámicamente via WP_Query
         $product_query = new WP_Query([
@@ -158,7 +181,7 @@ get_header();
         $pfid       = defined( $plan['pfid_const'] ) ? constant( $plan['pfid_const'] ) : 'PENDING_RCC';
         $cart_url   = ( $pfid !== 'PENDING_RCC' && function_exists( 'gano_rstore_cart_url' ) )
                         ? gano_rstore_cart_url( $pfid )
-                        : '/contacto';
+                        : '#ecosistemas-proximamente';
         $is_pending = ( $pfid === 'PENDING_RCC' ) && ! $rcc_product_id;
 
         $card_classes = 'gano-plan-card';
@@ -167,7 +190,12 @@ get_header();
         if ( $plan['tag'] ) $card_classes .= ' gano-plan-card--featured';
         ?>
 
-        <article class="<?php echo esc_attr( $card_classes ); ?> gano-km-card" id="<?php echo esc_attr( $plan['id'] ); ?>">
+        <article class="<?php echo esc_attr( $card_classes ); ?> gano-km-card"
+                 id="<?php echo esc_attr( $plan['id'] ); ?>"
+                 data-category="<?php echo esc_attr( $plan['catalog_cat'] ?? 'wordpressadministrado' ); ?>"
+                 data-product-id="<?php echo esc_attr( sanitize_title( $plan['id'] ) ); ?>"
+                 data-product-name="<?php echo esc_attr( $plan['nombre'] ); ?>"
+                 data-product-price="<?php echo esc_attr( $plan['precio'] ); ?>">
 
           <?php if ( $plan['tag'] ) : ?>
             <span class="gano-plan-badge"><?php echo esc_html( $plan['tag'] ); ?></span>
@@ -194,9 +222,10 @@ get_header();
 
           <div class="gano-plan-ctas">
             <?php if ( $is_pending ) : ?>
-              <a href="/contacto" class="gano-btn gano-km-btn-primary" aria-label="<?php echo esc_attr( $plan['cta_primario'] ); ?>">
+              <a href="/contacto" class="gano-btn gano-km-btn-primary" aria-label="<?php echo esc_attr( $plan['cta_primario'] ); ?> — contactar para precio">
                 <?php echo esc_html( $plan['cta_primario'] ); ?>
               </a>
+              <small class="gano-plan-pending-note">Carrito en configuración · Contacta para activar</small>
             <?php elseif ( $rcc_product_id ) : ?>
               <!-- NUEVO: Si se encontró el producto RCC, usar shortcode rstore_product -->
               <?php echo do_shortcode( "[rstore_product post_id={$rcc_product_id} show_price=1 redirect=1 button_label='" . esc_attr( $plan['cta_primario'] ) . "']" ); ?>
@@ -209,12 +238,21 @@ get_header();
             <a href="<?php echo esc_url( $plan['enlace_detalle'] ); ?>" class="gano-link-secundario gano-km-btn-secondary">
               <?php echo esc_html( $plan['cta_secundario'] ); ?> →
             </a>
+            <button type="button" class="gano-catalog-compare-toggle" data-gano-compare-toggle aria-pressed="false">
+              Comparar
+            </button>
           </div>
 
         </article>
 
       <?php endforeach; ?>
+      </div>
 
+      <section class="gano-catalog-comparator" data-gano-compare hidden>
+        <h3 class="gano-catalog-comparator-title">Comparador inteligente (hasta 3)</h3>
+        <ul class="gano-catalog-compare-list" data-gano-compare-list></ul>
+        <div class="gano-catalog-compare-grid" data-gano-compare-grid></div>
+      </section>
     </div><!-- .gano-container -->
   </section>
 
@@ -254,54 +292,57 @@ get_header();
     </div>
   </section>
 
-  <!-- ── CTA FINAL ───────────────────────────────────────────────── -->
-  <section class="gano-dark-section gano-ecosistemas__cta-final gano-km-shell" id="gano-cta-final-sentinel">
-    <div class="gano-container gano-km-container">
-      <h2>¿No sabes cuál elegir?</h2>
-      <p>Cuéntanos dónde estás y te decimos qué arquitectura corresponde a tu etapa. Sin presión.</p>
-      <a href="/contacto" class="gano-btn gano-km-btn-primary">Hablar con el equipo</a>
+  <!-- ── RESPUESTAS A OBJECIONES ────────────────────────────────── -->
+  <section class="gano-ecosistemas-objeciones" style="padding: 60px 5%; background: rgba(15,17,21,0.5); border-top: 1px solid rgba(255,255,255,0.08);">
+    <div class="gano-container">
+      <h2 style="text-align: center; margin-bottom: 40px;">Lo que dirías vs. lo que respondemos</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+
+        <!-- Objeción 1: Precio -->
+        <article style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+          <h3 style="color: #FF6B35; margin-bottom: 15px;">💰 "Es caro para lo que necesito"</h3>
+          <div style="font-size: 0.95rem; line-height: 1.6;">
+            <p><strong>Núcleo Prime:</strong> NVMe real (no HDD) + soporte en español = más que un hosting compartido genérico al mismo precio.</p>
+            <p><strong>Fortaleza Delta:</strong> Hardening activo + más recursos + visibilidad = no pagas dos veces el mismo servicio.</p>
+            <p><strong>Bastión SOTA:</strong> Una hora de caída supera la diferencia de precio mensual. Es inversión en continuidad.</p>
+          </div>
+        </article>
+
+        <!-- Objeción 2: Confianza -->
+        <article style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+          <h3 style="color: #1B4FD8; margin-bottom: 15px;">🤝 "¿Quién es Gano Digital?"</h3>
+          <div style="font-size: 0.95rem; line-height: 1.6;">
+            <p><strong>La infraestructura:</strong> GoDaddy Managed WordPress — años de trayectoria, datacenter con estándares globales.</p>
+            <p><strong>Lo que sumamos:</strong> Configuración experta, hardening que el reseller no hace por omisión, soporte en tu idioma y contexto local.</p>
+            <p><strong>Transparencia:</strong> SLA publicado, política de incidentes clara, sin letra pequeña.</p>
+          </div>
+        </article>
+
+        <!-- Objeción 3: Soporte -->
+        <article style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+          <h3 style="color: #00C26B; margin-bottom: 15px;">📞 "¿Recibiré soporte real?"</h3>
+          <div style="font-size: 0.95rem; line-height: 1.6;">
+            <p><strong>Núcleo Prime:</strong> Ticket en español con contexto de tu instalación — no un bot genérico.</p>
+            <p><strong>Fortaleza Delta:</strong> Canal priorizado para clientes Fortaleza (respuesta dentro de horario hábil).</p>
+            <p><strong>Bastión SOTA:</strong> Contacto dedicado, monitoreo proactivo, política de escalamiento documentada.</p>
+          </div>
+        </article>
+
+      </div>
     </div>
   </section>
 
-  <!-- ── CTA STICKY MOBILE ────────────────────────────────────────── -->
-  <div class="gano-sticky-cta-mobile"
-       role="complementary"
-       aria-label="Acciones rápidas">
-    <a href="#nucleo-prime"
-       class="gano-sticky-cta__primary"
-       aria-label="Elegir plan — ir a los planes">
-      Elegir plan →
-    </a>
-    <a href="/contacto"
-       class="gano-sticky-cta__secondary"
-       aria-label="Hablar con el equipo de ventas">
-      Contactar
-    </a>
+  <!-- ── CTA FINAL ───────────────────────────────────────────────── -->
+  <div class="gano-container">
+    <?php
+    gano_cta_registro(array(
+      'heading'     => '¿No sabes por dónde empezar?',
+      'description' => '¿no sabes por dónde empezar? registra tu cuenta y recibe soporte inmediato. Nosotros te agendamos. Acompañamos tu empresa en cada decisión: siempre donde verdaderamente importa.',
+      'button_text' => 'Registra tu cuenta',
+    ));
+    ?>
   </div>
 
 </main>
-
-<script>
-(function () {
-  // Ocultar la barra sticky cuando el CTA final entra en viewport
-  var sentinel = document.getElementById('gano-cta-final-sentinel');
-  var bar = document.querySelector('.gano-sticky-cta-mobile');
-  if (!sentinel || !bar) return;
-
-  document.body.classList.add('has-mobile-cta');
-
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        bar.classList.add('is-hidden');
-      } else {
-        bar.classList.remove('is-hidden');
-      }
-    });
-  }, { threshold: 0.1 });
-
-  obs.observe(sentinel);
-})();
-</script>
 
 <?php get_footer(); ?>

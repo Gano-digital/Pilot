@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Gano Digital — Fix: Unpublish Coming Soon (ID 1698)
  * Plugin URI:  https://gano.digital
- * Description: Fix único. Al activar: cambia el post ID 1698 (Coming Soon) de publish a draft. Desactivar y eliminar después de aplicado. Cierra issue #116.
- * Version:     1.0.0
+ * Description: Fix único. Al activar: cambia el post ID 1698 (Coming Soon) de publish a draft. Protección en tiempo de ejecución: redirige /coming-soon a home y la oculta de menús públicos. Cierra issues #116 y #227.
+ * Version:     1.1.0
  * Author:      Gano Digital
  */
 
@@ -13,15 +13,65 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/** ID del post "Coming Soon" que debe permanecer oculto al público. */
+const GANO_COMING_SOON_POST_ID = 1698;
+
 register_activation_hook( __FILE__, 'gano_fix_coming_soon_activate' );
 add_action( 'admin_notices', 'gano_fix_coming_soon_admin_notice' );
+add_action( 'template_redirect', 'gano_redirect_coming_soon_post' );
+add_filter( 'wp_nav_menu_objects', 'gano_filter_coming_soon_from_menus' );
+
+/**
+ * Redirige al inicio con 301 si alguien intenta acceder al post
+ * "Coming Soon" (ID 1698) mientras está publicado.
+ *
+ * Los usuarios con capacidad `edit_posts` (editores y superiores) pueden
+ * seguir accediendo para previsualizar o editar el post.
+ *
+ * Cubre el caso en que el post sea re-publicado accidentalmente tras la
+ * ejecución del activation hook.
+ */
+function gano_redirect_coming_soon_post(): void {
+	if ( ! is_singular() ) {
+		return;
+	}
+	if ( current_user_can( 'edit_posts' ) ) {
+		return;
+	}
+	$post = get_queried_object();
+	if ( ! ( $post instanceof \WP_Post ) ) {
+		return;
+	}
+	if ( absint( $post->ID ) === GANO_COMING_SOON_POST_ID ) {
+		wp_safe_redirect( home_url( '/' ), 301 );
+		exit;
+	}
+}
+
+/**
+ * Elimina el post "Coming Soon" (ID 1698) de los menús de navegación públicos.
+ *
+ * @param \WP_Post[] $items  Ítems del menú.
+ * @return \WP_Post[]
+ */
+function gano_filter_coming_soon_from_menus( array $items ): array {
+	foreach ( $items as $key => $item ) {
+		if (
+			'post_type' === $item->type &&
+			absint( $item->object_id ) === GANO_COMING_SOON_POST_ID
+		) {
+			unset( $items[ $key ] );
+		}
+	}
+	return $items;
+}
 
 /**
  * Cambia el post ID 1698 (Coming Soon) a estado draft.
  * Guarda el resultado en un transient para mostrarlo en la siguiente carga de admin.
  */
 function gano_fix_coming_soon_activate(): void {
-	$post_id = 1698;
+	$post_id = GANO_COMING_SOON_POST_ID;
 	$post    = get_post( $post_id );
 
 	if ( ! $post ) {

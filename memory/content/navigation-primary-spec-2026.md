@@ -1,7 +1,7 @@
 # Especificación menú `primary` — Gano Digital · 2026
 
-**Versión:** 1.0 · Abril 2026  
-**Ubicación registrada:** `primary` (`gano_child_register_nav_menus()` en `functions.php` línea 127)  
+**Versión:** 1.1 · Abril 2026  
+**Ubicación registrada:** `primary` (`gano_child_register_nav_menus()` en `functions.php` líneas 321–330)  
 **Referencia de IA:** `memory/content/site-ia-wave3-proposed.md` §6  
 **Regla de conversión:** ningún camino a checkout supera **3 clics** desde Home.
 
@@ -152,20 +152,26 @@ Los siguientes ítems **no van** en el menú `primary` del header, sino en el fo
 
 ## 6. Notas técnicas para agentes de código
 
-- La ubicación `primary` ya está registrada en `functions.php` (línea 127–131) y tiene un fallback automático (`gano_child_assign_primary_menu_fallback`) que asigna el primer menú disponible si `primary` no tiene menú asignado.
-- El CTA `Elegir plan →` en la navbar debe recibir la CSS class `gano-menu-cta`. Los estilos de esa clase se pueden agregar en `gano-child/style.css`:
+- La ubicación `primary` ya está registrada en `functions.php` (líneas 321–330, función `gano_child_register_nav_menus()`). El fallback automático lo gestiona `gano_child_assign_nav_menu_locations()` (líneas 349–351), que asigna el primer menú disponible a `primary`, `header` y `footer` si alguna de ellas está vacía.
+- Los estilos de `.gano-menu-cta` y `.menu-separator` **ya están implementados** en `gano-child/style.css` (líneas 1706–1737). No es necesario agregar CSS adicional. La implementación incluye `:visited`, `:hover`, `:focus`, `:focus-visible` (outline con `--gano-gold`) y el separador visual del dropdown:
   ```css
-  .gano-menu-cta > a {
-    background: var(--gano-orange);
+  /* Referencia — ya en style.css (no duplicar) */
+  .gano-menu-cta > a,
+  .gano-menu-cta > a:visited {
+    background: var(--gano-orange, #E85D04);
     color: #fff !important;
     padding: 0.5rem 1.25rem;
     border-radius: 4px;
-    font-weight: 600;
-    transition: opacity 0.2s ease;
+    font-weight: 700;
+    text-decoration: none !important;
+    transition: opacity 150ms ease, background 150ms ease;
   }
-  .gano-menu-cta > a:hover {
-    opacity: 0.88;
-  }
+  .gano-menu-cta > a:hover,
+  .gano-menu-cta > a:focus { opacity: 0.88; }
+  .gano-menu-cta > a:focus-visible { outline: 3px solid var(--gano-gold, #D4AF37); outline-offset: 3px; }
+
+  /* Separador antes de "Comparar todos" en dropdown Ecosistemas */
+  .menu-separator > a { border-top: 1px solid #e2e8f0; margin-top: 0.25rem; padding-top: 0.75rem; }
   ```
 - Los ítems P1 (sub-ítems de dropdown) **no** tienen que estar en `primary` como ítems de primer nivel — se crean como hijos (sub-ítems) del ítem padre en el editor de menús de WordPress.
 - Los anclas `#infraestructura`, `#seguridad`, etc. en `/pilares` deben existir en el HTML de esa página (IDs de sección en Elementor).

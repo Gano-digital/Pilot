@@ -8,337 +8,300 @@
 get_header();
 ?>
 
-<style>
-:root {
-    --gano-blue: #1B4FD8;
-    --gano-green: #00C26B;
-    --gano-orange: #FF6B35;
-    --gano-gold: #D4AF37;
-    --gano-dark: #0F1923;
-    --gano-darker: #05080b;
-    --gano-glass: rgba(255, 255, 255, 0.03);
-    --gano-glass-border: rgba(255, 255, 255, 0.08);
-    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.gano-home * { margin: 0; padding: 0; box-sizing: border-box; }
-.gano-home { background: var(--gano-darker); color: #e2e8f0; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-
-.hero-gano { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; background: radial-gradient(circle at 50% 50%, #1e2530 0%, var(--gano-darker) 100%); padding-top: 60px; }
-.hero-gano::before { content: ''; position: absolute; width: 200%; height: 200%; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231B4FD8' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); animation: moveGrid 20s linear infinite; opacity: 0.3; z-index: 0; pointer-events: none; }
-@keyframes moveGrid { from { transform: translateY(0); } to { transform: translateY(-60px); } }
-.hero-content { position: relative; z-index: 2; max-width: 900px; text-align: center; }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-/* h1 sin delay para LCP — el navegador lo pinta de inmediato */
-.hero-gano h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; letter-spacing: -1px; animation: fadeInUp 0.6s ease-out both; }
-.hero-gano h1 span { background: linear-gradient(135deg, var(--gano-blue), var(--gano-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.hero-gano p { font-size: 1.2rem; color: #94a3b8; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; animation: fadeInUp 0.8s ease-out 0.25s both; }
-.btn-gano { background: linear-gradient(135deg, var(--gano-blue), var(--gano-green)); color: #fff; padding: 18px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; display: inline-block; box-shadow: 0 10px 30px rgba(27, 79, 216, 0.3); transition: var(--transition); border: none; cursor: pointer; font-size: 1rem; animation: fadeInUp 0.8s ease-out 0.45s both; }
-.btn-gano:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0, 194, 107, 0.4); }
-.section-gano { padding: 100px 5%; max-width: 1400px; margin: 0 auto; }
-.section-title-gano { text-align: center; margin-bottom: 60px; }
-.section-title-gano h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2.5rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
-.section-title-gano p { color: #94a3b8; font-size: 1.1rem; }
-.ecosistemas-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 80px; }
-.ecosystem-card { background: var(--gano-glass); border: 1px solid var(--gano-glass-border); border-radius: 20px; padding: 40px; transition: var(--transition); text-align: center; position: relative; overflow: hidden; display: flex; flex-direction: column; }
-.ecosystem-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); transition: left 0.6s; z-index: 1; }
-.ecosystem-card:hover::before { left: 100%; }
-.ecosystem-card:hover { transform: translateY(-10px); border-color: var(--gano-gold); background: rgba(255, 255, 255, 0.05); }
-.ecosystem-card h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.5rem; margin-bottom: 15px; font-weight: 800; color: #fff; position: relative; z-index: 2; }
-.ecosystem-card .price { font-size: 2rem; font-weight: 800; color: var(--gano-gold); margin-bottom: 20px; font-family: 'Plus Jakarta Sans', sans-serif; position: relative; z-index: 2; }
-.ecosystem-card .price small { font-size: 0.6rem; color: #94a3b8; display: block; font-weight: 400; margin-top: 5px; }
-.ecosystem-card ul { list-style: none; margin-bottom: 30px; color: #94a3b8; font-size: 0.9rem; position: relative; z-index: 2; }
-.ecosystem-card ul li { margin-bottom: 10px; padding-left: 20px; position: relative; }
-.ecosystem-card ul li::before { content: '→'; position: absolute; left: 0; color: var(--gano-green); font-weight: bold; }
-.ecosystem-card .btn-gano { width: 100%; animation: none; margin-top: auto; position: relative; z-index: 2; }
-.value-section { background: var(--gano-glass); border: 1px solid var(--gano-glass-border); border-radius: 20px; padding: 60px; margin-bottom: 80px; }
-.value-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; }
-.value-item h4 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.2rem; color: var(--gano-gold); margin-bottom: 10px; font-weight: 800; }
-.value-item p { color: #cbd5e1; line-height: 1.6; font-size: 0.95rem; }
-.metrics-section { text-align: center; }
-.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
-.metric-box { background: var(--gano-glass); border: 1px solid var(--gano-glass-border); border-radius: 15px; padding: 40px 20px; transition: var(--transition); }
-.metric-box:hover { border-color: var(--gano-green); background: rgba(0, 194, 107, 0.05); }
-.metric-box .number { font-size: 2.5rem; font-weight: 900; color: var(--gano-green); margin-bottom: 10px; font-family: 'Plus Jakarta Sans', sans-serif; }
-.metric-box .label { color: #94a3b8; font-size: 0.9rem; }
-
-@media (max-width: 768px) {
-    .hero-gano { height: 90vh; padding-top: 40px; }
-    .hero-gano h1 { font-size: 2.5rem; }
-    .hero-gano p { font-size: 1rem; }
-    .section-gano { padding: 60px 5%; }
-    .section-title-gano h2 { font-size: 2rem; }
-    .value-section { padding: 40px; }
-    .ecosistemas-grid { grid-template-columns: 1fr; gap: 20px; }
-    .ecosystem-card { padding: 30px; }
-}
-</style>
-
-<div class="gano-home">
-    <section class="hero-gano">
-        <div class="hero-content">
-            <h1>Tu <span>Soberanía Digital</span> Comienza Aquí</h1>
-            <p>Infraestructura NVMe de alta gama, ciberseguridad SOTA y acompañamiento consultivo para escalar tu visión.</p>
-            <a href="#ecosistemas" class="btn-gano">Explorar Ecosistemas</a>
+<main class="gano-home" id="gano-home-main" data-gano-homepage>
+    <section class="hero-gano gano-hero-overlay">
+        <div class="hero-gano__ghost" aria-hidden="true">
+            <span class="hero-gano__ghost-line"><?php esc_html_e( 'SOTA', 'gano-child' ); ?></span>
+            <span class="hero-gano__ghost-line hero-gano__ghost-line--accent"><?php esc_html_e( 'COLOMBIA', 'gano-child' ); ?></span>
         </div>
-    </section>
-
-    <!-- Trust bar — señales de confianza post-hero -->
-    <div class="gano-trust-bar" role="complementary" aria-label="Señales de confianza">
-        <div class="gano-trust-bar__inner">
-            <span class="gano-trust-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                Reseller oficial GoDaddy
-            </span>
-            <span class="gano-trust-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                SLA objetivo ≥ 99,9% uptime
-            </span>
-            <span class="gano-trust-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                Soporte en español
-            </span>
-            <span class="gano-trust-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                NVMe Gen4 real
-            </span>
-            <span class="gano-trust-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                Facturación en COP
-            </span>
-        </div>
-    </div>
-
-    <style>
-    .gano-trust-bar {
-        background: rgba(27, 79, 216, 0.06);
-        border-top: 1px solid rgba(27, 79, 216, 0.15);
-        border-bottom: 1px solid rgba(27, 79, 216, 0.15);
-        padding: 14px 5%;
-    }
-    .gano-trust-bar__inner {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 8px 32px;
-        max-width: 1100px;
-        margin: 0 auto;
-    }
-    .gano-trust-item {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        color: #94a3b8;
-        font-size: 0.83rem;
-        font-weight: 500;
-        white-space: nowrap;
-    }
-    .gano-trust-item svg {
-        color: var(--gano-green, #00C26B);
-        flex-shrink: 0;
-    }
-    @media (max-width: 640px) {
-        .gano-trust-bar__inner { gap: 8px 20px; }
-        .gano-trust-item { font-size: 0.78rem; }
-    }
-    </style>
-
-    <section class="section-gano" style="text-align: center;">
-        <div class="section-title-gano">
-            <h2>Encuentra tu Dominio</h2>
-            <p>Búsqueda instantánea de TLDs disponibles</p>
-        </div>
-        <?php echo do_shortcode('[rstore_domain_search]'); ?>
-    </section>
-
-    <section class="section-gano" id="ecosistemas">
-        <div class="section-title-gano">
-            <h2>Ecosistemas SOTA 2026</h2>
-            <p>Elige el nivel de blindaje y potencia que tu proyecto merece</p>
-        </div>
-        <div class="ecosistemas-grid">
-            <?php
-            $ecosistemas = [
-                [
-                    'nombre' => 'Núcleo Prime',
-                    'slug' => 'wordpress-basico',
-                    'precio' => '$196.000',
-                    'features' => ['NVMe Gen4', 'WAF Capa 7', 'Soporte Standard']
-                ],
-                [
-                    'nombre' => 'Fortaleza Delta',
-                    'slug' => 'wordpress-deluxe',
-                    'precio' => '$450.000',
-                    'features' => ['50GB NVMe', 'Agente IA', 'Soporte 24/7']
-                ],
-                [
-                    'nombre' => 'Bastión SOTA',
-                    'slug' => 'wordpress-ultimate',
-                    'precio' => '$890.000',
-                    'features' => ['150GB NVMe', 'Dedicado', 'Seguridad Militar']
-                ],
-                [
-                    'nombre' => 'Soberanía Total',
-                    'slug' => 'cpanel-ultimate',
-                    'precio' => '$2.5M+',
-                    'features' => ['Recursos Ilimitados', 'Infraestructura Custom', 'Consultoría']
-                ]
-            ];
-
-            foreach ($ecosistemas as $eco) {
-                $product_query = new WP_Query([
-                    'post_type' => 'reseller_product',
-                    'name' => $eco['slug'],
-                    'posts_per_page' => 1,
-                ]);
-
-                $post_id = $product_query->have_posts() ? $product_query->posts[0]->ID : null;
-                wp_reset_postdata();
+        <div class="gano-shell hero-content">
+            <p class="overline">Soberanía Digital · Operación Colombia</p>
+            <h1>Infraestructura WordPress premium con acompañamiento real de inicio a escala.</h1>
+            <p>
+                Diseñamos, implementamos y acompañamos tu operación digital con soporte experto en español, asesoría continua,
+                capacitación del equipo y seguimiento técnico para que conviertas más sin fricción operativa.
+            </p>
+            <div class="hero-cta-row">
+                <a href="#ecosistemas" class="btn-holo">
+                    <span class="label">Ver arquitecturas y planes</span>
+                    <span class="arrow">→</span>
+                </a>
+                <?php
+                $url_shop = function_exists( 'gano_resolve_page_url' )
+                    ? gano_resolve_page_url( 'shop-premium', 'tienda', 'catalogo' )
+                    : home_url( '/shop-premium/' );
                 ?>
-                <div class="ecosystem-card">
-                    <h3><?php echo esc_html($eco['nombre']); ?></h3>
-                    <div class="price"><?php echo esc_html($eco['precio']); ?></div>
-                    <ul>
-                        <?php foreach ($eco['features'] as $feature) { ?>
-                            <li><?php echo esc_html($feature); ?></li>
-                        <?php } ?>
-                    </ul>
-                    <?php
-                    if ($post_id) {
-                        echo do_shortcode("[rstore_product post_id={$post_id} show_price=1 redirect=1 button_label='Elegir Plan']");
-                    } else {
-                        echo '<a href="/contacto/" class="btn-gano">Consultar</a>';
+                <a href="<?php echo esc_url( $url_shop ); ?>" class="btn-gano btn-gano--secondary">Explorar catálogo inteligente</a>
+            </div>
+            <div class="hero-gano__proof-glass">
+                <p class="hero-gano__proof-label"><?php esc_html_e( 'Marco operativo', 'gano-child' ); ?></p>
+                <ul class="hero-proof-bar" aria-label="<?php esc_attr_e( 'Marco operativo: SLA, endurecimiento y operación local', 'gano-child' ); ?>">
+                    <li><strong><?php esc_html_e( 'SLA', 'gano-child' ); ?></strong><span><?php esc_html_e( 'Acuerdos de nivel de servicio explícitos', 'gano-child' ); ?></span></li>
+                    <li><strong><?php esc_html_e( 'Hardening', 'gano-child' ); ?></strong><span><?php esc_html_e( 'WordPress endurecido y monitoreado', 'gano-child' ); ?></span></li>
+                    <li><strong><?php esc_html_e( 'COP', 'gano-child' ); ?></strong><span><?php esc_html_e( 'Facturación y operación en Colombia', 'gano-child' ); ?></span></li>
+                </ul>
+            </div>
+            <?php
+            $url_comenzar = function_exists( 'gano_resolve_page_url' )
+                ? gano_resolve_page_url( 'comenzar-aqui', 'comenzar', 'registro-y-compra' )
+                : home_url( '/comenzar-aqui/' );
+            ?>
+            <p class="gano-home-comenzar-link">
+                <a href="<?php echo esc_url( $url_comenzar ); ?>"><?php esc_html_e( '¿Primera compra? Guía del checkout y registro →', 'gano-child' ); ?></a>
+            </p>
+        </div>
+    </section>
+
+    <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="dominios-heading">
+        <div class="gano-shell">
+            <div class="section-title-gano">
+                <h2 id="dominios-heading">Encuentra tu dominio ideal</h2>
+                <p>Búsqueda instantánea de TLDs disponibles para lanzar tu operación.</p>
+            </div>
+            <div class="gano-domain-search-wrap">
+                <?php echo do_shortcode( '[rstore_domain_search]' ); ?>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-gano gano-home-section" id="ecosistemas" data-gano-catalog aria-labelledby="ecosistemas-heading">
+        <div class="gano-shell">
+            <div class="section-title-gano">
+                <h2 id="ecosistemas-heading">Ecosistemas SOTA 2026</h2>
+                <p>Elige el nivel de soporte, arquitectura y crecimiento que tu negocio necesita.</p>
+            </div>
+            <div class="gano-catalog-mode-switch" role="group" aria-label="Modo de navegación del catálogo">
+                <?php
+                $home_modes = function_exists( 'gano_get_catalog_nav_modes' ) ? gano_get_catalog_nav_modes() : array();
+                $home_primary_modes = array( 'grid', 'family' );
+                foreach ( $home_primary_modes as $mode_key ) :
+                    if ( ! isset( $home_modes[ $mode_key ] ) ) {
+                        continue;
                     }
                     ?>
-                </div>
-                <?php
-            }
-            ?>
-        </div>
-    </section>
-
-    <section class="section-gano">
-        <div class="section-title-gano">
-            <h2>¿Por qué Gano Digital?</h2>
-            <p>Soberanía tecnológica para PYMEs colombianas</p>
-        </div>
-        <div class="value-section">
-            <div class="value-grid">
-                <div class="value-item">
-                    <h4>🚀 Velocidad SOTA</h4>
-                    <p>NVMe Gen4 con latencia cero. 7.500 MB/s vs. 20% de hosting convencional.</p>
-                </div>
-                <div class="value-item">
-                    <h4>🔒 Blindaje Military-Grade</h4>
-                    <p>WAF Capa 7, cifrado post-cuántico, DDoS immunity. Tu infraestructura protegida.</p>
-                </div>
-                <div class="value-item">
-                    <h4>🤖 IA Consultiva</h4>
-                    <p>Agente SOTA 24/7 para optimización, escalado y estrategia técnica.</p>
-                </div>
-                <div class="value-item">
-                    <h4>🇨🇴 Nodos Bogotá</h4>
-                    <p>Infraestructura soberana. Datos en Colombia. Cumplimiento normativo asegurado.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section-gano metrics-section">
-        <div class="section-title-gano">
-            <h2>Nuestros Compromisos</h2>
-            <p>Benchmarks SOTA garantizados</p>
-        </div>
-        <div class="metrics-grid">
-            <div class="metric-box">
-                <div class="number">99.99%</div>
-                <div class="label">Uptime SLA</div>
-            </div>
-            <div class="metric-box">
-                <div class="number">&lt;50ms</div>
-                <div class="label">Latencia Bogotá</div>
-            </div>
-            <div class="metric-box">
-                <div class="number">7.500MB/s</div>
-                <div class="label">Velocidad I/O</div>
-            </div>
-            <div class="metric-box">
-                <div class="number">24/7</div>
-                <div class="label">Soporte Premium</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section-gano" style="text-align: center;">
-        <div style="background: var(--gano-glass); border: 1px solid var(--gano-glass-border); border-radius: 20px; padding: 60px; max-width: 700px; margin: 0 auto;">
-            <h2 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2rem; margin-bottom: 20px;">Primero — Descarga la Guía SOTA</h2>
-            <p style="color: #94a3b8; margin-bottom: 30px;">Recibe estrategias de infraestructura SOTA directo a tu correo (gratis).</p>
-
-            <form id="gano-lead-magnet" style="display: flex; flex-direction: column; gap: 16px;">
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="tu@empresa.com"
-                    required
-                    style="padding: 12px 16px; background: rgba(255,255,255,0.05); border: 1px solid var(--gano-glass-border); border-radius: 6px; color: #e2e8f0; font-size: 1rem;"
-                />
-                <input type="hidden" name="nonce" value="<?php echo esc_attr(gano_lead_capture_nonce()); ?>" />
-                <input type="hidden" name="plan" value="general" />
-                <button
-                    type="submit"
-                    style="padding: 12px 24px; background: var(--gc-primary); color: white; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; transition: all 0.2s;"
-                    onmouseover="this.style.background='var(--gc-secondary)';"
-                    onmouseout="this.style.background='var(--gc-primary)';"
-                >
-                    Recibir Guía Gratis
+                    <button type="button" class="gano-catalog-mode-btn" data-gano-mode="<?php echo esc_attr( $mode_key ); ?>" aria-pressed="false">
+                        <?php echo esc_html( $home_modes[ $mode_key ]['label'] ); ?>
+                    </button>
+                <?php endforeach; ?>
+                <button type="button" class="gano-catalog-advanced-toggle" data-gano-advanced-toggle aria-expanded="false">
+                    Modos avanzados
                 </button>
-            </form>
+            </div>
+            <div class="gano-catalog-advanced-modes" data-gano-advanced-modes hidden>
+                <?php
+                if ( isset( $home_modes['guided'] ) ) :
+                    ?>
+                    <button type="button" class="gano-catalog-mode-btn" data-gano-mode="guided" aria-pressed="false">
+                        <?php echo esc_html( $home_modes['guided']['label'] ); ?>
+                    </button>
+                <?php endif; ?>
+            </div>
+            <p class="gano-catalog-mode-desc" data-gano-mode-description>
+                Navega por vista general, familias o asistente guiado según tu contexto.
+            </p>
+            <section class="gano-catalog-guided-panel" data-gano-guided-panel aria-label="Asistente de selección">
+                <ul class="gano-catalog-guided-list" data-gano-guided-list></ul>
+            </section>
+            <div class="ecosistemas-grid" id="catalog-container">
+                <?php
+                $ecosistemas = array(
+                    array(
+                        'nombre'    => 'Lanzamiento Sólido',
+                        'slug'      => 'wordpress-basico',
+                        'precio'    => '$196.000',
+                        'categoria' => 'hostingwebcpanel',
+                        'features'  => array(
+                            'Acompañamiento de arranque',
+                            'Implementación WordPress optimizada',
+                            'Soporte técnico en español'
+                        )
+                    ),
+                    array(
+                        'nombre'    => 'Escala Inteligente',
+                        'slug'      => 'wordpress-deluxe',
+                        'precio'    => '$450.000',
+                        'categoria' => 'wordpressadministrado',
+                        'features'  => array(
+                            'Capacitación operativa del equipo',
+                            'Monitoreo y seguimiento continuo',
+                            'Soporte 24/7 priorizado'
+                        )
+                    ),
+                    array(
+                        'nombre'    => 'Conversión Segura',
+                        'slug'      => 'wordpress-ultimate',
+                        'precio'    => '$890.000',
+                        'categoria' => 'seguridadweb',
+                        'features'  => array(
+                            'Blindaje avanzado de superficie',
+                            'Optimización comercial por campañas',
+                            'Asesoría de continuidad tecnológica'
+                        )
+                    ),
+                    array(
+                        'nombre'    => 'Operación Crítica',
+                        'slug'      => 'cpanel-ultimate',
+                        'precio'    => '$2.5M+',
+                        'categoria' => 'servidoresvps',
+                        'features'  => array(
+                            'Arquitectura a medida y escalable',
+                            'Acompañamiento ejecutivo',
+                            'Seguimiento técnico y estratégico'
+                        )
+                    ),
+                );
 
-            <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 16px;">Sin spam. Desuscríbete en cualquier momento.</p>
+                foreach ( $ecosistemas as $eco ) :
+                    $product_query = new WP_Query(
+                        array(
+                            'post_type'      => 'reseller_product',
+                            'name'           => $eco['slug'],
+                            'posts_per_page' => 1,
+                        )
+                    );
+                    $post_id = $product_query->have_posts() ? $product_query->posts[0]->ID : null;
+                    wp_reset_postdata();
+                    ?>
+                    <article
+                        class="ecosystem-card"
+                        data-category="<?php echo esc_attr( $eco['categoria'] ); ?>"
+                        data-product-id="<?php echo esc_attr( sanitize_title( $eco['slug'] ) ); ?>"
+                        data-product-name="<?php echo esc_attr( $eco['nombre'] ); ?>"
+                        data-product-price="<?php echo esc_attr( $eco['precio'] ); ?>"
+                    >
+                        <h3><?php echo esc_html( $eco['nombre'] ); ?></h3>
+                        <div class="price"><?php echo esc_html( $eco['precio'] ); ?></div>
+                        <ul>
+                            <?php foreach ( $eco['features'] as $feature ) : ?>
+                                <li><?php echo esc_html( $feature ); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                        <?php
+                        if ( $post_id ) {
+                            echo do_shortcode( "[rstore_product post_id={$post_id} show_price=1 redirect=1 button_label='Elegir Plan']" );
+                        } else {
+                            echo '<a href="' . esc_url( home_url( '/contacto/' ) ) . '" class="btn-gano">Consultar</a>';
+                        }
+                        ?>
+                        <button type="button" class="gano-catalog-compare-toggle" data-gano-compare-toggle aria-pressed="false">
+                            Comparar
+                        </button>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+            <div class="gano-catalog-mobile-actions">
+                <button type="button" class="btn-gano btn-gano--secondary" data-gano-mobile-more aria-expanded="false">
+                    Ver más planes
+                </button>
+            </div>
+            <section class="gano-catalog-comparator" data-gano-compare hidden>
+                <h3 class="gano-catalog-comparator-title">Comparador inteligente (hasta 3)</h3>
+                <ul class="gano-catalog-compare-list" data-gano-compare-list></ul>
+                <div class="gano-catalog-compare-grid" data-gano-compare-grid></div>
+            </section>
         </div>
     </section>
 
-    <section class="section-gano" style="text-align: center;">
-        <div style="background: var(--gano-glass); border: 1px solid var(--gano-glass-border); border-radius: 20px; padding: 60px; max-width: 700px; margin: 0 auto;">
-            <h2 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2rem; margin-bottom: 20px;">¿Listo para Escalar?</h2>
-            <p style="color: #94a3b8; margin-bottom: 30px;">Contacta a nuestro equipo de especialistas para una consultoría personalizada.</p>
-            <a href="/contacto/" class="btn-gano">Agendar Llamada</a>
+    <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="valor-heading">
+        <div class="gano-shell">
+            <div class="section-title-gano">
+                <h2 id="valor-heading">Acompañamiento que sí mueve resultados</h2>
+                <p>Soporte, asesoría, capacitación y seguimiento continuo en una sola operación.</p>
+            </div>
+            <div class="value-section">
+                <div class="value-grid">
+                    <article class="value-item">
+                        <h3>Soporte técnico experto</h3>
+                        <p>Atención especializada para incidentes, ajustes y evolución de tu stack WordPress sin respuestas genéricas.</p>
+                    </article>
+                    <article class="value-item">
+                        <h3>Asesoría comercial y técnica</h3>
+                        <p>Traducimos objetivos de negocio en decisiones de infraestructura, seguridad y conversión con ruta clara.</p>
+                    </article>
+                    <article class="value-item">
+                        <h3>Capacitación operativa</h3>
+                        <p>Tu equipo aprende a operar mejor la plataforma con guías prácticas, estándares y buenas prácticas reales.</p>
+                    </article>
+                    <article class="value-item">
+                        <h3>Seguimiento continuo</h3>
+                        <p>Monitoreo, recomendaciones y roadmap evolutivo para sostener crecimiento sin sacrificar estabilidad.</p>
+                    </article>
+                </div>
+            </div>
         </div>
     </section>
 
-    <?php echo do_shortcode('[gano_socio_tecnologico]'); ?>
-    <?php echo do_shortcode('[gano_metrics]'); ?>
-</div>
+    <section class="section-gano gano-home-section" aria-labelledby="compromisos-heading">
+        <div class="gano-shell">
+            <div class="section-title-gano">
+                <h2 id="compromisos-heading">Compromisos operativos</h2>
+                <p>Métricas de servicio enfocadas en continuidad, respuesta y acompañamiento.</p>
+            </div>
+            <div class="metrics-grid">
+                <article class="metric-box">
+                    <div class="number">99.9%</div>
+                    <div class="label">Disponibilidad esperada</div>
+                </article>
+                <article class="metric-box">
+                    <div class="number">24/7</div>
+                    <div class="label">Soporte y seguimiento</div>
+                </article>
+                <article class="metric-box">
+                    <div class="number">&lt;2h</div>
+                    <div class="label">Respuesta inicial prioritaria</div>
+                </article>
+                <article class="metric-box">
+                    <div class="number">COP</div>
+                    <div class="label">Operación comercial local</div>
+                </article>
+            </div>
+        </div>
+    </section>
 
-<script>
-document.getElementById('gano-lead-magnet')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const email = form.email.value;
-    const nonce = form.nonce.value;
-    const plan = form.plan.value;
+    <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="lead-heading">
+        <div class="gano-shell">
+            <div class="gano-panel gano-panel--compact">
+                <h2 id="lead-heading">Primero: recibe la guía SOTA de crecimiento digital</h2>
+                <p>Buenas prácticas de infraestructura, seguridad y conversión para equipos que necesitan resultados sostenibles.</p>
+                <form id="gano-lead-magnet" class="gano-lead-form" novalidate>
+                    <label for="gano-lead-email" class="screen-reader-text">Correo corporativo</label>
+                    <input
+                        id="gano-lead-email"
+                        type="email"
+                        name="email"
+                        placeholder="tu@empresa.com"
+                        autocomplete="email"
+                        required
+                    />
+                    <input type="hidden" name="nonce" value="<?php echo esc_attr( gano_lead_capture_nonce() ); ?>" />
+                    <input type="hidden" name="plan" value="homepage-sota" />
+                    <button type="submit" class="btn-gano">Recibir guía gratis</button>
+                    <p class="gano-form-status" data-gano-form-status aria-live="polite"></p>
+                </form>
+                <small>Sin spam. Puedes cancelar en cualquier momento.</small>
+            </div>
+        </div>
+    </section>
 
-    try {
-        const response = await fetch('/wp-json/gano/v1/lead-capture', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, nonce, plan })
-        });
-        const data = await response.json();
+    <section class="section-gano gano-home-section" id="cta-final" aria-labelledby="cierre-heading">
+        <div class="gano-shell">
+            <div class="gano-panel gano-panel--compact">
+                <h2 id="cierre-heading">¿Listo para diseñar una operación digital que escale contigo?</h2>
+                <?php echo do_shortcode( '[gano_cta_icons]' ); ?>
+                <p class="gano-panel-cta">
+                    <a href="#ecosistemas" class="btn-gano">Elegir mi arquitectura</a>
+                </p>
+            </div>
+        </div>
+    </section>
 
-        if (response.ok) {
-            form.innerHTML = '<p style="color: var(--gc-secondary); font-weight: 600;">✓ Revisa tu correo</p>';
-            // GA4 event
-            gtag?.('event', 'gano_lead_capture', { email_domain: email.split('@')[1] });
-        } else {
-            alert('Error: ' + (data.error || 'No se pudo capturar el lead'));
-        }
-    } catch (err) {
-        console.error('Lead capture error:', err);
-        alert('Error de red. Intenta de nuevo.');
-    }
-});
-</script>
-
-<?php get_footer(); ?>
+    <section class="section-gano gano-home-section gano-home-section--surface" aria-label="Confianza y respaldo">
+        <div class="gano-shell">
+            <?php echo do_shortcode( '[gano_socio_tecnologico]' ); ?>
+            <?php echo do_shortcode( '[gano_metrics]' ); ?>
+        </div>
+    </section>
+</main>
+<?php
+get_footer();
+?>

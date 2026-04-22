@@ -23,8 +23,8 @@ Estos secretos deben configurarse en **GitHub Repo → Settings → Secrets and 
 |-------------|-----------|---------|---------------|
 | `SSH` | Clave privada SSH (id_rsa en PEM format) | `-----BEGIN OPENSSH PRIVATE KEY-----...` | GoDaddy cPanel → SSH Keys → Descargar Private Key |
 | `SERVER_HOST` | IP o FQDN del servidor | `123.45.67.89` o `managed-wp.godaddy.com` | GoDaddy Account → Hosting → IP/Domain |
-| `SERVER_USER` | Usuario SSH del servidor | `f1rml03th382` o `root` (no recomendado) | GoDaddy cPanel → SSH Keys → Username |
-| `DEPLOY_PATH` | Path al WordPress public_html en servidor | `/home/f1rml03th382/public_html/gano.digital` | GoDaddy cPanel → File Manager (raíz pública) |
+| `SERVER_USER` | Usuario SSH del servidor | `$SERVER_USER` o `root` (no recomendado) | GoDaddy cPanel → SSH Keys → Username |
+| `DEPLOY_PATH` | Path al WordPress public_html en servidor | `/home/$SERVER_USER/public_html/gano.digital` | GoDaddy cPanel → File Manager (raíz pública) |
 
 ### 1.3 Secretos GoDaddy Reseller API (Workflow 30 · Reseller Catalog Sync)
 
@@ -82,24 +82,14 @@ ADD_TO_PROJECT_PAT         Updated 2026-04-16
 **Estado actual**: Runners \`gano-production\` fueron eliminados el 2026-04-11.
 
 **Workflows afectados**:
-- Workflow 06 · DB Backup
-- Workflow 07 · Content Sync
-- Workflow 08 · Health Check
-- Workflow 31 · Phase 4 Health
+- Workflow **16 · Ops · Backup · BD Automático** (`06-db-backup.yml`)
+- Workflow **17 · Ops · Content Sync · Staging ↔ Producción** (`07-sync-content.yml`)
+- Workflow **18 · Ops · Health Check · Validar plugins gano-*** (`08-health-check-plugins.yml`)
+- Workflow **31 · Plugin Health Phase 4** (`31-plugin-health-check-phase4.yml`)
 
-### 3.2 Opción Recomendada: Migración a ubuntu-latest
+### 3.2 Estado actual (2026-04-19)
 
-Edita \`.github/workflows/{06-db-backup,07-sync-content,08-health-check-plugins,31-plugin-health-check-phase4}.yml\`:
-
-**Cambiar de**:
-\`\`\`yaml
-runs-on: [self-hosted, gano-production]
-\`\`\`
-
-**A**:
-\`\`\`yaml
-runs-on: ubuntu-latest
-\`\`\`
+Los workflows anteriores ya corren en **`ubuntu-latest`** y los jobs SSH se **saltan** si faltan los secrets `SSH`, `SERVER_HOST`, `SERVER_USER`, `DEPLOY_PATH` (evita colas eternas y reduce ruido en repos públicos sin runner dedicado).
 
 ---
 
@@ -134,6 +124,16 @@ gh workflow run verify-remove-wp-file-manager.yml --field force_remove=true
 
 ---
 
+## 6. Agentes (Cursor) — shell local y GitHub CLI
+
+- **Windows PowerShell:** los comandos remotos con `$(date ...)` o regex complejos pueden romperse por el parser local; usar `ssh --% usuario@host comando` (stop-parsing) o comillas simples en el bloque remoto.
+- **`gh issue comment` / API write:** si el comentario no aparece en GitHub, re-ejecutar fuera de sandbox (entorno con red y permisos completos hacia `api.github.com`).
+- **Parche urgente servidor:** si Actions 04/05 no alcanzan, copiar archivos con **SCP/rsync** solo tras backup en el servidor y verificar checksums; la fuente canónica de código sigue siendo `main` en el repo.
+
+**Handoff ola ops (hecho/pendiente + herramientas):** [`memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md`](../memory/sessions/2026-04-19-trazabilidad-ops-wave-handoff.md)
+
+---
+
 **Documento**: Gano Digital Dev Coordination  
-**Fecha**: 2026-04-16  
+**Fecha**: 2026-04-19  
 **Estado**: Implementación en progreso  

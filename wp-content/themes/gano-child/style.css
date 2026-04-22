@@ -5,7 +5,7 @@ Description:  Child theme de Royal Elementor Kit para Gano Digital. Contiene la 
 Author:       Gano Digital
 Author URI:   https://gano.digital
 Template:     royal-elementor-kit
-Version:      1.0.1
+Version:      1.0.6
 License:      GNU General Public License v3 or later
 Text Domain:  gano-child
 Tags:         hosting, digital-services, colombia
@@ -60,6 +60,19 @@ Tags:         hosting, digital-services, colombia
     --gano-bg-alt:       #F8FAFC;
     --gano-bg-dark:      #0F1923;
 
+    /* Semantic color system (single source of truth) */
+    --gano-color-primary:            var(--gano-blue);
+    --gano-color-primary-strong:     var(--gano-blue-dark);
+    --gano-color-secondary:          var(--gano-green);
+    --gano-color-secondary-strong:   var(--gano-green-dark);
+    --gano-color-accent:             var(--gano-gold);
+    --gano-color-accent-soft:        var(--gano-gold-soft);
+    --gano-color-surface-dark:       var(--gano-dark-deep);
+    --gano-color-surface-dark-soft:  var(--gano-card-sota);
+    --gano-color-text-on-dark:       #E2E8F0;
+    --gano-color-text-muted-on-dark: #94A3B8;
+    --gano-color-outline-on-dark:    rgba(148, 163, 184, 0.28);
+
     /* Tipografía */
     --gano-font-heading: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
     --gano-font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -97,16 +110,10 @@ Tags:         hosting, digital-services, colombia
     --gano-ls-wide:    0.04em;  /* badges, etiquetas */
     --gano-ls-wider:   0.08em;  /* all-caps, overline */
 
-    /* Oro — disponible globalmente (ver también Phase 6) */
-    --gano-gold:      #D4AF37;            /* Acento SOTA — ratio ≥ 7:1 sobre dark-bg */
-    --gano-gold-glow: rgba(212, 175, 55, 0.20); /* Brillo sutil para sombras */
-
     /* Tokens faltantes usados con fallback en css/*.css */
-    --gano-text-primary:  #e8eaf0;
+    --gano-text-primary:  var(--gano-color-text-on-dark);
     --gano-radius:        12px;
     --gano-container-sm:  800px;
-    --gano-gold-soft: rgba(212, 175, 55, 0.10); /* Fondo sutil tarjetas premium */
-    --gano-gold-glow: rgba(212, 175, 55, 0.20); /* Sombra hover cards premium */
 
     /* START: KINETIC MONOLITH — Cyber-Cold Palette (shop SOTA / dark templates) */
     --gano-purple:        #8B5CF6;               /* Violeta tech — acento Kinetic Monolith */
@@ -150,6 +157,10 @@ Tags:         hosting, digital-services, colombia
     /* Layout */
     --gano-container:  1200px;
     --gano-container-sm: 800px;
+
+    /* Glass morphism tokens (Phase 6) */
+    --gano-glass:       rgba(255, 255, 255, 0.05);
+    --gano-glass-border: rgba(255, 255, 255, 0.1);
 }
 
 /* ============================================================
@@ -280,7 +291,7 @@ code, pre, kbd {
 /* ============================================================
    ACCESIBILIDAD — FOCUS VISIBLE
    Anillo de foco dorado sobre fondos oscuros (WCAG 2.4.7 / 2.4.11).
-   Ratio: --gano-gold (#D4AF37) sobre --gano-dark-bg (#0F1115) ≈ 7.5:1.
+   Ratio: --gano-gold (#D4AF37) sobre --gano-bg-dark (#0F1923) ≈ 7.5:1.
    ============================================================ */
 :focus-visible {
     outline: 3px solid var(--gano-gold);
@@ -297,6 +308,28 @@ code, pre, kbd {
 .gano-bg-light :focus-visible,
 .elementor-section.bg-light :focus-visible {
     outline-color: var(--gano-blue);
+}
+
+/* WCAG 2.2 — Focus Not Obscured with sticky headers */
+html {
+    scroll-padding-top: 96px;
+}
+
+[id] {
+    scroll-margin-top: 96px;
+}
+
+/* WCAG 2.2 — minimum target size baseline */
+button,
+.gano-btn,
+.gano-btn-primary,
+.gano-btn-secondary,
+.gano-catalog-mode-btn,
+.gano-catalog-compare-toggle,
+.gano-mobile-nav-panel a,
+nav a {
+    min-height: 24px;
+    min-width: 24px;
 }
 
 /* ============================================================
@@ -904,7 +937,7 @@ body.woocommerce-checkout #customer_details {
 }
 
 /* Hover Mastery: Magnetic Interaction Smoothness */
-.gano-buy-button, .gano-btn-primary {
+.gano-buy-button {
     transition:
         transform     var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
         box-shadow    var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
@@ -949,26 +982,34 @@ body.woocommerce-checkout #customer_details {
     border-top: 1px solid rgba(255,255,255,0.08);
 }
 
+/* ─ CANONICAL BUTTON DEFINITION ─ Single source of truth for .gano-btn-primary
+   Decisión Q7 confirmada: naranja sólido #FF6B35, border-radius: 8px
+   Usado en CTAs, páginas SOTA, y llamadas a acción comerciales.
+   ────────────────────────────────────────────────────────────────── */
 .gano-btn-primary {
     display: inline-block;
-    background: linear-gradient(135deg, #1B4FD8, #00C26B);
-    color: #fff !important;
-    font-weight: 700;
-    font-size: 1rem;
+    background: var(--gano-orange);
+    color: var(--gano-white) !important;
+    font-weight: var(--gano-fw-bold);
+    font-size: var(--gano-fs-base);
     padding: 0.85rem 2rem;
-    border-radius: 50px;
+    border-radius: var(--gano-radius-md);
+    border: none;
     text-decoration: none !important;
     letter-spacing: 0.03em;
-    box-shadow: 0 6px 24px rgba(27, 79, 216, 0.35);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
     transition:
-        transform  var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
-        box-shadow var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1));
+        background  var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
+        transform   var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
+        box-shadow  var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1));
+    cursor: pointer;
 }
 
 .gano-btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 32px rgba(0, 194, 107, 0.4);
-    color: #fff !important;
+    background: var(--gano-orange-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 107, 53, 0.4);
+    color: var(--gano-white) !important;
 }
 
 /* Sticky Mobile CTA — individual pages can use JS to activate */
@@ -1022,13 +1063,7 @@ body.woocommerce-checkout #customer_details {
 /* ==========================================================================
    PHASE 6: PREMIUM SHOP & CATALOG (ANIMATED)
    ========================================================================== */
-
-:root {
-    /* Variables shop; tokens de oro en :root global */
-    --gano-dark-bg: #0f1115;
-    --gano-glass: rgba(255, 255, 255, 0.05);
-    --gano-glass-border: rgba(255, 255, 255, 0.1);
-}
+/* Variables shop consolidadas en :root global — eliminar bloque duplicado */
 
 .gano-shop-header {
     background: radial-gradient(circle at top, #1a1e26 0%, #0f1115 100%);
@@ -1040,7 +1075,7 @@ body.woocommerce-checkout #customer_details {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 40px;
     padding: 80px 5%;
-    background: var(--gano-dark-bg);
+    background: var(--gano-bg-dark);
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -1373,6 +1408,24 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
     background-color: var(--gano-blue);
 }
 
+.gano-socio-block__cta-link {
+    margin-top: 1.25rem;
+}
+
+.gano-socio-block__cta-link a {
+    color: var(--gano-blue);
+    font-size: var(--gano-fs-base);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+}
+
+.gano-socio-block__cta-link a:hover,
+.gano-socio-block__cta-link a:focus-visible {
+    border-bottom-color: var(--gano-blue);
+}
+
 /* Franja de métricas (números cortos, sin inflar cifras) */
 .gano-el-metrics {
     display: flex;
@@ -1546,7 +1599,7 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
 
 /* Sección oscura tipo SOTA/Bastión */
 .gano-dark-section {
-    background: var(--gano-dark-bg, #0F1115);
+    background: var(--gano-bg-dark);
     color: #FFFFFF;
 }
 
@@ -2195,6 +2248,17 @@ select:focus-visible {
 }
 
 /* ==========================================================================
+   Dark sections — contenedor base para secciones con fondo oscuro
+   Usado en: nosotros, contacto, ecosistemas, comenzar-aqui, dashboard
+   ========================================================================== */
+.gano-dark-section {
+    background: var(--gano-bg-dark);
+    color: rgba(255, 255, 255, 0.9);
+    position: relative;
+    overflow: hidden;
+}
+
+/* ==========================================================================
    Nosotros template
    ========================================================================== */
 .gano-trust-hero {
@@ -2309,20 +2373,7 @@ select:focus-visible {
     opacity: 0.85;
 }
 
-.gano-btn-primary {
-    display: inline-block;
-    padding: 0.9rem 2.2rem;
-    background: var(--gano-gold);
-    color: #000;
-    font-weight: var(--gano-fw-bold);
-    border-radius: var(--gano-radius-md);
-    text-decoration: none;
-    transition: opacity var(--gano-transition);
-}
-
-.gano-btn-primary:hover {
-    opacity: 0.85;
-}
+/* Definición de .gano-btn-primary consolidada en línea 981 (CSS Foundation) */
 
 .gano-btn-secondary {
     display: inline-block;
@@ -2750,6 +2801,102 @@ select:focus-visible {
     background-image: url("assets/images/hero-datacenter.jpg");
 }
 /* END: HERO IMAGE FALLBACK */
+
+/* START: HERO BLOCK SHORTCODE — [gano_hero] */
+.gano-hero-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+    padding: clamp(4rem, 8vw, 6rem) 0;
+}
+
+.gano-hero-block__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.gano-hero-block__sub {
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    color: rgba(255, 255, 255, 0.82);
+    line-height: var(--gano-lh-body, 1.6);
+    max-width: 52ch;
+}
+
+.gano-hero-block__cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.gano-hero-block__img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gano-hero-block__img-el {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--gano-radius-lg, 12px);
+    object-fit: cover;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+}
+
+/* Hero CTA row para front-page.php */
+.hero-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.hero-microcopy {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.03em;
+}
+
+/* Botón secundario del hero */
+.btn-gano--secondary {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--gano-white, #ffffff);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--gano-radius-sm, 6px);
+    font-weight: 600;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+}
+
+.btn-gano--secondary:hover,
+.btn-gano--secondary:focus-visible {
+    border-color: var(--gano-green, #00C26B);
+    background: rgba(0, 194, 107, 0.08);
+    outline: 2px solid var(--gano-green, #00C26B);
+    outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+    .gano-hero-block {
+        grid-template-columns: 1fr;
+    }
+
+    .gano-hero-block__img {
+        order: -1;
+    }
+
+    .gano-hero-block__img-el {
+        max-height: 280px;
+        object-position: center top;
+    }
+}
+/* END: HERO BLOCK SHORTCODE */
 
 /* START: SKELETON LOADERS — Wave 3 UX */
 @keyframes gano-shimmer {

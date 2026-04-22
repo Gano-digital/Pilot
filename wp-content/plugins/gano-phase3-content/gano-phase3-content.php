@@ -57,9 +57,9 @@ function gano_p3_activate() {
             ] );
 
             if ( $id && ! is_wp_error( $id ) ) {
-                // SOTA templates vs Elementor Default
-                $is_sota = !empty($data['category']) && $data['category'] === 'sota';
-                $template = $is_sota ? 'templates/sota-single-template.php' : 'elementor_canvas';
+                // SOTA templates vs Elementor Default; 'template' key permite sobrescribir.
+                $is_sota  = ! empty( $data['category'] ) && $data['category'] === 'sota';
+                $template = $data['template'] ?? ( $is_sota ? 'templates/sota-single-template.php' : 'elementor_canvas' );
                 update_post_meta( $id, '_wp_page_template', $template );
 
                 // Marcar coming-soon para que gano-phase7 la respete
@@ -88,13 +88,14 @@ function gano_p3_activate() {
 
     if ( ! is_wp_error( $menu_id ) ) {
         $menu_pages = [
-            'inicio'    => 'Inicio',
-            'nosotros'  => 'Nosotros',
-            'dominios'  => 'Dominios',
-            'hosting'   => 'Hosting',
-            'servicios' => 'Servicios',
-            'blog'      => 'Blog',
-            'contacto'  => 'Contacto',
+            'inicio'       => 'Inicio',
+            'hosting'      => 'Hosting',
+            'dominios'     => 'Dominios',
+            'servicios'    => 'Servicios',
+            'ecosistemas'  => 'Ecosistemas',
+            'nosotros'     => 'Nosotros',
+            'blog'         => 'Blog',
+            'contacto'     => 'Contacto',
         ];
 
         $order = 1;
@@ -255,6 +256,18 @@ function gano_p3_pages() {
                 'title'       => 'Servicios SOTA | Seguridad y Rendimiento Avanzado | Gano Digital',
                 'description' => 'Certificados de encriptación de grado militar, SEO de autoridad y blindaje perimetral. Protege tu imperio digital con Gano.',
                 'keywords'    => 'seguridad web colombia, ssl avanzado, seo de autoridad',
+            ],
+        ],
+
+        'ecosistemas' => [
+            'title'    => 'Ecosistemas',
+            'excerpt'  => 'Planes de hosting WordPress con arquitectura SOTA para Colombia.',
+            'content'  => '<!-- Catálogo de ecosistemas generado dinámicamente por gano_get_reseller_catalog_products(). -->',
+            'template' => 'templates/shop-premium.php',
+            'seo'      => [
+                'title'       => 'Ecosistemas de Hosting | Planes WordPress SOTA | Gano Digital',
+                'description' => 'Compara y elige tu plan de hosting WordPress con arquitectura NVMe Gen4, Zero-Trust y soporte local en Colombia.',
+                'keywords'    => 'planes hosting colombia, hosting wordpress, ecosistemas gano digital',
             ],
         ],
 

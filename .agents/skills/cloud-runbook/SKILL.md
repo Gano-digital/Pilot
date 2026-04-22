@@ -151,7 +151,7 @@ Servidor HTTP local en el directorio del archivo (mismas razones que Ops Hub). V
 | `01 · CI · Sintaxis PHP (Gano)` | Ya replicado arriba con `find` + `php -l` |
 | `02 · CI · Escaneo secretos` | TruffleHog en paths propios |
 | `05 · Ops · Verificar parches en servidor` | Comparación repo ↔ servidor — necesita secrets `SSH`, `SERVER_HOST`, etc. |
-| `Test Runner` | Placeholder self-hosted (`echo "Runner OK"`) — no sustituye pruebas locales |
+| `99 · Debug · Test Runner` | Smoke manual en `ubuntu-latest` (`echo "Runner OK"`) — no sustituye pruebas locales |
 
 ---
 
