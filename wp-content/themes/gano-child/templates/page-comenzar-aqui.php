@@ -163,7 +163,7 @@ get_header();
 		'heading'     => '¿No sabes cuál es el siguiente paso?',
 		'description' => 'Registra tu cuenta y accede al catálogo con soporte en español. Aquí comenzamos tu viaje.',
 		'button_text' => 'Comenzar ahora',
-		'button_url'  => home_url( '/register/' )
+		'button_url'  => $url_shop,
 	));
 	?>
 

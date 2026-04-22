@@ -285,6 +285,8 @@ add_filter( 'rest_authentication_errors', function( $result ) {
         // Las rutas están aquí como respaldo; el nonce es la verificación real.
         '/wp-json/gano-agent/v1/log',
         '/wp-json/gano/v1/chat',
+        // Lead magnet homepage — POST con nonce verificado en el callback del tema.
+        '/wp-json/gano/v1/lead-capture',
     ];
 
     foreach ( $allowed_rest as $allowed ) {

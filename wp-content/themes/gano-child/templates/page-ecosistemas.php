@@ -339,7 +339,6 @@ get_header();
       'heading'     => '¿No sabes por dónde empezar?',
       'description' => '¿no sabes por dónde empezar? registra tu cuenta y recibe soporte inmediato. Nosotros te agendamos. Acompañamos tu empresa en cada decisión: siempre donde verdaderamente importa.',
       'button_text' => 'Registra tu cuenta',
-      'button_url'  => home_url( '/register/' )
     ));
     ?>
   </div>

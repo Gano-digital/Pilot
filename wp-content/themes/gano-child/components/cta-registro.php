@@ -7,6 +7,18 @@
  * @example gano_cta_registro(array('heading' => '¿No sabes por dónde empezar?'))
  */
 
+if ( ! function_exists( 'gano_client_journey_landing_url' ) ) {
+    /**
+     * URL del flujo “primera compra / cuenta en operador Reseller” (no registro wp-admin).
+     */
+    function gano_client_journey_landing_url(): string {
+        if ( function_exists( 'gano_resolve_page_url' ) ) {
+            return gano_resolve_page_url( 'comenzar-aqui', 'comenzar', 'registro-y-compra' );
+        }
+        return home_url( '/comenzar-aqui/' );
+    }
+}
+
 if ( ! function_exists( 'gano_cta_registro' ) ) {
     /**
      * Genera un CTA creativo de registro con animaciones SOTA
@@ -15,7 +27,7 @@ if ( ! function_exists( 'gano_cta_registro' ) ) {
      *     @type string $heading          Texto del encabezado. Default: "¿No sabes por dónde empezar?"
      *     @type string $description      Descripción principal (4 líneas sugeridas). Default: mensaje completo.
      *     @type string $button_text      Texto del botón. Default: "Registra tu cuenta"
-     *     @type string $button_url       URL destino del botón. Default: "/register/"
+     *     @type string $button_url       URL destino del botón. Default: guía comenzar-aqui (checkout Reseller).
      *     @type string $class            Clases CSS adicionales para el wrapper. Default: ""
      * }
      * @return void Imprime el HTML del CTA
@@ -25,7 +37,7 @@ if ( ! function_exists( 'gano_cta_registro' ) ) {
             'heading'       => '¿No sabes por dónde empezar?',
             'description'   => '¿no sabes por dónde empezar? registra tu cuenta y recibe soporte inmediato. Nosotros te agendamos. Acompañamos tu empresa en cada decisión: siempre donde verdaderamente importa.',
             'button_text'   => 'Registra tu cuenta',
-            'button_url'    => '/register/',
+            'button_url'    => gano_client_journey_landing_url(),
             'class'         => '',
         );
 
