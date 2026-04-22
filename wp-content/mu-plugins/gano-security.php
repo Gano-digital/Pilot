@@ -335,7 +335,8 @@ add_action( 'send_headers', function() {
         //     Migrar a nonces de CSP en Fase 3+ para eliminar este permiso.
         //   • 'unsafe-eval': requerido por Elementor Pro y algunos widgets.
         //   • upgrade-insecure-requests fuerza HTTPS en todos los sub-recursos.
-        //   • frame-src incluye reseller.godaddy.com para el carrito Reseller.
+        //   • frame-src incluye reseller.godaddy.com para el carrito Reseller (Fase 4).
+        //   • frame-src incluye reseller-store.godaddy.com para iframe embebido Reseller Store (Fase 4).
         //
         $csp = implode( '; ', [
             "default-src 'self'",
@@ -344,7 +345,7 @@ add_action( 'send_headers', function() {
             "font-src 'self' data: https://fonts.gstatic.com",
             "img-src 'self' data: https:",
             "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://api.godaddy.com https://myh.godaddy.com",
-            "frame-src 'self' https://reseller.godaddy.com https://www.godaddy.com",
+            "frame-src 'self' https://reseller.godaddy.com https://reseller-store.godaddy.com https://www.godaddy.com",
             "upgrade-insecure-requests",
             "report-uri /wp-json/gano/v1/csp-report",
         ] );

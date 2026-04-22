@@ -332,6 +332,100 @@ get_header();
     </div>
   </section>
 
+  <!-- ── IFRAME RESELLER STORE (FASE 4) ──────────────────────── -->
+  <section style="padding: 60px 5%; background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);">
+    <div class="gano-container">
+      <h2 style="text-align: center; margin-bottom: 10px;">Elige tu plan y activa hoy</h2>
+      <p style="text-align: center; color: #64748b; margin-bottom: 40px; font-size: 1.1rem;">
+        Selecciona el ecosistema que se adapte a tu proyecto. El checkout está integrado y listo.
+      </p>
+
+      <!-- Tabs para seleccionar ecosistema -->
+      <div class="gano-reseller-tabs" style="display: flex; gap: 10px; margin-bottom: 30px; justify-content: center; flex-wrap: wrap;">
+        <button class="gano-reseller-tab-btn active" data-tab="hosting_economia" style="padding: 10px 20px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-weight: 500;">
+          Núcleo Prime
+        </button>
+        <button class="gano-reseller-tab-btn" data-tab="hosting_deluxe" style="padding: 10px 20px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-weight: 500;">
+          Fortaleza Delta
+        </button>
+        <button class="gano-reseller-tab-btn" data-tab="hosting_premium" style="padding: 10px 20px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-weight: 500;">
+          Bastión SOTA
+        </button>
+        <button class="gano-reseller-tab-btn" data-tab="hosting_ultimate" style="padding: 10px 20px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-weight: 500;">
+          Ultimate WP
+        </button>
+      </div>
+
+      <!-- Iframes para cada ecosistema -->
+      <div class="gano-reseller-tabs-content">
+        <div class="gano-reseller-tab-pane active" data-tab="hosting_economia">
+          <?php echo do_shortcode( '[gano_reseller_iframe ecosistema="hosting_economia" heading="Núcleo Prime — Elige tu plan"]' ); ?>
+        </div>
+        <div class="gano-reseller-tab-pane" data-tab="hosting_deluxe">
+          <?php echo do_shortcode( '[gano_reseller_iframe ecosistema="hosting_deluxe" heading="Fortaleza Delta — Elige tu plan"]' ); ?>
+        </div>
+        <div class="gano-reseller-tab-pane" data-tab="hosting_premium">
+          <?php echo do_shortcode( '[gano_reseller_iframe ecosistema="hosting_premium" heading="Bastión SOTA — Elige tu plan"]' ); ?>
+        </div>
+        <div class="gano-reseller-tab-pane" data-tab="hosting_ultimate">
+          <?php echo do_shortcode( '[gano_reseller_iframe ecosistema="hosting_ultimate" heading="Ultimate WP — Elige tu plan"]' ); ?>
+        </div>
+      </div>
+
+      <script>
+        // Tab switching logic para iframes Reseller
+        document.querySelectorAll('.gano-reseller-tab-btn').forEach(button => {
+          button.addEventListener('click', function() {
+            const tab = this.getAttribute('data-tab');
+
+            // Remove active class from all buttons and panes
+            document.querySelectorAll('.gano-reseller-tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.gano-reseller-tab-pane').forEach(pane => pane.classList.remove('active'));
+
+            // Add active class to clicked button and corresponding pane
+            this.classList.add('active');
+            this.style.background = '#FF6B35';
+            this.style.color = 'white';
+            this.style.borderColor = '#FF6B35';
+
+            document.querySelector(`[data-tab="${tab}"].gano-reseller-tab-pane`).classList.add('active');
+            document.querySelector(`[data-tab="${tab}"].gano-reseller-tab-pane`).style.display = 'block';
+
+            // Reset styles for other buttons
+            document.querySelectorAll('.gano-reseller-tab-btn').forEach(btn => {
+              if (btn !== this) {
+                btn.style.background = 'white';
+                btn.style.color = 'inherit';
+                btn.style.borderColor = '#e2e8f0';
+              }
+            });
+          });
+        });
+
+        // Hide all panes except the first one
+        document.querySelectorAll('.gano-reseller-tab-pane').forEach((pane, idx) => {
+          pane.style.display = idx === 0 ? 'block' : 'none';
+        });
+      </script>
+
+      <style>
+        .gano-reseller-tab-btn.active {
+          background-color: #FF6B35 !important;
+          color: white !important;
+          border-color: #FF6B35 !important;
+        }
+
+        .gano-reseller-tab-pane {
+          display: none;
+        }
+
+        .gano-reseller-tab-pane.active {
+          display: block;
+        }
+      </style>
+    </div>
+  </section>
+
   <!-- ── CTA FINAL ───────────────────────────────────────────────── -->
   <div class="gano-container">
     <?php
