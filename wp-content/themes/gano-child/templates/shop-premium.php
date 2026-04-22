@@ -7,6 +7,7 @@
  */
 
 // Enqueue catalog assets specific to this template BEFORE get_header()
+wp_enqueue_style( 'gano-fonts-sota', 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600&display=swap', array(), null );
 wp_enqueue_style( 'gano-catalog-sota-css', get_stylesheet_directory_uri() . '/css/catalog-sota.css', array(), '1.0.0' );
 
 // Load font-awesome if not loaded
@@ -29,13 +30,21 @@ get_header();
 <div class="sota-wrapper gano-catalog-shell">
     
     <!-- HERO SECTION -->
-    <section class="catalog-hero" style="text-align: center; padding: 80px 20px; background: var(--gano-dark-deep);">
-        <h1 style="font-size: 3rem; color: #fff; margin-bottom: 20px; font-family: var(--gano-font-heading);">
-            Soberanía digital <span style="color: var(--gano-purple);">sin concesiones</span>
-        </h1>
-        <p style="color: var(--gano-text-slate); max-width: 600px; margin: 0 auto 40px auto; font-size: 1.1rem; line-height: 1.6;">
-            Infraestructura de alto rendimiento con IP dedicada en Bogotá. Selecciona el ecosistema que mejor se adapte a tu operación.
-        </p>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-eyebrow"><i class="fa-solid fa-shield-halved"></i> Infraestructura SOTA · Nodo Bogotá</div>
+        <h1>Tu soberanía digital<br><span class="accent">sin concesiones</span></h1>
+        <p class="hero-sub">Hosting WordPress NVMe, VPS dedicado, dominios .co y seguridad de capa 7. Todo en COP, soporte en español, datos en Colombia.</p>
+        <div class="hero-stats">
+          <div class="hero-stat"><span class="stat-val">99.99%</span><span class="stat-lbl">SLA Elite</span></div>
+          <div class="stat-div"></div>
+          <div class="hero-stat"><span class="stat-val">&lt;20ms</span><span class="stat-lbl">Latencia Bogotá</span></div>
+          <div class="stat-div"></div>
+          <div class="hero-stat"><span class="stat-val">10 min</span><span class="stat-lbl">Activación</span></div>
+          <div class="stat-div"></div>
+          <div class="hero-stat"><span class="stat-val">24/7</span><span class="stat-lbl">Agente IA</span></div>
+        </div>
+      </div>
     </section>
 
     <!-- REACT-LIKE CATALOG MOUNT POINT -->
@@ -94,15 +103,20 @@ get_header();
         </div>
     </div>
 
-    <!-- PILLARS PREVIEW -->
-    <section style="padding: 80px 20px; text-align: center; border-top: 1px solid var(--gano-border-sota);">
-        <h2 style="color: #fff; margin-bottom: 40px;">Pivotes de Arquitectura SOTA</h2>
-        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
-            <div style="padding: 20px 40px; border: 1px solid var(--gano-border-sota); background: rgba(255,255,255,0.02); color: #fff;">NVMe Gen4</div>
-            <div style="padding: 20px 40px; border: 1px solid var(--gano-border-sota); background: rgba(255,255,255,0.02); color: #fff;">Zero-Trust</div>
-            <div style="padding: 20px 40px; border: 1px solid var(--gano-border-sota); background: rgba(255,255,255,0.02); color: #fff;">CDN Edge</div>
-            <div style="padding: 20px 40px; border: 1px solid var(--gano-border-sota); background: rgba(255,255,255,0.02); color: #fff;">Uptime 99.9%</div>
+    <!-- FOOTER CTA -->
+    <section class="footer-cta">
+      <div class="container">
+        <h2>¿Tienes dudas sobre qué plan elegir?</h2>
+        <p>Un ingeniero SOTA te asesora sin costo. Respuesta en menos de 2 horas en horario laboral.</p>
+        <div class="footer-cta-btns">
+          <a href="https://wa.me/573000000000?text=Hola%2C%20necesito%20asesoría%20para%20elegir%20un%20plan" class="btn-primary-lg" target="_blank">
+            <i class="fa-brands fa-whatsapp"></i> Hablar por WhatsApp
+          </a>
+          <a href="mailto:hola@gano.digital" class="btn-ghost-lg">
+            <i class="fa-solid fa-envelope"></i> hola@gano.digital
+          </a>
         </div>
+      </div>
     </section>
 
 </div>
