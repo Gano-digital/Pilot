@@ -6,6 +6,7 @@ Esta carpeta concentra **registros estructurados** para que cualquier instancia 
 
 | Orden | Archivo | Para qué sirve |
 |------:|---------|----------------|
+| 0a | [../sessions/2026-04-20-babysit-pr-alignment.md](../sessions/2026-04-20-babysit-pr-alignment.md) | **2026-04-20:** babysit PRs **#273** / **#278** / **#279** — merge `main` en UX, fixes Copilot landing, qué queda para humano. |
 | 0 | [../sessions/2026-04-19-trazabilidad-ops-wave-handoff.md](../sessions/2026-04-19-trazabilidad-ops-wave-handoff.md) | **Estado actual (abr 2026):** hecho/pendiente post-ola ops, prioridades, enlaces GitHub **#263**, herramientas (PowerShell/`gh`/SCP). **Leer primero** si vas a retomar trabajo en abril 2026. |
 | 1 | [2026-04-10-reporte-tecnico-extenso-claude.md](2026-04-10-reporte-tecnico-extenso-claude.md) | **Reporte técnico consolidado** — problemas (hosting E-01–E-12, GitHub/runners, deploy, seguridad repo), soluciones, estrategias intentadas, checklist P0–P3, índice de rutas. Contexto histórico profundo. |
 | 2 | [2026-04-08-reporte-handoff-ssh-deploy-tokens.md](2026-04-08-reporte-handoff-ssh-deploy-tokens.md) | **Handoff SSH/Deploy/CI + tokens** — huella verificada, hipótesis IP, PR #160, enlaces a runs. Útil si el foco es solo deploy/SSH. |

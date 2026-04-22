@@ -75,24 +75,48 @@ add_action(
 get_header();
 ?>
 
-<main id="gano-main-content" class="gano-start-journey gano-trust-page gano-km-shell">
+<main id="gano-main-content" class="gano-start-journey gano-trust-page gano-km-shell gano-on-dark" data-gano-start-journey>
 
-	<section class="gano-dark-section gano-trust-hero gano-start-journey__hero">
-		<div class="gano-container">
-			<p class="gano-label-pill gano-km-live-badge"><?php esc_html_e( 'Flujo comercial', 'gano-child' ); ?></p>
-			<h1><?php esc_html_e( 'De la duda al plan: cómo comprar con claridad', 'gano-child' ); ?></h1>
-			<p class="gano-trust-hero__sub gano-start-journey__lede">
-				<?php esc_html_e( 'Aquí no hay letra pequeña escondida: te contamos qué ocurre cuando eliges un producto, en qué página se cobra y qué hace Gano Digital frente a eso. Objetivo simple — que avances o pidas ayuda con confianza.', 'gano-child' ); ?>
-			</p>
-			<p class="gano-start-journey__hero-cta">
-				<a class="gano-btn gano-btn-primary" href="<?php echo esc_url( $url_shop ); ?>"><?php esc_html_e( 'Ir al catálogo SOTA', 'gano-child' ); ?></a>
-				<a class="gano-btn-outline" href="<?php echo esc_url( $url_contacto ); ?>"><?php esc_html_e( 'Hablar antes de pagar', 'gano-child' ); ?></a>
-			</p>
+	<section class="gano-start-journey__hero" aria-label="<?php esc_attr_e( 'Guía de compra', 'gano-child' ); ?>">
+		<div class="gano-km-container">
+			<div class="gano-km-hero">
+				<div>
+					<p class="gano-km-live-badge"><?php esc_html_e( 'Guía de compra', 'gano-child' ); ?></p>
+					<h1 class="gano-km-title">
+						<?php esc_html_e( 'Compra con claridad', 'gano-child' ); ?>
+						<span class="gano-km-title-accent"><?php esc_html_e( 'sin sorpresas', 'gano-child' ); ?></span>
+					</h1>
+					<p class="gano-km-lead">
+						<?php esc_html_e( 'Te explicamos el flujo real: eliges en gano.digital y el pago ocurre en el carrito GoDaddy Reseller (marca blanca). Así entiendes qué pasa, dónde se cobra y qué hacemos nosotros después.', 'gano-child' ); ?>
+					</p>
+					<div class="gano-km-cta-row">
+						<a class="gano-km-btn-primary" href="<?php echo esc_url( $url_shop ); ?>"><?php esc_html_e( 'Ir al catálogo', 'gano-child' ); ?></a>
+						<a class="gano-km-btn-secondary" href="<?php echo esc_url( $url_contacto ); ?>"><?php esc_html_e( 'Hablar con el equipo', 'gano-child' ); ?></a>
+					</div>
+					<p class="gano-start-journey__microcopy">
+						<?php esc_html_e( 'Tip: si es tu primera compra, revisa el checklist a la derecha antes de abrir el carrito.', 'gano-child' ); ?>
+					</p>
+				</div>
+
+				<aside class="gano-start-journey__glass" aria-label="<?php esc_attr_e( 'Checklist antes de pagar', 'gano-child' ); ?>">
+					<h2 class="gano-start-journey__glass-title"><?php esc_html_e( 'Antes de pagar', 'gano-child' ); ?></h2>
+					<ul class="gano-start-journey__checklist">
+						<li><?php esc_html_e( 'Verifica moneda (COP) y plan seleccionado.', 'gano-child' ); ?></li>
+						<li><?php esc_html_e( 'El pago ocurre en GoDaddy Reseller (carrito marca blanca).', 'gano-child' ); ?></li>
+						<li><?php esc_html_e( 'Gano Digital no almacena datos de tarjeta.', 'gano-child' ); ?></li>
+						<li><?php esc_html_e( 'Si algo no cuadra, para y escríbenos.', 'gano-child' ); ?></li>
+					</ul>
+					<div class="gano-start-journey__glass-cta">
+						<a class="gano-km-btn-secondary" href="#comenzar-compra-ahora"><?php esc_html_e( 'Ver pasos', 'gano-child' ); ?></a>
+						<a class="gano-km-btn-tertiary" href="<?php echo esc_url( $url_contacto ); ?>"><?php esc_html_e( 'Resolver dudas', 'gano-child' ); ?></a>
+					</div>
+				</aside>
+			</div>
 		</div>
 	</section>
 
 	<section class="gano-trust-section gano-start-journey__trust" aria-labelledby="gano-start-trust-heading">
-		<div class="gano-container">
+		<div class="gano-km-container">
 			<h2 id="gano-start-trust-heading" class="screen-reader-text"><?php esc_html_e( 'Por qué comprar con este flujo', 'gano-child' ); ?></h2>
 			<ul class="gano-start-journey__trust-list">
 				<li><strong><?php esc_html_e( 'COP', 'gano-child' ); ?></strong><span><?php esc_html_e( 'Operación comercial local', 'gano-child' ); ?></span></li>
@@ -104,7 +128,7 @@ get_header();
 	</section>
 
 	<section class="gano-trust-section gano-trust-section--alt" aria-labelledby="gano-start-steps-heading">
-		<div class="gano-container">
+		<div class="gano-km-container">
 			<h2 id="gano-start-steps-heading"><?php esc_html_e( 'Tres pasos, sin sorpresas', 'gano-child' ); ?></h2>
 			<p class="gano-el-prose-narrow gano-start-journey__intro">
 				<?php esc_html_e( 'El catálogo vive en gano.digital; el cobro y la creación de cuenta del producto ocurren en la infraestructura de GoDaddy bajo el programa reseller — igual que miles de partners en el mundo, con marca y precios acordes a tu mercado.', 'gano-child' ); ?>
@@ -138,20 +162,20 @@ get_header();
 	</section>
 
 	<section class="gano-trust-section" aria-labelledby="gano-start-paths-heading">
-		<div class="gano-container">
+		<div class="gano-km-container">
 			<h2 id="gano-start-paths-heading"><?php esc_html_e( 'Elige tu ritmo', 'gano-child' ); ?></h2>
 			<div class="gano-start-journey__paths">
 				<article class="gano-start-journey__path gano-start-journey__path--primary">
 					<h3><?php esc_html_e( 'Ya sé qué necesito', 'gano-child' ); ?></h3>
 					<p><?php esc_html_e( 'Ve al catálogo, filtra por categoría y pulsa adquirir en el plan correcto. Si el botón está pendiente de configuración, no fuerces el flujo: contáctanos.', 'gano-child' ); ?></p>
-					<a class="gano-btn gano-btn-primary" href="<?php echo esc_url( $url_shop ); ?>"><?php esc_html_e( 'Ir al catálogo', 'gano-child' ); ?></a>
+					<a class="gano-km-btn-primary" href="<?php echo esc_url( $url_shop ); ?>"><?php esc_html_e( 'Ir al catálogo', 'gano-child' ); ?></a>
 				</article>
 				<article class="gano-start-journey__path">
 					<h3><?php esc_html_e( 'Quiero validar antes de pagar', 'gano-child' ); ?></h3>
 					<p><?php esc_html_e( 'Usa el diagnóstico digital o escríbenos. Te ayudamos a mapear hosting, dominio y seguridad a tu etapa — sin presión para cerrar en la primera llamada.', 'gano-child' ); ?></p>
 					<p class="gano-start-journey__path-row">
-						<a class="gano-btn-outline" href="<?php echo esc_url( $url_diag ); ?>"><?php esc_html_e( 'Diagnóstico', 'gano-child' ); ?></a>
-						<a class="gano-btn-outline" href="<?php echo esc_url( $url_contacto ); ?>"><?php esc_html_e( 'Contacto', 'gano-child' ); ?></a>
+						<a class="gano-km-btn-secondary" href="<?php echo esc_url( $url_diag ); ?>"><?php esc_html_e( 'Diagnóstico', 'gano-child' ); ?></a>
+						<a class="gano-km-btn-secondary" href="<?php echo esc_url( $url_contacto ); ?>"><?php esc_html_e( 'Contacto', 'gano-child' ); ?></a>
 					</p>
 				</article>
 			</div>
@@ -168,7 +192,7 @@ get_header();
 	?>
 
 	<section class="gano-trust-section gano-trust-section--alt gano-start-journey__faq" aria-labelledby="gano-start-faq-heading">
-		<div class="gano-container gano-el-prose-narrow">
+		<div class="gano-km-container gano-el-prose-narrow">
 			<h2 id="gano-start-faq-heading"><?php esc_html_e( 'Preguntas frecuentes', 'gano-child' ); ?></h2>
 
 			<details class="gano-start-journey__details">
@@ -205,14 +229,14 @@ get_header();
 	</section>
 
 	<section class="gano-dark-section gano-start-journey__final-cta" id="comenzar-compra-ahora" aria-labelledby="gano-start-final-heading">
-		<div class="gano-container">
+		<div class="gano-km-container">
 			<h2 id="gano-start-final-heading"><?php esc_html_e( 'Listo para el siguiente paso', 'gano-child' ); ?></h2>
 			<p class="gano-start-journey__final-copy">
 				<?php esc_html_e( 'El mejor momento para mejorar tu infraestructura es cuando ya entiendes qué estás comprando. Si es tu caso, el catálogo te espera.', 'gano-child' ); ?>
 			</p>
 			<p class="gano-start-journey__hero-cta">
-				<a class="gano-btn gano-btn-primary" href="<?php echo esc_url( $url_shop ); ?>"><?php esc_html_e( 'Comprar en el catálogo', 'gano-child' ); ?></a>
-				<a class="gano-btn-outline" href="<?php echo esc_url( $url_contacto ); ?>"><?php esc_html_e( 'Prefiero asesoría humana', 'gano-child' ); ?></a>
+				<a class="gano-km-btn-primary" href="<?php echo esc_url( $url_shop ); ?>"><?php esc_html_e( 'Comprar en el catálogo', 'gano-child' ); ?></a>
+				<a class="gano-km-btn-secondary" href="<?php echo esc_url( $url_contacto ); ?>"><?php esc_html_e( 'Prefiero asesoría humana', 'gano-child' ); ?></a>
 			</p>
 		</div>
 	</section>

@@ -10,6 +10,10 @@ get_header();
 
 <main class="gano-home" id="gano-home-main" data-gano-homepage>
     <section class="hero-gano gano-hero-overlay">
+        <div class="hero-gano__ghost" aria-hidden="true">
+            <span class="hero-gano__ghost-line"><?php esc_html_e( 'SOTA', 'gano-child' ); ?></span>
+            <span class="hero-gano__ghost-line hero-gano__ghost-line--accent"><?php esc_html_e( 'COLOMBIA', 'gano-child' ); ?></span>
+        </div>
         <div class="gano-shell hero-content">
             <p class="overline">Soberanía Digital · Operación Colombia</p>
             <h1>Infraestructura NVMe blindada y un agente IA que trabaja antes de que algo falle.</h1>
@@ -19,13 +23,21 @@ get_header();
                     <span class="label">Ver arquitecturas y planes</span>
                     <span class="arrow">→</span>
                 </a>
-                <a href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>" class="btn-gano btn-gano--secondary">Hablar con el equipo</a>
+                <?php
+                $url_shop = function_exists( 'gano_resolve_page_url' )
+                    ? gano_resolve_page_url( 'shop-premium', 'tienda', 'catalogo' )
+                    : home_url( '/shop-premium/' );
+                ?>
+                <a href="<?php echo esc_url( $url_shop ); ?>" class="btn-gano btn-gano--secondary">Explorar catálogo inteligente</a>
             </div>
-            <ul class="hero-proof-bar" aria-label="Prueba social y operativa">
-                <li><strong>99.9%</strong><span>Disponibilidad operativa</span></li>
-                <li><strong>24/7</strong><span>Soporte y seguimiento</span></li>
-                <li><strong>COP</strong><span>Operación comercial local</span></li>
-            </ul>
+            <div class="hero-gano__proof-glass">
+                <p class="hero-gano__proof-label"><?php esc_html_e( 'Marco operativo', 'gano-child' ); ?></p>
+                <ul class="hero-proof-bar" aria-label="<?php esc_attr_e( 'Marco operativo: SLA, endurecimiento y operación local', 'gano-child' ); ?>">
+                    <li><strong><?php esc_html_e( 'SLA', 'gano-child' ); ?></strong><span><?php esc_html_e( 'Acuerdos de nivel de servicio explícitos', 'gano-child' ); ?></span></li>
+                    <li><strong><?php esc_html_e( 'Hardening', 'gano-child' ); ?></strong><span><?php esc_html_e( 'WordPress endurecido y monitoreado', 'gano-child' ); ?></span></li>
+                    <li><strong><?php esc_html_e( 'COP', 'gano-child' ); ?></strong><span><?php esc_html_e( 'Facturación y operación en Colombia', 'gano-child' ); ?></span></li>
+                </ul>
+            </div>
             <?php
             $url_comenzar = function_exists( 'gano_resolve_page_url' )
                 ? gano_resolve_page_url( 'comenzar-aqui', 'comenzar', 'registro-y-compra' )

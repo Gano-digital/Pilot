@@ -1,5 +1,18 @@
 # Progress Tracker
 
+## 2026-04-20 — Babysit PRs (merge #273 + fixes #278)
+
+### Completado
+
+- [x] Merge `main` → `claude/gifted-dewdney-b958c5` (PR #273): conflictos en `02-pendientes-detallados.md` y `front-page.php` resueltos; trust bar + enlaces catálogo; push a origin.
+- [x] PR #278: respuesta a revisión Copilot en `gano-start-journey.css` + bump `style.css` 1.0.6; push a origin; CI php-lint/trufflehog verde.
+
+### Pendiente (humano / orden de merge)
+
+- [ ] Merge a `main` en el orden acordado (`MERGE-PLAYBOOK`); revisar duplicación visual trust bar vs proof bar en home tras fusionar #273 + #278.
+
+---
+
 ## 2026-04-19 — Ola ops producción + convergencia repo ↔ servidor
 
 ### Completado
