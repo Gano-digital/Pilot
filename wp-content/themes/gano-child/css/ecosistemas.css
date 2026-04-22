@@ -83,7 +83,7 @@
     border-color: var(--gano-orange, #FF6B1A);
 }
 .gano-plan-card--dark {
-    background: var(--gano-dark-bg, #0F1115);
+    background: var(--gano-bg-dark, #0F1115);
     color: #fff;
     border-color: var(--gano-gold, #D4AF37);
 }
@@ -211,7 +211,7 @@
 .gano-link-secundario {
     text-align: center;
     font-size: var(--gano-fs-sm, .875rem);
-    color: var(--gano-blue, #2952CC);
+    color: var(--gano-blue, #1B4FD8);
     text-decoration: none;
 }
 .gano-link-secundario:hover { text-decoration: underline; }

@@ -292,14 +292,56 @@ get_header();
     </div>
   </section>
 
-  <!-- ── CTA FINAL ───────────────────────────────────────────────── -->
-  <section class="gano-dark-section gano-ecosistemas__cta-final gano-km-shell">
-    <div class="gano-container gano-km-container">
-      <h2>¿No sabes cuál elegir?</h2>
-      <p>Cuéntanos dónde estás y te decimos qué arquitectura corresponde a tu etapa. Sin presión.</p>
-      <a href="/contacto" class="gano-btn gano-km-btn-primary">Hablar con el equipo</a>
+  <!-- ── RESPUESTAS A OBJECIONES ────────────────────────────────── -->
+  <section class="gano-ecosistemas-objeciones" style="padding: 60px 5%; background: rgba(15,17,21,0.5); border-top: 1px solid rgba(255,255,255,0.08);">
+    <div class="gano-container">
+      <h2 style="text-align: center; margin-bottom: 40px;">Lo que dirías vs. lo que respondemos</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+
+        <!-- Objeción 1: Precio -->
+        <article style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+          <h3 style="color: #FF6B35; margin-bottom: 15px;">💰 "Es caro para lo que necesito"</h3>
+          <div style="font-size: 0.95rem; line-height: 1.6;">
+            <p><strong>Núcleo Prime:</strong> NVMe real (no HDD) + soporte en español = más que un hosting compartido genérico al mismo precio.</p>
+            <p><strong>Fortaleza Delta:</strong> Hardening activo + más recursos + visibilidad = no pagas dos veces el mismo servicio.</p>
+            <p><strong>Bastión SOTA:</strong> Una hora de caída supera la diferencia de precio mensual. Es inversión en continuidad.</p>
+          </div>
+        </article>
+
+        <!-- Objeción 2: Confianza -->
+        <article style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+          <h3 style="color: #1B4FD8; margin-bottom: 15px;">🤝 "¿Quién es Gano Digital?"</h3>
+          <div style="font-size: 0.95rem; line-height: 1.6;">
+            <p><strong>La infraestructura:</strong> GoDaddy Managed WordPress — años de trayectoria, datacenter con estándares globales.</p>
+            <p><strong>Lo que sumamos:</strong> Configuración experta, hardening que el reseller no hace por omisión, soporte en tu idioma y contexto local.</p>
+            <p><strong>Transparencia:</strong> SLA publicado, política de incidentes clara, sin letra pequeña.</p>
+          </div>
+        </article>
+
+        <!-- Objeción 3: Soporte -->
+        <article style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+          <h3 style="color: #00C26B; margin-bottom: 15px;">📞 "¿Recibiré soporte real?"</h3>
+          <div style="font-size: 0.95rem; line-height: 1.6;">
+            <p><strong>Núcleo Prime:</strong> Ticket en español con contexto de tu instalación — no un bot genérico.</p>
+            <p><strong>Fortaleza Delta:</strong> Canal priorizado para clientes Fortaleza (respuesta dentro de horario hábil).</p>
+            <p><strong>Bastión SOTA:</strong> Contacto dedicado, monitoreo proactivo, política de escalamiento documentada.</p>
+          </div>
+        </article>
+
+      </div>
     </div>
   </section>
+
+  <!-- ── CTA FINAL ───────────────────────────────────────────────── -->
+  <div class="gano-container">
+    <?php
+    gano_cta_registro(array(
+      'heading'     => '¿No sabes por dónde empezar?',
+      'description' => '¿no sabes por dónde empezar? registra tu cuenta y recibe soporte inmediato. Nosotros te agendamos. Acompañamos tu empresa en cada decisión: siempre donde verdaderamente importa.',
+      'button_text' => 'Registra tu cuenta',
+    ));
+    ?>
+  </div>
 
 </main>
 

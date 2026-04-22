@@ -92,11 +92,17 @@ get_header(); ?>
   <section class="gano-trust-section gano-trust-section--alt">
     <div class="gano-container gano-el-prose-narrow">
       <h2>El equipo</h2>
-      <!-- [NIT_PENDIENTE]: Diego — añadir nombre, rol y bio real cuando esté disponible.
-           Omitir esta sección si no hay datos verificables; mejor no tener que tener stock. -->
-      <p class="gano-nosotros__pending">
-        Sección en preparación. Próximamente: el equipo detrás de Gano Digital.
-      </p>
+      <article class="gano-team-member">
+        <div class="gano-team-member__header">
+          <h3>Diego Sandoval</h3>
+          <p class="gano-team-member__role">Fundador</p>
+        </div>
+        <p class="gano-team-member__bio">
+          Psicólogo organizacional y consultor técnico con experiencia en hosting, seguridad web y soluciones
+          digitales para empresas colombianas. Combina visión tecnológica con enfoque humano para construir
+          infraestructura WordPress que funciona sin excusas — en pesos, en español, con soporte real.
+        </p>
+      </article>
     </div>
   </section>
 
