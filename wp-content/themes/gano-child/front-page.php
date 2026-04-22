@@ -30,14 +30,11 @@ get_header();
                 ?>
                 <a href="<?php echo esc_url( $url_shop ); ?>" class="btn-gano btn-gano--secondary">Explorar catálogo inteligente</a>
             </div>
-            <div class="hero-gano__proof-glass">
-                <p class="hero-gano__proof-label"><?php esc_html_e( 'Marco operativo', 'gano-child' ); ?></p>
-                <ul class="hero-proof-bar" aria-label="<?php esc_attr_e( 'Marco operativo: SLA, endurecimiento y operación local', 'gano-child' ); ?>">
-                    <li><strong><?php esc_html_e( 'SLA', 'gano-child' ); ?></strong><span><?php esc_html_e( 'Acuerdos de nivel de servicio explícitos', 'gano-child' ); ?></span></li>
-                    <li><strong><?php esc_html_e( 'Hardening', 'gano-child' ); ?></strong><span><?php esc_html_e( 'WordPress endurecido y monitoreado', 'gano-child' ); ?></span></li>
-                    <li><strong><?php esc_html_e( 'COP', 'gano-child' ); ?></strong><span><?php esc_html_e( 'Facturación y operación en Colombia', 'gano-child' ); ?></span></li>
-                </ul>
-            </div>
+            <?php
+            if ( function_exists( 'gano_render_content_atlas' ) ) {
+                echo gano_render_content_atlas(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — markup propia del tema.
+            }
+            ?>
             <?php
             $url_comenzar = function_exists( 'gano_resolve_page_url' )
                 ? gano_resolve_page_url( 'comenzar-aqui', 'comenzar', 'registro-y-compra' )

@@ -1,0 +1,240 @@
+/**
+ * Atlas de lectura — tokens gano-child (UI/UX Pro Max: contraste, reduced-motion).
+ */
+
+.gano-atlas-hero {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1.25rem;
+	margin-top: 1.5rem;
+	padding: 1.25rem 1.5rem;
+	background: linear-gradient(135deg, var(--gano-gold-soft, rgba(212, 175, 55, 0.1)), rgba(15, 25, 35, 0.35));
+	border: 1px solid var(--gano-gold-border, rgba(212, 175, 55, 0.3));
+	border-radius: var(--gano-radius-lg, 16px);
+	backdrop-filter: blur(12px);
+}
+
+@media (min-width: 768px) {
+	.gano-atlas-hero {
+		grid-template-columns: 1.4fr 1fr;
+		align-items: center;
+	}
+}
+
+.gano-atlas-hero__eyebrow {
+	margin: 0 0 0.35rem;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--gano-gold, #d4af37);
+}
+
+.gano-atlas-hero__copy {
+	margin: 0;
+	font-size: 0.95rem;
+	line-height: 1.55;
+	color: var(--gano-color-text-on-dark, #e2e8f0);
+}
+
+.gano-atlas-hero__action {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	align-items: flex-start;
+}
+
+.gano-atlas-open.btn-holo {
+	margin: 0;
+}
+
+.gano-atlas-hero__hint {
+	margin: 0;
+	font-size: 0.85rem;
+}
+
+.gano-atlas-hero__hint a {
+	color: var(--gano-gold, #d4af37);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.gano-atlas-backdrop {
+	position: fixed;
+	inset: 0;
+	z-index: 9998;
+	background: rgba(15, 25, 35, 0.55);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.22s ease;
+}
+
+.gano-atlas-backdrop.is-visible {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.gano-atlas-sheet {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 9999;
+	max-height: 88vh;
+	display: flex;
+	flex-direction: column;
+	background: var(--gano-bg-dark, #0f1923);
+	border-radius: 1rem 1rem 0 0;
+	border: 1px solid var(--gano-gold-border, rgba(212, 175, 55, 0.3));
+	border-bottom: none;
+	box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35);
+	transform: translateY(100%);
+	transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.gano-atlas-sheet.is-open {
+	transform: translateY(0);
+}
+
+.gano-atlas-sheet__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1rem 1.25rem;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.gano-atlas-sheet__title {
+	margin: 0;
+	font-size: 1.1rem;
+	color: var(--gano-white, #fff);
+}
+
+.gano-atlas-close {
+	background: transparent;
+	border: none;
+	color: var(--gano-gray-300, #d1d5db);
+	font-size: 1.75rem;
+	line-height: 1;
+	cursor: pointer;
+	padding: 0.25rem 0.5rem;
+	border-radius: var(--gano-radius-md, 8px);
+}
+
+.gano-atlas-close:hover,
+.gano-atlas-close:focus-visible {
+	color: var(--gano-gold, #d4af37);
+	outline: 2px solid var(--gano-gold, #d4af37);
+	outline-offset: 2px;
+}
+
+.gano-atlas-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	padding: 0.75rem 1.25rem;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.gano-atlas-chip {
+	padding: 0.35rem 0.85rem;
+	border-radius: 999px;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	background: rgba(255, 255, 255, 0.04);
+	color: var(--gano-color-text-muted-on-dark, #94a3b8);
+	font-size: 0.8rem;
+	cursor: pointer;
+	transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+.gano-atlas-chip:hover,
+.gano-atlas-chip:focus-visible {
+	border-color: var(--gano-gold-border, rgba(212, 175, 55, 0.4));
+	color: var(--gano-white, #fff);
+	outline: none;
+}
+
+.gano-atlas-chip.is-active {
+	background: var(--gano-gold-bg, rgba(212, 175, 55, 0.15));
+	border-color: var(--gano-gold, #d4af37);
+	color: var(--gano-white, #fff);
+}
+
+.gano-atlas-list {
+	list-style: none;
+	margin: 0;
+	padding: 0.5rem 0 1.25rem;
+	overflow-y: auto;
+	flex: 1;
+}
+
+.gano-atlas-item {
+	opacity: 0;
+	transform: translateY(6px);
+	animation: gano-atlas-in 0.38s ease forwards;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.gano-atlas-item:nth-child(1) { animation-delay: 0.02s; }
+.gano-atlas-item:nth-child(2) { animation-delay: 0.04s; }
+.gano-atlas-item:nth-child(3) { animation-delay: 0.06s; }
+.gano-atlas-item:nth-child(4) { animation-delay: 0.08s; }
+.gano-atlas-item:nth-child(5) { animation-delay: 0.1s; }
+.gano-atlas-item:nth-child(n+6) { animation-delay: 0.12s; }
+
+@keyframes gano-atlas-in {
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.gano-atlas-item {
+		animation: none;
+		opacity: 1;
+		transform: none;
+	}
+	.gano-atlas-sheet {
+		transition: none;
+	}
+	.gano-atlas-backdrop {
+		transition: none;
+	}
+}
+
+.gano-atlas-item.is-hidden {
+	display: none;
+}
+
+.gano-atlas-item__link {
+	display: flex;
+	flex-direction: column;
+	gap: 0.2rem;
+	padding: 0.85rem 1.25rem;
+	text-decoration: none;
+	color: inherit;
+	transition: background 0.15s ease;
+}
+
+.gano-atlas-item__link:hover,
+.gano-atlas-item__link:focus-visible {
+	background: rgba(212, 175, 55, 0.08);
+	outline: none;
+}
+
+.gano-atlas-item__title {
+	font-weight: 600;
+	color: var(--gano-white, #fff);
+	font-size: 0.95rem;
+}
+
+.gano-atlas-item__meta {
+	font-size: 0.75rem;
+	color: var(--gano-color-text-muted-on-dark, #94a3b8);
+}
+
+.gano-atlas-item__link:hover .gano-atlas-item__title,
+.gano-atlas-item__link:focus-visible .gano-atlas-item__title {
+	color: var(--gano-gold, #d4af37);
+}

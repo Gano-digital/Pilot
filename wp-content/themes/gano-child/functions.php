@@ -13,6 +13,7 @@
 // =============================================================================
 
 require_once get_stylesheet_directory() . '/inc/homepage-blocks.php';
+require_once get_stylesheet_directory() . '/inc/gano-content-atlas.php';
 require_once get_stylesheet_directory() . '/inc/contact-form-handler.php';
 require_once get_stylesheet_directory() . '/inc/lead-magnet-handler.php';
 require_once get_stylesheet_directory() . '/inc/gano-premium-components.php';
@@ -314,6 +315,9 @@ function gano_child_enqueue_styles() {
                 'leadEndpoint' => rest_url( 'gano/v1/lead-capture' ),
             )
         );
+        if ( function_exists( 'gano_content_atlas_enqueue_assets' ) ) {
+            gano_content_atlas_enqueue_assets();
+        }
     }
 
     // Navegación sticky — todas las páginas
