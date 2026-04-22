@@ -157,6 +157,10 @@ Tags:         hosting, digital-services, colombia
     /* Layout */
     --gano-container:  1200px;
     --gano-container-sm: 800px;
+
+    /* Glass morphism tokens (Phase 6) */
+    --gano-glass:       rgba(255, 255, 255, 0.05);
+    --gano-glass-border: rgba(255, 255, 255, 0.1);
 }
 
 /* ============================================================
@@ -287,7 +291,7 @@ code, pre, kbd {
 /* ============================================================
    ACCESIBILIDAD — FOCUS VISIBLE
    Anillo de foco dorado sobre fondos oscuros (WCAG 2.4.7 / 2.4.11).
-   Ratio: --gano-gold (#D4AF37) sobre --gano-dark-bg (#0F1115) ≈ 7.5:1.
+   Ratio: --gano-gold (#D4AF37) sobre --gano-bg-dark (#0F1923) ≈ 7.5:1.
    ============================================================ */
 :focus-visible {
     outline: 3px solid var(--gano-gold);
@@ -933,7 +937,7 @@ body.woocommerce-checkout #customer_details {
 }
 
 /* Hover Mastery: Magnetic Interaction Smoothness */
-.gano-buy-button, .gano-btn-primary {
+.gano-buy-button {
     transition:
         transform     var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
         box-shadow    var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
@@ -978,26 +982,34 @@ body.woocommerce-checkout #customer_details {
     border-top: 1px solid rgba(255,255,255,0.08);
 }
 
+/* ─ CANONICAL BUTTON DEFINITION ─ Single source of truth for .gano-btn-primary
+   Decisión Q7 confirmada: naranja sólido #FF6B35, border-radius: 8px
+   Usado en CTAs, páginas SOTA, y llamadas a acción comerciales.
+   ────────────────────────────────────────────────────────────────── */
 .gano-btn-primary {
     display: inline-block;
-    background: linear-gradient(135deg, #1B4FD8, #00C26B);
-    color: #fff !important;
-    font-weight: 700;
-    font-size: 1rem;
+    background: var(--gano-orange);
+    color: var(--gano-white) !important;
+    font-weight: var(--gano-fw-bold);
+    font-size: var(--gano-fs-base);
     padding: 0.85rem 2rem;
-    border-radius: 50px;
+    border-radius: var(--gano-radius-md);
+    border: none;
     text-decoration: none !important;
     letter-spacing: 0.03em;
-    box-shadow: 0 6px 24px rgba(27, 79, 216, 0.35);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
     transition:
-        transform  var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
-        box-shadow var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1));
+        background  var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
+        transform   var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
+        box-shadow  var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1));
+    cursor: pointer;
 }
 
 .gano-btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 32px rgba(0, 194, 107, 0.4);
-    color: #fff !important;
+    background: var(--gano-orange-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 107, 53, 0.4);
+    color: var(--gano-white) !important;
 }
 
 /* Sticky Mobile CTA — individual pages can use JS to activate */
@@ -1051,13 +1063,7 @@ body.woocommerce-checkout #customer_details {
 /* ==========================================================================
    PHASE 6: PREMIUM SHOP & CATALOG (ANIMATED)
    ========================================================================== */
-
-:root {
-    /* Variables shop; tokens de oro en :root global */
-    --gano-dark-bg: #0f1115;
-    --gano-glass: rgba(255, 255, 255, 0.05);
-    --gano-glass-border: rgba(255, 255, 255, 0.1);
-}
+/* Variables shop consolidadas en :root global — eliminar bloque duplicado */
 
 .gano-shop-header {
     background: radial-gradient(circle at top, #1a1e26 0%, #0f1115 100%);
@@ -1069,7 +1075,7 @@ body.woocommerce-checkout #customer_details {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 40px;
     padding: 80px 5%;
-    background: var(--gano-dark-bg);
+    background: var(--gano-bg-dark);
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -1593,7 +1599,7 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
 
 /* Sección oscura tipo SOTA/Bastión */
 .gano-dark-section {
-    background: var(--gano-dark-bg, #0F1115);
+    background: var(--gano-bg-dark);
     color: #FFFFFF;
 }
 
@@ -2242,6 +2248,17 @@ select:focus-visible {
 }
 
 /* ==========================================================================
+   Dark sections — contenedor base para secciones con fondo oscuro
+   Usado en: nosotros, contacto, ecosistemas, comenzar-aqui, dashboard
+   ========================================================================== */
+.gano-dark-section {
+    background: var(--gano-bg-dark);
+    color: rgba(255, 255, 255, 0.9);
+    position: relative;
+    overflow: hidden;
+}
+
+/* ==========================================================================
    Nosotros template
    ========================================================================== */
 .gano-trust-hero {
@@ -2356,20 +2373,7 @@ select:focus-visible {
     opacity: 0.85;
 }
 
-.gano-btn-primary {
-    display: inline-block;
-    padding: 0.9rem 2.2rem;
-    background: var(--gano-gold);
-    color: #000;
-    font-weight: var(--gano-fw-bold);
-    border-radius: var(--gano-radius-md);
-    text-decoration: none;
-    transition: opacity var(--gano-transition);
-}
-
-.gano-btn-primary:hover {
-    opacity: 0.85;
-}
+/* Definición de .gano-btn-primary consolidada en línea 981 (CSS Foundation) */
 
 .gano-btn-secondary {
     display: inline-block;

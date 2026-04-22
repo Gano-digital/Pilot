@@ -158,6 +158,15 @@ get_header();
 		</div>
 	</section>
 
+	<?php
+	gano_cta_registro(array(
+		'heading'     => '¿No sabes cuál es el siguiente paso?',
+		'description' => 'Registra tu cuenta y accede al catálogo con soporte en español. Aquí comenzamos tu viaje.',
+		'button_text' => 'Comenzar ahora',
+		'button_url'  => $url_shop,
+	));
+	?>
+
 	<section class="gano-trust-section gano-trust-section--alt gano-start-journey__faq" aria-labelledby="gano-start-faq-heading">
 		<div class="gano-container gano-el-prose-narrow">
 			<h2 id="gano-start-faq-heading"><?php esc_html_e( 'Preguntas frecuentes', 'gano-child' ); ?></h2>

@@ -71,22 +71,22 @@ $fecha_actualizacion = '2026-04-06';
             <tr>
               <td><strong>Crítico</strong></td>
               <td>Sitio completamente caído; sin acceso a wp-admin</td>
-              <td><!-- [NIT_PENDIENTE] --> Por confirmar</td>
+              <td>Hasta 4 horas</td>
             </tr>
             <tr>
               <td><strong>Alto</strong></td>
               <td>Degradación severa del rendimiento o funcionalidades clave afectadas</td>
-              <td><!-- [NIT_PENDIENTE] --> Por confirmar</td>
+              <td>Hasta 8 horas</td>
             </tr>
             <tr>
               <td><strong>Medio</strong></td>
               <td>Funcionalidad parcial; workaround disponible</td>
-              <td><!-- [NIT_PENDIENTE] --> Por confirmar</td>
+              <td>Hasta 24 horas</td>
             </tr>
             <tr>
               <td><strong>Bajo</strong></td>
               <td>Consultas, mejoras, solicitudes no urgentes</td>
-              <td><!-- [NIT_PENDIENTE] --> Por confirmar</td>
+              <td>Hasta 72 horas</td>
             </tr>
           </tbody>
         </table>
@@ -137,15 +137,8 @@ $fecha_actualizacion = '2026-04-06';
 
 </main>
 
-<style>
-.gano-sla-table { width: 100%; border-collapse: collapse; font-size: .875rem; margin-top: 1rem; }
-.gano-sla-table th, .gano-sla-table td { padding: .75rem 1rem; border-bottom: 1px solid #e2e8f0; text-align: left; }
-.gano-sla-table thead th { background: #f8fafc; font-weight: 600; }
-.gano-legal__body h2 { font-size: var(--gano-fs-xl, 1.25rem); margin: 2rem 0 .75rem; }
-.gano-legal__body p, .gano-legal__body li { line-height: 1.75; }
-.gano-legal__body ul { padding-left: 1.25rem; }
-.gano-legal__footer-links { font-size: .875rem; color: #64748b; }
-.gano-legal__footer-links a { color: var(--gano-blue, #2952CC); }
-</style>
-
-<?php get_footer(); ?>
+<?php
+// Cargar estilos consolidados de páginas legales
+wp_enqueue_style( 'gano-pages', get_stylesheet_directory_uri() . '/css/gano-pages.css', [], '1.0' );
+get_footer();
+?>
