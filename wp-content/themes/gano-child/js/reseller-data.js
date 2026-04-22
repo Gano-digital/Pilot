@@ -1115,17 +1115,44 @@ window.GANO_CATEGORIES = [
   { id: 'dominios', label: 'Dominios', icon: 'fa-globe' },
 ];
 
-// Format helpers
-// Asume que el precio de entrada es en USD (ej. 9.99).
-// Formatea con prefijo USD para evitar confusión.
-window.formatCOP = function(n) {
-  if (n == null) return '—';
-  // Formato USD estricto: USD $9.99
-  return 'USD $' + n.toFixed(2);
+// ── Precios: datos catálogo en USD; COP derivado con TRM (ganoCatalogWP.usdCop) ──
+window.ganoGetUsdCopRate = function () {
+  var w = typeof window !== 'undefined' ? window.ganoCatalogWP : null;
+  var r = w && Number(w.usdCop);
+  return r > 0 ? r : 4100;
 };
 
-// Formato auxiliar si necesitas precios completos (anuales)
-window.formatCOPFull = function(n) {
-  if (n == null) return '—';
-  return 'USD $' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+window.ganoCopFromUsd = function (usd) {
+  var u = Number(usd);
+  if (usd == null || isNaN(u)) return null;
+  return Math.round(u * window.ganoGetUsdCopRate());
+};
+
+/** Referencia USD desde monto catálogo (facturación típica en USD). */
+window.formatUSDRef = function (n) {
+  if (n == null || isNaN(Number(n))) return '—';
+  return 'USD $' + Number(n).toFixed(2) + '*';
+};
+
+/** COP aproximado desde monto USD del catálogo (TRM referencia). */
+window.formatCOPFromUsd = function (usd) {
+  var cop = window.ganoCopFromUsd(usd);
+  if (cop == null) return '—';
+  try {
+    return new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      maximumFractionDigits: 0,
+      minimumFractionDigits: 0,
+    }).format(cop);
+  } catch (e) {
+    return '$' + cop.toLocaleString('es-CO') + ' COP';
+  }
+};
+
+window.formatUSD = window.formatUSDRef;
+window.formatCOP = window.formatCOPFromUsd;
+
+window.formatCOPFull = function (usd) {
+  return window.formatCOPFromUsd(usd);
 };

@@ -14,6 +14,7 @@
 
 require_once get_stylesheet_directory() . '/inc/homepage-blocks.php';
 require_once get_stylesheet_directory() . '/inc/gano-content-atlas.php';
+require_once get_stylesheet_directory() . '/inc/draft-home-rstore-catalog-home.php';
 require_once get_stylesheet_directory() . '/inc/contact-form-handler.php';
 require_once get_stylesheet_directory() . '/inc/lead-magnet-handler.php';
 require_once get_stylesheet_directory() . '/inc/gano-premium-components.php';
@@ -447,8 +448,8 @@ function gano_child_enqueue_styles() {
     }
 
     // Smart catalog UX — shared by commercial templates (grid/family/guided + comparator + analytics hooks)
+    // Home (front-page) ya no incluye `[data-gano-catalog]` — no cargar UX catálogo ahí.
     $is_commerce_template =
-        is_front_page() ||
         is_page_template( 'templates/shop-premium.php' ) ||
         is_page_template( 'templates/page-ecosistemas.php' ) ||
         is_page_template( 'templates/page-seo-landing.php' );

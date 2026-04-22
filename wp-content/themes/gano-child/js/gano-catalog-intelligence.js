@@ -22,18 +22,18 @@
     toggle.className = "gano-mobile-nav-toggle";
     toggle.setAttribute("aria-label", "Abrir navegación");
     toggle.setAttribute("aria-expanded", "false");
-    toggle.innerHTML = "☰";
+    toggle.innerHTML = "\u2630";
 
     const panel = document.createElement("aside");
     panel.className = "gano-mobile-nav-panel";
     panel.setAttribute("aria-label", "Navegación móvil");
     panel.innerHTML =
       '<a href="/">Inicio</a>' +
-      '<a href="/ecosistemas">Ecosistemas</a>' +
-      '<a href="/shop-premium">Catálogo</a>' +
-      '<a href="/sota-hub">SOTA Hub</a>' +
-      '<a href="/diagnostico-digital">Diagnóstico</a>' +
-      '<a href="/contacto" class="gano-mobile-nav-cta">Hablar con ventas</a>' +
+      '<a href="/ecosistemas/">Ecosistemas</a>' +
+      '<a href="/shop-premium/">Catálogo</a>' +
+      '<a href="/sota-hub/">SOTA Hub</a>' +
+      '<a href="/diagnostico-digital/">Diagnóstico</a>' +
+      '<a href="/contacto/" class="gano-mobile-nav-cta">Hablar con ventas</a>' +
       '<a href="#" data-gano-close-mobile-nav>Cerrar</a>';
 
     header.appendChild(toggle);

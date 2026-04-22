@@ -114,7 +114,7 @@ get_header(); ?>
 
         <p class="gano-contacto__cta-link">
           ¿Ya sabes qué necesitas?<br>
-          <a href="/ecosistemas">Ver planes y precios →</a>
+          <a href="/ecosistemas/">Ver planes y precios →</a>
         </p>
       </aside>
 

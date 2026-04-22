@@ -113,7 +113,7 @@ get_header(); ?>
       <p class="gano-nosotros__cta-copy">Habla con el equipo. Sin formularios de ventas agresivos.</p>
       <a href="/contacto" class="gano-btn">Habla con el equipo</a>
       &nbsp;&nbsp;
-      <a href="/ecosistemas" class="gano-nosotros__cta-link">Ver ecosistemas →</a>
+      <a href="/ecosistemas/" class="gano-nosotros__cta-link">Ver ecosistemas →</a>
     </div>
   </section>
 

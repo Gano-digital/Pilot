@@ -4,24 +4,39 @@
  *
  * Este template renderiza el catálogo SOTA de forma agnóstica utilizando
  * el motor React-like (catalog-sota.js) que consume reseller-data.js.
+ *
+ * TRM COP/USD: opción `gano_usd_cop_rate` o filtro `gano_catalog_usd_cop_rate`.
  */
+
+$gano_usd_cop_rate = (float) apply_filters(
+	'gano_catalog_usd_cop_rate',
+	(float) get_option( 'gano_usd_cop_rate', 4100 )
+);
+if ( $gano_usd_cop_rate <= 0 ) {
+	$gano_usd_cop_rate = 4100;
+}
 
 // Enqueue catalog assets specific to this template BEFORE get_header()
 wp_enqueue_style( 'gano-fonts-sota', 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600&display=swap', array(), null );
-wp_enqueue_style( 'gano-catalog-sota-css', get_stylesheet_directory_uri() . '/css/catalog-sota.css', array(), '1.0.0' );
+wp_enqueue_style( 'gano-catalog-sota-css', get_stylesheet_directory_uri() . '/css/catalog-sota.css', array(), '1.1.0' );
 
 // Load font-awesome if not loaded
 wp_enqueue_style( 'font-awesome-6', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css', array(), '6.5.0' );
 
 // Enqueue data and logic
-wp_enqueue_script( 'gano-reseller-data', get_stylesheet_directory_uri() . '/js/reseller-data.js', array(), '1.0.0', true );
-wp_enqueue_script( 'gano-catalog-sota-js', get_stylesheet_directory_uri() . '/js/catalog-sota.js', array('gano-reseller-data'), '1.0.0', true );
+wp_enqueue_script( 'gano-reseller-data', get_stylesheet_directory_uri() . '/js/reseller-data.js', array(), '1.1.0', true );
+wp_enqueue_script( 'gano-catalog-sota-js', get_stylesheet_directory_uri() . '/js/catalog-sota.js', array( 'gano-reseller-data' ), '1.1.0', true );
 
 // Pass PHP config variables to JS if needed
-wp_localize_script( 'gano-reseller-data', 'ganoCatalogWP', array(
-    'ajaxurl' => admin_url( 'admin-ajax.php' ),
-    'whatsappNum' => '573000000000'
-));
+wp_localize_script(
+	'gano-reseller-data',
+	'ganoCatalogWP',
+	array(
+		'ajaxurl'     => admin_url( 'admin-ajax.php' ),
+		'whatsappNum' => '573000000000',
+		'usdCop'      => $gano_usd_cop_rate,
+	)
+);
 
 get_header();
 ?>
@@ -34,7 +49,7 @@ get_header();
       <div class="container">
         <div class="hero-eyebrow"><i class="fa-solid fa-shield-halved"></i> Infraestructura SOTA · Nodo Bogotá</div>
         <h1>Tu soberanía digital<br><span class="accent">sin concesiones</span></h1>
-        <p class="hero-sub">Hosting WordPress NVMe, VPS dedicado, dominios .co y seguridad de capa 7. Todo en COP, soporte en español, datos en Colombia.</p>
+        <p class="hero-sub">Hosting WordPress NVMe, VPS dedicado, dominios .co y seguridad de capa 7. Referencia en COP y USD* según catálogo; soporte en español.</p>
         <div class="hero-stats">
           <div class="hero-stat"><span class="stat-val">99.99%</span><span class="stat-lbl">SLA Elite</span></div>
           <div class="stat-div"></div>
@@ -72,6 +87,17 @@ get_header();
               <div class="results-bar">
                 <span class="rcount">Mostrando <strong id="results-count">0</strong> productos</span>
               </div>
+              <p class="catalog-price-disclaimer">
+				<?php
+				echo esc_html(
+					sprintf(
+						/* translators: %s: COP per 1 USD (integer reference rate). */
+						__( '*COP estimado con TRM de referencia (%s COP/USD). La facturación del proveedor puede aplicarse en USD; el tipo al momento del cobro puede variar.', 'gano-child' ),
+						number_format_i18n( $gano_usd_cop_rate, 0 )
+					)
+				);
+				?>
+              </p>
             </div>
           </div>
         </section>
