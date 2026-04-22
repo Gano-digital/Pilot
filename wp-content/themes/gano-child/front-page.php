@@ -16,8 +16,11 @@ get_header();
         </div>
         <div class="gano-shell hero-content">
             <p class="overline">Soberanía Digital · Operación Colombia</p>
-            <h1>Infraestructura NVMe blindada y un agente IA que trabaja antes de que algo falle.</h1>
-            <p>Hosting WordPress de alto rendimiento con seguridad de nivel empresarial, soporte en español y operación en pesos colombianos. Menos ruido, más continuidad.</p>
+            <h1>Infraestructura WordPress premium con acompañamiento real de inicio a escala.</h1>
+            <p>
+                Diseñamos, implementamos y acompañamos tu operación digital con soporte experto en español, asesoría continua,
+                capacitación del equipo y seguimiento técnico para que conviertas más sin fricción operativa.
+            </p>
             <div class="hero-cta-row">
                 <a href="#ecosistemas" class="btn-holo">
                     <span class="label">Ver arquitecturas y planes</span>
@@ -48,15 +51,6 @@ get_header();
             </p>
         </div>
     </section>
-
-    <?php
-    gano_cta_registro(array(
-        'heading'     => '¿No sabes por dónde empezar?',
-        'description' => '¿no sabes por dónde empezar? registra tu cuenta y recibe soporte inmediato. Nosotros te agendamos. Acompañamos tu empresa en cada decisión: siempre donde verdaderamente importa.',
-        'button_text' => 'Registra tu cuenta',
-        'class'       => 'gano-cta-registro--hero-section'
-    ));
-    ?>
 
     <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="dominios-heading">
         <div class="gano-shell">
@@ -112,47 +106,47 @@ get_header();
                 <?php
                 $ecosistemas = array(
                     array(
-                        'nombre'    => 'Núcleo Prime',
+                        'nombre'    => 'Lanzamiento Sólido',
                         'slug'      => 'wordpress-basico',
                         'precio'    => '$196.000',
                         'categoria' => 'hostingwebcpanel',
                         'features'  => array(
-                            'Almacenamiento NVMe',
-                            'Soporte en español por ticket',
-                            'Activación rápida'
+                            'Acompañamiento de arranque',
+                            'Implementación WordPress optimizada',
+                            'Soporte técnico en español'
                         )
                     ),
                     array(
-                        'nombre'    => 'Fortaleza Delta',
+                        'nombre'    => 'Escala Inteligente',
                         'slug'      => 'wordpress-deluxe',
                         'precio'    => '$450.000',
                         'categoria' => 'wordpressadministrado',
                         'features'  => array(
-                            'Hardening activo incluido',
-                            'Mayor capacidad de recursos',
-                            'Respaldos automatizados'
+                            'Capacitación operativa del equipo',
+                            'Monitoreo y seguimiento continuo',
+                            'Soporte 24/7 priorizado'
                         )
                     ),
                     array(
-                        'nombre'    => 'Bastión SOTA',
+                        'nombre'    => 'Conversión Segura',
                         'slug'      => 'wordpress-ultimate',
                         'precio'    => '$890.000',
                         'categoria' => 'seguridadweb',
                         'features'  => array(
-                            'Recursos dedicados',
-                            'SLA ≥ 99.9%',
-                            'Monitoreo proactivo'
+                            'Blindaje avanzado de superficie',
+                            'Optimización comercial por campañas',
+                            'Asesoría de continuidad tecnológica'
                         )
                     ),
                     array(
-                        'nombre'    => 'Ultimate WP',
+                        'nombre'    => 'Operación Crítica',
                         'slug'      => 'cpanel-ultimate',
-                        'precio'    => '$1.200.000',
+                        'precio'    => '$2.5M+',
                         'categoria' => 'servidoresvps',
                         'features'  => array(
-                            'Máxima capacidad de recursos',
-                            'Blindaje ante picos masivos',
-                            'Soporte prioritario'
+                            'Arquitectura a medida y escalable',
+                            'Acompañamiento ejecutivo',
+                            'Seguimiento técnico y estratégico'
                         )
                     ),
                 );
@@ -208,37 +202,29 @@ get_header();
         </div>
     </section>
 
-    <?php
-    gano_cta_registro(array(
-        'heading'     => '¿Aún tienes dudas?',
-        'description' => 'Nuestro equipo te acompaña en cada decisión. Registra tu cuenta y accede a soporte inmediato.',
-        'button_text' => 'Crear cuenta',
-    ));
-    ?>
-
     <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="valor-heading">
         <div class="gano-shell">
             <div class="section-title-gano">
-                <h2 id="valor-heading">Cuatro pilares de la infraestructura SOTA</h2>
-                <p>Lo que diferencia a Gano Digital en el mercado colombiano.</p>
+                <h2 id="valor-heading">Acompañamiento que sí mueve resultados</h2>
+                <p>Soporte, asesoría, capacitación y seguimiento continuo en una sola operación.</p>
             </div>
             <div class="value-section">
                 <div class="value-grid">
                     <article class="value-item">
-                        <h3>Velocidad real (NVMe)</h3>
-                        <p>Almacenamiento de nueva generación y stack optimizado para WordPress: menos espera, más conversión. Tu sitio carga cuando el cliente ya decidió quedarse.</p>
+                        <h3>Soporte técnico experto</h3>
+                        <p>Atención especializada para incidentes, ajustes y evolución de tu stack WordPress sin respuestas genéricas.</p>
                     </article>
                     <article class="value-item">
-                        <h3>WordPress blindada</h3>
-                        <p>Hardening continuo, controles de acceso y visibilidad sobre lo que ocurre en tu instalación. Menos superficie de ataque, más tranquilidad operativa.</p>
+                        <h3>Asesoría comercial y técnica</h3>
+                        <p>Traducimos objetivos de negocio en decisiones de infraestructura, seguridad y conversión con ruta clara.</p>
                     </article>
                     <article class="value-item">
-                        <h3>Zero-Trust operativo</h3>
-                        <p>Confianza cero por defecto: identidad, sesiones y permisos bajo control. La seguridad no es un cartel: es política aplicada en capas.</p>
+                        <h3>Capacitación operativa</h3>
+                        <p>Tu equipo aprende a operar mejor la plataforma con guías prácticas, estándares y buenas prácticas reales.</p>
                     </article>
                     <article class="value-item">
-                        <h3>Edge y latencia</h3>
-                        <p>Contenido más cerca del usuario sin magia barata. Arquitectura pensada para entregar experiencias rápidas donde vive tu audiencia.</p>
+                        <h3>Seguimiento continuo</h3>
+                        <p>Monitoreo, recomendaciones y roadmap evolutivo para sostener crecimiento sin sacrificar estabilidad.</p>
                     </article>
                 </div>
             </div>
@@ -300,7 +286,7 @@ get_header();
     <section class="section-gano gano-home-section" id="cta-final" aria-labelledby="cierre-heading">
         <div class="gano-shell">
             <div class="gano-panel gano-panel--compact">
-                <h2 id="cierre-heading">¿Listo para una infraestructura que no te pida disculpas?</h2>
+                <h2 id="cierre-heading">¿Listo para diseñar una operación digital que escale contigo?</h2>
                 <?php echo do_shortcode( '[gano_cta_icons]' ); ?>
                 <p class="gano-panel-cta">
                     <a href="#ecosistemas" class="btn-gano">Elegir mi arquitectura</a>
