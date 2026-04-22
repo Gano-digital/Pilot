@@ -162,6 +162,8 @@ define('GANO_PFID_PERFORMANCE_ADDON', 'PENDING_RCC');    // Performance Optimiza
 | `wp-content/themes/gano-child/functions.php` (L. 662–696) | Ubicación exacta constantes PFID |
 | `memory/integration/antigravity-integration-2026-04-06.md` | Setup Antigravity, test syntax |
 | `.github/DEV-COORDINATION.md` | Secretos GoDaddy API (si se necesita) |
+| `memory/commerce/crypto-manual-fulfillment-godaddy-policy-2026-04.md` | Pago crypto → compra manual RCC (referencia; modelo full-crypto diferido) |
+| `memory/commerce/estrategia-comercial-hibrido-checkout-servicios-complementarios-2026-04.md` | Estrategia híbrida: checkout Reseller + crypto opcional en servicios complementarios Gano |
 
 ---
 

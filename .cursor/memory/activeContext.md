@@ -1,6 +1,12 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-20._
+_Última actualización: 2026-04-22._
+
+## Snapshot 2026-04-22 (comercio crypto + política Reseller)
+
+- **Estrategia comercial activa (documental):** modelo **híbrido** — checkout **convencional** para núcleo Reseller; **crypto opcional** solo para **servicios complementarios** facturados por Gano (perfil inversionistas/crypto-native B2B) — [`memory/commerce/estrategia-comercial-hibrido-checkout-servicios-complementarios-2026-04.md`](../../memory/commerce/estrategia-comercial-hibrido-checkout-servicios-complementarios-2026-04.md).
+- **Referencia diferida:** modelo full “crypto → compra manual RCC” — [`memory/commerce/crypto-manual-fulfillment-godaddy-policy-2026-04.md`](../../memory/commerce/crypto-manual-fulfillment-godaddy-policy-2026-04.md) ([Reseller Agreement](https://www.godaddy.com/legal/agreements/reseller-agreement)).
+- **Nota:** sin asesoría legal; validar flujos con soporte Reseller / asesoría al escalar; cartera/contabilidad **dedicada** al negocio vs wallet personal de exchange.
 
 ## Snapshot 2026-04-20 (PRs + babysit)
 

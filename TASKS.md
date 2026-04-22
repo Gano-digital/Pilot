@@ -1,5 +1,5 @@
 # Tasks — Gano Digital
-_Última actualización: 2026-04-19_
+_Última actualización: 2026-04-22_
 
 ## REGRESAR AQUÍ (pendiente tu acción)
 
@@ -120,6 +120,8 @@ _Última actualización: 2026-04-19_
 **ESTRATEGIA ACTUALIZADA**: Toda la facturación y el checkout recaen sobre el **carrito y el programa nativos** del GoDaddy Reseller (RCC + Reseller Store), no sobre la **API REST** del Developer Portal. Esa API es **opcional** solo como herramienta complementaria (scripts, back-office, futuro billing); **Good as Gold** aplica cuando haya **compras** vía API, no para uso meramente consultivo. Se elimina el overhead de mantener paneles de facturación locales (WHMCS) **mientras** el modelo activo sea Reseller; `memory/research/fase4-plataforma.md` queda como referencia para expansiones posteriores.
 
 **Referencias operativas API GoDaddy Reseller:** [`memory/research/godaddy-api-reseller-operations-2026.md`](memory/research/godaddy-api-reseller-operations-2026.md) — ToU resumidos, flujo OTE → producción → Good as Gold, matriz acción/requisito/riesgo.
+
+**Estrategia comercial (documentación, abr 2026):** modelo **híbrido** para perfiles B2B/crypto-friendly — checkout **convencional** para núcleo Reseller; **crypto opcional** solo en **servicios complementarios** facturados por Gano (sin implementación técnica de pagos crypto en esta fase). Ver [`memory/commerce/estrategia-comercial-hibrido-checkout-servicios-complementarios-2026-04.md`](memory/commerce/estrategia-comercial-hibrido-checkout-servicios-complementarios-2026-04.md). Referencia **diferida** full crypto → RCC: [`memory/commerce/crypto-manual-fulfillment-godaddy-policy-2026-04.md`](memory/commerce/crypto-manual-fulfillment-godaddy-policy-2026-04.md).
 
 - [ ] **Depurar Catálogo en GoDaddy Reseller Control Center**:
   - Asegurar que los productos (Hosting, VPS, SSL) tengan el precio base en el RCC (Reseller Control Center).
