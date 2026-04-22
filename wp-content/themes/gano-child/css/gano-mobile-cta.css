@@ -1,0 +1,88 @@
+/**
+ * GANO MOBILE CTA — Sticky bottom bar
+ * Solo visible en mobile (≤768px) en páginas de planes.
+ * Se oculta automáticamente cuando el CTA final de sección está en viewport.
+ */
+
+.gano-sticky-cta-mobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .gano-sticky-cta-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 998;
+        padding: 12px 16px 16px;
+        background: rgba(5, 8, 11, 0.96);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255, 107, 53, 0.25);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .gano-sticky-cta-mobile.is-hidden {
+        transform: translateY(100%);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .gano-sticky-cta-mobile .gano-sticky-cta__primary {
+        flex: 1;
+        max-width: 240px;
+        text-align: center;
+        padding: 13px 20px;
+        background: var(--gano-orange, #FF6B35);
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: opacity 0.2s ease;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .gano-sticky-cta-mobile .gano-sticky-cta__primary:hover,
+    .gano-sticky-cta-mobile .gano-sticky-cta__primary:focus-visible {
+        opacity: 0.88;
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+    }
+
+    .gano-sticky-cta-mobile .gano-sticky-cta__secondary {
+        padding: 13px 14px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        color: #e2e8f0;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        transition: border-color 0.2s ease;
+    }
+
+    .gano-sticky-cta-mobile .gano-sticky-cta__secondary:hover,
+    .gano-sticky-cta-mobile .gano-sticky-cta__secondary:focus-visible {
+        border-color: rgba(255, 255, 255, 0.5);
+        outline: 2px solid rgba(255,255,255,0.4);
+        outline-offset: 2px;
+    }
+
+    /* Compensar el espacio que ocupa la barra sticky */
+    body.has-mobile-cta {
+        padding-bottom: 72px;
+    }
+}

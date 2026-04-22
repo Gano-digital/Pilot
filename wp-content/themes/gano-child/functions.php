@@ -206,6 +206,12 @@ if ( ! function_exists( 'gano_critical_css_hero_visibility' ) ) {
  *
  * Solo en homepage para no contaminar el resto del sitio.
  */
+add_action( 'wp_head', 'gano_font_preconnect', 1 );
+function gano_font_preconnect() {
+    echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
+    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+}
+
 add_action( 'wp_head', 'gano_critical_css', 1 );
 function gano_critical_css() {
     if ( ! is_front_page() ) {
@@ -389,6 +395,7 @@ function gano_child_enqueue_styles() {
     // Ecosistemas — catálogo de planes (cd-content-002)
     if ( is_page_template( 'templates/page-ecosistemas.php' ) ) {
         wp_enqueue_style( 'gano-ecosistemas-css', get_stylesheet_directory_uri() . '/css/ecosistemas.css', array( 'gano-child-style' ), '1.0.0' );
+        wp_enqueue_style( 'gano-mobile-cta-css', get_stylesheet_directory_uri() . '/css/gano-mobile-cta.css', array( 'gano-child-style' ), '1.0.0' );
     }
 
     // Constellation 3D Hero — se carga cuando el template o shortcode lo necesite

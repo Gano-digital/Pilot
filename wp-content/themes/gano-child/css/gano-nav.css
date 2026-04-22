@@ -198,15 +198,22 @@ header.site-header nav {
  * RESPONSIVE
  * ============================================================ */
 
+@media (max-width: 1024px) {
+  #site-header nav ul,
+  header.site-header nav ul {
+    gap: 20px !important;
+  }
+
+  #site-header nav a,
+  header.site-header nav a {
+    font-size: 0.9rem !important;
+  }
+}
+
 @media (max-width: 768px) {
   #site-header,
   header.site-header {
     padding: 12px 5% !important;
-  }
-
-  #site-header nav ul,
-  header.site-header nav ul {
-    gap: 20px !important;
   }
 
   #site-header nav a,
@@ -255,5 +262,43 @@ body.admin-bar {
 
   body.admin-bar {
     padding-top: calc(60px + 46px) !important;
+  }
+}
+
+/* ============================================================
+ * ARIA-CURRENT — Ítem activo en la nav
+ * ============================================================ */
+
+#site-header nav a[aria-current="page"],
+header.site-header nav a[aria-current="page"] {
+  color: var(--gc-secondary, #00C26B) !important;
+  font-weight: 700 !important;
+}
+
+/* ============================================================
+ * PRICING HINTS — Precio secundario en sub-ítems dropdown
+ * ============================================================ */
+
+#site-header nav .nav-plan-price,
+header.site-header nav .nav-plan-price {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--gc-secondary, #00C26B);
+  opacity: 0.85;
+  margin-top: 1px;
+  letter-spacing: 0;
+}
+
+/* ============================================================
+ * WCAG 2.2 §2.4.11 Focus Not Obscured — evita que el foco quede oculto
+   bajo el header sticky al navegar con Tab */
+html {
+  scroll-padding-top: 80px;
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 70px;
   }
 }
