@@ -17,8 +17,39 @@
     return `https://cart.secureserver.net/?plid=${PLID}&pfid=${pfid}`;
   }
 
-  /* ── Price helpers ── */
-  function fmt(n) { return window.formatCOP ? window.formatCOP(n) : ('$' + n); }
+  /* ── Price helpers (COP dinámico + USD* en paralelo) ── */
+  function copStr(usd) {
+    if (window.formatCOPFromUsd) return window.formatCOPFromUsd(usd);
+    const r = (window.ganoCatalogWP && Number(window.ganoCatalogWP.usdCop)) || 4100;
+    return '$' + Math.round(Number(usd) * r).toLocaleString('es-CO') + ' COP';
+  }
+  function usdStr(usd) {
+    if (window.formatUSDRef) return window.formatUSDRef(usd);
+    return 'USD $' + Number(usd).toFixed(2) + '*';
+  }
+  /** Bloque visual: línea principal COP + línea secundaria USD* */
+  function dualAmount(usdValue, perSuffix) {
+    const per = perSuffix || '';
+    return (
+      '<div class="price-dual">' +
+      '<div class="price-dual__row price-dual__primary">' +
+      '<span class="price-cop">' + copStr(usdValue) + '</span>' +
+      '<span class="price-per">' + per + '</span>' +
+      '</div>' +
+      '<div class="price-dual__row price-dual__secondary">' +
+      '<span class="price-usd-ref">' + usdStr(usdValue) + '</span>' +
+      '<span class="price-per price-per--muted">' + per + '</span>' +
+      '</div></div>'
+    );
+  }
+  function dualStrike(usdMonthly) {
+    return (
+      '<div class="price-strike-dual">' +
+      '<span>' + copStr(usdMonthly) + '<span class="price-strike-sub">/mes</span></span>' +
+      '<span class="price-strike-usd">' + usdStr(usdMonthly) + '<span class="price-strike-sub">/mes</span></span>' +
+      '</div>'
+    );
+  }
   function monthlyEstimate(yearly) { return yearly ? Math.round(yearly / 12) : null; }
 
   /* ── Badge map ── */
@@ -89,28 +120,28 @@
     }
 
     if (isAnnual && hasYearly) {
-      const mo = monthlyEstimate(p.yearly);
-      const strike = hasMonthly ? `<span class="price-strike">${fmt(p.monthly)}/mes</span>` : '';
-      const save = hasMonthly && mo
-        ? `<span class="price-save">Ahorras ${fmt((p.monthly * 12) - p.yearly)}/año</span>` : '';
-      return `
-        ${strike}
-        <span class="price-val">${fmt(p.yearly)}</span>
-        <span class="price-per">/año</span>
-        ${save}`;
-    } else if (!isAnnual && hasMonthly) {
-      return `
-        <span class="price-val">${fmt(p.monthly)}</span>
-        <span class="price-per">/mes</span>`;
-    } else if (hasYearly) {
-      // monthly only shown, yearly product — show estimated
-      const mo = monthlyEstimate(p.yearly);
-      return `
-        <span class="price-val">${fmt(mo)}</span>
-        <span class="price-per">/mes est.</span>`;
-    } else {
-      return `<span class="price-val">${fmt(p.yearly)}</span><span class="price-per">/año</span>`;
+      const strike = hasMonthly ? dualStrike(p.monthly) : '';
+      const annualSave =
+        hasMonthly && p.monthly != null && p.yearly != null
+          ? p.monthly * 12 - p.yearly
+          : 0;
+      const save =
+        annualSave > 0.009
+          ? (
+            '<span class="price-save">Ahorras ' + copStr(annualSave) + ' · ' +
+            '<span class="price-save-usd">' + usdStr(annualSave) + '</span>/año</span>'
+          )
+          : '';
+      return strike + dualAmount(p.yearly, '/año') + save;
     }
+    if (!isAnnual && hasMonthly) {
+      return dualAmount(p.monthly, '/mes');
+    }
+    if (hasYearly) {
+      const mo = monthlyEstimate(p.yearly);
+      return dualAmount(mo, '/mes est.');
+    }
+    return dualAmount(p.yearly, '/año');
   }
 
   /* ── Build CTA ── */
@@ -160,13 +191,61 @@
 </article>`;
   }
 
+  function sortedProducts() {
+    const cats = (window.GANO_CATEGORIES || []).filter(function (c) { return c.id !== 'all'; });
+    const rank = {};
+    cats.forEach(function (c, i) { rank[c.id] = i; });
+    return window.GANO_PRODUCTS.slice().sort(function (a, b) {
+      const ra = rank[a.category] != null ? rank[a.category] : 999;
+      const rb = rank[b.category] != null ? rank[b.category] : 999;
+      if (ra !== rb) return ra - rb;
+      return (a.name || '').localeCompare(b.name || '');
+    });
+  }
+
+  function renderCategoryHeader(catId) {
+    const meta = (window.GANO_CATEGORIES || []).find(function (c) { return c.id === catId; });
+    const title = meta ? meta.label : catId;
+    const icon = meta ? meta.icon : 'fa-layer-group';
+    const count = window.GANO_PRODUCTS.filter(function (x) { return x.category === catId; }).length;
+    return (
+      '<div class="gano-cat-header" data-cat-head="' + catId + '" role="presentation">' +
+      '<div class="gano-cat-header-icon"><i class="fa-solid ' + icon + '"></i></div>' +
+      '<span class="gano-cat-header-name">' + title + '</span>' +
+      '<span class="gano-cat-header-count">' + count + ' productos</span></div>'
+    );
+  }
+
+  function syncCategoryHeaders() {
+    document.querySelectorAll('.gano-cat-header').forEach(function (h) {
+      const cat = h.getAttribute('data-cat-head');
+      if (!cat) return;
+      const n = document.querySelectorAll('.pcard[data-cat="' + cat + '"]:not(.hidden)').length;
+      h.classList.toggle('gano-cat-header--empty', n === 0);
+    });
+  }
+
   /* ── Render all cards ── */
   function renderGrid() {
     const grid = document.getElementById('product-grid');
     if (!grid || !window.GANO_PRODUCTS) return;
-    grid.innerHTML = window.GANO_PRODUCTS.map(renderCard).join('');
+    if (activeCategory === 'all') {
+      const parts = [];
+      let lastCat = null;
+      sortedProducts().forEach(function (p) {
+        if (p.category !== lastCat) {
+          lastCat = p.category;
+          parts.push(renderCategoryHeader(p.category));
+        }
+        parts.push(renderCard(p));
+      });
+      grid.innerHTML = parts.join('');
+    } else {
+      grid.innerHTML = window.GANO_PRODUCTS.map(renderCard).join('');
+    }
     updateCount();
     bindGlossaryTips();
+    syncCategoryHeaders();
   }
 
   /* ── Filter logic ── */
@@ -184,6 +263,7 @@
       card.classList.toggle('hidden', shouldHide(p));
     });
     updateCount();
+    syncCategoryHeaders();
   }
 
   function updateCount() {
@@ -277,21 +357,24 @@
   }
 
   /* ── Price toggle ── */
-  document.getElementById('price-toggle').addEventListener('change', function () {
-    isAnnual = this.checked;
-    const lm = document.getElementById('lbl-monthly');
-    const la = document.getElementById('lbl-annual');
-    if (lm) { lm.classList.toggle('on', !isAnnual); }
-    if (la) { la.classList.toggle('on', isAnnual); }
-    updatePrices();
-  });
+  const priceToggleEl = document.getElementById('price-toggle');
+  if (priceToggleEl) {
+    priceToggleEl.addEventListener('change', function () {
+      isAnnual = this.checked;
+      const lm = document.getElementById('lbl-monthly');
+      const la = document.getElementById('lbl-annual');
+      if (lm) { lm.classList.toggle('on', !isAnnual); }
+      if (la) { la.classList.toggle('on', isAnnual); }
+      updatePrices();
+    });
+  }
 
   /* ── Global filter handlers (called from inline onclick) ── */
   window.setCat = function (btn, id) {
     document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     activeCategory = id;
-    applyFilters();
+    renderGrid();
   };
 
   window.setObj = function (btn, id) {
@@ -310,9 +393,10 @@
 
   /* ── Init ── */
   function init() {
-    // Set toggle to annual by default
     const tog = document.getElementById('price-toggle');
-    if (tog) { tog.checked = true; }
+    if (tog) {
+      tog.checked = true;
+    }
     document.getElementById('lbl-annual')?.classList.add('on');
     document.getElementById('lbl-monthly')?.classList.remove('on');
 
