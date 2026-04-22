@@ -1157,6 +1157,129 @@ function gano_render_cta_icons() {
     return ob_get_clean();
 }
 
+/**
+ * Shortcode: [gano_reseller_iframe ecosistema="hosting_economia"]
+ *
+ * Renderiza un iframe embebido del Reseller Store de GoDaddy con fallback
+ * a página de configuración si el PFID aún no está disponible.
+ *
+ * Atributos:
+ * - ecosistema: "hosting_economia", "hosting_deluxe", "hosting_premium", "hosting_ultimate"
+ * - fallback_url: URL alternativa si PFID = PENDING_RCC (default: /contacto/)
+ * - heading: Título opcional del iframe (default: "Selecciona tu plan")
+ * - button_text: Texto del botón fallback (default: "Ir a configuración")
+ *
+ * Ejemplo:
+ *   [gano_reseller_iframe ecosistema="hosting_economia"]
+ *
+ * Requiere:
+ * - CSP header: frame-src https://reseller-store.godaddy.com (en gano-security.php)
+ * - iframe-resizer script para responsive height (enqueue en functions.php)
+ */
+add_shortcode( 'gano_reseller_iframe', 'gano_render_reseller_iframe' );
+function gano_render_reseller_iframe( $atts = array() ) {
+	$atts = shortcode_atts(
+		array(
+			'ecosistema'   => 'hosting_economia',
+			'fallback_url' => home_url( '/contacto/' ),
+			'heading'      => 'Selecciona tu plan',
+			'button_text'  => 'Ir a configuración',
+		),
+		$atts,
+		'gano_reseller_iframe'
+	);
+
+	// Mapeo de ecosistema a PFID constant
+	$ecosistema_map = array(
+		'hosting_economia' => 'GANO_PFID_HOSTING_ECONOMIA',
+		'hosting_deluxe'   => 'GANO_PFID_HOSTING_DELUXE',
+		'hosting_premium'  => 'GANO_PFID_HOSTING_PREMIUM',
+		'hosting_ultimate' => 'GANO_PFID_HOSTING_ULTIMATE',
+		'ssl_deluxe'       => 'GANO_PFID_SSL_DELUXE',
+		'security'         => 'GANO_PFID_SECURITY_ULTIMATE',
+		'm365'             => 'GANO_PFID_M365_PREMIUM',
+		'storage'          => 'GANO_PFID_ONLINE_STORAGE',
+	);
+
+	$ecosistema = sanitize_key( $atts['ecosistema'] );
+	$const_name = $ecosistema_map[ $ecosistema ] ?? null;
+
+	if ( ! $const_name || ! defined( $const_name ) ) {
+		return '<p class="gano-reseller-iframe-error">' . esc_html__( 'Ecosistema no válido.', 'gano-child' ) . '</p>';
+	}
+
+	$pfid = (string) constant( $const_name );
+
+	// Si PFID = PENDING_RCC, mostrar fallback
+	if ( 'PENDING_RCC' === $pfid ) {
+		$fallback_url = esc_url( $atts['fallback_url'] );
+		$button_text  = esc_html( $atts['button_text'] );
+		$heading      = esc_html( $atts['heading'] );
+
+		return sprintf(
+			'<div class="gano-reseller-iframe-pending">
+				<h3>%s</h3>
+				<p>' . esc_html__( 'Estamos configurando tu catálogo de productos. Por favor, habla con nosotros.', 'gano-child' ) . '</p>
+				<a href="%s" class="gano-btn gano-btn-primary">%s</a>
+			</div>',
+			$heading,
+			$fallback_url,
+			$button_text
+		);
+	}
+
+	if ( empty( $pfid ) ) {
+		return '<p class="gano-reseller-iframe-error">' . esc_html__( 'PFID vacío o no configurado.', 'gano-child' ) . '</p>';
+	}
+
+	// URL del Reseller Store con PFID
+	$reseller_base = 'https://reseller-store.godaddy.com';
+	$iframe_src    = esc_url( add_query_arg( 'pfid', $pfid, $reseller_base ) );
+
+	// Enqueue iframe-resizer script para responsive height
+	wp_enqueue_script(
+		'gano-iframe-resizer',
+		'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.2/iframeResizer.min.js',
+		array(),
+		'4.3.2',
+		true
+	);
+
+	// Script inline para inicializar iframeResizer
+	wp_add_inline_script(
+		'gano-iframe-resizer',
+		'
+		if ( window.iframeResizer ) {
+			window.iframeResizer(
+				{
+					log: false,
+					autoResize: true,
+					heightCalculationMethod: "documentElementOffset",
+					checkOrigin: ["https://reseller-store.godaddy.com"],
+				},
+				".gano-reseller-iframe-embed"
+			);
+		}
+		'
+	);
+
+	ob_start();
+	?>
+	<div class="gano-reseller-iframe-wrapper">
+		<h3><?php echo esc_html( $atts['heading'] ); ?></h3>
+		<iframe
+			class="gano-reseller-iframe-embed"
+			src="<?php echo esc_url( $iframe_src ); ?>"
+			title="<?php esc_attr_e( 'GoDaddy Reseller Store - Selecciona tu plan', 'gano-child' ); ?>"
+			style="border: none; width: 100%; min-height: 600px;"
+			sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals"
+			loading="lazy"
+		></iframe>
+	</div>
+	<?php
+	return ob_get_clean();
+}
+
 
 /**
  * El MU plugin gano-security.php bloquea la REST API para no autenticados.

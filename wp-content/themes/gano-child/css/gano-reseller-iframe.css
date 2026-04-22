@@ -1,0 +1,170 @@
+/**
+ * gano-reseller-iframe.css
+ * Estilos para el shortcode [gano_reseller_iframe] — iframe embebido del Reseller Store
+ * Fase 4: Integración GoDaddy Reseller
+ */
+
+/* Wrapper principal */
+.gano-reseller-iframe-wrapper {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border-radius: var(--gano-radius-md, 8px);
+    background-color: var(--gano-color-surface-light, #f8f9fa);
+    box-shadow: var(--gano-shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.1));
+}
+
+.gano-reseller-iframe-wrapper h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+    font-weight: var(--gano-fw-bold, 700);
+    color: var(--gano-color-text-primary, #05070a);
+    line-height: var(--gano-lh-tight, 1.2);
+}
+
+/* iframe embebido */
+.gano-reseller-iframe-embed {
+    display: block;
+    width: 100%;
+    min-height: 600px;
+    border: 1px solid var(--gano-color-border, #e2e8f0);
+    border-radius: var(--gano-radius-sm, 4px);
+}
+
+/* Estados responsivos */
+@media (max-width: 768px) {
+    .gano-reseller-iframe-wrapper {
+        padding: 1rem;
+        margin: 1.5rem 0;
+    }
+
+    .gano-reseller-iframe-wrapper h3 {
+        font-size: 1.25rem;
+    }
+
+    .gano-reseller-iframe-embed {
+        min-height: 500px;
+    }
+}
+
+/* Fallback cuando PFID = PENDING_RCC */
+.gano-reseller-iframe-pending {
+    margin: 2rem 0;
+    padding: 2rem 1.5rem;
+    border-radius: var(--gano-radius-md, 8px);
+    background: linear-gradient(
+        135deg,
+        var(--gano-color-surface-light, #f8f9fa),
+        var(--gano-color-surface, #f0f2f5)
+    );
+    border: 1px solid var(--gano-color-border, #e2e8f0);
+    text-align: center;
+    box-shadow: var(--gano-shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.05));
+}
+
+.gano-reseller-iframe-pending h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+    font-weight: var(--gano-fw-bold, 700);
+    color: var(--gano-color-text-primary, #05070a);
+    line-height: var(--gano-lh-tight, 1.2);
+}
+
+.gano-reseller-iframe-pending p {
+    margin: 0 0 1.5rem 0;
+    font-size: 1rem;
+    color: var(--gano-color-text-secondary, #64748b);
+    line-height: var(--gano-lh-relaxed, 1.6);
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.gano-reseller-iframe-pending .gano-btn {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    background-color: var(--gano-orange, #FF6B35);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--gano-radius-sm, 8px);
+    font-weight: var(--gano-fw-semibold, 600);
+    transition: all 0.2s ease-out;
+}
+
+.gano-reseller-iframe-pending .gano-btn:hover {
+    background-color: #e85a24;
+    box-shadow: var(--gano-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.15));
+    transform: translateY(-2px);
+}
+
+.gano-reseller-iframe-pending .gano-btn:focus {
+    outline: 3px solid var(--gano-gold, #D4AF37);
+    outline-offset: 2px;
+}
+
+/* Error message */
+.gano-reseller-iframe-error {
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    background-color: #fee;
+    border-left: 4px solid #c33;
+    color: #933;
+    border-radius: var(--gano-radius-sm, 4px);
+    font-size: 0.95rem;
+}
+
+/* Loading state (optional, para futuro) */
+.gano-reseller-iframe-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 600px;
+    color: var(--gano-color-text-secondary, #64748b);
+    font-size: 1rem;
+}
+
+/* Asegura que iframe-resizer no causa layout shift */
+.gano-reseller-iframe-embed[style*="height"] {
+    transition: height 0.3s ease-out;
+}
+
+/* Dark mode (si aplica) */
+@media (prefers-color-scheme: dark) {
+    .gano-reseller-iframe-wrapper {
+        background-color: var(--gano-bg-dark, #0f1115);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .gano-reseller-iframe-wrapper h3 {
+        color: var(--gano-color-text-on-dark, #e2e8f0);
+    }
+
+    .gano-reseller-iframe-embed {
+        border-color: var(--gano-color-border-dark, #2d3748);
+    }
+
+    .gano-reseller-iframe-pending {
+        background: linear-gradient(
+            135deg,
+            #1a1e2e 0%,
+            #0f1319 100%
+        );
+        border-color: #2d3748;
+    }
+
+    .gano-reseller-iframe-pending h3 {
+        color: #e2e8f0;
+    }
+
+    .gano-reseller-iframe-pending p {
+        color: #cbd5e0;
+    }
+}
+
+/* Accesibilidad: respeta prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    .gano-reseller-iframe-wrapper,
+    .gano-reseller-iframe-pending,
+    .gano-reseller-iframe-pending .gano-btn {
+        transition: none;
+    }
+}
