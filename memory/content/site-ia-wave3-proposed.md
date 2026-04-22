@@ -8,6 +8,8 @@
 
 ## 1. Árbol de rutas completo
 
+> **Slugs SOTA:** se adopta **Opción C** (issue #265). Los slugs son los generados por `gano-content-importer` v2.0, organizados bajo la jerarquía `/pilares/[categoria]/` asignando "Página padre" en wp-admin. Ver tabla canónica completa → [`gap-ia-vs-live-inventory-2026.md`](gap-ia-vs-live-inventory-2026.md).
+
 ```
 / (Home)
 ├── /ecosistemas                       ← Hub principal de conversión
@@ -16,35 +18,35 @@
 │   └── /ecosistemas/bastion-sota      ← Plan premium
 │
 ├── /pilares                           ← Hub SEO (landing de índice)
-│   ├── infraestructura/
-│   │   ├── /arquitectura-nvme-la-muerte-del-ssd-tradicional
-│   │   ├── /la-muerte-del-hosting-compartido-el-riesgo-invisible
-│   │   ├── /edge-computing-contenido-a-cero-distancia-de-tu-cliente
-│   │   ├── /backups-continuos-en-tiempo-real-tu-maquina-del-tiempo
-│   │   ├── /escalamiento-elastico-sobrevive-a-tu-propio-exito-viral
-│   │   └── /alta-disponibilidad-ha-la-infraestructura-indestructible
+│   ├── /pilares/infraestructura/
+│   │   ├── arquitectura-nvme-el-manifiesto-de-la-velocidad-critica
+│   │   ├── contenedores-aislados-tu-isla-de-rendimiento
+│   │   ├── edge-computing-colapsando-la-latencia-geografica
+│   │   ├── resiliencia-de-datos-maquina-del-tiempo-digital
+│   │   ├── escalamiento-elastico-el-ecosistema-infinito
+│   │   └── arquitectura-indestructible-alta-disponibilidad-enterprise
 │   │
-│   ├── seguridad/
-│   │   ├── /zero-trust-security-el-fin-de-las-contrasenas
-│   │   ├── /mitigacion-ddos-inteligente-firewall-de-nueva-generacion
-│   │   └── /cifrado-post-cuantico-la-boveda-del-futuro
+│   ├── /pilares/seguridad/
+│   │   ├── zero-trust-el-fin-de-la-confianza-implicita
+│   │   ├── inmunidad-ddos-blindaje-ia-en-el-perimetro
+│   │   └── blindaje-post-cuantico-cifrado-para-la-proxima-decada
 │   │
-│   ├── rendimiento/
-│   │   ├── /headless-wordpress-la-velocidad-absoluta
-│   │   ├── /green-hosting-infraestructura-sostenible-para-tu-negocio
-│   │   ├── /cicd-automatizado-nunca-mas-rompas-tu-tienda-en-vivo
-│   │   ├── /skeleton-screens-la-psicologia-de-la-velocidad-percibida
-│   │   ├── /micro-animaciones-e-interacciones-hapticas-diseno-que-se-siente
-│   │   └── /http3-y-quic-el-protocolo-que-rompe-la-congestion
+│   ├── /pilares/rendimiento/
+│   │   ├── arquitectura-headless-desacoplando-el-futuro
+│   │   ├── orquestacion-cicd-evolucion-sin-interrupcion
+│   │   ├── skeleton-screens-psicologia-del-rendimiento
+│   │   ├── experiencias-cineticas-diseno-que-se-siente-premium
+│   │   └── protocolos-de-vanguardia-http3-quic-transmision
 │   │
-│   ├── inteligencia-artificial/
-│   │   ├── /gestion-predictiva-con-ai-cero-caidas-cero-sorpresas
-│   │   ├── /self-healing-el-ecosistema-que-se-cura-solo
-│   │   └── /el-agente-ia-de-administracion-tu-infraestructura-habla-espanol
+│   ├── /pilares/inteligencia-artificial/
+│   │   ├── ia-predictiva-la-mente-que-anticipa-el-fallo
+│   │   ├── self-healing-resiliencia-autonoma
+│   │   └── co-piloto-de-ia-soberana-administracion-por-conversacion
 │   │
-│   └── estrategia/
-│       ├── /soberania-digital-en-latam-tus-datos-tu-control
-│       └── /analytics-server-side-privacidad-velocidad-y-datos-reales
+│   └── /pilares/estrategia/
+│       ├── soberania-digital-jurisdiccion-y-control-total
+│       ├── soberania-de-datos-analytics-privado-server-side
+│       └── ingenieria-sostenible-rendimiento-con-conciencia  ← ⚠️ categoría pendiente confirmar (estrategia vs rendimiento); ver [`gap-ia-vs-live-inventory-2026.md`](gap-ia-vs-live-inventory-2026.md) §"Resolver decisión fila 9"
 │
 ├── /hosting-wordpress-colombia        ← Landing SEO dedicada
 │
@@ -253,6 +255,8 @@ Los slugs exactos para los CTA:
 
 ## 7. Rutas a crear / publicar (checklist de estado)
 
+> **Nota:** los slugs de las 20 páginas SOTA han sido actualizados para reflejar la **Opción C adoptada** (issue #265). Ver tabla canónica completa → [`gap-ia-vs-live-inventory-2026.md`](gap-ia-vs-live-inventory-2026.md).
+
 | Ruta | Estado actual | Acción requerida |
 |------|--------------|-----------------|
 | `/` | Publicada (Elementor, pendiente copy final) | Aplicar copy de `homepage-copy-2026-04.md` |
@@ -260,8 +264,13 @@ Los slugs exactos para los CTA:
 | `/ecosistemas/nucleo-prime` | Pendiente | Crear página Elementor |
 | `/ecosistemas/fortaleza-delta` | Pendiente | Crear página Elementor |
 | `/ecosistemas/bastion-sota` | Pendiente | Crear página Elementor |
-| `/pilares` | Pendiente | Crear página índice Elementor |
-| 20 páginas SOTA | Creadas como `draft` por plugin importer | Revisar + publicar individualmente |
+| `/pilares` | Pendiente | Crear página índice Elementor (o asignar `hub-sota` si importer fue activado) |
+| `/pilares/infraestructura` | Pendiente | Crear página categoría (página padre de 6 páginas SOTA) |
+| `/pilares/seguridad` | Pendiente | Crear página categoría (página padre de 3 páginas SOTA) |
+| `/pilares/rendimiento` | Pendiente | Crear página categoría (página padre de 5 páginas SOTA) |
+| `/pilares/inteligencia-artificial` | Pendiente | Crear página categoría (página padre de 3 páginas SOTA) |
+| `/pilares/estrategia` | Pendiente | Crear página categoría (página padre de 2–3 páginas SOTA) |
+| 20 páginas SOTA | `borrador` si importer activado | Asignar "Página padre" (categoría) + plantilla `sota-single-template.php` + publicar |
 | `/hosting-wordpress-colombia` | PHP template lista | Publicar con template asignado |
 | `/nosotros` | Pendiente contenido real | Crear + publicar cuando haya copy |
 | `/contacto` | Pendiente | Crear página Elementor con formulario |

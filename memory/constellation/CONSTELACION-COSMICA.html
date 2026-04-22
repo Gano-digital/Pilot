@@ -1168,8 +1168,8 @@
   </div>
   <div class="meta">
     <div><span class="dot"></span><b>SYNC LIVE</b> · Obsidian REST</div>
-    <div>1 estrella · 8 cuerpos · 1 cinturón · 1 cometa</div>
-    <div>WebGL 2 · ACES · Bloom 0.35</div>
+    <div>1 estrella · 8 cuerpos · 1 agujero negro · 1 cinturón · 1 cometa</div>
+    <div>WebGL 2 · ACES · Bloom 0.35 · Cosmos v3.2</div>
   </div>
 </div>
 
@@ -1412,6 +1412,7 @@ const TAXONOMY = {
   'ice-giant':   { icon:'◐', label:'Gigante de Hielo',           colorRing:'#6a90ad' },
   'comet':       { icon:'☄', label:'Cometa · Órbita Excéntrica', colorRing:'#a8c4d4' },
   'belt':        { icon:'⋯', label:'Cinturón de Asteroides',     colorRing:'#7a7a8a' },
+  'blackhole':   { icon:'⊘', label:'Agujero Negro · Singularidad', colorRing:'#a040ff' },
 };
 /** Referencia visual del preset procedural (Sistema Solar) */
 const LOOK_LABELS = {
@@ -1432,6 +1433,7 @@ const SC_PORTRAITS = {
   '06': { race:'protoss', file:'portrait-worker-protoss.png', faction:'PROTOSS' },
   '07': { race:'terran', file:'portrait-worker-terran.png', faction:'TERRAN' },
   '08': { race:'zerg', file:'portrait-worker-zerg.png', faction:'ZERG' },
+  '09': { race:'zerg', file:'portrait-worker-zerg.png', faction:'ZERG' },
 };
 function portraitConfigFor(sys){
   if(!sys || sys.id === undefined) return SC_PORTRAITS['01'];
@@ -1814,6 +1816,34 @@ const BRIEFS = {
       {t:'T-05d',m:'Antigravity dependency tagged'},
       {t:'T-02d',m:'Risk escalated to Diego'},
       {t:'T-00h',m:'⚠ CRITICAL · awaiting action'},
+    ]
+  },
+  '09':{
+    designation:'GD-EVT-09',
+    classification:'CLASS-X // SINGULARITY',
+    classLevel:'critical',
+    subtitle:'Black Hole · Gravitational Anomaly · Future Horizon',
+    missionBrief:'Horizonte de eventos del proyecto. Representa las fases 5+ que absorben todos los requisitos futuros en un solo punto de no retorno. Infraestructura elástica, billing self-hosted, CI/CD completo, agentes autónomos — cada hilo converge aquí. La singularidad no perdona: cruzar el horizonte requiere que TODAS las dependencias anteriores estén resueltas.',
+    objectives:[
+      {label:'Fases 1-4 completadas (prerequisito)', state:'active'},
+      {label:'CI/CD pipeline automatizado', state:'planned'},
+      {label:'Billing self-hosted (WHMCS/Blesta)', state:'planned'},
+      {label:'Infraestructura multi-región', state:'planned'},
+      {label:'Agentes IA autónomos (ops)', state:'planned'},
+    ],
+    metrics:[
+      {k:'Prerequisitos resueltos',v:'47%',state:'warning'},
+      {k:'Horizonte estimado',v:'Q3-Q4 2026',state:'info'},
+      {k:'Complejidad',v:'SINGULARITY',state:'danger'},
+    ],
+    progressPct:12,
+    dependencies:['Fase 4 comercialización','PFID mappings completos','DNS soberanía','Equipo DevOps'],
+    threats:['Scope creep gravitacional','Dependencias circulares','Budget sin validar','Timeline compresión'],
+    nextActions:['Cerrar Fase 4 primero','Definir MVP Fase 5','Evaluar Blesta vs WHMCS','Reservar presupuesto infra'],
+    log:[
+      {t:'2026-Q1',m:'Horizonte identificado en Plan Maestro'},
+      {t:'2026-Q2',m:'Prerequisitos en ejecución'},
+      {t:'2026-Q3',m:'⊘ Event horizon approach window'},
     ]
   },
 };
@@ -2605,6 +2635,357 @@ const { group: beltGroup, belt: asteroidBelt } = createAsteroidBelt();
 scene.add(beltGroup);
 
 /* ============================================================
+   IMMERSIVE COSMOS v3.2 — black hole, satellites, ships,
+   gas clouds, background comets. Each registers tick(t) into
+   updateFns so the animate() loop stays clean.
+   ============================================================ */
+const updateFns = [];
+
+/* ---------- BLACK HOLE (Event Horizon · Fase 5+) ---------- */
+const BH_DATA = {id:'09',name:'Event Horizon · Fase 5+',type:'blackhole',color:'#a040ff'};
+const bhGroup = new THREE.Group();
+bhGroup.position.set(-175, 12, -130);
+scene.add(bhGroup);
+
+// Singularity core — absolute black sphere
+const bhCore = new THREE.Mesh(
+  new THREE.SphereGeometry(4.2, 48, 48),
+  new THREE.MeshBasicMaterial({ color: 0x000000 })
+);
+bhGroup.add(bhCore);
+
+// Accretion disk — plasma shader with swirl & temperature gradient
+const bhDiskMat = new THREE.ShaderMaterial({
+  transparent:true, side:THREE.DoubleSide, depthWrite:false,
+  blending:THREE.AdditiveBlending,
+  uniforms:{ uTime:{value:0} },
+  vertexShader:`varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+  fragmentShader:`
+    varying vec2 vUv; uniform float uTime;
+    float hash(vec2 p){return fract(sin(dot(p,vec2(41.3,289.1)))*43758.5);}
+    void main(){
+      vec2 c = vUv - 0.5;
+      float r = length(c);
+      float a = atan(c.y, c.x);
+      float swirl = sin(a*6.0 - uTime*2.2 + r*40.0)*0.5 + 0.5;
+      float noise = hash(vec2(floor(a*20.0+uTime*2.0), floor(r*60.0)));
+      float ring = smoothstep(0.18,0.22,r) * (1.0-smoothstep(0.44,0.5,r));
+      float heat = pow(1.0-r*1.8, 2.0);
+      vec3 hot = mix(vec3(1.0,0.95,0.8), vec3(1.0,0.48,0.11), r*2.0);
+      hot = mix(hot, vec3(0.45,0.15,0.55), smoothstep(0.3,0.5,r));
+      float intensity = ring * (0.6+swirl*0.6) * (0.7+noise*0.5);
+      gl_FragColor = vec4(hot * heat * 2.2, intensity);
+    }`
+});
+const bhDisk = new THREE.Mesh(new THREE.RingGeometry(4.8, 13, 96, 1), bhDiskMat);
+bhDisk.rotation.x = Math.PI/2 - 0.35;
+bhGroup.add(bhDisk);
+
+// Second accretion disk (tilted, gives 3D depth)
+const bhDisk2 = new THREE.Mesh(new THREE.RingGeometry(4.8, 13, 96, 1), bhDiskMat);
+bhDisk2.rotation.x = Math.PI/2 + 0.18;
+bhDisk2.rotation.z = 0.4;
+bhGroup.add(bhDisk2);
+
+// Photon ring — bright innermost orbit
+const photonRing = new THREE.Mesh(
+  new THREE.TorusGeometry(4.55, 0.09, 16, 96),
+  new THREE.MeshBasicMaterial({ color: 0xffe0b0, transparent:true, opacity:0.85 })
+);
+bhGroup.add(photonRing);
+
+// Gravitational lensing halo
+const lensMat = new THREE.ShaderMaterial({
+  transparent:true, side:THREE.DoubleSide, depthWrite:false,
+  blending:THREE.AdditiveBlending,
+  uniforms:{ uTime:{value:0} },
+  vertexShader:`varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+  fragmentShader:`
+    varying vec2 vUv; uniform float uTime;
+    void main(){
+      vec2 c = vUv - 0.5;
+      float r = length(c);
+      float glow = exp(-r*4.5) * 0.35;
+      float distort = sin(atan(c.y,c.x)*3.0 + uTime*1.5)*0.12;
+      gl_FragColor = vec4(0.6,0.5,1.0, glow + distort*0.1);
+    }`
+});
+const lensHalo = new THREE.Mesh(new THREE.PlaneGeometry(32,32), lensMat);
+lensHalo.renderOrder = -1;
+bhGroup.add(lensHalo);
+
+// Label for black hole
+const bhLabel = makeLabel('09 — Event Horizon');
+bhLabel.position.set(-175, 26, -130);
+scene.add(bhLabel);
+
+updateFns.push(t=>{
+  bhDiskMat.uniforms.uTime.value = t;
+  lensMat.uniforms.uTime.value = t;
+  bhDisk.rotation.z  = t*0.12;
+  bhDisk2.rotation.z = -t*0.09 + 0.4;
+  bhGroup.rotation.y = t*0.02;
+  lensHalo.lookAt(camera.position);
+});
+
+/* ---------- SATELLITES (orbiting Metrics & Team planets) ---------- */
+function createSatellite(scale=1){
+  const g = new THREE.Group();
+  // Main body — metallic box
+  const body = new THREE.Mesh(
+    new THREE.BoxGeometry(0.35, 0.35, 0.55),
+    new THREE.MeshStandardMaterial({color:0xbfc7cf, metalness:0.8, roughness:0.3})
+  );
+  g.add(body);
+  // Solar panels — dark blue
+  const panelMat = new THREE.MeshStandardMaterial({
+    color:0x1a3a6e, emissive:0x0a2040, metalness:0.6, roughness:0.2
+  });
+  const pL = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.02, 0.4), panelMat);
+  pL.position.x = -0.75; g.add(pL);
+  const pR = pL.clone(); pR.position.x = 0.75; g.add(pR);
+  // Communication dish
+  const dish = new THREE.Mesh(
+    new THREE.SphereGeometry(0.18, 12, 8, 0, Math.PI*2, 0, Math.PI/2),
+    new THREE.MeshStandardMaterial({color:0xe8eef2, metalness:0.5, roughness:0.4, side:THREE.DoubleSide})
+  );
+  dish.rotation.x = -Math.PI/2; dish.position.y = 0.25; g.add(dish);
+  // Blinking status light
+  const blink = new THREE.Mesh(
+    new THREE.SphereGeometry(0.05, 8, 8),
+    new THREE.MeshBasicMaterial({color:0xff3020})
+  );
+  blink.position.set(0, -0.2, 0.3); g.add(blink);
+  g.scale.setScalar(scale);
+  g.userData.blink = blink;
+  return g;
+}
+const sat1 = createSatellite(1.1); planets[5].group.add(sat1);
+const sat2 = createSatellite(0.9); planets[6].group.add(sat2);
+updateFns.push(t=>{
+  [sat1,sat2].forEach((s,i)=>{
+    const a = t*(0.9 + i*0.3) + i*2.1;
+    const r = 3.6 + i*0.8;
+    s.position.set(Math.cos(a)*r, Math.sin(a*1.3)*0.6, Math.sin(a)*r);
+    s.rotation.y = -a + Math.PI/2;
+    s.userData.blink.visible = (Math.sin(t*6 + i*2) > 0.3);
+  });
+});
+
+/* ---------- SPACESHIPS on Catmull-Rom patrol routes ---------- */
+function createShip(color){
+  const g = new THREE.Group();
+  // Fuselage — cone
+  const body = new THREE.Mesh(
+    new THREE.ConeGeometry(0.5, 1.8, 10),
+    new THREE.MeshStandardMaterial({color:0xd8dde3, metalness:0.85, roughness:0.25})
+  );
+  body.rotation.x = Math.PI/2; g.add(body);
+  // Wings
+  const wing = new THREE.Mesh(
+    new THREE.BoxGeometry(2.2, 0.08, 0.55),
+    new THREE.MeshStandardMaterial({color:0x8892a0, metalness:0.8, roughness:0.3})
+  );
+  wing.position.z = -0.1; g.add(wing);
+  // Engine glow (colored)
+  const glow = new THREE.Mesh(
+    new THREE.SphereGeometry(0.28, 12, 12),
+    new THREE.MeshBasicMaterial({color, transparent:true, opacity:0.9})
+  );
+  glow.position.z = -1.0; g.add(glow);
+  // Engine light point
+  const engineLight = new THREE.PointLight(color, 0.6, 8);
+  engineLight.position.z = -1.0; g.add(engineLight);
+  // Nav lights: port red, starboard green
+  const lr = new THREE.Mesh(new THREE.SphereGeometry(0.06,6,6), new THREE.MeshBasicMaterial({color:0xff2020}));
+  lr.position.set(-1.1, 0, -0.1); g.add(lr);
+  const lg = new THREE.Mesh(new THREE.SphereGeometry(0.06,6,6), new THREE.MeshBasicMaterial({color:0x20ff40}));
+  lg.position.set(1.1, 0, -0.1); g.add(lg);
+  g.userData.navLights = [lr, lg];
+  return g;
+}
+const shipCurves = [
+  new THREE.CatmullRomCurve3([
+    new THREE.Vector3(40, 6, 30),   new THREE.Vector3(10, 10, -50),
+    new THREE.Vector3(-60, 4, -20), new THREE.Vector3(-30, -6, 50),
+    new THREE.Vector3(50, 2, 60)
+  ], true, 'catmullrom', 0.4),
+  new THREE.CatmullRomCurve3([
+    new THREE.Vector3(-80, 10, 40),  new THREE.Vector3(-40, -4, -60),
+    new THREE.Vector3(70, 6, -30),   new THREE.Vector3(90, 12, 20),
+    new THREE.Vector3(20, 8, 70)
+  ], true, 'catmullrom', 0.4),
+];
+const ships = [createShip(0x5cc4d4), createShip(0xff7a1c)];
+ships.forEach(s => scene.add(s));
+updateFns.push(t=>{
+  ships.forEach((s,i)=>{
+    const u = ((t * 0.018 * (1 + i*0.3)) + i*0.5) % 1;
+    const pos = shipCurves[i].getPointAt(u);
+    const nxt = shipCurves[i].getPointAt((u + 0.002) % 1);
+    s.position.copy(pos);
+    s.lookAt(nxt);
+    // blink nav lights
+    s.userData.navLights.forEach((l,j)=>{
+      l.visible = (Math.sin(t*8 + i*3 + j*Math.PI) > 0);
+    });
+  });
+});
+
+/* ---------- GAS / NEBULA CLOUDS ---------- */
+function gasTexture(color){
+  const c = document.createElement('canvas'); c.width = c.height = 128;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(64,64,0, 64,64,64);
+  g.addColorStop(0,   `rgba(${color},0.55)`);
+  g.addColorStop(0.45,`rgba(${color},0.18)`);
+  g.addColorStop(1,   `rgba(${color},0)`);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, 128, 128);
+  return new THREE.CanvasTexture(c);
+}
+const gasDefs = [
+  { pos:[90, 20, -70],   color:'120,180,220', size:55 },
+  { pos:[-110, -15, 60], color:'200,120,80',  size:70 },
+  { pos:[60, -25, 110],  color:'140,90,200',  size:48 },
+  { pos:[-60, 30, -100], color:'80,200,180',  size:62 },
+];
+const gasClouds = gasDefs.map(d=>{
+  const mat = new THREE.SpriteMaterial({
+    map: gasTexture(d.color), transparent:true, depthWrite:false,
+    blending: THREE.AdditiveBlending, opacity: 0.75
+  });
+  const s = new THREE.Sprite(mat);
+  s.position.fromArray(d.pos);
+  s.scale.setScalar(d.size);
+  scene.add(s);
+  return s;
+});
+updateFns.push(t=>{
+  gasClouds.forEach((g,i)=>{
+    g.material.rotation = t * 0.02 * (i%2 ? 1 : -1);
+    g.position.y += Math.sin(t*0.3 + i) * 0.008;
+  });
+});
+
+/* ---------- BACKGROUND COMETS (3 streaking through space) ---------- */
+const bgComets = [];
+for(let i = 0; i < 3; i++){
+  const head = new THREE.Mesh(
+    new THREE.SphereGeometry(0.45, 10, 10),
+    new THREE.MeshBasicMaterial({color:0xe0f4ff})
+  );
+  const tailN = 40;
+  const tailGeo = new THREE.BufferGeometry();
+  const pts = new Float32Array(tailN*3);
+  const cols = new Float32Array(tailN*3);
+  const alphas = new Float32Array(tailN);
+  for(let k=0; k<tailN; k++){
+    cols[k*3]=0.7; cols[k*3+1]=0.9; cols[k*3+2]=1.0;
+    alphas[k] = 1.0 - k/tailN;
+  }
+  tailGeo.setAttribute('position', new THREE.BufferAttribute(pts, 3));
+  tailGeo.setAttribute('color', new THREE.BufferAttribute(cols, 3));
+  const tail = new THREE.Points(tailGeo, new THREE.PointsMaterial({
+    size:0.35, vertexColors:true, transparent:true, opacity:0.8,
+    blending:THREE.AdditiveBlending, depthWrite:false
+  }));
+  const g = new THREE.Group(); g.add(head); g.add(tail);
+  scene.add(g);
+  bgComets.push({
+    g, head, tail, tailN,
+    origin: new THREE.Vector3(
+      (Math.random()-0.5)*300,
+      (Math.random()-0.5)*80,
+      (Math.random()-0.5)*300
+    ),
+    dir: new THREE.Vector3(
+      (Math.random()-0.5),
+      (Math.random()-0.5)*0.3,
+      (Math.random()-0.5)
+    ).normalize(),
+    speed: 12 + Math.random()*10,
+    offset: Math.random()*100,
+    trail: []
+  });
+}
+updateFns.push(t=>{
+  bgComets.forEach(c=>{
+    const tt = (t + c.offset) % 20;
+    const pos = c.origin.clone().add(c.dir.clone().multiplyScalar(tt * c.speed - 100));
+    c.g.position.copy(pos);
+    c.trail.unshift(pos.clone());
+    if(c.trail.length > c.tailN) c.trail.pop();
+    const arr = c.tail.geometry.attributes.position.array;
+    for(let k = 0; k < c.tailN; k++){
+      const p = c.trail[k] || pos;
+      arr[k*3]   = p.x - pos.x;
+      arr[k*3+1] = p.y - pos.y;
+      arr[k*3+2] = p.z - pos.z;
+    }
+    c.tail.geometry.attributes.position.needsUpdate = true;
+  });
+});
+
+/* ---------- ASTRONAUT (EVA near Sol) ---------- */
+function createAstronaut(){
+  const g = new THREE.Group();
+  const white = new THREE.MeshStandardMaterial({color:0xf0f0f0, roughness:0.6, metalness:0.1});
+  // Helmet (sphere with gold visor)
+  const helmet = new THREE.Mesh(new THREE.SphereGeometry(0.3, 16, 16), white);
+  helmet.position.y = 0.65; g.add(helmet);
+  const visor = new THREE.Mesh(
+    new THREE.SphereGeometry(0.28, 16, 8, 0, Math.PI*2, 0, Math.PI/2),
+    new THREE.MeshStandardMaterial({color:0xdaa520, metalness:0.9, roughness:0.1, transparent:true, opacity:0.8})
+  );
+  visor.position.y = 0.65; visor.rotation.x = Math.PI*0.2; g.add(visor);
+  // Torso
+  const torso = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.5, 0.3), white);
+  torso.position.y = 0.25; g.add(torso);
+  // Backpack (life support)
+  const pack = new THREE.Mesh(
+    new THREE.BoxGeometry(0.35, 0.4, 0.15),
+    new THREE.MeshStandardMaterial({color:0xcccccc, roughness:0.5, metalness:0.3})
+  );
+  pack.position.set(0, 0.3, -0.22); g.add(pack);
+  // Arms
+  const armMat = white;
+  const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.45, 8), armMat);
+  armL.position.set(-0.32, 0.2, 0); armL.rotation.z = 0.6; g.add(armL);
+  const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.45, 8), armMat);
+  armR.position.set(0.32, 0.2, 0); armR.rotation.z = -0.6; g.add(armR);
+  // Legs
+  const legL = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.5, 8), white);
+  legL.position.set(-0.12, -0.25, 0); g.add(legL);
+  const legR = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.5, 8), white);
+  legR.position.set(0.12, -0.25, 0); g.add(legR);
+  // Helmet light
+  const headLight = new THREE.PointLight(0xffffff, 0.3, 5);
+  headLight.position.set(0, 0.7, 0.3); g.add(headLight);
+  g.userData.armL = armL;
+  g.userData.armR = armR;
+  g.userData.legL = legL;
+  g.userData.legR = legR;
+  return g;
+}
+const astronaut = createAstronaut();
+astronaut.scale.setScalar(1.8);
+scene.add(astronaut);
+updateFns.push(t=>{
+  // Slow orbit near the sun, gentle tumble
+  const a = t * 0.08;
+  const r = 18;
+  astronaut.position.set(Math.cos(a)*r, 4 + Math.sin(t*0.5)*2, Math.sin(a)*r);
+  astronaut.rotation.x = Math.sin(t*0.3)*0.15;
+  astronaut.rotation.z = Math.cos(t*0.25)*0.1;
+  astronaut.rotation.y = -a + Math.PI;
+  // Limb float animation
+  astronaut.userData.armL.rotation.z = 0.6 + Math.sin(t*0.7)*0.3;
+  astronaut.userData.armR.rotation.z = -0.6 + Math.sin(t*0.7 + 1)*0.3;
+  astronaut.userData.legL.rotation.x = Math.sin(t*0.4)*0.15;
+  astronaut.userData.legR.rotation.x = Math.sin(t*0.4 + Math.PI)*0.15;
+});
+
+/* ============================================================
    CONNECTION LINES — sol → planetas (sutil, animado)
    ============================================================ */
 const linksGroup = new THREE.Group();
@@ -2956,6 +3337,7 @@ addEventListener('click', e=>{
   if(isEventOnUiLayer(e.target)) return;
   const hit = pickBody();
   if(hit==='sun') focusSun();
+  else if(hit==='blackhole') focusBlackHole();
   else if(hit!==-1 && hit!==null) focusPlanet(hit);
 });
 
@@ -2983,6 +3365,12 @@ function pickBody(){
   const dSun2 = ray.ray.distanceSqToPoint(new THREE.Vector3(0,0,0));
   const sunNear = 4.15;
   if(dSun2 <= sunNear*sunNear) return 'sun';
+
+  // Black hole detection
+  const bhWorldPos = new THREE.Vector3();
+  bhGroup.getWorldPosition(bhWorldPos);
+  const bhHit = ray.ray.distanceSqToPoint(bhWorldPos);
+  if(bhHit <= 14*14) return 'blackhole';
 
   return -1;
 }
@@ -3183,7 +3571,7 @@ function statusLabelFor(sys){
 function buildIndexer(){
   // Star first
   const starSys = { id:'00', name:'Gano Digital · Core', type:'star', radius:0, lookRef:'sol' };
-  const allBodies = [starSys, ...SYSTEMS];
+  const allBodies = [starSys, ...SYSTEMS, BH_DATA];
   idxList.innerHTML = '';
   allBodies.forEach(sys=>{
     const tax = TAXONOMY[sys.type];
@@ -3208,6 +3596,7 @@ function buildIndexer(){
     item.onclick = ()=>{
       closeIndexer();
       if(sys.id === '00') focusSun();
+      else if(sys.id === '09') focusBlackHole();
       else {
         const idx = SYSTEMS.findIndex(s=>s.id===sys.id);
         if(idx>=0) focusPlanet(idx);
@@ -3286,6 +3675,15 @@ function focusSun(){
   controls.autoRotate = false;
   document.getElementById('btnRotate').classList.remove('active');
   openPanel(STAR_DATA);
+}
+function focusBlackHole(){
+  setPlanetEmissive(-1);
+  const target = bhGroup.position.clone();
+  const camPos = target.clone().add(new THREE.Vector3(18, 12, 18));
+  focusTarget = { camPos, look:target.clone(), t:0 };
+  controls.autoRotate = false;
+  document.getElementById('btnRotate').classList.remove('active');
+  openPanel(BH_DATA);
 }
 
 /* ============================================================
@@ -3503,6 +3901,9 @@ function animate(){
 
   sun.rotation.y += 0.0015;
 
+  // Immersive cosmos tick
+  updateFns.forEach(fn => fn(t));
+
   // Hover/raycast: omitir por completo cuando hay overlay activo (panel, indexer, SC menu)
   const hit = isOverlayActive() ? -1 : pickBody();
 
@@ -3542,6 +3943,10 @@ function animate(){
   if(hit==='sun'){
     document.body.style.cursor = 'pointer';
     setTooltipForSystem(STAR_DATA);
+    tooltip.classList.add('show');
+  } else if(hit==='blackhole'){
+    document.body.style.cursor = 'pointer';
+    setTooltipForSystem(BH_DATA);
     tooltip.classList.add('show');
   } else if(hit!==-1 && hit!==null){
     document.body.style.cursor = 'pointer';

@@ -15,6 +15,71 @@
 require_once get_stylesheet_directory() . '/inc/homepage-blocks.php';
 require_once get_stylesheet_directory() . '/inc/contact-form-handler.php';
 require_once get_stylesheet_directory() . '/inc/lead-magnet-handler.php';
+require_once get_stylesheet_directory() . '/inc/gano-premium-components.php';
+
+// =============================================================================
+// 0.1 INCLUDES — Componentes reutilizables (Shadcn-inspired, WordPress)
+// =============================================================================
+
+require_once get_stylesheet_directory() . '/components/icon.php';
+require_once get_stylesheet_directory() . '/components/button.php';
+require_once get_stylesheet_directory() . '/components/card.php';
+require_once get_stylesheet_directory() . '/components/cta-registro.php';
+
+// =============================================================================
+// 0.3 ENQUEUE CSS PREMIUM (Frontend Design + UI/UX Pro Max merged + Design System)
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_premium_styles', 11 );
+function gano_enqueue_premium_styles() {
+    // CSS Design System: Componentes + Tokens + Grid + Motion
+    wp_enqueue_style(
+        'gano-design-system',
+        get_stylesheet_directory_uri() . '/css/gano-design-system.css',
+        array(),
+        '1.0.0'
+    );
+
+    // CSS Premium: Frontend Design con patrones Trust & Authority de UI/UX Pro Max
+    wp_enqueue_style(
+        'gano-frontend-design-premium',
+        get_stylesheet_directory_uri() . '/css/gano-frontend-design-premium.css',
+        array(),
+        '1.0.0'
+    );
+
+    // CSS de páginas consolidadas
+    wp_enqueue_style(
+        'gano-pages',
+        get_stylesheet_directory_uri() . '/css/gano-pages.css',
+        array(),
+        '1.0.0'
+    );
+
+    // CSS de ecosistemas (mejorado)
+    wp_enqueue_style(
+        'gano-ecosistemas',
+        get_stylesheet_directory_uri() . '/css/ecosistemas.css',
+        array(),
+        '1.0.0'
+    );
+
+    // CSS de página Dominios
+    wp_enqueue_style(
+        'gano-dominios',
+        get_stylesheet_directory_uri() . '/css/dominios.css',
+        array(),
+        '1.0.0'
+    );
+
+    // CSS de CTA Registro (Fase 2)
+    wp_enqueue_style(
+        'gano-cta-registro',
+        get_stylesheet_directory_uri() . '/css/gano-cta-registro.css',
+        array(),
+        '1.0.0'
+    );
+}
 
 // =============================================================================
 // 0.4 URL HELPERS — slugs comerciales (catálogo, contacto, esta página, etc.)
@@ -57,7 +122,83 @@ if ( ! function_exists( 'gano_resolve_page_url' ) ) {
 
 // =============================================================================
 // 0.5 CSS CRÍTICO — Prioridad 1 (inline en wp_head antes de Elementor)
+// FIX: Homepage blanca - garantizar visibilidad del hero sobre especificidad CSS de Royal Elementor
 // =============================================================================
+
+if ( ! function_exists( 'gano_critical_css_hero_visibility' ) ) {
+    /**
+     * Inyecta CSS crítico para garantizar visibilidad del hero.
+     * Prioridad 99 = después de Elementor, pero antes de otros plugins.
+     *
+     * Issue: Royal Elementor Addons aplica estilos con ! important que ocultan el hero.
+     * Solución: usar especificidad alta + !important para garantizar visibilidad.
+     */
+    add_action( 'wp_head', function() {
+        if ( ! is_home() && ! is_front_page() ) {
+            return;
+        }
+        ?>
+        <style id="gano-hero-critical">
+        /* Hero visibility fix: garantizar que el hero es visible sobre Royal Elementor */
+        body .gano-home {
+            display: block !important;
+        }
+
+        .gano-home .hero-gano {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: flex-start !important;
+            min-height: 100vh !important;
+            background: radial-gradient(circle at 50% 50%, var(--gano-gray-900, #1e2530) 0%, var(--gano-color-surface-dark, #05080b) 100%) !important;
+            color: white !important;
+            position: relative !important;
+            z-index: 1 !important;
+        }
+
+        .hero-gano .hero-content {
+            display: flex !important;
+            flex-direction: column !important;
+            z-index: 10 !important;
+        }
+
+        .hero-gano h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem) !important;
+            font-weight: 800 !important;
+            line-height: 1.1 !important;
+            color: white !important;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .hero-gano > p {
+            font-size: 1.125rem !important;
+            color: rgba(255,255,255,0.95) !important;
+            line-height: 1.6 !important;
+            margin-bottom: 2rem !important;
+            max-width: 700px !important;
+        }
+
+        .hero-cta-row {
+            display: flex !important;
+            gap: 1rem !important;
+            flex-wrap: wrap !important;
+            margin-bottom: 2rem !important;
+            z-index: 10 !important;
+        }
+
+        .hero-proof-bar {
+            color: rgba(255,255,255,0.8) !important;
+            font-size: 0.875rem !important;
+        }
+
+        /* Asegurar que el hero sea visible sobre cualquier overlay de Elementor */
+        .royal-elementor-style-wrapper { display: none !important; }
+        body.elementor .hero-gano { z-index: 999 !important; }
+        </style>
+        <?php
+    }, 99 );
+}
 /**
  * Inyecta estilos críticos inline con prioridad 1.
  * Esto asegura que nuestras variables y estilos fundamentales ganen
@@ -1321,30 +1462,62 @@ function gano_get_reseller_catalog_products() {
 
 	return array(
 		array(
-			'cat'           => 'hostingwebcpanel',
-			'name'          => 'Hosting Deluxe',
-			'desc'          => '1 sitio web, SSD ilimitado, 1 base MySQL, SSL gratuito y soporte 24/7.',
-			'price'         => '$9.99/mes',
-			'price_context' => 'Precio desde',
+			'cat'           => 'ecosistemas',
+			'name'          => 'Núcleo Prime',
+			'desc'          => 'El punto de partida correcto para sitios en crecimiento.',
+			'price'         => '$196.000',
+			'price_context' => 'COP/mes',
 			'icon'          => 'fa-server',
-			'pfid'          => '459',
+			'pfid'          => GANO_PFID_HOSTING_ECONOMIA,
 			'status'        => 'active',
-			'tip'           => 'Mejor si tienes agencia o diseñador propio.',
-			'cta_label'     => 'Agregar al carrito',
+			'cta_label'     => 'Elegir Núcleo Prime',
 		),
 		array(
-			'cat'           => 'hostingwebcpanel',
-			'name'          => 'Hosting Ultimate',
-			'desc'          => 'Sitios y bases ilimitadas, correo incluido y SSL gratuito.',
-			'price'         => '$12.99/mes',
-			'price_context' => 'Precio desde',
-			'icon'          => 'fa-server',
-			'pfid'          => '459',
+			'cat'           => 'ecosistemas',
+			'name'          => 'Fortaleza Delta',
+			'desc'          => 'Para marcas que ya generan ingresos con hardening activo.',
+			'price'         => '$450.000',
+			'price_context' => 'COP/mes',
+			'icon'          => 'fa-shield',
+			'pfid'          => GANO_PFID_HOSTING_DELUXE,
 			'status'        => 'active',
-			'badge'         => 'Popular',
-			'tip'           => 'Escala mejor que el cPanel estándar.',
-			'cta_label'     => 'Agregar al carrito',
+			'badge'         => 'Más popular',
+			'cta_label'     => 'Activar Fortaleza Delta',
 		),
+		array(
+			'cat'           => 'ecosistemas',
+			'name'          => 'Bastión SOTA',
+			'desc'          => 'Rendimiento crítico con seguridad de nivel empresarial.',
+			'price'         => '$890.000',
+			'price_context' => 'COP/mes',
+			'icon'          => 'fa-fort',
+			'pfid'          => GANO_PFID_HOSTING_PREMIUM,
+			'status'        => 'active',
+			'badge'         => 'Recomendado',
+			'cta_label'     => 'Solicitar Bastión SOTA',
+		),
+		array(
+			'cat'           => 'ecosistemas',
+			'name'          => 'Ultimate WP',
+			'desc'          => 'Máxima capacidad para agencias y alto tráfico.',
+			'price'         => '$1.200.000',
+			'price_context' => 'COP/mes',
+			'icon'          => 'fa-crown',
+			'pfid'          => GANO_PFID_HOSTING_ULTIMATE,
+			'status'        => 'active',
+			'cta_label'     => 'Cotizar Ultimate WP',
+		),
+	);
+}
+
+/**
+ * LEGACY — Commented out for reference.
+ * Old gano_get_reseller_catalog_products featured generic GoDaddy products
+ * (Hosting, WordPress, VPS, Domains). Now replaced with Gano 4-plan ecosistema.
+ * If you need GoDaddy full catalog, contact reseller support for direct integration.
+ */
+/*
+	Old products (commented):
 		array(
 			'cat'           => 'webhostingplus',
 			'name'          => 'WHP Inicio',
@@ -1930,7 +2103,7 @@ function gano_child_empty_cart_message(): string {
       </a>
       &ensp;
       <a href="<?php echo esc_url( home_url( '/contacto' ) ); ?>"
-         style="font-weight:600; color:var(--gano-blue,#2952CC);">
+         style="font-weight:600; color:var(--gano-blue,#1B4FD8);">
         Hablar con el equipo
       </a>
     </div>

@@ -176,15 +176,21 @@ _Activar cuando:_ parches F1–3 desplegados de forma estable, flujo Fase 4 Rese
 - [x] **Validación cola:** workflow **Validate agent queue JSON** + `scripts/validate_agent_queue.py` (CI al tocar `.github/agent-queue/`).
 - [x] **Oleada 3 — issues creados en GitHub (#54–#68)** — Seed con `tasks-wave3.json` ejecutado.
 - [x] **Prompt Copilot:** prompts por oleada consolidados en [`.github/prompts/copilot-bulk-assign.md`](.github/prompts/copilot-bulk-assign.md) y aplicados en el ciclo de consolidación.
-- [x] ~~**Consolidar oleada 1 (merge PRs)**~~ — hecho 2026-04-03. **10 · Orquestar oleadas** solo si en el futuro vuelves a tener un lote de PRs oleada 1 y quieres automatizar merge + **seed oleada 2**. *Trabajo repetible en repo sin GitHub (dispatch Claude): ver [memory/claude/dispatch-queue.json](memory/claude/dispatch-queue.json).*
+- [x] ~~**Consolidar oleada 1 (merge PRs)**~~ — hecho 2026-04-03. **10 · Orquestar oleadas:** solo si en el futuro vuelves a tener un lote de PRs oleada 1 y quieres automatizar merge + **seed oleada 2**. 
+  - _Nota:_ Trabajo repetible **en repo sin necesidad de GitHub Actions** (dispatch Claude automático vía queue): ver [memory/claude/dispatch-queue.json](memory/claude/dispatch-queue.json) + `python scripts/claude_dispatch.py next` en local o `.vscode/tasks.json` (task **Claude Dispatch: next**). Este es el modelo actual post-consolidación (abr 2026).
 - [x] PR #13: CI TruffleHog + PHP lint + plantillas Copilot + `ssh_cli` sin credenciales en archivo
 - [x] Dependabot (GitHub Actions) + plantilla de PR; `labeler.yml` (workflow) retirado hasta crear etiquetas `area:*` en el repo o reactivar con permisos
 - [x] `.github/labeler.yml` conserva reglas; workflow `labeler.yml` restaurado tras ejecutar **06 · Repo · Crear etiquetas** en Actions
 - [x] **06 · Repo · Crear etiquetas** — workflow disparado vía push de [`.github/label-bootstrap`](.github/label-bootstrap) (o manual en Actions)
 - [x] Fusionar PR #13 y verificar checks en `main` (squash merge 2026-04-02)
-- [x] Actions → ejecutar **09 · Sembrar issues homepage** (ciclo inicial ya corrido; no re-ejecutar salvo apertura de nuevo lote).
-- [x] Actions → **08 · Sembrar cola Copilot** (ciclo inicial completado; resembrar solo si existe backlog nuevo y validado para evitar duplicados).
+- [ ] **09 · Sembrar issues homepage** — _Marcar [x] **solo tras confirmar en GitHub** que existen 7 issues etiquetados `homepage-fixplan` en el repo (ir a github.com/Gano-digital/Pilot/issues y filtrar por label)._ Ciclo inicial completado 2026-04-03; re-ejecución: Actions → **09** → solo si hay nuevo lote de tareas homepage-fixplan validado.
+- [x] **08 · Sembrar cola Copilot** (ciclo inicial completado 2026-04-03) — _Condición para re-ejecutar:_ solo si existe backlog nuevo en `dispatch-queue.json` **validado** contra duplicados por `agent-task-id` (script: `python scripts/validate_agent_queue.py`). Ejecutar: Actions → **08 · Sembrar cola Copilot** → input `queue_file` con archivo JSON (ej. `tasks-wave4-ia-content.json`). _Trabajo repetible sin GitHub:_ ver [memory/claude/dispatch-queue.json](memory/claude/dispatch-queue.json).
 - [ ] Rotación de tokens y limpieza de remotes con credenciales (al cierre del workflow de despliegue)
+
+**📌 Criterios de verificación para GitHub workflows (08, 09, 10):**
+- **08 · Sembrar cola Copilot:** [ ] JSON válido (`python scripts/validate_agent_queue.py` = OK) → [ ] sin duplicados por `agent-task-id` → [ ] workflow disparado exitosamente → [ ] issues aparecen en GitHub (etiqueta correspondiente).
+- **09 · Sembrar issues homepage:** [ ] 7 issues con label `homepage-fixplan` existentes en GitHub → [ ] cada issue contiene descripción coherente y `agent-task-id` único → [ ] Copilot asignado o waiting for assignment.
+- **10 · Orquestar oleadas:** Deprecado en flujo manual GitHub; **modelo actual:** dispatch Claude vía `memory/claude/dispatch-queue.json` + `python scripts/claude_dispatch.py`. Ver `memory/claude/README.md` para continuidad local.
 
 ### Contenido homepage (Elementor en servidor)
 
