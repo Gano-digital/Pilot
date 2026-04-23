@@ -149,4 +149,30 @@ La carpeta wiki incluye `_secrets-index` (posibles claves y PII). No subas este 
 
 Set-Content -Path (Join-Path $DestRoot 'README-PRIMERO.md') -Value $readme -Encoding UTF8
 
+## CHANGELOG (portable)
+# Solo escribe en el CHANGELOG del paquete portable (en Descargas).
+# No modifica el CHANGELOG canónico del OneDrive.
+$portableChangelog = Join-Path $DestWiki 'CHANGELOG.md'
+if (Test-Path -LiteralPath $portableChangelog) {
+  $ts = Get-Date -Format 'yyyy-MM-dd HH:mm'
+  $ch = @"
+
+---
+
+## $stamp · Export portable (Pilot overlays)
+
+- `bootstrap` · `scripts/export_second_brain_to_downloads.ps1` → `$DestRoot` · export completo wiki + overlays Pilot.
+- `copy` · `memory/sessions/*.md` → `wiki/sessions/` · sesiones de chat relevantes (repo Pilot).
+- `copy` · `wiki/dev-sessions/*.md` → `wiki/dev-sessions/` · sesiones técnicas del repo.
+- `copy` · `memory/claude/*.md` + `dispatch-queue.json` → `wiki/pilot-claude-memory/` · contexto Claude/dispatch.
+- `snapshot` · `.cursor/memory/*` → `wiki/pilot-cursor-memory/*-$stamp.md` · memory bank Cursor (fecha: $ts).
+- `copy` · `memory/research/*.md` → `wiki/pilot-memory-research/` · volcado íntegro investigación (repo Pilot).
+
+"@
+  Add-Content -LiteralPath $portableChangelog -Value $ch -Encoding UTF8
+  Write-Host "OK: CHANGELOG portable actualizado ($stamp)."
+} else {
+  Write-Warning "No se encontró CHANGELOG.md en el portable: $portableChangelog"
+}
+
 Write-Host "Listo: $DestRoot"
