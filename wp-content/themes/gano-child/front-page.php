@@ -15,7 +15,7 @@ $url_shop = function_exists( 'gano_resolve_page_url' )
 	: home_url( '/shop-premium/' );
 ?>
 
-<main class="gano-home" id="gano-home-main" data-gano-homepage>
+<main id="gano-main-content" class="gano-home" tabindex="-1" data-gano-homepage>
     <section class="hero-gano gano-hero-overlay">
         <div class="hero-gano__ghost" aria-hidden="true">
             <span class="hero-gano__ghost-line"><?php esc_html_e( 'SOTA', 'gano-child' ); ?></span>
@@ -75,7 +75,7 @@ $url_shop = function_exists( 'gano_resolve_page_url' )
                 <p>
                     <?php
                     echo esc_html(
-                        __( 'Compará planes con precios en COP y referencia USD*, filtros por familia y checkout seguro en la página Ecosistemas.', 'gano-child' )
+                        __( 'Compara planes con precios en COP y referencia USD*, filtros por familia y checkout seguro en la página Ecosistemas.', 'gano-child' )
                     );
                     ?>
                 </p>
@@ -85,7 +85,7 @@ $url_shop = function_exists( 'gano_resolve_page_url' )
                     <span class="label"><?php esc_html_e( 'Abrir catálogo en Ecosistemas', 'gano-child' ); ?></span>
                     <span class="arrow" aria-hidden="true">→</span>
                 </a>
-                <a class="btn-gano btn-gano--secondary" href="<?php echo esc_url( $url_shop ); ?>"><?php esc_html_e( 'Vista SOTA (shop-premium)', 'gano-child' ); ?></a>
+                <a class="btn-gano btn-gano--secondary" href="<?php echo esc_url( $url_shop ); ?>"><?php esc_html_e( 'Vista SOTA (demo)', 'gano-child' ); ?></a>
             </div>
         </div>
     </section>
@@ -93,26 +93,26 @@ $url_shop = function_exists( 'gano_resolve_page_url' )
     <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="valor-heading">
         <div class="gano-shell">
             <div class="section-title-gano">
-                <h2 id="valor-heading">Cuatro pilares de la infraestructura SOTA</h2>
-                <p>Lo que diferencia a Gano Digital en el mercado colombiano.</p>
+                <h2 id="valor-heading"><?php esc_html_e( 'Cuatro pilares de la infraestructura SOTA', 'gano-child' ); ?></h2>
+                <p><?php esc_html_e( 'Lo que diferencia a Gano Digital en el mercado colombiano.', 'gano-child' ); ?></p>
             </div>
             <div class="value-section">
                 <div class="value-grid">
                     <article class="value-item">
-                        <h3>Velocidad real (NVMe)</h3>
-                        <p>Almacenamiento de nueva generación y stack optimizado para WordPress: menos espera, más conversión. Tu sitio carga cuando el cliente ya decidió quedarse.</p>
+                        <h3><?php esc_html_e( 'Velocidad real (NVMe)', 'gano-child' ); ?></h3>
+                        <p><?php esc_html_e( 'Almacenamiento de nueva generación y stack optimizado para WordPress: menos espera, más conversión. Tu sitio carga cuando el cliente ya decidió quedarse.', 'gano-child' ); ?></p>
                     </article>
                     <article class="value-item">
-                        <h3>WordPress blindada</h3>
-                        <p>Hardening continuo, controles de acceso y visibilidad sobre lo que ocurre en tu instalación. Menos superficie de ataque, más tranquilidad operativa.</p>
+                        <h3><?php esc_html_e( 'WordPress blindada', 'gano-child' ); ?></h3>
+                        <p><?php esc_html_e( 'Hardening continuo, controles de acceso y visibilidad sobre lo que ocurre en tu instalación. Menos superficie de ataque, más tranquilidad operativa.', 'gano-child' ); ?></p>
                     </article>
                     <article class="value-item">
-                        <h3>Zero-Trust operativo</h3>
-                        <p>Confianza cero por defecto: identidad, sesiones y permisos bajo control. La seguridad no es un cartel: es política aplicada en capas.</p>
+                        <h3><?php esc_html_e( 'Zero-Trust operativo', 'gano-child' ); ?></h3>
+                        <p><?php esc_html_e( 'Confianza cero por defecto: identidad, sesiones y permisos bajo control. La seguridad no es un cartel: es política aplicada en capas.', 'gano-child' ); ?></p>
                     </article>
                     <article class="value-item">
-                        <h3>Edge y latencia</h3>
-                        <p>Contenido más cerca del usuario sin magia barata. Arquitectura pensada para entregar experiencias rápidas donde vive tu audiencia.</p>
+                        <h3><?php esc_html_e( 'Edge y latencia', 'gano-child' ); ?></h3>
+                        <p><?php esc_html_e( 'Contenido más cerca del usuario sin magia barata. Arquitectura pensada para entregar experiencias rápidas donde vive tu audiencia.', 'gano-child' ); ?></p>
                     </article>
                 </div>
             </div>
@@ -122,25 +122,25 @@ $url_shop = function_exists( 'gano_resolve_page_url' )
     <section class="section-gano gano-home-section" aria-labelledby="compromisos-heading">
         <div class="gano-shell">
             <div class="section-title-gano">
-                <h2 id="compromisos-heading">Compromisos operativos</h2>
-                <p>Métricas de servicio enfocadas en continuidad, respuesta y acompañamiento.</p>
+                <h2 id="compromisos-heading"><?php esc_html_e( 'Compromisos operativos', 'gano-child' ); ?></h2>
+                <p><?php esc_html_e( 'Métricas de servicio enfocadas en continuidad, respuesta y acompañamiento.', 'gano-child' ); ?></p>
             </div>
             <div class="metrics-grid">
                 <article class="metric-box">
                     <div class="number">99.9%</div>
-                    <div class="label">Disponibilidad esperada</div>
+                    <div class="label"><?php esc_html_e( 'Disponibilidad esperada', 'gano-child' ); ?></div>
                 </article>
                 <article class="metric-box">
                     <div class="number">24/7</div>
-                    <div class="label">Soporte y seguimiento</div>
+                    <div class="label"><?php esc_html_e( 'Soporte y seguimiento', 'gano-child' ); ?></div>
                 </article>
                 <article class="metric-box">
                     <div class="number">&lt;2h</div>
-                    <div class="label">Respuesta inicial prioritaria</div>
+                    <div class="label"><?php esc_html_e( 'Respuesta inicial prioritaria', 'gano-child' ); ?></div>
                 </article>
                 <article class="metric-box">
                     <div class="number">COP</div>
-                    <div class="label">Operación comercial local</div>
+                    <div class="label"><?php esc_html_e( 'Operación comercial local', 'gano-child' ); ?></div>
                 </article>
             </div>
         </div>
@@ -148,17 +148,17 @@ $url_shop = function_exists( 'gano_resolve_page_url' )
 
     <?php
     gano_cta_registro(array(
-        'heading'     => '¿Aún tienes dudas?',
-        'description' => 'Nuestro equipo te acompaña en cada decisión. Registra tu cuenta y accede a soporte inmediato.',
-        'button_text' => 'Crear cuenta',
+        'heading'       => __( '¿Aún tienes dudas?', 'gano-child' ),
+        'description'   => __( 'Nuestro equipo te acompaña en cada decisión. Registra tu cuenta y accede a soporte inmediato.', 'gano-child' ),
+        'button_text'   => __( 'Crear cuenta', 'gano-child' ),
     ));
     ?>
 
     <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="dominios-heading">
         <div class="gano-shell">
             <div class="section-title-gano">
-                <h2 id="dominios-heading">Encuentra tu dominio ideal</h2>
-                <p>Búsqueda instantánea de TLDs disponibles para lanzar tu operación.</p>
+                <h2 id="dominios-heading"><?php esc_html_e( 'Encuentra tu dominio ideal', 'gano-child' ); ?></h2>
+                <p><?php esc_html_e( 'Búsqueda instantánea de TLDs disponibles para lanzar tu operación.', 'gano-child' ); ?></p>
             </div>
             <div class="gano-domain-search-wrap">
                 <?php echo do_shortcode( '[rstore_domain_search]' ); ?>
@@ -169,8 +169,8 @@ $url_shop = function_exists( 'gano_resolve_page_url' )
     <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="lead-heading">
         <div class="gano-shell">
             <div class="gano-panel gano-panel--compact">
-                <h2 id="lead-heading">Primero: recibe la guía SOTA de crecimiento digital</h2>
-                <p>Buenas prácticas de infraestructura, seguridad y conversión para equipos que necesitan resultados sostenibles.</p>
+                <h2 id="lead-heading"><?php esc_html_e( 'Primero: recibe la guía SOTA de crecimiento digital', 'gano-child' ); ?></h2>
+                <p><?php esc_html_e( 'Buenas prácticas de infraestructura, seguridad y conversión para equipos que necesitan resultados sostenibles.', 'gano-child' ); ?></p>
                 <form id="gano-lead-magnet" class="gano-lead-form" novalidate>
                     <label for="gano-lead-email" class="screen-reader-text">Correo corporativo</label>
                     <input
@@ -183,10 +183,10 @@ $url_shop = function_exists( 'gano_resolve_page_url' )
                     />
                     <input type="hidden" name="nonce" value="<?php echo esc_attr( gano_lead_capture_nonce() ); ?>" />
                     <input type="hidden" name="plan" value="homepage-sota" />
-                    <button type="submit" class="btn-gano">Recibir guía gratis</button>
+                    <button type="submit" class="btn-gano"><?php esc_html_e( 'Recibir guía gratis', 'gano-child' ); ?></button>
                     <p class="gano-form-status" data-gano-form-status aria-live="polite"></p>
                 </form>
-                <small>Sin spam. Puedes cancelar en cualquier momento.</small>
+                <small><?php esc_html_e( 'Sin spam. Puedes cancelar en cualquier momento.', 'gano-child' ); ?></small>
             </div>
         </div>
     </section>
@@ -194,7 +194,7 @@ $url_shop = function_exists( 'gano_resolve_page_url' )
     <section class="section-gano gano-home-section" id="cta-final" aria-labelledby="cierre-heading">
         <div class="gano-shell">
             <div class="gano-panel gano-panel--compact">
-                <h2 id="cierre-heading">¿Listo para una infraestructura que no te pida disculpas?</h2>
+                <h2 id="cierre-heading"><?php esc_html_e( '¿Listo para una infraestructura que no te pida disculpas?', 'gano-child' ); ?></h2>
                 <?php echo do_shortcode( '[gano_cta_icons]' ); ?>
                 <p class="gano-panel-cta">
                     <a href="<?php echo esc_url( $url_ecosistemas ); ?>" class="btn-gano"><?php esc_html_e( 'Elegir mi arquitectura', 'gano-child' ); ?></a>
@@ -203,7 +203,7 @@ $url_shop = function_exists( 'gano_resolve_page_url' )
         </div>
     </section>
 
-    <section class="section-gano gano-home-section gano-home-section--surface" aria-label="Confianza y respaldo">
+    <section class="section-gano gano-home-section gano-home-section--surface" aria-label="<?php esc_attr_e( 'Confianza y respaldo', 'gano-child' ); ?>">
         <div class="gano-shell">
             <?php echo do_shortcode( '[gano_socio_tecnologico]' ); ?>
             <?php echo do_shortcode( '[gano_metrics]' ); ?>

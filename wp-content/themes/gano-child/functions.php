@@ -564,9 +564,18 @@ function gano_skip_link(): void {
  *
  * Para plantillas Elementor full-width: asigna el ID "gano-main-content" a la
  * primera sección del canvas desde el editor de Elementor (Advanced > CSS ID).
+ *
+ * Si existe `front-page.php` en el child y se muestra la portada, el propio
+ * template define `<main id="gano-main-content" tabindex="-1">` y aquí no se
+ * inyecta el span vacío (evita id duplicado y mejora el foco del skip link).
  */
 add_action( 'wp_body_open', 'gano_main_content_anchor', 5 );
 function gano_main_content_anchor(): void {
+    // Si el child define `front-page.php`, ese `<main id="gano-main-content">` es el destino
+    // real del skip link: no inyectar un segundo elemento con el mismo id.
+    if ( is_front_page() && '' !== locate_template( array( 'front-page.php' ), false, false ) ) {
+        return;
+    }
     echo '<span id="gano-main-content" tabindex="-1" class="gano-a11y-anchor"></span>';
 }
 
