@@ -26,7 +26,7 @@ Con **Gano Digital — Homepage** implementado en `wp-content/themes/gano-child/
 
 1. **Ajustes → Lectura**: “Una página estática” → **Inicio** = página 1745 (o la vigente).
 2. Dejá el child **activo** (`gano-child`). Con `front-page.php` presente, la portada `/` sale del PHP del tema.
-3. **Opcional:** en *Inicio*, **Elementor → Settings → Disable Elementor for this page** (o equivalente) para evitar confusión en el equipo y ediciones “fantasma” que no impactan el front.
+3. **Opcional / hecho en prod (2026-04-23):** quitar metadatos de Elementor en la página de inicio vía **§8 (WP-CLI)** o en *Inicio* **Elementor → Disable for this page**, para que el equipo no edite un lienzo que no controla el `/`.
 
 ---
 
@@ -90,3 +90,29 @@ wp rewrite flush
 **Hecho en producción (2026-04-23):** `page_on_front = 1745`, título *Inicio*, `_elementor_edit_mode = builder`, meta `_elementor_data` **sin contenido útil** (0 bytes vía `wp post meta get` + `wc`), coherente con **HTML servido desde `front-page.php`** (hero, proof bar, Atlas, HUD). Se ejecutaron **`wp cache flush`** y **`wp rewrite flush`**.
 
 **Nota:** el subcomando `wp elementor flush-css` no estaba registrado en ese entorno; si hace falta regenerar CSS de Elementor, usar **Elementor → Herramientas → Regenerar CSS** en wp-admin o instalar el paquete WP-CLI de Elementor si el hosting lo permite.
+
+---
+
+## 8. Desactivar Elementor en *Inicio* (WP-CLI) — **ejecutado 2026-04-23**
+
+**Motivo:** con `front-page.php` activo en el child, el cuerpo de `/` lo arma el tema; dejar `_elementor_edit_mode=builder` sin `_elementor_data` útil generaba **falsa expectativa** en el equipo (“se edita en Elementor y no cambia el home”).
+
+**Precondición verificada:** `post_content` de la página de inicio era **mínimo** (~77 bytes); no había lienzo Elementor serializado útil.
+
+**Comandos (reemplazar `1745` si cambia el ID):**
+
+```bash
+cd /ruta/al/wordpress
+PAGE_ID=1745
+for k in _elementor_edit_mode _elementor_template_type _elementor_version \
+         _elementor_page_assets _elementor_css _elementor_data \
+         _elementor_page_settings _elementor_controls_usage; do
+  wp post meta delete "$PAGE_ID" "$k" 2>/dev/null || true
+done
+wp cache flush
+wp rewrite flush
+```
+
+**Post-check:** `wp post meta list "$PAGE_ID" | grep -i elementor` → vacío. Home `https://gano.digital/` → **HTTP 200** con User-Agent de navegador (sin UA, algunos WAF devuelven **403** a `curl`; es esperable).
+
+**Rollback:** no se volcó backup de metas en esta pasada; si hiciera falta recuperar un diseño Elementor previo, restaurar desde **backup de BD/hosting** o desde historial interno del flujo de trabajo del equipo.
