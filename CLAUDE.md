@@ -136,6 +136,7 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `.gano-skills/gano-graphify-local/` | Usar Graphify (vendor) como tooling local (sin hooks) para mapas de arquitectura/UX del repo |
 | `.gano-skills/gano-agent-orchestrator-local/` | Orquestar oleadas de agentes en paralelo (worktrees/PRs) como recurso opcional, recomendado en WSL2 |
 | `.gano-skills/gano-ml-ssd/` | Recurso integral I+D (apple/ml-ssd) para evaluación de codegen; submodule en `vendor/ml-ssd` |
+| `.cursor/skills/gano-web-visual-systems/` | Canvas/SVG/generativo (fractales, metabolas, caleidoscopios, simetría), prototipos HTML locales y **reglas de integración** en `gano-child` (enqueue, CSP, reduced-motion, variables CSS) |
 
 ## Archivos importantes
 | Archivo | Qué es |
@@ -151,6 +152,7 @@ Investigación más amplia (billing self-hosted, DIAN, etc.) vive en `memory/res
 | `wp-content/themes/gano-child/seo-pages/` | **NUEVO** Contenido landing pages keywords |
 | `memory/research/fase4-plataforma.md` | **NUEVO** Investigación completa Fase 4 |
 | `memory/research/starcraft1-assets-sota.md` | **2026-04-02** Inventario técnico assets SC1/BW, brecha vs Constellation, herramientas (IronGRP, PyMS), legal |
+| `memory/research/visual-systems-canvas-svg-second-brain-2026-04.md` | **2026-04-24** Second brain: Canvas/SVG/generativo (fractales, metabolas, caleidoscopios), WP, bibliografía MDN, anti-patrones; enlaza skill `.cursor/skills/gano-web-visual-systems/` |
 | `memory/audits/` | PDF/HTML auditoría desarrolladores; regenerar con `python scripts/generate_dev_audit_pdf.py` |
 | `memory/sessions/2026-04-01-reporte-cursor-descargas-y-herramientas.md` | **2026-04-01** Reporte de sesión Cursor: Descargas, `EJECUTAR_ANALISIS.ps1`, organización de folios, seguridad (`id_rsa` → `.ssh`). Continuidad para Claude. |
 | `memory/sessions/2026-04-02-reporte-handoff-godaddy-api-reseller-whmcs.md` | **2026-04-02** Handoff: GoDaddy Developer API vs Reseller Store, Good as Gold, WHMCS, pendientes y guardrails para Claude. |

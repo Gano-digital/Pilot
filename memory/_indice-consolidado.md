@@ -46,11 +46,13 @@
 - `ops/wordfence-2fa-checklist.md`
 - `ops/remover-wp-file-manager-checklist.md`
 - `ops/github-actions-audit-2026-04.md`
+- `ops/second-brain-portable-sync.md` — volcar `memory/sessions`, `memory/claude`, `.cursor/memory` y `wiki/dev-sessions` al paquete `Gano-SecondBrain-COMPLETO`
 
 ## Investigación vigente
 - `research/fase4-plataforma.md` (referencia, no compromiso)
 - `research/gano-wave3-brand-ux-master-brief.md`
 - `research/motion-and-3d-policy-gano.md`
+- `research/visual-systems-canvas-svg-second-brain-2026-04.md` — **second brain** sistemas visuales (Canvas/SVG/generativo), integración WP, bibliografía y anti-patrones; skill `.cursor/skills/gano-web-visual-systems/`
 - `research/ux-heuristics-checklist-gano.md`
 - `research/competitive-framework-colombia-hosting.md`
 - `research/sota-operativo-2026-04.md`

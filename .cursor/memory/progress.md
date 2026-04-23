@@ -1,5 +1,15 @@
 # Progress Tracker
 
+## 2026-04-22 — Second brain sistemas visuales (memoria repo)
+
+### Completado
+
+- [x] Documento de investigación y recursos: [`memory/research/visual-systems-canvas-svg-second-brain-2026-04.md`](../../memory/research/visual-systems-canvas-svg-second-brain-2026-04.md) (bibliografía, tablas WP, anti-patrones, enlaces MDN).
+- [x] Entrada en [`memory/_indice-consolidado.md`](../../memory/_indice-consolidado.md) § Investigación vigente.
+- [x] [`CLAUDE.md`](../../CLAUDE.md) tabla *Archivos importantes* + [`.cursor/memory/techContext.md`](../../.cursor/memory/techContext.md) decisión §13.
+
+---
+
 ## 2026-04-20 — Babysit PRs (merge #273 + fixes #278)
 
 ### Completado
