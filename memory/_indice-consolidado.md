@@ -53,6 +53,7 @@
 - `research/gano-wave3-brand-ux-master-brief.md`
 - `research/motion-and-3d-policy-gano.md`
 - `research/visual-systems-canvas-svg-second-brain-2026-04.md` — **second brain** sistemas visuales (Canvas/SVG/generativo), integración WP, bibliografía y anti-patrones; skill `.cursor/skills/gano-web-visual-systems/`
+- `research/ux-audit-homepage-gano-2026-04.md` — auditoría UX + plan de formalización del home (template `front-page.php`)
 - `research/ux-heuristics-checklist-gano.md`
 - `research/competitive-framework-colombia-hosting.md`
 - `research/sota-operativo-2026-04.md`
