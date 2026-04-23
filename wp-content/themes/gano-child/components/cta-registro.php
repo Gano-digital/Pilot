@@ -35,7 +35,7 @@ if ( ! function_exists( 'gano_cta_registro' ) ) {
     function gano_cta_registro( $args = array() ) {
         $defaults = array(
             'heading'       => '¿No sabes por dónde empezar?',
-            'description'   => '¿no sabes por dónde empezar? registra tu cuenta y recibe soporte inmediato. Nosotros te agendamos. Acompañamos tu empresa en cada decisión: siempre donde verdaderamente importa.',
+            'description'   => 'Registra tu cuenta y recibe soporte inmediato. Nosotros te agendamos y te acompañamos en cada decisión: siempre donde verdaderamente importa.',
             'button_text'   => 'Registra tu cuenta',
             'button_url'    => gano_client_journey_landing_url(),
             'class'         => '',

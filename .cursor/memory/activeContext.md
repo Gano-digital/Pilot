@@ -8,6 +8,10 @@ _Última actualización: 2026-04-22._
 - **Referencia diferida:** modelo full “crypto → compra manual RCC” — [`memory/commerce/crypto-manual-fulfillment-godaddy-policy-2026-04.md`](../../memory/commerce/crypto-manual-fulfillment-godaddy-policy-2026-04.md) ([Reseller Agreement](https://www.godaddy.com/legal/agreements/reseller-agreement)).
 - **Nota:** sin asesoría legal; validar flujos con soporte Reseller / asesoría al escalar; cartera/contabilidad **dedicada** al negocio vs wallet personal de exchange.
 
+## Actualización 2026-04-22 (second brain visual)
+
+- Memoria estructurada para desarrollos Canvas/SVG/generativos en gano.digital: [`memory/research/visual-systems-canvas-svg-second-brain-2026-04.md`](../../memory/research/visual-systems-canvas-svg-second-brain-2026-04.md) (enlaza skill `.cursor/skills/gano-web-visual-systems/` y política [`motion-and-3d-policy-gano.md`](../../memory/research/motion-and-3d-policy-gano.md)).
+
 ## Snapshot 2026-04-20 (PRs + babysit)
 
 - **PR [#273](https://github.com/Gano-digital/Pilot/pull/273)** (UX/A11y, rama `claude/gifted-dewdney-b958c5`): merge de `main` completado; conflictos resueltos; home incluye **barra de confianza** post-hero + CTA catálogo con `gano_resolve_page_url`. Estado GitHub: **mergeable**, puede quedar **BLOCKED** por ruleset/review.

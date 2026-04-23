@@ -22,16 +22,30 @@ $url_shop = function_exists( 'gano_resolve_page_url' )
             <span class="hero-gano__ghost-line hero-gano__ghost-line--accent"><?php esc_html_e( 'COLOMBIA', 'gano-child' ); ?></span>
         </div>
         <div class="gano-shell hero-content">
-            <p class="overline">Soberanía Digital · Operación Colombia</p>
-            <h1>Infraestructura NVMe blindada y un agente IA que trabaja antes de que algo falle.</h1>
-            <p>Hosting WordPress de alto rendimiento con seguridad de nivel empresarial, soporte en español y operación en pesos colombianos. Menos ruido, más continuidad.</p>
+            <p class="overline"><?php esc_html_e( 'Soberanía digital · Operación Colombia', 'gano-child' ); ?></p>
+            <h1><?php esc_html_e( 'Infraestructura NVMe blindada y un agente IA que trabaja antes de que algo falle.', 'gano-child' ); ?></h1>
+            <p><?php esc_html_e( 'Hosting WordPress de alto rendimiento con seguridad de nivel empresarial, soporte en español y operación en pesos colombianos. Menos ruido, más continuidad.', 'gano-child' ); ?></p>
             <div class="hero-cta-row">
                 <a href="<?php echo esc_url( $url_ecosistemas ); ?>" class="btn-holo">
-                    <span class="label"><?php esc_html_e( 'Ver catálogo en Ecosistemas', 'gano-child' ); ?></span>
+                    <span class="label"><?php esc_html_e( 'Ver planes y arquitecturas', 'gano-child' ); ?></span>
                     <span class="arrow">→</span>
                 </a>
-                <a href="<?php echo esc_url( $url_shop ); ?>" class="btn-gano btn-gano--secondary"><?php esc_html_e( 'Vista catálogo SOTA', 'gano-child' ); ?></a>
+                <a href="<?php echo esc_url( $url_shop ); ?>" class="btn-gano btn-gano--secondary"><?php esc_html_e( 'Vista SOTA (demo)', 'gano-child' ); ?></a>
             </div>
+            <ul class="hero-proof-bar" aria-label="<?php esc_attr_e( 'Señales rápidas de confianza', 'gano-child' ); ?>">
+                <li>
+                    <strong><?php esc_html_e( 'NVMe', 'gano-child' ); ?></strong>
+                    <span><?php esc_html_e( 'Stack optimizado para WordPress', 'gano-child' ); ?></span>
+                </li>
+                <li>
+                    <strong><?php esc_html_e( 'COP', 'gano-child' ); ?></strong>
+                    <span><?php esc_html_e( 'Operación comercial local', 'gano-child' ); ?></span>
+                </li>
+                <li>
+                    <strong><?php esc_html_e( '24/7', 'gano-child' ); ?></strong>
+                    <span><?php esc_html_e( 'Monitoreo y respuesta prioritaria', 'gano-child' ); ?></span>
+                </li>
+            </ul>
             <?php
             $url_comenzar = function_exists( 'gano_resolve_page_url' )
                 ? gano_resolve_page_url( 'comenzar-aqui', 'comenzar', 'registro-y-compra' )
@@ -50,27 +64,6 @@ $url_shop = function_exists( 'gano_resolve_page_url' )
         </div>
     </section>
     <?php endif; ?>
-
-    <?php
-    gano_cta_registro(array(
-        'heading'     => '¿No sabes por dónde empezar?',
-        'description' => '¿no sabes por dónde empezar? registra tu cuenta y recibe soporte inmediato. Nosotros te agendamos. Acompañamos tu empresa en cada decisión: siempre donde verdaderamente importa.',
-        'button_text' => 'Registra tu cuenta',
-        'class'       => 'gano-cta-registro--hero-section'
-    ));
-    ?>
-
-    <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="dominios-heading">
-        <div class="gano-shell">
-            <div class="section-title-gano">
-                <h2 id="dominios-heading">Encuentra tu dominio ideal</h2>
-                <p>Búsqueda instantánea de TLDs disponibles para lanzar tu operación.</p>
-            </div>
-            <div class="gano-domain-search-wrap">
-                <?php echo do_shortcode( '[rstore_domain_search]' ); ?>
-            </div>
-        </div>
-    </section>
 
     <?php
     // Teaser rStore de 4 tarjetas: borrador en inc/draft-home-rstore-catalog-home.php (filtro gano_show_draft_home_rstore_catalog).
@@ -96,14 +89,6 @@ $url_shop = function_exists( 'gano_resolve_page_url' )
             </div>
         </div>
     </section>
-
-    <?php
-    gano_cta_registro(array(
-        'heading'     => '¿Aún tienes dudas?',
-        'description' => 'Nuestro equipo te acompaña en cada decisión. Registra tu cuenta y accede a soporte inmediato.',
-        'button_text' => 'Crear cuenta',
-    ));
-    ?>
 
     <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="valor-heading">
         <div class="gano-shell">
@@ -157,6 +142,26 @@ $url_shop = function_exists( 'gano_resolve_page_url' )
                     <div class="number">COP</div>
                     <div class="label">Operación comercial local</div>
                 </article>
+            </div>
+        </div>
+    </section>
+
+    <?php
+    gano_cta_registro(array(
+        'heading'     => '¿Aún tienes dudas?',
+        'description' => 'Nuestro equipo te acompaña en cada decisión. Registra tu cuenta y accede a soporte inmediato.',
+        'button_text' => 'Crear cuenta',
+    ));
+    ?>
+
+    <section class="section-gano gano-home-section gano-home-section--surface" aria-labelledby="dominios-heading">
+        <div class="gano-shell">
+            <div class="section-title-gano">
+                <h2 id="dominios-heading">Encuentra tu dominio ideal</h2>
+                <p>Búsqueda instantánea de TLDs disponibles para lanzar tu operación.</p>
+            </div>
+            <div class="gano-domain-search-wrap">
+                <?php echo do_shortcode( '[rstore_domain_search]' ); ?>
             </div>
         </div>
     </section>

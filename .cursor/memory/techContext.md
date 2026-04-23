@@ -31,6 +31,7 @@
 10. **Homepage SOTA runtime budget (abr 2026)** — baseline SSH validado en hosting y objetivo `LCP <= 3.0s`; en front-page se prioriza motion CSS sutil y se evita carga innecesaria de GSAP/Constellation cuando no aporta conversión directa.
 11. **Política bots en Apache (abr 2026)** — en producción se bloquean solo user-agents de **escaneo abusivo** (`sqlmap`, `nikto`, `acunetix`, `masscan`, `dirbuster`, `wpscan`, `zgrab`, `nmap`, `httrack`). Crawlers de descubrimiento y herramientas tipo `curl` / `GPTBot` no se deniegan por esa regla. Contenido orientado a bots: `llms.txt` y `bot-seo-context.md` en la raíz del sitio.
 12. **Convergencia repo ↔ producción (abr 2026)** — la fuente canónica de **código versionado** es `main` en `Gano-digital/Pilot`. Despliegue rutinario: workflow **04** + verificación **05** ([`.github/DEV-COORDINATION.md`](../../.github/DEV-COORDINATION.md)). Despliegue de **parche urgente**: SCP/rsync con backup previo en servidor y comprobación de checksums.
+13. **Sistemas visuales Canvas/SVG (abr 2026)** — skill `.cursor/skills/gano-web-visual-systems/`; memoria extendida y bibliografía en `memory/research/visual-systems-canvas-svg-second-brain-2026-04.md`. Prototipos locales sin CDN antes de subir a `gano-child`; alinear con `memory/research/motion-and-3d-policy-gano.md` (LCP, reduced-motion).
 
 ## Tooling opcional (repo)
 
