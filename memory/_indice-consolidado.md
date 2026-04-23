@@ -47,6 +47,7 @@
 - `ops/remover-wp-file-manager-checklist.md`
 - `ops/github-actions-audit-2026-04.md`
 - `ops/second-brain-portable-sync.md` — volcar `memory/sessions`, `memory/claude`, `.cursor/memory` y `wiki/dev-sessions` al paquete `Gano-SecondBrain-COMPLETO`
+- `ops/runbook-elementor-atlas-home-2026-04-22.md` — Atlas en home + alineación Elementor vs `front-page.php` + WP-CLI/SSH (§7)
 
 ## Investigación vigente
 - `research/fase4-plataforma.md` (referencia, no compromiso)
