@@ -16,7 +16,7 @@
 
 ## Paquete completo desde Pilot
 
-`powershell -File scripts\export_second_brain_to_downloads.ps1 -FolderName 'Gano-SecondBrain-COMPLETO'` (desde clon **Pilot** con script vigente) — luego **reaplicar** las carpetas anteriores si el export regenera solo desde OneDrive y aún no incluye `sessions/` en el script.
+`powershell -File scripts\export_second_brain_to_downloads.ps1 -FolderName 'Gano-SecondBrain-COMPLETO'` (desde clon **Pilot**) — el script ya incluye automáticamente `sessions/`, `pilot-claude-memory/`, `pilot-cursor-memory/` y `pilot-memory-research/` dentro de `wiki/`.
 
 ## Canon documental
 
