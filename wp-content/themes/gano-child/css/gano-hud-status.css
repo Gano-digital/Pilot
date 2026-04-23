@@ -1,0 +1,200 @@
+:root {
+  --gano-hud-cyan: #22d3ee;
+  --gano-hud-magenta: #c084fc;
+  --gano-hud-red: #fb7185;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../assets/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../assets/fonts/JetBrainsMono-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+.gano-hud {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 8000;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.gano-hud__bar {
+  width: min(1100px, 100%);
+  pointer-events: auto;
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: linear-gradient(180deg, rgba(5, 8, 12, 0.28), rgba(5, 8, 12, 0.78));
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+    0 18px 60px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.gano-hud__bar::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.09) 0 1px,
+    rgba(0, 0, 0, 0) 1px 5px
+  );
+  opacity: 0.18;
+  pointer-events: none;
+  animation: ganoHudScan 3s linear infinite;
+}
+
+.gano-hud__bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 80px at 30% 0%, rgba(0, 194, 107, 0.22), transparent 60%),
+    radial-gradient(900px 80px at 70% 0%, rgba(27, 79, 216, 0.22), transparent 60%);
+}
+
+@keyframes ganoHudScan {
+  0% { transform: translateY(-6px); }
+  100% { transform: translateY(6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gano-hud__bar::before {
+    animation: none;
+    opacity: 0.12;
+  }
+}
+
+.gano-hud__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: clamp(10px, 1.8vw, 14px) clamp(12px, 2vw, 16px);
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-variant-numeric: tabular-nums;
+  color: rgba(226, 232, 240, 0.9);
+}
+
+.gano-hud__line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: clamp(11px, 1.6vw, 13px);
+}
+
+.gano-hud__sep {
+  color: rgba(148, 163, 184, 0.55);
+}
+
+.gano-hud__val {
+  position: relative;
+  color: rgba(226, 232, 240, 0.92);
+}
+
+.gano-hud__val[data-gl="1"]::before,
+.gano-hud__val[data-gl="1"]::after {
+  content: attr(data-t);
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.gano-hud__val[data-gl="1"]::before {
+  transform: translate(1px, 0);
+  color: rgba(34, 211, 238, 0.9);
+  mix-blend-mode: screen;
+}
+
+.gano-hud__val[data-gl="1"]::after {
+  transform: translate(-1px, 0);
+  color: rgba(192, 132, 252, 0.85);
+  mix-blend-mode: screen;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gano-hud__val[data-gl="1"]::before,
+  .gano-hud__val[data-gl="1"]::after {
+    display: none;
+  }
+}
+
+.gano-hud[data-state="ok"] .gano-hud__bar {
+  border-color: rgba(34, 211, 238, 0.22);
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.14) inset, 0 18px 60px rgba(0, 0, 0, 0.55);
+}
+
+.gano-hud[data-state="warn"] .gano-hud__bar {
+  border-color: rgba(192, 132, 252, 0.3);
+  box-shadow: 0 0 0 1px rgba(192, 132, 252, 0.2) inset, 0 18px 60px rgba(0, 0, 0, 0.55);
+}
+
+.gano-hud[data-state="alert"] .gano-hud__bar {
+  border-color: rgba(251, 113, 133, 0.3);
+  box-shadow: 0 0 0 1px rgba(251, 113, 133, 0.2) inset, 0 18px 60px rgba(0, 0, 0, 0.55);
+}
+
+/* Mobile compact rules: PING + TIME always visible; FPS + DCL hide first */
+@media (max-width: 640px) {
+  .gano-hud__token--fps,
+  .gano-hud__token--dcl,
+  .gano-hud__sep--a,
+  .gano-hud__sep--b {
+    display: none;
+  }
+  .gano-hud.is-expanded .gano-hud__token--fps,
+  .gano-hud.is-expanded .gano-hud__token--dcl,
+  .gano-hud.is-expanded .gano-hud__sep--a,
+  .gano-hud.is-expanded .gano-hud__sep--b {
+    display: inline;
+  }
+  .gano-hud.is-expanded .gano-hud__line {
+    white-space: normal;
+    text-align: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+}
+
+.gano-hud__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+

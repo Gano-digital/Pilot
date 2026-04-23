@@ -18,6 +18,7 @@ require_once get_stylesheet_directory() . '/inc/draft-home-rstore-catalog-home.p
 require_once get_stylesheet_directory() . '/inc/contact-form-handler.php';
 require_once get_stylesheet_directory() . '/inc/lead-magnet-handler.php';
 require_once get_stylesheet_directory() . '/inc/gano-premium-components.php';
+require_once get_stylesheet_directory() . '/inc/gano-hud-status.php';
 
 // =============================================================================
 // 0.1 INCLUDES — Componentes reutilizables (Shadcn-inspired, WordPress)
@@ -82,6 +83,37 @@ function gano_enqueue_premium_styles() {
         '1.0.0'
     );
 }
+
+// =============================================================================
+// HUD sitewide — status bar (CRT + glitch postpunk)
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_status_hud', 12 );
+function gano_enqueue_status_hud(): void {
+    if ( is_admin() ) {
+        return;
+    }
+
+    $css_path = get_stylesheet_directory() . '/css/gano-hud-status.css';
+    $js_path  = get_stylesheet_directory() . '/js/gano-hud-status.js';
+
+    wp_enqueue_style(
+        'gano-hud-status',
+        get_stylesheet_directory_uri() . '/css/gano-hud-status.css',
+        array(),
+        file_exists( $css_path ) ? (string) filemtime( $css_path ) : '1.0.0'
+    );
+
+    wp_enqueue_script(
+        'gano-hud-status',
+        get_stylesheet_directory_uri() . '/js/gano-hud-status.js',
+        array(),
+        file_exists( $js_path ) ? (string) filemtime( $js_path ) : '1.0.0',
+        true
+    );
+}
+
+add_action( 'wp_footer', 'gano_render_status_hud', 20 );
 
 // =============================================================================
 // 0.4 URL HELPERS — slugs comerciales (catálogo, contacto, esta página, etc.)
