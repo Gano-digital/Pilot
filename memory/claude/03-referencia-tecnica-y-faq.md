@@ -72,6 +72,12 @@ Documentado en [`.github/DEV-COORDINATION.md`](../../.github/DEV-COORDINATION.md
 
 ## 4. FAQ
 
+### ¿Dónde está la referencia para sistemas visuales (Canvas/SVG, fractales, lava, caleidoscopios)?
+
+- **Skill (reglas de integración WP + prototipo local):** [`.cursor/skills/gano-web-visual-systems/SKILL.md`](../../.cursor/skills/gano-web-visual-systems/SKILL.md) y [`reference.md`](../../.cursor/skills/gano-web-visual-systems/reference.md)
+- **Second brain (bibliografía, anti‑patrones, checklist pre‑deploy):** [`memory/research/visual-systems-canvas-svg-second-brain-2026-04.md`](../research/visual-systems-canvas-svg-second-brain-2026-04.md)
+- **Política motion/LCP (cuándo NO usar canvas pesado):** [`memory/research/motion-and-3d-policy-gano.md`](../research/motion-and-3d-policy-gano.md)
+
 ### ¿Hay que ejecutar el workflow 10 ahora?
 
 **No**, para la oleada de PRs que ya se fusionó en `main` el **2026-04-03**. Usar **10** solo si vuelve a haber un conjunto de PRs “oleada 1” y quieres automatizar merges + semilla oleada 2.

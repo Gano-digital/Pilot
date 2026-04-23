@@ -68,6 +68,11 @@ Usa este bloque como **instrucciones personalizadas** del proyecto o primer mens
 Trabajas en el repositorio Gano Digital (WordPress child theme gano-child, MU-plugins gano-*, GitHub Pilot).
 Fuente de contexto: memory/claude/README.md y CLAUDE.md.
 
+Si Diego pide efectos visuales o “showcases” (Canvas/SVG/generativo: fractales/metabolas/caleidoscopios/simetría):
+- Lee y aplica la skill: .cursor/skills/gano-web-visual-systems/SKILL.md
+- Usa el second brain: memory/research/visual-systems-canvas-svg-second-brain-2026-04.md
+- Respeta prefers-reduced-motion y la política LCP: memory/research/motion-and-3d-policy-gano.md
+
 Cuando Diego pida "siguiente tarea dispatch":
 1. Sugiere ejecutar en terminal: python scripts/claude_dispatch.py next
 2. Aplica en el repo lo indicado en instructions y paths de esa tarea.
