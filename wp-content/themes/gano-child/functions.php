@@ -84,11 +84,12 @@ function gano_enqueue_premium_styles() {
     );
 
     // JS de Pre-registro (Lead capture)
+    $pr_js_path = get_stylesheet_directory() . '/js/gano-pre-registro.js';
     wp_enqueue_script(
         'gano-pre-registro',
         get_stylesheet_directory_uri() . '/js/gano-pre-registro.js',
         array(),
-        '1.0.0',
+        file_exists( $pr_js_path ) ? (string) filemtime( $pr_js_path ) : '1.0.0',
         true
     );
 
@@ -141,8 +142,12 @@ add_action( 'wp_ajax_nopriv_gano_pre_registro', 'gano_handle_pre_registro' );
 function gano_handle_pre_registro() {
     check_ajax_referer( 'gano_pre_registro_nonce', 'nonce' );
 
-    $name  = sanitize_text_field( $_POST['gano_name'] ?? '' );
-    $email = sanitize_email( $_POST['gano_email'] ?? '' );
+    // wp_unslash antes de sanitizar (WordPress añade magic quotes a $_POST)
+    $raw_name  = wp_unslash( $_POST['gano_name'] ?? '' );
+    $raw_email = wp_unslash( $_POST['gano_email'] ?? '' );
+
+    $name  = sanitize_text_field( $raw_name );
+    $email = sanitize_email( $raw_email );
 
     if ( empty( $email ) ) {
         wp_send_json_error( 'El email es obligatorio.' );
@@ -153,9 +158,14 @@ function gano_handle_pre_registro() {
         'name'  => $name,
         'email' => $email,
         'time'  => current_time( 'mysql' ),
-        'ip'    => $_SERVER['REMOTE_ADDR'] ?? '',
+        'ip'    => sanitize_text_field( $_SERVER['REMOTE_ADDR'] ?? '' ),
         'plan'  => 'Interés General (SOTA Hub)',
     );
+
+    // Limitar a 500 leads para evitar crecimiento infinito de wp_options
+    if ( count( $leads ) > 500 ) {
+        $leads = array_slice( $leads, -500 );
+    }
 
     update_option( 'gano_leads', $leads );
 
