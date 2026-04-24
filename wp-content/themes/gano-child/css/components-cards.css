@@ -1,0 +1,418 @@
+/* ============================================================================
+   Card Components: Pricing + Product (Ecosistema)
+   ============================================================================ */
+
+/* ============================================================================
+   PRICING CARD COMPONENT
+   ============================================================================ */
+
+.gano-card-pricing {
+  position: relative;
+  background-color: var(--gano-bg);
+  border: 1px solid var(--gano-border);
+  border-radius: var(--gano-radius-lg);
+  padding: 32px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all var(--motion-normal) var(--ease-out);
+}
+
+.gano-card-pricing:hover {
+  border-color: var(--gano-blue);
+  box-shadow: 0 8px 24px rgba(27, 79, 216, 0.1);
+}
+
+/* Featured / Popular variant */
+.gano-card-pricing--featured {
+  border: 2px solid var(--gano-blue);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(27, 79, 216, 0.15);
+}
+
+.gano-card-pricing--featured:hover {
+  border-color: var(--gano-blue);
+  box-shadow: 0 24px 48px rgba(27, 79, 216, 0.2);
+}
+
+/* Keycap badge for featured */
+.gano-keycap {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: var(--gano-radius-pill);
+  font-family: var(--gano-font-mono);
+  font-size: 0.625rem;
+  font-weight: var(--gano-fw-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: -8px;
+  align-self: center;
+  width: fit-content;
+}
+
+.gano-keycap--gold {
+  background-color: var(--gano-gold);
+  color: #05070A;
+}
+
+/* Pricing card name */
+.gano-card-pricing__name {
+  font-family: var(--gano-font-display);
+  font-size: 1.375rem;
+  font-weight: var(--gano-fw-bold);
+  color: var(--gano-text);
+  margin: 0;
+  line-height: var(--gano-lh-snug);
+}
+
+/* Pricing card description */
+.gano-card-pricing__description {
+  color: var(--gano-text-secondary);
+  font-size: 0.875rem;
+  line-height: var(--gano-lh-relaxed);
+  margin: 0;
+}
+
+/* Pricing display */
+.gano-card-pricing__price {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0;
+  border-top: 1px dashed var(--gano-border);
+  border-bottom: 1px dashed var(--gano-border);
+}
+
+.gano-card-pricing__price strong {
+  font-family: var(--gano-font-display);
+  font-size: 2.375rem;
+  font-weight: var(--gano-fw-extrabold);
+  color: var(--gano-text);
+  line-height: 1;
+}
+
+.gano-card-pricing__price small {
+  font-size: 0.75rem;
+  color: var(--gano-text-secondary);
+  font-weight: var(--gano-fw-regular);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Features list */
+.gano-card-pricing__features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gano-card-pricing__feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--gano-text);
+  font-size: 0.875rem;
+  line-height: var(--gano-lh-base);
+  text-align: left;
+}
+
+.gano-card-pricing__feature i {
+  color: var(--gano-green);
+  font-weight: var(--gano-fw-bold);
+  flex-shrink: 0;
+}
+
+/* ============================================================================
+   PRODUCT CARD COMPONENT (Ecosistema - Dark SOTA Mode)
+   ============================================================================ */
+
+.gano-card-product {
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(27, 79, 216, 0.2);
+  border-radius: var(--gano-radius-xl);
+  padding: 36px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all var(--motion-normal) var(--ease-out);
+  overflow: hidden;
+}
+
+/* Top accent bar */
+.gano-card-product::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gano-blue), var(--gano-orange));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--motion-normal) var(--ease-out);
+  z-index: 1;
+}
+
+.gano-card-product:hover::before {
+  transform: scaleX(1);
+}
+
+/* Hover state */
+.gano-card-product:hover {
+  border-color: var(--gano-gold);
+  transform: translateY(-15px);
+  box-shadow: 0 20px 40px rgba(212, 175, 55, 0.15);
+}
+
+/* Accent decoration element (top-right corner) */
+.gano-card-product__accent {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.1), transparent);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Icon styling */
+.gano-card-product__icon {
+  font-size: 2rem;
+  color: #A78BFA;
+  transition: color var(--motion-normal) var(--ease-out);
+  position: relative;
+  z-index: 2;
+}
+
+.gano-card-product:hover .gano-card-product__icon {
+  color: var(--gano-gold);
+}
+
+/* Eyebrow (category label) */
+.gano-card-product__eyebrow {
+  display: inline-block;
+  font-family: var(--gano-font-mono);
+  font-size: 0.625rem;
+  font-weight: var(--gano-fw-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #818CF8;
+  width: fit-content;
+  position: relative;
+  z-index: 2;
+}
+
+/* Title */
+.gano-card-product__title {
+  font-family: var(--gano-font-display);
+  font-size: 1.375rem;
+  font-weight: var(--gano-fw-extrabold);
+  color: white;
+  margin: 0;
+  line-height: var(--gano-lh-snug);
+  position: relative;
+  z-index: 2;
+}
+
+/* Specs container */
+.gano-card-product__specs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 2;
+}
+
+/* Individual spec */
+.gano-card-product__spec {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.gano-card-product__spec-label {
+  font-family: var(--gano-font-mono);
+  font-size: 0.625rem;
+  font-weight: var(--gano-fw-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #A0A4B8;
+}
+
+.gano-card-product__spec-value {
+  font-size: 0.875rem;
+  font-weight: var(--gano-fw-semibold);
+  color: white;
+  text-align: right;
+}
+
+/* Price section */
+.gano-card-product__price {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.gano-card-product__price small {
+  font-size: 0.75rem;
+  color: #A0A4B8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: var(--gano-fw-regular);
+}
+
+.gano-card-product__price strong {
+  font-family: var(--gano-font-display);
+  font-size: 1.875rem;
+  font-weight: var(--gano-fw-extrabold);
+  color: white;
+  line-height: 1;
+}
+
+/* CTA Button wrapper */
+.gano-card-product .gano-btn {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* ============================================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  /* Pricing cards responsive */
+  .gano-card-pricing {
+    padding: 24px 16px;
+    gap: 12px;
+  }
+
+  .gano-card-pricing__name {
+    font-size: 1.25rem;
+  }
+
+  .gano-card-pricing__price strong {
+    font-size: 2rem;
+  }
+
+  .gano-card-pricing__feature {
+    font-size: 0.8125rem;
+  }
+
+  /* Product cards responsive */
+  .gano-card-product {
+    padding: 28px 20px 20px;
+  }
+
+  .gano-card-product__icon {
+    font-size: 1.75rem;
+  }
+
+  .gano-card-product__title {
+    font-size: 1.25rem;
+  }
+
+  .gano-card-product__price strong {
+    font-size: 1.625rem;
+  }
+
+  .gano-card-product:hover {
+    transform: translateY(-12px);
+  }
+}
+
+@media (max-width: 480px) {
+  /* Pricing cards mobile */
+  .gano-card-pricing {
+    padding: 20px 12px;
+  }
+
+  .gano-card-pricing--featured {
+    transform: translateY(-4px);
+  }
+
+  .gano-card-pricing__name {
+    font-size: 1.125rem;
+  }
+
+  .gano-card-pricing__price strong {
+    font-size: 1.75rem;
+  }
+
+  .gano-keycap {
+    font-size: 0.5625rem;
+    padding: 4px 8px;
+  }
+
+  /* Product cards mobile */
+  .gano-card-product {
+    padding: 20px 16px 16px;
+    gap: 12px;
+  }
+
+  .gano-card-product__icon {
+    font-size: 1.5rem;
+  }
+
+  .gano-card-product__title {
+    font-size: 1.125rem;
+  }
+
+  .gano-card-product__price strong {
+    font-size: 1.375rem;
+  }
+
+  .gano-card-product:hover {
+    transform: translateY(-8px);
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .gano-card-pricing,
+  .gano-card-pricing--featured,
+  .gano-card-product,
+  .gano-card-product::before,
+  .gano-card-product__icon {
+    transition: none;
+  }
+
+  .gano-card-pricing--featured,
+  .gano-card-pricing:hover,
+  .gano-card-product:hover,
+  .gano-card-product:hover .gano-card-product__icon {
+    transform: none;
+  }
+}
+
+/* Dark mode overrides if needed (inherits from design-tokens) */
+[data-theme="dark"] .gano-card-pricing {
+  background-color: var(--gano-bg);
+  border-color: var(--gano-border);
+  color: var(--gano-text);
+}
+
+[data-theme="dark"] .gano-card-product {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(27, 79, 216, 0.15);
+}

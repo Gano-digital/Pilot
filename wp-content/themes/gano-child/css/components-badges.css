@@ -1,0 +1,132 @@
+/* Keycap Component */
+.gano-keycap {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: var(--gano-fw-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    transition: all var(--motion-fast) cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+}
+
+/* Keycap Variants */
+.gano-keycap--gold {
+    background-color: var(--gano-color-accent, #D4AF37);
+    color: var(--gano-bg-dark, #0F1115);
+}
+
+.gano-keycap--primary {
+    background-color: var(--gano-blue, #1B4FD8);
+    color: white;
+}
+
+.gano-keycap--secondary {
+    background-color: var(--gano-green, #00C26B);
+    color: white;
+}
+
+.gano-keycap--accent {
+    background-color: var(--gano-orange, #FF6B35);
+    color: white;
+}
+
+/* Keycap Sizes */
+.gano-keycap--xs {
+    padding: 2px 8px;
+    font-size: 0.65rem;
+}
+
+.gano-keycap--sm {
+    padding: 4px 12px;
+    font-size: 0.75rem;
+}
+
+.gano-keycap--md {
+    padding: 6px 16px;
+    font-size: 0.875rem;
+}
+
+/* Keycap Icons */
+.gano-keycap i {
+    font-size: 0.875em;
+}
+
+/* Badge Component */
+.gano-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: var(--gano-fw-semibold);
+    transition: all var(--motion-normal) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Badge Types */
+.gano-badge--primary {
+    background-color: var(--gano-blue, #1B4FD8);
+    color: white;
+}
+
+.gano-badge--success {
+    background-color: var(--gano-green, #00C26B);
+    color: white;
+}
+
+.gano-badge--warning {
+    background-color: #FFA500;
+    color: white;
+}
+
+.gano-badge--error {
+    background-color: #EF4444;
+    color: white;
+}
+
+.gano-badge--info {
+    background-color: #3B82F6;
+    color: white;
+}
+
+/* Badge Count */
+.gano-badge__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 9px;
+    font-weight: var(--gano-fw-bold);
+    font-size: 0.75em;
+}
+
+/* Badge Pulse Animation */
+.gano-badge--pulse {
+    animation: gano-badge-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes gano-badge-pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 currentColor;
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .gano-keycap,
+    .gano-badge,
+    .gano-badge--pulse {
+        transition: none;
+        animation: none;
+    }
+}

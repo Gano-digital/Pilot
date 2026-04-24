@@ -1,0 +1,184 @@
+/* Monolith Panel Component */
+.gano-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+    border-radius: var(--gano-radius-lg, 12px);
+    transition: all var(--motion-normal) cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+/* Panel Default Variant */
+.gano-panel--default {
+    background-color: var(--gano-surface, #FFFFFF);
+    border: 1px solid var(--gano-border, #E5E7EB);
+    color: var(--gano-text, #1F2937);
+    box-shadow: var(--gano-shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
+}
+
+.gano-panel--default:hover {
+    box-shadow: var(--gano-shadow-md, 0 4px 6px rgba(0, 0, 0, 0.1));
+    transform: translateY(-2px);
+}
+
+/* Panel Highlight Variant (featured SOTA style) */
+.gano-panel--highlight {
+    background: linear-gradient(135deg, rgba(27, 79, 216, 0.1), rgba(0, 194, 107, 0.1));
+    border: 2px solid var(--gano-blue, #1B4FD8);
+    color: var(--gano-text, #1F2937);
+    box-shadow: var(--gano-shadow-md, 0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.gano-panel--highlight:hover {
+    box-shadow: var(--gano-shadow-lg, 0 10px 15px rgba(0, 0, 0, 0.1));
+    transform: translateY(-4px);
+    border-color: var(--gano-green, #00C26B);
+}
+
+/* Panel Dark Variant (SOTA hub background) */
+.gano-panel--dark {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--gano-text-dark, #FFFFFF);
+    backdrop-filter: blur(10px);
+}
+
+.gano-panel--dark:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Panel Featured State */
+.gano-panel--featured {
+    position: relative;
+    z-index: 1;
+    transform: scale(1.02);
+}
+
+.gano-panel--featured::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    background: linear-gradient(135deg, var(--gano-gold, #D4AF37), var(--gano-blue, #1B4FD8));
+    border-radius: var(--gano-radius-lg, 12px);
+    z-index: -1;
+    opacity: 0.3;
+}
+
+/* Panel Accent Bar (bottom) */
+.gano-panel__accent {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gano-gold, #D4AF37), var(--gano-blue, #1B4FD8), var(--gano-green, #00C26B));
+    border-radius: 0 0 var(--gano-radius-lg, 12px) var(--gano-radius-lg, 12px);
+}
+
+/* Panel Icon */
+.gano-panel__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+    border-radius: var(--gano-radius-md, 8px);
+    background-color: var(--gano-blue, #1B4FD8);
+    color: white;
+    font-size: 1.5rem;
+    transition: all var(--motion-fast) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gano-panel:hover .gano-panel__icon {
+    background-color: var(--gano-green, #00C26B);
+    transform: rotate(-5deg) scale(1.1);
+}
+
+/* Panel Content */
+.gano-panel__content {
+    flex-grow: 1;
+    margin-bottom: 16px;
+}
+
+/* Panel Title */
+.gano-panel__title {
+    margin: 0 0 8px 0;
+    font-size: 1.25rem;
+    font-weight: var(--gano-fw-bold);
+    line-height: var(--gano-lh-tight);
+}
+
+/* Panel Text */
+.gano-panel__text {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: var(--gano-lh-relaxed);
+    opacity: 0.85;
+}
+
+/* Panel CTA */
+.gano-panel__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    color: var(--gano-blue, #1B4FD8);
+    text-decoration: none;
+    font-weight: var(--gano-fw-semibold);
+    transition: all var(--motion-fast) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gano-panel__cta:hover {
+    color: var(--gano-green, #00C26B);
+    transform: translateX(4px);
+}
+
+.gano-panel__cta i {
+    font-size: 0.85em;
+    transition: transform var(--motion-fast) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gano-panel__cta:hover i {
+    transform: translateX(4px);
+}
+
+/* Panel Footer */
+.gano-panel__footer {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+.gano-panel--dark .gano-panel__footer {
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .gano-panel {
+        padding: 24px;
+    }
+
+    .gano-panel--featured {
+        transform: scale(1);
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .gano-panel,
+    .gano-panel__icon,
+    .gano-panel__cta {
+        transition: none;
+        animation: none;
+    }
+}

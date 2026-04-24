@@ -1,0 +1,193 @@
+/* ============================================================================
+   Button Component Styles
+   ============================================================================ */
+
+/* Base Button */
+.gano-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--gano-radius-md);
+  font-family: var(--gano-font-body);
+  font-weight: var(--gano-fw-semibold);
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--motion-normal) var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+
+.gano-btn:focus {
+  outline: 3px solid var(--gano-gold);
+  outline-offset: 2px;
+}
+
+.gano-btn:disabled,
+.gano-btn[aria-disabled="true"] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Size Variants */
+.gano-btn--sm {
+  padding: 8px 16px;
+  font-size: 0.875rem;
+}
+
+.gano-btn--lg {
+  padding: 16px 32px;
+  font-size: 1.125rem;
+}
+
+/* ============================================================================
+   Light Mode Variants
+   ============================================================================ */
+
+/* Primary (Light) - Blue */
+.gano-btn--primary.gano-btn--light {
+  background-color: var(--gano-blue);
+  color: white;
+}
+
+.gano-btn--primary.gano-btn--light:hover {
+  background-color: #1740A0;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(23, 64, 160, 0.25);
+}
+
+.gano-btn--primary.gano-btn--light:active {
+  transform: translateY(0);
+}
+
+/* CTA (Light) - Orange */
+.gano-btn--cta.gano-btn--light {
+  background-color: var(--gano-orange);
+  color: white;
+}
+
+.gano-btn--cta.gano-btn--light:hover {
+  background-color: #E67E22;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(230, 126, 34, 0.25);
+}
+
+.gano-btn--cta.gano-btn--light:active {
+  transform: translateY(0);
+}
+
+/* Secondary (Light) - Gray */
+.gano-btn--secondary.gano-btn--light {
+  background-color: var(--gano-gray-100);
+  color: var(--gano-gray-900);
+}
+
+.gano-btn--secondary.gano-btn--light:hover {
+  background-color: var(--gano-gray-200);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.gano-btn--secondary.gano-btn--light:active {
+  transform: translateY(0);
+}
+
+/* Outline (Light) - Blue */
+.gano-btn--outline.gano-btn--light {
+  background-color: transparent;
+  color: var(--gano-blue);
+  border: 2px solid var(--gano-blue);
+}
+
+.gano-btn--outline.gano-btn--light:hover {
+  background-color: var(--gano-blue);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.gano-btn--outline.gano-btn--light:active {
+  transform: translateY(0);
+}
+
+/* ============================================================================
+   Dark Mode Variants
+   ============================================================================ */
+
+/* Primary (Dark) - Blue Gradient */
+.gano-btn--primary.gano-btn--dark {
+  background: linear-gradient(135deg, var(--gano-blue), #4F81FF);
+  color: white;
+  border-radius: var(--gano-radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.gano-btn--primary.gano-btn--dark:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(23, 64, 160, 0.3);
+}
+
+.gano-btn--primary.gano-btn--dark:active {
+  transform: translateY(0);
+}
+
+/* Ghost (Dark) - Gold Border */
+.gano-btn--ghost.gano-btn--dark {
+  background-color: transparent;
+  color: var(--gano-gold);
+  border: 2px solid var(--gano-gold);
+  border-radius: var(--gano-radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.gano-btn--ghost.gano-btn--dark:hover {
+  background-color: rgba(212, 175, 55, 0.1);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  transform: translateY(-2px);
+}
+
+.gano-btn--ghost.gano-btn--dark:active {
+  transform: translateY(0);
+}
+
+/* Gold (Dark) - Filled */
+.gano-btn--gold.gano-btn--dark {
+  background-color: var(--gano-gold);
+  color: #05070A;
+  border-radius: var(--gano-radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: var(--gano-fw-bold);
+}
+
+.gano-btn--gold.gano-btn--dark:hover {
+  background-color: #E5C158;
+  box-shadow: 0 12px 24px rgba(212, 175, 55, 0.4);
+  transform: translateY(-2px);
+}
+
+.gano-btn--gold.gano-btn--dark:active {
+  transform: translateY(0);
+}
+
+/* ============================================================================
+   Accessibility
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .gano-btn {
+    transition: none;
+  }
+
+  .gano-btn:hover {
+    transform: none;
+  }
+
+  .gano-btn:active {
+    transform: none;
+  }
+}
