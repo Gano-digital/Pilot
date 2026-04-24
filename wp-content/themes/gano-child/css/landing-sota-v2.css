@@ -1,0 +1,1111 @@
+/* ============================================================================
+   GANO DIGITAL — LANDING SOTA V2
+   Scoped to .gano-landing-sota to avoid collisions with parent theme.
+   Extracted from gano-digital-landing.html
+   ========================================================================== */
+
+:root {
+  --bg-void: #050508;
+  --bg-surface: #0a0a0f;
+  --bg-elevated: #111118;
+  --bg-card: #16161f;
+  --border-subtle: #1e1e2e;
+  --border-default: #2a2a3e;
+  --border-active: #3a3a52;
+  --text-primary: #f0f0f5;
+  --text-secondary: #a0a0b0;
+  --text-muted: #606070;
+  --accent-cyan: #00d4aa;
+  --accent-cyan-dim: #00a884;
+  --accent-blue: #3b82f6;
+  --accent-amber: #f59e0b;
+  --accent-red: #ef4444;
+  --gradient-hero: linear-gradient(135deg, #00d4aa 0%, #3b82f6 100%);
+  --gradient-glow: radial-gradient(ellipse at center, rgba(0,212,170,0.15) 0%, transparent 70%);
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-glow: 0 0 40px rgba(0,212,170,0.1);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+.gano-landing-sota,
+.gano-landing-sota *,
+.gano-landing-sota *::before,
+.gano-landing-sota *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.gano-landing-sota {
+  font-family: var(--font-sans);
+  background: var(--bg-void);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.gano-landing-sota ::selection {
+  background: rgba(0,212,170,0.3);
+  color: var(--text-primary);
+}
+
+.gano-landing-sota::-webkit-scrollbar {
+  width: 8px;
+}
+.gano-landing-sota::-webkit-scrollbar-track {
+  background: var(--bg-void);
+}
+.gano-landing-sota::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 4px;
+}
+.gano-landing-sota::-webkit-scrollbar-thumb:hover {
+  background: var(--border-active);
+}
+
+/* ---- UTILITY ---- */
+.gano-landing-sota .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.gano-landing-sota .container-narrow {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.gano-landing-sota .gradient-text {
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gano-landing-sota .mono {
+  font-family: var(--font-mono);
+}
+
+.gano-landing-sota .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid var(--border-default);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+}
+.gano-landing-sota .badge-accent {
+  border-color: rgba(0,212,170,0.3);
+  background: rgba(0,212,170,0.08);
+  color: var(--accent-cyan);
+}
+
+/* ---- ANIMATIONS ---- */
+@keyframes gano-fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes gano-fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes gano-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+@keyframes gano-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes gano-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes gano-gridMove {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(40px); }
+}
+@keyframes gano-spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.gano-landing-sota .animate-in {
+  animation: gano-fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+.gano-landing-sota .delay-1 { animation-delay: 0.1s; }
+.gano-landing-sota .delay-2 { animation-delay: 0.2s; }
+.gano-landing-sota .delay-3 { animation-delay: 0.3s; }
+.gano-landing-sota .delay-4 { animation-delay: 0.4s; }
+.gano-landing-sota .delay-5 { animation-delay: 0.5s; }
+
+/* ---- NAVIGATION ---- */
+.gano-landing-sota .nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 16px 0;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+.gano-landing-sota .nav.scrolled {
+  background: rgba(5,5,8,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom-color: var(--border-subtle);
+  padding: 12px 0;
+}
+.gano-landing-sota .nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.gano-landing-sota .nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+}
+.gano-landing-sota .nav-logo-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--gradient-hero);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+.gano-landing-sota .nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+.gano-landing-sota .nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.2s;
+  position: relative;
+}
+.gano-landing-sota .nav-links a:hover {
+  color: var(--text-primary);
+}
+.gano-landing-sota .nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent-cyan);
+  transition: width 0.3s;
+}
+.gano-landing-sota .nav-links a:hover::after {
+  width: 100%;
+}
+.gano-landing-sota .nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.gano-landing-sota .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.gano-landing-sota .btn-primary {
+  background: var(--gradient-hero);
+  color: #000;
+  box-shadow: 0 4px 20px rgba(0,212,170,0.3);
+}
+.gano-landing-sota .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0,212,170,0.4);
+}
+.gano-landing-sota .btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+}
+.gano-landing-sota .btn-ghost:hover {
+  border-color: var(--border-active);
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+}
+.gano-landing-sota .btn-lg {
+  padding: 14px 32px;
+  font-size: 1rem;
+}
+
+.gano-landing-sota .mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* ---- HERO ---- */
+.gano-landing-sota .hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 140px 0 100px;
+  overflow: hidden;
+}
+.gano-landing-sota .hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.gano-landing-sota .hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,170,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,170,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gano-gridMove 20s linear infinite;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+}
+.gano-landing-sota .hero-glow {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 600px;
+  background: var(--gradient-glow);
+  pointer-events: none;
+}
+.gano-landing-sota .hero-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.gano-landing-sota .particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--accent-cyan);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: gano-float 6s ease-in-out infinite;
+}
+
+.gano-landing-sota .hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+}
+.gano-landing-sota .hero-badge {
+  margin-bottom: 24px;
+}
+.gano-landing-sota .hero-title {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+}
+.gano-landing-sota .hero-title .line {
+  display: block;
+}
+.gano-landing-sota .hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--text-secondary);
+  max-width: 560px;
+  margin-bottom: 40px;
+  line-height: 1.7;
+}
+.gano-landing-sota .hero-ctas {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+.gano-landing-sota .hero-trust {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.gano-landing-sota .trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+.gano-landing-sota .trust-item i {
+  color: var(--accent-cyan);
+  font-size: 1rem;
+}
+
+.gano-landing-sota .hero-visual {
+  position: absolute;
+  right: -5%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 550px;
+  height: 550px;
+  z-index: 1;
+  pointer-events: none;
+}
+.gano-landing-sota .server-rack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.gano-landing-sota .rack-unit {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  height: 50px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+.gano-landing-sota .rack-unit::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 10px var(--accent-cyan);
+  animation: gano-pulse 2s infinite;
+}
+.gano-landing-sota .rack-unit .bar {
+  flex: 1;
+  height: 4px;
+  background: var(--border-subtle);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.gano-landing-sota .rack-unit .bar-fill {
+  height: 100%;
+  background: var(--gradient-hero);
+  border-radius: 2px;
+  animation: gano-shimmer 3s infinite;
+  background-size: 200% 100%;
+}
+.gano-landing-sota .rack-unit:nth-child(1) { top: 15%; }
+.gano-landing-sota .rack-unit:nth-child(2) { top: 30%; }
+.gano-landing-sota .rack-unit:nth-child(3) { top: 45%; }
+.gano-landing-sota .rack-unit:nth-child(4) { top: 60%; }
+.gano-landing-sota .rack-unit:nth-child(5) { top: 75%; }
+
+.gano-landing-sota .connection-lines {
+  position: absolute;
+  inset: 0;
+}
+.gano-landing-sota .conn-line {
+  position: absolute;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--accent-cyan), transparent);
+  opacity: 0.2;
+}
+
+/* ---- SECTIONS ---- */
+.gano-landing-sota .section {
+  padding: 100px 0;
+  position: relative;
+}
+.gano-landing-sota .section-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 64px;
+}
+.gano-landing-sota .section-label {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 16px;
+}
+.gano-landing-sota .section-title {
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+.gano-landing-sota .section-desc {
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+
+/* ---- SOTA BANNER ---- */
+.gano-landing-sota .sota-banner {
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 60px 0;
+}
+.gano-landing-sota .sota-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.gano-landing-sota .sota-text h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.gano-landing-sota .sota-text p {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1rem;
+}
+.gano-landing-sota .sota-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.gano-landing-sota .sota-stat {
+  text-align: center;
+  padding: 24px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+.gano-landing-sota .sota-stat-value {
+  font-family: var(--font-mono);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  margin-bottom: 4px;
+}
+.gano-landing-sota .sota-stat-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ---- PILARS ---- */
+.gano-landing-sota .pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.gano-landing-sota .pillar-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.gano-landing-sota .pillar-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-hero);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+.gano-landing-sota .pillar-card:hover {
+  border-color: var(--border-active);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.gano-landing-sota .pillar-card:hover::before {
+  transform: scaleX(1);
+}
+.gano-landing-sota .pillar-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--accent-cyan);
+  margin-bottom: 20px;
+}
+.gano-landing-sota .pillar-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.gano-landing-sota .pillar-desc {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ---- PRICING ---- */
+.gano-landing-sota .pricing-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 48px;
+}
+.gano-landing-sota .pricing-tab {
+  padding: 10px 24px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.gano-landing-sota .pricing-tab.active {
+  background: var(--bg-card);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+.gano-landing-sota .pricing-tab:hover:not(.active) {
+  border-color: var(--border-active);
+  color: var(--text-primary);
+}
+
+.gano-landing-sota .pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.gano-landing-sota .pricing-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 40px 32px;
+  position: relative;
+  transition: all 0.3s;
+}
+.gano-landing-sota .pricing-card:hover {
+  border-color: var(--border-active);
+  transform: translateY(-4px);
+}
+.gano-landing-sota .pricing-card.featured {
+  border-color: var(--accent-cyan);
+  box-shadow: var(--shadow-glow);
+  transform: scale(1.02);
+}
+.gano-landing-sota .pricing-card.featured:hover {
+  transform: scale(1.02) translateY(-4px);
+}
+.gano-landing-sota .pricing-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gradient-hero);
+  color: #000;
+  padding: 4px 16px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.gano-landing-sota .pricing-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.gano-landing-sota .pricing-desc {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+.gano-landing-sota .pricing-price {
+  margin-bottom: 24px;
+}
+.gano-landing-sota .pricing-price .currency {
+  font-size: 1.5rem;
+  font-weight: 700;
+  vertical-align: top;
+  line-height: 1;
+}
+.gano-landing-sota .pricing-price .amount {
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.gano-landing-sota .pricing-price .period {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+.gano-landing-sota .pricing-price .usd {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.gano-landing-sota .pricing-features {
+  list-style: none;
+  margin-bottom: 32px;
+}
+.gano-landing-sota .pricing-features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.gano-landing-sota .pricing-features li:last-child {
+  border-bottom: none;
+}
+.gano-landing-sota .pricing-features li i {
+  color: var(--accent-cyan);
+  font-size: 0.75rem;
+}
+.gano-landing-sota .pricing-features li.muted {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+.gano-landing-sota .pricing-features li.muted i {
+  color: var(--text-muted);
+}
+
+/* ---- DOMAIN SEARCH ---- */
+.gano-landing-sota .domain-section {
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.gano-landing-sota .domain-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: 48px;
+  text-align: center;
+}
+.gano-landing-sota .domain-search {
+  display: flex;
+  gap: 12px;
+  max-width: 600px;
+  margin: 32px auto 0;
+}
+.gano-landing-sota .domain-input {
+  flex: 1;
+  padding: 14px 20px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.gano-landing-sota .domain-input:focus {
+  border-color: var(--accent-cyan);
+}
+.gano-landing-sota .domain-input::placeholder {
+  color: var(--text-muted);
+}
+.gano-landing-sota .domain-tlds {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.gano-landing-sota .tld-tag {
+  padding: 6px 16px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.gano-landing-sota .tld-tag .price {
+  color: var(--accent-cyan);
+  margin-left: 6px;
+}
+
+/* ---- TESTIMONIALS ---- */
+.gano-landing-sota .testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.gano-landing-sota .testimonial-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  position: relative;
+}
+.gano-landing-sota .testimonial-card::before {
+  content: '"';
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  font-size: 4rem;
+  color: var(--border-default);
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+.gano-landing-sota .testimonial-text {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+.gano-landing-sota .testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.gano-landing-sota .testimonial-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--gradient-hero);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: #000;
+}
+.gano-landing-sota .testimonial-name {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+.gano-landing-sota .testimonial-role {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.gano-landing-sota .stars {
+  color: var(--accent-amber);
+  font-size: 0.8rem;
+  margin-bottom: 12px;
+}
+
+/* ---- SERVICES ---- */
+.gano-landing-sota .services-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.gano-landing-sota .service-row {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 24px;
+  align-items: center;
+  padding: 28px 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.gano-landing-sota .service-row:hover {
+  border-color: var(--border-active);
+  background: var(--bg-elevated);
+}
+.gano-landing-sota .service-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--accent-cyan);
+}
+.gano-landing-sota .service-info h4 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.gano-landing-sota .service-info p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+.gano-landing-sota .service-arrow {
+  color: var(--text-muted);
+  transition: color 0.2s, transform 0.2s;
+}
+.gano-landing-sota .service-row:hover .service-arrow {
+  color: var(--accent-cyan);
+  transform: translateX(4px);
+}
+
+/* ---- NEWSLETTER ---- */
+.gano-landing-sota .newsletter-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: 64px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.gano-landing-sota .newsletter-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--gradient-hero);
+}
+.gano-landing-sota .newsletter-form {
+  display: flex;
+  gap: 12px;
+  max-width: 480px;
+  margin: 32px auto 0;
+}
+.gano-landing-sota .newsletter-input {
+  flex: 1;
+  padding: 14px 20px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+}
+.gano-landing-sota .newsletter-input:focus {
+  border-color: var(--accent-cyan);
+}
+
+/* ---- FOOTER ---- */
+.gano-landing-sota .footer {
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+  padding: 80px 0 40px;
+}
+.gano-landing-sota .footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 64px;
+}
+.gano-landing-sota .footer-brand {
+  max-width: 300px;
+}
+.gano-landing-sota .footer-brand .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+.gano-landing-sota .footer-brand p {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+.gano-landing-sota .footer-col h4 {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+.gano-landing-sota .footer-col ul {
+  list-style: none;
+}
+.gano-landing-sota .footer-col li {
+  margin-bottom: 10px;
+}
+.gano-landing-sota .footer-col a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s;
+}
+.gano-landing-sota .footer-col a:hover {
+  color: var(--accent-cyan);
+}
+.gano-landing-sota .footer-bottom {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.gano-landing-sota .footer-bottom p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.gano-landing-sota .footer-social {
+  display: flex;
+  gap: 16px;
+}
+.gano-landing-sota .footer-social a {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.gano-landing-sota .footer-social a:hover {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  transform: translateY(-2px);
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 1024px) {
+  .gano-landing-sota .hero-visual {
+    display: none;
+  }
+  .gano-landing-sota .pillars-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .gano-landing-sota .pricing-grid {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .gano-landing-sota .pricing-card.featured {
+    transform: none;
+    order: -1;
+  }
+  .gano-landing-sota .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+  .gano-landing-sota .sota-inner {
+    grid-template-columns: 1fr;
+  }
+  .gano-landing-sota .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .gano-landing-sota .nav-links,
+  .gano-landing-sota .nav-cta .btn-ghost {
+    display: none;
+  }
+  .gano-landing-sota .mobile-toggle {
+    display: block;
+  }
+  .gano-landing-sota .hero {
+    padding: 120px 0 80px;
+    text-align: center;
+  }
+  .gano-landing-sota .hero-subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .gano-landing-sota .hero-ctas {
+    justify-content: center;
+  }
+  .gano-landing-sota .hero-trust {
+    justify-content: center;
+  }
+  .gano-landing-sota .pillars-grid {
+    grid-template-columns: 1fr;
+  }
+  .gano-landing-sota .sota-stats {
+    grid-template-columns: 1fr;
+  }
+  .gano-landing-sota .domain-search,
+  .gano-landing-sota .newsletter-form {
+    flex-direction: column;
+  }
+  .gano-landing-sota .service-row {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 16px;
+  }
+  .gano-landing-sota .service-icon {
+    margin: 0 auto;
+  }
+  .gano-landing-sota .service-arrow {
+    display: none;
+  }
+  .gano-landing-sota .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .gano-landing-sota .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* ---- SCROLL REVEAL ---- */
+.gano-landing-sota .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.gano-landing-sota .reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

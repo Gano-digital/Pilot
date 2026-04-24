@@ -384,29 +384,32 @@ function gano_child_enqueue_styles() {
     wp_enqueue_style( 'gano-child-style', get_stylesheet_uri(), array( 'royal-elementor-kit-parent' ), wp_get_theme()->get( 'Version' ) );
 
     // Homepage SOTA — solo en front page
+    /* -------------------------------------------------------------------------
+       Landing SOTA v2 — reemplazo completo de front-page.php
+       ---------------------------------------------------------------------- */
     if ( is_front_page() ) {
-        $homepage_css_path = get_stylesheet_directory() . '/css/homepage.css';
-        $homepage_css_ver  = file_exists( $homepage_css_path ) ? (string) filemtime( $homepage_css_path ) : wp_get_theme()->get( 'Version' );
-        wp_enqueue_style( 'gano-homepage-css', get_stylesheet_directory_uri() . '/css/homepage.css', array( 'gano-child-style' ), $homepage_css_ver );
+        // CSS landing SOTA v2
+        $landing_css_path = get_stylesheet_directory() . '/css/landing-sota-v2.css';
+        $landing_css_ver  = file_exists( $landing_css_path ) ? (string) filemtime( $landing_css_path ) : wp_get_theme()->get( 'Version' );
+        wp_enqueue_style( 'gano-landing-sota-v2', get_stylesheet_directory_uri() . '/css/landing-sota-v2.css', array( 'gano-child-style' ), $landing_css_ver );
 
-        $homepage_js_path = get_stylesheet_directory() . '/js/gano-homepage.js';
-        $homepage_js_ver  = file_exists( $homepage_js_path ) ? (string) filemtime( $homepage_js_path ) : wp_get_theme()->get( 'Version' );
+        // JS landing SOTA v2
+        $landing_js_path = get_stylesheet_directory() . '/js/landing-sota-v2.js';
+        $landing_js_ver  = file_exists( $landing_js_path ) ? (string) filemtime( $landing_js_path ) : wp_get_theme()->get( 'Version' );
         wp_enqueue_script(
-            'gano-homepage-js',
-            get_stylesheet_directory_uri() . '/js/gano-homepage.js',
+            'gano-landing-sota-v2-js',
+            get_stylesheet_directory_uri() . '/js/landing-sota-v2.js',
             array(),
-            $homepage_js_ver,
+            $landing_js_ver,
             true
         );
-        wp_localize_script(
-            'gano-homepage-js',
-            'ganoHomepageConfig',
-            array(
-                'leadEndpoint' => rest_url( 'gano/v1/lead-capture' ),
-            )
-        );
-        if ( function_exists( 'gano_content_atlas_enqueue_assets' ) ) {
-            gano_content_atlas_enqueue_assets();
+
+        // Ocultar header del tema padre (royal-elementor-kit) en landing
+        wp_add_inline_style( 'gano-child-style', '#site-header { display: none !important; }' );
+
+        // Font Awesome 6.5.1 si no está cargado por otro plugin/tema
+        if ( ! wp_script_is( 'font-awesome', 'enqueued' ) && ! wp_script_is( 'fontawesome', 'enqueued' ) ) {
+            wp_enqueue_style( 'font-awesome-6', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css', array(), '6.5.1' );
         }
     }
 
