@@ -2451,3 +2451,61 @@ add_filter( 'rstore_product_text_cart', function() {
 add_filter( 'rstore_product_text_more', function() {
 	return esc_html__( 'Más información', 'gano-child' );
 });
+
+/**
+ * Display Gano Digital logo
+ *
+ * @param string $type 'light' or 'dark' (default: 'light')
+ * @param string $size 'sm', 'md', 'lg' (default: 'md')
+ * @return string SVG or img HTML
+ */
+function gano_logo($type = 'light', $size = 'md') {
+	$logo_url = '';
+
+	if ($type === 'dark') {
+		$logo_url = get_stylesheet_directory_uri() . '/assets/logo-gano-dark.svg';
+	} else {
+		$logo_url = get_stylesheet_directory_uri() . '/assets/logo-gano.svg';
+	}
+
+	$sizes = [
+		'sm' => '32px',
+		'md' => '48px',
+		'lg' => '64px'
+	];
+
+	$height = $sizes[$size] ?? $sizes['md'];
+
+	return sprintf(
+		'<img src="%s" alt="Gano Digital" class="gano-logo gano-logo--%s gano-logo--%s" height="%s" loading="lazy" />',
+		esc_url($logo_url),
+		esc_attr($type),
+		esc_attr($size),
+		esc_attr($height)
+	);
+}
+
+/**
+ * Display Gano mark (symbol only)
+ *
+ * @param string $size 'sm', 'md', 'lg'
+ * @return string SVG HTML
+ */
+function gano_logo_mark($size = 'md') {
+	$logo_url = get_stylesheet_directory_uri() . '/assets/logo-mark.svg';
+
+	$sizes = [
+		'sm' => '24px',
+		'md' => '32px',
+		'lg' => '48px'
+	];
+
+	$height = $sizes[$size] ?? $sizes['md'];
+
+	return sprintf(
+		'<img src="%s" alt="Gano" class="gano-logo-mark gano-logo-mark--%s" height="%s" loading="lazy" />',
+		esc_url($logo_url),
+		esc_attr($size),
+		esc_attr($height)
+	);
+}

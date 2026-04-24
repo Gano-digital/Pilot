@@ -2940,3 +2940,68 @@ select:focus-visible {
     .gano-skeleton { animation: none; }
 }
 /* END: SKELETON LOADERS */
+
+/* START: LOGO DISPLAY */
+.gano-logo {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    transition: filter var(--motion-fast) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gano-logo--light {
+    /* Light mode colors */
+}
+
+.gano-logo--dark {
+    /* Dark mode colors */
+    filter: brightness(1.1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.1));
+}
+
+.gano-logo--sm {
+    height: 32px;
+}
+
+.gano-logo--md {
+    height: 48px;
+}
+
+.gano-logo--lg {
+    height: 64px;
+}
+
+/* Logo Mark */
+.gano-logo-mark {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.gano-logo-mark--sm {
+    height: 24px;
+}
+
+.gano-logo-mark--md {
+    height: 32px;
+}
+
+.gano-logo-mark--lg {
+    height: 48px;
+}
+
+/* Header Logo */
+.site-header .gano-logo {
+    max-height: 64px;
+}
+
+/* Footer Logo */
+.site-footer .gano-logo {
+    max-height: 48px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gano-logo {
+        transition: none;
+    }
+}
+/* END: LOGO DISPLAY */
