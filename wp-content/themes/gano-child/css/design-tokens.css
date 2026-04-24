@@ -1,0 +1,223 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+/* ============================================================================
+   DESIGN TOKENS
+   ============================================================================
+
+   Complete CSS custom properties system for Gano Digital design system.
+   Includes colors, typography, spacing, motion, shadows, and easing functions.
+   Organized for light mode (:root) and dark mode ([data-theme="dark"]).
+
+   Usage: Use var(--gano-*) throughout component CSS files.
+   ========================================================================== */
+
+/* ============================================================================
+   LIGHT MODE - ROOT TOKENS (DEFAULT)
+   ========================================================================== */
+
+:root {
+  /* --------- COLOR PALETTE - PRIMARY --------- */
+  --gano-blue: #1B4FD8;
+  --gano-green: #00C26B;
+  --gano-orange: #FF6B35;
+  --gano-gold: #D4AF37;
+
+  /* --------- COLOR PALETTE - NEUTRALS --------- */
+  --gano-white: #FFFFFF;
+  --gano-gray-50: #F9FAFB;
+  --gano-gray-100: #F3F4F6;
+  --gano-gray-200: #E5E7EB;
+  --gano-gray-300: #D1D5DB;
+  --gano-gray-400: #9CA3AF;
+  --gano-gray-500: #6B7280;
+  --gano-gray-600: #4B5563;
+  --gano-gray-700: #374151;
+  --gano-gray-800: #1F2937;
+  --gano-gray-900: #111827;
+
+  /* --------- SEMANTIC COLORS - LIGHT MODE --------- */
+  --gano-bg: #FFFFFF;
+  --gano-bg-secondary: #F9FAFB;
+  --gano-text: #111827;
+  --gano-text-secondary: #6B7280;
+  --gano-surface: #F3F4F6;
+  --gano-border: #E5E7EB;
+  --gano-color-accent: #D4AF37;
+
+  /* --------- TYPOGRAPHY - FONT FAMILIES --------- */
+  --gano-font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --gano-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --gano-font-mono: 'JetBrains Mono', 'Monaco', 'Courier New', monospace;
+
+  /* --------- TYPOGRAPHY - FONT WEIGHTS --------- */
+  --gano-fw-regular: 400;
+  --gano-fw-semibold: 600;
+  --gano-fw-bold: 700;
+  --gano-fw-extrabold: 800;
+
+  /* --------- TYPOGRAPHY - LINE HEIGHTS --------- */
+  --gano-lh-tight: 1.2;
+  --gano-lh-snug: 1.375;
+  --gano-lh-base: 1.5;
+  --gano-lh-relaxed: 1.75;
+
+  /* --------- SPACING SCALE --------- */
+  --gano-space-xs: 4px;
+  --gano-space-sm: 8px;
+  --gano-space-md: 16px;
+  --gano-space-lg: 24px;
+  --gano-space-xl: 32px;
+  --gano-space-2xl: 48px;
+
+  /* --------- BORDER RADII --------- */
+  --gano-radius-sm: 6px;
+  --gano-radius-md: 8px;
+  --gano-radius-lg: 12px;
+  --gano-radius-xl: 20px;
+  --gano-radius-pill: 50px;
+
+  /* --------- SHADOWS --------- */
+  --gano-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --gano-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --gano-shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.2);
+  --gano-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.25);
+
+  /* --------- MOTION TOKENS --------- */
+  --motion-fast: 150ms;
+  --motion-normal: 220ms;
+  --motion-slow: 400ms;
+
+  /* --------- EASING FUNCTIONS --------- */
+  --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ============================================================================
+   DARK MODE TOKENS
+   ========================================================================== */
+
+[data-theme="dark"] {
+  /* --------- SEMANTIC COLORS - DARK MODE --------- */
+  --gano-bg: #0F1115;
+  --gano-bg-secondary: #1A1E27;
+  --gano-bg-darker: #05080C;
+  --gano-text: #FFFFFF;
+  --gano-text-secondary: #A0A4B8;
+  --gano-surface: #1A1E27;
+  --gano-border: #2D3139;
+  --gano-color-accent: #D4AF37;
+
+  /* Dark mode adjusts shadows for better contrast */
+  --gano-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --gano-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --gano-shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.5);
+  --gano-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* ============================================================================
+   ROOT ELEMENT DEFAULTS
+   ========================================================================== */
+
+html {
+  font-family: var(--gano-font-body);
+  font-size: 16px;
+  line-height: var(--gano-lh-base);
+  color: var(--gano-text);
+  background-color: var(--gano-bg);
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================================
+   HEADING DEFAULTS
+   ========================================================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--gano-font-display);
+  font-weight: var(--gano-fw-bold);
+  line-height: var(--gano-lh-snug);
+  margin-top: 0;
+  margin-bottom: var(--gano-space-md);
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+h5 {
+  font-size: 1.125rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+/* ============================================================================
+   CODE & INLINE CODE DEFAULTS
+   ========================================================================== */
+
+code,
+pre {
+  font-family: var(--gano-font-mono);
+  font-size: 0.875em;
+}
+
+code {
+  background-color: var(--gano-surface);
+  padding: var(--gano-space-xs) var(--gano-space-sm);
+  border-radius: var(--gano-radius-sm);
+}
+
+pre {
+  background-color: var(--gano-surface);
+  padding: var(--gano-space-md);
+  border-radius: var(--gano-radius-md);
+  overflow-x: auto;
+}
+
+pre code {
+  padding: 0;
+  background-color: transparent;
+}
+
+/* ============================================================================
+   ACCESSIBILITY - PREFERS REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
