@@ -82,6 +82,25 @@ function gano_enqueue_premium_styles() {
         array(),
         '1.0.0'
     );
+
+    // JS de Pre-registro (Lead capture)
+    $pr_js_path = get_stylesheet_directory() . '/js/gano-pre-registro.js';
+    wp_enqueue_script(
+        'gano-pre-registro',
+        get_stylesheet_directory_uri() . '/js/gano-pre-registro.js',
+        array(),
+        file_exists( $pr_js_path ) ? (string) filemtime( $pr_js_path ) : '1.0.0',
+        true
+    );
+
+    wp_localize_script(
+        'gano-pre-registro',
+        'gano_vars',
+        array(
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'nonce'    => wp_create_nonce( 'gano_pre_registro_nonce' ),
+        )
+    );
 }
 
 // =============================================================================
@@ -114,6 +133,44 @@ function gano_enqueue_status_hud(): void {
 }
 
 add_action( 'wp_footer', 'gano_render_status_hud', 20 );
+
+// =============================================================================
+// PRE-REGISTRO AJAX HANDLER (Lead Capture)
+// =============================================================================
+add_action( 'wp_ajax_gano_pre_registro', 'gano_handle_pre_registro' );
+add_action( 'wp_ajax_nopriv_gano_pre_registro', 'gano_handle_pre_registro' );
+function gano_handle_pre_registro() {
+    check_ajax_referer( 'gano_pre_registro_nonce', 'nonce' );
+
+    // wp_unslash antes de sanitizar (WordPress añade magic quotes a $_POST)
+    $raw_name  = wp_unslash( $_POST['gano_name'] ?? '' );
+    $raw_email = wp_unslash( $_POST['gano_email'] ?? '' );
+
+    $name  = sanitize_text_field( $raw_name );
+    $email = sanitize_email( $raw_email );
+
+    if ( empty( $email ) ) {
+        wp_send_json_error( 'El email es obligatorio.' );
+    }
+
+    $leads = (array) get_option( 'gano_leads', array() );
+    $leads[] = array(
+        'name'  => $name,
+        'email' => $email,
+        'time'  => current_time( 'mysql' ),
+        'ip'    => sanitize_text_field( $_SERVER['REMOTE_ADDR'] ?? '' ),
+        'plan'  => 'Interés General (SOTA Hub)',
+    );
+
+    // Limitar a 500 leads para evitar crecimiento infinito de wp_options
+    if ( count( $leads ) > 500 ) {
+        $leads = array_slice( $leads, -500 );
+    }
+
+    update_option( 'gano_leads', $leads );
+
+    wp_send_json_success( 'Lead capturado con éxito.' );
+}
 
 // =============================================================================
 // 0.4 URL HELPERS — slugs comerciales (catálogo, contacto, esta página, etc.)
