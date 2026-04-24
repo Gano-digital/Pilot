@@ -2509,3 +2509,91 @@ function gano_logo_mark($size = 'md') {
 		esc_attr($height)
 	);
 }
+
+/**
+ * Initialize theme toggle functionality
+ * Detects user preference via prefers-color-scheme and localStorage
+ */
+function gano_init_theme_toggle() {
+	?>
+	<script>
+	// Theme toggle initialization
+	(function() {
+		const THEME_KEY = 'gano-theme-preference';
+		const DARK_PREFERENCE = '(prefers-color-scheme: dark)';
+
+		// Get saved preference or system preference
+		function getThemePreference() {
+			const saved = localStorage.getItem(THEME_KEY);
+			if (saved) return saved;
+
+			return window.matchMedia(DARK_PREFERENCE).matches ? 'dark' : 'light';
+		}
+
+		// Apply theme to document
+		function applyTheme(theme) {
+			document.documentElement.setAttribute('data-theme', theme);
+			localStorage.setItem(THEME_KEY, theme);
+		}
+
+		// Initialize on page load
+		applyTheme(getThemePreference());
+
+		// Listen for system preference changes
+		window.matchMedia(DARK_PREFERENCE).addListener(e => {
+			const current = localStorage.getItem(THEME_KEY);
+			if (!current) {
+				applyTheme(e.matches ? 'dark' : 'light');
+			}
+		});
+
+		// Expose toggle function globally
+		window.ganoToggleTheme = function(theme) {
+			if (theme !== 'light' && theme !== 'dark') {
+				theme = localStorage.getItem(THEME_KEY) === 'dark' ? 'light' : 'dark';
+			}
+			applyTheme(theme);
+
+			// Trigger custom event for components to react
+			window.dispatchEvent(new CustomEvent('gano-theme-changed', { detail: { theme } }));
+		};
+	})();
+	</script>
+	<?php
+}
+add_action('wp_head', 'gano_init_theme_toggle', 1);
+
+/**
+ * Get current theme preference
+ * Returns 'light' or 'dark'
+ */
+function gano_get_current_theme() {
+	return isset($_COOKIE['gano-theme-preference'])
+		? sanitize_text_field($_COOKIE['gano-theme-preference'])
+		: 'light';
+}
+
+/**
+ * Output theme toggle button
+ */
+function gano_theme_toggle_button() {
+	return sprintf(
+		'<button class="gano-theme-toggle" aria-label="Toggle dark mode" onclick="window.ganoToggleTheme()">
+			<i class="fa-solid fa-moon gano-theme-toggle__icon--dark"></i>
+			<i class="fa-solid fa-sun gano-theme-toggle__icon--light"></i>
+		</button>'
+	);
+}
+
+/**
+ * Enqueue theme toggle styles
+ */
+function gano_enqueue_theme_styles() {
+	wp_enqueue_style(
+		'gano-theme-toggle',
+		get_stylesheet_directory_uri() . '/css/theme-toggle.css',
+		[],
+		'1.0.0'
+	);
+}
+add_action('wp_enqueue_scripts', 'gano_enqueue_theme_styles', 5);

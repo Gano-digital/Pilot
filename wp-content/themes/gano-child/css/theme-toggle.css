@@ -1,0 +1,145 @@
+/* Theme Toggle System */
+
+/* Root element theme state */
+:root {
+	--theme-transition: var(--motion-normal, 220ms) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Default light theme (no data-theme or data-theme="light") */
+:root,
+[data-theme="light"] {
+	--gano-bg: #FFFFFF;
+	--gano-bg-secondary: #F8FBFF;
+	--gano-bg-dark: #0F1115;
+
+	--gano-text: #1F2937;
+	--gano-text-secondary: #6B7280;
+	--gano-text-light: #9CA3AF;
+
+	--gano-surface: #FFFFFF;
+	--gano-border: #E5E7EB;
+	--gano-shadow: rgba(0, 0, 0, 0.05);
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+	--gano-bg: #0F1115;
+	--gano-bg-secondary: #1A1F2E;
+	--gano-bg-dark: #050709;
+
+	--gano-text: #FFFFFF;
+	--gano-text-secondary: #D1D5DB;
+	--gano-text-light: #9CA3AF;
+
+	--gano-surface: rgba(255, 255, 255, 0.05);
+	--gano-border: rgba(255, 255, 255, 0.1);
+	--gano-shadow: rgba(0, 0, 0, 0.3);
+
+	/* Color adjustments for dark mode */
+	--gano-blue: #60A5FA;
+	--gano-green: #34D399;
+	--gano-orange: #FB923C;
+	--gano-color-accent: #D4AF37;
+}
+
+/* Theme Toggle Button */
+.gano-theme-toggle {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border: 1px solid var(--gano-border);
+	border-radius: var(--gano-radius-md, 8px);
+	background-color: var(--gano-surface);
+	color: var(--gano-text);
+	cursor: pointer;
+	transition: all var(--theme-transition);
+	padding: 0;
+	font-size: 1rem;
+}
+
+.gano-theme-toggle:hover {
+	background-color: var(--gano-bg-secondary);
+	border-color: var(--gano-text);
+	transform: scale(1.05);
+}
+
+.gano-theme-toggle:active {
+	transform: scale(0.98);
+}
+
+.gano-theme-toggle:focus {
+	outline: 2px solid var(--gano-blue);
+	outline-offset: 2px;
+}
+
+/* Icon states */
+.gano-theme-toggle__icon--dark,
+.gano-theme-toggle__icon--light {
+	position: absolute;
+	transition: opacity var(--theme-transition), transform var(--theme-transition);
+}
+
+.gano-theme-toggle__icon--dark {
+	opacity: 0;
+	transform: rotate(-180deg) scale(0.5);
+}
+
+.gano-theme-toggle__icon--light {
+	opacity: 1;
+	transform: rotate(0) scale(1);
+}
+
+[data-theme="dark"] .gano-theme-toggle__icon--dark {
+	opacity: 1;
+	transform: rotate(0) scale(1);
+}
+
+[data-theme="dark"] .gano-theme-toggle__icon--light {
+	opacity: 0;
+	transform: rotate(180deg) scale(0.5);
+}
+
+/* Smooth transitions for all elements when theme changes */
+body,
+button,
+a,
+div,
+span,
+p,
+h1, h2, h3, h4, h5, h6 {
+	transition: background-color var(--theme-transition),
+				color var(--theme-transition),
+				border-color var(--theme-transition),
+				box-shadow var(--theme-transition);
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+	:root {
+		--theme-transition: none;
+	}
+
+	body,
+	button,
+	a,
+	div,
+	span,
+	p,
+	h1, h2, h3, h4, h5, h6,
+	.gano-theme-toggle,
+	.gano-theme-toggle__icon--dark,
+	.gano-theme-toggle__icon--light {
+		transition: none !important;
+	}
+}
+
+/* Print mode - force light theme */
+@media print {
+	[data-theme="dark"] {
+		--gano-bg: #FFFFFF;
+		--gano-text: #000000;
+	}
+}
