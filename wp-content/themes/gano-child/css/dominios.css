@@ -5,9 +5,9 @@
 
 :root {
     --gc-primary: #1B4FD8;
-    --gc-secondary: #00C26B;
-    --gc-accent: #D4AF37;
-    --gc-dark: #05080b;
+    --gc-secondary: #6366F1;
+    --gc-accent: #4CD7F6;
+    --gc-dark: #05080c;
     --gc-text: #e2e8f0;
     --gc-text-muted: #94a3b8;
 }
@@ -112,7 +112,7 @@
 
 .tld-card:hover {
     transform: translateY(-8px);
-    border-color: #D4AF37;
+    border-color: #4CD7F6;
     background: rgba(255, 255, 255, 0.05);
 }
 

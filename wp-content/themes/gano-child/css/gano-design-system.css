@@ -24,12 +24,13 @@
    ────────────────────────────────────────────────────────────────────────── */
 
 :root {
-  /* Color system (ya definido en style.css, referencia aquí) */
+  /* Color system (Cyber-Cold Palette) */
   --gano-color-primary: var(--gano-blue, #1B4FD8);
-  --gano-color-secondary: var(--gano-green, #00C26B);
-  --gano-color-accent: var(--gano-orange, #FF6B35);
+  --gano-color-secondary: var(--gano-indigo, #6366F1);
+  --gano-color-accent: #4CD7F6; /* Cyan SOTA */
   --gano-color-neutral-dark: var(--gano-dark, #0F1923);
   --gano-color-surface: #FFFFFF;
+
 
   /* Spacing scale (8-point grid) */
   --gano-space-1: 0.25rem;   /* 4px */

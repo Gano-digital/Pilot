@@ -104,20 +104,19 @@ get_header();
     </div>
 
     <!-- FOOTER CTA -->
-    <section class="footer-cta">
-      <div class="container">
-        <h2>¿Tienes dudas sobre qué plan elegir?</h2>
-        <p>Un ingeniero SOTA te asesora sin costo. Respuesta en menos de 2 horas en horario laboral.</p>
-        <div class="footer-cta-btns">
-          <a href="https://wa.me/573000000000?text=Hola%2C%20necesito%20asesoría%20para%20elegir%20un%20plan" class="btn-primary-lg" target="_blank">
-            <i class="fa-brands fa-whatsapp"></i> Hablar por WhatsApp
-          </a>
-          <a href="mailto:hola@gano.digital" class="btn-ghost-lg">
-            <i class="fa-solid fa-envelope"></i> hola@gano.digital
-          </a>
-        </div>
-      </div>
-    </section>
+    <div class="container" style="margin-top: 80px; margin-bottom: 80px;">
+        <?php 
+        if ( function_exists( 'gano_cta_registro' ) ) {
+            gano_cta_registro( array(
+                'heading'     => '¿Tienes dudas sobre qué plan elegir?',
+                'description' => 'Un ingeniero SOTA te asesora sin costo. Registra tu interés y recibe acompañamiento inmediato para elegir la infraestructura que tu proyecto merece.',
+                'button_text' => 'Comenzar ahora',
+                'class'       => 'gano-cta-registro--hero-section'
+            ) );
+        }
+        ?>
+    </div>
+
 
 </div>
 <!-- END: SHOP PREMIUM SOTA WRAPPER -->

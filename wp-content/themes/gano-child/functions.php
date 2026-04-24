@@ -24,7 +24,18 @@ require_once get_stylesheet_directory() . '/inc/gano-premium-components.php';
 require_once get_stylesheet_directory() . '/components/icon.php';
 require_once get_stylesheet_directory() . '/components/button.php';
 require_once get_stylesheet_directory() . '/components/card.php';
+require_once get_stylesheet_directory() . '/components/card-pricing.php';
+require_once get_stylesheet_directory() . '/components/card-product.php';
+require_once get_stylesheet_directory() . '/components/keycap.php';
+require_once get_stylesheet_directory() . '/components/badge.php';
+require_once get_stylesheet_directory() . '/components/panel.php';
+require_once get_stylesheet_directory() . '/components/hero.php';
 require_once get_stylesheet_directory() . '/components/cta-registro.php';
+
+// =============================================================================
+// 0.2 INCLUDES — HUD sitewide status bar (CRT + glitch postpunk)
+// =============================================================================
+require_once get_stylesheet_directory() . '/inc/gano-hud-status.php';
 
 // =============================================================================
 // 0.3 ENQUEUE CSS PREMIUM (Frontend Design + UI/UX Pro Max merged + Design System)
@@ -79,7 +90,82 @@ function gano_enqueue_premium_styles() {
         array(),
         '1.0.0'
     );
+
+    // CSS Design System: Tokens (Task 2)
+    wp_enqueue_style(
+        'gano-design-tokens',
+        get_stylesheet_directory_uri() . '/css/design-tokens.css',
+        array(),
+        filemtime( get_stylesheet_directory() . '/css/design-tokens.css' )
+    );
+
+    // CSS Componentes Design System (Tasks 3-7)
+    wp_enqueue_style(
+        'gano-components-buttons',
+        get_stylesheet_directory_uri() . '/css/components-buttons.css',
+        array('gano-design-tokens'),
+        filemtime( get_stylesheet_directory() . '/css/components-buttons.css' )
+    );
+    wp_enqueue_style(
+        'gano-components-cards',
+        get_stylesheet_directory_uri() . '/css/components-cards.css',
+        array('gano-design-tokens'),
+        filemtime( get_stylesheet_directory() . '/css/components-cards.css' )
+    );
+    wp_enqueue_style(
+        'gano-components-badges',
+        get_stylesheet_directory_uri() . '/css/components-badges.css',
+        array('gano-design-tokens'),
+        filemtime( get_stylesheet_directory() . '/css/components-badges.css' )
+    );
+    wp_enqueue_style(
+        'gano-components-panels',
+        get_stylesheet_directory_uri() . '/css/components-panels.css',
+        array('gano-design-tokens'),
+        filemtime( get_stylesheet_directory() . '/css/components-panels.css' )
+    );
+    wp_enqueue_style(
+        'gano-components-hero',
+        get_stylesheet_directory_uri() . '/css/components-hero.css',
+        array('gano-design-tokens'),
+        filemtime( get_stylesheet_directory() . '/css/components-hero.css' )
+    );
+
+    // CSS Theme Toggle (Task 8)
+    wp_enqueue_style(
+        'gano-theme-toggle',
+        get_stylesheet_directory_uri() . '/css/theme-toggle.css',
+        array('gano-design-tokens'),
+        filemtime( get_stylesheet_directory() . '/css/theme-toggle.css' )
+    );
+
+    // CSS Animaciones SOTA
+    wp_enqueue_style(
+        'gano-sota-animations',
+        get_stylesheet_directory_uri() . '/gano-sota-animations.css',
+        array(),
+        filemtime( get_stylesheet_directory() . '/gano-sota-animations.css' )
+    );
+
+    // JS de Pre-registro (Lead capture)
+    wp_enqueue_script(
+        'gano-pre-registro',
+        get_stylesheet_directory_uri() . '/js/gano-pre-registro.js',
+        array(),
+        '1.0.0',
+        true
+    );
+
+    wp_localize_script(
+        'gano-pre-registro',
+        'gano_vars',
+        array(
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'nonce'    => wp_create_nonce( 'gano_pre_registro_nonce' ),
+        )
+    );
 }
+
 
 // =============================================================================
 // 0.4 URL HELPERS — slugs comerciales (catálogo, contacto, esta página, etc.)
@@ -2382,6 +2468,40 @@ add_filter( 'rstore_domain_text_not_available', function() {
 add_filter( 'rstore_domain_text_cart', function() {
 	return esc_html__( 'Continuar al carrito', 'gano-child' );
 });
+
+add_filter( 'rstore_product_text_more', function() {
+	return esc_html__( 'Más información', 'gano-child' );
+});
+
+// =============================================================================
+// PRE-REGISTRO AJAX HANDLER (Lead Capture)
+// =============================================================================
+add_action( 'wp_ajax_gano_pre_registro', 'gano_handle_pre_registro' );
+add_action( 'wp_ajax_nopriv_gano_pre_registro', 'gano_handle_pre_registro' );
+function gano_handle_pre_registro() {
+    check_ajax_referer( 'gano_pre_registro_nonce', 'nonce' );
+
+    $name  = sanitize_text_field( $_POST['gano_name'] ?? '' );
+    $email = sanitize_email( $_POST['gano_email'] ?? '' );
+
+    if ( empty( $email ) ) {
+        wp_send_json_error( 'El email es obligatorio.' );
+    }
+
+    $leads = (array) get_option( 'gano_leads', array() );
+    $leads[] = array(
+        'name'  => $name,
+        'email' => $email,
+        'time'  => current_time( 'mysql' ),
+        'ip'    => $_SERVER['REMOTE_ADDR'] ?? '',
+        'plan'  => 'Interés General (SOTA Hub)',
+    );
+
+    update_option( 'gano_leads', $leads );
+
+    wp_send_json_success( 'Lead capturado con éxito.' );
+}
+
 
 add_filter( 'rstore_text_select', function() {
 	return esc_html__( 'Seleccionar', 'gano-child' );

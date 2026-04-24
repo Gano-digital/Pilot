@@ -11,7 +11,7 @@
   --gano-text-secondary: #8B9BB8;
   --gano-text-muted: #4A5A7A;
   --gano-green: #10B981;
-  --gano-gold: #F59E0B;
+  --gano-gold: #4CD7F6;
   --gano-purple: #7C3AED;
   --radius-md: 12px;
   --radius-lg: 16px;
@@ -94,7 +94,7 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:700;line-height:1.2}
 .pcard.is-featured{border-color:rgba(27,79,216,0.45);background:linear-gradient(160deg,var(--gano-surface) 0%,rgba(27,79,216,0.08) 100%);box-shadow:0 0 40px rgba(27,79,216,0.12)}
 .pcard.is-featured::after{opacity:1}
 .pcard.is-elite{border-color:rgba(124,58,237,0.4);background:linear-gradient(160deg,var(--gano-surface) 0%,rgba(124,58,237,0.07) 100%)}
-.pcard.is-sota{border-color:rgba(245,158,11,0.4);background:linear-gradient(160deg,var(--gano-surface) 0%,rgba(245,158,11,0.06) 100%)}
+.pcard.is-sota{border-color:rgba(76, 215, 246, 0.4);background:linear-gradient(160deg,var(--gano-surface) 0%,rgba(76, 215, 246, 0.06) 100%)}
 .pcard.is-medida{border-color:rgba(239,68,68,0.3)}
 .pcard.hidden{display:none}
 
@@ -103,13 +103,13 @@ h1,h2,h3,h4{font-family:var(--font-display);font-weight:700;line-height:1.2}
 .card-icon{width:46px;height:46px;border-radius:var(--radius-md);background:rgba(27,79,216,0.1);border:1px solid rgba(27,79,216,0.2);display:flex;align-items:center;justify-content:center;font-size:19px;color:var(--gano-blue-light);flex-shrink:0;transition:var(--transition)}
 .pcard.is-featured .card-icon{background:rgba(27,79,216,0.22);box-shadow:0 0 20px var(--gano-blue-glow)}
 .pcard.is-elite .card-icon{background:rgba(124,58,237,0.15);border-color:rgba(124,58,237,0.35);color:#C4B5FD}
-.pcard.is-sota .card-icon{background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.3);color:#FCD34D}
+.pcard.is-sota .card-icon{background:rgba(76, 215, 246, 0.12);border-color:rgba(76, 215, 246, 0.3);color:#4CD7F6}
 .pcard:hover .card-icon{box-shadow:0 0 14px var(--gano-blue-glow)}
 .card-badges{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
 .badge{display:inline-block;padding:3px 9px;border-radius:100px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em}
 .badge-popular{background:rgba(27,79,216,0.18);color:#7BA7FF;border:1px solid rgba(27,79,216,0.4)}
 .badge-elite{background:rgba(124,58,237,0.18);color:#C4B5FD;border:1px solid rgba(124,58,237,0.4)}
-.badge-sota{background:rgba(245,158,11,0.14);color:#FCD34D;border:1px solid rgba(245,158,11,0.35)}
+.badge-sota{background:rgba(76, 215, 246, 0.14);color:#4CD7F6;border:1px solid rgba(76, 215, 246, 0.35)}
 .badge-unique{background:rgba(16,185,129,0.14);color:#6EE7B7;border:1px solid rgba(16,185,129,0.3)}
 .badge-custom{background:rgba(239,68,68,0.12);color:#FCA5A5;border:1px solid rgba(239,68,68,0.3)}
 

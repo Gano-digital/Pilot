@@ -300,7 +300,7 @@ get_header();
 
         <!-- Objeción 1: Precio -->
         <article style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
-          <h3 style="color: #FF6B35; margin-bottom: 15px;">💰 "Es caro para lo que necesito"</h3>
+          <h3 style="color: #4CD7F6; margin-bottom: 15px;">💰 "Es caro para lo que necesito"</h3>
           <div style="font-size: 0.95rem; line-height: 1.6;">
             <p><strong>Núcleo Prime:</strong> NVMe real (no HDD) + soporte en español = más que un hosting compartido genérico al mismo precio.</p>
             <p><strong>Fortaleza Delta:</strong> Hardening activo + más recursos + visibilidad = no pagas dos veces el mismo servicio.</p>
@@ -320,7 +320,7 @@ get_header();
 
         <!-- Objeción 3: Soporte -->
         <article style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
-          <h3 style="color: #00C26B; margin-bottom: 15px;">📞 "¿Recibiré soporte real?"</h3>
+          <h3 style="color: #4CD7F6; margin-bottom: 15px;">📞 "¿Recibiré soporte real?"</h3>
           <div style="font-size: 0.95rem; line-height: 1.6;">
             <p><strong>Núcleo Prime:</strong> Ticket en español con contexto de tu instalación — no un bot genérico.</p>
             <p><strong>Fortaleza Delta:</strong> Canal priorizado para clientes Fortaleza (respuesta dentro de horario hábil).</p>
@@ -333,25 +333,25 @@ get_header();
   </section>
 
   <!-- ── IFRAME RESELLER STORE (FASE 4) ──────────────────────── -->
-  <section style="padding: 60px 5%; background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);">
+  <section style="padding: 60px 5%; background: rgba(15,17,21,0.8); border-top: 1px solid rgba(255,255,255,0.08);">
     <div class="gano-container">
       <h2 style="text-align: center; margin-bottom: 10px;">Elige tu plan y activa hoy</h2>
-      <p style="text-align: center; color: #64748b; margin-bottom: 40px; font-size: 1.1rem;">
+      <p style="text-align: center; color: #8B9BB8; margin-bottom: 40px; font-size: 1.1rem;">
         Selecciona el ecosistema que se adapte a tu proyecto. El checkout está integrado y listo.
       </p>
 
       <!-- Tabs para seleccionar ecosistema -->
       <div class="gano-reseller-tabs" style="display: flex; gap: 10px; margin-bottom: 30px; justify-content: center; flex-wrap: wrap;">
-        <button class="gano-reseller-tab-btn active" data-tab="hosting_economia" style="padding: 10px 20px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-weight: 500;">
+        <button class="gano-reseller-tab-btn active" data-tab="hosting_economia" style="padding: 10px 20px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; border-radius: 6px; cursor: pointer; font-weight: 500;">
           Núcleo Prime
         </button>
-        <button class="gano-reseller-tab-btn" data-tab="hosting_deluxe" style="padding: 10px 20px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-weight: 500;">
+        <button class="gano-reseller-tab-btn" data-tab="hosting_deluxe" style="padding: 10px 20px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; border-radius: 6px; cursor: pointer; font-weight: 500;">
           Fortaleza Delta
         </button>
-        <button class="gano-reseller-tab-btn" data-tab="hosting_premium" style="padding: 10px 20px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-weight: 500;">
+        <button class="gano-reseller-tab-btn" data-tab="hosting_premium" style="padding: 10px 20px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; border-radius: 6px; cursor: pointer; font-weight: 500;">
           Bastión SOTA
         </button>
-        <button class="gano-reseller-tab-btn" data-tab="hosting_ultimate" style="padding: 10px 20px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-weight: 500;">
+        <button class="gano-reseller-tab-btn" data-tab="hosting_ultimate" style="padding: 10px 20px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; border-radius: 6px; cursor: pointer; font-weight: 500;">
           Ultimate WP
         </button>
       </div>
@@ -384,9 +384,9 @@ get_header();
 
             // Add active class to clicked button and corresponding pane
             this.classList.add('active');
-            this.style.background = '#FF6B35';
-            this.style.color = 'white';
-            this.style.borderColor = '#FF6B35';
+            this.style.background = '#4CD7F6';
+            this.style.color = '#0F1923';
+            this.style.borderColor = '#4CD7F6';
 
             document.querySelector(`[data-tab="${tab}"].gano-reseller-tab-pane`).classList.add('active');
             document.querySelector(`[data-tab="${tab}"].gano-reseller-tab-pane`).style.display = 'block';
@@ -394,9 +394,9 @@ get_header();
             // Reset styles for other buttons
             document.querySelectorAll('.gano-reseller-tab-btn').forEach(btn => {
               if (btn !== this) {
-                btn.style.background = 'white';
-                btn.style.color = 'inherit';
-                btn.style.borderColor = '#e2e8f0';
+                btn.style.background = 'rgba(255,255,255,0.05)';
+                btn.style.color = '#fff';
+                btn.style.borderColor = 'rgba(255,255,255,0.1)';
               }
             });
           });
@@ -410,9 +410,9 @@ get_header();
 
       <style>
         .gano-reseller-tab-btn.active {
-          background-color: #FF6B35 !important;
-          color: white !important;
-          border-color: #FF6B35 !important;
+          background-color: #4CD7F6 !important;
+          color: #0F1923 !important;
+          border-color: #4CD7F6 !important;
         }
 
         .gano-reseller-tab-pane {

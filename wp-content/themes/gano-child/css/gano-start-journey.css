@@ -18,9 +18,19 @@ body.gano-page-start-journey #page,
 body.gano-page-start-journey .site,
 body.gano-page-start-journey #content,
 body.gano-page-start-journey .site-content,
+body.gano-page-start-journey #content-wrap,
+body.gano-page-start-journey #main,
 body.gano-page-start-journey #primary,
 body.gano-page-start-journey .content-area {
     background: transparent !important;
+    background-color: transparent !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -29,11 +39,12 @@ body.gano-page-start-journey .content-area {
 main.gano-start-journey.gano-on-dark {
     --gano-landing-ice: #c0c1ff;
     --gano-landing-cyan: #4cd7f6;
-    --gano-landing-indigo: #8083ff;
+    --gano-landing-indigo: #6366f1;
 
     position: relative;
     overflow-x: clip;
 }
+
 
 main.gano-start-journey.gano-on-dark::before {
     content: "";
@@ -169,7 +180,7 @@ main.gano-start-journey.gano-on-dark > section {
 }
 
 .gano-start-journey .gano-km-btn-primary:focus-visible {
-    outline: 3px solid rgba(212, 175, 55, 0.9);
+    outline: 3px solid rgba(76, 215, 246, 0.9);
     outline-offset: 3px;
 }
 
@@ -277,7 +288,7 @@ main.gano-start-journey.gano-on-dark > section {
 }
 
 .gano-start-journey .gano-km-btn-tertiary:focus-visible {
-    outline: 3px solid var(--gano-gold, #D4AF37);
+    outline: 3px solid var(--gano-color-accent, #4cd7f6);
     outline-offset: 3px;
 }
 

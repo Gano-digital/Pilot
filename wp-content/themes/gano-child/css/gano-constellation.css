@@ -66,17 +66,17 @@ button.chip:hover {
 
 /* ── Variante dorada (SOTA / Premium) ────────────────────────── */
 .chip--gold {
-    background: var(--gano-gold-bg, rgba(212, 175, 55, 0.15));
-    color: var(--gano-gold, #D4AF37);
-    border-color: var(--gano-gold-border, rgba(212, 175, 55, 0.30));
+    background: var(--gano-gold-bg, rgba(76, 215, 246, 0.15));
+    color: var(--gano-gold, #4CD7F6);
+    border-color: var(--gano-gold-border, rgba(76, 215, 246, 0.30));
 }
 
 .chip--gold[role="button"]:hover,
 a.chip--gold:hover,
 button.chip--gold:hover {
-    background: var(--gano-gold, #D4AF37);
-    color: var(--gano-dark, #0F1923);
-    border-color: var(--gano-gold, #D4AF37);
+    background: var(--gano-gold, #4CD7F6);
+    color: var(--gano-dark, #05080c);
+    border-color: var(--gano-gold, #4CD7F6);
 }
 
 /* ── Variante verde (Activo / Éxito) ─────────────────────────── */
@@ -161,13 +161,13 @@ button.chip--dark:hover {
 
 /* ── Variante gold (acento premium) ──────────────────────────── */
 .panel--gold {
-    border-color: var(--gano-gold-border, rgba(212, 175, 55, 0.30));
-    background: var(--gano-gold-soft, rgba(212, 175, 55, 0.10));
+    border-color: var(--gano-gold-border, rgba(76, 215, 246, 0.30));
+    background: var(--gano-gold-soft, rgba(76, 215, 246, 0.10));
 }
 
 .panel--gold:hover {
-    border-color: var(--gano-gold, #D4AF37);
-    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.15);
+    border-color: var(--gano-gold, #4CD7F6);
+    box-shadow: 0 8px 32px rgba(76, 215, 246, 0.15);
 }
 
 /* =============================================================================

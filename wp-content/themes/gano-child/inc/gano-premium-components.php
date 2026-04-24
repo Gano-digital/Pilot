@@ -259,7 +259,7 @@ function gano_render_hero_premium(): string {
                 <svg viewBox="0 0 200 200" style="width: 200px; height: 200px; opacity: 0.8;">
                     <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
                     <circle cx="100" cy="100" r="60" fill="none" stroke="rgba(27,79,216,0.2)" stroke-width="2"/>
-                    <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(255,107,53,0.3)" stroke-width="2"/>
+                    <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(76, 215, 246,0.3)" stroke-width="2"/>
                     <circle cx="100" cy="100" r="20" fill="rgba(27,79,216,0.5)"/>
                 </svg>
             </div>

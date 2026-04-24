@@ -2,7 +2,7 @@
 #gano-quiz-container {
     background: rgba(15, 17, 21, 0.95);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(212, 175, 55, 0.3);
+    border: 1px solid rgba(76, 215, 246, 0.3);
     border-radius: 12px;
     padding: 30px;
     margin: 40px 0;
@@ -12,7 +12,7 @@
 }
 
 #gano-quiz-header h2 {
-    color: var(--gano-gold, #D4AF37);
+    color: var(--gano-color-accent, #4CD7F6);
     margin-top: 0;
     font-size: 1.8rem;
     text-transform: uppercase;
@@ -32,8 +32,8 @@
 }
 
 .quiz-option:hover {
-    background: rgba(212, 175, 55, 0.1);
-    border-color: #D4AF37;
+    background: rgba(76, 215, 246, 0.1);
+    border-color: #4CD7F6;
     transform: translateX(5px);
 }
 
@@ -42,12 +42,12 @@
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    border: 8px solid #D4AF37;
+    border: 8px solid #4CD7F6;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2.5rem;
     font-weight: 800;
     margin: 20px auto;
-    color: #D4AF37;
+    color: #4CD7F6;
 }

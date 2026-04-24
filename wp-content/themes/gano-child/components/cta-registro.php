@@ -21,46 +21,58 @@ if ( ! function_exists( 'gano_client_journey_landing_url' ) ) {
 
 if ( ! function_exists( 'gano_cta_registro' ) ) {
     /**
-     * Genera un CTA creativo de registro con animaciones SOTA
-     *
-     * @param array $args {
-     *     @type string $heading          Texto del encabezado. Default: "¿No sabes por dónde empezar?"
-     *     @type string $description      Descripción principal (4 líneas sugeridas). Default: mensaje completo.
-     *     @type string $button_text      Texto del botón. Default: "Registra tu cuenta"
-     *     @type string $button_url       URL destino del botón. Default: guía comenzar-aqui (checkout Reseller).
-     *     @type string $class            Clases CSS adicionales para el wrapper. Default: ""
-     * }
-     * @return void Imprime el HTML del CTA
+     * Genera un CTA creativo de registro con pre-registro (lead capture)
      */
     function gano_cta_registro( $args = array() ) {
         $defaults = array(
-            'heading'       => '¿No sabes por dónde empezar?',
-            'description'   => '¿no sabes por dónde empezar? registra tu cuenta y recibe soporte inmediato. Nosotros te agendamos. Acompañamos tu empresa en cada decisión: siempre donde verdaderamente importa.',
-            'button_text'   => 'Registra tu cuenta',
+            'heading'       => 'Empieza tu viaje digital',
+            'description'   => 'Regístrate para acceder al catálogo SOTA y recibe acompañamiento experto desde el primer minuto. Sin complicaciones, sin letra pequeña.',
+            'button_text'   => 'Iniciar registro',
             'button_url'    => gano_client_journey_landing_url(),
             'class'         => '',
+            'show_form'     => true,
         );
 
         $args = wp_parse_args( $args, $defaults );
 
-        // Sanitizar valores
-        $heading      = esc_html( $args['heading'] );
-        $description  = esc_html( $args['description'] );
-        $button_text  = esc_html( $args['button_text'] );
-        $button_url   = esc_url( $args['button_url'] );
+        $heading       = $args['heading'];
+        $description   = $args['description'];
+        $button_text   = esc_html( $args['button_text'] );
+        $button_url    = esc_url( $args['button_url'] );
         $wrapper_class = 'gano-cta-registro-wrapper ' . esc_attr( $args['class'] );
 
         ?>
         <div class="<?php echo $wrapper_class; ?>">
-            <div class="gano-cta-registro">
-                <h3 class="gano-cta-registro__heading"><?php echo $heading; ?></h3>
+            <div class="gano-cta-registro gano-km-shell">
+                <h3 class="gano-cta-registro__heading">
+                    <span><?php esc_html_e( 'SOTA Hub Access', 'gano-child' ); ?></span>
+                    <?php echo $heading; ?>
+                </h3>
                 <p class="gano-cta-registro__description"><?php echo $description; ?></p>
-                <a href="<?php echo $button_url; ?>" class="gano-cta-registro__button">
-                    <?php echo $button_text; ?>
-                    <span class="gano-cta-registro__ripple" aria-hidden="true"></span>
-                </a>
+                
+                <?php if ( $args['show_form'] ) : ?>
+                    <form class="gano-pre-registro-form gano-cta-registro__form" method="POST">
+                        <input type="text" name="gano_name" placeholder="Tu nombre" required>
+                        <input type="email" name="gano_email" placeholder="Tu mejor email" required>
+                        <input type="hidden" name="redirect_to" value="<?php echo $button_url; ?>">
+                        <button type="submit" class="gano-cta-registro__button">
+                            <?php echo $button_text; ?>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </button>
+                    </form>
+                    <div class="gano-pre-registro-feedback" style="display:none; color: var(--gano-color-accent); margin-top: 20px; font-weight: 600;">
+                        <?php esc_html_e( 'Preparando tu acceso SOTA...', 'gano-child' ); ?>
+                    </div>
+
+                <?php else : ?>
+                    <a href="<?php echo $button_url; ?>" class="gano-cta-registro__button">
+                        <?php echo $button_text; ?>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
         <?php
     }
 }
+

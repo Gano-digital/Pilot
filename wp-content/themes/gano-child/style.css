@@ -12,14 +12,14 @@ Tags:         hosting, digital-services, colombia
 */
 
 /* START: WOOCOMMERCE MEMBER PORTAL */
-.woocommerce-account .woocommerce-MyAccount-navigation { background: rgba(15, 17, 21, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: var(--gano-radius-lg); padding: 20px; margin-right: 30px; }
+.woocommerce-account .woocommerce-MyAccount-navigation { background: rgba(15, 17, 21, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(76, 215, 246, 0.2); border-radius: var(--gano-radius-lg); padding: 20px; margin-right: 30px; }
 .woocommerce-account .woocommerce-MyAccount-navigation ul { list-style: none; padding: 0; }
 .woocommerce-account .woocommerce-MyAccount-navigation ul li { border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding: 10px 0; }
 .woocommerce-account .woocommerce-MyAccount-navigation ul li.is-active a { color: var(--gano-gold); font-weight: var(--gano-fw-bold); }
 .woocommerce-account .woocommerce-MyAccount-navigation ul li a { color: var(--gano-gray-500); text-decoration: none; font-size: var(--gano-fs-base); transition: var(--gano-transition); }
 .woocommerce-account .woocommerce-MyAccount-navigation ul li a:hover { color: var(--gano-white); }
 .woocommerce-account .woocommerce-MyAccount-content { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: var(--gano-radius-lg); padding: 40px; color: var(--gano-gray-300); }
-.gano-portal-card { background: linear-gradient(135deg, var(--gano-gold-soft), transparent); border: 1px solid var(--gano-gold-border, rgba(212, 175, 55, 0.3)); padding: 20px; border-radius: var(--gano-radius-md); margin-bottom: 20px; }
+.gano-portal-card { background: linear-gradient(135deg, var(--gano-gold-soft), transparent); border: 1px solid var(--gano-gold-border, rgba(76, 215, 246, 0.3)); padding: 20px; border-radius: var(--gano-radius-md); margin-bottom: 20px; }
 /* END: WOOCOMMERCE MEMBER PORTAL */
 
 /* ============================================================
@@ -36,42 +36,42 @@ Tags:         hosting, digital-services, colombia
     --gano-green-light:  #E0FAF0;
 
     /* Acción */
-    --gano-orange:       #FF6B35;   /* CTA — contratar, comprar */
-    --gano-orange-dark:  #E55520;
-    --gano-orange-light: #FFF0EB;
+    --gano-orange:       #6366F1;   /* Indigo SOTA — contratar, comprar */
+    --gano-orange-dark:  #4F46E5;
+    --gano-orange-light: #EEF2FF;
 
     /* Acento premium / SOTA */
-    --gano-gold:         #D4AF37;           /* Dorado — acento SOTA / Kinetic Monolith */
-    --gano-gold-soft:    rgba(212, 175, 55, 0.10); /* Fondo sutil dorado */
-    --gano-gold-bg:      rgba(212, 175, 55, 0.15); /* Fondo dorado para badges/chips */
-    --gano-gold-border:  rgba(212, 175, 55, 0.30); /* Borde dorado estándar */
+    --gano-gold:         #4CD7F6;           /* Cyan — acento SOTA / Kinetic Monolith */
+    --gano-gold-soft:    rgba(76, 215, 246, 0.10); /* Fondo sutil cyan */
+    --gano-gold-bg:      rgba(76, 215, 246, 0.15); /* Fondo cyan para badges/chips */
+    --gano-gold-border:  rgba(76, 215, 246, 0.30); /* Borde cyan estándar */
 
     /* Neutrales */
-    --gano-dark:         #0F1923;   /* Títulos principales */
-    --gano-gray-900:     #1A2535;
-    --gano-gray-700:     #374151;
-    --gano-gray-500:     #6B7280;
-    --gano-gray-300:     #D1D5DB;
-    --gano-gray-100:     #F3F4F6;
+    --gano-dark:         #05080c;   /* Títulos principales */
+    --gano-gray-900:     #0F172A;
+    --gano-gray-700:     #334155;
+    --gano-gray-500:     #64748B;
+    --gano-gray-300:     #CBD5E1;
+    --gano-gray-100:     #F1F5F9;
     --gano-white:        #FFFFFF;
 
     /* Fondos */
-    --gano-bg-primary:   #FFFFFF;
-    --gano-bg-alt:       #F8FAFC;
-    --gano-bg-dark:      #0F1923;
+    --gano-bg-primary:   #05080c;
+    --gano-bg-alt:       #0F172A;
+    --gano-bg-dark:      #05080c;
 
     /* Semantic color system (single source of truth) */
     --gano-color-primary:            var(--gano-blue);
     --gano-color-primary-strong:     var(--gano-blue-dark);
-    --gano-color-secondary:          var(--gano-green);
-    --gano-color-secondary-strong:   var(--gano-green-dark);
+    --gano-color-secondary:          var(--gano-indigo, #6366F1);
+    --gano-color-secondary-strong:   var(--gano-indigo-dark, #4F46E5);
     --gano-color-accent:             var(--gano-gold);
     --gano-color-accent-soft:        var(--gano-gold-soft);
-    --gano-color-surface-dark:       var(--gano-dark-deep);
-    --gano-color-surface-dark-soft:  var(--gano-card-sota);
+    --gano-color-surface-dark:       var(--gano-dark-deep, #05080c);
+    --gano-color-surface-dark-soft:  var(--gano-card-sota, #1e293b);
     --gano-color-text-on-dark:       #E2E8F0;
     --gano-color-text-muted-on-dark: #94A3B8;
-    --gano-color-outline-on-dark:    rgba(148, 163, 184, 0.28);
+    --gano-color-outline-on-dark:    rgba(148, 163, 184, 0.20);
 
     /* Tipografía */
     --gano-font-heading: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
@@ -291,7 +291,7 @@ code, pre, kbd {
 /* ============================================================
    ACCESIBILIDAD — FOCUS VISIBLE
    Anillo de foco dorado sobre fondos oscuros (WCAG 2.4.7 / 2.4.11).
-   Ratio: --gano-gold (#D4AF37) sobre --gano-bg-dark (#0F1923) ≈ 7.5:1.
+   Ratio: --gano-gold (#4CD7F6) sobre --gano-bg-dark (#0F1923) ≈ 7.5:1.
    ============================================================ */
 :focus-visible {
     outline: 3px solid var(--gano-gold);
@@ -778,11 +778,11 @@ body.woocommerce-checkout #customer_details {
     font-size: var(--gano-fs-lg) !important;
     padding: 1.25rem !important;
     margin-top: 1rem;
-    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.25);
+    box-shadow: 0 4px 15px rgba(76, 215, 246, 0.25);
 }
 
 #place_order:hover {
-    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+    box-shadow: 0 6px 20px rgba(76, 215, 246, 0.4);
 }
 
 @media (min-width: 992px) {
@@ -907,9 +907,9 @@ body.woocommerce-checkout #customer_details {
 
 /* Pulse Animations: Signature SOTA Indicator */
 @keyframes gano-pulse-vivid {
-    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
-    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
-    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(76, 215, 246, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(76, 215, 246, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(76, 215, 246, 0); }
 }
 
 .gano-sota-badge {
@@ -917,7 +917,7 @@ body.woocommerce-checkout #customer_details {
     align-items: center;
     gap: 8px;
     background: var(--gano-gold-bg);
-    border: 1px solid rgba(212, 175, 55, 0.4);
+    border: 1px solid rgba(76, 215, 246, 0.4);
     color: var(--gano-gold);
     padding: 6px 16px;
     border-radius: 99px;
@@ -997,7 +997,7 @@ body.woocommerce-checkout #customer_details {
     border: none;
     text-decoration: none !important;
     letter-spacing: 0.03em;
-    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+    box-shadow: 0 4px 12px rgba(76, 215, 246, 0.3);
     transition:
         background  var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
         transform   var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
@@ -1008,7 +1008,7 @@ body.woocommerce-checkout #customer_details {
 .gano-btn-primary:hover {
     background: var(--gano-orange-dark);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(255, 107, 53, 0.4);
+    box-shadow: 0 6px 16px rgba(76, 215, 246, 0.4);
     color: var(--gano-white) !important;
 }
 
@@ -1067,7 +1067,7 @@ body.woocommerce-checkout #customer_details {
 
 .gano-shop-header {
     background: radial-gradient(circle at top, #1a1e26 0%, #0f1115 100%);
-    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    border-bottom: 1px solid rgba(76, 215, 246, 0.1);
 }
 
 .gano-shop-container {
@@ -1099,14 +1099,14 @@ body.woocommerce-checkout #customer_details {
 .gano-product-card:hover {
     transform: translateY(-20px);
     border-color: var(--gano-gold);
-    box-shadow: 0 30px 60px rgba(212, 175, 55, 0.15);
+    box-shadow: 0 30px 60px rgba(76, 215, 246, 0.15);
 }
 
 .gano-product-card::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, transparent 0%, rgba(212, 175, 55, 0.03) 100%);
+    background: linear-gradient(135deg, transparent 0%, rgba(76, 215, 246, 0.03) 100%);
     opacity: 0;
     transition: opacity 0.5s;
 }
@@ -1173,7 +1173,7 @@ body.woocommerce-checkout #customer_details {
     color: var(--gano-gold);
     font-family: 'Fira Code', monospace;
     font-size: 12px;
-    background: rgba(212, 175, 55, 0.08);
+    background: rgba(76, 215, 246, 0.08);
     padding: 2px 8px;
     border-radius: 4px;
 }
@@ -1191,7 +1191,7 @@ body.woocommerce-checkout #customer_details {
     letter-spacing: 2px;
     font-size: 14px !important;
     margin-top: 20px;
-    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+    box-shadow: 0 8px 20px rgba(76, 215, 246, 0.2);
 }
 
 .gano-buy-button:hover {
@@ -1274,7 +1274,7 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
 .rstore-add-to-cart-form button.rstore-add-to-cart:hover {
     background: #fff !important;
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+    box-shadow: 0 10px 20px rgba(76, 215, 246, 0.2);
 }
 
 .rstore-product-summary .gano-product-specs {
@@ -1482,7 +1482,7 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
 
 .gano-el-cta-icons .elementor-icon,
 .gano-el-cta-icons i {
-    color: var(--gano-orange);
+    color: var(--gano-color-accent, #4CD7F6);
     font-size: 1.75rem;
     line-height: 1;
 }
@@ -1517,12 +1517,12 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
 .gano-el-cta-icons__item a:hover i,
 .gano-el-cta-icons li a:hover,
 .gano-el-cta-icons li a:hover i {
-    color: var(--gano-orange);
+    color: var(--gano-color-accent, #4CD7F6);
 }
 
 .gano-el-cta-icons__item a:focus-visible,
 .gano-el-cta-icons li a:focus-visible {
-    outline: 2px solid var(--gano-orange);
+    outline: 2px solid var(--gano-color-accent, #4CD7F6);
     outline-offset: 3px;
 }
 
@@ -1634,7 +1634,7 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
     font-weight: 600;
     text-decoration: none;
     border-radius: 0 0 var(--gano-radius-md) var(--gano-radius-md);
-    outline: 3px solid var(--gano-gold, #D4AF37);
+    outline: 3px solid var(--gano-gold, #4CD7F6);
     outline-offset: 2px;
     transition: top var(--motion-fast, 150ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1));
 }
@@ -1663,9 +1663,9 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
 button:focus-visible,
 [role="button"]:focus-visible,
 .elementor-button:focus-visible {
-    outline: 3px solid var(--gano-gold, #D4AF37);
+    outline: 3px solid var(--gano-gold, #4CD7F6);
     outline-offset: 3px;
-    box-shadow: 0 0 0 5px rgba(212, 175, 55, 0.28);
+    box-shadow: 0 0 0 5px rgba(76, 215, 246, 0.28);
 }
 
 /* Inputs y controles de formulario */
@@ -1686,7 +1686,7 @@ select:focus-visible {
 
 .gano-bg-dark a:focus-visible,
 .elementor-section.e-con--dark a:focus-visible {
-    outline-color: var(--gano-gold, #D4AF37);
+    outline-color: var(--gano-gold, #4CD7F6);
 }
 
 #gano-main-content {
@@ -1731,7 +1731,7 @@ select:focus-visible {
 }
 
 .gano-menu-cta > a:focus-visible {
-    outline: 3px solid var(--gano-gold, #D4AF37);
+    outline: 3px solid var(--gano-gold, #4CD7F6);
     outline-offset: 3px;
 }
 
@@ -2062,8 +2062,8 @@ select:focus-visible {
     gap: 0.45rem;
     padding: 0.35rem 0.8rem;
     border-radius: var(--gano-radius-pill);
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    background: rgba(212, 175, 55, 0.09);
+    border: 1px solid rgba(76, 215, 246, 0.3);
+    background: rgba(76, 215, 246, 0.09);
     color: var(--gano-gold);
     font-size: var(--gano-fs-xs);
     letter-spacing: var(--gano-ls-wider);
@@ -2086,7 +2086,7 @@ select:focus-visible {
     background:
         radial-gradient(circle at 18% 28%, rgba(27, 79, 216, 0.26), transparent 46%),
         radial-gradient(circle at 82% 68%, rgba(0, 194, 107, 0.2), transparent 44%),
-        radial-gradient(circle at 55% 50%, rgba(212, 175, 55, 0.12), transparent 52%);
+        radial-gradient(circle at 55% 50%, rgba(76, 215, 246, 0.12), transparent 52%);
 }
 
 .gano-sota-hero__content {
@@ -2190,7 +2190,7 @@ select:focus-visible {
 }
 
 .gano-sota-card:hover {
-    border-color: rgba(212, 175, 55, 0.42);
+    border-color: rgba(76, 215, 246, 0.42);
     transform: translateY(-3px);
 }
 
@@ -2500,7 +2500,7 @@ select:focus-visible {
 }
 
 .gano-diagnostico__answer-btn:hover {
-    border-color: rgba(212, 175, 55, 0.45);
+    border-color: rgba(76, 215, 246, 0.45);
     transform: translateY(-1px);
 }
 
@@ -2567,7 +2567,7 @@ select:focus-visible {
     font-weight: var(--gano-fw-bold);
     margin-bottom: 24px;
     padding-bottom: 12px;
-    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    border-bottom: 1px solid rgba(76, 215, 246, 0.2);
 }
 
 .sota-hub-grid {
@@ -2651,7 +2651,7 @@ select:focus-visible {
 
 .sota-hub-cta {
     margin-top: 80px;
-    border: 1px solid rgba(212, 175, 55, 0.35);
+    border: 1px solid rgba(76, 215, 246, 0.35);
     padding: 50px;
     text-align: center;
 }

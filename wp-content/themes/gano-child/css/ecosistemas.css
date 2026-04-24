@@ -6,9 +6,9 @@
 :root {
   /* Asegurar que tenemos variables --gc-* disponibles aquí también */
   --gc-primary: #1B4FD8;
-  --gc-secondary: #00C26B;
-  --gc-accent: #D4AF37;
-  --gc-dark: #05080b;
+  --gc-secondary: #6366F1;
+  --gc-accent: #4CD7F6;
+  --gc-dark: #05080c;
   --gc-text: #e2e8f0;
   --gc-text-muted: #94a3b8;
 }
@@ -38,8 +38,8 @@
     font-weight: var(--gano-fw-semibold, 600);
     letter-spacing: var(--gano-ls-wider, .08em);
     text-transform: uppercase;
-    color: var(--gano-gold, #D4AF37);
-    border: 1px solid var(--gano-gold, #D4AF37);
+    color: var(--gano-gold, #4CD7F6);
+    border: 1px solid var(--gano-gold, #4CD7F6);
     border-radius: 999px;
     padding: 0.25rem 0.875rem;
     margin-bottom: 1rem;
@@ -80,22 +80,22 @@
     box-shadow: 0 12px 32px rgba(15,17,21,.1);
 }
 .gano-plan-card--featured {
-    border-color: var(--gano-orange, #FF6B1A);
+    border-color: var(--gano-orange, #6366F1);
 }
 .gano-plan-card--dark {
-    background: var(--gano-bg-dark, #0F1115);
+    background: var(--gano-bg-dark, #05080c);
     color: #fff;
-    border-color: var(--gano-gold, #D4AF37);
+    border-color: var(--gano-gold, #4CD7F6);
 }
 .gano-plan-card--dark .gano-plan-promesa,
 .gano-plan-card--dark .gano-plan-precio span {
     color: rgba(255,255,255,0.7);
 }
 .gano-plan-card--dark .gano-plan-beneficios li::before {
-    color: var(--gano-gold, #D4AF37);
+    color: var(--gano-gold, #4CD7F6);
 }
 .gano-plan-card--dark .gano-plan-objecion {
-    border-color: rgba(212,175,55,0.3);
+    border-color: rgba(76, 215, 246, 0.3);
     color: rgba(255,255,255,0.65);
 }
 
@@ -104,7 +104,7 @@
     position: absolute;
     top: -0.75rem;
     left: 1.5rem;
-    background: var(--gano-orange, #FF6B1A);
+    background: var(--gano-orange, #6366F1);
     color: #fff;
     font-size: var(--gano-fs-xs, .75rem);
     font-weight: var(--gano-fw-semibold, 600);
@@ -114,8 +114,8 @@
 }
 .gano-plan-card--dark .gano-plan-badge,
 .gano-plan-card--gold .gano-plan-badge {
-    background: var(--gano-gold, #D4AF37);
-    color: #0F1115;
+    background: var(--gano-gold, #4CD7F6);
+    color: #05080c;
 }
 
 /* ── Nombre y promesa ──────────────────────────────────────────── */
@@ -126,7 +126,7 @@
     line-height: var(--gano-lh-snug, 1.25);
 }
 .gano-plan-card--gold .gano-plan-nombre {
-    color: var(--gano-gold, #D4AF37);
+    color: var(--gano-gold, #4CD7F6);
 }
 .gano-plan-promesa {
     font-size: var(--gano-fs-sm, .875rem);
@@ -149,10 +149,10 @@
     font-size: var(--gano-fs-4xl, 2.25rem);
     font-weight: var(--gano-fw-extrabold, 800);
     line-height: 1;
-    color: var(--gano-orange, #FF6B1A);
+    color: var(--gano-orange, #6366F1);
 }
 .gano-plan-card--dark .gano-plan-precio strong {
-    color: var(--gano-gold, #D4AF37);
+    color: var(--gano-gold, #4CD7F6);
 }
 .gano-plan-precio span {
     font-size: var(--gano-fs-xs, .75rem);
@@ -181,7 +181,7 @@
     content: "✓";
     position: absolute;
     left: 0;
-    color: var(--gano-orange, #FF6B1A);
+    color: var(--gano-orange, #6366F1);
     font-weight: 700;
 }
 

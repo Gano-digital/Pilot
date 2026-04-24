@@ -26,8 +26,8 @@
 
 .gano-catalog-mode-btn:hover,
 .gano-catalog-mode-btn[aria-pressed="true"] {
-    border-color: var(--gano-color-accent, #d4af37);
-    color: var(--gano-color-accent, #d4af37);
+    border-color: var(--gano-color-accent, #4CD7F6);
+    color: var(--gano-color-accent, #4CD7F6);
 }
 
 .gano-catalog-mode-desc {
@@ -72,7 +72,7 @@
 .gano-catalog-guided-btn strong {
     display: block;
     margin-bottom: 0.2rem;
-    color: var(--gano-color-accent, #d4af37);
+    color: var(--gano-color-accent, #4CD7F6);
 }
 
 .gano-catalog-family-section {
@@ -89,7 +89,7 @@
     margin: 1.5rem 0;
     padding: 1rem;
     border-radius: var(--gano-radius-lg, 12px);
-    border: 1px solid rgba(212, 175, 55, 0.28);
+    border: 1px solid rgba(76, 215, 246, 0.28);
     background: rgba(15, 25, 35, 0.72);
 }
 
@@ -99,7 +99,7 @@
 
 .gano-catalog-comparator-title {
     margin: 0 0 0.5rem;
-    color: var(--gano-color-accent, #d4af37);
+    color: var(--gano-color-accent, #4CD7F6);
     font-size: var(--gano-fs-sm, 0.875rem);
     text-transform: uppercase;
     letter-spacing: var(--gano-ls-wide, 0.04em);
@@ -116,11 +116,11 @@
 
 .gano-catalog-compare-chip {
     border-radius: var(--gano-radius-pill, 9999px);
-    border: 1px solid rgba(212, 175, 55, 0.35);
+    border: 1px solid rgba(76, 215, 246, 0.35);
     color: var(--gano-color-text-on-dark, #e2e8f0);
     padding: 0.25rem 0.65rem;
     font-size: var(--gano-fs-xs, 0.75rem);
-    background: rgba(212, 175, 55, 0.1);
+    background: rgba(76, 215, 246, 0.1);
 }
 
 .gano-catalog-compare-toggle {
@@ -138,8 +138,8 @@
 }
 
 .gano-catalog-compare-toggle[aria-pressed="true"] {
-    border-color: var(--gano-color-accent, #d4af37);
-    color: var(--gano-color-accent, #d4af37);
+    border-color: var(--gano-color-accent, #4CD7F6);
+    color: var(--gano-color-accent, #4CD7F6);
 }
 
 .gano-catalog-compare-grid {
@@ -157,14 +157,14 @@
 }
 
 .gano-catalog-sync-missing {
-    border-color: rgba(251, 191, 36, 0.7) !important;
+    border-color: rgba(76, 215, 246, 0.7) !important;
 }
 
 .gano-catalog-sync-note {
     display: inline-flex;
     margin-top: 0.45rem;
     font-size: var(--gano-fs-xs, 0.75rem);
-    color: #fbbf24;
+    color: #4CD7F6;
 }
 
 .gano-mobile-nav-toggle {
@@ -212,7 +212,7 @@
     }
 
     .gano-mobile-nav-panel .gano-mobile-nav-cta {
-        border-color: rgba(212, 175, 55, 0.4);
-        color: var(--gano-color-accent, #d4af37);
+        border-color: rgba(76, 215, 246, 0.4);
+        color: var(--gano-color-accent, #4CD7F6);
     }
 }
