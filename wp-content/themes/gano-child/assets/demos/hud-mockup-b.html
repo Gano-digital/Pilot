@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>HUD B — clean</title>
+<style>
+  :root{--bg:#05080c;--fg:#e2e8f0;--mut:#94a3b8;--bd:rgba(148,163,184,.18);--glass:rgba(2,6,23,.28)}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,Segoe UI,Inter,Arial,sans-serif;min-height:200vh}
+  .demo{padding:24px;max-width:980px}
+  .hud{position:fixed;left:0;right:0;bottom:0;z-index:9999}
+  .hud__bar{
+    position:relative;
+    background:linear-gradient(180deg, rgba(5,8,12,.45), rgba(5,8,12,.90));
+    border-top:1px solid var(--bd);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+  }
+  .scanlines{
+    position:absolute;inset:0;pointer-events:none;opacity:.18;
+    background:repeating-linear-gradient(180deg, rgba(255,255,255,.08) 0 1px, rgba(0,0,0,0) 1px 4px);
+  }
+  .hud__inner{position:relative;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;gap:12px;font-variant-numeric:tabular-nums}
+  .brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+  .brand__kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(226,232,240,.78)}
+  .brand__route{font-size:12px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40vw}
+  .stack{display:flex;align-items:center;gap:10px}
+  .metric{display:flex;align-items:baseline;gap:8px;padding:6px 10px;border:1px solid var(--bd);border-radius:10px;background:var(--glass)}
+  .metric .k{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(226,232,240,.68)}
+  .metric .v{font-size:13px;font-weight:800}
+  .gl{position:relative}
+  .gl::before,.gl::after{content:attr(data-t);position:absolute;left:0;top:0;opacity:.55}
+  .gl::before{transform:translate(1px,0);color:rgba(34,211,238,.9);mix-blend-mode:screen}
+  .gl::after{transform:translate(-1px,0);color:rgba(248,113,113,.85);mix-blend-mode:screen}
+  .details{display:none;padding:10px 14px 14px;border-top:1px dashed var(--bd);color:rgba(226,232,240,.78);font-size:12px}
+  .hud.is-open .details{display:block}
+  @media (max-width:720px){
+    .brand__route{display:none}
+    .metric .k{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .gl::before,.gl::after{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="demo"><h1>Demo HUD B (clean)</h1><p>Tap/click abre detalles.</p></div>
+
+<div class="hud" id="hud">
+  <div class="hud__bar" id="bar" role="button" aria-expanded="false" tabindex="0">
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="hud__inner">
+      <div class="brand">
+        <div class="brand__kicker">Status / HUD</div>
+        <div class="brand__route" id="route">/</div>
+      </div>
+      <div class="stack">
+        <div class="metric"><span class="k">lat</span><span class="v gl" id="lat" data-t="--">--</span></div>
+        <div class="metric"><span class="k">net</span><span class="v gl" id="net" data-t="ON">ON</span></div>
+        <div class="metric"><span class="k">tick</span><span class="v gl" id="tick" data-t="0000">0000</span></div>
+      </div>
+    </div>
+    <div class="details">
+      Premium/limpio pero con glitch visible. Telemetría: HEAD a “/” + estado online.
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const hud = document.getElementById('hud');
+  const bar = document.getElementById('bar');
+  const route = document.getElementById('route');
+  const latEl = document.getElementById('lat');
+  const netEl = document.getElementById('net');
+  const tickEl = document.getElementById('tick');
+
+  route.textContent = location.pathname || '/';
+
+  const toggle = () => {
+    const open = !hud.classList.contains('is-open');
+    hud.classList.toggle('is-open', open);
+    bar.setAttribute('aria-expanded', String(open));
+  };
+  bar.addEventListener('click', toggle);
+  bar.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }});
+
+  let t = 0;
+  function jitterSoft(s){
+    if (Math.random() < 0.88) return s;
+    const a = s.split('');
+    a[Math.random()*a.length|0] = String(Math.random()*10|0);
+    return a.join('');
+  }
+
+  async function ping(){
+    const t0 = performance.now();
+    try{
+      await fetch('/', { method:'HEAD', cache:'no-store' });
+      const ms = Math.max(0, performance.now() - t0);
+      const out = String(Math.round(ms)).padStart(3,'0');
+      latEl.textContent = jitterSoft(out) + 'ms';
+      latEl.dataset.t = latEl.textContent;
+      netEl.textContent = navigator.onLine ? 'ON' : 'OFF';
+      netEl.dataset.t = netEl.textContent;
+    }catch{
+      latEl.textContent = '---'; latEl.dataset.t = latEl.textContent;
+      netEl.textContent = 'ERR'; netEl.dataset.t = netEl.textContent;
+    }
+  }
+
+  function loop(){
+    t = (t + 1) % 10000;
+    const s = String(t).padStart(4,'0');
+    tickEl.textContent = jitterSoft(s);
+    tickEl.dataset.t = tickEl.textContent;
+    requestAnimationFrame(loop);
+  }
+
+  ping();
+  setInterval(ping, 9000);
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

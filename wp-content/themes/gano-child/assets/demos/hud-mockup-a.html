@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>HUD A — dense</title>
+<style>
+  :root{--bg:#05080c;--fg:#e2e8f0;--mut:#94a3b8;--a:#1b4fd8;--o:#ff6b35;--g:#00c26b}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,Segoe UI,Inter,Arial,sans-serif;min-height:200vh}
+  .demo{padding:24px;max-width:980px}
+  .hud{position:fixed;left:0;right:0;bottom:0;z-index:9999;color:var(--fg)}
+  .hud__bar{
+    position:relative;
+    background:linear-gradient(180deg, rgba(5,8,12,.55), rgba(5,8,12,.92));
+    border-top:1px solid rgba(148,163,184,.22);
+    box-shadow:0 -16px 80px rgba(0,0,0,.55);
+    overflow:hidden;
+  }
+  .hud__bar::before{
+    content:"";
+    position:absolute;inset:-2px;
+    background:
+      repeating-linear-gradient(180deg, rgba(255,255,255,.07) 0 1px, rgba(0,0,0,0) 1px 3px);
+    opacity:.28;
+    mix-blend-mode:soft-light;
+    pointer-events:none;
+    transform:translateZ(0);
+    animation:scan 2.4s linear infinite;
+  }
+  .hud__bar::after{
+    content:"";
+    position:absolute;inset:0;
+    background:radial-gradient(1200px 80px at 50% 0%, rgba(27,79,216,.25), transparent 60%);
+    pointer-events:none;
+  }
+  @keyframes scan{0%{transform:translateY(-6px)}100%{transform:translateY(6px)}}
+  .hud__inner{
+    display:flex;gap:14px;align-items:center;justify-content:space-between;
+    padding:10px 12px;
+    font-variant-numeric:tabular-nums;
+  }
+  .hud__left{display:flex;gap:12px;align-items:baseline;min-width:0}
+  .hud__sig{
+    font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+    color:#f8fafc;
+    text-shadow:0 0 18px rgba(34,211,238,.22),0 0 32px rgba(192,132,252,.10);
+    white-space:nowrap;
+  }
+  .hud__route{color:var(--mut);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:32vw}
+  .hud__right{display:flex;gap:12px;align-items:center}
+  .pill{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border:1px solid rgba(148,163,184,.18);border-radius:999px;background:rgba(2,6,23,.35)}
+  .k{color:rgba(226,232,240,.78);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+  .v{font-size:14px;font-weight:800}
+  .v.glitch{position:relative;letter-spacing:.08em}
+  .v.glitch::before,.v.glitch::after{
+    content:attr(data-t);
+    position:absolute;left:0;top:0;
+    opacity:.75;
+    clip-path:inset(0 0 0 0);
+  }
+  .v.glitch::before{transform:translate(1px,0);color:rgba(34,211,238,.9);mix-blend-mode:screen}
+  .v.glitch::after{transform:translate(-1px,0);color:rgba(248,113,113,.85);mix-blend-mode:screen}
+  .hud__details{
+    display:none;
+    padding:10px 12px 14px;
+    border-top:1px dashed rgba(148,163,184,.22);
+    background:rgba(2,6,23,.35);
+    font-size:12px;color:rgba(226,232,240,.82);
+  }
+  .hud.is-open .hud__details{display:block}
+  .hud__hint{color:rgba(226,232,240,.55);font-size:11px}
+  @media (max-width:720px){
+    .hud__route{display:none}
+    .pill .k{display:none}
+    .hud__inner{padding:10px 10px}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hud__bar::before{animation:none;opacity:.14}
+    .v.glitch::before,.v.glitch::after{display:none}
+  }
+</style>
+</head>
+<body>
+  <div class="demo">
+    <h1>Demo HUD A (dense)</h1>
+    <p>Scroll para ver fijo abajo. Tap/click en la barra abre detalles (modo móvil expandible).</p>
+  </div>
+
+  <div class="hud" id="hud">
+    <div class="hud__bar" id="hudBar" role="button" aria-expanded="false" tabindex="0">
+      <div class="hud__inner">
+        <div class="hud__left">
+          <div class="hud__sig">GANO.STATUS</div>
+          <div class="hud__route" id="hudRoute">/</div>
+        </div>
+        <div class="hud__right">
+          <span class="pill"><span class="k">lat</span><span class="v glitch" id="lat" data-t="--">--</span></span>
+          <span class="pill"><span class="k">health</span><span class="v glitch" id="hl" data-t="OK">OK</span></span>
+          <span class="pill"><span class="k">tick</span><span class="v glitch" id="tk" data-t="0000">0000</span></span>
+        </div>
+      </div>
+      <div class="hud__details">
+        <div><strong>Telemetría (demo)</strong> — mezcla real/simulada: ping “/”, estado online, fps estimado.</div>
+        <div class="hud__hint">Tip: en reduced motion se apaga el glitch/scanlines.</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const hud = document.getElementById('hud');
+  const bar = document.getElementById('hudBar');
+  const route = document.getElementById('hudRoute');
+  const latEl = document.getElementById('lat');
+  const hlEl = document.getElementById('hl');
+  const tkEl = document.getElementById('tk');
+
+  route.textContent = location.pathname || '/';
+
+  const toggle = () => {
+    const open = !hud.classList.contains('is-open');
+    hud.classList.toggle('is-open', open);
+    bar.setAttribute('aria-expanded', String(open));
+  };
+  bar.addEventListener('click', toggle);
+  bar.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }});
+
+  let tick = 0;
+  function jitterDigits(s){
+    if (Math.random() < 0.75) return s;
+    const a = s.split('');
+    const n = 1 + (Math.random()*2|0);
+    for(let i=0;i<n;i++){
+      const p = Math.random()*a.length|0;
+      a[p] = String(Math.random()*10|0);
+    }
+    return a.join('');
+  }
+
+  async function ping(){
+    const t0 = performance.now();
+    try{
+      await fetch('/', { method:'HEAD', cache:'no-store' });
+      const ms = Math.max(0, performance.now() - t0);
+      const out = String(Math.round(ms)).padStart(3,'0');
+      latEl.textContent = jitterDigits(out) + 'ms';
+      latEl.dataset.t = latEl.textContent;
+      hlEl.textContent = (navigator.onLine ? 'OK' : 'OFF');
+      hlEl.dataset.t = hlEl.textContent;
+    }catch{
+      latEl.textContent = '---';
+      latEl.dataset.t = latEl.textContent;
+      hlEl.textContent = 'ERR';
+      hlEl.dataset.t = hlEl.textContent;
+    }
+  }
+
+  function loop(){
+    tick = (tick + 1) % 10000;
+    const s = String(tick).padStart(4,'0');
+    tkEl.textContent = jitterDigits(s);
+    tkEl.dataset.t = tkEl.textContent;
+    requestAnimationFrame(loop);
+  }
+
+  ping();
+  setInterval(ping, 7000);
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

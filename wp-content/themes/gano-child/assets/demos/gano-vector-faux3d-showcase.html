@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>50 propuestas — vector / falso 3D / “viz geométrico” (local)</title>
+<style>
+:root{
+  --bg:#07080d;--panel:#10131c;--bd:#252a3a;--tx:#e6e9f2;--m:#8b93a8;--a:#8b7cff;--b:#38d9c0;
+  font-family:system-ui,Segoe UI,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);line-height:1.4}
+header{position:sticky;top:0;z-index:9;background:linear-gradient(180deg,#0a0c12,transparent);padding:.9rem 1rem;border-bottom:1px solid var(--bd)}
+header h1{font-size:1.05rem;margin:0 0 .25rem}
+header p{margin:0;font-size:.78rem;color:var(--m);max-width:90ch}
+.research{font-size:.72rem;color:#9fb3c8;margin-top:.5rem;padding:.5rem;background:#0c1018;border:1px solid var(--bd);border-radius:8px}
+.research code{color:var(--b)}
+nav{display:flex;flex-wrap:wrap;gap:.25rem;padding:.6rem .85rem;border-bottom:1px solid var(--bd);background:#06070b;position:sticky;top:72px;z-index:8;max-height:38vh;overflow:auto}
+nav a{font-size:.62rem;padding:.15rem .35rem;border-radius:4px;background:var(--panel);border:1px solid var(--bd);color:var(--tx);text-decoration:none}
+nav a:hover{border-color:var(--a)}
+main{max-width:1100px;margin:0 auto;padding:.75rem .9rem 3rem}
+section{margin:0 0 1.35rem;padding:.75rem;background:var(--panel);border:1px solid var(--bd);border-radius:10px}
+section h2{margin:0 0 .2rem;font-size:.88rem;display:flex;flex-wrap:wrap;gap:.35rem;align-items:center}
+.tag{font-size:.58rem;text-transform:uppercase;letter-spacing:.04em;padding:.08rem .28rem;border-radius:3px;border:1px solid var(--bd);color:#cbd5e1}
+.tag.vec{border-color:#1d4ed8;color:#93c5fd}
+.tag.f3{border-color:#047857;color:#6ee7b7}
+.tag.eq{border-color:#7c3aed;color:#ddd6fe}
+.cap{font-size:.72rem;color:var(--m);margin-bottom:.45rem}
+.slot{position:relative;min-height:150px;background:#05060a;border-radius:8px;border:1px solid #1a2030;overflow:hidden}
+.slot canvas,.slot svg{display:block;width:100%;height:160px}
+.slot.t svg,.slot.t canvas{height:200px}
+.small{font-size:.65rem;color:#64748b;margin-top:.35rem}
+</style>
+</head>
+<body>
+<header>
+  <h1>50 propuestas visuales — animación vectorial & falso 3D (inspiración “reproductor geométrico” legacy, sin copiar assets Microsoft)</h1>
+  <p>Todo local: sin CDNs. Espectros reactivos <strong>simulados</strong> (sin Web Audio obligatorio). Estilos distintos al showcase anterior de 25 demos.</p>
+  <div class="research">
+    <strong>Investigación SOTA (referencias, no dependencias):</strong>
+    MDN <code>AnalyserNode</code> + barras / forma de onda / espectro como pipeline conceptual de visualizaciones;
+    patrones radiales y suavizado tipo Catmull-Rom en visualizadores SVG (p. ej. ecosistema <code>@euterpe.js/visualizer</code>);
+    isometría y extrusión con <code>transform-style: preserve-3d</code>, perspectiva y sombras (guías CSS 3D / isometric layouts).
+    Objetivo: figuras isométricas, prismas, ecualizadores vectoriales — paleta y geometría <em>originales</em>.
+  </div>
+</header>
+<nav id="nav-main" aria-label="Índice"></nav>
+<main id="sections"></main>
+<script>
+(function(){
+"use strict";
+const NS="http://www.w3.org/2000/svg";
+function el(t,a={},p=[]){const e=document.createElement(t);Object.assign(e,a);p.forEach(c=>e.appendChild(c));return e;}
+function sim(t, n, seed=1){
+  const out=new Float32Array(n);
+  for(let i=0;i<n;i++){
+    const x=i/n;
+    const bass=Math.sin(t*0.002+x*6)*0.35+0.35;
+    const tre=Math.sin(t*0.0037+seed+x*22)*0.25+0.25;
+    const pulse=0.5+0.5*Math.sin(t*0.0015+i*0.08);
+    out[i]=Math.max(0,Math.min(1,(bass*(1-x)+tre*x)*pulse*(0.55+0.45*Math.sin(t*0.0008+i))));
+  }
+  return out;
+}
+function resize(c){
+  const dpr=Math.min(2,window.devicePixelRatio||1);
+  let cw=c.clientWidth, ch=c.clientHeight;
+  if(!cw||!ch){
+    const p=c.parentElement;
+    if(p){ cw=p.clientWidth||300; ch=p.clientHeight||160; }
+    else{ cw=300; ch=160; }
+  }
+  const w=Math.max(32,Math.floor((cw||300)*dpr)), h=Math.max(32,Math.floor((ch||160)*dpr));
+  if(c.width!==w||c.height!==h){c.width=w;c.height=h;}
+  return{w,h,dpr};
+}
+
+const demos=[];
+
+/* 01 radial spectrum canvas */
+demos.push({id:"v01",title:"01 · Espectro radial (barras polares)",tags:["vec","eq","f3"],cap:"Barras desde centro; profundidad simulada con grosor y alpha.",init(c){
+  const x=c.getContext("2d"); let t0=performance.now();
+  function f(t){const{w,h}=resize(c);x.fillStyle="#040508";x.fillRect(0,0,w,h);
+    const s=sim(t,64,2),cx=w/2,cy=h/2,R=Math.min(w,h)*0.28;
+    for(let i=0;i<s.length;i+=1){
+      const a=(i/s.length)*Math.PI*2, len=R+s[i]*Math.min(w,h)*0.38;
+      x.strokeStyle=`hsla(${200+i*4},85%,65%,${0.25+s[i]*0.65})`;
+      x.lineWidth=3+4*s[i];
+      x.beginPath();x.moveTo(cx+Math.cos(a)*R*0.15,cy+Math.sin(a)*R*0.15);
+      x.lineTo(cx+Math.cos(a)*len,cy+Math.sin(a)*len);x.stroke();
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 02 SVG smooth closed curve from sim points */
+demos.push({id:"v02",host:"slot",title:"02 · Lazo vectorial suavizado (espectro como forma)",tags:["vec","eq"],cap:"Polilínea cerrada con esquinas suavizadas (cuadrática).",init(c){
+  const svg=el("svg",{width:"100%",height:"160",viewBox:"0 0 800 160"});
+  const path=el("path",{fill:"rgba(99,102,241,0.15)",stroke:"#a5b4fc","stroke-width":"2"});
+  svg.appendChild(path);c.appendChild(svg);
+  let t0=performance.now();
+  function f(t){
+    const s=sim(t,36,3);
+    let d="",cx=400,cy=90,R=55;
+    for(let i=0;i<=s.length;i++){
+      const j=i%s.length;
+      const a=(j/s.length)*Math.PI*2;
+      const rr=R+s[j]*70;
+      const px=cx+Math.cos(a)*rr, py=cy+Math.sin(a)*rr*0.72;
+      d+=(i?"L":"M")+px.toFixed(1)+","+py.toFixed(1)+" ";
+    }
+    d+="Z";
+    path.setAttribute("d",d);
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 03 CSS extruded isometric slab */
+demos.push({id:"v03",host:"slot",tall:true,title:"03 · Losa isométrica extruida (CSS 3D)",tags:["f3","vec"],cap:"Tres caras simuladas: translateZ + rotateX/Y.",init(c){
+  c.classList.add("t");
+  const kid="kf_spin_"+(c.dataset.demoId||"v03");
+  const wrap=el("div",{style:"display:flex;align-items:center;justify-content:center;height:200px;perspective:900px;background:#05060a"});
+  const cube=el("div",{style:"width:120px;height:72px;position:relative;transform-style:preserve-3d;transform:rotateX(54deg) rotateZ(-46deg);animation:"+kid+" 9s linear infinite"});
+  const face=(col,z,rx,ry)=>el("div",{style:`position:absolute;inset:0;background:${col};border:1px solid #334155;transform:translateZ(${z}px) rotateX(${rx}deg) rotateY(${ry}deg);opacity:.95`});
+  cube.appendChild(face("linear-gradient(135deg,#4f46e5,#312e81)",0,0,0));
+  const top=el("div",{style:"position:absolute;left:0;top:-48px;width:120px;height:48px;background:linear-gradient(90deg,#6366f1,#4338ca);transform-origin:50% 100%;transform:rotateX(90deg);border:1px solid #818cf8"});
+  const side=el("div",{style:"position:absolute;right:-48px;top:0;width:48px;height:72px;background:linear-gradient(180deg,#312e81,#1e1b4b);transform-origin:0 50%;transform:rotateY(90deg);border:1px solid #4338ca"});
+  cube.appendChild(top);cube.appendChild(side);
+  if(!document.getElementById(kid)){
+    const st=document.createElement("style");st.id=kid;
+    st.textContent="@keyframes "+kid+"{to{transform:rotateX(54deg) rotateZ(314deg)}}";
+    document.head.appendChild(st);
+  }
+  wrap.appendChild(cube);c.appendChild(wrap);
+}});
+
+/* 04 Lissajous */
+demos.push({id:"v04",title:"04 · Lissajous vector (trazo orgánico)",tags:["vec"],cap:"Curva paramétrica; grosor modulado por sim.",init(c){
+  const x=c.getContext("2d");let t0=performance.now();
+  function f(t){const{w,h}=resize(c);x.fillStyle="#03040a";x.fillRect(0,0,w,h);
+    const s=sim(t,1,4)[0];
+    x.beginPath();const cx=w/2,cy=h/2,sc=Math.min(w,h)*0.38;
+    for(let i=0;i<900;i++){
+      const u=i*0.02, a=3+s*2, b=4+s*2.2;
+      const px=cx+Math.sin(a*u+t*0.0012)*sc, py=cy+Math.sin(b*u)*sc*0.72;
+      if(i===0)x.moveTo(px,py);else x.lineTo(px,py);
+    }
+    x.strokeStyle=`hsl(${220+s*80},90%,70%)`;x.lineWidth=2.2;x.shadowColor="#6366f1";x.shadowBlur=8;x.stroke();x.shadowBlur=0;
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 05 Oscilloscope glow */
+demos.push({id:"v05",title:"05 · Osciloscopio con bloom (Canvas)",tags:["vec","eq"],cap:"Dominio temporal simulado; no FFT.",init(c){
+  const x=c.getContext("2d");let t0=performance.now();
+  function f(t){const{w,h}=resize(c);x.fillStyle="rgba(2,4,10,.35)";x.fillRect(0,0,w,h);
+    x.lineJoin="round";
+    x.strokeStyle="#5eead4";x.lineWidth=3;x.shadowColor="#2dd4bf";x.shadowBlur=18;
+    x.beginPath();
+    for(let i=0;i<w;i++){
+      const y=h*0.5+Math.sin(i*0.04+t*0.003)*h*0.22+Math.sin(i*0.015+t*0.0017)*h*0.08;
+      if(i===0)x.moveTo(i,y);else x.lineTo(i,y);
+    }
+    x.stroke();x.shadowBlur=0;
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 06 Diamond tessellation EQ */
+demos.push({id:"v06",title:"06 · Rejilla de rombos “gemas” (altura = banda)",tags:["vec","eq","f3"],cap:"Rombo isométrico por celda.",init(c){
+  const x=c.getContext("2d");const cols=14,rows=5;
+  function f(t){const{w,h}=resize(c);x.fillStyle="#05060c";x.fillRect(0,0,w,h);
+    const s=sim(t,cols,5);
+    const cw=w/cols,ch=h/rows;
+    for(let gy=0;gy<rows;gy++){
+      for(let gx=0;gx<cols;gx++){
+        const v=s[(gx+gy*3)%cols];
+        const cx=gx*cw+cw/2,cy=gy*ch+ch/2;
+        const rh=cw*0.42, rv=ch*0.32+v*ch*0.55;
+        x.fillStyle=`hsla(${200+gx*10},80%,${45+v*40}%,${0.35+v*0.55})`;
+        x.beginPath();x.moveTo(cx,cy-rv);x.lineTo(cx+rh,cy);x.lineTo(cx,cy+rv);x.lineTo(cx-rh,cy);x.closePath();x.fill();
+        x.strokeStyle="rgba(255,255,255,.12)";x.lineWidth=1;x.stroke();
+      }
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 07 Hex flower spectrum */
+demos.push({id:"v07",host:"slot",title:"07 · Flor hexagonal de bandas",tags:["vec","eq"],cap:"Pétalos = anchura según sim.",init(c){
+  const svg=el("svg",{viewBox:"0 0 800 200",width:"100%",height:"200"});c.appendChild(svg);
+  const g=el("g");svg.appendChild(g);
+  function f(t){
+    g.replaceChildren();
+    const s=sim(t,18,6),cx=400,cy=100;
+    for(let i=0;i<s.length;i++){
+      const a=(i/s.length)*Math.PI*2;
+      const len=40+s[i]*95;
+      const hx=cx+Math.cos(a)*len, hy=cy+Math.sin(a)*len;
+      const poly=el("polygon",{
+        points:`${cx},${cy} ${cx+Math.cos(a+0.08)*20},${cy+Math.sin(a+0.08)*20} ${hx},${hy}`,
+        fill:`hsla(${210+i*8},85%,60%,${0.2+s[i]*0.65})`,
+        stroke:"rgba(255,255,255,.15)"
+      });
+      g.appendChild(poly);
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 08 feDisplacementMap */
+demos.push({id:"v08",host:"slot",title:"08 · Malla vectorial con turbulencia (SVG filter)",tags:["vec"],cap:"feTurbulence + feDisplacementMap en rectángulos.",init(c){
+  const uid=(c.dataset.demoId||"v08").replace(/[^a-z0-9]/gi,"_");
+  const fid="ft_"+uid, gid="gm_"+uid;
+  const svg=el("svg",{width:"100%",height:"200",viewBox:"0 0 800 200"});
+  const defs=el("defs");
+  defs.innerHTML=`<filter id="${fid}" x="-20%" y="-20%" width="140%" height="140%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.015 0.08" numOctaves="2" result="noise">
+      <animate attributeName="baseFrequency" dur="14s" values="0.01 0.06;0.03 0.12;0.01 0.06" repeatCount="indefinite"/>
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="18" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>`;
+  const r=el("rect",{x:"60",y:"30",width:"680",height:"140",fill:"url(#"+gid+")",filter:"url(#"+fid+")"});
+  const gdef=el("linearGradient",{id:gid,x1:"0",x2:"1"});
+  gdef.appendChild(el("stop",{offset:"0",stopColor:"#312e81"}));
+  gdef.appendChild(el("stop",{offset:"1",stopColor:"#0f766e"}));
+  defs.appendChild(gdef);svg.appendChild(defs);svg.appendChild(r);
+  for(let i=0;i<11;i++){
+    const line=el("line",{x1:80+i*60,y1:40,x2:80+i*60,y2:160,stroke:"rgba(255,255,255,.08)","stroke-width":"1"});
+    svg.appendChild(line);
+  }
+  c.appendChild(svg);
+}});
+
+/* 09 Trapezoid perspective wall */
+demos.push({id:"v09",title:"09 · Muro trapezoidal (falso 3D)",tags:["f3","eq"],cap:"Barras convergentes hacia horizonte simulado.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#020308";x.fillRect(0,0,w,h);
+    const s=sim(t,32,7);const baseY=h*0.82;
+    for(let i=0;i<s.length;i++){
+      const px=i/s.length; const topW=40+s[i]*110; const botW=26+s[i]*70;
+      const cx=px*w; const skew=(px-0.5)*40;
+      x.fillStyle=`hsla(${195+i*5},80%,${40+s[i]*35}%,0.85)`;
+      x.beginPath();
+      x.moveTo(cx-skew,botW*0.1+baseY-botW);
+      x.lineTo(cx+topW-skew,baseY-topW);
+      x.lineTo(cx+topW+skew,baseY);
+      x.lineTo(cx+skew,baseY);
+      x.closePath();x.fill();
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 10 Torus wireframe */
+demos.push({id:"v10",title:"10 · Toro wireframe (proyección)",tags:["vec","f3"],cap:"Dos familias de círculos en 3D → 2D.",init(c){
+  const x=c.getContext("2d");let ang=0;
+  function proj(X,Y,Z,wx,wy){
+    const co=Math.cos(ang*0.6),si=Math.sin(ang*0.6);
+    let x1=X*co-Z*si,z1=X*si+Z*co;
+    const c2=Math.cos(ang),s2=Math.sin(ang);
+    let y1=Y*c2-z1*s2; z1=Y*s2+z1*c2;
+    const f=260/(260+z1);
+    return[wx+x1*f,wy+y1*f];
+  }
+  function f(t){const{w,h}=resize(c);x.fillStyle="#03040a";x.fillRect(0,0,w,h);
+    ang=t*0.0007; const cx=w/2,cy=h/2,R=90,r=36;
+    x.strokeStyle="#93c5fd";x.lineWidth=1.2;
+    for(let ring=0;ring<24;ring++){
+      const u=ring/24*Math.PI*2;
+      x.beginPath();
+      for(let seg=0;seg<=64;seg++){
+        const v=seg/64*Math.PI*2;
+        const X=(R+r*Math.cos(v))*Math.cos(u), Y=(R+r*Math.cos(v))*Math.sin(u), Z=r*Math.sin(v);
+        const[p,q]=proj(X,Y,Z,cx,cy);
+        if(seg===0)x.moveTo(p,q);else x.lineTo(p,q);
+      }
+      x.strokeStyle=`hsla(${200+ring*6},80%,70%,0.35)`;x.stroke();
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 11 Iso stairs waveform */
+demos.push({id:"v11",title:"11 · Escalera isométrica “oscilante”",tags:["f3","vec"],cap:"Degradados por escalón.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#04050a";x.fillRect(0,0,w,h);
+    const s=sim(t,20,8); const step=28, base=h-24;
+    for(let i=0;i<s.length;i++){
+      const elev=s[i]*90;
+      const ox=40+i*step*1.1, oy=base-i*8-elev;
+      x.fillStyle=`hsl(${210+i*6},70%,${38+s[i]*30}%)`;
+      x.beginPath();
+      x.moveTo(ox,oy);x.lineTo(ox+step,oy-6);x.lineTo(ox+step+14,oy+10);x.lineTo(ox+14,oy+16);x.closePath();x.fill();
+      x.strokeStyle="rgba(255,255,255,.12)";x.stroke();
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 12 VU needles SVG */
+demos.push({id:"v12",host:"slot",title:"12 · Vúmetros con aguja (SVG rotate)",tags:["vec","eq"],cap:"Transform origin en base.",init(c){
+  const svg=el("svg",{viewBox:"0 0 800 200",width:"100%",height:"200"});
+  for(let i=0;i<8;i++){
+    const g=el("g",{transform:`translate(${80+i*90},150)`});
+    const arc=el("path",{d:"M -40 0 A 40 40 0 0 1 40 0",fill:"none",stroke:"#334155","stroke-width":"4"});
+    const needle=el("line",{x1:"0",y1:"0",x2:"0",y2:"-52",stroke:"#f472b6","stroke-width":"3","stroke-linecap":"round",
+      transform:"rotate(0)"});
+    needle.dataset.i=String(i);
+    g.appendChild(arc);g.appendChild(needle);svg.appendChild(g);
+  }
+  c.appendChild(svg);
+  function f(t){
+    const s=sim(t,8,9);
+    svg.querySelectorAll("line").forEach((ln)=>{
+      const idx=Number(ln.dataset.i)||0;
+      const ang=-60+s[idx]*120;
+      ln.setAttribute("transform","rotate("+ang+")");
+    });
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 13 Regular polygon burst */
+demos.push({id:"v13",title:"13 · Polígonos regulares pulsantes",tags:["vec","eq"],cap:"Radio por banda sim.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#030308";x.fillRect(0,0,w,h);
+    const s=sim(t,10,10),cx=w/2,cy=h/2;
+    for(let k=0;k<s.length;k++){
+      const n=5+k,sides=n+3,r=30+k*16+s[k]*40;
+      x.beginPath();
+      for(let i=0;i<=sides;i++){
+        const a=i/sides*Math.PI*2+t*0.0004*(k+1);
+        const px=cx+Math.cos(a)*r, py=cy+Math.sin(a)*r*0.72;
+        if(i===0)x.moveTo(px,py);else x.lineTo(px,py);
+      }
+      x.strokeStyle=`hsla(${200+k*15},85%,65%,${0.25+s[k]*0.55})`;
+      x.lineWidth=2;x.stroke();
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 14 Iso chevron flow */
+demos.push({id:"v14",title:"14 · Flujo de chevrones isométricos",tags:["f3","vec"],cap:"Patrón direccional.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#04060d";x.fillRect(0,0,w,h);
+    const rows=5,cols=10;
+    for(let ry=0;ry<rows;ry++){
+      for(let rx=0;rx<cols;rx++){
+        const ox=rx*72+ry*18+(t*0.02)%36,cy=30+ry*34;
+        const v=sim(t+rx*40,1,11)[0];
+        x.fillStyle=`hsla(${210+rx*5},75%,${40+v*35}%,0.9)`;
+        x.beginPath();
+        x.moveTo(ox,cy);x.lineTo(ox+26,cy-14);x.lineTo(ox+52,cy);x.lineTo(ox+26,cy+14);x.closePath();x.fill();
+      }
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 15 Rotating conic gradient prism */
+demos.push({id:"v15",host:"slot",title:"15 · Prisma de gradiente cónico animado",tags:["vec","f3"],cap:"CSS conic-gradient + máscara.",init(c){
+  const kid="kf_rotg_"+(c.dataset.demoId||"v15");
+  const d=el("div",{style:"width:min(360px,90vw);height:160px;margin:20px auto;border-radius:16px;background:conic-gradient(from 0deg at 50% 120%,#6366f1,#22d3ee,#f472b6,#6366f1);clip-path:polygon(10% 100%,50% 0%,90% 100%);animation:"+kid+" 8s linear infinite;filter:saturate(1.2)"});
+  if(!document.getElementById(kid)){const st=document.createElement("style");st.id=kid;st.textContent="@keyframes "+kid+"{to{filter:hue-rotate(360deg) saturate(1.35)}}";document.head.appendChild(st);}
+  c.appendChild(d);
+}});
+
+/* 16 Spirograph */
+demos.push({id:"v16",title:"16 · Espirógrafo (hipotrocoide)",tags:["vec"],cap:"Rastro fino multi-capa.",init(c){
+  const x=c.getContext("2d");let t0=performance.now();
+  function f(t){const{w,h}=resize(c);x.fillStyle="rgba(3,4,10,.15)";x.fillRect(0,0,w,h);
+    const cx=w/2,cy=h/2,R=80,r=22,d=48;
+    x.beginPath();
+    for(let i=0;i<2000;i++){
+      const th=i*0.03+t*0.0004;
+      const k=R-r;
+      const px=cx+k*Math.cos(th)+d*Math.cos((k/r)*th);
+      const py=cy+k*Math.sin(th)-d*Math.sin((k/r)*th);
+      if(i===0)x.moveTo(px,py);else x.lineTo(px,py);
+    }
+    x.strokeStyle="#c4b5fd";x.lineWidth=1.1;x.stroke();
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 17 Metatron stroke dash */
+demos.push({id:"v17",host:"slot",title:"17 · Círculos entrelazados (trazo animado)",tags:["vec"],cap:"stroke-dashoffset (SMIL, sin @keyframes duplicados).",init(c){
+  const svg=el("svg",{viewBox:"0 0 800 200",width:"100%",height:"200"});
+  const cx=400,cy=100,R=46;
+  const pts=[[0,-1],[0.866,-0.5],[0.866,0.5],[0,1],[-0.866,0.5],[-0.866,-0.5]];
+  pts.forEach((p,i)=>{
+    const circ=el("circle",{cx:String(cx+p[0]*R*1.1),cy:String(cy+p[1]*R*1.1),r:String(R*0.95),fill:"none",stroke:"#94a3b8","stroke-width":"2",
+      "stroke-dasharray":"40 60","stroke-dashoffset":"0"});
+    const an=el("animate",{attributeName:"stroke-dashoffset",from:"0",to:"-400",dur:String(6+i*0.4)+"s",repeatCount:"indefinite"});
+    circ.appendChild(an);
+    svg.appendChild(circ);
+  });
+  c.appendChild(svg);
+}});
+
+/* 18 conic pie sectors */
+demos.push({id:"v18",host:"slot",title:"18 · Sectores tipo “VU circular” (conic)",tags:["vec","eq"],cap:"Div animado.",init(c){
+  const kid="kf_pie_"+(c.dataset.demoId||"v18");
+  const d=el("div",{style:"width:160px;height:160px;margin:20px auto;border-radius:50%;background:conic-gradient(from -90deg,#1e293b 0deg 20deg,#334155 20deg 60deg,#6366f1 60deg 120deg,#22d3ee 120deg 200deg,#f472b6 200deg 300deg,#312e81 300deg 360deg);animation:"+kid+" 12s linear infinite;box-shadow:0 0 40px rgba(99,102,241,.35)"});
+  const hole=el("div",{style:"position:absolute;inset:28px;border-radius:50%;background:#05060a;pointer-events:none"});
+  const wrap=el("div",{style:"position:relative;width:160px;height:160px;margin:20px auto;isolation:isolate"});
+  wrap.appendChild(d);wrap.appendChild(hole);
+  if(!document.getElementById(kid)){const st=document.createElement("style");st.id=kid;st.textContent="@keyframes "+kid+"{to{transform:rotate(360deg)}}";document.head.appendChild(st);}
+  c.appendChild(wrap);
+}});
+
+/* 19 LED ladder SVG rects */
+demos.push({id:"v19",host:"slot",title:"19 · Escalera LED vertical segmentada",tags:["vec","eq"],cap:"Segmentos redondeados.",init(c){
+  const svg=el("svg",{viewBox:"0 0 200 200",width:"120",height:"200",style:"margin:0 auto;display:block"});
+  const bars=24;
+  for(let i=0;i<bars;i++){
+    const h=4+i*0.35;
+    const r=el("rect",{x:"70",y:String(190-i*8),width:"60",height:String(h),rx:"2",fill:"#1e293b"});
+    r.dataset.idx=String(i);svg.appendChild(r);
+  }
+  c.appendChild(svg);
+  function f(t){
+    const s=sim(t,bars,12);
+    svg.querySelectorAll("rect").forEach((r)=>{
+      const i=+r.dataset.idx;
+      const v=s[bars-1-i];
+      r.setAttribute("fill",`hsl(${200+v*80},85%,${35+v*40}%)`);
+      r.setAttribute("width",String(20+v*70));
+    });
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 20 mirror spectrum */
+demos.push({id:"v20",title:"20 · Espectro simétrico (espejo axial)",tags:["vec","eq"],cap:"Barras centradas en eje vertical.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#020308";x.fillRect(0,0,w,h);
+    const n=40,s=sim(t,n,13),cx=w/2,cyv=h/2;
+    for(let i=0;i<n;i++){
+      const hh=s[i]*h*0.42,bw=w/n*0.72;
+      const x0=cx+(i-n/2)*bw;
+      x.fillStyle=`hsla(${210+i*4},85%,60%,0.85)`;
+      x.fillRect(x0,cyv-hh/2,bw,hh);
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 21 z-sorted panels */
+demos.push({id:"v21",title:"21 · Paneles flotantes con orden Z falso",tags:["f3","vec"],cap:"Escala y blur por “profundidad”.",init(c){
+  const x=c.getContext("2d");const panels=Array.from({length:14},(_,i)=>({x:Math.random(),y:Math.random(),z:Math.random(),w:0.08+Math.random()*0.12,h:0.12+Math.random()*0.18}));
+  function f(t){const{w,h}=resize(c);x.fillStyle="#03040a";x.fillRect(0,0,w,h);
+    const tt=t*0.0003;
+    panels.forEach(p=>{
+      p.z=(p.z+0.0013)%1;
+      p.x=(p.x+Math.sin(tt+p.z*6)*0.001)%1;
+    });
+    panels.sort((a,b)=>a.z-b.z);
+    panels.forEach(p=>{
+      const px=p.x*w,py=p.y*h,sc=0.35+p.z*0.9;
+      x.fillStyle=`hsla(${200+p.z*80},75%,${35+p.z*30}%,${0.25+p.z*0.65})`;
+      x.fillRect(px,py,p.w*w*sc,p.h*h*sc);
+    });
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 22 star polyhedron outline */
+demos.push({id:"v22",title:"22 · Estrella grande {7/2} animada",tags:["vec"],cap:"Saltos de vértice.",init(c){
+  const x=c.getContext("2d");let t0=performance.now();
+  function f(t){const{w,h}=resize(c);x.fillStyle="#04050c";x.fillRect(0,0,w,h);
+    const cx=w/2,cy=h/2,R=Math.min(w,h)*0.38,n=7,step=2;
+    x.beginPath();
+    for(let i=0;i<=n*6;i++){
+      const v=(i*step)%n;
+      const a=v/n*Math.PI*2+t*0.0005;
+      const px=cx+Math.cos(a)*R,py=cy+Math.sin(a)*R*0.78;
+      if(i===0)x.moveTo(px,py);else x.lineTo(px,py);
+    }
+    x.strokeStyle="#f9a8d4";x.lineWidth=2.2;x.stroke();
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 23 phase envelope bars */
+demos.push({id:"v23",title:"23 · Barras con envolvente sinusoidal",tags:["vec","eq"],cap:"Altura * envolvente larga.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#020308";x.fillRect(0,0,w,h);
+    const n=48,s=sim(t,n,14);
+    const env=0.55+0.45*Math.sin(t*0.0012);
+    for(let i=0;i<n;i++){
+      const bw=w/n*0.85,hh=s[i]*h*0.5*env,x0=i/n*w;
+      x.fillStyle=`hsl(${205+i*3},80%,55%)`;
+      x.fillRect(x0,h-hh,bw,hh);
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 24 orbit triangles */
+demos.push({id:"v24",title:"24 · Triángulos en órbita elíptica",tags:["vec","f3"],cap:"Rotación + escala.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#03040a";x.fillRect(0,0,w,h);
+    const cx=w/2,cy=h/2;
+    for(let i=0;i<16;i++){
+      const a=t*0.0008+i*0.4;
+      const rx=Math.min(w,h)*0.38,ry=Math.min(w,h)*0.22;
+      const px=cx+Math.cos(a)*rx,py=cy+Math.sin(a)*ry;
+      const sc=0.4+sim(t+i*30,1,15)[0]*0.9;
+      x.save();x.translate(px,py);x.rotate(a);x.scale(sc,sc);
+      x.fillStyle=`hsla(${210+i*11},85%,60%,0.85)`;
+      x.beginPath();x.moveTo(0,-12);x.lineTo(10,10);x.lineTo(-10,10);x.closePath();x.fill();
+      x.restore();
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 25 moiré grids */
+demos.push({id:"v25",host:"slot",title:"25 · Moiré de dos rejillas",tags:["vec"],cap:"Rotación CSS en <g> (evita SMIL fuera de namespace).",init(c){
+  const kid="kf_moir_"+(c.dataset.demoId||"v25");
+  const svg=document.createElementNS(NS,"svg");
+  svg.setAttribute("viewBox","0 0 800 200");svg.setAttribute("width","100%");svg.setAttribute("height","200");
+  const g1=document.createElementNS(NS,"g");g1.setAttribute("stroke","rgba(148,163,184,.35)");g1.setAttribute("stroke-width","1");
+  const g2=document.createElementNS(NS,"g");g2.setAttribute("stroke","rgba(56,189,248,.28)");g2.setAttribute("stroke-width","1");
+  g2.setAttribute("style","transform-origin:400px 100px;animation:"+kid+" 18s linear infinite");
+  for(let i=0;i<40;i++){
+    const l1=document.createElementNS(NS,"line");l1.setAttribute("x1",String(i*22));l1.setAttribute("y1","0");l1.setAttribute("x2",String(i*22+300));l1.setAttribute("y2","200");g1.appendChild(l1);
+    const l2=document.createElementNS(NS,"line");l2.setAttribute("x1",String(i*22));l2.setAttribute("y1","0");l2.setAttribute("x2",String(i*22+280));l2.setAttribute("y2","200");g2.appendChild(l2);
+  }
+  svg.appendChild(g1);svg.appendChild(g2);
+  if(!document.getElementById(kid)){const st=document.createElement("style");st.id=kid;st.textContent="@keyframes "+kid+"{from{transform:rotate(0.6deg)}to{transform:rotate(3.4deg)}}";document.head.appendChild(st);}
+  c.appendChild(svg);
+}});
+
+/* 26 hatched parallelograms */
+demos.push({id:"v26",title:"26 · Rayas oblicuas en mosaico",tags:["vec","f3"],cap:"Paralelogramos con clipping.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#04050c";x.fillRect(0,0,w,h);
+    const cols=10,rows=4;
+    for(let ry=0;ry<rows;ry++){
+      for(let rx=0;rx<cols;rx++){
+        const v=sim(t+rx*20,1,16)[0];
+        const ox=rx*(w/cols)+ry*12,oy=ry*(h/rows)+20;
+        x.save();x.beginPath();
+        x.moveTo(ox,oy);x.lineTo(ox+w/cols,oy-10);x.lineTo(ox+w/cols+18,oy+h/rows);x.lineTo(ox+18,oy+h/rows+10);
+        x.closePath();x.clip();
+        for(let k=-20;k<120;k+=4){
+          x.strokeStyle=`rgba(165,180,252,${0.15+v*0.5})`;
+          x.beginPath();x.moveTo(ox+k,oy-20);x.lineTo(ox+k+40,oy+h/rows+40);x.stroke();
+        }
+        x.restore();
+      }
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 27 mouse parallax layers */
+demos.push({id:"v27",host:"slot",title:"27 · Capas de profundidad (parallax puntero)",tags:["f3","vec"],cap:"Escuchamos pointermove en el slot.",init(c){
+  const layers=[{z:0.2,c:"#1e293b"},{z:0.45,c:"#334155"},{z:0.7,c:"#4c1d95"}];
+  const divs=layers.map(L=>el("div",{style:`position:absolute;inset:12%;background:${L.c};border-radius:14px;opacity:.85;transform:translate3d(0,0,0);box-shadow:0 10px 30px rgba(0,0,0,.35)`}));
+  const wrap=el("div",{style:"position:relative;height:200px;background:#05060a"});
+  divs.forEach(d=>wrap.appendChild(d));c.appendChild(wrap);
+  let mx=0,my=0;
+  wrap.addEventListener("pointermove",e=>{const r=wrap.getBoundingClientRect();mx=(e.clientX-r.left)/r.width-0.5;my=(e.clientY-r.top)/r.height-0.5;});
+  function f(){
+    divs.forEach((d,i)=>{
+      const z=layers[i].z;
+      d.style.transform=`translate(${(mx*40*z).toFixed(1)}px,${(my*28*z).toFixed(1)}px) scale(${1+z*0.08})`;
+    });
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 28 kaleidoscope */
+demos.push({id:"v28",title:"28 · Calidoscopio (6 sectores)",tags:["vec"],cap:"Clip en cuña circular; arcos dentro del sector.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#020308";x.fillRect(0,0,w,h);
+    const cx=w/2,cy=h/2,sectors=6,rad=Math.min(w,h)*0.48;
+    for(let s=0;s<sectors;s++){
+      x.save();x.translate(cx,cy);x.rotate((s/sectors)*Math.PI*2);
+      x.beginPath();x.moveTo(0,0);x.arc(0,0,rad,-0.02,Math.PI/3+0.02,false);x.closePath();x.clip();
+      for(let i=0;i<30;i++){
+        const v=sim(t+i*17,1,17)[0];
+        x.strokeStyle=`hsla(${200+i*6},90%,65%,0.45)`;
+        x.lineWidth=2+4*v;
+        x.beginPath();x.arc(30+i*8,15,18+i*2+v*35,0.2,Math.PI-0.2);x.stroke();
+      }
+      x.restore();
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 29 sonar rings */
+demos.push({id:"v29",host:"slot",title:"29 · Anillos tipo “sonar”",tags:["vec","eq"],cap:"SVG circle r animado.",init(c){
+  const svg=el("svg",{viewBox:"0 0 800 200",width:"100%",height:"200"});
+  for(let i=0;i<5;i++){
+    const circ=el("circle",{cx:"400",cy:"100",r:"10",fill:"none",stroke:"#38bdf8","stroke-width":"2",opacity:String(0.35+i*0.1)});
+    const an=el("animate",{attributeName:"r",values:"10;140;10",dur:String(3.2+i*0.4)+"s",begin:String(i*0.25)+"s",repeatCount:"indefinite"});
+    const an2=el("animate",{attributeName:"opacity",values:"0.85;0;0.85",dur:String(3.2+i*0.4)+"s",begin:String(i*0.25)+"s",repeatCount:"indefinite"});
+    circ.appendChild(an);circ.appendChild(an2);svg.appendChild(circ);
+  }
+  c.appendChild(svg);
+}});
+
+/* 30 peak history */
+demos.push({id:"v30",title:"30 · Historial de picos (líneas finas)",tags:["vec","eq"],cap:"Buffer circular.",init(c){
+  const x=c.getContext("2d");const hist=[];
+  function f(t){const{w,h}=resize(c);x.fillStyle="#03040a";x.fillRect(0,0,w,h);
+    hist.push(sim(t,1,18)[0]); if(hist.length>w/2)hist.shift();
+    x.strokeStyle="#a78bfa";x.beginPath();
+    hist.forEach((v,i)=>{const px=i*2,py=h-v*h*0.85;i===0?x.moveTo(px,py):x.lineTo(px,py);});
+    x.stroke();
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 31 ribbon bezier */
+demos.push({id:"v31",title:"31 · Cinta Bézier triple",tags:["vec"],cap:"Degradado lineal en trazo.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#020308";x.fillRect(0,0,w,h);
+    const g=x.createLinearGradient(0,0,w,0);g.addColorStop(0,"#6366f1");g.addColorStop(0.5,"#22d3ee");g.addColorStop(1,"#f472b6");
+    x.strokeStyle=g;x.lineWidth=6;x.lineCap="round";
+    const s=sim(t,1,19)[0];
+    x.beginPath();
+    x.moveTo(40,h*0.55);
+    x.bezierCurveTo(w*0.25,h*0.2+s*h*0.35,w*0.55,h*0.9,w-40,h*0.45);
+    x.stroke();
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 32 iso keys */
+demos.push({id:"v32",host:"slot",title:"32 · Teclas isométricas “piano”",tags:["f3","vec"],cap:"CSS grid + skew.",init(c){
+  const kid="kf_keyb_"+(c.dataset.demoId||"v32");
+  const wrap=el("div",{style:"display:flex;gap:6px;justify-content:center;align-items:flex-end;height:200px;background:#05060a;transform:skewX(-12deg)"});
+  for(let i=0;i<14;i++){
+    const k=el("div",{style:`width:22px;height:${60+i*3}px;background:linear-gradient(180deg,#475569,#1e293b);border:1px solid #64748b;border-radius:4px;animation:`+kid+` 1.2s ease-in-out infinite;animation-delay:${i*0.07}s`});
+    wrap.appendChild(k);
+  }
+  if(!document.getElementById(kid)){const st=document.createElement("style");st.id=kid;st.textContent="@keyframes "+kid+"{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}";document.head.appendChild(st);}
+  c.appendChild(wrap);
+}});
+
+/* 33 polar scatter */
+demos.push({id:"v33",title:"33 · Nube polar de puntos",tags:["vec","eq"],cap:"Radio ∝ sim.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#03040a";x.fillRect(0,0,w,h);
+    const cx=w/2,cy=h/2;
+    const s=sim(t,120,20);
+    for(let i=0;i<s.length;i++){
+      const a=(i/s.length)*Math.PI*2;
+      const r=30+s[i]*Math.min(w,h)*0.38;
+      x.fillStyle=`hsla(${200+i*3},90%,70%,${0.15+s[i]*0.65})`;
+      x.fillRect(cx+Math.cos(a)*r,cy+Math.sin(a)*r,2.2,2.2);
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 34 DNA helix */
+demos.push({id:"v34",title:"34 · Doble hélice geométrica",tags:["vec","f3"],cap:"Líneas entre puntos.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#020308";x.fillRect(0,0,w,h);
+    const cx=w*0.35,amp=40,steps=80;
+    for(let i=0;i<steps;i++){
+      const y=i/steps*h*0.85+10;
+      const a=i*0.35+t*0.002;
+      const x1=cx+Math.sin(a)*amp,x2=cx+Math.sin(a+Math.PI)*amp;
+      x.strokeStyle=`hsla(${200+i*3},85%,65%,0.45)`;
+      x.beginPath();x.moveTo(x1,y);x.lineTo(x2,y);x.stroke();
+      x.fillStyle="#38bdf8";x.fillRect(x1-2,y-2,4,4);
+      x.fillStyle="#f472b6";x.fillRect(x2-2,y-2,4,4);
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 35 lens stack */
+demos.push({id:"v35",host:"slot",title:"35 · Lentes apiladas (elipses)",tags:["vec","f3"],cap:"SVG stroke simulando vidrio.",init(c){
+  const svg=el("svg",{viewBox:"0 0 800 200",width:"100%",height:"200"});
+  for(let i=0;i<6;i++){
+    const e=el("ellipse",{cx:"400",cy:String(110-i*8),rx:String(120-i*12),ry:String(36-i*3),fill:"none",stroke:"#cbd5e1","stroke-width":"2",opacity:String(0.25+i*0.12)});
+    svg.appendChild(e);
+  }
+  c.appendChild(svg);
+  let t0=performance.now();
+  function f(t){
+    const v=sim(t,1,21)[0];
+    svg.querySelectorAll("ellipse").forEach((e,i)=>{
+      e.setAttribute("transform","rotate("+((v-0.5)*8+i*2)+" 400 100)");
+    });
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 36 oblique columns */
+demos.push({id:"v36",title:"36 · Columnas en proyección oblicua",tags:["f3","vec"],cap:"Trapecios verticales.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#03040a";x.fillRect(0,0,w,h);
+    const cols=9;
+    for(let i=0;i<cols;i++){
+      const v=sim(t+i*10,1,22)[0];
+      const x0=60+i*78, top=h*0.15,bot=h-20,wid=26+v*40;
+      x.fillStyle=`hsl(${205+i*7},70%,${38+v*30}%)`;
+      x.beginPath();x.moveTo(x0,top);x.lineTo(x0+wid*0.35,top-18);x.lineTo(x0+wid+16,top-10);
+      x.lineTo(x0+wid+16,bot-8);x.lineTo(x0+wid*0.35,bot);x.lineTo(x0,bot);x.closePath();x.fill();
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 37 zigzag morph */
+demos.push({id:"v37",host:"slot",title:"37 · Zigzag tensionado (SVG path)",tags:["vec","eq"],cap:"d attribute recalculado.",init(c){
+  const svg=el("svg",{viewBox:"0 0 800 160",width:"100%",height:"160"});
+  const p=el("path",{fill:"none",stroke:"#93c5fd","stroke-width":"3"});svg.appendChild(p);c.appendChild(svg);
+  function f(t){
+    const s=sim(t,24,23);
+    let d="M 20 80";
+    for(let i=0;i<s.length;i++){
+      d+=` L ${20+i*32} ${80+(i%2===0?-1:1)*s[i]*60}`;
+    }
+    p.setAttribute("d",d);
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 38 fractal tree */
+demos.push({id:"v38",title:"38 · Árbol fractal (2D vector)",tags:["vec"],cap:"Recursión acotada (profundidad 9).",init(c){
+  const x=c.getContext("2d");
+  function branch(len,ang,cx,cy,depth,t){
+    if(depth>9||len<2)return;
+    const x2=cx+Math.cos(ang)*len,y2=cy-Math.sin(ang)*len;
+    x.strokeStyle=`hsla(${200+depth*10},80%,${55-depth*3}%,0.85)`;
+    x.lineWidth=Math.max(0.6,4-depth*0.35);
+    x.beginPath();x.moveTo(cx,cy);x.lineTo(x2,y2);x.stroke();
+    const wob=sim(t,1,24)[0]*0.18;
+    branch(len*0.72,ang+0.45+wob,x2,y2,depth+1,t);
+    branch(len*0.72,ang-0.45-wob,x2,y2,depth+1,t);
+  }
+  function f(t){const{w,h}=resize(c);x.fillStyle="#020308";x.fillRect(0,0,w,h);
+    branch(Math.min(w,h)*0.18,-Math.PI/2,w*0.5,h-10,0,t);
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 39 bar shuffle illusion */
+demos.push({id:"v39",title:"39 · Barras “ordenadas” con jitter",tags:["vec","eq"],cap:"Offsets seno.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#03040a";x.fillRect(0,0,w,h);
+    const n=50,s=sim(t,n,26);
+    for(let i=0;i<n;i++){
+      const jitter=Math.sin(t*0.002+i*0.35)*8;
+      const bw=w/n*0.78,hh=s[i]*h*0.55,x0=i/n*w+jitter;
+      x.fillStyle=`hsl(${200+i*3},80%,58%)`;
+      x.fillRect(x0,h-hh,bw,hh);
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 40 displaced grid */
+demos.push({id:"v40",title:"40 · Rejilla de puntos deformada",tags:["vec"],cap:"Campo vectorial 2D.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#020308";x.fillRect(0,0,w,h);
+    const step=18;
+    for(let py=0;py<h;py+=step){
+      for(let px=0;px<w;px+=step){
+        const dx=Math.sin(px*0.01+t*0.001)*6,dy=Math.cos(py*0.01+t*0.0012)*6;
+        x.fillStyle="#64748b";
+        x.fillRect(px+dx,py+dy,2,2);
+      }
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 41 octahedron */
+demos.push({id:"v41",title:"41 · Octaedro wireframe",tags:["f3","vec"],cap:"12 aristas.",init(c){
+  const x=c.getContext("2d");
+  const V=[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]];
+  const E=[[0,2],[2,1],[1,3],[3,0],[4,2],[4,3],[4,1],[4,0],[5,2],[5,3],[5,1],[5,0]];
+  let ang=0;
+  function proj(X,Y,Z,cx,cy){
+    const co=Math.cos(ang),si=Math.sin(ang);
+    let x1=X*co-Z*si,z1=X*si+Z*co;
+    const c2=Math.cos(ang*0.7),s2=Math.sin(ang*0.7);
+    let y1=Y*c2-z1*s2; z1=Y*s2+z1*c2;
+    const f=200/(200+z1);
+    return[cx+x1*90*f,cy+y1*90*f];
+  }
+  function f(t){const{w,h}=resize(c);x.fillStyle="#03040a";x.fillRect(0,0,w,h);
+    ang=t*0.0009; const cx=w/2,cy=h/2;
+    E.forEach(([a,b])=>{
+      const p1=proj(...V[a],cx,cy),p2=proj(...V[b],cx,cy);
+      x.strokeStyle="#a5b4fc";x.lineWidth=1.4;x.beginPath();x.moveTo(p1[0],p1[1]);x.lineTo(p2[0],p2[1]);x.stroke();
+    });
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 42 iso diamond field */
+demos.push({id:"v42",title:"42 · Campo de diamantes isométricos",tags:["f3","vec","eq"],cap:"Onda en altura.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#020308";x.fillRect(0,0,w,h);
+    const cols=12,rows=6;
+    for(let ry=0;ry<rows;ry++){
+      for(let rx=0;rx<cols;rx++){
+        const v=sim(t+rx*10+ry*20,1,27)[0];
+        const cx=60+rx*58+ry*16,cy=30+ry*28-v*40;
+        const rw=22,rh=14;
+        x.fillStyle=`hsla(${210+rx*6},80%,${40+v*35}%,0.9)`;
+        x.beginPath();x.moveTo(cx,cy-rh);x.lineTo(cx+rw,cy);x.lineTo(cx,cy+rh);x.lineTo(cx-rw,cy);x.closePath();x.fill();
+      }
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 43 pulse core */
+demos.push({id:"v43",title:"43 · Núcleo poligonal pulsante",tags:["vec","eq"],cap:"Polígono + glow.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#020308";x.fillRect(0,0,w,h);
+    const v=sim(t,1,28)[0],cx=w/2,cy=h/2,n=8,R=40+v*55;
+    x.beginPath();
+    for(let i=0;i<=n;i++){
+      const a=i/n*Math.PI*2+t*0.001;
+      x.lineTo(cx+Math.cos(a)*R,cy+Math.sin(a)*R*0.72);
+    }
+    x.closePath();
+    x.shadowColor="#818cf8";x.shadowBlur=28;
+    x.fillStyle=`rgba(129,140,248,${0.15+v*0.55})`;
+    x.fill();x.shadowBlur=0;
+    x.strokeStyle="#e0e7ff";x.stroke();
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 44 comet scope */
+demos.push({id:"v44",title:"44 · Trazo “cometa” en osciloscopio",tags:["vec"],cap:"Cola con alpha.",init(c){
+  const x=c.getContext("2d");const pts=[];
+  function f(t){const{w,h}=resize(c);
+    x.fillStyle="rgba(2,3,10,.22)";x.fillRect(0,0,w,h);
+    const y=h*0.5+Math.sin(t*0.003)*h*0.25;
+    pts.push({x:t*0.08%w,y});
+    if(pts.length>120)pts.shift();
+    for(let i=1;i<pts.length;i++){
+      const p0=pts[i-1],p1=pts[i];
+      x.strokeStyle=`rgba(56,189,248,${i/pts.length})`;
+      x.lineWidth=2;x.beginPath();x.moveTo(p0.x,p0.y);x.lineTo(p1.x,p1.y);x.stroke();
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 45 GANO blocks */
+demos.push({id:"v45",host:"slot",title:"45 · Bloques isométricos tipográficos",tags:["f3","vec"],cap:"Letras como prismas CSS.",init(c){
+  const kid="kf_bob_"+(c.dataset.demoId||"v45");
+  const wrap=el("div",{style:"display:flex;gap:10px;justify-content:center;align-items:flex-end;height:200px;perspective:900px;background:#05060a"});
+  "GANO".split("").forEach((ch,i)=>{
+    const b=el("div",{textContent:ch,style:`width:46px;height:56px;display:grid;place-items:center;font-weight:800;color:#e2e8f0;background:linear-gradient(135deg,#4338ca,#312e81);border:1px solid #818cf8;transform:rotateX(52deg) rotateZ(-40deg) translateZ(${i*6}px);animation:`+kid+` 2.4s ease-in-out infinite;animation-delay:${i*0.12}s`});
+    wrap.appendChild(b);
+  });
+  if(!document.getElementById(kid)){const st=document.createElement("style");st.id=kid;st.textContent="@keyframes "+kid+"{0%,100%{transform:rotateX(52deg) rotateZ(-40deg) translateZ(0)}50%{transform:rotateX(52deg) rotateZ(-40deg) translateZ(18px)}}";document.head.appendChild(st);}
+  c.appendChild(wrap);
+}});
+
+/* 46 cube unfold */
+demos.push({id:"v46",host:"slot",title:"46 · Cruz de cubo (desplegable CSS)",tags:["f3","vec"],cap:"Seis caras en cruz 2D estilizada.",init(c){
+  const kid="kf_facep_"+(c.dataset.demoId||"v46");
+  const g=el("div",{style:"display:grid;grid-template-columns:60px 60px 60px;grid-template-rows:60px 60px 60px;gap:4px;justify-content:center;margin:24px auto;width:200px;height:200px"});
+  const face=(t)=>el("div",{style:`background:linear-gradient(145deg,#475569,#0f172a);border:1px solid #64748b;border-radius:6px;animation:`+kid+` 5s ease-in-out infinite`,title:t});
+  g.appendChild(el("div"));
+  g.appendChild(face("top"));
+  g.appendChild(el("div"));
+  g.appendChild(face("L"));g.appendChild(face("F"));g.appendChild(face("R"));
+  g.appendChild(el("div"));g.appendChild(face("K"));g.appendChild(el("div"));
+  if(!document.getElementById(kid)){const st=document.createElement("style");st.id=kid;st.textContent="@keyframes "+kid+"{0%,100%{filter:brightness(1)}50%{filter:brightness(1.35) hue-rotate(25deg)}}";document.head.appendChild(st);}
+  c.appendChild(g);
+}});
+
+/* 47 sunburst */
+demos.push({id:"v47",title:"47 · Rayos cuyo largo sigue al “beat” simulado",tags:["vec","eq"],cap:"Canvas radial segments.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#020308";x.fillRect(0,0,w,h);
+    const cx=w/2,cy=h/2,n=64,v=sim(t,1,29)[0];
+    for(let i=0;i<n;i++){
+      const a=i/n*Math.PI*2;
+      const L=40+v*90*(0.5+0.5*Math.sin(t*0.001+i));
+      x.strokeStyle=`hsla(${200+i*4},85%,65%,0.55)`;
+      x.lineWidth=2;x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(a)*L,cy+Math.sin(a)*L);x.stroke();
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 48 arc bars bottom */
+demos.push({id:"v48",title:"48 · Barras en arco inferior",tags:["vec","eq"],cap:"Posición polar en semicírculo.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#03040a";x.fillRect(0,0,w,h);
+    const n=36,s=sim(t,n,30),cx=w/2,cy=h*0.92,R=Math.min(w,h)*0.42;
+    for(let i=0;i<n;i++){
+      const a=Math.PI*0.85*(i/n)+Math.PI*0.575;
+      const hh=s[i]*Math.min(w,h)*0.35;
+      const x0=cx+Math.cos(a)*R,y0=cy+Math.sin(a)*R*0.35;
+      x.strokeStyle=`hsl(${205+i*4},85%,60%)`;
+      x.lineWidth=5;x.lineCap="round";
+      x.beginPath();x.moveTo(x0,y0);x.lineTo(x0-Math.cos(a)*hh,y0-Math.sin(a)*hh*0.55);x.stroke();
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 49 icosahedron simplified */
+demos.push({id:"v49",title:"49 · Icosaedro (proyección simplificada)",tags:["f3","vec"],cap:"12 vértices normalizados + lista de aristas.",init(c){
+  const x=c.getContext("2d");
+  const phi=(1+Math.sqrt(5))/2;
+  const raw=[[0,1,phi],[0,-1,phi],[0,1,-phi],[0,-1,-phi],[1,phi,0],[-1,phi,0],[1,-phi,0],[-1,-phi,0],[phi,0,1],[phi,0,-1],[-phi,0,1],[-phi,0,-1]];
+  const verts=raw.map(v=>{const m=Math.hypot(v[0],v[1],v[2]);return[v[0]/m,v[1]/m,v[2]/m];});
+  const edges=[];
+  for(let i=0;i<verts.length;i++){
+    for(let j=i+1;j<verts.length;j++){
+      const d=Math.hypot(verts[i][0]-verts[j][0],verts[i][1]-verts[j][1],verts[i][2]-verts[j][2]);
+      if(d>0.98&&d<1.12)edges.push([i,j]);
+    }
+  }
+  let ang=0;
+  function proj(X,Y,Z,cx,cy){
+    const co=Math.cos(ang),si=Math.sin(ang);
+    let x1=X*co-Z*si,z1=X*si+Z*co;
+    const c2=Math.cos(ang*0.55),s2=Math.sin(ang*0.55);
+    let y1=Y*c2-z1*s2; z1=Y*s2+z1*c2;
+    const f=220/(220+z1);
+    return[cx+x1*95*f,cy+y1*95*f];
+  }
+  function f(t){const{w,h}=resize(c);x.fillStyle="#020308";x.fillRect(0,0,w,h);
+    ang=t*0.00055; const cx=w/2,cy=h/2;
+    edges.forEach(([a,b])=>{
+      const p1=proj(verts[a][0],verts[a][1],verts[a][2],cx,cy),p2=proj(verts[b][0],verts[b][1],verts[b][2],cx,cy);
+      x.strokeStyle="rgba(165,180,252,.5)";x.lineWidth=1;x.beginPath();x.moveTo(p1[0],p1[1]);x.lineTo(p2[0],p2[1]);x.stroke();
+    });
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* 50 podium scene */
+demos.push({id:"v50",title:"50 · Podio + anillos + barras (composición)",tags:["f3","vec","eq"],cap:"Mini escena “player” abstracta.",init(c){
+  const x=c.getContext("2d");
+  function f(t){const{w,h}=resize(c);x.fillStyle="#020308";x.fillRect(0,0,w,h);
+    const cx=w*0.5,cy=h*0.62;
+    x.fillStyle="#1e293b";
+    x.beginPath();x.moveTo(cx-120,cy+10);x.lineTo(cx,cy-40);x.lineTo(cx+120,cy+10);x.lineTo(cx+120,cy+40);x.lineTo(cx-120,cy+40);x.closePath();x.fill();
+    x.strokeStyle="#64748b";x.stroke();
+    for(let r=30;r<100;r+=22){
+      x.strokeStyle=`rgba(56,189,248,${0.35-r/300})`;
+      x.beginPath();x.ellipse(cx,cy-10,r,r*0.28,0,0,Math.PI*2);x.stroke();
+    }
+    const s=sim(t,24,31);
+    for(let i=0;i<s.length;i++){
+      const bx=cx-110+i*9,by=cy+18,hh=s[i]*70;
+      x.fillStyle=`hsl(${200+i*5},85%,60%)`;
+      x.fillRect(bx,by-hh,6,hh);
+    }
+    requestAnimationFrame(f);
+  }requestAnimationFrame(f);
+}});
+
+/* build DOM */
+const main=document.getElementById("sections");
+const nav=document.getElementById("nav-main");
+for(let i=1;i<=50;i++)nav.appendChild(el("a",{href:"#v"+String(i).padStart(2,"0"),textContent:"#"+i}));
+demos.forEach(d=>{
+  const sec=el("section",{id:d.id});
+  sec.appendChild(el("h2",{},[document.createTextNode(d.title),...d.tags.map(t=>el("span",{className:"tag "+(t==="vec"?"vec":t==="f3"?"f3":"eq"),textContent:t}))]));
+  sec.appendChild(el("div",{className:"cap",textContent:d.cap}));
+  const slot=el("div",{className:"slot"+(d.tall?" t":"")});
+  slot.dataset.demoId=d.id;
+  sec.appendChild(slot);
+  main.appendChild(sec);
+  try{
+    if(d.host==="slot")d.init(slot);
+    else{
+      const canvas=el("canvas",{style:"display:block;width:100%;height:160px"});
+      canvas.dataset.demoId=d.id;
+      slot.appendChild(canvas);
+      d.init(canvas);
+    }
+  }catch(e){slot.textContent="Init error: "+e;}
+});
+})();
+</script>
+</body>
+</html>

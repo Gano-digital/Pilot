@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Catálogo visual — WMP / Win95-ish / Web procedural (local)</title>
+  <style>
+    :root {
+      --bg: #0c0e12;
+      --panel: #151922;
+      --border: #2a3142;
+      --text: #e8ecf4;
+      --muted: #8b95a8;
+      --accent: #7c6cf0;
+      --accent2: #3dd6c3;
+      --win-hi: #ffffff;
+      --win-lo: #1a1f2a;
+      --crt-line: rgba(0, 255, 180, 0.06);
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+    a { color: var(--accent2); }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: linear-gradient(180deg, #0f1218 90%, transparent);
+      padding: 1rem 1.25rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    header h1 { font-size: 1.15rem; margin: 0 0 0.35rem; font-weight: 600; }
+    header p { margin: 0; font-size: 0.85rem; color: var(--muted); max-width: 72ch; }
+    .toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 0.5rem;
+      padding: 0.75rem 1.25rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: #0a0c10;
+    }
+    .toc a {
+      font-size: 0.72rem;
+      text-decoration: none;
+      padding: 0.2rem 0.45rem;
+      border-radius: 4px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .toc a:hover { border-color: var(--accent); color: #fff; }
+    main { padding: 1rem 1.25rem 3rem; max-width: 1200px; margin: 0 auto; }
+    section {
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    section h2 {
+      margin: 0 0 0.35rem;
+      font-size: 1rem;
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    section h2 span.id {
+      font-family: ui-monospace, monospace;
+      color: var(--accent);
+      font-size: 0.85rem;
+    }
+    .meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+    .effort {
+      display: inline-block;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.12rem 0.35rem;
+      border-radius: 3px;
+      background: #222836;
+      border: 1px solid var(--border);
+      color: #cbd5e1;
+    }
+    .effort.h { border-color: #7f1d1d; color: #fecaca; }
+    .effort.m { border-color: #713f12; color: #fde68a; }
+    .effort.l { border-color: #14532d; color: #bbf7d0; }
+    .stage {
+      position: relative;
+      min-height: 180px;
+      background: #080a0e;
+      border-radius: 8px;
+      border: 1px solid #1e2433;
+      overflow: hidden;
+    }
+    .stage canvas, .stage svg { display: block; width: 100%; height: 220px; }
+    .stage.tall canvas { height: 280px; }
+    .note {
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    /* Win95-ish bevel */
+    .win95 {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      background: #c0c0c0;
+      color: #000;
+      border: 2px solid;
+      border-color: var(--win-hi) var(--win-lo) var(--win-lo) var(--win-hi);
+      box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #555;
+      font-family: Tahoma, Arial, sans-serif;
+      font-size: 0.8rem;
+    }
+    .win95:active {
+      border-color: var(--win-lo) var(--win-hi) var(--win-hi) var(--win-lo);
+    }
+    /* Fake EQ */
+    .eq {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 64px;
+      padding: 0.5rem;
+      justify-content: center;
+      background: #111;
+    }
+    .eq i {
+      width: 6px;
+      height: 20%;
+      background: linear-gradient(180deg, #6ee7b7, #059669);
+      border-radius: 1px;
+      animation: eqbar 0.8s ease-in-out infinite alternate;
+    }
+    .eq i:nth-child(2) { animation-delay: 0.1s; }
+    .eq i:nth-child(3) { animation-delay: 0.25s; }
+    .eq i:nth-child(4) { animation-delay: 0.05s; }
+    .eq i:nth-child(5) { animation-delay: 0.35s; }
+    .eq i:nth-child(6) { animation-delay: 0.15s; }
+    .eq i:nth-child(7) { animation-delay: 0.4s; }
+    .eq i:nth-child(8) { animation-delay: 0.2s; }
+    @keyframes eqbar {
+      from { height: 12%; }
+      to { height: 100%; }
+    }
+    /* CRT */
+    .crt-wrap {
+      position: relative;
+      padding: 0.5rem;
+      background: #0a2f1a;
+    }
+    .crt-wrap::after {
+      content: "";
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0,
+        transparent 2px,
+        var(--crt-line) 2px,
+        var(--crt-line) 3px
+      );
+      animation: crtflicker 4s steps(2) infinite;
+    }
+    @keyframes crtflicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.92; }
+    }
+    .glitch {
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: 0.05em;
+      animation: glitchsk 2.5s infinite;
+    }
+    @keyframes glitchsk {
+      0%, 90%, 100% { transform: translate(0); text-shadow: none; }
+      91% { transform: skewX(-6deg); text-shadow: 3px 0 #f0f, -2px 0 #0ff; }
+      93% { transform: skewX(4deg); text-shadow: -2px 0 #f0f; }
+      95% { transform: translate(0); }
+    }
+    /* Player chrome */
+    .player {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.5rem;
+      padding: 0.6rem;
+      background: linear-gradient(180deg, #2a2f3d, #1a1e28);
+      border: 1px solid #444;
+      border-radius: 6px;
+      color: #ddd;
+      font-size: 0.75rem;
+    }
+    .vu {
+      display: flex;
+      gap: 2px;
+      align-items: flex-end;
+      height: 40px;
+    }
+    .vu b {
+      width: 4px;
+      height: 8px;
+      background: #22d3ee;
+      transform-origin: bottom;
+      animation: vub 0.45s ease-in-out infinite alternate;
+    }
+    .vu b:nth-child(odd) { animation-duration: 0.62s; background: #a78bfa; }
+    @keyframes vub {
+      from { transform: scaleY(0.25); }
+      to { transform: scaleY(1); }
+    }
+    /* Isometric tile */
+    .iso {
+      width: 80px;
+      height: 80px;
+      margin: 1rem auto;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      transform: rotateX(55deg) rotateZ(45deg);
+      transform-style: preserve-3d;
+      box-shadow: 12px 12px 0 #312e81;
+      animation: isobob 3s ease-in-out infinite;
+    }
+    @keyframes isobob {
+      0%, 100% { transform: rotateX(55deg) rotateZ(45deg) translateZ(0); }
+      50% { transform: rotateX(55deg) rotateZ(45deg) translateZ(12px); }
+    }
+    .iso-wrap { perspective: 400px; display: flex; justify-content: center; padding: 1rem; }
+    /* Scroll demo */
+    .scroll-demo {
+      height: 220px;
+      overflow-y: auto;
+      border: 1px dashed #444;
+      border-radius: 6px;
+      padding: 1rem;
+      background: #0a0c10;
+    }
+    .scroll-demo .layer {
+      height: 120px;
+      margin: 2rem 0;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #1e293b, #334155);
+      transition: transform 0.1s linear;
+      will-change: transform;
+    }
+    .wipe-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: stretch;
+    }
+    .wipe-row .half {
+      flex: 1;
+      min-height: 100px;
+      border-radius: 6px;
+      animation: wipeclip 3s ease-in-out infinite;
+    }
+    .wipe-row .a { background: linear-gradient(135deg, #4338ca, #7c3aed); }
+    .wipe-row .b { background: linear-gradient(135deg, #0f766e, #14b8a6); }
+    @keyframes wipeclip {
+      0%, 100% { clip-path: inset(0 50% 0 0); }
+      50% { clip-path: inset(0 0 0 0); }
+    }
+    .wipe-row .b { animation-delay: -1.5s; }
+    button.ctl {
+      margin-top: 0.5rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #1e2433;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    button.ctl:hover { border-color: var(--accent); }
+    .badge-off { font-size: 0.7rem; color: #f87171; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Catálogo visual + showcase (100% local)</h1>
+    <p>
+      Basado en <code>retro-wmp-win95-web-visual-pipeline-2026-04-23.md</code>.
+      Sin CDNs, sin fuentes remotas: gráficos procedurales (Canvas / SVG / WebGL embebido).
+      Abre este archivo con <kbd>file://</kbd> o un servidor estático local.
+    </p>
+  </header>
+  <nav class="toc" aria-label="Índice">
+    <a href="#p01">#1 Tubos</a>
+    <a href="#p02">#2 Laberinto</a>
+    <a href="#p03">#3 Objetos</a>
+    <a href="#p04">#4 Separador</a>
+    <a href="#p05">#5 Loader tubo</a>
+    <a href="#p06">#6 Loader maze</a>
+    <a href="#p07">#7 Isométrico</a>
+    <a href="#p08">#8 Bisel Win95</a>
+    <a href="#p09">#9 Player</a>
+    <a href="#p10">#10 EQ falso</a>
+    <a href="#p11">#11 EQ real</a>
+    <a href="#p12">#12 Plasma WebGL</a>
+    <a href="#p13">#13 Partículas</a>
+    <a href="#p14">#14 Ciudad</a>
+    <a href="#p15">#15 CRT</a>
+    <a href="#p16">#16 Glitch</a>
+    <a href="#p17">#17 Cursor</a>
+    <a href="#p18">#18 Scroll</a>
+    <a href="#p19">#19 Wipe</a>
+    <a href="#p20">#20 Idle</a>
+    <a href="#p21">#21 Maze SVG</a>
+    <a href="#p22">#22 Snapshot</a>
+    <a href="#p23">#23 Lottie-ish</a>
+    <a href="#p24">#24 ASCII</a>
+    <a href="#p25">#25 WebGPU</a>
+  </nav>
+  <main>
+    <section id="p01">
+      <h2><span class="id">#1</span> Fondo hero “tubos” <span class="effort h">esfuerzo alto</span></h2>
+      <div class="meta">Three.js instancing + grid graph → aquí: Canvas 2D procedural “pipes-lite”.</div>
+      <div class="stage"><canvas id="c-pipes" width="800" height="220"></canvas></div>
+      <p class="note">Segmentos al azar en grilla; colores no tomados de binarios Microsoft.</p>
+    </section>
+    <section id="p02">
+      <h2><span class="id">#2</span> Laberinto tórico <span class="effort h">alto</span></h2>
+      <div class="meta">Raymarching / mesh + niebla → preview: laberinto 2D DFS + niebla Canvas.</div>
+      <div class="stage"><canvas id="c-maze" width="800" height="220"></canvas></div>
+    </section>
+    <section id="p03">
+      <h2><span class="id">#3</span> Objetos voladores <span class="effort m">medio</span></h2>
+      <div class="meta">Sólidos “platónicos” wireframe falso-3D.</div>
+      <div class="stage"><canvas id="c-fly" width="800" height="220"></canvas></div>
+    </section>
+    <section id="p04">
+      <h2><span class="id">#4</span> Separador tipo segmento <span class="effort l">bajo</span></h2>
+      <div class="meta">SVG + CSS animation.</div>
+      <div class="stage">
+        <svg viewBox="0 0 800 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#a78bfa"/>
+            </linearGradient>
+          </defs>
+          <g>
+            <rect x="40" y="44" width="720" height="32" fill="#111827" stroke="#334155" stroke-width="2" rx="4"/>
+            <rect x="60" y="50" width="120" height="20" fill="url(#g)">
+              <animate attributeName="x" values="60;600;60" dur="6s" repeatCount="indefinite"/>
+            </rect>
+          </g>
+        </svg>
+      </div>
+    </section>
+    <section id="p05">
+      <h2><span class="id">#5</span> Loader crecimiento tubo <span class="effort m">medio</span></h2>
+      <div class="meta">Canvas 2D: polilínea que crece en grilla.</div>
+      <div class="stage"><canvas id="c-loader-pipe" width="800" height="220"></canvas></div>
+    </section>
+    <section id="p06">
+      <h2><span class="id">#6</span> Loader laberinto (stroke) <span class="effort l">bajo</span></h2>
+      <div class="meta">SVG stroke-dashoffset.</div>
+      <div class="stage">
+        <svg viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg">
+          <path id="maze-path" fill="none" stroke="#94a3b8" stroke-width="6" stroke-linecap="square"
+            d="M40 180 L40 40 L200 40 L200 160 L360 160 L360 60 L520 60 L520 180 L680 180 L680 40 L760 40"/>
+          <style>
+            #maze-path {
+              stroke-dasharray: 2000;
+              stroke-dashoffset: 2000;
+              animation: dashm 4s linear infinite;
+            }
+            @keyframes dashm { to { stroke-dashoffset: 0; } }
+          </style>
+        </svg>
+      </div>
+    </section>
+    <section id="p07">
+      <h2><span class="id">#7</span> Icono 3D isométrico <span class="effort m">medio</span></h2>
+      <div class="meta">CSS 3D transform (sin glTF externo).</div>
+      <div class="stage">
+        <div class="iso-wrap"><div class="iso" aria-hidden="true"></div></div>
+      </div>
+    </section>
+    <section id="p08">
+      <h2><span class="id">#8</span> Cards bisel estilo clásico <span class="effort l">bajo</span></h2>
+      <div class="meta">Inset box-shadow + bordes 1px.</div>
+      <div class="stage" style="display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;">
+        <button type="button" class="win95">OK</button>
+        <button type="button" class="win95">Cancel</button>
+        <span class="win95">Panel simulado</span>
+      </div>
+    </section>
+    <section id="p09">
+      <h2><span class="id">#9</span> Player chrome ficticio <span class="effort m">medio</span></h2>
+      <div class="meta">HTML/CSS; VU animados (sin WMZ).</div>
+      <div class="stage" style="padding:0.75rem;">
+        <div class="player">
+          <div>▶ Procedural demo · 00:42</div>
+          <div class="vu" aria-hidden="true">
+            <b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="p10">
+      <h2><span class="id">#10</span> Ecualizador falso <span class="effort l">bajo</span></h2>
+      <div class="meta">CSS keyframes.</div>
+      <div class="stage"><div class="eq" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div></div>
+    </section>
+    <section id="p11">
+      <h2><span class="id">#11</span> Ecualizador real (oscilador local) <span class="effort m">medio</span></h2>
+      <div class="meta">Web Audio: oscilador + AnalyserNode → Canvas. Clic para iniciar (política del navegador).</div>
+      <div class="stage tall"><canvas id="c-real-eq" width="800" height="280"></canvas></div>
+      <button type="button" class="ctl" id="btn-audio">Iniciar / detener audio interno</button>
+      <p class="note">No se carga ningún archivo; solo tono generado en RAM.</p>
+    </section>
+    <section id="p12">
+      <h2><span class="id">#12</span> “Milkdrop lite” — plasma WebGL2 <span class="effort h">alto</span></h2>
+      <div class="meta">Shader fullscreen mínimo, sin librerías externas.</div>
+      <div class="stage tall"><canvas id="gl-plasma" width="800" height="280"></canvas></div>
+      <p class="note" id="gl-plasma-note"></p>
+    </section>
+    <section id="p13">
+      <h2><span class="id">#13</span> Partículas low-poly <span class="effort m">medio</span></h2>
+      <div class="meta">Triángulos Canvas 2D.</div>
+      <div class="stage"><canvas id="c-particles" width="800" height="220"></canvas></div>
+    </section>
+    <section id="p14">
+      <h2><span class="id">#14</span> Wireframe city <span class="effort m">medio</span></h2>
+      <div class="meta">Cubos instanciados como aristas 2D.</div>
+      <div class="stage"><canvas id="c-city" width="800" height="220"></canvas></div>
+    </section>
+    <section id="p15">
+      <h2><span class="id">#15</span> CRT / scanlines <span class="effort l">bajo</span></h2>
+      <div class="meta">Pseudo-elemento repetido + tinte verde.</div>
+      <div class="stage crt-wrap">
+        <p style="margin:0;font-family:ui-monospace,monospace;color:#86efac;">&gt; sistema.listo<br/>_</p>
+      </div>
+    </section>
+    <section id="p16">
+      <h2><span class="id">#16</span> Glitch textual <span class="effort m">medio</span></h2>
+      <div class="meta">CSS skew + text-shadow.</div>
+      <div class="stage" style="display:flex;align-items:center;justify-content:center;">
+        <span class="glitch">GANO.digital</span>
+      </div>
+    </section>
+    <section id="p17">
+      <h2><span class="id">#17</span> Estela del cursor <span class="effort l">bajo</span></h2>
+      <div class="meta">Pasa el ratón sobre el lienzo.</div>
+      <div class="stage"><canvas id="c-trail" width="800" height="220"></canvas></div>
+    </section>
+    <section id="p18">
+      <h2><span class="id">#18</span> Scroll-linked (sin GSAP) <span class="effort h">alto</span></h2>
+      <div class="meta">Scroll en el panel; capas con <code>transform</code> desde JS.</div>
+      <div class="stage">
+        <div class="scroll-demo" id="scroll-box">
+          <p style="color:var(--muted);font-size:0.8rem;">Desplázate ↓</p>
+          <div class="layer" data-parallax="0.35"></div>
+          <div class="layer" data-parallax="0.6"></div>
+          <div class="layer" data-parallax="0.2"></div>
+          <p style="color:var(--muted);font-size:0.8rem;">Fin del demo</p>
+        </div>
+      </div>
+    </section>
+    <section id="p19">
+      <h2><span class="id">#19</span> Transición “pipe wipe” (clip) <span class="effort h">alto</span></h2>
+      <div class="meta">Aproximación: clip-path animado en dos bloques.</div>
+      <div class="stage">
+        <div class="wipe-row">
+          <div class="half a"></div>
+          <div class="half b"></div>
+        </div>
+      </div>
+    </section>
+    <section id="p20">
+      <h2><span class="id">#20</span> Modo salvapantallas (intensidad) <span class="effort m">medio</span></h2>
+      <div class="meta">Simula inactividad: pulsaciones de brillo en #1.</div>
+      <div class="stage"><canvas id="c-idle" width="800" height="220"></canvas></div>
+      <p class="note">El canvas #20 reutiliza lógica de partículas; en producción enlazarías a <code>requestIdle</code> / timer.</p>
+    </section>
+    <section id="p21">
+      <h2><span class="id">#21</span> Miniatura laberinto SVG <span class="effort m">medio</span></h2>
+      <div class="meta">Laberinto generado en JS (string → SVG).</div>
+      <div class="stage" id="svg-maze-host" style="min-height:240px;"></div>
+    </section>
+    <section id="p22">
+      <h2><span class="id">#22</span> Snapshot tipo OG <span class="effort h">alto</span></h2>
+      <div class="meta">Captura del plasma a PNG (blob local).</div>
+      <div class="stage tall"><canvas id="c-snap-src" width="400" height="200" style="height:200px;width:100%;max-width:400px;margin:0 auto;"></canvas></div>
+      <button type="button" class="ctl" id="btn-snap">Generar miniatura (descarga)</button>
+      <p class="note">Descarga solo desde tu máquina; sin servidor.</p>
+    </section>
+    <section id="p23">
+      <h2><span class="id">#23</span> Lottie *inspirado* (CSS/SVG) <span class="effort m">medio</span></h2>
+      <div class="meta">Sin player Lottie: morph simple con <code>&lt;animate&gt;</code>.</div>
+      <div class="stage">
+        <svg viewBox="0 0 200 200" width="200" height="200" style="margin:0 auto;">
+          <circle r="40" cx="100" cy="100" fill="#6366f1">
+            <animate attributeName="r" values="28;52;28" dur="2.2s" repeatCount="indefinite"/>
+            <animate attributeName="fill" values="#6366f1;#22d3ee;#f472b6;#6366f1" dur="4s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+      </div>
+    </section>
+    <section id="p24">
+      <h2><span class="id">#24</span> ASCII / half-block <span class="effort l">bajo</span></h2>
+      <div class="meta">Rejilla de caracteres animada.</div>
+      <div class="stage"><canvas id="c-ascii" width="800" height="220"></canvas></div>
+    </section>
+    <section id="p25">
+      <h2><span class="id">#25</span> WebGPU (2026+) <span class="effort h">muy alto</span></h2>
+      <div class="meta">Prueba de capacidad; triángulo rojo si hay adapter.</div>
+      <div class="stage tall"><canvas id="wgpu" width="800" height="280"></canvas></div>
+      <p class="note" id="wgpu-note"></p>
+    </section>
+  </main>
+  <script>
+(function () {
+  "use strict";
+
+  function resizeCanvasToDisplaySize(canvas) {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.floor(canvas.clientWidth * dpr);
+    const h = Math.floor(canvas.clientHeight * dpr);
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width = w;
+      canvas.height = h;
+    }
+    return { w, h, dpr };
+  }
+
+  /* #1 Pipes lite */
+  (function pipes() {
+    const canvas = document.getElementById("c-pipes");
+    const ctx = canvas.getContext("2d");
+    let dirs = [[1,0],[-1,0],[0,1],[0,-1]];
+    let gridW = 16, gridH = 10, cell, segs = [], t0 = performance.now();
+
+    function rebuild() {
+      const { w, h } = resizeCanvasToDisplaySize(canvas);
+      cell = Math.max(8, Math.floor(Math.min(w, h) / Math.max(gridW, gridH)));
+      gridW = Math.floor(w / cell);
+      gridH = Math.floor(h / cell);
+      segs = [];
+      let x = Math.floor(gridW / 2), y = Math.floor(gridH / 2);
+      for (let i = 0; i < 220; i++) {
+        const d = dirs[(Math.random() * dirs.length) | 0];
+        const nx = x + d[0], ny = y + d[1];
+        if (nx < 0 || ny < 0 || nx >= gridW || ny >= gridH) continue;
+        segs.push({ x1: x, y1: y, x2: nx, y2: ny, hue: (i * 7) % 360 });
+        x = nx; y = ny;
+      }
+    }
+    rebuild();
+    window.addEventListener("resize", rebuild);
+
+    function frame(t) {
+      const { w, h } = resizeCanvasToDisplaySize(canvas);
+      ctx.fillStyle = "#05060a";
+      ctx.fillRect(0, 0, w, h);
+      const pulse = 0.6 + 0.4 * Math.sin((t - t0) * 0.002);
+      ctx.lineWidth = Math.max(2, cell * 0.22);
+      ctx.lineCap = "round";
+      for (let i = 0; i < segs.length; i++) {
+        const s = segs[i];
+        ctx.strokeStyle = "hsl(" + s.hue + ",70%," + Math.floor(45 + 20 * pulse) + "%)";
+        ctx.beginPath();
+        ctx.moveTo(s.x1 * cell + cell * 0.5, s.y1 * cell + cell * 0.5);
+        ctx.lineTo(s.x2 * cell + cell * 0.5, s.y2 * cell + cell * 0.5);
+        ctx.stroke();
+      }
+      if (t - t0 > 14000) { t0 = t; rebuild(); }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  /* #2 Maze + fog */
+  (function maze() {
+    const canvas = document.getElementById("c-maze");
+    const ctx = canvas.getContext("2d");
+    let W, H, cell, maze, t0 = performance.now();
+
+    function genMaze(cw, ch) {
+      const m = [];
+      for (let y = 0; y < ch; y++) { m[y] = []; for (let x = 0; x < cw; x++) m[y][x] = 1; }
+      function carve(x, y) {
+        m[y][x] = 0;
+        const opts = [[2,0],[-2,0],[0,2],[0,-2]].sort(() => Math.random() - 0.5);
+        for (const [dx, dy] of opts) {
+          const nx = x + dx, ny = y + dy;
+          if (nx > 0 && ny > 0 && nx < cw - 1 && ny < ch - 1 && m[ny][nx]) {
+            m[y + dy / 2][x + dx / 2] = 0;
+            carve(nx, ny);
+          }
+        }
+      }
+      carve(1, 1);
+      m[ch - 2][cw - 2] = 0;
+      return m;
+    }
+
+    function rebuild() {
+      const { w, h } = resizeCanvasToDisplaySize(canvas);
+      W = w; H = h;
+      cell = Math.max(6, Math.floor(Math.min(w, h) / 14));
+      let cw = Math.floor(w / cell), ch = Math.floor(h / cell);
+      if (cw % 2 === 0) cw--;
+      if (ch % 2 === 0) ch--;
+      cw = Math.max(7, cw);
+      ch = Math.max(7, ch);
+      maze = genMaze(cw, ch);
+    }
+    rebuild();
+    window.addEventListener("resize", rebuild);
+
+    function frame(t) {
+      resizeCanvasToDisplaySize(canvas);
+      const w = canvas.width, h = canvas.height;
+      ctx.fillStyle = "#030508";
+      ctx.fillRect(0, 0, w, h);
+      const fog = 0.35 + 0.25 * Math.sin((t - t0) * 0.0015);
+      const rows = maze.length, cols = maze[0].length;
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          if (maze[y][x]) {
+            const gx = x * cell, gy = y * cell;
+            const dist = Math.hypot(gx - w * 0.45, gy - h * 0.35) / (w * 0.55);
+            const a = Math.min(1, fog + dist * 0.85);
+            ctx.fillStyle = "rgba(30,64,175," + (0.15 + (1 - dist) * 0.5) + ")";
+            ctx.globalAlpha = a;
+            ctx.fillRect(gx, gy, cell, cell);
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
+      if (t - t0 > 12000) { t0 = t; rebuild(); }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  /* #3 Flying wireframes */
+  (function fly() {
+    const canvas = document.getElementById("c-fly");
+    const ctx = canvas.getContext("2d");
+    const verts = [
+      [0, 1, 0], [0.95, 0.3, 0], [0.58, -0.8, 0], [-0.58, -0.8, 0], [-0.95, 0.3, 0]
+    ];
+    const edges = [[0,1],[1,2],[2,3],[3,4],[4,0],[0,2],[2,4],[4,1],[1,3],[3,0]];
+    let t0 = performance.now();
+
+    function project(v, ax, ay) {
+      const c = Math.cos(ax), s = Math.sin(ax);
+      let y = v[1] * c - v[2] * s, z = v[1] * s + v[2] * c;
+      let x = v[0] * c - z * Math.sin(ay);
+      z = v[0] * Math.sin(ay) + z * Math.cos(ay);
+      const f = 2.2 / (2.2 + z);
+      return [x * f * 120, y * f * 120];
+    }
+
+    function frame(t) {
+      const { w, h } = resizeCanvasToDisplaySize(canvas);
+      const tt = (t - t0) * 0.001;
+      ctx.fillStyle = "#06080f";
+      ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = "#a5b4fc";
+      ctx.lineWidth = 2;
+      const ax = tt * 0.7, ay = tt * 0.5;
+      const cx = w * 0.5, cy = h * 0.52;
+      for (const [a, b] of edges) {
+        const p1 = project(verts[a], ax, ay), p2 = project(verts[b], ax, ay);
+        ctx.beginPath();
+        ctx.moveTo(cx + p1[0], cy + p1[1]);
+        ctx.lineTo(cx + p2[0], cy + p2[1]);
+        ctx.stroke();
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  /* #5 Loader pipe */
+  (function loaderPipe() {
+    const canvas = document.getElementById("c-loader-pipe");
+    const ctx = canvas.getContext("2d");
+    let path = [], t0 = performance.now(), gx = 5, gy = 5, dir = 0;
+    const steps = [[1,0],[0,1],[-1,0],[0,-1]];
+    const cell = 14;
+
+    function frame(t) {
+      const { w, h } = resizeCanvasToDisplaySize(canvas);
+      ctx.fillStyle = "#080a10";
+      ctx.fillRect(0, 0, w, h);
+      const elapsed = (t - t0) * 0.03;
+      while (path.length < 80 && elapsed > path.length * 0.15) {
+        const [dx, dy] = steps[dir];
+        const nx = gx + dx, ny = gy + dy;
+        if (nx < 2 || ny < 2 || nx > w / cell - 3 || ny > h / cell - 3) {
+          dir = (dir + 1) % 4;
+          continue;
+        }
+        path.push({ x: gx * cell, y: gy * cell, x2: nx * cell, y2: ny * cell });
+        gx = nx; gy = ny;
+        if (Math.random() < 0.35) dir = (dir + (Math.random() < 0.5 ? 1 : 3)) % 4;
+      }
+      if (path.length > 95 || elapsed > 120) { path = []; gx = 5; gy = 5; t0 = t; }
+      ctx.strokeStyle = "#34d399";
+      ctx.lineWidth = 5;
+      ctx.lineCap = "round";
+      for (const s of path) {
+        ctx.beginPath();
+        ctx.moveTo(s.x + cell / 2, s.y + cell / 2);
+        ctx.lineTo(s.x2 + cell / 2, s.y2 + cell / 2);
+        ctx.stroke();
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  /* #11 Real EQ */
+  (function realEq() {
+    const canvas = document.getElementById("c-real-eq");
+    const ctx = canvas.getContext("2d");
+    let audioCtx, osc, gain, analyser, data, raf, running = false;
+    const btn = document.getElementById("btn-audio");
+
+    function draw() {
+      if (!running || !analyser) return;
+      resizeCanvasToDisplaySize(canvas);
+      const w = canvas.width, h = canvas.height;
+      analyser.getByteFrequencyData(data);
+      ctx.fillStyle = "#050508";
+      ctx.fillRect(0, 0, w, h);
+      const bars = 48, bw = w / bars;
+      for (let i = 0; i < bars; i++) {
+        const v = data[i * 2] / 255;
+        const bh = v * h * 0.85;
+        ctx.fillStyle = "hsl(" + (200 + i * 3) + ",80%,55%)";
+        ctx.fillRect(i * bw + 1, h - bh, bw - 2, bh);
+      }
+      raf = requestAnimationFrame(draw);
+    }
+
+    btn.addEventListener("click", function () {
+      if (!running) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        osc = audioCtx.createOscillator();
+        osc.type = "sawtooth";
+        osc.frequency.value = 55;
+        gain = audioCtx.createGain();
+        gain.gain.value = 0.08;
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 512;
+        data = new Uint8Array(analyser.frequencyBinCount);
+        osc.connect(gain);
+        gain.connect(analyser);
+        analyser.connect(audioCtx.destination);
+        osc.start();
+        running = true;
+        btn.textContent = "Detener audio";
+        draw();
+      } else {
+        running = false;
+        cancelAnimationFrame(raf);
+        if (osc) try { osc.stop(); } catch (e) {}
+        if (audioCtx) audioCtx.close();
+        btn.textContent = "Iniciar / detener audio interno";
+        resizeCanvasToDisplaySize(canvas);
+        ctx.fillStyle = "#111";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#64748b";
+        ctx.font = "14px system-ui";
+        ctx.fillText("Audio detenido", 16, 28);
+      }
+    });
+  })();
+
+  /* #12 WebGL2 plasma */
+  (function plasma() {
+    const canvas = document.getElementById("gl-plasma");
+    const note = document.getElementById("gl-plasma-note");
+    const gl = canvas.getContext("webgl2");
+    if (!gl) {
+      note.textContent = "WebGL2 no disponible en este navegador.";
+      return;
+    }
+    const vs = `#version 300 es
+    in vec4 a_position;
+    void main() { gl_Position = a_position; }`;
+    const fs = `#version 300 es
+    precision highp float;
+    out vec4 o;
+    uniform float u_t;
+    uniform vec2 u_res;
+    void main() {
+      vec2 uv = gl_FragCoord.xy / u_res;
+      float a = sin(uv.x * 10.0 + u_t) + sin(uv.y * 8.0 - u_t * 0.7);
+      float b = sin((uv.x+uv.y)*12.0 + u_t*1.3);
+      vec3 c = vec3(0.2,0.05,0.35) + vec3(0.4*a,0.3*b,0.5*sin(a+b));
+      o = vec4(c, 1.0);
+    }`;
+    function compile(type, src) {
+      const sh = gl.createShader(type);
+      gl.shaderSource(sh, src);
+      gl.compileShader(sh);
+      return sh;
+    }
+    const prog = gl.createProgram();
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER, vs));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fs));
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, "a_position");
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    const uT = gl.getUniformLocation(prog, "u_t");
+    const uRes = gl.getUniformLocation(prog, "u_res");
+    let t0 = performance.now();
+    function frame(t) {
+      resizeCanvasToDisplaySize(canvas);
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.uniform1f(uT, (t - t0) * 0.001);
+      gl.uniform2f(uRes, canvas.width, canvas.height);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+      requestAnimationFrame(frame);
+    }
+    note.textContent = "WebGL2 activo; shader procedural local.";
+    requestAnimationFrame(frame);
+  })();
+
+  /* #13 Particles */
+  (function parts() {
+    const canvas = document.getElementById("c-particles");
+    const ctx = canvas.getContext("2d");
+    const N = 60;
+    let pts = [], t0 = performance.now();
+
+    function reset() {
+      pts = [];
+      const { w, h } = resizeCanvasToDisplaySize(canvas);
+      for (let i = 0; i < N; i++) {
+        pts.push({
+          x: Math.random() * w, y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 1.2, vy: (Math.random() - 0.5) * 1.2
+        });
+      }
+    }
+    reset();
+    window.addEventListener("resize", reset);
+
+    function frame(t) {
+      const { w, h } = resizeCanvasToDisplaySize(canvas);
+      ctx.fillStyle = "#070910";
+      ctx.fillRect(0, 0, w, h);
+      const tt = (t - t0) * 0.001;
+      for (const p of pts) {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+      }
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const a = pts[i], b = pts[j];
+          const d = Math.hypot(a.x - b.x, a.y - b.y);
+          if (d < 90) {
+            ctx.strokeStyle = "rgba(129,140,248," + (1 - d / 90) * 0.5 + ")";
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+      for (const p of pts) {
+        ctx.fillStyle = "hsl(" + ((p.x + p.y + tt * 40) % 360) + ",70%,60%)";
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y - 6);
+        ctx.lineTo(p.x + 5, p.y + 4);
+        ctx.lineTo(p.x - 5, p.y + 4);
+        ctx.closePath();
+        ctx.fill();
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  /* #14 City */
+  (function city() {
+    const canvas = document.getElementById("c-city");
+    const ctx = canvas.getContext("2d");
+    let buildings = [], t0 = performance.now();
+
+    function rebuild() {
+      const { w, h } = resizeCanvasToDisplaySize(canvas);
+      buildings = [];
+      let x = 0;
+      while (x < w) {
+        const bw = 20 + Math.random() * 40;
+        const bh = 40 + Math.random() * (h * 0.65);
+        buildings.push({ x, w: bw, h: bh });
+        x += bw + 4;
+      }
+    }
+    rebuild();
+    window.addEventListener("resize", rebuild);
+
+    function frame(t) {
+      const { w, h } = resizeCanvasToDisplaySize(canvas);
+      const tt = (t - t0) * 0.0008;
+      ctx.fillStyle = "#05060a";
+      ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = "#64748b";
+      ctx.lineWidth = 1;
+      for (const b of buildings) {
+        const isoX = b.x + b.w * 0.5;
+        const top = h - b.h - 20;
+        ctx.strokeRect(b.x, top, b.w, b.h);
+        const skew = Math.sin(tt + b.x * 0.01) * 6;
+        ctx.beginPath();
+        ctx.moveTo(b.x, top);
+        ctx.lineTo(b.x + skew, top - 14);
+        ctx.lineTo(b.x + b.w + skew, top - 14);
+        ctx.lineTo(b.x + b.w, top);
+        ctx.stroke();
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  /* #17 Trail */
+  (function trail() {
+    const canvas = document.getElementById("c-trail");
+    const ctx = canvas.getContext("2d");
+    const trail = [];
+    let max = 80;
+    canvas.addEventListener("mousemove", function (e) {
+      const r = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / r.width, scaleY = canvas.height / r.height;
+      trail.push({
+        x: (e.clientX - r.left) * scaleX,
+        y: (e.clientY - r.top) * scaleY,
+        a: 1
+      });
+      while (trail.length > max) trail.shift();
+    });
+    function frame() {
+      resizeCanvasToDisplaySize(canvas);
+      const w = canvas.width, h = canvas.height;
+      ctx.fillStyle = "rgba(5,6,10,0.25)";
+      ctx.fillRect(0, 0, w, h);
+      for (let i = 0; i < trail.length; i++) {
+        const p = trail[i];
+        p.a *= 0.96;
+        ctx.fillStyle = "rgba(125,211,252," + p.a + ")";
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 4 + i * 0.05, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  /* #18 Scroll */
+  (function scrollLink() {
+    const box = document.getElementById("scroll-box");
+    if (!box) return;
+    const layers = box.querySelectorAll("[data-parallax]");
+    box.addEventListener("scroll", function () {
+      const rect = box.getBoundingClientRect();
+      layers.forEach(function (el) {
+        const r = el.getBoundingClientRect();
+        const rel = (rect.top + rect.height / 2) - (r.top + r.height / 2);
+        const k = parseFloat(el.getAttribute("data-parallax"));
+        el.style.transform = "translateY(" + (rel * k * 0.08).toFixed(1) + "px)";
+      });
+    });
+  })();
+
+  /* #20 Idle spark */
+  (function idle() {
+    const canvas = document.getElementById("c-idle");
+    const ctx = canvas.getContext("2d");
+    let sparks = [], t0 = performance.now();
+    function frame(t) {
+      const { w, h } = resizeCanvasToDisplaySize(canvas);
+      ctx.fillStyle = "#020308";
+      ctx.fillRect(0, 0, w, h);
+      const pulse = 0.5 + 0.5 * Math.sin((t - t0) * 0.004);
+      if (sparks.length < 40 && Math.random() < 0.3 * pulse) {
+        sparks.push({
+          x: Math.random() * w, y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 3, vy: (Math.random() - 0.5) * 3, life: 1
+        });
+      }
+      sparks = sparks.filter(function (s) {
+        s.x += s.vx; s.y += s.vy; s.life -= 0.02;
+        if (s.life <= 0) return false;
+        ctx.fillStyle = "rgba(250,204,21," + s.life + ")";
+        ctx.fillRect(s.x, s.y, 2, 2);
+        return true;
+      });
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  /* #21 SVG maze */
+  (function svgMaze() {
+    const host = document.getElementById("svg-maze-host");
+    const cols = 31, rows = 21, cell = 10;
+    const m = [];
+    for (let y = 0; y < rows; y++) { m[y] = []; for (let x = 0; x < cols; x++) m[y][x] = 1; }
+    function carve(x, y) {
+      m[y][x] = 0;
+      const opts = [[2,0],[-2,0],[0,2],[0,-2]].sort(() => Math.random() - 0.5);
+      for (const [dx, dy] of opts) {
+        const nx = x + dx, ny = y + dy;
+        if (nx > 0 && ny > 0 && nx < cols - 1 && ny < rows - 1 && m[ny][nx]) {
+          m[y + dy / 2][x + dx / 2] = 0;
+          carve(nx, ny);
+        }
+      }
+    }
+    carve(1, 1);
+    m[rows - 2][cols - 2] = 0;
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("viewBox", "0 0 " + (cols * cell) + " " + (rows * cell));
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", String(rows * cell));
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        if (m[y][x]) {
+          const r = document.createElementNS(svgNS, "rect");
+          r.setAttribute("x", String(x * cell));
+          r.setAttribute("y", String(y * cell));
+          r.setAttribute("width", String(cell));
+          r.setAttribute("height", String(cell));
+          r.setAttribute("fill", "#1e293b");
+          svg.appendChild(r);
+        }
+      }
+    }
+    host.appendChild(svg);
+  })();
+
+  /* #22 Snapshot */
+  (function snap() {
+    const src = document.getElementById("c-snap-src");
+    const sctx = src.getContext("2d");
+    let t0 = performance.now();
+    function miniPlasma(t) {
+      const w = src.width, h = src.height;
+      const img = sctx.createImageData(w, h);
+      const u = (t - t0) * 0.002;
+      for (let j = 0; j < h; j++) {
+        for (let i = 0; i < w; i++) {
+          const a = Math.sin(i * 0.04 + u) + Math.sin(j * 0.05 - u);
+          const idx = (j * w + i) * 4;
+          img.data[idx] = 40 + a * 40;
+          img.data[idx + 1] = 20 + a * 30;
+          img.data[idx + 2] = 80 + a * 50;
+          img.data[idx + 3] = 255;
+        }
+      }
+      sctx.putImageData(img, 0, 0);
+    }
+    function loop(t) { miniPlasma(t); requestAnimationFrame(loop); }
+    requestAnimationFrame(loop);
+    document.getElementById("btn-snap").addEventListener("click", function () {
+      src.toBlob(function (blob) {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "gano-showcase-snapshot.png";
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+    });
+  })();
+
+  /* #24 ASCII */
+  (function ascii() {
+    const canvas = document.getElementById("c-ascii");
+    const ctx = canvas.getContext("2d");
+    const chars = " .:-=+*#%@";
+    let t0 = performance.now();
+    function frame(t) {
+      const { w, h } = resizeCanvasToDisplaySize(canvas);
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, w, h);
+      const cols = Math.floor(w / 7), rows = Math.floor(h / 12);
+      const tt = (t - t0) * 0.002;
+      ctx.font = "10px ui-monospace, monospace";
+      for (let j = 0; j < rows; j++) {
+        for (let i = 0; i < cols; i++) {
+          const v = Math.sin(i * 0.2 + tt) * Math.cos(j * 0.15 - tt);
+          const idx = Math.max(0, Math.min(chars.length - 1, ((v + 1) * 0.5 * chars.length) | 0));
+          ctx.fillStyle = "hsl(" + ((i * 5 + j * 3) % 360) + ",70%,65%)";
+          ctx.fillText(chars[idx], i * 7, j * 12 + 10);
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  /* #25 WebGPU */
+  (function wgpu() {
+    const canvas = document.getElementById("wgpu");
+    const note = document.getElementById("wgpu-note");
+    if (!navigator.gpu) {
+      note.innerHTML = "<span class='badge-off'>WebGPU no disponible</span> — en Chrome/Edge recientes y flags en otros.";
+      const ctx = canvas.getContext("2d");
+      resizeCanvasToDisplaySize(canvas);
+      ctx.fillStyle = "#111";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "15px system-ui";
+      ctx.fillText("Sin WebGPU en este entorno.", 20, 40);
+      return;
+    }
+    note.textContent = "Inicializando triángulo WebGPU…";
+    (async function () {
+      const adapter = await navigator.gpu.requestAdapter();
+      if (!adapter) {
+        note.textContent = "Adapter WebGPU no obtenido.";
+        return;
+      }
+      const device = await adapter.requestDevice();
+      const context = canvas.getContext("webgpu");
+      const format = navigator.gpu.getPreferredCanvasFormat();
+      const module = device.createShaderModule({
+        code: `
+        struct Out { @builtin(position) pos: vec4f, @location(0) col: vec4f };
+        @vertex fn vs(@builtin(vertex_index) vi: u32) -> Out {
+          var p = array<vec2f,3>(vec2f(0,0.6), vec2f(-0.55,-0.55), vec2f(0.55,-0.55));
+          var c = array<vec4f,3>(vec4f(1,0.2,0.2,1), vec4f(0.2,1,0.3,1), vec4f(0.3,0.5,1,1));
+          var o: Out;
+          o.pos = vec4f(p[vi], 0, 1);
+          o.col = c[vi];
+          return o;
+        }
+        @fragment fn fs(in: Out) -> @location(0) vec4f { return in.col; }
+        `
+      });
+      const pipeline = device.createRenderPipeline({
+        layout: "auto",
+        vertex: { module, entryPoint: "vs" },
+        fragment: { module, entryPoint: "fs", targets: [{ format }] }
+      });
+      let lastW = 0, lastH = 0;
+      function frame() {
+        resizeCanvasToDisplaySize(canvas);
+        const w = canvas.width, h = canvas.height;
+        if (w !== lastW || h !== lastH) {
+          lastW = w;
+          lastH = h;
+          context.configure({ device, format, alphaMode: "premultiplied" });
+        }
+        const encoder = device.createCommandEncoder();
+        const pass = encoder.beginRenderPass({
+          colorAttachments: [{
+            view: context.getCurrentTexture().createView(),
+            clearValue: { r: 0.05, g: 0.06, b: 0.09, a: 1 },
+            loadOp: "clear",
+            storeOp: "store"
+          }]
+        });
+        pass.setPipeline(pipeline);
+        pass.draw(3, 1, 0, 0);
+        pass.end();
+        device.queue.submit([encoder.finish()]);
+        requestAnimationFrame(frame);
+      }
+      note.textContent = "WebGPU activo: triángulo procedural (WGSL embebido).";
+      requestAnimationFrame(frame);
+    })();
+  })();
+})();
+  </script>
+</body>
+</html>

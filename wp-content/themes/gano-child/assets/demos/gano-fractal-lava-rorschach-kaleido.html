@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>50 propuestas — fractales · lava/metabolas · Rorschach · caleidoscopios (local)</title>
+<style>
+:root{--bg:#060708;--panel:#12141a;--bd:#2a2f3d;--tx:#eceef4;--m:#8b92a3;--a:#c084fc;--b:#22d3ee;font-family:system-ui,Segoe UI,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx)}
+header{position:sticky;top:0;z-index:9;padding:.85rem 1rem;background:linear-gradient(180deg,#0c0e14,transparent);border-bottom:1px solid var(--bd)}
+header h1{font-size:1.02rem;margin:0 0 .3rem}
+header p{margin:0;font-size:.76rem;color:var(--m);max-width:92ch}
+.plan{font-size:.72rem;color:#a8b4cf;margin-top:.45rem;padding:.5rem;background:#0a0c12;border:1px solid var(--bd);border-radius:8px;line-height:1.45}
+.plan strong{color:var(--b)}
+nav{display:flex;flex-wrap:wrap;gap:.22rem;padding:.55rem .8rem;border-bottom:1px solid var(--bd);background:#05060a;position:sticky;top:64px;z-index:8;max-height:36vh;overflow:auto}
+nav a{font-size:.6rem;padding:.12rem .32rem;border-radius:4px;background:var(--panel);border:1px solid var(--bd);color:var(--tx);text-decoration:none}
+nav a:hover{border-color:var(--a)}
+main{max-width:1080px;margin:0 auto;padding:.7rem .85rem 2.5rem}
+section{margin:0 0 1.2rem;padding:.7rem;background:var(--panel);border:1px solid var(--bd);border-radius:10px}
+section h2{margin:0 0 .15rem;font-size:.84rem;display:flex;flex-wrap:wrap;gap:.3rem;align-items:center}
+.tag{font-size:.55rem;text-transform:uppercase;padding:.06rem .26rem;border-radius:3px;border:1px solid var(--bd)}
+.tag.fr{color:#f9a8d4}.tag.lv{color:#fde047}.tag.ro{color:#93c5fd}.tag.ka{color:#6ee7b7}
+.cap{font-size:.7rem;color:var(--m);margin-bottom:.4rem}
+.slot{position:relative;min-height:148px;background:#030406;border-radius:8px;border:1px solid #1a1f2e;overflow:hidden}
+.slot canvas,.slot svg{display:block;width:100%;height:158px}
+.slot.t canvas,.slot.t svg{height:198px}
+</style>
+</head>
+<body>
+<header>
+  <h1>50 propuestas — fractales, “lámpara de lava” (metabolas), manchas tipo Rorschach, caleidoscopios</h1>
+  <p>Todo local, sin CDNs. Animaciones con Canvas 2D y algo de CSS/SVG. No reutiliza los 25 demos del primer showcase ni los 50 vector/falso‑3D del segundo.</p>
+  <div class="plan">
+    <strong>Investigación SOTA (referencias conceptuales):</strong>
+    Conjuntos de escape (Mandelbrot/Julia) y tiempo de escape — literatura clásica (Peitgen &amp; Richter) y tutoriales numéricos modernos;
+    <strong>metabolas / “lava”</strong> — campo de potencial inverso de distancia (Jim Blinn 1982), implementaciones web comunes con umbral y marching squares simplificado;
+    <strong>manchas simétricas</strong> — simetría bilateral en psicometría de taches (Rorschach, dominio público para <em>figuras originales</em> generadas aquí, no copiar láminas clínicas históricas);
+    <strong>caleidoscopios digitales</strong> — grupo diedral: reflexión en cuña 2π/n y composición de orbit traps (Pickover, etc.).
+    <strong>Plan de implementación:</strong> (1) motor común <code>resize</code> + RNG determinista; (2) 12 fractales clásicos 2D; (3) 14 campos tipo metabola / lava; (4) 12 simetrías tipo tinta; (5) 12 caleidoscopios y cierre compositivo — cada uno con parámetros distintos.
+  </div>
+</header>
+<nav id="nav-f"></nav>
+<main id="main-f"></main>
+<script>
+(function(){
+"use strict";
+const NS="http://www.w3.org/2000/svg";
+function el(t,a={},p=[]){const e=document.createElement(t);Object.assign(e,a);p.forEach(x=>e.appendChild(x));return e;}
+function mulberry32(a){return function(){let t=a+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
+function resize(cv){
+  const dpr=Math.min(2,devicePixelRatio||1);
+  let cw=cv.clientWidth,ch=cv.clientHeight;
+  if(!cw||!ch){const p=cv.parentElement;if(p){cw=p.clientWidth||320;ch=p.clientHeight||158}else{cw=320;ch=158}}
+  const w=Math.max(32,Math.floor(cw*dpr)),h=Math.max(32,Math.floor(ch*dpr));
+  if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h}
+  return{w,h}
+}
+let demos=[];
+
+function add(o){demos.push(o)}
+
+/* ——— Fractales (12) ——— */
+add({id:"f01",title:"01 · Mandelbrot (región centro)",tags:["fr"],cap:"Escape time, paleta suave.",host:"canvas",init(cv){
+  const x=cv.getContext("2d"),mx=-0.75,my=0,sc=2.6;
+  function draw(t){
+    const{w,h}=resize(cv),img=x.createImageData(w,h),d=img.data,seed=Math.floor(t*0.0002);
+    const rnd=mulberry32(0x9e3779b9+seed);
+    for(let py=0;py<h;py+=2)for(let px=0;px<w;px+=2){
+      const zx=(px/w-0.5)*sc+mx, zy=(py/h-0.5)*sc*h/w+my;
+      let zx1=zx,zy1=zy,i=0;
+      for(;i<80&&zx1*zx1+zy1*zy1<4;i++){const x2=zx1*zx1-zy1*zy1+zx;zy1=2*zx1*zy1+zy;zx1=x2}
+      const hue=(i*5+seed*3)%360, v=i>79?0:0.35+rnd()*0.4;
+      for(let dy=0;dy<2;dy++)for(let dx=0;dx<2;dx++){
+        const p=((py+dy)*w+(px+dx))*4;
+        if(p>=0&&p<d.length-3){d[p]=hue*0.4|0;d[p+1]=40+i*2;d[p+2]=180+v*60|0;d[p+3]=255}
+      }
+    }
+    x.putImageData(img,0,0);requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f02",title:"02 · Julia animada (c en cardioida)",tags:["fr"],cap:"c se mueve lentamente.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");
+  function draw(t){
+    const{w,h}=resize(cv),img=x.createImageData(w,h),d=img.data;
+    const ang=t*0.0003,cr=0.7885*Math.cos(ang)-0.1,ci=0.7885*Math.sin(ang);
+    const sc=2.2;
+    for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+      let zx=(px/w-0.5)*sc,zy=(py/h-0.5)*sc*h/w,i=0;
+      for(;i<64&&zx*zx+zy*zy<4;i++){const x2=zx*zx-zy*zy+cr;zy=2*zx*zy+ci;zx=x2}
+      const p=(py*w+px)*4,u=Math.min(255,i*9);d[p]=u;d[p+1]=i>63?20:120;d[p+2]=255-u;d[p+3]=255
+    }
+    x.putImageData(img,0,0);requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f03",title:"03 · Burning Ship (fragmento)",tags:["fr"],cap:"|Re|,|Im| en iteración.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");
+  function draw(){
+    const{w,h}=resize(cv),img=x.createImageData(w,h),d=img.data;
+    const sc=3.2,mx=-2.2,my=-2.0;
+    for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+      let zx=(px/w)*sc+mx,zy=(py/h)*sc*h/w+my,cx=zx,cy=zy,i=0;
+      for(;i<72&&zx*zx+zy*zy<4;i++){zx=Math.abs(zx);zy=Math.abs(zy);const x2=zx*zx-zy*zy+cx;zy=2*zx*zy+cy;zx=x2}
+      const p=(py*w+px)*4,v=Math.min(255,i*5);d[p]=v;d[p+1]=40;d[p+2]=i>71?0:200;d[p+3]=255
+    }
+    x.putImageData(img,0,0);requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f04",title:"04 · Newton z³−1 (cuencas)",tags:["fr"],cap:"z − (z³−1)/(3z²) en ℂ.",host:"canvas",init(cv){
+  const x=cv.getContext("2d"),roots=[{r:1,i:0},{r:-0.5,i:0.8660254},{r:-0.5,i:-0.8660254}],cols=[[255,80,80],[80,255,120],[120,140,255]];
+  function draw(){
+    const{w,h}=resize(cv),img=x.createImageData(w,h),d=img.data,sc=2.8;
+    for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+      let zr=(px/w-0.5)*sc,zi=(py/h-0.5)*sc*h/w;
+      for(let k=0;k<32;k++){
+        const z2r=zr*zr-zi*zi,z2i=2*zr*zi,z3r=z2r*zr-z2i*zi,z3i=z2r*zi+z2i*zr;
+        const fr=z3r-1,fi=z3i,dr=3*z2r,di=3*z2i,den=dr*dr+di*di+1e-9;
+        zr-=(fr*dr+fi*di)/den;zi-=(fi*dr-fr*di)/den;
+      }
+      let bi=0,md=9;
+      roots.forEach((rt,j)=>{const dr=zr-rt.r,di=zi-rt.i;const dd=dr*dr+di*di;if(dd<md){md=dd;bi=j}});
+      const p=(py*w+px)*4,c=cols[bi];d[p]=c[0];d[p+1]=c[1];d[p+2]=c[2];d[p+3]=255
+    }
+    x.putImageData(img,0,0);requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f05",title:"05 · Triángulo de Sierpinski (juego del caos)",tags:["fr"],cap:"100k iteraciones por frame.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");const vx=[0,1,0.5],vy=[1,1,0];
+  let px=0.5,py=0.5,rnd=mulberry32(42);
+  function draw(){
+    const{w,h}=resize(cv);x.fillStyle="rgba(0,0,0,.12)";x.fillRect(0,0,w,h);
+    for(let k=0;k<800;k++){const j=(rnd()*3)|0;px=(px+vx[j])/2;py=(py+vy[j])/2;x.fillStyle="#a78bfa";x.fillRect(px*w,py*h,1.2,1.2)}
+    requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f06",title:"06 · Curva de Koch (4 iteraciones)",tags:["fr"],cap:"Segmentos recursivos.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");
+  function koch(ax,ay,bx,by,depth){
+    if(depth<=0){x.lineTo(bx,by);return}
+    const dx=bx-ax,dy=by-ay;
+    const x1=ax+dx/3,y1=ay+dy/3,x2=ax+dx/2-Math.sqrt(3)*dy/6,y2=ay+dy/2+Math.sqrt(3)*dx/6,x3=ax+2*dx/3,y3=ay+2*dy/3;
+    koch(ax,ay,x1,y1,depth-1);koch(x1,y1,x2,y2,depth-1);koch(x2,y2,x3,y3,depth-1);koch(x3,y3,bx,by,depth-1)
+  }
+  function draw(){
+    const{w,h}=resize(cv);x.fillStyle="#030508";x.fillRect(0,0,w,h);
+    x.strokeStyle="#67e8f9";x.lineWidth=1.2;x.beginPath();x.moveTo(w*0.1,h*0.65);koch(w*0.1,h*0.65,w*0.9,h*0.65,4);x.stroke();
+    requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f07",title:"07 · Helecho de Barnsley (IFS)",tags:["fr"],cap:"4 transformaciones afines.",host:"canvas",init(cv){
+  const x=cv.getContext("2d"),rnd=mulberry32(7);let X=0,Y=0;
+  const fs=[{p:.01,a:0,b:0,c:0,d:.16,e:0,f:0},{p:.85,a:.85,b:.04,c:-.04,d:.85,e:0,f:1.6},{p:.07,a:.2,b:-.26,c:.23,d:.22,e:0,f:1.6},{p:.07,a:-.15,b:.28,c:.26,d:.24,e:0,f:.44}];
+  function pick(){let r=rnd(),s=0;for(let i=0;i<4;i++){s+=fs[i].p;if(r<=s)return fs[i]}return fs[3]}
+  function draw(){
+    const{w,h}=resize(cv);x.fillStyle="rgba(0,10,8,.08)";x.fillRect(0,0,w,h);
+    for(let k=0;k<1200;k++){const t=pick();const nx=t.a*X+t.b*Y+t.e,ny=t.c*X+t.d*Y+t.f;X=nx;Y=ny;x.fillStyle="#4ade80";x.fillRect(X*w/10+w*0.45,h-Y*w/11,1,1)}
+    requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f08",title:"08 · Curva Z-order (Morton) 256 puntos",tags:["fr"],cap:"Relleno espacial 2D determinista.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");
+  function mortonXY(k,order){
+    let x=0,y=0,t=k;
+    for(let s=0;s<order;s++){x|=(t&1)<<s;t>>=1;y|=(t&1)<<s;t>>=1}
+    return[x,y]
+  }
+  function draw(){
+    const{w,h}=resize(cv);x.fillStyle="#04060a";x.fillRect(0,0,w,h);
+    const order=8,side=1<<order,sc=Math.min(w,h)*0.85/side,ox=(w-side*sc)/2,oy=(h-side*sc)/2;
+    x.strokeStyle="#f472b6";x.lineWidth=1.2;x.beginPath();
+    for(let k=0;k<side*side;k++){
+      const[mx,my]=mortonXY(k,order),px=ox+mx*sc,py=oy+my*sc;
+      if(k===0)x.moveTo(px,py);else x.lineTo(px,py)
+    }
+    x.stroke();requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f09",title:"09 · Alfombra de Sierpinski (cuadrado)",tags:["fr"],cap:"Recorte recursivo visual.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");
+  function carpet(ax,ay,s,dep){
+    if(dep<=0){x.fillRect(ax,ay,s,s);return}
+    const t=s/3;
+    for(let i=0;i<3;i++)for(let j=0;j<3;j++)if(i!==1||j!==1)carpet(ax+i*t,ay+j*t,t,dep-1)
+  }
+  function draw(){
+    const{w,h}=resize(cv);x.fillStyle="#0f172a";x.fillRect(0,0,w,h);x.fillStyle="#38bdf8";
+    carpet(w*0.15,h*0.1,Math.min(w,h)*0.7,4);requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f10",title:"10 · Atractor de Clifford (Pickover)",tags:["fr"],cap:"Orbita 2D de mapa 3D proyectado.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");let a=1.4,b=1.56,c=1.4,d=-2.14,x1=0,y1=0;
+  function draw(){
+    const{w,h}=resize(cv);x.fillStyle="rgba(2,2,8,.15)";x.fillRect(0,0,w,h);
+    for(let k=0;k<400;k++){const nx=Math.sin(a*y1)+c*Math.cos(a*x1),ny=Math.sin(b*x1)+d*Math.cos(b*y1);x1=nx;y1=ny;x.fillStyle="#fb7185";x.fillRect(w*(0.5+x1*0.18),h*(0.5+y1*0.18),1.2,1.2)}
+    requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f11",title:"11 · Tricorn conj(z)²+c",tags:["fr"],cap:"Variante de Julia con conjugado.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");
+  function draw(t){
+    const{w,h}=resize(cv),img=x.createImageData(w,h),d=img.data;
+    const cr=-0.2+0.08*Math.sin(t*4e-4),ci=0.55+0.05*Math.cos(t*3e-4),sc=2.6;
+    for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+      let zx=(px/w-0.5)*sc,zy=(py/h-0.5)*sc*h/w,i=0;
+      for(;i<48&&zx*zx+zy*zy<4;i++){
+        const sx=zx,sy=-zy;
+        const nzr=sx*sx-sy*sy+cr,nzi=2*sx*sy+ci;zx=nzr;zy=nzi
+      }
+      const p=(py*w+px)*4,v=i*5;d[p]=v;d[p+1]=200-i*3;d[p+2]=255-v;d[p+3]=255
+    }
+    x.putImageData(img,0,0);requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f12",title:"12 · Cantor sobre eje + polvo",tags:["fr"],cap:"Conjunto 1D escalado.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");let t=0;
+  function draw(){
+    const{w,h}=resize(cv);x.fillStyle="#020308";x.fillRect(0,0,w,h);t+=0.01;
+    function cantor(ax,bx,y,dep){
+      if(dep<=0)return;const dx=bx-ax;x.strokeStyle=`hsl(${200+dep*15},80%,60%)`;x.lineWidth=2+dep;x.beginPath();x.moveTo(ax,y);x.lineTo(bx,y);x.stroke();
+      cantor(ax,ax+dx/3,y+22+Math.sin(t+dep)*4,dep-1);cantor(ax+2*dx/3,bx,y+22+Math.sin(t+dep)*4,dep-1)
+    }
+    cantor(w*0.08,w*0.92,h*0.25,5);requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+
+/* ——— Lava / metabolas (14) ——— */
+function metaBlob(cv,nballs,style){
+  const x=cv.getContext("2d"),balls=Array.from({length:nballs},(_,i)=>({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*0.002,vy:(Math.random()-.5)*0.002,r:0.08+Math.random()*0.12,hue:i*40}));
+  function draw(t){
+    const{w,h}=resize(cv),img=x.createImageData(w,h),d=img.data;
+    balls.forEach(b=>{b.x+=b.vx;b.y+=b.vy;if(b.x<0||b.x>1)b.vx*=-1;if(b.y<0||b.y>1)b.vy*=-1});
+    for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+      let sum=0;const fx=px/w,fy=py/h;
+      balls.forEach(b=>{const dx=fx-b.x,dy=fy-b.y;sum+=b.r*b.r/(dx*dx+dy*dy+1e-5)});
+      const p=(py*w+px)*4,th=sum>style.th?1:(sum-style.th*0.7)/(style.th*0.3+1e-6);
+      if(style.kind===0){d[p]=40+th*180;d[p+1]=20+th*60;d[p+2]=80+th*120;d[p+3]=255}
+      else{d[p]=200*th|0;d[p+1]=80+100*th|0;d[p+2]=30+180*(1-th)|0;d[p+3]=255}
+    }
+    x.putImageData(img,0,0);requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}
+add({id:"f13",title:"13 · Metabolas triples (umbral clásico)",tags:["lv"],cap:"Potencial 1/r².",host:"canvas",init(cv){metaBlob(cv,3,{th:4.2,kind:0})}});
+add({id:"f14",title:"14 · Cinco blobs “lava” cálida",tags:["lv"],cap:"Paleta magma.",host:"canvas",init(cv){metaBlob(cv,5,{th:5.5,kind:1})}});
+add({id:"f15",title:"15 · Metabolas + ruido de fondo",tags:["lv"],cap:"Umbral con jitter.",host:"canvas",init(cv){
+  const x=cv.getContext("2d"),rnd=mulberry32(99);
+  function draw(t){
+    const{w,h}=resize(cv),img=x.createImageData(w,h),d=img.data;
+    const bx=0.5+0.2*Math.sin(t*0.001),by=0.5+0.15*Math.cos(t*0.0008),r=0.12;
+    for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+      const fx=px/w,fy=py/h,v=r*r/((fx-bx)*(fx-bx)+(fy-by)*(fy-by)+1e-4)+rnd()*0.15;
+      const p=(py*w+px)*4,u=v>6?1:(v-4)/2;d[p]=30+u*200;d[p+1]=10+u*80;d[p+2]=60+u*180;d[p+3]=255
+    }
+    x.putImageData(img,0,0);requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f16",title:"16 · Dos elipses fundentes",tags:["lv"],cap:"Campos alargados.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");
+  function draw(t){
+    const{w,h}=resize(cv),img=x.createImageData(w,h),d=img.data;
+    const cx1=0.35+0.1*Math.sin(t*8e-4),cy1=0.5,cx2=0.65+0.1*Math.cos(t*7e-4),cy2=0.5;
+    for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+      const fx=px/w,fy=py/h;
+      const s1=0.02/(((fx-cx1)/0.25)**2+((fy-cy1)/0.12)**2+1e-4),s2=0.02/(((fx-cx2)/0.25)**2+((fy-cy2)/0.12)**2+1e-4);
+      const v=s1+s2,p=(py*w+px)*4,m=Math.min(255,v*0.35);d[p]=m;d[p+1]=80+m*0.5;d[p+2]=200-m*0.3;d[p+3]=255
+    }
+    x.putImageData(img,0,0);requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f17",title:"17 · “Lava” vertical (sin metabola)",tags:["lv"],cap:"Ondas seno + capas.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");
+  function draw(t){
+    const{w,h}=resize(cv);x.fillStyle="#1a0508";x.fillRect(0,0,w,h);
+    for(let L=0;L<6;L++){
+      x.fillStyle=`hsla(${15+L*12},90%,${35+L*8}%,0.35)`;
+      x.beginPath();
+      for(let px=0;px<=w;px+=6){const yy=h*0.2+L*h*0.11+Math.sin(px*0.02+t*0.002+L)*h*0.06+Math.sin(px*0.05+t*0.004)*h*0.03;x.lineTo(px,yy)}
+      x.lineTo(w,h);x.lineTo(0,h);x.closePath();x.fill()
+    }
+    requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f18",title:"18 · Burbuja ascendente (metabola móvil)",tags:["lv"],cap:"Un solo máximo que sube.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");
+  function draw(t){
+    const{w,h}=resize(cv),img=x.createImageData(w,h),d=img.data;
+    const by=(t*0.00008%1),bx=0.5+0.2*Math.sin(t*0.001);
+    for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+      const fx=px/w,fy=py/h,v=0.015/((fx-bx)*(fx-bx)+(fy-by)*(fy-by)+1e-4);
+      const p=(py*w+px)*4,u=Math.min(1,v/8);d[p]=255*u;d[p+1]=100+100*u;d[p+2]=40;d[p+3]=255
+    }
+    x.putImageData(img,0,0);requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f19",title:"19 · Marching squares lite (1 isosuperficie)",tags:["lv"],cap:"Aproximación contorno metabola.",host:"canvas",init(cv){
+  const x=cv.getContext("2d"),res=48,g=new Float32Array(res*res);
+  function field(){
+    for(let j=0;j<res;j++)for(let i=0;i<res;i++){const u=i/res,v=j/res;let s=0;[[0.4,0.5,0.04],[0.7,0.45,0.05]].forEach(b=>{s+=b[2]/((u-b[0])**2+(v-b[1])**2+1e-4)});g[j*res+i]=s}
+  }
+  function draw(t){
+    const{w,h}=resize(cv);x.fillStyle="#020308";x.fillRect(0,0,w,h);field();
+    const cx=w/res,cy=h/res,th=5+Math.sin(t*0.001);
+    for(let j=0;j<res-1;j++)for(let i=0;i<res-1;i++){
+      const a=g[j*res+i]-th,b=g[j*res+i+1]-th,c=g[(j+1)*res+i]-th,d0=g[(j+1)*res+i+1]-th;
+      if((a>0)!==(b>0)||(a>0)!==(c>0)){x.strokeStyle="#34d399";x.lineWidth=1;x.beginPath();x.moveTo(i*cx,j*cy);x.lineTo((i+1)*cx,(j+1)*cy);x.stroke()}
+    }
+    requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f20",title:"20 · Lava CSS (capas blur)",tags:["lv"],cap:"Solo CSS en slot.",host:"slot",init(slot){
+  const kid="kf_lavcss_"+(slot.dataset.demoId||"f20");
+  const w=el("div",{style:"height:180px;border-radius:10px;overflow:hidden;position:relative;background:#1a0305"});
+  const layers=["radial-gradient(circle at 30% 120%,#f97316,#7f1d1d 40%,transparent 55%)","radial-gradient(circle at 70% 100%,#fbbf24,#9a3412 35%,transparent 50%)","radial-gradient(circle at 50% 0%,#fef08a,transparent 45%)"];
+  layers.forEach((bg,i)=>{
+    w.appendChild(el("div",{style:`position:absolute;inset:-20%;background:${bg};opacity:0.55;mix-blend-mode:screen;animation:${kid} ${8+i*2}s ease-in-out infinite;animation-delay:${i*0.7}s`}))
+  });
+  if(!document.getElementById(kid)){const st=document.createElement("style");st.id=kid;st.textContent="@keyframes "+kid+"{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-12%) scale(1.08)}}";document.head.appendChild(st)}
+  slot.appendChild(w)
+}});
+add({id:"f21",title:"21 · Metacírculos en cadena",tags:["lv"],cap:"Tres centros en línea.",host:"canvas",init(cv){metaBlob(cv,3,{th:3.8,kind:1})}});
+add({id:"f22",title:"22 · Plasma “lava” (Canvas, no WebGL)",tags:["lv"],cap:"sin²+cos² distinto al showcase 1.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");
+  function draw(t){
+    const{w,h}=resize(cv),img=x.createImageData(w,h),d=img.data;
+    for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+      const u=px*0.04+t*8e-4,v=py*0.035-t*6e-4,a=Math.sin(u)+Math.sin(v*1.7)+Math.sin((u+v)*0.5+t*0.001);
+      const p=(py*w+px)*4,n=(a+3)/6;d[p]=40+n*200;d[p+1]=20+n*80;d[p+2]=10+n*40;d[p+3]=255
+    }
+    x.putImageData(img,0,0);requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f23",title:"23 · Doble tórus metabólico",tags:["lv"],cap:"Dos acoplamientos.",host:"canvas",init(cv){metaBlob(cv,4,{th:5,kind:0})}});
+add({id:"f24",title:"24 · Lava con “solución” salina (estrías)",tags:["lv"],cap:"Ruido multiplicado al campo.",host:"canvas",init(cv){
+  const x=cv.getContext("2d"),rnd=mulberry32(12345);
+  function draw(t){
+    const{w,h}=resize(cv),img=x.createImageData(w,h),d=img.data;
+    for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+      const fx=px/w,fy=py/h;let s=0.04/((fx-0.5)**2+(fy-0.45)**2+1e-3)+0.03/((fx-0.55)**2+(fy-0.58)**2+1e-3);
+      s*=0.7+0.6*rnd();const p=(py*w+px)*4,u=Math.min(1,s/7);d[p]=200*u;d[p+1]=60*u;d[p+2]=30;d[p+3]=255
+    }
+    x.putImageData(img,0,0);requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f25",title:"25 · Voronoi suavizado (aspecto cera)",tags:["lv"],cap:"Distancia mínima a semillas.",host:"canvas",init(cv){
+  const x=cv.getContext("2d"),seeds=Array.from({length:12},()=>[Math.random(),Math.random(),Math.random()*360]);
+  function draw(){
+    const{w,h}=resize(cv),img=x.createImageData(w,h),d=img.data;
+    for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+      const fx=px/w,fy=py/h;let md=99,ci=0;
+      seeds.forEach((s,i)=>{const dd=Math.hypot(fx-s[0],fy-s[1]);if(dd<md){md=dd;ci=i}});
+      const p=(py*w+px)*4,hue=seeds[ci][2];d[p]=hue;d[p+1]=200-md*400;d[p+2]=120+md*200;d[p+3]=255
+    }
+    x.putImageData(img,0,0);seeds.forEach(s=>{s[0]+=(Math.random()-.5)*0.002;s[1]+=(Math.random()-.5)*0.002});requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f26",title:"26 · Metabolas reactivas a tiempo",tags:["lv"],cap:"Umbral modulado.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");
+  function draw(t){
+    const{w,h}=resize(cv),img=x.createImageData(w,h),d=img.data,th=4+2*Math.sin(t*0.001);
+    const balls=[[0.3+0.1*Math.sin(t*7e-4),0.5,0.1],[0.7,0.5+0.1*Math.cos(t*8e-4),0.09]];
+    for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+      const fx=px/w,fy=py/h;let s=0;balls.forEach(b=>{s+=b[2]*b[2]/((fx-b[0])**2+(fy-b[1])**2+1e-5)});
+      const p=(py*w+px)*4,u=s>th?1:(s-th*0.85)/(th*0.15+1e-6);d[p]=20+230*u;d[p+1]=40+100*u;d[p+2]=180-100*u;d[p+3]=255
+    }
+    x.putImageData(img,0,0);requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+
+/* ——— Rorschach / simetría (12) ——— */
+function mirrorInk(cv,gen){
+  const x=cv.getContext("2d");
+  function draw(t){
+    const{w,h}=resize(cv);x.fillStyle="#f8fafc";x.fillRect(0,0,w,h);
+    const hw=w>>1,img=x.createImageData(hw,h),d=img.data;
+    gen(d,hw,h,t);
+    const full=x.createImageData(w,h),fd=full.data;
+    for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+      const sx=px<hw?px:w-1-px,si=(py*hw+sx)*4,di=(py*w+px)*4;
+      fd[di]=d[si];fd[di+1]=d[si+1];fd[di+2]=d[si+2];fd[di+3]=255
+    }
+    x.putImageData(full,0,0);x.strokeStyle="#94a3b8";x.beginPath();x.moveTo(w/2,0);x.lineTo(w/2,h);x.stroke();
+    requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}
+add({id:"f27",title:"27 · Mancha bilateral (ruido suavizado)",tags:["ro"],cap:"Simetría espejo eje Y.",host:"canvas",init(cv){
+  mirrorInk(cv,(d,hw,h,t)=>{
+    const rnd=mulberry32(0xC0FFEE^Math.floor(t/200));
+    for(let i=0;i<d.length;i+=4){const v=(rnd()*255)|0;d[i]=40+v*0.3;d[i+1]=30+v*0.25;d[i+2]=50+v*0.35;d[i+3]=255}
+    for(let k=0;k<3;k++)for(let py=1;py<h-1;py++)for(let px=1;px<hw-1;px++){
+      const p=(py*hw+px)*4,s=0;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)s+=d[((py+dy)*hw+px+dx)*4];
+      d[p]=s/9|0;d[p+1]=s/9|0;d[p+2]=s/9|0
+    }
+  })
+}});
+add({id:"f28",title:"28 · Gotas radiales simétricas",tags:["ro"],cap:"Acumulación circular.",host:"canvas",init(cv){
+  mirrorInk(cv,(d,hw,h,t)=>{
+    for(let py=0;py<h;py++)for(let px=0;px<hw;px++){
+      const dx=px-hw*0.5,dy=py-h*0.5,r=Math.hypot(dx,dy),v=Math.exp(-r*r/(hw*0.18)**2)*200;
+      const p=(py*hw+px)*4;d[p]=40;d[p+1]=30;d[p+2]=v;d[p+3]=255
+    }
+  })
+}});
+add({id:"f29",title:"29 · Tinta “fold” (gradiente plegado)",tags:["ro"],cap:"Simetría + mezcla.",host:"canvas",init(cv){
+  mirrorInk(cv,(d,hw,h,t)=>{
+    for(let py=0;py<h;py++)for(let px=0;px<hw;px++){
+      const u=px/hw,v=py/h,a=Math.sin(u*10+t*5e-4)*0.5+0.5,b=Math.cos(v*8)*0.5+0.5,n=(a+b)*127;
+      const p=(py*hw+px)*4;d[p]=n;d[p+1]=80;d[p+2]=200-n;d[p+3]=255
+    }
+  })
+}});
+add({id:"f30",title:"30 · Splats aleatorios espejados",tags:["ro"],cap:"Círculos con alpha.",host:"canvas",init(cv){
+  const x=cv.getContext("2d"),rnd=mulberry32(555);
+  function draw(){
+    const{w,h}=resize(cv);x.fillStyle="#f1f5f9";x.fillRect(0,0,w,h);
+    for(let k=0;k<6;k++){const r=20+rnd()*50,cx=w/2+(rnd()-0.5)*w*0.35,cy=rnd()*h;const gr=x.createRadialGradient(cx,cy,0,cx,cy,r);gr.addColorStop(0,"rgba(30,41,59,0.7)");gr.addColorStop(1,"rgba(30,41,59,0)");x.fillStyle=gr;x.beginPath();x.arc(cx,cy,r,0,7);x.fill();x.save();x.translate(w,0);x.scale(-1,1);x.fillStyle=gr;x.beginPath();x.arc(cx,cy,r,0,7);x.fill();x.restore()}
+    x.strokeStyle="#64748b";x.beginPath();x.moveTo(w/2,0);x.lineTo(w/2,h);x.stroke();
+    requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f31",title:"31 · Simetría horizontal (eje X)",tags:["ro"],cap:"Reflejo vertical de blobs.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");
+  function draw(t){
+    const{w,h}=resize(cv);x.fillStyle="#0f172a";x.fillRect(0,0,w,h);
+    const cy=h*(0.45+0.05*Math.sin(t*9e-4));
+    for(let i=0;i<5;i++){const gr=x.createRadialGradient(w*(0.2+i*0.15),cy,0,w*(0.2+i*0.15),cy,40);gr.addColorStop(0,"rgba(244,114,182,0.5)");gr.addColorStop(1,"transparent");x.fillStyle=gr;x.fillRect(0,0,w,h);x.save();x.translate(0,h);x.scale(1,-1);x.fillStyle=gr;x.fillRect(0,0,w,h);x.restore()}
+    x.strokeStyle="#94a3b8";x.beginPath();x.moveTo(0,cy);x.lineTo(w,cy);x.stroke();
+    requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f32",title:"32 · Mancha tipo “ala” (Bezier espejo)",tags:["ro"],cap:"SVG.",host:"slot",init(slot){
+  const uid=(slot.dataset.demoId||"f32").replace(/[^a-z0-9]/gi,"_");
+  const svg=document.createElementNS(NS,"svg");svg.setAttribute("viewBox","0 0 400 200");svg.setAttribute("width","100%");svg.setAttribute("height","200");
+  const path=document.createElementNS(NS,"path");path.setAttribute("fill","#334155");path.setAttribute("opacity","0.85");
+  path.setAttribute("d","M200 100 Q260 40 320 100 Q260 160 200 100 Q140 40 80 100 Q140 160 200 100");
+  function tick(t){
+    const wob=Math.sin(t*0.002)*30;
+    path.setAttribute("d","M200 100 Q "+(260+wob)+" 40 320 100 Q "+(260-wob)+" 160 200 100 Q "+(140-wob)+" 40 80 100 Q "+(140+wob)+" 160 200 100")
+  }
+  svg.appendChild(path);slot.appendChild(svg);
+  function loop(t){tick(t);requestAnimationFrame(loop)}requestAnimationFrame(loop)
+}});
+add({id:"f33",title:"33 · Ruido de Worley bilateral",tags:["ro"],cap:"Puntos aleatorios mitad.",host:"canvas",init(cv){
+  mirrorInk(cv,(d,hw,h,t)=>{
+    const pts=Array.from({length:20},()=>[Math.random()*hw,Math.random()*h]);
+    for(let py=0;py<h;py++)for(let px=0;px<hw;px++){
+      let md=1e9;pts.forEach(p=>{const dd=(px-p[0])**2+(py-p[1])**2;if(dd<md)md=dd});
+      const v=Math.sqrt(md)*3,n=255-Math.min(255,v);const p=(py*hw+px)*4;d[p]=n;d[p+1]=n;d[p+2]=n+20;d[p+3]=255
+    }
+  })
+}});
+add({id:"f34",title:"34 · Trazos brush acumulados",tags:["ro"],cap:"Half buffer copiado.",host:"canvas",init(cv){
+  const x=cv.getContext("2d"),rnd=mulberry32(77);
+  function draw(){
+    const{w,h}=resize(cv);x.fillStyle="rgba(248,250,252,0.08)";x.fillRect(0,0,w,h);
+    const cx=w/2+(rnd()-0.5)*w*0.2,cy=h/2+(rnd()-0.5)*h*0.3;
+    const lw=4+rnd()*8,rad=10+rnd()*40,ang=rnd()*6;x.strokeStyle="rgba(15,23,42,0.35)";x.lineWidth=lw;
+    x.beginPath();x.arc(cx,cy,rad,0,ang);x.stroke();
+    x.save();x.translate(w,0);x.scale(-1,1);x.beginPath();x.arc(cx,cy,rad,0,ang);x.stroke();x.restore();
+    requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f35",title:"35 · Simetría diagonal",tags:["ro"],cap:"Reflejo y=x.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");
+  function draw(t){
+    const{w,h}=resize(cv),s=Math.min(w,h);x.fillStyle="#020617";x.fillRect(0,0,w,h);
+    for(let k=0;k<40;k++){const u=(k/40*s+t*0.05)%s,v=Math.sin(k*0.5+t*0.01)*s*0.15;x.fillStyle=`hsla(${k*9},70%,60%,0.4)`;x.fillRect(u,v,6,6);x.fillRect(v,u,6,6)}
+    requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f36",title:"36 · Mancha “organica” (reacción-difusión 5 pasos)",tags:["ro"],cap:"Gris Scott muy simplificado.",host:"canvas",init(cv){
+  const x=cv.getContext("2d"),res=80,u=new Float32Array(res*res),v=new Float32Array(res*res);
+  for(let i=0;i<u.length;i++){u[i]=1;v[i]=i%40===0?0.5:0}
+  function step(){
+    const nu=u.slice(),nv=v.slice();
+    for(let y=1;y<res-1;y++)for(let x=1;x<res-1;x++){
+      const i=y*res+x,Lap=-4*nu[i]+nu[i-1]+nu[i+1]+nu[i-res]+nu[i+res];
+      u[i]=nu[i]+0.16*Lap-nu[i]*nv[i]*nv[i]+0.04*(1-nu[i]);v[i]=nv[i]+0.08*Lap+nu[i]*nv[i]*nv[i]-0.12*nv[i]
+    }
+  }
+  function draw(){
+    const{w,h}=resize(cv);for(let k=0;k<2;k++)step();
+    const img=x.createImageData(w,h),d=img.data;
+    for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+      const gx=Math.min(res-1,(px/w*res)|0),gy=Math.min(res-1,(py/h*res)|0),sx=gx<res/2?gx:res-1-gx;
+      const val=Math.min(255,u[gy*res+sx]*255),p=(py*w+px)*4;
+      d[p]=val;d[p+1]=80;d[p+2]=200-val;d[p+3]=255
+    }
+    x.putImageData(img,0,0);x.strokeStyle="#64748b";x.beginPath();x.moveTo(w/2,0);x.lineTo(w/2,h);x.stroke();
+    requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f37",title:"37 · Silueta simétrica (threshold campo)",tags:["ro"],cap:"> umbral tinta.",host:"canvas",init(cv){
+  mirrorInk(cv,(d,hw,h,t)=>{
+    for(let py=0;py<h;py++)for(let px=0;px<hw;px++){
+      const v=128+60*Math.sin(px*0.08+t*5e-4)*Math.cos(py*0.07);
+      const ink=v>140?30:245,p=(py*hw+px)*4;d[p]=ink;d[p+1]=ink;d[p+2]=ink+5;d[p+3]=255
+    }
+  })
+}});
+add({id:"f38",title:"38 · Espejo 4-fold (copia cuadrantes)",tags:["ro"],cap:"Un cuadrante genera cuatro.",host:"canvas",init(cv){
+  const x=cv.getContext("2d"),rnd=mulberry32(99);
+  function draw(){
+    const{w,h}=resize(cv),qw=w>>1,qh=h>>1,img=x.createImageData(qw,qh),d=img.data;
+    for(let py=0;py<qh;py++)for(let px=0;px<qw;px++){
+      const v=(rnd()*200)|0,p=(py*qw+px)*4;d[p]=v;d[p+1]=100;d[p+2]=200-v;d[p+3]=255
+    }
+    const full=x.createImageData(w,h),fd=full.data;
+    const copy=(fx,fy)=>{for(let py=0;py<qh;py++)for(let px=0;px<qw;px++){const si=(py*qw+px)*4,ox=fx?qw-1-px:px,oy=fy?qh-1-py:py,di=(oy*w+ox)*4;fd[di]=d[si];fd[di+1]=d[si+1];fd[di+2]=d[si+2];fd[di+3]=255}};
+    copy(0,0);copy(1,0);copy(0,1);copy(1,1);
+    x.putImageData(full,0,0);requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+
+/* ——— Caleidoscopios (12) ——— */
+function kaleido(cv,n,drawWedge){
+  const x=cv.getContext("2d");
+  function draw(t){
+    const{w,h}=resize(cv),cx=w/2,cy=h/2,R=Math.min(w,h)*0.48;
+    x.fillStyle="#030508";x.fillRect(0,0,w,h);
+    for(let s=0;s<n;s++){
+      x.save();x.translate(cx,cy);x.rotate((s*Math.PI*2)/n);
+      x.beginPath();x.moveTo(0,0);x.arc(0,0,R,-0.001,(Math.PI*2/n)+0.001,false);x.closePath();x.clip();
+      drawWedge(x,w,h,t);x.restore()
+    }
+    requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}
+add({id:"f39",title:"39 · Caleidoscopio 7‑pliegues (arcos)",tags:["ka"],cap:"Wedge + arcos.",host:"canvas",init(cv){kaleido(cv,7,(x,w,h,t)=>{for(let i=0;i<20;i++){x.strokeStyle=`hsla(${i*18},85%,65%,0.5)`;x.lineWidth=2;x.beginPath();x.arc(30+i*12,0,15+i*2+t*0.01%3,0.2,2);x.stroke()}})}});
+add({id:"f40",title:"40 · Caleidoscopio 5‑pliegues (líneas radiales)",tags:["ka"],cap:"Rayos dentro de cuña.",host:"canvas",init(cv){kaleido(cv,5,(x,w,h,t)=>{x.strokeStyle="#e879f9";for(let i=0;i<30;i++){x.beginPath();x.moveTo(0,0);x.lineTo(40+i*15,(i%3)*20+Math.sin(t*6e-4+i)*15);x.stroke()}})}});
+add({id:"f41",title:"41 · Caleidoscopio 9‑pliegues (puntos)",tags:["ka"],cap:"Partículas en sector.",host:"canvas",init(cv){kaleido(cv,9,(x,w,h,t)=>{x.fillStyle="#67e8f9";for(let i=0;i<60;i++){const a=i*0.7+t*0.002,r=20+(i%7)*8;x.fillRect(Math.cos(a)*r,Math.sin(a)*r,2,2)}})}});
+add({id:"f42",title:"42 · Caleidoscopio 6‑pliegues (espiral)",tags:["ka"],cap:"Diferente del vector #28 (espiral log).",host:"canvas",init(cv){kaleido(cv,6,(x,w,h,t)=>{x.strokeStyle="#fcd34d";x.beginPath();for(let i=0;i<200;i++){const ang=i*0.15+t*0.001,r=2+i*0.35;const px=Math.cos(ang)*r,py=Math.sin(ang)*r;i===0?x.moveTo(px,py):x.lineTo(px,py)}x.stroke()})}});
+add({id:"f43",title:"43 · Caleidoscopio 8‑pliegues (polígono)",tags:["ka"],cap:"Polígono irregular repetido.",host:"canvas",init(cv){kaleido(cv,8,(x,w,h,t)=>{x.fillStyle="rgba(129,140,248,0.35)";x.beginPath();x.moveTo(0,0);for(let k=0;k<6;k++){const a=k+t*0.0005,r=30+k*12;x.lineTo(Math.cos(a)*r,Math.sin(a)*r)}x.closePath();x.fill()})}});
+add({id:"f44",title:"44 · Caleidoscopio 11‑pliegues (ondas)",tags:["ka"],cap:"sin(r−θ).",host:"canvas",init(cv){kaleido(cv,11,(x,w,h,t)=>{x.strokeStyle="#2dd4bf";x.beginPath();for(let r=0;r<180;r++){const th=r*0.08,y=Math.sin(r*0.1-t*4e-4)*12;x.lineTo(r,y)}x.stroke()})}});
+add({id:"f45",title:"45 · Caleidoscopio 4‑pliegues (cuadrado ondulado)",tags:["ka"],cap:"N=4 diedro.",host:"canvas",init(cv){kaleido(cv,4,(x,w,h,t)=>{x.strokeStyle="#fb923c";x.lineWidth=2;for(let e=0;e<5;e++){x.strokeRect(20+e*15,10+e*8,60+e*10,40+Math.sin(t*5e-4)*10)}})}});
+add({id:"f46",title:"46 · Caleidoscopio 13‑pliegues (estrella)",tags:["ka"],cap:"Rayos cruzados.",host:"canvas",init(cv){kaleido(cv,13,(x,w,h,t)=>{x.strokeStyle="rgba(248,250,252,0.4)";for(let i=0;i<13;i++){const a=i/13*Math.PI+t*0.0005;x.beginPath();x.moveTo(0,0);x.lineTo(Math.cos(a)*160,Math.sin(a)*160);x.stroke()}})}});
+add({id:"f47",title:"47 · Caleidoscopio animado (rotación global)",tags:["ka"],cap:"Grupo gira; contenido fijo en cuña.",host:"canvas",init(cv){
+  const x=cv.getContext("2d"),n=5;
+  function draw(t){
+    const{w,h}=resize(cv),cx=w/2,cy=h/2,R=Math.min(w,h)*0.45;
+    x.fillStyle="#020308";x.fillRect(0,0,w,h);x.save();x.translate(cx,cy);x.rotate(t*3e-4);
+    for(let s=0;s<n;s++){
+      x.save();x.rotate((s*Math.PI*2)/n);
+      x.beginPath();x.moveTo(0,0);x.arc(0,0,R,0,Math.PI*2/n);x.closePath();x.clip();
+      x.fillStyle="#a78bfa";for(let i=0;i<15;i++)x.fillRect(20+i*10,10+i*5,8,8);
+      x.restore()
+    }
+    x.restore();requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+add({id:"f48",title:"48 · Caleidoscopio “orbit trap” (banda)",tags:["ka"],cap:"Color según min(|x|,|y|) en iteración Julia mini.",host:"canvas",init(cv){kaleido(cv,6,(x2,w,h,t)=>{
+  for(let py=-80;py<80;py+=3)for(let px=0;px<120;px+=3){
+    let zx=px*0.02,zy=py*0.02,cr=-0.4,ci=0.6,i=0;
+    for(;i<18&&zx*zx+zy*zy<4;i++){const x3=zx*zx-zy*zy+cr;zy=2*zx*zy+ci;zx=x3}
+    const c=`hsl(${i*20},80%,${50+Math.min(Math.abs(zx),Math.abs(zy))*30}%)`;x2.fillStyle=c;x2.fillRect(px,py,3,3)
+  }
+})}});
+add({id:"f50",title:"50 · Composición: Julia central + anillo caleidoscópico",tags:["fr","ka"],cap:"Centro escape + borde simétrico.",host:"canvas",init(cv){
+  const x=cv.getContext("2d");
+  function draw(t){
+    const{w,h}=resize(cv),cx=w/2,cy=h/2,R=Math.min(w,h)*0.35;
+    x.fillStyle="#020308";x.fillRect(0,0,w,h);
+    const img=x.createImageData(w,h),d=img.data,cr=-0.8,ci=0.156;
+    for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+      const dx=px-cx,dy=py-cy;if(dx*dx+dy*dy>R*R){const p=(py*w+px)*4;d[p]=10;d[p+1]=10;d[p+2]=20;d[p+3]=255;continue}
+      let zx=(px-cx)/R*1.4,zy=(py-cy)/R*1.4,i=0;
+      for(;i<48&&zx*zx+zy*zy<4;i++){const x2=zx*zx-zy*zy+cr;zy=2*zx*zy+ci;zx=x2}
+      const p=(py*w+px)*4,v=i*5;d[p]=v;d[p+1]=200-v;d[p+2]=180;d[p+3]=255
+    }
+    x.putImageData(img,0,0);
+    const n=8;
+    for(let s=0;s<n;s++){
+      x.save();x.translate(cx,cy);x.rotate(s*Math.PI*2/n+t*5e-4);
+      x.strokeStyle="rgba(250,204,21,0.35)";x.lineWidth=2;
+      for(let r=40;r<Math.min(w,h)*0.48;r+=12)x.strokeRect(r*0.1,r*0.2,r,r*0.15);
+      x.restore()
+    }
+    requestAnimationFrame(draw)
+  }requestAnimationFrame(draw)
+}});
+
+add({id:"f49",title:"49 · Roseta SVG (6 reflexiones SMIL)",tags:["ka"],cap:"Polilínea en un sector + <use>.",host:"slot",init(slot){
+  const uid=(slot.dataset.demoId||"f49").replace(/[^a-z0-9]/gi,"_");
+  const svg=document.createElementNS(NS,"svg");svg.setAttribute("viewBox","-120 -120 240 240");svg.setAttribute("width","180");svg.setAttribute("height","180");svg.style.display="block";svg.style.margin="12px auto";
+  const defs=document.createElementNS(NS,"defs");
+  const g=document.createElementNS(NS,"g");g.setAttribute("id","rose_"+uid);
+  const p=document.createElementNS(NS,"path");p.setAttribute("fill","rgba(56,189,248,0.45)");p.setAttribute("stroke","#e0f2fe");
+  const an=document.createElementNS(NS,"animate");an.setAttribute("attributeName","d");an.setAttribute("dur","10s");an.setAttribute("repeatCount","indefinite");
+  an.setAttribute("values","M0-80 Q40-20 80 0 Q40 20 0 80 Q-40 20 -80 0 Q-40 -20 0-80;M0-85 Q50-30 85 5 Q45 35 0 90 Q-45 35 -85 5 Q-50 -30 0-85;M0-80 Q40-20 80 0 Q40 20 0 80 Q-40 20 -80 0 Q-40 -20 0-80");
+  p.appendChild(an);g.appendChild(p);defs.appendChild(g);svg.appendChild(defs);
+  for(let i=0;i<6;i++){const u=document.createElementNS(NS,"use");u.setAttribute("href","#rose_"+uid);u.setAttribute("transform","rotate("+i*60+")");svg.appendChild(u)}
+  slot.appendChild(svg)
+}});
+
+demos.sort((a,b)=>a.id.localeCompare(b.id,"en"));
+const nav=document.getElementById("nav-f"),main=document.getElementById("main-f");
+demos.forEach((d,i)=>{
+  nav.appendChild(el("a",{href:"#"+d.id,textContent:"#"+(i+1)}));
+});
+demos.forEach(d=>{
+  const sec=el("section",{id:d.id});
+  sec.appendChild(el("h2",{},[document.createTextNode(d.title),...d.tags.map(t=>el("span",{className:"tag "+({fr:"fr",lv:"lv",ro:"ro",ka:"ka"}[t]||"fr"),textContent:t}))]));
+  sec.appendChild(el("div",{className:"cap",textContent:d.cap}));
+  const slot=el("div",{className:"slot"+(d.tall?" t":"")});slot.dataset.demoId=d.id;sec.appendChild(slot);main.appendChild(sec);
+  try{
+    if(d.host==="slot")d.init(slot);
+    else{const cv=el("canvas",{style:"display:block;width:100%;height:158px"});cv.dataset.demoId=d.id;slot.appendChild(cv);d.init(cv)}
+  }catch(e){slot.textContent="Error: "+e}
+});
+})();
+</script>
+</body>
+</html>
