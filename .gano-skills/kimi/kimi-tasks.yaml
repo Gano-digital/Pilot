@@ -1,0 +1,246 @@
+# Kimi Task Templates for Gano Digital
+# These templates define autonomous tasks Kimi can execute
+
+tasks:
+  - name: analyze_code
+    description: "Analyze codebase for quality issues, complexity, and performance problems"
+    category: "analysis"
+    enabled: true
+    timeout: 300
+    prompt: |
+      Analyze the Gano Digital codebase for:
+      1. Code quality issues (complexity, maintainability)
+      2. Performance bottlenecks in CSS and JavaScript
+      3. Security vulnerabilities
+      4. Dead code or unused imports
+
+      Focus on:
+      - wp-content/themes/gano-digital/
+      - wp-content/plugins/gano-reseller-integration/
+
+      Generate a report with findings and recommendations.
+
+  - name: run_tests
+    description: "Execute E2E tests and verify test coverage"
+    category: "testing"
+    enabled: true
+    timeout: 600
+    prompt: |
+      Execute the E2E test suite for Gano Digital:
+      1. Check test files exist in tests/ directory
+      2. Run all tests with detailed output
+      3. Generate coverage report
+      4. Log failures and success rates
+
+      Expected: All tests should pass with >90% coverage.
+      Report: Test summary, pass/fail counts, coverage metrics.
+
+  - name: verify_deployment
+    description: "Verify production deployment status on remote server"
+    category: "deployment"
+    enabled: true
+    timeout: 120
+    prompt: |
+      Verify the Gano Digital deployment on production server:
+      1. SSH into f1rml03th382@72.167.102.145
+      2. Check if WordPress is running
+      3. Verify file permissions (644 for files, 755 for dirs)
+      4. Check PHP logs for errors
+      5. Verify reseller API integration is active
+
+      Report: Deployment status, any errors, recommendations.
+
+  - name: document_findings
+    description: "Generate documentation for recent changes and findings"
+    category: "documentation"
+    enabled: true
+    timeout: 180
+    prompt: |
+      Document recent changes and findings:
+      1. Review git log for recent commits (last 10)
+      2. Extract change summaries
+      3. Document design system changes
+      4. Note any breaking changes
+      5. Create summary in wiki/dev-sessions/
+
+      Output: Markdown document with organized findings.
+
+  - name: optimize_css
+    description: "Optimize CSS for performance and file size"
+    category: "optimization"
+    enabled: true
+    timeout: 240
+    prompt: |
+      Optimize CSS in Gano Digital theme:
+      1. Analyze wp-content/themes/gano-digital/*.css files
+      2. Identify unused selectors and rules
+      3. Check for duplicate declarations
+      4. Suggest improvements for media queries
+      5. Verify critical CSS is inlined
+
+      Generate report with:
+      - Current file sizes
+      - Estimated savings from optimization
+      - Specific recommendations
+      - Before/after comparison
+
+  - name: check_accessibility
+    description: "Audit design system for WCAG 2.1 AA accessibility compliance"
+    category: "accessibility"
+    enabled: true
+    timeout: 300
+    prompt: |
+      Audit Gano Digital for WCAG 2.1 AA accessibility compliance:
+      1. Review color contrast ratios (target: 4.5:1 normal, 3:1 large)
+      2. Check for keyboard navigation support
+      3. Verify semantic HTML usage
+      4. Test focus indicators visibility
+      5. Verify ARIA labels where needed
+      6. Check for motion/animation issues (prefers-reduced-motion)
+
+      Report: Compliance status, issues found, recommendations.
+
+  - name: sync_memory
+    description: "Synchronize development memory with Claude Code"
+    category: "coordination"
+    enabled: true
+    timeout: 60
+    prompt: |
+      Synchronize Kimi's development memory:
+      1. Check memory files in ~/.claude/projects/C--Users-diego/memory/
+      2. Update kimi-context.md with latest findings
+      3. Log task completion status
+      4. Note any blockers or escalations
+      5. Prepare summary for Claude Code
+
+      Sync points: Task completion, errors, performance metrics.
+
+  - name: monitor_tasks
+    description: "Monitor ongoing task progress and report status"
+    category: "coordination"
+    enabled: true
+    timeout: 120
+    prompt: |
+      Monitor task progress for Phase 4:
+      1. Check status of Tasks 5-9
+      2. Monitor blockers and dependencies
+      3. Track token usage and performance
+      4. Alert on failures or long-running tasks
+      5. Update progress in memory
+
+      Report: Current status, completed tasks, in-progress, blocked.
+
+  - name: verify_file_changes
+    description: "Verify and log file changes from Claude Code"
+    category: "monitoring"
+    enabled: true
+    timeout: 30
+    prompt: |
+      Verify file changes made by Claude Code:
+      1. Get current git status
+      2. List changed files
+      3. Verify file integrity
+      4. Check for unintended changes
+      5. Log changes for audit trail
+
+      Report: File change summary, integrity check results.
+
+  - name: lint_php
+    description: "Lint PHP files for syntax and common errors"
+    category: "quality"
+    enabled: true
+    timeout: 120
+    prompt: |
+      Lint PHP files in Gano Digital:
+      1. Check wp-content/plugins/gano-reseller-integration/*.php
+      2. Run PHP syntax checker
+      3. Look for common PHP issues
+      4. Verify WordPress coding standards
+
+      Report: Lint results, issues found, fix suggestions.
+
+  - name: validate_css_design_system
+    description: "Validate CSS against design system standards"
+    category: "quality"
+    enabled: true
+    timeout: 150
+    prompt: |
+      Validate CSS against design system:
+      1. Check color usage (primary, secondary, accent, neutral)
+      2. Verify typography (Inter, Fira Code, sizes)
+      3. Validate motion (fade, slide, prefers-reduced-motion)
+      4. Ensure spacing follows grid system
+      5. Check responsive breakpoints
+
+      Report: Compliance status, deviations, recommendations.
+
+  - name: generate_lighthouse_report
+    description: "Generate Lighthouse performance report"
+    category: "performance"
+    enabled: true
+    timeout: 300
+    prompt: |
+      Generate Lighthouse performance report:
+      1. Target: localhost or production URL
+      2. Measure performance, accessibility, best practices, SEO
+      3. Target metrics:
+         - Performance: > 85
+         - Accessibility: > 95
+         - Best Practices: > 90
+         - SEO: > 90
+      4. Identify opportunities for improvement
+
+      Report: Lighthouse scores, metrics, recommendations.
+
+task_groups:
+  code_quality:
+    tasks:
+      - analyze_code
+      - lint_php
+      - validate_css_design_system
+    description: "Code quality and standards verification"
+
+  testing_validation:
+    tasks:
+      - run_tests
+      - check_accessibility
+      - generate_lighthouse_report
+    description: "Testing and quality validation"
+
+  deployment_monitoring:
+    tasks:
+      - verify_deployment
+      - verify_file_changes
+      - monitor_tasks
+    description: "Deployment and monitoring tasks"
+
+  optimization_docs:
+    tasks:
+      - optimize_css
+      - document_findings
+      - sync_memory
+    description: "Optimization and documentation"
+
+schedules:
+  - name: "hourly_monitoring"
+    tasks:
+      - verify_file_changes
+      - monitor_tasks
+    frequency: "0 * * * *"  # Every hour
+    enabled: false
+
+  - name: "daily_analysis"
+    tasks:
+      - analyze_code
+      - check_accessibility
+      - generate_lighthouse_report
+    frequency: "0 9 * * *"  # Daily at 9 AM
+    enabled: false
+
+  - name: "weekly_optimization"
+    tasks:
+      - optimize_css
+      - validate_css_design_system
+      - document_findings
+    frequency: "0 9 * * 1"  # Weekly Monday at 9 AM
+    enabled: false
