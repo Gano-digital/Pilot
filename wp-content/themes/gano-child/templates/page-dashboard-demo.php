@@ -8,6 +8,11 @@
  * @since 1.2.0
  */
 
+if ( ! current_user_can( 'manage_options' ) ) {
+	wp_safe_redirect( home_url( '/' ) );
+	exit;
+}
+
 get_header();
 ?>
 

@@ -1,5 +1,30 @@
 # Progress Tracker
 
+## 2026-04-25 — Sprint 1: Tokens + Texturas + Cleanup (Kimi Code CLI)
+
+### Completado
+
+- [x] **Plan maestro aprobado:** `C:\Users\diego\.kimi\plans\domino-nova-falcon.md` — refactor integral SOTA 2026 por sprints (Fases 1–7).
+- [x] **Exploración codebase:** 3 agentes explore en paralelo → estructura tema (33 CSS, 21 JS, 20 templates), catálogo reseller (35 productos, PFIDs pendientes), páginas/contenido (flujo comercial, login, shortcodes).
+- [x] **Tokens unificados:** `css/gano-tokens-unified.css` — paleta SOTA completa, tokens de textura/neon/glow, utilidades CSS, reduced-motion.
+- [x] **Texturas procedurales:** `css/gano-textures.css` — ruido SVG inline, scanlines CSS, grid HUD, vignette. Sin CDNs.
+- [x] **Cleanup:**
+  - Encolado tokens + texturas en `functions.php` (globales).
+  - `page-dashboard-demo.php` protegida para admins únicamente.
+  - `front-page-draft.php` + `homepage-2026-preview.html` movidos a `archive/`.
+
+### Pendiente (Cursor continúa Sprint 1)
+
+- [ ] **F2.1:** Reorganizar navegación UX en `front-page.php`.
+- [ ] **F2.2:** Scroll-spy + hide-on-scroll en `js/gano-nav.js`.
+- [ ] **F2.3:** Mobile menu mejorado.
+- [ ] **F3.1:** Logo holograma neon/poltergeist (`js/gano-hero-logo.js`).
+- [ ] **F3.2:** Expandir `js/scroll-reveal.js` para landing.
+- [ ] **F3.3:** Enriquecer partículas hero.
+- [ ] Deploy Sprint 1 a producción (SCP manual; SSH directo no responde desde entorno Kimi).
+
+---
+
 ## 2026-04-24 — Fix funnel + Showcase futurista
 
 ### Completado

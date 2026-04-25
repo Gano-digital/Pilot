@@ -1,6 +1,42 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-24._
+_Última actualización: 2026-04-25 (sesión Kimi Code CLI)._
+
+## Snapshot 2026-04-25 — Sprint 1 iniciado (Tokens + Texturas + Cleanup + Plan)
+
+**Agente:** Kimi Code CLI (sesión actual). **Próximo agente:** Cursor (continuación solicitada).
+
+### Plan maestro aprobado
+Plan completo en `C:\Users\diego\.kimi\plans\domino-nova-falcon.md` — refactor integral SOTA 2026 por sprints:
+- **Sprint 1 (en curso):** Fases 1–3 — Tokens unificados, texturas, cleanup, navegación UX, hero holograma neon/poltergeist, scroll animations.
+- **Sprint 2 (pendiente):** Fases 4–5 — Catálogo enriquecido, íconos de branding, CTAs con estados (activo/pendiente/ventas), documentación plugin.
+- **Sprint 3 (pendiente):** Fase 6 — Login custom estilizado, profesionalización de páginas restantes.
+
+### Completado en esta sesión (Kimi)
+- [x] **Tokens unificados:** `css/gano-tokens-unified.css` — paleta SOTA completa (lavanda `#c0c1ff`, cian `#4cd7f6`, índigo `#8083ff`), tokens de textura, tokens de neon/glow, utilidades `.gano-glow-*`, reduced-motion.
+- [x] **Texturas procedurales:** `css/gano-textures.css` — ruido SVG inline, scanlines CSS, grid de perspectiva HUD, vignette radial. Sin dependencias externas.
+- [x] **Cleanup:**
+  - `functions.php` — encolado `gano-tokens-unified.css` y `gano-textures.css` en todas las páginas.
+  - `templates/page-dashboard-demo.php` — protegida con `current_user_can('manage_options')` → redirect home.
+  - `front-page-draft.php` y `templates/homepage-2026-preview.html` — movidos a `archive/` (legacy no deployable).
+- [x] **Exploración completa del codebase** — 3 agentes explore en paralelo: estructura tema, catálogo reseller, páginas/contenido. Hallazgos críticos documentados en plan.
+
+### Pendiente inmediato (Cursor debe continuar)
+1. **F2.1:** Reorganizar navegación UX en `front-page.php` (prioridad: Productos → Precios → Servicios → Showcase → Nosotros → Contacto).
+2. **F2.2:** Ampliar `js/gano-nav.js` con scroll-spy + hide-on-scroll-down + glassmorphism en scroll.
+3. **F2.3:** Mobile menu mejorado (animación slide/fade, blur, CTA prominente).
+4. **F3.1:** Crear `js/gano-hero-logo.js` — logo "GANO" como holograma neon/poltergeist en Canvas 2D (flicker aleatorio, desplazamiento elástico, partículas de polvo, fallback SVG/CSS).
+5. **F3.2:** Ampliar `js/scroll-reveal.js` para observar `.gano-landing-sota`, añadir clases `.gs-reveal-up/left/right/scale/rotate`, stagger automático, parallax sutil.
+6. **F3.3:** Enriquecer partículas hero en `landing-sota-v2.js` — conexiones de proximidad, mouse repulsion, densidad desktop.
+7. **Deploy:** SCP manual (SSH directo no responde desde este entorno; usar `cmd /c scp` como en deploys previos).
+
+### Bloqueantes operacionales (sin cambio desde 2026-04-24)
+- PLID `599667` no verificado en RCC.
+- 8 PFIDs en `PENDING_RCC` — CTAs devuelven `'#'`.
+- Bundle IDs son ejemplos (`301`, `320`, etc.).
+- **Estrategia implementada:** sistema de 3 estados visuales para CTAs (ACTIVO/PENDIENTE/VENTAS) con fallback a `/contacto/` cuando no hay PFID.
+
+---
 
 ## Snapshot 2026-04-24 (fix funnel diagnóstico + showcase futurista)
 

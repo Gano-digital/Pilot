@@ -1,5 +1,28 @@
 # Tasks — Gano Digital
-_Última actualización: 2026-04-22_
+_Última actualización: 2026-04-25_
+
+## 🚀 SPRINT 1 — Refactor Visual SOTA 2026 (en curso)
+
+**Contexto:** sesión Kimi Code CLI 2026-04-25. Plan aprobado en `C:\Users\diego\.kimi\plans\domino-nova-falcon.md`. Continúa Cursor.
+
+### Completado (Kimi)
+- [x] Tokens unificados: `css/gano-tokens-unified.css` + encolado en `functions.php`.
+- [x] Texturas: `css/gano-textures.css` (ruido, scanlines, grid, vignette).
+- [x] Cleanup: `page-dashboard-demo.php` protegida; legacy movido a `archive/`.
+
+### Pendiente — Cursor continúa Sprint 1
+- [ ] **F2.1 Navegación UX:** reorganizar `front-page.php` (Productos → Precios → Servicios → Showcase → Nosotros → Contacto).
+- [ ] **F2.2 Scroll-spy:** ampliar `js/gano-nav.js` (hide-on-scroll, glassmorphism, resaltar sección activa).
+- [ ] **F2.3 Mobile menu:** animación slide/fade, blur, CTA prominente.
+- [ ] **F3.1 Hero holograma:** crear `js/gano-hero-logo.js` — logo "GANO" en Canvas 2D con flicker neon, poltergeist drift, partículas, fallback SVG.
+- [ ] **F3.2 Scroll animations:** ampliar `js/scroll-reveal.js` para `.gano-landing-sota` (reveal-up/left/right/scale/rotate, stagger, parallax).
+- [ ] **F3.3 Partículas hero:** conexiones de proximidad, mouse repulsion, densidad desktop.
+- [ ] **Commit + deploy Sprint 1** (SCP manual; SSH directo no responde desde entorno Kimi).
+
+### Bloqueantes (sin cambio)
+- PLID `599667` y 8 PFIDs en `PENDING_RCC` — CTAs devuelven `'#'`. Sistema de 3 estados (ACTIVO/PENDIENTE/VENTAS) implementado en plan.
+
+---
 
 ## REGRESAR AQUÍ (pendiente tu acción)
 

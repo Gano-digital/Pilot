@@ -383,6 +383,12 @@ function gano_child_enqueue_styles() {
     wp_enqueue_style( 'royal-elementor-kit-parent', get_template_directory_uri() . '/style.css' );
     wp_enqueue_style( 'gano-child-style', get_stylesheet_uri(), array( 'royal-elementor-kit-parent' ), wp_get_theme()->get( 'Version' ) );
 
+    // Tokens SOTA unificados — disponibles en todo el sitio
+    wp_enqueue_style( 'gano-tokens-unified', get_stylesheet_directory_uri() . '/css/gano-tokens-unified.css', array( 'gano-child-style' ), '1.0.0' );
+
+    // Texturas procedurales SOTA
+    wp_enqueue_style( 'gano-textures', get_stylesheet_directory_uri() . '/css/gano-textures.css', array( 'gano-tokens-unified' ), '1.0.0' );
+
     // Homepage SOTA — solo en front page
     /* -------------------------------------------------------------------------
        Landing SOTA v2 — reemplazo completo de front-page.php

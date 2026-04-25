@@ -1,0 +1,116 @@
+/**
+ * Gano Digital — Tokens Unificados SOTA 2026
+ * ==========================================
+ * Capa de design tokens que extiende design-tokens.css y style.css
+ * con la paleta SOTA completa (lavanda, cian, índigo) para uso
+ * cross-page: landing, showcase, catálogo, login, y páginas legales.
+ *
+ * No sobrescribe tokens base para mantener compatibilidad.
+ * Todos los tokens nuevos usan prefijo --gano-sota-* o --gano-tex-*.
+ *
+ * @version 1.0.0
+ * @package gano-child
+ */
+
+/* ==========================================================================
+   SOTA COLOR TOKENS — Neon / Holograma / Dark
+   ========================================================================== */
+
+:root {
+  /* Neon primarios */
+  --gano-sota-primary:   #c0c1ff; /* lavanda */
+  --gano-sota-secondary: #4cd7f6; /* cian */
+  --gano-sota-accent:    #8083ff; /* índigo */
+
+  /* Superficies dark */
+  --gano-sota-surface:     #0b1326;
+  --gano-sota-surface-2:   #111a2e;
+  --gano-sota-surface-3:   #172240;
+  --gano-sota-deep:        #05080c;
+
+  /* Texto sobre dark */
+  --gano-sota-text:        #e2e8f0;
+  --gano-sota-text-dim:    #94a3b8;
+  --gano-sota-text-muted:  #64748b;
+
+  /* Glow / sombras de neon */
+  --gano-sota-glow-primary:   rgba(192, 193, 255, 0.35);
+  --gano-sota-glow-secondary: rgba(76, 215, 246, 0.30);
+  --gano-sota-glow-accent:    rgba(128, 131, 255, 0.40);
+  --gano-sota-shadow-neon:    0 0 20px rgba(128, 131, 255, 0.25),
+                               0 0 60px rgba(128, 131, 255, 0.10);
+
+  /* Tokens de textura (referencias, valores en gano-textures.css) */
+  --gano-tex-noise-opacity:   0.04;
+  --gano-tex-scanline-opacity: 0.03;
+  --gano-tex-grid-opacity:    0.06;
+  --gano-tex-vignette:        radial-gradient(ellipse at center,
+                               transparent 0%,
+                               rgba(5, 8, 12, 0.6) 100%);
+
+  /* Tokens de neon flicker */
+  --gano-neon-lavanda:   #c0c1ff;
+  --gano-neon-cian:      #4cd7f6;
+  --gano-neon-flicker:   #ffffff;
+  --gano-neon-off:       #3a3d5c;
+
+  /* Motion SOTA (más dramático que tokens base) */
+  --gano-sota-motion-fast:    120ms;
+  --gano-sota-motion-normal:  280ms;
+  --gano-sota-motion-slow:    600ms;
+  --gano-sota-ease-out:       cubic-bezier(0.22, 1, 0.36, 1);
+  --gano-sota-ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+  --gano-sota-ease-ghost:     cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ==========================================================================
+   SEMÁNTICOS CROSS-PAGE
+   ========================================================================== */
+
+.gano-sota-theme,
+[data-sota-theme="dark"] {
+  --gano-bg:            var(--gano-sota-deep);
+  --gano-bg-secondary:  var(--gano-sota-surface);
+  --gano-text:          var(--gano-sota-text);
+  --gano-text-secondary: var(--gano-sota-text-dim);
+  --gano-surface:       var(--gano-sota-surface-2);
+  --gano-border:        var(--gano-sota-surface-3);
+  --gano-color-accent:  var(--gano-sota-primary);
+}
+
+/* ==========================================================================
+   UTILIDADES DE NEON / GLOW
+   ========================================================================== */
+
+.gano-glow-text {
+  text-shadow:
+    0 0 4px  var(--gano-sota-glow-primary),
+    0 0 12px var(--gano-sota-glow-accent),
+    0 0 24px var(--gano-sota-glow-primary);
+}
+
+.gano-glow-box {
+  box-shadow:
+    0 0 12px var(--gano-sota-glow-accent),
+    0 0 32px var(--gano-sota-glow-primary),
+    inset 0 0 12px rgba(192, 193, 255, 0.05);
+}
+
+.gano-glow-border {
+  border-color: var(--gano-sota-primary);
+  box-shadow:
+    0 0 8px  var(--gano-sota-glow-primary),
+    inset 0 0 8px var(--gano-sota-glow-primary);
+}
+
+/* ==========================================================================
+   REDUCED MOTION — respeta preferencias del usuario
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --gano-sota-motion-fast:   0ms;
+    --gano-sota-motion-normal: 0ms;
+    --gano-sota-motion-slow:   0ms;
+  }
+}
