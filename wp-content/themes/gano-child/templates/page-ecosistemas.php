@@ -263,12 +263,57 @@ get_header();
     </div>
   </section>
 
+  <!-- ── SEÑALES DE CONFIANZA ───────────────────────────────────── -->
+  <section class="gano-ecosistemas-trust-signals" style="padding: 40px 5%; background: rgba(255,107,53,0.08); border-bottom: 1px solid rgba(255,107,53,0.2);">
+    <div class="gano-container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px;">
+
+        <!-- Signal 1: GoDaddy Reseller -->
+        <div style="display: flex; align-items: center; gap: 15px;">
+          <div style="font-size: 2.5rem;">🛡️</div>
+          <div>
+            <h4 style="margin: 0 0 5px 0; font-weight: 600;">Infraestructura GoDaddy</h4>
+            <p style="margin: 0; font-size: 0.95rem; color: #64748b;">Programa reseller autorizado · Estándares globales de datacenter</p>
+          </div>
+        </div>
+
+        <!-- Signal 2: Uptime Guarantee -->
+        <div style="display: flex; align-items: center; gap: 15px;">
+          <div style="font-size: 2.5rem;">📊</div>
+          <div>
+            <h4 style="margin: 0 0 5px 0; font-weight: 600;">99.9% Disponibilidad</h4>
+            <p style="margin: 0; font-size: 0.95rem; color: #64748b;">SLA comprometido · Monitoreo proactivo incluido</p>
+          </div>
+        </div>
+
+        <!-- Signal 3: COP Billing -->
+        <div style="display: flex; align-items: center; gap: 15px;">
+          <div style="font-size: 2.5rem;">💵</div>
+          <div>
+            <h4 style="margin: 0 0 5px 0; font-weight: 600;">Facturación en COP</h4>
+            <p style="margin: 0; font-size: 0.95rem; color: #64748b;">Pesos colombianos · Sin sorpresas de tipo de cambio</p>
+          </div>
+        </div>
+
+        <!-- Signal 4: Support Response -->
+        <div style="display: flex; align-items: center; gap: 15px;">
+          <div style="font-size: 2.5rem;">⚡</div>
+          <div>
+            <h4 style="margin: 0 0 5px 0; font-weight: 600;">Soporte Priorizado</h4>
+            <p style="margin: 0; font-size: 0.95rem; color: #64748b;">Primera respuesta en 8 horas · En tu idioma</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ── COMPARACIÓN RÁPIDA ──────────────────────────────────────── -->
   <section class="gano-ecosistemas-tabla">
     <div class="gano-container">
       <h2>Comparación rápida</h2>
       <div class="gano-table-scroll">
-        <table>
+        <table class="gano-ecosistemas-comparison">
           <thead>
             <tr>
               <th scope="col">Característica</th>
@@ -279,11 +324,15 @@ get_header();
             </tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Almacenamiento</th><td>NVMe (base)</td><td>NVMe (medio)</td><td>NVMe (alto)</td><td>NVMe (máximo)</td></tr>
-            <tr><th scope="row">Hardening WP</th><td>Básico</td><td>Activo</td><td>Avanzado</td><td>Avanzado</td></tr>
-            <tr><th scope="row">Soporte español</th><td>Ticket</td><td>Priorizado</td><td>Dedicado</td><td>Prioritario</td></tr>
-            <tr><th scope="row">Agente IA</th><td>—</td><td>—</td><td>✓</td><td>✓</td></tr>
-            <tr><th scope="row">SLA uptime</th><td>Estándar</td><td>Estándar</td><td>≥ 99,9%</td><td>≥ 99,9%</td></tr>
+            <tr><th scope="row">Almacenamiento NVMe</th><td>20 GB</td><td>40 GB</td><td>75 GB</td><td>100 GB</td></tr>
+            <tr><th scope="row">Recursos de cómputo</th><td>Base</td><td>Doble</td><td>Dedicados</td><td>Máximos</td></tr>
+            <tr><th scope="row">Hardening WordPress</th><td>Básico</td><td>Activo</td><td>Avanzado</td><td>Avanzado</td></tr>
+            <tr><th scope="row">Soporte en español</th><td>Ticket &lt; 8h</td><td>Priorizado &lt; 4h</td><td>Dedicado 24/7 &lt; 2h</td><td>Prioritario &lt; 1h</td></tr>
+            <tr><th scope="row">Agente IA de administración</th><td>—</td><td>—</td><td>✓ Incluido</td><td>✓ Incluido</td></tr>
+            <tr><th scope="row">SLA de disponibilidad</th><td>Estándar</td><td>Estándar</td><td>≥ 99,9%</td><td>≥ 99,9%</td></tr>
+            <tr><th scope="row">Backups automáticos</th><td>Diarios · 30 días</td><td>Diarios + on-demand · 30 días</td><td>Diarios + on-demand · 60 días</td><td>Continuos + DR · 90 días</td></tr>
+            <tr><th scope="row">Monitoreo y alertas</th><td>—</td><td>✓ Uptime</td><td>✓ Proactivo</td><td>✓ Escalado automático</td></tr>
+            <tr><th scope="row">CDN incluido</th><td>✓ Global</td><td>✓ Global</td><td>✓ Global</td><td>✓ Global</td></tr>
             <tr><th scope="row">Facturación</th><td>COP</td><td>COP</td><td>COP</td><td>COP</td></tr>
           </tbody>
         </table>
