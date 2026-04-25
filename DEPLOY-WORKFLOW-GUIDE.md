@@ -1,5 +1,6 @@
 # DEPLOY WORKFLOW — Gano Digital Frontend SOTA
-**Status:** 2026-04-18 | **Branch:** main (commit b426edb1)
+**Status:** 2026-04-24 | **Branch:** main (commit eb6d5f62)  
+**Last Deploy:** 2026-04-24 Security Hardening via SSH (see `deploys/2026-04-24-security-hardening.md`)
 
 ---
 
@@ -370,7 +371,8 @@ EOF
 | 2026-04-18 | All sprints implemented | Claude | ✅ |
 | 2026-04-18 | SSH + PAT configured | Diego/Claude | ⏳ |
 | 2026-04-19 | Deploy to staging | Diego | 📅 |
-| 2026-04-20 | Production deploy | Diego | 📅 |
+| 2026-04-20 | Production deploy | Diego | ✅ |
+| 2026-04-24 | Security hardening deploy (PR #294) | Kimi Code CLI | ✅ |
 | 2026-04-21 | First lead capture (target) | - | 📅 |
 | 2026-05-18 | First sale (north star) | - | 🎯 |
 
