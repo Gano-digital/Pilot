@@ -21,6 +21,15 @@ Plan completo en `C:\Users\diego\.kimi\plans\domino-nova-falcon.md` — refactor
   - `front-page-draft.php` y `templates/homepage-2026-preview.html` — movidos a `archive/` (legacy no deployable).
 - [x] **Exploración completa del codebase** — 3 agentes explore en paralelo: estructura tema, catálogo reseller, páginas/contenido. Hallazgos críticos documentados en plan.
 
+### Integración Kimi ↔ Cursor (nueva)
+- **Skill creada:** `.cursor/skills/kimi-cursor-bridge/SKILL.md` — documenta 3 modos de usar Kimi dentro de Cursor:
+  1. **Modelo alternativo** via OpenRouter (`moonshotai/kimi-k2.5`, 256K contexto)
+  2. **Delegación por prompts** — prompts estandarizados Cursor→Kimi y Kimi→Cursor
+  3. **Sincronización de contexto** — archivos compartidos como fuente de verdad
+- **Referencia rápida:** `.cursor/skills/kimi-cursor-bridge/reference.md` — modelos, atajos, prompts de 1 línea, flags de seguridad
+- **Setup requerido por usuario:** crear cuenta en OpenRouter, obtener API key, añadir modelo en Cursor Settings (`Ctrl+,` → Models → `moonshotai/kimi-k2.5`)
+- **Permisos definidos:** Cursor edita `.cursor/memory/`, Kimi edita `.kimi/plans/`, ambos leen `TASKS.md` y `memory/sessions/`. Ningún agente hace push sin aprobación humana.
+
 ### Pendiente inmediato (Cursor debe continuar)
 1. **F2.1:** Reorganizar navegación UX en `front-page.php` (prioridad: Productos → Precios → Servicios → Showcase → Nosotros → Contacto).
 2. **F2.2:** Ampliar `js/gano-nav.js` con scroll-spy + hide-on-scroll-down + glassmorphism en scroll.
