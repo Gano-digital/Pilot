@@ -369,6 +369,19 @@
     margin-top: 0.75rem;
 }
 
+/* ── Objeción card headings ───────────────────────────────────── */
+.gano-objecion-card-precio h3 {
+    color: #FF6B35;
+}
+
+.gano-objecion-card-confianza h3 {
+    color: #1B4FD8;
+}
+
+.gano-objecion-card-soporte h3 {
+    color: #00C26B;
+}
+
 /* ── Reseller Checkout Section ────────────────────────────────── */
 .gano-reseller-checkout-section {
     padding: 60px 5%;

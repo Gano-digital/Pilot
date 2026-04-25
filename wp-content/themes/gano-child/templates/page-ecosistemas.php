@@ -348,8 +348,8 @@ get_header();
       <div class="gano-objeciones-grid">
 
         <!-- Objeción 1: Precio -->
-        <article class="gano-objecion-card">
-          <h3 style="color: #FF6B35;">💰 "Es caro para lo que necesito"</h3>
+        <article class="gano-objecion-card gano-objecion-card-precio">
+          <h3>💰 "Es caro para lo que necesito"</h3>
           <div class="gano-objecion-card-content">
             <p><strong>Núcleo Prime:</strong> NVMe real (no HDD) + soporte en español = más que un hosting compartido genérico al mismo precio.</p>
             <p><strong>Fortaleza Delta:</strong> Hardening activo + más recursos + visibilidad = no pagas dos veces el mismo servicio.</p>
@@ -358,8 +358,8 @@ get_header();
         </article>
 
         <!-- Objeción 2: Confianza -->
-        <article class="gano-objecion-card">
-          <h3 style="color: #1B4FD8;">🤝 "¿Quién es Gano Digital?"</h3>
+        <article class="gano-objecion-card gano-objecion-card-confianza">
+          <h3>🤝 "¿Quién es Gano Digital?"</h3>
           <div class="gano-objecion-card-content">
             <p><strong>La infraestructura:</strong> GoDaddy Managed WordPress — años de trayectoria, datacenter con estándares globales.</p>
             <p><strong>Lo que sumamos:</strong> Configuración experta, hardening que el reseller no hace por omisión, soporte en tu idioma y contexto local.</p>
@@ -368,8 +368,8 @@ get_header();
         </article>
 
         <!-- Objeción 3: Soporte -->
-        <article class="gano-objecion-card">
-          <h3 style="color: #00C26B;">📞 "¿Recibiré soporte real?"</h3>
+        <article class="gano-objecion-card gano-objecion-card-soporte">
+          <h3>📞 "¿Recibiré soporte real?"</h3>
           <div class="gano-objecion-card-content">
             <p><strong>Núcleo Prime:</strong> Ticket en español con contexto de tu instalación — no un bot genérico.</p>
             <p><strong>Fortaleza Delta:</strong> Canal priorizado para clientes Fortaleza (respuesta dentro de horario hábil).</p>
