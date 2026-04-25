@@ -33,6 +33,11 @@ function gano_activate_sota_production() {
     Gano_Agent_Logger::log( "SOTA Final Activator: $count pages published and assigned to V2 template.", 'INFO' );
 }
 
+// URL: /wp-admin/?gano_sota_release_1=1&_wpnonce=<nonce>
+// Generate nonce: wp_create_nonce('gano_sota_release_action')
 if (isset($_GET['gano_sota_release_1'])) {
+    if (!current_user_can('manage_options') || !wp_verify_nonce($_GET['_wpnonce'] ?? '', 'gano_sota_release_action')) {
+        wp_die('Acceso denegado. Se requiere nonce válido y capacidad de administrador.', '403');
+    }
     add_action('admin_init', 'gano_activate_sota_production');
 }

@@ -110,8 +110,13 @@ function gano_enrich_reseller_catalog() {
     }
 }
 
-// Trigger enrichment via URL: /wp-admin/?gano_enrich_reseller=1
+// Trigger enrichment via URL: /wp-admin/?gano_enrich_reseller=1&_wpnonce=<nonce>
+// Generate nonce: wp_create_nonce('gano_enrich_reseller_action')
 if (isset($_GET['gano_enrich_reseller']) && is_admin()) {
+    if (!current_user_can('manage_options') || !wp_verify_nonce($_GET['_wpnonce'] ?? '', 'gano_enrich_reseller_action')) {
+        wp_die('Acceso denegado. Se requiere nonce válido y capacidad de administrador.', '403');
+    }
+
     // ─── 2. GLOBALLY ALIGN PRICES (3rd-Year Structure) ───
     if (isset($_GET['gano_align_prices'])) {
         $args = array(
