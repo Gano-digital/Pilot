@@ -107,7 +107,7 @@ get_header(); ?>
 
         <div class="gano-contacto__item">
           <strong>Horario de atención</strong>
-          <span>Soporte por ticket disponible 24/7</span>
+          <span>Soporte por ticket disponible 24/7 — tiempo de primera respuesta: hasta 8 horas hábiles</span>
         </div>
 
         <hr class="gano-contacto__divider">
