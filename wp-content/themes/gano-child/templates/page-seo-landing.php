@@ -255,7 +255,7 @@ get_header();
             <h2>¿Por qué elegir hosting WordPress en Colombia con Gano Digital?</h2>
             <ul class="gano-trust-list">
                 <li><strong>Facturación en COP</strong> — Sin conversiones de divisas ni cargos internacionales.</li>
-                <li><strong>Soporte en español 24/7</strong> — Agentes en Colombia, no bots ni formularios.</li>
+                <li><strong>Soporte por ticket 24/7</strong> — Primera respuesta hasta 8 horas hábiles, agentes en Colombia, no bots ni formularios.</li>
                 <li><strong>Seguridad empresarial</strong> — WAF, Wordfence, MU Plugin hardening, 2FA y backups diarios.</li>
                 <li><strong>Checkout validado en Reseller Store</strong> — Flujo comercial conectado al programa de GoDaddy Reseller.</li>
                 <li><strong>Migraciones incluidas</strong> — Traemos tu sitio sin tiempo de inactividad.</li>
