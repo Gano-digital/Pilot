@@ -36,8 +36,6 @@ $fecha_actualizacion = '2026-04-06';
       <section aria-labelledby="sla-disponibilidad">
         <h2 id="sla-disponibilidad">1. Objetivo de disponibilidad</h2>
         <p>
-          <!-- [NIT_PENDIENTE]: Confirmar % real con GoDaddy para el plan contratado antes de publicar.
-               No usar "99,9%" sin respaldo escrito. -->
           Gano Digital persigue mantener el servicio disponible de acuerdo con el plan contratado.
           El porcentaje de disponibilidad comprometido se especifica en el contrato individual de servicio.
         </p>
@@ -51,7 +49,6 @@ $fecha_actualizacion = '2026-04-06';
       <section aria-labelledby="sla-mantenimiento">
         <h2 id="sla-mantenimiento">2. Ventana de mantenimiento</h2>
         <p>
-          <!-- [NIT_PENDIENTE]: Definir ventana real. Ej: domingos 02:00–04:00 hora Colombia. -->
           Los mantenimientos planificados se comunicarán con al menos 48 horas de antelación
           por correo electrónico al titular de la cuenta.
         </p>
@@ -118,8 +115,6 @@ $fecha_actualizacion = '2026-04-06';
       <section aria-labelledby="sla-compensacion">
         <h2 id="sla-compensacion">6. Compensación por incumplimiento</h2>
         <p>
-          <!-- [NIT_PENDIENTE]: Definir política de compensación antes de publicar.
-               Ej: crédito de servicio proporcional al tiempo de caída; no aplica a incidentes GoDaddy. -->
           La política de compensación por incumplimiento del SLA se especificará en el contrato
           individual de servicio antes de la activación comercial del plan.
         </p>
