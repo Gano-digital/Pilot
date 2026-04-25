@@ -1,0 +1,301 @@
+/**
+ * GANO NAV ENHANCED — Scroll-Spy + Hide-on-Scroll + Glassmorphism
+ *
+ * Features:
+ * 1. Scroll-Spy: Highlights nav link based on current section in viewport (IntersectionObserver)
+ * 2. Hide-on-Scroll: Nav hides when scrolling down > 50px, reappears when scrolling up
+ * 3. Glassmorphism: Semi-transparent background with backdrop blur effect
+ *
+ * Dependencies: gano-nav-scroll-spy.js
+ * WCAG: aria-current="page" on active link, focus-visible outline, reduced-motion support
+ */
+
+/* ============================================================
+ * NAV BASE — Enhanced with glassmorphism and animations
+ * ============================================================ */
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1200;
+  width: 100%;
+  background: rgba(5, 7, 10, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(27, 79, 216, 0.2);
+
+  /* Smooth transitions for hide-on-scroll */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+
+  /* Layout */
+  display: flex;
+  align-items: center;
+  padding: 16px 5%;
+  box-sizing: border-box;
+  will-change: transform;
+}
+
+/* ============================================================
+ * NAV HIDDEN STATE — Applied when scrolling down
+ * ============================================================ */
+
+.nav.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ============================================================
+ * NAV INNER CONTAINER
+ * ============================================================ */
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 40px;
+}
+
+/* ============================================================
+ * NAV LOGO
+ * ============================================================ */
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.nav-logo:hover {
+  color: var(--gano-orange, #FF6B35);
+}
+
+.nav-logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3em;
+}
+
+/* ============================================================
+ * NAV LINKS — Container
+ * ============================================================ */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-links li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================
+ * NAV LINKS — Individual link styling
+ * ============================================================ */
+
+.nav-links a {
+  display: inline-block;
+  padding: 8px 16px;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+
+  /* Smooth transitions for hover and active states */
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+  border-bottom: 2px solid transparent;
+  position: relative;
+}
+
+/* Hover state */
+.nav-links a:hover {
+  color: white;
+  border-bottom-color: var(--gano-blue, #1B4FD8);
+}
+
+/* Focus state for keyboard navigation (WCAG) */
+.nav-links a:focus-visible {
+  outline: 2px solid var(--gano-gold, #FFD700);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+ * NAV LINKS — ACTIVE STATE (Scroll-Spy)
+ * ============================================================ */
+
+.nav-links a.active {
+  color: var(--gano-orange, #FF6B35);
+  border-bottom-color: var(--gano-orange, #FF6B35);
+  font-weight: 600;
+}
+
+.nav-links a.active:hover {
+  border-bottom-color: var(--gano-orange, #FF6B35);
+  color: #FFB399;
+}
+
+/* ============================================================
+ * ARIA-CURRENT (Fallback accessibility)
+ * ============================================================ */
+
+.nav-links a[aria-current="page"] {
+  color: var(--gano-orange, #FF6B35);
+  border-bottom-color: var(--gano-orange, #FF6B35);
+}
+
+/* ============================================================
+ * REDUCED MOTION — Disable transitions if user prefers
+ * ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .nav {
+    transition: none;
+  }
+
+  .nav-links a {
+    transition: color 0.1s linear, border-color 0.1s linear;
+  }
+}
+
+/* ============================================================
+ * RESPONSIVE — Desktop
+ * ============================================================ */
+
+@media (min-width: 901px) {
+  .nav-links {
+    gap: 0;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .nav-links a {
+    padding: 8px 16px;
+    font-size: 0.95rem;
+  }
+}
+
+/* ============================================================
+ * RESPONSIVE — Tablet and small screens
+ * ============================================================ */
+
+@media (max-width: 1024px) {
+  .nav-inner {
+    gap: 20px;
+  }
+
+  .nav-links {
+    gap: 0;
+  }
+
+  .nav-links a {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+}
+
+/* ============================================================
+ * RESPONSIVE — Mobile (hide nav links if needed)
+ * ============================================================ */
+
+@media (max-width: 768px) {
+  .nav {
+    padding: 12px 5%;
+  }
+
+  .nav-inner {
+    gap: 16px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(5, 7, 10, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(27, 79, 216, 0.2);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .nav-links.open {
+    max-height: 400px;
+  }
+
+  .nav-links a {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    width: 100%;
+    border: none;
+  }
+
+  .nav-links a.active {
+    background-color: rgba(255, 107, 53, 0.15);
+    border-left: 3px solid var(--gano-orange, #FF6B35);
+    padding-left: 13px;
+  }
+}
+
+/* ============================================================
+ * SMOOTH SCROLL BEHAVIOR
+ * ============================================================ */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 70px;
+  }
+}
+
+/* ============================================================
+ * ENSURE BODY HAS TOP PADDING FOR STICKY NAV
+ * ============================================================ */
+
+body {
+  padding-top: 70px;
+}
+
+body.admin-bar {
+  padding-top: calc(70px + 32px);
+}
+
+@media (max-width: 782px) {
+  body.admin-bar {
+    padding-top: calc(70px + 46px);
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 60px;
+  }
+
+  body.admin-bar {
+    padding-top: calc(60px + 46px);
+  }
+}

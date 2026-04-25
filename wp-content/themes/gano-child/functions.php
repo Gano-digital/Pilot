@@ -612,6 +612,24 @@ function gano_child_enqueue_styles() {
 
     // Navegación sticky + mega-dropdown — todas las páginas
     wp_enqueue_script( 'gano-nav', get_stylesheet_directory_uri() . '/js/gano-nav.js', array(), '1.0.0', true );
+
+    // Nav Enhanced: Scroll-Spy + Hide-on-Scroll + Glassmorphism (F2.2)
+    $gano_nav_enhanced_css = get_stylesheet_directory() . '/css/gano-nav-enhanced.css';
+    wp_enqueue_style(
+        'gano-nav-enhanced',
+        get_stylesheet_directory_uri() . '/css/gano-nav-enhanced.css',
+        array( 'gano-nav-css' ),
+        file_exists( $gano_nav_enhanced_css ) ? (string) filemtime( $gano_nav_enhanced_css ) : '1.0.0'
+    );
+
+    $gano_nav_scroll_spy_js = get_stylesheet_directory() . '/js/gano-nav-scroll-spy.js';
+    wp_enqueue_script(
+        'gano-nav-scroll-spy',
+        get_stylesheet_directory_uri() . '/js/gano-nav-scroll-spy.js',
+        array(),
+        file_exists( $gano_nav_scroll_spy_js ) ? (string) filemtime( $gano_nav_scroll_spy_js ) : '1.0.0',
+        true
+    );
 }
 
 /**
