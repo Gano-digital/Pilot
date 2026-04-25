@@ -1137,6 +1137,26 @@ function gano_enqueue_diagnostico_assets() {
     );
 }
 
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_showcase_assets', 12 );
+function gano_enqueue_showcase_assets() {
+    if ( ! is_page_template( 'templates/page-showcase.php' ) ) {
+        return;
+    }
+    wp_enqueue_style(
+        'gano-showcase',
+        get_stylesheet_directory_uri() . '/css/gano-showcase.css',
+        array(),
+        '1.0.0'
+    );
+    wp_enqueue_script(
+        'gano-showcase',
+        get_stylesheet_directory_uri() . '/js/gano-showcase.js',
+        array(),
+        '1.0.0',
+        true
+    );
+}
+
 add_action( 'rest_api_init', 'gano_register_diagnostico_rest_routes' );
 function gano_register_diagnostico_rest_routes() {
     register_rest_route( 'gano/v1', '/lead', array(
