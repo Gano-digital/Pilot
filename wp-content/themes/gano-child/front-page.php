@@ -42,9 +42,32 @@ $url_login = wp_login_url( home_url() );
 				<a href="<?php echo esc_url( $url_login ); ?>" class="btn btn-ghost"><?php esc_html_e( 'Ingresar', 'gano-child' ); ?></a>
 				<a href="#precios" class="btn btn-primary"><?php esc_html_e( 'Crear cuenta', 'gano-child' ); ?></a>
 			</div>
-			<button class="mobile-toggle" aria-label="<?php esc_attr_e( 'Abrir menú', 'gano-child' ); ?>">
-				<i class="fas fa-bars"></i>
+			<button class="mobile-toggle" aria-label="<?php esc_attr_e( 'Abrir menú', 'gano-child' ); ?>" aria-expanded="false">
+				<span></span>
+				<span></span>
+				<span></span>
 			</button>
+		</div>
+	</nav>
+
+	<!-- Mobile Menu -->
+	<div class="mobile-menu-backdrop"></div>
+
+	<nav class="mobile-menu" aria-hidden="true">
+		<div class="mobile-menu-header">
+			<h2 style="margin: 0; font-size: 1.25rem; color: white;"><?php esc_html_e( 'Menú', 'gano-child' ); ?></h2>
+			<button class="mobile-menu-close" aria-label="<?php esc_attr_e( 'Cerrar menú', 'gano-child' ); ?>">&times;</button>
+		</div>
+		<div class="mobile-menu-items">
+			<a href="#inicio"><?php esc_html_e( 'Inicio', 'gano-child' ); ?></a>
+			<a href="#pilares"><?php esc_html_e( 'Infraestructura', 'gano-child' ); ?></a>
+			<a href="#precios"><?php esc_html_e( 'Planes', 'gano-child' ); ?></a>
+			<a href="#servicios"><?php esc_html_e( 'Servicios', 'gano-child' ); ?></a>
+			<a href="#nosotros"><?php esc_html_e( 'Nosotros', 'gano-child' ); ?></a>
+			<a href="#contacto"><?php esc_html_e( 'Contacto', 'gano-child' ); ?></a>
+		</div>
+		<div class="mobile-menu-footer">
+			<a href="<?php echo esc_url( $url_ecosistemas ); ?>" class="btn"><?php esc_html_e( 'Crear cuenta', 'gano-child' ); ?></a>
 		</div>
 	</nav>
 

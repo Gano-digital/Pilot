@@ -135,6 +135,35 @@ function gano_enqueue_status_hud(): void {
 add_action( 'wp_footer', 'gano_render_status_hud', 20 );
 
 // =============================================================================
+// MOBILE MENU (F2.3 — Front Page + all pages)
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_mobile_menu', 12 );
+function gano_enqueue_mobile_menu(): void {
+    if ( is_admin() ) {
+        return;
+    }
+
+    $css_path = get_stylesheet_directory() . '/css/gano-mobile-menu.css';
+    $js_path  = get_stylesheet_directory() . '/js/gano-mobile-menu.js';
+
+    wp_enqueue_style(
+        'gano-mobile-menu',
+        get_stylesheet_directory_uri() . '/css/gano-mobile-menu.css',
+        array(),
+        file_exists( $css_path ) ? (string) filemtime( $css_path ) : '1.0.0'
+    );
+
+    wp_enqueue_script(
+        'gano-mobile-menu',
+        get_stylesheet_directory_uri() . '/js/gano-mobile-menu.js',
+        array(),
+        file_exists( $js_path ) ? (string) filemtime( $js_path ) : '1.0.0',
+        true  // Load in footer
+    );
+}
+
+// =============================================================================
 // RESELLER TABS (page-ecosistemas.php)
 // =============================================================================
 
