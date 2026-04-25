@@ -244,9 +244,9 @@ $url_login = wp_login_url( home_url() );
 			</div>
 
 			<div class="pricing-tabs reveal" data-animation="fade" data-duration="600" data-delay="100">
-				<button class="pricing-tab active"><?php esc_html_e( 'WordPress', 'gano-child' ); ?></button>
-				<button class="pricing-tab"><?php esc_html_e( 'Compartido', 'gano-child' ); ?></button>
-				<button class="pricing-tab"><?php esc_html_e( 'VPS', 'gano-child' ); ?></button>
+				<button class="pricing-tab active" data-target="pricing-wordpress"><?php esc_html_e( 'WordPress', 'gano-child' ); ?></button>
+				<button class="pricing-tab" data-target="pricing-compartido"><?php esc_html_e( 'Compartido', 'gano-child' ); ?></button>
+				<button class="pricing-tab" data-target="pricing-vps">VPS</button>
 			</div>
 
 			<div class="pricing-grid" id="pricing-wordpress">
@@ -315,6 +315,38 @@ $url_login = wp_login_url( home_url() );
 						<li><i class="fas fa-check"></i> <?php esc_html_e( 'IP dedicada', 'gano-child' ); ?></li>
 					</ul>
 					<a href="<?php echo esc_url( $url_ecosistemas ); ?>" class="btn btn-ghost" style="width:100%"><?php esc_html_e( 'Elegir plan', 'gano-child' ); ?></a>
+				</div>
+			</div>
+
+			<!-- COMPARTIDO — próximamente -->
+			<div class="pricing-grid" id="pricing-compartido" style="display:none;">
+				<div class="pricing-card reveal" data-animation="scale" data-duration="600" data-delay="200" style="grid-column: 1 / -1; max-width: 560px; margin: 0 auto; text-align: center;">
+					<div class="pillar-icon" style="margin: 0 auto 1.5rem;">
+						<i class="fas fa-layer-group"></i>
+					</div>
+					<div class="pricing-name"><?php esc_html_e( 'Hosting Compartido', 'gano-child' ); ?></div>
+					<p class="pillar-desc" style="margin: 1rem 0 1.5rem;">
+						<?php esc_html_e( 'Planes de hosting compartido con NVMe, cPanel y soporte en español. Catálogo en configuración — disponible próximamente.', 'gano-child' ); ?>
+					</p>
+					<a href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>" class="btn btn-ghost" style="width:100%">
+						<?php esc_html_e( 'Notificarme cuando esté disponible', 'gano-child' ); ?>
+					</a>
+				</div>
+			</div>
+
+			<!-- VPS — próximamente -->
+			<div class="pricing-grid" id="pricing-vps" style="display:none;">
+				<div class="pricing-card reveal" data-animation="scale" data-duration="600" data-delay="200" style="grid-column: 1 / -1; max-width: 560px; margin: 0 auto; text-align: center;">
+					<div class="pillar-icon" style="margin: 0 auto 1.5rem;">
+						<i class="fas fa-cube"></i>
+					</div>
+					<div class="pricing-name">VPS Cloud</div>
+					<p class="pillar-desc" style="margin: 1rem 0 1.5rem;">
+						<?php esc_html_e( 'Servidores virtuales privados con recursos dedicados, panel de control y escalamiento bajo demanda. Catálogo en configuración — disponible próximamente.', 'gano-child' ); ?>
+					</p>
+					<a href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>" class="btn btn-ghost" style="width:100%">
+						<?php esc_html_e( 'Notificarme cuando esté disponible', 'gano-child' ); ?>
+					</a>
 				</div>
 			</div>
 		</div>
@@ -425,74 +457,54 @@ $url_login = wp_login_url( home_url() );
 		</div>
 	</section>
 
-	<!-- TESTIMONIALS (part of nosotros flow) -->
+	<!-- RESPALDO TÉCNICO — Hechos verificables, sin testimonios fabricados -->
 	<section class="section">
 		<div class="container">
 			<div class="section-header reveal" data-animation="reveal-up" data-duration="600" data-delay="0">
-				<span class="section-label"><?php esc_html_e( 'Confianza', 'gano-child' ); ?></span>
-				<h2 class="section-title"><?php esc_html_e( 'Lo que dicen nuestros', 'gano-child' ); ?> <span class="gradient-text"><?php esc_html_e( 'clientes', 'gano-child' ); ?></span></h2>
-				<p class="section-desc"><?php esc_html_e( 'Empresas colombianas que ya operan con infraestructura SOTA.', 'gano-child' ); ?></p>
+				<span class="section-label"><?php esc_html_e( 'Por qué Gano Digital', 'gano-child' ); ?></span>
+				<h2 class="section-title"><?php esc_html_e( 'Infraestructura con', 'gano-child' ); ?> <span class="gradient-text"><?php esc_html_e( 'respaldo real', 'gano-child' ); ?></span></h2>
+				<p class="section-desc"><?php esc_html_e( 'Sin promesas genéricas. Estos son los hechos detrás de nuestra operación.', 'gano-child' ); ?></p>
 			</div>
 
-			<div class="testimonials-grid">
-				<div class="testimonial-card reveal" data-animation="scale" data-duration="600" data-delay="100">
-					<div class="stars">
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
+			<div class="pillars-grid">
+				<div class="pillar-card reveal" data-animation="reveal-up" data-duration="600" data-delay="100">
+					<div class="pillar-icon">
+						<i class="fas fa-server"></i>
 					</div>
-					<p class="testimonial-text">
-						"<?php esc_html_e( 'Migrar a Gano Digital redujo nuestro tiempo de carga en un 60%. El soporte técnico local entiende nuestro negocio y responde en minutos, no en horas.', 'gano-child' ); ?>"
+					<h3 class="pillar-title"><?php esc_html_e( 'Infraestructura de datacenter enterprise', 'gano-child' ); ?></h3>
+					<p class="pillar-desc">
+						<?php esc_html_e( 'Operamos sobre plataforma GoDaddy con SLA de 99.9 % de disponibilidad, redundancia de red y centros de datos certificados. La confiabilidad no es un cartel: está en el contrato.', 'gano-child' ); ?>
 					</p>
-					<div class="testimonial-author">
-						<div class="testimonial-avatar">CM</div>
-						<div>
-							<div class="testimonial-name">Carlos Méndez</div>
-							<div class="testimonial-role"><?php esc_html_e( 'CTO — TiendaVirtual.co', 'gano-child' ); ?></div>
-						</div>
-					</div>
 				</div>
 
-				<div class="testimonial-card reveal" data-animation="scale" data-duration="600" data-delay="200">
-					<div class="stars">
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
+				<div class="pillar-card reveal" data-animation="reveal-up" data-duration="600" data-delay="250">
+					<div class="pillar-icon">
+						<i class="fas fa-coins"></i>
 					</div>
-					<p class="testimonial-text">
-						"<?php esc_html_e( 'La facturación en COP y el soporte en español fueron decisivos. Pero lo que realmente nos sorprendió fue la velocidad: NVMe se siente.', 'gano-child' ); ?>"
+					<h3 class="pillar-title"><?php esc_html_e( 'Precios en COP, sin tipo de cambio sorpresa', 'gano-child' ); ?></h3>
+					<p class="pillar-desc">
+						<?php esc_html_e( 'Facturación en pesos colombianos. Saber exactamente cuánto pagas cada mes, sin convertir USD ni depender de la tasa del día, es parte del servicio.', 'gano-child' ); ?>
 					</p>
-					<div class="testimonial-author">
-						<div class="testimonial-avatar">AR</div>
-						<div>
-							<div class="testimonial-name">Ana Rodríguez</div>
-							<div class="testimonial-role"><?php esc_html_e( 'Directora — Agencia Bloom', 'gano-child' ); ?></div>
-						</div>
-					</div>
 				</div>
 
-				<div class="testimonial-card reveal" data-animation="scale" data-duration="600" data-delay="300">
-					<div class="stars">
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star"></i>
-						<i class="fas fa-star-half-stroke"></i>
+				<div class="pillar-card reveal" data-animation="reveal-up" data-duration="600" data-delay="400">
+					<div class="pillar-icon">
+						<i class="fas fa-headset"></i>
 					</div>
-					<p class="testimonial-text">
-						"<?php esc_html_e( 'Después de un intento de ataque, el WAF de Gano bloqueó todo antes de que impactara. Zero-Trust no es marketing: es política real aplicada a nuestra infraestructura.', 'gano-child' ); ?>"
+					<h3 class="pillar-title"><?php esc_html_e( 'Soporte técnico en español, con contexto local', 'gano-child' ); ?></h3>
+					<p class="pillar-desc">
+						<?php esc_html_e( 'Equipo que conoce el mercado colombiano, responde en tu idioma y entiende el contexto de tu negocio. Primera respuesta en menos de 8 horas, sin bots de primer nivel.', 'gano-child' ); ?>
 					</p>
-					<div class="testimonial-author">
-						<div class="testimonial-avatar">JP</div>
-						<div>
-							<div class="testimonial-name">Juan Pablo L.</div>
-							<div class="testimonial-role"><?php esc_html_e( 'Fundador — Fintech Andina', 'gano-child' ); ?></div>
-						</div>
+				</div>
+
+				<div class="pillar-card reveal" data-animation="reveal-up" data-duration="600" data-delay="550">
+					<div class="pillar-icon">
+						<i class="fas fa-lock"></i>
 					</div>
+					<h3 class="pillar-title"><?php esc_html_e( 'Seguridad aplicada, no decorativa', 'gano-child' ); ?></h3>
+					<p class="pillar-desc">
+						<?php esc_html_e( 'Hardening continuo, CSP enforced, rate limiting y WAF activos desde el primer día. La seguridad es configuración real, no un complemento de marketing.', 'gano-child' ); ?>
+					</p>
 				</div>
 			</div>
 		</div>
@@ -549,9 +561,9 @@ $url_login = wp_login_url( home_url() );
 					<h4><?php esc_html_e( 'Empresa', 'gano-child' ); ?></h4>
 					<ul>
 						<li><a href="<?php echo esc_url( home_url( '/nosotros/' ) ); ?>"><?php esc_html_e( 'Sobre nosotros', 'gano-child' ); ?></a></li>
-						<li><a href="#"><?php esc_html_e( 'Estado de red', 'gano-child' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>"><?php esc_html_e( 'Estado de red', 'gano-child' ); ?></a></li>
 						<li><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>"><?php esc_html_e( 'Blog', 'gano-child' ); ?></a></li>
-						<li><a href="#"><?php esc_html_e( 'Preguntas frecuentes', 'gano-child' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>"><?php esc_html_e( 'Preguntas frecuentes', 'gano-child' ); ?></a></li>
 						<li><a href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>"><?php esc_html_e( 'Contacto', 'gano-child' ); ?></a></li>
 					</ul>
 				</div>
@@ -561,7 +573,7 @@ $url_login = wp_login_url( home_url() );
 					<ul>
 						<li><a href="<?php echo esc_url( home_url( '/terminos/' ) ); ?>"><?php esc_html_e( 'Términos y condiciones', 'gano-child' ); ?></a></li>
 						<li><a href="<?php echo esc_url( home_url( '/privacidad/' ) ); ?>"><?php esc_html_e( 'Política de privacidad', 'gano-child' ); ?></a></li>
-						<li><a href="#"><?php esc_html_e( 'Política de uso', 'gano-child' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/terminos/' ) ); ?>"><?php esc_html_e( 'Política de uso', 'gano-child' ); ?></a></li>
 						<li><a href="<?php echo esc_url( home_url( '/sla/' ) ); ?>"><?php esc_html_e( 'SLA', 'gano-child' ); ?></a></li>
 					</ul>
 				</div>
@@ -581,4 +593,25 @@ $url_login = wp_login_url( home_url() );
 
 </div><!-- /.gano-landing-sota -->
 
+<?php /* Pricing tabs switching */ ?>
+<script>
+(function () {
+	'use strict';
+	document.addEventListener( 'DOMContentLoaded', function () {
+		var tabs  = document.querySelectorAll( '.pricing-tab' );
+		var grids = document.querySelectorAll( '.pricing-grid' );
+		if ( ! tabs.length ) { return; }
+		tabs.forEach( function ( tab ) {
+			tab.addEventListener( 'click', function () {
+				var target = this.dataset.target;
+				tabs.forEach( function ( t ) { t.classList.remove( 'active' ); } );
+				grids.forEach( function ( g ) { g.style.display = 'none'; } );
+				this.classList.add( 'active' );
+				var grid = document.getElementById( target );
+				if ( grid ) { grid.style.display = ''; }
+			} );
+		} );
+	} );
+}());
+</script>
 <?php get_footer(); ?>
