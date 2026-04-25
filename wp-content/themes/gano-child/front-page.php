@@ -72,7 +72,7 @@ $url_login = wp_login_url( home_url() );
 	</nav>
 
 	<!-- SECCIÓN 1: INICIO (Hero) -->
-	<section class="hero" id="inicio" data-animation="hero">
+	<section class="hero" id="inicio" data-animation="fade">
 		<div class="hero-bg">
 			<div class="hero-grid"></div>
 			<div class="hero-glow"></div>
@@ -182,7 +182,7 @@ $url_login = wp_login_url( home_url() );
 	</section>
 
 	<!-- SECCIÓN 2: INFRAESTRUCTURA (Pilares) -->
-	<section class="section" id="pilares" data-animation="section">
+	<section class="section" id="pilares" data-animation="reveal-up">
 		<div class="container">
 			<div class="section-header reveal" data-animation="reveal-up" data-duration="600" data-delay="0">
 				<span class="section-label"><?php esc_html_e( 'Infraestructura', 'gano-child' ); ?></span>
@@ -235,7 +235,7 @@ $url_login = wp_login_url( home_url() );
 	</section>
 
 	<!-- SECCIÓN 3: PLANES (Ecosistemas) -->
-	<section class="section" id="precios" style="background: var(--bg-surface);" data-animation="section">
+	<section class="section" id="precios" style="background: var(--bg-surface);" data-animation="reveal-up">
 		<div class="container">
 			<div class="section-header reveal" data-animation="reveal-up" data-duration="600" data-delay="0">
 				<span class="section-label"><?php esc_html_e( 'Catálogo comercial', 'gano-child' ); ?></span>
@@ -321,7 +321,7 @@ $url_login = wp_login_url( home_url() );
 	</section>
 
 	<!-- SECCIÓN 4: SERVICIOS -->
-	<section class="section" id="servicios" data-animation="section">
+	<section class="section" id="servicios" data-animation="reveal-up">
 		<div class="container">
 			<div class="section-header reveal" data-animation="reveal-up" data-duration="600" data-delay="0">
 				<span class="section-label"><?php esc_html_e( 'Servicios', 'gano-child' ); ?></span>
@@ -399,7 +399,7 @@ $url_login = wp_login_url( home_url() );
 	</section>
 
 	<!-- SECCIÓN 6: NOSOTROS (Team/About) -->
-	<section class="section" id="nosotros" data-animation="section">
+	<section class="section" id="nosotros" data-animation="reveal-up">
 		<div class="container">
 			<div class="section-header reveal" data-animation="reveal-up" data-duration="600" data-delay="0">
 				<span class="section-label"><?php esc_html_e( 'Sobre nosotros', 'gano-child' ); ?></span>
@@ -499,7 +499,7 @@ $url_login = wp_login_url( home_url() );
 	</section>
 
 	<!-- SECCIÓN 7: CONTACTO (Final CTA) -->
-	<section class="section" id="contacto" data-animation="section">
+	<section class="section" id="contacto" data-animation="reveal-up">
 		<div class="container">
 			<div class="contacto-box reveal" data-animation="reveal-up" data-duration="600" data-delay="0">
 				<span class="section-label"><?php esc_html_e( 'Próximo paso', 'gano-child' ); ?></span>
