@@ -21,13 +21,6 @@
   pointer-events: none; /* Allow clicks through canvas */
 }
 
-/* Fallback: if Canvas unsupported */
-@supports not (display: canvas) {
-  #particles {
-    display: none;
-  }
-}
-
 /* Accessibility: disable animation if prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   #particles {

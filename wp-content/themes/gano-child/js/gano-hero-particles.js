@@ -17,6 +17,8 @@ class ParticleSystem {
     // Physics constants
     this.gravity = 0.05;
     this.damping = 0.98;
+    this.bounceDamping = 0.8;
+    this.maxVelocity = 5;
     this.connectionDistance = 150;
     this.connectionColor = 'rgba(27, 79, 216, 0.15)';
     this.connectionWidth = 0.5;
@@ -34,6 +36,7 @@ class ParticleSystem {
 
     // Animation state
     this.animationFrameId = null;
+    this.resizeTimeout = null;
 
     // Setup
     this.canvas = document.getElementById('particles');
@@ -43,6 +46,10 @@ class ParticleSystem {
     }
 
     this.ctx = this.canvas.getContext('2d');
+    if (!this.ctx) {
+      console.error('Canvas 2D context unavailable');
+      return;
+    }
     this.setupCanvas();
     this.createParticles(this.getParticleCount());
     this.attachMouseListener();
@@ -75,10 +82,9 @@ class ParticleSystem {
     resizeCanvas();
 
     // Resize listener
-    let resizeTimeout;
     window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = setTimeout(() => {
         resizeCanvas();
 
         // Update particle count based on new viewport
@@ -140,6 +146,10 @@ class ParticleSystem {
       particle.vx *= this.damping;
       particle.vy *= this.damping;
 
+      // Clamp velocity to prevent accumulation
+      particle.vx = Math.max(-this.maxVelocity, Math.min(this.maxVelocity, particle.vx));
+      particle.vy = Math.max(-this.maxVelocity, Math.min(this.maxVelocity, particle.vy));
+
       // Update position
       particle.x += particle.vx;
       particle.y += particle.vy;
@@ -147,18 +157,18 @@ class ParticleSystem {
       // Bounce on walls
       if (particle.x - particle.radius < 0) {
         particle.x = particle.radius;
-        particle.vx = -particle.vx * 0.8;
+        particle.vx = -particle.vx * this.bounceDamping;
       } else if (particle.x + particle.radius > width) {
         particle.x = width - particle.radius;
-        particle.vx = -particle.vx * 0.8;
+        particle.vx = -particle.vx * this.bounceDamping;
       }
 
       if (particle.y - particle.radius < 0) {
         particle.y = particle.radius;
-        particle.vy = -particle.vy * 0.8;
+        particle.vy = -particle.vy * this.bounceDamping;
       } else if (particle.y + particle.radius > height) {
         particle.y = height - particle.radius;
-        particle.vy = -particle.vy * 0.8;
+        particle.vy = -particle.vy * this.bounceDamping;
       }
 
       // Reset repel force for next frame
@@ -282,6 +292,18 @@ class ParticleSystem {
       this.mouseX = -1000;
       this.mouseY = -1000;
     });
+  }
+
+  /**
+   * Cleanup animation frame and timers on destroy
+   */
+  destroy() {
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+    }
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+    }
   }
 }
 
