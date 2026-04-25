@@ -57,17 +57,21 @@ Contains copies of all 9 modified files before overwrite.
 | `wp rewrite flush` | ✅ Success |
 | File timestamps on server | ✅ All updated to 2026-04-24 18:01–18:03 UTC |
 | `GANO_DEPLOY_HOOK_SECRET` in `wp-config.php` | ✅ Already present |
-| `GANO_AI_API_KEY` in `wp-config.php` | ⚠️ **NOT SET** — still in `wp_options` |
-| `GANO_CRM_WEBHOOK` in `wp-config.php` | ⚠️ **NOT SET** — still in `wp_options` |
+| `GANO_AI_API_KEY` in `wp-config.php` | ⚠️ **NOT SET** — empty in `wp_options` too |
+| `GANO_CRM_WEBHOOK` in `wp-config.php` | ⚠️ **NOT SET** — empty in `wp_options` too |
 
 ---
 
 ## ⚠️ Action Items (Post-Deploy)
 
-1. **Migrate credentials to `wp-config.php`**
-   - Add `define('GANO_AI_API_KEY', 'sk-...');` to `wp-config.php`
-   - Add `define('GANO_CRM_WEBHOOK', 'https://...');` to `wp-config.php`
-   - Then delete from `wp_options` to remove database exposure.
+1. **Configure credentials directly in `wp-config.php` when needed**
+   - `wp_options` currently has **no values** for `gano_ai_api_key` or `gano_crm_webhook` (verified via PHP query)
+   - When you add them in the future, use `wp-config.php` directly:
+     ```php
+     define('GANO_AI_API_KEY', 'sk-...');
+     define('GANO_CRM_WEBHOOK', 'https://...');
+     ```
+   - **Do NOT** enter them via the WordPress admin UI — that stores them in `wp_options` (database exposure).
 
 2. **Rotate `GANO_DEPLOY_HOOK_SECRET`**
    - Current secret is hardcoded in `wp-config.php`. Consider rotating if it was ever logged or shared.
