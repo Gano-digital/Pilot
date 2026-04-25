@@ -1,0 +1,36 @@
+/**
+ * gano-particles.css
+ *
+ * Canvas styling for particle system animation
+ * - Absolute positioning for hero overlay
+ * - Transparent background to show hero content
+ * - pointer-events: none to allow clicks through
+ * - Accessibility: hidden if prefers-reduced-motion enabled
+ */
+
+/* Canvas container */
+#particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: transparent;
+  z-index: 5;
+  pointer-events: none; /* Allow clicks through canvas */
+}
+
+/* Fallback: if Canvas unsupported */
+@supports not (display: canvas) {
+  #particles {
+    display: none;
+  }
+}
+
+/* Accessibility: disable animation if prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  #particles {
+    display: none; /* Hide particle system entirely */
+  }
+}
