@@ -65,11 +65,7 @@ $url_login = wp_login_url( home_url() );
 				</div>
 
 				<h1 class="hero-title animate-in delay-1">
-					<span class="line"><?php esc_html_e( 'Infraestructura NVMe', 'gano-child' ); ?></span>
-					<span class="line gradient-text"><?php esc_html_e( 'blindada', 'gano-child' ); ?></span>
-					<span class="line"><?php esc_html_e( 'y un agente IA que', 'gano-child' ); ?></span>
-					<span class="line"><?php esc_html_e( 'trabaja antes de que', 'gano-child' ); ?></span>
-					<span class="line"><?php esc_html_e( 'algo falle.', 'gano-child' ); ?></span>
+					<?php esc_html_e( 'Infraestructura NVMe blindada y un agente IA que trabaja antes de que algo falle.', 'gano-child' ); ?>
 				</h1>
 
 				<p class="hero-subtitle animate-in delay-2">
@@ -142,15 +138,15 @@ $url_login = wp_login_url( home_url() );
 			<div class="sota-stats">
 				<div class="sota-stat reveal">
 					<div class="sota-stat-value">99.9%</div>
-					<div class="sota-stat-label"><?php esc_html_e( 'Disponibilidad', 'gano-child' ); ?></div>
+					<div class="sota-stat-label"><?php esc_html_e( 'Disponibilidad Garantizada', 'gano-child' ); ?></div>
 				</div>
 				<div class="sota-stat reveal">
-					<div class="sota-stat-value">&lt;2h</div>
-					<div class="sota-stat-label"><?php esc_html_e( 'Respuesta', 'gano-child' ); ?></div>
+					<div class="sota-stat-value">&lt;8h</div>
+					<div class="sota-stat-label"><?php esc_html_e( 'Primera Respuesta', 'gano-child' ); ?></div>
 				</div>
 				<div class="sota-stat reveal">
 					<div class="sota-stat-value">24/7</div>
-					<div class="sota-stat-label"><?php esc_html_e( 'Monitoreo', 'gano-child' ); ?></div>
+					<div class="sota-stat-label"><?php esc_html_e( 'Monitoreo Proactivo', 'gano-child' ); ?></div>
 				</div>
 			</div>
 		</div>
@@ -170,7 +166,7 @@ $url_login = wp_login_url( home_url() );
 					<div class="pillar-icon">
 						<i class="fas fa-gauge-high"></i>
 					</div>
-					<h3 class="pillar-title"><?php esc_html_e( 'Velocidad real (NVMe)', 'gano-child' ); ?></h3>
+					<h3 class="pillar-title"><?php esc_html_e( 'NVMe que se nota en Core Web Vitals, no solo en el folleto.', 'gano-child' ); ?></h3>
 					<p class="pillar-desc">
 						<?php esc_html_e( 'Almacenamiento de nueva generación y stack optimizado para WordPress: menos espera, más conversión. Tu sitio carga cuando el cliente ya decidió quedarse.', 'gano-child' ); ?>
 					</p>
@@ -180,7 +176,7 @@ $url_login = wp_login_url( home_url() );
 					<div class="pillar-icon">
 						<i class="fas fa-shield-halved"></i>
 					</div>
-					<h3 class="pillar-title"><?php esc_html_e( 'WordPress blindada', 'gano-child' ); ?></h3>
+					<h3 class="pillar-title"><?php esc_html_e( 'WordPress endurecida para el tráfico real de un negocio.', 'gano-child' ); ?></h3>
 					<p class="pillar-desc">
 						<?php esc_html_e( 'Hardening continuo, controles de acceso y visibilidad sobre lo que ocurre en tu instalación. Menos superficie de ataque, más tranquilidad operativa.', 'gano-child' ); ?>
 					</p>
@@ -190,9 +186,9 @@ $url_login = wp_login_url( home_url() );
 					<div class="pillar-icon">
 						<i class="fas fa-fingerprint"></i>
 					</div>
-					<h3 class="pillar-title"><?php esc_html_e( 'Zero-Trust operativo', 'gano-child' ); ?></h3>
+					<h3 class="pillar-title"><?php esc_html_e( 'Confianza cero por defecto: identidad, sesiones y permisos bajo control.', 'gano-child' ); ?></h3>
 					<p class="pillar-desc">
-						<?php esc_html_e( 'Confianza cero por defecto: identidad, sesiones y permisos bajo control. La seguridad no es un cartel: es política aplicada en capas.', 'gano-child' ); ?>
+						<?php esc_html_e( 'La seguridad no es un cartel: es política aplicada en capas. Menos suposiciones, más trazabilidad cuando importa.', 'gano-child' ); ?>
 					</p>
 				</div>
 
@@ -200,9 +196,9 @@ $url_login = wp_login_url( home_url() );
 					<div class="pillar-icon">
 						<i class="fas fa-globe"></i>
 					</div>
-					<h3 class="pillar-title"><?php esc_html_e( 'Edge y latencia', 'gano-child' ); ?></h3>
+					<h3 class="pillar-title"><?php esc_html_e( 'Contenido más cerca del usuario, sin magia barata.', 'gano-child' ); ?></h3>
 					<p class="pillar-desc">
-						<?php esc_html_e( 'Contenido más cerca del usuario sin magia barata. Arquitectura pensada para entregar experiencias rápidas donde vive tu audiencia.', 'gano-child' ); ?>
+						<?php esc_html_e( 'Arquitectura pensada para entregar experiencias rápidas donde vive tu audiencia. Menos saltos innecesarios, más respuesta perceptible.', 'gano-child' ); ?>
 					</p>
 				</div>
 			</div>
@@ -507,7 +503,7 @@ $url_login = wp_login_url( home_url() );
 						<?php echo esc_html( get_bloginfo( 'name' ) ); ?>
 					</a>
 					<p>
-						<?php esc_html_e( 'Un socio tecnológico que trabaja en silencio. Infraestructura seria, soporte en tu idioma y visibilidad sobre lo que pasa detrás del sitio.', 'gano-child' ); ?>
+						<?php esc_html_e( 'Un socio tecnológico que trabaja en silencio. Gano Digital no compite en hosting barato. Compite en continuidad: infraestructura seria, soporte en tu idioma y visibilidad sobre lo que pasa detrás del sitio.', 'gano-child' ); ?>
 					</p>
 				</div>
 
