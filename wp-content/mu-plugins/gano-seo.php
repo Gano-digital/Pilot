@@ -523,6 +523,160 @@ function gano_output_breadcrumb_schema(): void {
 }
 
 // =============================================================================
+// 4.1 SCHEMA JSON-LD — FAQ PARA PÁGINAS ESPECÍFICAS (ecosistemas, nosotros)
+// =============================================================================
+
+/**
+ * Construye FAQ schema para página-ecosistemas.
+ * Preguntas sobre planes, pricing, soporte y características técnicas.
+ *
+ * @return array<string, mixed> Schema FAQPage para ecosistemas.
+ */
+function gano_build_faq_ecosistemas_schema(): array {
+    return array(
+        '@type'      => 'FAQPage',
+        '@context'   => 'https://schema.org',
+        'mainEntity' => array(
+            array(
+                '@type'          => 'Question',
+                'name'           => '¿Cuál es la diferencia entre los planes de Gano Digital?',
+                'acceptedAnswer' => array(
+                    '@type' => 'Answer',
+                    'text'  => 'Nuestros 4 ecosistemas están diseñados para diferentes etapas: Núcleo Prime ($196K/mes) para startups y pequeñas empresas, Fortaleza Delta ($450K/mes) para medianas empresas, Bastión SOTA ($890K/mes) para empresas en crecimiento, y Ultimate WP ($1.2M/mes) para operaciones críticas. Cada uno incluye almacenamiento NVMe, hardening WordPress, soporte en español, y escala según tus necesidades.',
+                ),
+            ),
+            array(
+                '@type'          => 'Question',
+                'name'           => '¿Incluye soporte técnico en español?',
+                'acceptedAnswer' => array(
+                    '@type' => 'Answer',
+                    'text'  => 'Sí, todos nuestros planes incluyen soporte vía ticket 24/7 en español. Garantizamos tiempo de primera respuesta hasta 8 horas hábiles para incidentes de cualquier severidad.',
+                ),
+            ),
+            array(
+                '@type'          => 'Question',
+                'name'           => '¿Puedo cambiar de plan después de contratar?',
+                'acceptedAnswer' => array(
+                    '@type' => 'Answer',
+                    'text'  => 'Absolutamente. Puedes cambiar o actualizar tu plan en cualquier momento. Nuestro equipo coordinará la migración sin interrupciones.',
+                ),
+            ),
+            array(
+                '@type'          => 'Question',
+                'name'           => '¿Qué incluye el agente IA de administración?',
+                'acceptedAnswer' => array(
+                    '@type' => 'Answer',
+                    'text'  => 'El agente IA monitorea tu infraestructura 24/7, predice problemas antes de que ocurran, y te envía alertas en español. En planes SOTA y Ultimate, el agente puede ejecutar acciones automáticas de recuperación.',
+                ),
+            ),
+            array(
+                '@type'          => 'Question',
+                'name'           => '¿Por qué NVMe en lugar de SSD tradicional?',
+                'acceptedAnswer' => array(
+                    '@type' => 'Answer',
+                    'text'  => 'NVMe es 5–10x más rápido que SSD tradicional. Reduce tiempos de carga, mejora Core Web Vitals, y permite más transacciones simultáneas con menos latencia.',
+                ),
+            ),
+            array(
+                '@type'          => 'Question',
+                'name'           => '¿Cuál es la diferencia entre el SLA y el tiempo de respuesta de soporte?',
+                'acceptedAnswer' => array(
+                    '@type' => 'Answer',
+                    'text'  => 'El SLA garantiza disponibilidad del servicio (99.9% uptime). El tiempo de respuesta de soporte es cuánto tardamos en atender tu ticket (hasta 8 horas hábiles). Son métricas diferentes: una sobre infraestructura, otra sobre atención al cliente.',
+                ),
+            ),
+        ),
+    );
+}
+
+/**
+ * Construye FAQ schema para página-nosotros.
+ * Preguntas sobre la empresa, misión y razones para elegir Gano Digital.
+ *
+ * @return array<string, mixed> Schema FAQPage para nosotros.
+ */
+function gano_build_faq_nosotros_schema(): array {
+    return array(
+        '@type'      => 'FAQPage',
+        '@context'   => 'https://schema.org',
+        'mainEntity' => array(
+            array(
+                '@type'          => 'Question',
+                'name'           => '¿Quién es Gano Digital y por qué debería confiarles mi sitio?',
+                'acceptedAnswer' => array(
+                    '@type' => 'Answer',
+                    'text'  => 'Gano Digital es un proveedor de hosting WordPress especializado en empresas colombianas que necesitan infraestructura confiable en pesos, con soporte en español y sin excusas. Nuestro fundador, Diego Sandoval, es psicólogo organizacional y consultor técnico con más de 10 años de experiencia en hosting, seguridad web y soluciones digitales. Construimos infraestructura que funciona, punto.',
+                ),
+            ),
+            array(
+                '@type'          => 'Question',
+                'name'           => '¿Por qué no usar GoDaddy, Bluehost o similar?',
+                'acceptedAnswer' => array(
+                    '@type' => 'Answer',
+                    'text'  => 'Esos proveedores son excelentes para sitios simples, pero no entienden el contexto colombiano: facturación en COP, soporte sin barrera de idioma, y hardening específico para regulaciones LATAM. Gano Digital está diseñado desde cero para empresas que necesitan alguien que hable su idioma y entienda sus restricciones.',
+                ),
+            ),
+            array(
+                '@type'          => 'Question',
+                'name'           => '¿Qué significa "infraestructura sin excusas"?',
+                'acceptedAnswer' => array(
+                    '@type' => 'Answer',
+                    'text'  => 'Significa que no culpamos al cliente, a los plugins, o al "demasiado tráfico". Nuestros planes incluyen monitoreo IA, hardening por defecto, y escalabilidad automática. Si algo falla, es nuestra responsabilidad arreglarlo.',
+                ),
+            ),
+            array(
+                '@type'          => 'Question',
+                'name'           => '¿Soporte 24/7 significa respuesta inmediata?',
+                'acceptedAnswer' => array(
+                    '@type' => 'Answer',
+                    'text'  => 'No. Soporte 24/7 significa que puedes abrir tickets en cualquier momento. Garantizamos primera respuesta en hasta 8 horas hábiles (no horas colombianas de medianoche). Para incidentes críticos, escalamos a nuestro equipo técnico inmediatamente.',
+                ),
+            ),
+            array(
+                '@type'          => 'Question',
+                'name'           => '¿Cómo sé que es confiable?',
+                'acceptedAnswer' => array(
+                    '@type' => 'Answer',
+                    'text'  => 'Estamos respaldados por GoDaddy Reseller Program, que maneja facturación, cobranza e infraestructura base. Nosotros agregamos el agente IA, soporte en español, hardening, y gestión de clientes. Verificable, transparente, y con responsabilidad clara.',
+                ),
+            ),
+        ),
+    );
+}
+
+add_action( 'wp_head', 'gano_output_page_faq_schema', 8 );
+/**
+ * Emite FAQ schema JSON-LD para páginas específicas (ecosistemas, nosotros).
+ * Se ejecuta después del breadcrumb (prioridad 8).
+ */
+function gano_output_page_faq_schema(): void {
+    $page_id = get_the_ID();
+    if ( ! $page_id ) {
+        return;
+    }
+
+    $template = get_page_template_slug( $page_id );
+
+    // Determinar qué FAQ schema usar según el template de la página
+    $faq_schema = null;
+    if ( 'templates/page-ecosistemas.php' === $template ) {
+        $faq_schema = gano_build_faq_ecosistemas_schema();
+    } elseif ( 'templates/page-nosotros.php' === $template ) {
+        $faq_schema = gano_build_faq_nosotros_schema();
+    }
+
+    if ( ! $faq_schema ) {
+        return;
+    }
+
+    // Emitir schema FAQPage
+    echo "\n<!-- Gano Digital: Schema JSON-LD FAQPage -->\n";
+    echo '<script type="application/ld+json">'
+        . wp_json_encode( $faq_schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT )
+        . '</script>' . "\n";
+}
+
+// =============================================================================
 // 5. RESOURCE HINTS — Preconnect a dominios críticos de terceros
 //    Se emiten en prioridad 1 para procesarse lo antes posible por el navegador.
 // =============================================================================
