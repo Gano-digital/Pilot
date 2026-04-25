@@ -1106,6 +1106,178 @@ function gano_chat_response_callback( WP_REST_Request $request ): WP_REST_Respon
 }
 
 // =============================================================================
+// 3.5 ENDPOINT REST DEL DIAGNÓSTICO DIGITAL — Lead capture + rate limiting
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_diagnostico_assets', 12 );
+function gano_enqueue_diagnostico_assets() {
+    if ( ! is_page_template( 'page-diagnostico.php' ) && ! is_page( 'diagnostico' ) ) {
+        return;
+    }
+    wp_enqueue_style(
+        'gano-diagnostico',
+        get_stylesheet_directory_uri() . '/css/diagnostico.css',
+        array(),
+        '1.0.0'
+    );
+    wp_enqueue_script(
+        'gano-diagnostico',
+        get_stylesheet_directory_uri() . '/js/diagnostico.js',
+        array(),
+        '1.0.0',
+        true
+    );
+    wp_localize_script(
+        'gano-diagnostico',
+        'ganoDiagnosticoVars',
+        array(
+            'restUrl' => esc_url_raw( rest_url( 'gano/v1/' ) ),
+            'nonce'   => wp_create_nonce( 'gano_diagnostico_nonce' ),
+        )
+    );
+}
+
+add_action( 'rest_api_init', 'gano_register_diagnostico_rest_routes' );
+function gano_register_diagnostico_rest_routes() {
+    register_rest_route( 'gano/v1', '/lead', array(
+        'methods'             => 'POST',
+        'callback'            => 'gano_diagnostico_lead_callback',
+        'permission_callback' => 'gano_verify_diagnostico_nonce',
+    ) );
+}
+
+/**
+ * Verificar nonce CSRF + rate limiting del diagnóstico.
+ * Rate limiting: max 5 peticiones por IP cada 60 segundos.
+ *
+ * @return true|WP_Error
+ */
+function gano_verify_diagnostico_nonce( WP_REST_Request $request ) {
+    $ip        = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+    $transient = 'gano_diag_rate_' . md5( $ip );
+    $window    = 60;
+    $max       = 5;
+    $hits      = (int) get_transient( $transient );
+
+    if ( $hits >= $max ) {
+        return new WP_Error(
+            'gano_rate_limited',
+            'Demasiadas peticiones. Intenta de nuevo en un momento.',
+            array( 'status' => 429 )
+        );
+    }
+
+    if ( 0 === $hits ) {
+        set_transient( $transient, 1, $window );
+    } else {
+        $window_start = get_transient( $transient . '_start' );
+        if ( false === $window_start ) {
+            set_transient( $transient . '_start', time(), $window );
+        }
+        $remaining = $window - ( time() - (int) $window_start );
+        if ( $remaining > 0 ) {
+            set_transient( $transient, $hits + 1, $remaining );
+        } else {
+            set_transient( $transient, 1, $window );
+            set_transient( $transient . '_start', time(), $window );
+        }
+    }
+
+    $nonce = $request->get_header( 'X-WP-Nonce' );
+    if ( ! wp_verify_nonce( $nonce, 'gano_diagnostico_nonce' ) ) {
+        return new WP_Error(
+            'gano_invalid_nonce',
+            'Nonce inválido o expirado.',
+            array( 'status' => 403 )
+        );
+    }
+
+    return true;
+}
+
+/**
+ * Callback: guardar lead del diagnóstico en CSV + DB fallback.
+ */
+function gano_diagnostico_lead_callback( WP_REST_Request $request ): WP_REST_Response {
+    $body    = $request->get_json_params();
+    $name    = isset( $body['name'] )    ? sanitize_text_field( $body['name'] )    : '';
+    $email   = isset( $body['email'] )   ? sanitize_email( $body['email'] )        : '';
+    $phone   = isset( $body['phone'] )   ? sanitize_text_field( $body['phone'] )   : '';
+    $company = isset( $body['company'] ) ? sanitize_text_field( $body['company'] ) : '';
+    $source  = isset( $body['source'] )  ? sanitize_text_field( $body['source'] )  : 'diagnostico_digital';
+    $answers = isset( $body['answers'] ) ? (array) $body['answers'] : array();
+
+    if ( empty( $name ) || empty( $email ) ) {
+        return new WP_REST_Response( array( 'error' => 'Nombre y correo son obligatorios.' ), 400 );
+    }
+
+    $date     = current_time( 'mysql' );
+    $leads_file = WP_CONTENT_DIR . '/uploads/gano-leads.csv';
+
+    // Ensure directory and file exist
+    $upload_dir = dirname( $leads_file );
+    if ( ! is_dir( $upload_dir ) ) {
+        wp_mkdir_p( $upload_dir );
+    }
+    if ( ! file_exists( $leads_file ) ) {
+        $header = "Date,Name,Email,Phone,Company,Source,Answers\n";
+        @file_put_contents( $leads_file, $header );
+        // Protect with .htaccess
+        $htaccess = $upload_dir . '/.htaccess';
+        if ( ! file_exists( $htaccess ) ) {
+            @file_put_contents( $htaccess, "<Files \"gano-leads.csv\">\n    Require all denied\n</Files>\n" );
+        }
+    }
+
+    $answers_json = wp_json_encode( $answers );
+    $line = sprintf(
+        '"%s","%s","%s","%s","%s","%s","%s"\n',
+        $date,
+        str_replace( '"', '""', $name ),
+        str_replace( '"', '""', $email ),
+        str_replace( '"', '""', $phone ),
+        str_replace( '"', '""', $company ),
+        str_replace( '"', '""', $source ),
+        str_replace( '"', '""', $answers_json )
+    );
+
+    @file_put_contents( $leads_file, $line, FILE_APPEND );
+
+    // DB fallback (last 100 leads)
+    $db_leads = get_option( 'gano_diagnostico_leads', array() );
+    $db_leads[] = array(
+        'date'     => $date,
+        'name'     => $name,
+        'email'    => $email,
+        'phone'    => $phone,
+        'company'  => $company,
+        'source'   => $source,
+        'answers'  => $answers,
+    );
+    if ( count( $db_leads ) > 100 ) {
+        array_shift( $db_leads );
+    }
+    update_option( 'gano_diagnostico_leads', $db_leads );
+
+    // Optional: send email notification
+    $admin_email = get_option( 'admin_email' );
+    if ( is_email( $admin_email ) ) {
+        $subject = sprintf( '[Gano Lead] Diagnóstico de %s', $name );
+        $message = sprintf(
+            "Nuevo lead desde el diagnóstico digital.\n\nNombre: %s\nEmail: %s\nTeléfono: %s\nEmpresa: %s\nFecha: %s\n",
+            $name,
+            $email,
+            $phone ?: 'No proporcionado',
+            $company ?: 'No proporcionada',
+            $date
+        );
+        wp_mail( $admin_email, $subject, $message );
+    }
+
+    return new WP_REST_Response( array( 'saved' => true ), 200 );
+}
+
+// =============================================================================
 // 4. SHORTCODE [gano_pilares] — Cuatro pilares de la homepage
 // Copy: memory/content/homepage-copy-2026-04.md — Sección "Cuatro pilares"
 // Uso en Elementor: insertar widget "Código corto" y escribir [gano_pilares]

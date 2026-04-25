@@ -2,101 +2,73 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Gano: validar cola Claude dispatch",
+      "label": "Gano: PHP Lint (cambios recientes)",
       "type": "shell",
-      "command": "python",
-      "args": ["scripts/validate_claude_dispatch.py"],
+      "command": "git diff --name-only HEAD~1 HEAD | Where-Object { $_ -match '\\.php$' } | ForEach-Object { php -l $_ }",
       "options": {
         "cwd": "${workspaceFolder}"
       },
+      "problemMatcher": ["$php"],
+      "group": "build"
+    },
+    {
+      "label": "Gano: PHP Lint (todo)",
+      "type": "shell",
+      "command": "Get-ChildItem -Recurse -Filter '*.php' | ForEach-Object { php -l $_.FullName }",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": ["$php"],
+      "group": "build"
+    },
+    {
+      "label": "Gano: Deploy — Dry Run",
+      "type": "shell",
+      "command": "scripts/deploy-local.ps1 -DryRun",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build"
+    },
+    {
+      "label": "Gano: Deploy — Live",
+      "type": "shell",
+      "command": "scripts/deploy-local.ps1",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
       "presentation": {
         "reveal": "always",
         "panel": "shared",
         "focus": true
-      },
-      "problemMatcher": []
+      }
     },
     {
-      "label": "Gano: Claude dispatch — siguiente tarea (next)",
+      "label": "Gano: Verificar estado git",
       "type": "shell",
-      "command": "python",
-      "args": ["scripts/claude_dispatch.py", "next"],
+      "command": "git status --short",
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared",
-        "focus": true
-      },
-      "problemMatcher": []
+      "group": "build"
     },
     {
-      "label": "Gano: Claude dispatch — listar",
+      "label": "Gano: Commit + Push",
       "type": "shell",
-      "command": "python",
-      "args": ["scripts/claude_dispatch.py", "list"],
+      "command": "git add -A; git commit -m '${input:commitMessage}'; git push origin main",
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared",
-        "focus": false
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Gano: Claude dispatch — mostrar tarea",
-      "type": "shell",
-      "command": "python",
-      "args": ["scripts/claude_dispatch.py", "show", "${input:dispatchTaskId}"],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared",
-        "focus": true
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Gano: Claude dispatch — marcar completa",
-      "type": "shell",
-      "command": "python",
-      "args": ["scripts/claude_dispatch.py", "complete", "${input:dispatchTaskId}"],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared",
-        "focus": true
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Gano: validar cola Copilot (agent-queue)",
-      "type": "shell",
-      "command": "python",
-      "args": ["scripts/validate_agent_queue.py"],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared",
-        "focus": false
-      },
-      "problemMatcher": []
+      "group": "build"
     }
   ],
   "inputs": [
     {
-      "id": "dispatchTaskId",
+      "id": "commitMessage",
       "type": "promptString",
-      "description": "ID de tarea dispatch (ej. cd-repo-002)"
+      "description": "Mensaje del commit",
+      "default": "update: cambios desde Cursor"
     }
   ]
 }

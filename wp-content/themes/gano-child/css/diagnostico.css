@@ -1,0 +1,730 @@
+/**
+ * Gano Diagnóstico Digital — Scoped Styles
+ * Namespace: .gano-diagnostico-*
+ * Based on: wiki/design-system/mockups/diagnostico_digital_gano.html
+ */
+
+.gano-diagnostico {
+  --gd-primary: #c0c1ff;
+  --gd-tertiary: #4cd7f6;
+  --gd-secondary: #d0bcff;
+  --gd-surface: #0b1326;
+  --gd-sc: #171f33;
+  --gd-sch: #222a3d;
+  --gd-ov: #dae2fd;
+  --gd-subt: #c7c4d7;
+  --gd-outline: rgba(70, 69, 84, .3);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--gd-ov);
+  background: var(--gd-surface);
+  min-height: 100vh;
+}
+
+/* Header */
+.gano-diagnostico__header {
+  background: rgba(7, 15, 30, .95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--gd-outline);
+  padding: .75rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.gano-diagnostico__logo {
+  font-weight: 800;
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, var(--gd-primary), var(--gd-tertiary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.gano-diagnostico__badge {
+  font-size: .75rem;
+  color: var(--gd-subt);
+}
+.gano-diagnostico__cta-top {
+  background: linear-gradient(135deg, var(--gd-primary), #8083ff);
+  color: #1000a9;
+  font-weight: 700;
+  font-size: .75rem;
+  padding: .4rem 1rem;
+  border-radius: .4rem;
+  text-decoration: none;
+}
+
+/* Quiz container */
+.gano-diagnostico__quiz {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+.gano-diagnostico__step {
+  display: none;
+}
+.gano-diagnostico__step.active {
+  display: block;
+}
+
+/* Progress */
+.gano-diagnostico__progress-bar {
+  height: 4px;
+  background: rgba(70, 69, 84, .3);
+  border-radius: 9999px;
+  margin-bottom: 2.5rem;
+  overflow: hidden;
+}
+.gano-diagnostico__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gd-primary), var(--gd-tertiary));
+  border-radius: 9999px;
+  transition: width .4s ease;
+}
+.gano-diagnostico__step-label {
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .15em;
+  color: var(--gd-tertiary);
+  font-weight: 700;
+  margin-bottom: .5rem;
+}
+
+/* Question */
+.gano-diagnostico__question-title {
+  font-weight: 800;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  line-height: 1.1;
+  color: var(--gd-ov);
+  margin-bottom: .75rem;
+}
+.gano-diagnostico__question-sub {
+  color: var(--gd-subt);
+  font-size: .95rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+/* Option cards */
+.gano-diagnostico__options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.gano-diagnostico__option {
+  background: var(--gd-sc);
+  border: 1px solid var(--gd-outline);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all .2s;
+  text-align: left;
+  position: relative;
+  user-select: none;
+}
+.gano-diagnostico__option:hover {
+  border-color: rgba(192, 193, 255, .4);
+  background: var(--gd-sch);
+  transform: translateY(-2px);
+}
+.gano-diagnostico__option.selected {
+  border-color: var(--gd-primary);
+  background: rgba(192, 193, 255, .08);
+  box-shadow: 0 0 20px rgba(192, 193, 255, .12);
+}
+.gano-diagnostico__option-icon {
+  font-size: 1.5rem;
+  margin-bottom: .5rem;
+  display: block;
+}
+.gano-diagnostico__option-label {
+  font-weight: 700;
+  font-size: .9rem;
+  color: var(--gd-ov);
+  display: block;
+  margin-bottom: .25rem;
+}
+.gano-diagnostico__option-desc {
+  font-size: .75rem;
+  color: var(--gd-subt);
+  line-height: 1.4;
+}
+.gano-diagnostico__option-check {
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  border: 2px solid var(--gd-outline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .65rem;
+  transition: all .2s;
+}
+.gano-diagnostico__option.selected .gano-diagnostico__option-check {
+  background: var(--gd-primary);
+  border-color: var(--gd-primary);
+  color: #1000a9;
+}
+
+/* Multi-select note */
+.gano-diagnostico__multi-note {
+  font-size: .72rem;
+  color: var(--gd-subt);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+
+/* Checkbox grid */
+.gano-diagnostico__checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: .75rem;
+  margin-bottom: 2rem;
+}
+.gano-diagnostico__cb-item {
+  background: var(--gd-sc);
+  border: 1px solid var(--gd-outline);
+  border-radius: .75rem;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+}
+.gano-diagnostico__cb-item:hover {
+  border-color: rgba(192, 193, 255, .3);
+}
+.gano-diagnostico__cb-item.selected {
+  border-color: var(--gd-tertiary);
+  background: rgba(76, 215, 246, .06);
+}
+.gano-diagnostico__cb-box {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: .2rem;
+  border: 2px solid var(--gd-outline);
+  flex-shrink: 0;
+  margin-top: .15rem;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .65rem;
+}
+.gano-diagnostico__cb-item.selected .gano-diagnostico__cb-box {
+  background: var(--gd-tertiary);
+  border-color: var(--gd-tertiary);
+  color: #001f27;
+}
+.gano-diagnostico__cb-text {
+  font-size: .82rem;
+  color: var(--gd-subt);
+  line-height: 1.4;
+}
+.gano-diagnostico__cb-text strong {
+  color: var(--gd-ov);
+  display: block;
+  font-size: .85rem;
+  margin-bottom: .1rem;
+}
+
+/* Nav buttons */
+.gano-diagnostico__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.gano-diagnostico__btn-next {
+  background: linear-gradient(135deg, var(--gd-primary), #8083ff);
+  color: #1000a9;
+  font-weight: 700;
+  font-size: .9rem;
+  padding: .75rem 2rem;
+  border-radius: .6rem;
+  border: none;
+  cursor: pointer;
+  transition: all .2s;
+}
+.gano-diagnostico__btn-next:hover {
+  box-shadow: 0 0 30px rgba(192, 193, 255, .3);
+}
+.gano-diagnostico__btn-next:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+.gano-diagnostico__btn-back {
+  background: transparent;
+  border: 1px solid var(--gd-outline);
+  color: var(--gd-subt);
+  font-weight: 600;
+  font-size: .85rem;
+  padding: .65rem 1.5rem;
+  border-radius: .6rem;
+  cursor: pointer;
+  transition: all .2s;
+}
+.gano-diagnostico__btn-back:hover {
+  border-color: rgba(192, 193, 255, .3);
+  color: var(--gd-ov);
+}
+
+/* Results */
+.gano-diagnostico__results {
+  display: none;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+/* Score header */
+.gano-diagnostico__score-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.gano-diagnostico__score-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 3px solid var(--gd-primary);
+  background: rgba(192, 193, 255, .05);
+}
+.gano-diagnostico__score-num {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--gd-primary);
+  line-height: 1;
+}
+.gano-diagnostico__score-label {
+  font-size: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--gd-subt);
+}
+
+/* LEGO blocks */
+.gano-diagnostico__lego-section {
+  margin-bottom: 3rem;
+}
+.gano-diagnostico__lego-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--gd-ov);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.gano-diagnostico__lego-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: .75rem;
+}
+.gano-diagnostico__lego-block {
+  border-radius: .75rem;
+  padding: 1rem;
+  text-align: center;
+  position: relative;
+  transition: transform .2s;
+}
+.gano-diagnostico__lego-block:hover {
+  transform: translateY(-3px);
+}
+.gano-diagnostico__lego-icon {
+  font-size: 1.5rem;
+  display: block;
+  margin-bottom: .4rem;
+}
+.gano-diagnostico__lego-name {
+  font-size: .78rem;
+  font-weight: 700;
+  margin-bottom: .2rem;
+}
+.gano-diagnostico__lego-status {
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: .15rem .5rem;
+  border-radius: 9999px;
+  display: inline-block;
+}
+.gano-diagnostico__lego-block--have {
+  background: rgba(76, 215, 246, .1);
+  border: 1px solid rgba(76, 215, 246, .3);
+}
+.gano-diagnostico__lego-block--have .gano-diagnostico__lego-icon {
+  color: var(--gd-tertiary);
+}
+.gano-diagnostico__lego-block--have .gano-diagnostico__lego-name {
+  color: var(--gd-ov);
+}
+.gano-diagnostico__lego-block--have .gano-diagnostico__lego-status {
+  background: rgba(76, 215, 246, .2);
+  color: var(--gd-tertiary);
+}
+.gano-diagnostico__lego-block--need {
+  background: rgba(192, 193, 255, .06);
+  border: 1px solid rgba(192, 193, 255, .2);
+}
+.gano-diagnostico__lego-block--need .gano-diagnostico__lego-icon {
+  color: var(--gd-primary);
+}
+.gano-diagnostico__lego-block--need .gano-diagnostico__lego-name {
+  color: var(--gd-ov);
+}
+.gano-diagnostico__lego-block--need .gano-diagnostico__lego-status {
+  background: rgba(192, 193, 255, .15);
+  color: var(--gd-primary);
+}
+.gano-diagnostico__lego-block--optional {
+  background: rgba(70, 69, 84, .2);
+  border: 1px solid rgba(70, 69, 84, .3);
+}
+.gano-diagnostico__lego-block--optional .gano-diagnostico__lego-icon {
+  color: var(--gd-subt);
+}
+.gano-diagnostico__lego-block--optional .gano-diagnostico__lego-name {
+  color: var(--gd-subt);
+}
+.gano-diagnostico__lego-block--optional .gano-diagnostico__lego-status {
+  background: rgba(70, 69, 84, .3);
+  color: var(--gd-subt);
+}
+
+/* Recommendations */
+.gano-diagnostico__reco-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+.gano-diagnostico__reco-card {
+  background: var(--gd-sc);
+  border: 1px solid var(--gd-outline);
+  border-radius: 1.1rem;
+  padding: 1.4rem;
+  position: relative;
+  transition: all .2s;
+}
+.gano-diagnostico__reco-card:hover {
+  border-color: rgba(192, 193, 255, .35);
+  transform: translateY(-3px);
+}
+.gano-diagnostico__reco-card--priority {
+  border-color: rgba(192, 193, 255, .4);
+  box-shadow: 0 0 25px rgba(192, 193, 255, .08);
+}
+.gano-diagnostico__reco-priority-badge {
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+  font-size: .6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: var(--gd-primary);
+  color: #1000a9;
+  padding: .15rem .5rem;
+  border-radius: 9999px;
+}
+.gano-diagnostico__reco-cat {
+  font-size: .62rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-weight: 700;
+  margin-bottom: .5rem;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+.gano-diagnostico__reco-name {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--gd-ov);
+  margin-bottom: .4rem;
+}
+.gano-diagnostico__reco-why {
+  font-size: .8rem;
+  color: var(--gd-subt);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+.gano-diagnostico__reco-price {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: .75rem;
+}
+.gano-diagnostico__reco-btn {
+  display: block;
+  text-align: center;
+  background: linear-gradient(135deg, var(--gd-primary), #8083ff);
+  color: #1000a9;
+  font-weight: 700;
+  font-size: .78rem;
+  padding: .5rem 1rem;
+  border-radius: .5rem;
+  text-decoration: none;
+  transition: all .2s;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+.gano-diagnostico__reco-btn:hover {
+  box-shadow: 0 0 20px rgba(192, 193, 255, .25);
+}
+.gano-diagnostico__reco-btn--todo {
+  background: rgba(70, 69, 84, .4);
+  color: var(--gd-subt);
+  cursor: default;
+}
+
+/* Profile badge */
+.gano-diagnostico__profile-badge {
+  background: linear-gradient(135deg, rgba(192, 193, 255, .1), rgba(76, 215, 246, .05));
+  border: 1px solid rgba(192, 193, 255, .2);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.gano-diagnostico__profile-icon {
+  font-size: 3rem;
+  flex-shrink: 0;
+}
+.gano-diagnostico__profile-title {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--gd-primary);
+  margin-bottom: .3rem;
+}
+.gano-diagnostico__profile-desc {
+  color: var(--gd-subt);
+  font-size: .9rem;
+  line-height: 1.6;
+}
+
+/* Segment bars */
+.gano-diagnostico__segments {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+.gano-diagnostico__segment {
+  background: var(--gd-sc);
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+.gano-diagnostico__seg-label {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--gd-subt);
+  font-weight: 700;
+  margin-bottom: .5rem;
+}
+.gano-diagnostico__seg-bar {
+  height: 6px;
+  background: rgba(70, 69, 84, .3);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-bottom: .4rem;
+}
+.gano-diagnostico__seg-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width .8s ease;
+}
+.gano-diagnostico__seg-pct {
+  font-size: .85rem;
+  font-weight: 800;
+}
+
+/* CTA box */
+.gano-diagnostico__cta-box {
+  background: linear-gradient(135deg, rgba(192, 193, 255, .08), rgba(76, 215, 246, .04));
+  border: 1px solid rgba(192, 193, 255, .2);
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+.gano-diagnostico__cta-box h2 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin-bottom: .75rem;
+}
+.gano-diagnostico__cta-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+.gano-diagnostico__cta-primary {
+  background: linear-gradient(135deg, var(--gd-primary), #8083ff);
+  color: #1000a9;
+  font-weight: 700;
+  padding: .85rem 2rem;
+  border-radius: .6rem;
+  text-decoration: none;
+}
+.gano-diagnostico__cta-secondary {
+  background: rgba(45, 52, 73, .55);
+  border: 1px solid var(--gd-outline);
+  color: var(--gd-ov);
+  font-weight: 600;
+  padding: .85rem 2rem;
+  border-radius: .6rem;
+  text-decoration: none;
+}
+.gano-diagnostico__restart-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  background: transparent;
+  border: 1px solid var(--gd-outline);
+  color: var(--gd-subt);
+  font-size: .8rem;
+  padding: .4rem 1rem;
+  border-radius: .5rem;
+  cursor: pointer;
+  margin-top: 2rem;
+  font-family: inherit;
+}
+
+/* Lead form overlay */
+.gano-diagnostico__lead-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 15, 30, .9);
+  backdrop-filter: blur(10px);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.gano-diagnostico__lead-overlay.active {
+  display: flex;
+}
+.gano-diagnostico__lead-box {
+  background: var(--gd-sc);
+  border: 1px solid var(--gd-outline);
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  max-width: 480px;
+  width: 100%;
+}
+.gano-diagnostico__lead-box h3 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: .5rem;
+  color: var(--gd-ov);
+}
+.gano-diagnostico__lead-box p {
+  color: var(--gd-subt);
+  font-size: .9rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+.gano-diagnostico__lead-input {
+  width: 100%;
+  background: var(--gd-surface);
+  border: 1px solid var(--gd-outline);
+  border-radius: .6rem;
+  padding: .85rem 1rem;
+  color: var(--gd-ov);
+  font-family: inherit;
+  font-size: .9rem;
+  margin-bottom: 1rem;
+  outline: none;
+}
+.gano-diagnostico__lead-input:focus {
+  border-color: var(--gd-primary);
+}
+.gano-diagnostico__lead-input::placeholder {
+  color: var(--gd-subt);
+}
+.gano-diagnostico__lead-submit {
+  width: 100%;
+  background: linear-gradient(135deg, var(--gd-primary), #8083ff);
+  color: #1000a9;
+  font-weight: 700;
+  font-size: .9rem;
+  padding: .85rem;
+  border-radius: .6rem;
+  border: none;
+  cursor: pointer;
+}
+.gano-diagnostico__lead-submit:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+.gano-diagnostico__lead-skip {
+  display: block;
+  text-align: center;
+  color: var(--gd-subt);
+  font-size: .8rem;
+  margin-top: 1rem;
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+}
+.gano-diagnostico__lead-success {
+  display: none;
+  text-align: center;
+  padding: 2rem;
+}
+.gano-diagnostico__lead-success h3 {
+  color: var(--gd-tertiary);
+  margin-bottom: .5rem;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .gano-diagnostico__header {
+    padding: .75rem 1rem;
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+  .gano-diagnostico__badge {
+    display: none;
+  }
+  .gano-diagnostico__quiz,
+  .gano-diagnostico__results {
+    padding: 2rem 1rem;
+  }
+  .gano-diagnostico__options {
+    grid-template-columns: 1fr;
+  }
+  .gano-diagnostico__checkbox-grid {
+    grid-template-columns: 1fr;
+  }
+  .gano-diagnostico__reco-grid {
+    grid-template-columns: 1fr;
+  }
+  .gano-diagnostico__profile-badge {
+    flex-direction: column;
+    text-align: center;
+  }
+}
