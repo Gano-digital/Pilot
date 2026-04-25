@@ -709,22 +709,75 @@ function gano_child_enqueue_styles() {
 
     // Navegación sticky + mega-dropdown — todas las páginas
     wp_enqueue_script( 'gano-nav', get_stylesheet_directory_uri() . '/js/gano-nav.js', array(), '1.0.0', true );
+}
 
-    // Nav Enhanced: Scroll-Spy + Hide-on-Scroll + Glassmorphism (F2.2)
-    $gano_nav_enhanced_css = get_stylesheet_directory() . '/css/gano-nav-enhanced.css';
+// =============================================================================
+// Task 2: Scroll-Spy Navigation Enhanced — Enqueue CSS & JS
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_nav_enhanced', 12 );
+
+function gano_enqueue_nav_enhanced() {
+    if ( is_admin() ) { return; }
+    if ( ! is_front_page() ) { return; }
+
+    $css_path = get_stylesheet_directory() . '/css/gano-nav-enhanced.css';
+    $css_version = file_exists( $css_path ) ? (string) filemtime( $css_path ) : '1.0.0';
+
     wp_enqueue_style(
         'gano-nav-enhanced',
         get_stylesheet_directory_uri() . '/css/gano-nav-enhanced.css',
-        array( 'gano-nav-css' ),
-        file_exists( $gano_nav_enhanced_css ) ? (string) filemtime( $gano_nav_enhanced_css ) : '1.0.0'
+        [],
+        $css_version
     );
+}
 
-    $gano_nav_scroll_spy_js = get_stylesheet_directory() . '/js/gano-nav-scroll-spy.js';
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_nav_scroll_spy', 12 );
+
+function gano_enqueue_nav_scroll_spy() {
+    if ( is_admin() ) { return; }
+    if ( ! is_front_page() ) { return; }
+
+    $js_path = get_stylesheet_directory() . '/js/gano-nav-scroll-spy.js';
+    $js_version = file_exists( $js_path ) ? (string) filemtime( $js_path ) : '1.0.0';
+
     wp_enqueue_script(
         'gano-nav-scroll-spy',
         get_stylesheet_directory_uri() . '/js/gano-nav-scroll-spy.js',
-        array(),
-        file_exists( $gano_nav_scroll_spy_js ) ? (string) filemtime( $gano_nav_scroll_spy_js ) : '1.0.0',
+        [],
+        $js_version,
+        true
+    );
+}
+
+// =============================================================================
+// Task 6: Hero Particles System — Enqueue CSS & JS
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_particles', 12 );
+
+function gano_enqueue_particles() {
+    if ( is_admin() ) { return; }
+    if ( ! is_front_page() ) { return; }
+
+    $css_path = get_stylesheet_directory() . '/css/gano-particles.css';
+    $css_version = file_exists( $css_path ) ? (string) filemtime( $css_path ) : '1.0.0';
+
+    wp_enqueue_style(
+        'gano-particles',
+        get_stylesheet_directory_uri() . '/css/gano-particles.css',
+        [],
+        $css_version
+    );
+
+    $js_path = get_stylesheet_directory() . '/js/gano-hero-particles.js';
+    $js_version = file_exists( $js_path ) ? (string) filemtime( $js_path ) : '1.0.0';
+
+    wp_enqueue_script(
+        'gano-hero-particles',
+        get_stylesheet_directory_uri() . '/js/gano-hero-particles.js',
+        [],
+        $js_version,
         true
     );
 }
