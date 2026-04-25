@@ -1,18 +1,26 @@
 # Progress Tracker
 
-## 2026-04-24 — Fix funnel diagnóstico (REST whitelist)
+## 2026-04-24 — Fix funnel + Showcase futurista
 
 ### Completado
 
-- [x] Identificar causa raíz del 401 en `/wp-json/gano/v1/lead`: filtro `rest_authentication_errors` bloqueaba la ruta.
-- [x] Añadir `/wp-json/gano/v1/lead` a la whitelist del filtro en `functions.php`.
-- [x] Validar sintaxis PHP (`php -l` sin errores).
-- [x] Commit local `16fc7dcd` en `main`.
+- [x] Fix REST whitelist: `/wp-json/gano/v1/lead` añadido a `rest_authentication_errors`.
+- [x] Validar sintaxis PHP (`php -l` sin errores) — `functions.php`.
+- [x] Commit local `16fc7dcd` (fix REST).
+- [x] Showcase futurista: plan aprobado + ejecución de 12 efectos procedurales.
+- [x] Crear `css/gano-showcase.css` — tokens SOTA, layout grid, CSS 3D, reduced-motion.
+- [x] Crear `js/gano-showcase.js` — motor lazy-init, 8 efectos Canvas 2D/WebGL/SVG adaptados.
+- [x] Crear `templates/page-showcase.php` — hero, grid 8 tarjetas, separador SVG, CTA fractal.
+- [x] Enqueue condicional en `functions.php` para template showcase.
+- [x] Validar sintaxis PHP (`php -l` sin errores) — `page-showcase.php`.
+- [x] Commit local `1dde1c54` (feat showcase).
 
 ### Pendiente
 
-- [ ] Deploy a producción (SCP o webhook 04).
-- [ ] Smoke test end-to-end: completar quiz en `/diagnostico-digital/` → enviar lead → verificar CSV + email admin.
+- [ ] Deploy a producción (SCP o webhook 04): commits `16fc7dcd` + `1dde1c54`.
+- [ ] Crear página WP `/showcase/` y asignar template `page-showcase.php` (WP-CLI).
+- [ ] Smoke test end-to-end: completar quiz → enviar lead → verificar CSV.
+- [ ] Smoke test showcase: visual responsive + reduced-motion + lazy-init en scroll.
 
 ---
 

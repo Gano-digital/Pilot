@@ -2,16 +2,30 @@
 
 _Última actualización: 2026-04-24._
 
-## Snapshot 2026-04-24 (fix funnel diagnóstico — REST whitelist)
+## Snapshot 2026-04-24 (fix funnel diagnóstico + showcase futurista)
 
+### Fix REST whitelist
 - **Fix crítico en `functions.php`:** el endpoint `POST /wp-json/gano/v1/lead` retornaba **401** porque el filtro `rest_authentication_errors` no incluía la ruta en la lista blanca. Añadida `/wp-json/gano/v1/lead` al array `$chat_routes`; ahora el endpoint llega correctamente al `permission_callback` (`gano_verify_diagnostico_nonce`), que valida nonce CSRF + rate limiting (5 req/IP/60s).
-- **Estado del funnel Zero-Plugin:**
-  - `/diagnostico-digital/` — template `page-diagnostico.php`, CSS `diagnostico.css`, JS `diagnostico.js` con `wp_localize_script` (nonce + restUrl). Enqueue + localize ya estaban en `functions.php`.
-  - `/servicios/` — template `page-servicios.php` con 4 pilares y catálogo rápido.
-  - `/hosting/` — template `page-hosting.php` con tabla comparativa de 4 planes.
-  - Lead capture: guarda en CSV (`wp-content/uploads/gano-leads.csv`) + DB fallback (`gano_diagnostico_leads`).
-- **Commit local:** `16fc7dcd` en `main` (sin push — esperando aprobación).
-- **Pendiente inmediato:** deploy del fix a producción (SCP o webhook 04), validación end-to-end del envío de leads en `/diagnostico-digital/`.
+- **Commit local:** `16fc7dcd` en `main`.
+
+### Showcase futurista (nuevo)
+- **Página `/showcase/`** — Template `templates/page-showcase.php` con 12 efectos procedurales 100% nativos:
+  - Hero: **WebGL2 Plasma** background + glitch textual "Soberanía Digital"
+  - Grid 8 tarjetas: partículas conectadas (infra), espectro radial (rendimiento), osciloscopio bloom (monitoreo), icosaedro wireframe (seguridad), losa isométrica CSS 3D (hosting), bloques "GANO" isométricos (brand), metabolas triples (fusión), vúmetros SVG (estado)
+  - Separador SVG animado con gradiente Gano
+  - CTA final: **Julia + anillo caleidoscópico** como fondo
+- **Assets:** `css/gano-showcase.css` (320 líneas, tokens SOTA, reduced-motion), `js/gano-showcase.js` (motor lazy-init + 8 efectos Canvas/WebGL/SVG)
+- **Features técnicas:** `IntersectionObserver` para lazy-init, `prefers-reduced-motion` en todos los efectos, paleta Gano adaptada, sin dependencias externas
+- **Enqueue condicional** en `functions.php` solo para template `page-showcase.php`
+- **Commit local:** `1dde1c54` en `main` (sin push).
+
+### Estado del funnel Zero-Plugin
+- `/diagnostico-digital/` — template, CSS, JS, endpoint REST con nonce + rate limit.
+- `/servicios/` — 4 pilares + catálogo rápido.
+- `/hosting/` — tabla comparativa 4 planes.
+- Lead capture: CSV + DB fallback.
+
+**Pendiente inmediato:** deploy a producción (SCP o webhook 04) de commits `16fc7dcd` + `1dde1c54`, validación end-to-end del envío de leads, creación de página WP para `/showcase/` con template asignado.
 
 ## Snapshot 2026-04-22 (comercio crypto + política Reseller)
 
