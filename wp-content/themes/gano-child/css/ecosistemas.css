@@ -250,6 +250,147 @@
 }
 .gano-ecosistemas-tabla tbody tr:hover td { background: #f1f5f9; }
 
+/* ── Trust Signals ─────────────────────────────────────────────── */
+.gano-ecosistemas-trust-signals {
+    padding: 40px 5%;
+    background: rgba(255, 107, 53, 0.08);
+    border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+}
+
+.gano-ecosistemas-trust-signals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.gano-trust-signal {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.gano-trust-signal-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.gano-trust-signal-content h4 {
+    margin: 0 0 5px 0;
+    font-weight: 600;
+}
+
+.gano-trust-signal-content p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #64748b;
+}
+
+/* ── Reseller Tabs ─────────────────────────────────────────────── */
+.gano-reseller-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.gano-reseller-tab-btn {
+    padding: 10px 20px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.gano-reseller-tab-btn:hover {
+    background-color: #f8fafc;
+}
+
+.gano-reseller-tab-btn.active {
+    background-color: #FF6B35;
+    color: white;
+    border-color: #FF6B35;
+}
+
+.gano-reseller-tab-pane {
+    display: none;
+}
+
+.gano-reseller-tab-pane.active {
+    display: block;
+}
+
+/* ── Objeciones Section ────────────────────────────────────────── */
+.gano-ecosistemas-objeciones {
+    padding: 60px 5%;
+    background: rgba(15, 17, 21, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.gano-ecosistemas-objeciones h2 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.gano-objeciones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.gano-objecion-card {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.gano-objecion-card h3 {
+    margin-bottom: 15px;
+}
+
+.gano-objecion-card-content {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.gano-objecion-card-content p {
+    margin-bottom: 0.5rem;
+}
+
+.gano-objecion-card-content p:last-child {
+    margin-bottom: 0;
+}
+
+.gano-objecion-card-content strong {
+    display: block;
+    margin-top: 0.75rem;
+}
+
+/* ── Reseller Checkout Section ────────────────────────────────── */
+.gano-reseller-checkout-section {
+    padding: 60px 5%;
+    background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);
+}
+
+.gano-reseller-checkout-section h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.gano-reseller-checkout-section > p {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+}
+
+.gano-reseller-tabs-content {
+    width: 100%;
+}
+
 /* ── Responsive ────────────────────────────────────────────────── */
 @media (max-width: 768px) {
     .gano-planes-grid-section > .gano-container {

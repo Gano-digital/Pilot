@@ -228,7 +228,7 @@ get_header();
               <small class="gano-plan-pending-note">Carrito en configuración · Contacta para activar</small>
             <?php elseif ( $rcc_product_id ) : ?>
               <!-- NUEVO: Si se encontró el producto RCC, usar shortcode rstore_product -->
-              <?php echo do_shortcode( "[rstore_product post_id={$rcc_product_id} show_price=1 redirect=1 button_label='" . esc_attr( $plan['cta_primario'] ) . "']" ); ?>
+              <?php echo do_shortcode( "[rstore_product post_id=" . intval( $rcc_product_id ) . " show_price=1 redirect=1 button_label='" . esc_attr( $plan['cta_primario'] ) . "']" ); ?>
             <?php else : ?>
               <a href="<?php echo esc_url( $cart_url ); ?>" class="gano-btn gano-km-btn-primary" target="_blank" rel="noopener">
                 <?php echo esc_html( $plan['cta_primario'] ); ?>
@@ -264,43 +264,43 @@ get_header();
   </section>
 
   <!-- ── SEÑALES DE CONFIANZA ───────────────────────────────────── -->
-  <section class="gano-ecosistemas-trust-signals" style="padding: 40px 5%; background: rgba(255,107,53,0.08); border-bottom: 1px solid rgba(255,107,53,0.2);">
+  <section class="gano-ecosistemas-trust-signals">
     <div class="gano-container">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px;">
+      <div class="gano-ecosistemas-trust-signals-grid">
 
         <!-- Signal 1: GoDaddy Reseller -->
-        <div style="display: flex; align-items: center; gap: 15px;">
-          <div style="font-size: 2.5rem;">🛡️</div>
-          <div>
-            <h4 style="margin: 0 0 5px 0; font-weight: 600;">Infraestructura GoDaddy</h4>
-            <p style="margin: 0; font-size: 0.95rem; color: #64748b;">Programa reseller autorizado · Estándares globales de datacenter</p>
+        <div class="gano-trust-signal">
+          <div class="gano-trust-signal-icon">🛡️</div>
+          <div class="gano-trust-signal-content">
+            <h4>Infraestructura GoDaddy</h4>
+            <p>Programa reseller autorizado · Estándares globales de datacenter</p>
           </div>
         </div>
 
         <!-- Signal 2: Uptime Guarantee -->
-        <div style="display: flex; align-items: center; gap: 15px;">
-          <div style="font-size: 2.5rem;">📊</div>
-          <div>
-            <h4 style="margin: 0 0 5px 0; font-weight: 600;">99.9% Disponibilidad</h4>
-            <p style="margin: 0; font-size: 0.95rem; color: #64748b;">SLA comprometido · Monitoreo proactivo incluido</p>
+        <div class="gano-trust-signal">
+          <div class="gano-trust-signal-icon">📊</div>
+          <div class="gano-trust-signal-content">
+            <h4>99.9% Disponibilidad</h4>
+            <p>SLA comprometido · Monitoreo proactivo incluido</p>
           </div>
         </div>
 
         <!-- Signal 3: COP Billing -->
-        <div style="display: flex; align-items: center; gap: 15px;">
-          <div style="font-size: 2.5rem;">💵</div>
-          <div>
-            <h4 style="margin: 0 0 5px 0; font-weight: 600;">Facturación en COP</h4>
-            <p style="margin: 0; font-size: 0.95rem; color: #64748b;">Pesos colombianos · Sin sorpresas de tipo de cambio</p>
+        <div class="gano-trust-signal">
+          <div class="gano-trust-signal-icon">💵</div>
+          <div class="gano-trust-signal-content">
+            <h4>Facturación en COP</h4>
+            <p>Pesos colombianos · Sin sorpresas de tipo de cambio</p>
           </div>
         </div>
 
         <!-- Signal 4: Support Response -->
-        <div style="display: flex; align-items: center; gap: 15px;">
-          <div style="font-size: 2.5rem;">⚡</div>
-          <div>
-            <h4 style="margin: 0 0 5px 0; font-weight: 600;">Soporte Priorizado</h4>
-            <p style="margin: 0; font-size: 0.95rem; color: #64748b;">Primera respuesta en 8 horas · En tu idioma</p>
+        <div class="gano-trust-signal">
+          <div class="gano-trust-signal-icon">⚡</div>
+          <div class="gano-trust-signal-content">
+            <h4>Soporte Priorizado</h4>
+            <p>Primera respuesta en 8 horas · En tu idioma</p>
           </div>
         </div>
 
@@ -342,15 +342,15 @@ get_header();
   </section>
 
   <!-- ── RESPUESTAS A OBJECIONES ────────────────────────────────── -->
-  <section class="gano-ecosistemas-objeciones" style="padding: 60px 5%; background: rgba(15,17,21,0.5); border-top: 1px solid rgba(255,255,255,0.08);">
+  <section class="gano-ecosistemas-objeciones">
     <div class="gano-container">
-      <h2 style="text-align: center; margin-bottom: 40px;">Lo que dirías vs. lo que respondemos</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+      <h2>Lo que dirías vs. lo que respondemos</h2>
+      <div class="gano-objeciones-grid">
 
         <!-- Objeción 1: Precio -->
-        <article style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
-          <h3 style="color: #FF6B35; margin-bottom: 15px;">💰 "Es caro para lo que necesito"</h3>
-          <div style="font-size: 0.95rem; line-height: 1.6;">
+        <article class="gano-objecion-card">
+          <h3 style="color: #FF6B35;">💰 "Es caro para lo que necesito"</h3>
+          <div class="gano-objecion-card-content">
             <p><strong>Núcleo Prime:</strong> NVMe real (no HDD) + soporte en español = más que un hosting compartido genérico al mismo precio.</p>
             <p><strong>Fortaleza Delta:</strong> Hardening activo + más recursos + visibilidad = no pagas dos veces el mismo servicio.</p>
             <p><strong>Bastión SOTA:</strong> Una hora de caída supera la diferencia de precio mensual. Es inversión en continuidad.</p>
@@ -358,9 +358,9 @@ get_header();
         </article>
 
         <!-- Objeción 2: Confianza -->
-        <article style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
-          <h3 style="color: #1B4FD8; margin-bottom: 15px;">🤝 "¿Quién es Gano Digital?"</h3>
-          <div style="font-size: 0.95rem; line-height: 1.6;">
+        <article class="gano-objecion-card">
+          <h3 style="color: #1B4FD8;">🤝 "¿Quién es Gano Digital?"</h3>
+          <div class="gano-objecion-card-content">
             <p><strong>La infraestructura:</strong> GoDaddy Managed WordPress — años de trayectoria, datacenter con estándares globales.</p>
             <p><strong>Lo que sumamos:</strong> Configuración experta, hardening que el reseller no hace por omisión, soporte en tu idioma y contexto local.</p>
             <p><strong>Transparencia:</strong> SLA publicado, política de incidentes clara, sin letra pequeña.</p>
@@ -368,9 +368,9 @@ get_header();
         </article>
 
         <!-- Objeción 3: Soporte -->
-        <article style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
-          <h3 style="color: #00C26B; margin-bottom: 15px;">📞 "¿Recibiré soporte real?"</h3>
-          <div style="font-size: 0.95rem; line-height: 1.6;">
+        <article class="gano-objecion-card">
+          <h3 style="color: #00C26B;">📞 "¿Recibiré soporte real?"</h3>
+          <div class="gano-objecion-card-content">
             <p><strong>Núcleo Prime:</strong> Ticket en español con contexto de tu instalación — no un bot genérico.</p>
             <p><strong>Fortaleza Delta:</strong> Canal priorizado para clientes Fortaleza (respuesta dentro de horario hábil).</p>
             <p><strong>Bastión SOTA:</strong> Contacto dedicado, monitoreo proactivo, política de escalamiento documentada.</p>
@@ -382,96 +382,58 @@ get_header();
   </section>
 
   <!-- ── IFRAME RESELLER STORE (FASE 4) ──────────────────────── -->
-  <section style="padding: 60px 5%; background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);">
+  <section class="gano-reseller-checkout-section">
     <div class="gano-container">
-      <h2 style="text-align: center; margin-bottom: 10px;">Elige tu plan y activa hoy</h2>
-      <p style="text-align: center; color: #64748b; margin-bottom: 40px; font-size: 1.1rem;">
-        Selecciona el ecosistema que se adapte a tu proyecto. El checkout está integrado y listo.
-      </p>
+      <h2>Elige tu plan y activa hoy</h2>
+      <p>Selecciona el ecosistema que se adapte a tu proyecto. El checkout está integrado y listo.</p>
 
       <!-- Tabs para seleccionar ecosistema -->
-      <div class="gano-reseller-tabs" style="display: flex; gap: 10px; margin-bottom: 30px; justify-content: center; flex-wrap: wrap;">
-        <button class="gano-reseller-tab-btn active" data-tab="hosting_economia" style="padding: 10px 20px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-weight: 500;">
+      <div class="gano-reseller-tabs" role="tablist" aria-label="Selecciona ecosistema">
+        <button class="gano-reseller-tab-btn active"
+                data-tab="hosting_economia"
+                role="tab"
+                aria-selected="true"
+                aria-label="Seleccionar ecosistema Núcleo Prime">
           Núcleo Prime
         </button>
-        <button class="gano-reseller-tab-btn" data-tab="hosting_deluxe" style="padding: 10px 20px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-weight: 500;">
+        <button class="gano-reseller-tab-btn"
+                data-tab="hosting_deluxe"
+                role="tab"
+                aria-selected="false"
+                aria-label="Seleccionar ecosistema Fortaleza Delta">
           Fortaleza Delta
         </button>
-        <button class="gano-reseller-tab-btn" data-tab="hosting_premium" style="padding: 10px 20px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-weight: 500;">
+        <button class="gano-reseller-tab-btn"
+                data-tab="hosting_premium"
+                role="tab"
+                aria-selected="false"
+                aria-label="Seleccionar ecosistema Bastión SOTA">
           Bastión SOTA
         </button>
-        <button class="gano-reseller-tab-btn" data-tab="hosting_ultimate" style="padding: 10px 20px; border: 1px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; font-weight: 500;">
+        <button class="gano-reseller-tab-btn"
+                data-tab="hosting_ultimate"
+                role="tab"
+                aria-selected="false"
+                aria-label="Seleccionar ecosistema Ultimate WP">
           Ultimate WP
         </button>
       </div>
 
       <!-- Iframes para cada ecosistema -->
       <div class="gano-reseller-tabs-content">
-        <div class="gano-reseller-tab-pane active" data-tab="hosting_economia">
+        <div class="gano-reseller-tab-pane active" data-tab="hosting_economia" role="tabpanel">
           <?php echo do_shortcode( '[gano_reseller_iframe ecosistema="hosting_economia" heading="Núcleo Prime — Elige tu plan"]' ); ?>
         </div>
-        <div class="gano-reseller-tab-pane" data-tab="hosting_deluxe">
+        <div class="gano-reseller-tab-pane" data-tab="hosting_deluxe" role="tabpanel">
           <?php echo do_shortcode( '[gano_reseller_iframe ecosistema="hosting_deluxe" heading="Fortaleza Delta — Elige tu plan"]' ); ?>
         </div>
-        <div class="gano-reseller-tab-pane" data-tab="hosting_premium">
+        <div class="gano-reseller-tab-pane" data-tab="hosting_premium" role="tabpanel">
           <?php echo do_shortcode( '[gano_reseller_iframe ecosistema="hosting_premium" heading="Bastión SOTA — Elige tu plan"]' ); ?>
         </div>
-        <div class="gano-reseller-tab-pane" data-tab="hosting_ultimate">
+        <div class="gano-reseller-tab-pane" data-tab="hosting_ultimate" role="tabpanel">
           <?php echo do_shortcode( '[gano_reseller_iframe ecosistema="hosting_ultimate" heading="Ultimate WP — Elige tu plan"]' ); ?>
         </div>
       </div>
-
-      <script>
-        // Tab switching logic para iframes Reseller
-        document.querySelectorAll('.gano-reseller-tab-btn').forEach(button => {
-          button.addEventListener('click', function() {
-            const tab = this.getAttribute('data-tab');
-
-            // Remove active class from all buttons and panes
-            document.querySelectorAll('.gano-reseller-tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.gano-reseller-tab-pane').forEach(pane => pane.classList.remove('active'));
-
-            // Add active class to clicked button and corresponding pane
-            this.classList.add('active');
-            this.style.background = '#FF6B35';
-            this.style.color = 'white';
-            this.style.borderColor = '#FF6B35';
-
-            document.querySelector(`[data-tab="${tab}"].gano-reseller-tab-pane`).classList.add('active');
-            document.querySelector(`[data-tab="${tab}"].gano-reseller-tab-pane`).style.display = 'block';
-
-            // Reset styles for other buttons
-            document.querySelectorAll('.gano-reseller-tab-btn').forEach(btn => {
-              if (btn !== this) {
-                btn.style.background = 'white';
-                btn.style.color = 'inherit';
-                btn.style.borderColor = '#e2e8f0';
-              }
-            });
-          });
-        });
-
-        // Hide all panes except the first one
-        document.querySelectorAll('.gano-reseller-tab-pane').forEach((pane, idx) => {
-          pane.style.display = idx === 0 ? 'block' : 'none';
-        });
-      </script>
-
-      <style>
-        .gano-reseller-tab-btn.active {
-          background-color: #FF6B35 !important;
-          color: white !important;
-          border-color: #FF6B35 !important;
-        }
-
-        .gano-reseller-tab-pane {
-          display: none;
-        }
-
-        .gano-reseller-tab-pane.active {
-          display: block;
-        }
-      </style>
     </div>
   </section>
 

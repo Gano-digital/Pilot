@@ -135,6 +135,40 @@ function gano_enqueue_status_hud(): void {
 add_action( 'wp_footer', 'gano_render_status_hud', 20 );
 
 // =============================================================================
+// RESELLER TABS (page-ecosistemas.php)
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_reseller_tabs', 12 );
+function gano_enqueue_reseller_tabs(): void {
+    if ( is_admin() ) {
+        return;
+    }
+
+    // Solo enqueue en la página de ecosistemas
+    if ( ! is_page_template( 'templates/page-ecosistemas.php' ) ) {
+        return;
+    }
+
+    $css_path = get_stylesheet_directory() . '/css/gano-reseller-tabs.css';
+    $js_path  = get_stylesheet_directory() . '/js/gano-reseller-tabs.js';
+
+    wp_enqueue_style(
+        'gano-reseller-tabs',
+        get_stylesheet_directory_uri() . '/css/gano-reseller-tabs.css',
+        array(),
+        file_exists( $css_path ) ? (string) filemtime( $css_path ) : '1.0.0'
+    );
+
+    wp_enqueue_script(
+        'gano-reseller-tabs',
+        get_stylesheet_directory_uri() . '/js/gano-reseller-tabs.js',
+        array(),
+        file_exists( $js_path ) ? (string) filemtime( $js_path ) : '1.0.0',
+        true  // Load in footer
+    );
+}
+
+// =============================================================================
 // PRE-REGISTRO AJAX HANDLER (Lead Capture)
 // =============================================================================
 add_action( 'wp_ajax_gano_pre_registro', 'gano_handle_pre_registro' );
