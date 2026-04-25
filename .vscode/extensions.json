@@ -1,12 +1,12 @@
 {
   "recommendations": [
-    "ms-python.python",
     "bmewburn.vscode-intelephense-client",
-    "redhat.vscode-yaml",
-    "github.vscode-github-actions",
-    "yzhang.markdown-all-in-one",
-    "ms-vscode.powershell",
-    "editorconfig.editorconfig",
-    "gruntfuggly.todo-tree"
+    "wordpresstoolbox.wordpress-toolbox",
+    "mehedidracula.php-namespace-resolver",
+    "dbaeumer.vscode-eslint",
+    "stylelint.vscode-stylelint",
+    "esbenp.prettier-vscode",
+    "mrmlnc.vscode-duplicate",
+    "wayou.vscode-todo-highlight"
   ]
 }
