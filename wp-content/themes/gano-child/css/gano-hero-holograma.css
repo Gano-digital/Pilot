@@ -1,0 +1,34 @@
+#hero-holograma-canvas {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+  display: block;
+}
+
+.hero-holograma-svg {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+  display: block;
+}
+
+.hero-holograma-svg-text {
+  filter: drop-shadow(0 0 20px #00C26B);
+  animation: staticGlow 2s ease-in-out infinite;
+}
+
+@keyframes staticGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 15px #00C26B);
+  }
+  50% {
+    filter: drop-shadow(0 0 25px #00C26B);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-holograma-svg-text {
+    animation: none;
+    filter: drop-shadow(0 0 20px #00C26B);
+  }
+}
