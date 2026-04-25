@@ -157,7 +157,7 @@ $url_login = wp_login_url( home_url() );
 	<!-- SECCIÓN 5: SHOWCASE (SOTA Articles) -->
 	<section class="sota-banner" id="showcase">
 		<div class="container sota-inner">
-			<div class="sota-text reveal">
+			<div class="sota-text reveal" data-animation="reveal-up" data-duration="600" data-delay="0">
 				<span class="section-label">SOTA</span>
 				<h3><?php esc_html_e( 'State of the Art', 'gano-child' ); ?></h3>
 				<p>
@@ -165,15 +165,15 @@ $url_login = wp_login_url( home_url() );
 				</p>
 			</div>
 			<div class="sota-stats">
-				<div class="sota-stat reveal">
+				<div class="sota-stat reveal" data-animation="scale" data-duration="600" data-delay="100">
 					<div class="sota-stat-value">99.9%</div>
 					<div class="sota-stat-label"><?php esc_html_e( 'Disponibilidad Garantizada', 'gano-child' ); ?></div>
 				</div>
-				<div class="sota-stat reveal">
+				<div class="sota-stat reveal" data-animation="scale" data-duration="600" data-delay="200">
 					<div class="sota-stat-value">&lt;8h</div>
 					<div class="sota-stat-label"><?php esc_html_e( 'Primera Respuesta', 'gano-child' ); ?></div>
 				</div>
-				<div class="sota-stat reveal">
+				<div class="sota-stat reveal" data-animation="scale" data-duration="600" data-delay="300">
 					<div class="sota-stat-value">24/7</div>
 					<div class="sota-stat-label"><?php esc_html_e( 'Monitoreo Proactivo', 'gano-child' ); ?></div>
 				</div>
@@ -184,14 +184,14 @@ $url_login = wp_login_url( home_url() );
 	<!-- SECCIÓN 2: INFRAESTRUCTURA (Pilares) -->
 	<section class="section" id="pilares" data-animation="section">
 		<div class="container">
-			<div class="section-header reveal">
+			<div class="section-header reveal" data-animation="reveal-up" data-duration="600" data-delay="0">
 				<span class="section-label"><?php esc_html_e( 'Infraestructura', 'gano-child' ); ?></span>
 				<h2 class="section-title"><?php esc_html_e( 'Cuatro pilares de la', 'gano-child' ); ?> <span class="gradient-text"><?php esc_html_e( 'infraestructura SOTA', 'gano-child' ); ?></span></h2>
 				<p class="section-desc"><?php esc_html_e( 'Lo que diferencia a Gano Digital en el mercado colombiano.', 'gano-child' ); ?></p>
 			</div>
 
 			<div class="pillars-grid">
-				<div class="pillar-card reveal" data-animation="reveal-up" data-delay="0.1">
+				<div class="pillar-card reveal" data-animation="reveal-up" data-duration="600" data-delay="100" data-stagger="150">
 					<div class="pillar-icon">
 						<i class="fas fa-gauge-high"></i>
 					</div>
@@ -201,7 +201,7 @@ $url_login = wp_login_url( home_url() );
 					</p>
 				</div>
 
-				<div class="pillar-card reveal" data-animation="reveal-up" data-delay="0.2">
+				<div class="pillar-card reveal" data-animation="reveal-up" data-duration="600" data-delay="250" data-stagger="150">
 					<div class="pillar-icon">
 						<i class="fas fa-shield-halved"></i>
 					</div>
@@ -211,7 +211,7 @@ $url_login = wp_login_url( home_url() );
 					</p>
 				</div>
 
-				<div class="pillar-card reveal" data-animation="reveal-up" data-delay="0.3">
+				<div class="pillar-card reveal" data-animation="reveal-up" data-duration="600" data-delay="400" data-stagger="150">
 					<div class="pillar-icon">
 						<i class="fas fa-fingerprint"></i>
 					</div>
@@ -221,7 +221,7 @@ $url_login = wp_login_url( home_url() );
 					</p>
 				</div>
 
-				<div class="pillar-card reveal" data-animation="reveal-up" data-delay="0.4">
+				<div class="pillar-card reveal" data-animation="reveal-up" data-duration="600" data-delay="550" data-stagger="150">
 					<div class="pillar-icon">
 						<i class="fas fa-globe"></i>
 					</div>
@@ -237,20 +237,20 @@ $url_login = wp_login_url( home_url() );
 	<!-- SECCIÓN 3: PLANES (Ecosistemas) -->
 	<section class="section" id="precios" style="background: var(--bg-surface);" data-animation="section">
 		<div class="container">
-			<div class="section-header reveal">
+			<div class="section-header reveal" data-animation="reveal-up" data-duration="600" data-delay="0">
 				<span class="section-label"><?php esc_html_e( 'Catálogo comercial', 'gano-child' ); ?></span>
 				<h2 class="section-title"><?php esc_html_e( 'Planes con precios en', 'gano-child' ); ?> <span class="gradient-text">COP</span></h2>
 				<p class="section-desc"><?php esc_html_e( 'Compara planes con referencia USD* y elige el que necesita tu operación.', 'gano-child' ); ?></p>
 			</div>
 
-			<div class="pricing-tabs reveal">
+			<div class="pricing-tabs reveal" data-animation="fade" data-duration="600" data-delay="100">
 				<button class="pricing-tab active"><?php esc_html_e( 'WordPress', 'gano-child' ); ?></button>
 				<button class="pricing-tab"><?php esc_html_e( 'Compartido', 'gano-child' ); ?></button>
 				<button class="pricing-tab"><?php esc_html_e( 'VPS', 'gano-child' ); ?></button>
 			</div>
 
 			<div class="pricing-grid" id="pricing-wordpress">
-				<div class="pricing-card reveal" data-animation="reveal-up" data-delay="0.1">
+				<div class="pricing-card reveal" data-animation="reveal-left" data-duration="600" data-delay="200">
 					<div class="pricing-name"><?php esc_html_e( 'Esencial', 'gano-child' ); ?></div>
 					<div class="pricing-desc"><?php esc_html_e( 'Para emprendedores y proyectos nuevos', 'gano-child' ); ?></div>
 					<div class="pricing-price">
@@ -272,7 +272,7 @@ $url_login = wp_login_url( home_url() );
 					<a href="<?php echo esc_url( $url_ecosistemas ); ?>" class="btn btn-ghost" style="width:100%"><?php esc_html_e( 'Elegir plan', 'gano-child' ); ?></a>
 				</div>
 
-				<div class="pricing-card featured reveal" data-animation="reveal-up" data-delay="0.2">
+				<div class="pricing-card featured reveal" data-animation="scale" data-duration="600" data-delay="300">
 					<div class="pricing-badge"><?php esc_html_e( 'Más popular', 'gano-child' ); ?></div>
 					<div class="pricing-name"><?php esc_html_e( 'Profesional', 'gano-child' ); ?></div>
 					<div class="pricing-desc"><?php esc_html_e( 'Para negocios en crecimiento', 'gano-child' ); ?></div>
@@ -295,7 +295,7 @@ $url_login = wp_login_url( home_url() );
 					<a href="<?php echo esc_url( $url_ecosistemas ); ?>" class="btn btn-primary" style="width:100%"><?php esc_html_e( 'Elegir plan', 'gano-child' ); ?></a>
 				</div>
 
-				<div class="pricing-card reveal" data-animation="reveal-up" data-delay="0.3">
+				<div class="pricing-card reveal" data-animation="reveal-right" data-duration="600" data-delay="400">
 					<div class="pricing-name"><?php esc_html_e( 'Empresarial', 'gano-child' ); ?></div>
 					<div class="pricing-desc"><?php esc_html_e( 'Para operaciones de alto tráfico', 'gano-child' ); ?></div>
 					<div class="pricing-price">
@@ -323,14 +323,14 @@ $url_login = wp_login_url( home_url() );
 	<!-- SECCIÓN 4: SERVICIOS -->
 	<section class="section" id="servicios" data-animation="section">
 		<div class="container">
-			<div class="section-header reveal">
+			<div class="section-header reveal" data-animation="reveal-up" data-duration="600" data-delay="0">
 				<span class="section-label"><?php esc_html_e( 'Servicios', 'gano-child' ); ?></span>
 				<h2 class="section-title"><?php esc_html_e( 'Blindaje y', 'gano-child' ); ?> <span class="gradient-text"><?php esc_html_e( 'Optimización', 'gano-child' ); ?></span></h2>
 				<p class="section-desc"><?php esc_html_e( 'Capas de seguridad avanzada e inteligencia aplicadas a tu presencia digital.', 'gano-child' ); ?></p>
 			</div>
 
 			<div class="services-list">
-				<div class="service-row reveal" data-animation="reveal-up" data-delay="0.1">
+				<div class="service-row reveal" data-animation="reveal-up" data-duration="600" data-delay="100">
 					<div class="service-icon">
 						<i class="fas fa-shield-virus"></i>
 					</div>
@@ -343,7 +343,7 @@ $url_login = wp_login_url( home_url() );
 					</div>
 				</div>
 
-				<div class="service-row reveal" data-animation="reveal-up" data-delay="0.2">
+				<div class="service-row reveal" data-animation="reveal-up" data-duration="600" data-delay="200">
 					<div class="service-icon">
 						<i class="fas fa-magnifying-glass-chart"></i>
 					</div>
@@ -356,7 +356,7 @@ $url_login = wp_login_url( home_url() );
 					</div>
 				</div>
 
-				<div class="service-row reveal" data-animation="reveal-up" data-delay="0.3">
+				<div class="service-row reveal" data-animation="reveal-up" data-duration="600" data-delay="300">
 					<div class="service-icon">
 						<i class="fas fa-bolt"></i>
 					</div>
@@ -369,7 +369,7 @@ $url_login = wp_login_url( home_url() );
 					</div>
 				</div>
 
-				<div class="service-row reveal" data-animation="reveal-up" data-delay="0.4">
+				<div class="service-row reveal" data-animation="reveal-up" data-duration="600" data-delay="400">
 					<div class="service-icon">
 						<i class="fas fa-database"></i>
 					</div>
@@ -382,7 +382,7 @@ $url_login = wp_login_url( home_url() );
 					</div>
 				</div>
 
-				<div class="service-row reveal" data-animation="reveal-up" data-delay="0.5">
+				<div class="service-row reveal" data-animation="reveal-up" data-duration="600" data-delay="500">
 					<div class="service-icon">
 						<i class="fas fa-envelope-circle-check"></i>
 					</div>
@@ -401,13 +401,13 @@ $url_login = wp_login_url( home_url() );
 	<!-- SECCIÓN 6: NOSOTROS (Team/About) -->
 	<section class="section" id="nosotros" data-animation="section">
 		<div class="container">
-			<div class="section-header reveal">
+			<div class="section-header reveal" data-animation="reveal-up" data-duration="600" data-delay="0">
 				<span class="section-label"><?php esc_html_e( 'Sobre nosotros', 'gano-child' ); ?></span>
 				<h2 class="section-title"><?php esc_html_e( 'Infraestructura SOTA,', 'gano-child' ); ?> <span class="gradient-text"><?php esc_html_e( 'operación seria', 'gano-child' ); ?></span></h2>
 				<p class="section-desc"><?php esc_html_e( 'Gano Digital es un socio tecnológico que trabaja en silencio, comprometido con la continuidad de tu infraestructura y la soberanía digital de Colombia.', 'gano-child' ); ?></p>
 			</div>
 
-			<div class="nosotros-content reveal" data-animation="reveal-up" data-delay="0.1">
+			<div class="nosotros-content reveal" data-animation="reveal-up" data-duration="600" data-delay="100">
 				<div class="nosotros-mission">
 					<h3><?php esc_html_e( 'Nuestra misión', 'gano-child' ); ?></h3>
 					<p><?php esc_html_e( 'Proporcionar infraestructura de clase mundial con estándares SOTA, operación transparente y soporte en español. Sin ruido, sin promesas genéricas. Solo resultados.', 'gano-child' ); ?></p>
@@ -428,14 +428,14 @@ $url_login = wp_login_url( home_url() );
 	<!-- TESTIMONIALS (part of nosotros flow) -->
 	<section class="section">
 		<div class="container">
-			<div class="section-header reveal">
+			<div class="section-header reveal" data-animation="reveal-up" data-duration="600" data-delay="0">
 				<span class="section-label"><?php esc_html_e( 'Confianza', 'gano-child' ); ?></span>
 				<h2 class="section-title"><?php esc_html_e( 'Lo que dicen nuestros', 'gano-child' ); ?> <span class="gradient-text"><?php esc_html_e( 'clientes', 'gano-child' ); ?></span></h2>
 				<p class="section-desc"><?php esc_html_e( 'Empresas colombianas que ya operan con infraestructura SOTA.', 'gano-child' ); ?></p>
 			</div>
 
 			<div class="testimonials-grid">
-				<div class="testimonial-card reveal">
+				<div class="testimonial-card reveal" data-animation="scale" data-duration="600" data-delay="100">
 					<div class="stars">
 						<i class="fas fa-star"></i>
 						<i class="fas fa-star"></i>
@@ -455,7 +455,7 @@ $url_login = wp_login_url( home_url() );
 					</div>
 				</div>
 
-				<div class="testimonial-card reveal">
+				<div class="testimonial-card reveal" data-animation="scale" data-duration="600" data-delay="200">
 					<div class="stars">
 						<i class="fas fa-star"></i>
 						<i class="fas fa-star"></i>
@@ -475,7 +475,7 @@ $url_login = wp_login_url( home_url() );
 					</div>
 				</div>
 
-				<div class="testimonial-card reveal">
+				<div class="testimonial-card reveal" data-animation="scale" data-duration="600" data-delay="300">
 					<div class="stars">
 						<i class="fas fa-star"></i>
 						<i class="fas fa-star"></i>
@@ -501,7 +501,7 @@ $url_login = wp_login_url( home_url() );
 	<!-- SECCIÓN 7: CONTACTO (Final CTA) -->
 	<section class="section" id="contacto" data-animation="section">
 		<div class="container">
-			<div class="contacto-box reveal" data-animation="reveal-up" data-delay="0.1">
+			<div class="contacto-box reveal" data-animation="reveal-up" data-duration="600" data-delay="0">
 				<span class="section-label"><?php esc_html_e( 'Próximo paso', 'gano-child' ); ?></span>
 				<h2 class="section-title" style="margin-bottom: 12px;"><?php esc_html_e( 'Crea tu cuenta hoy', 'gano-child' ); ?></h2>
 				<p class="section-desc" style="max-width: 560px; margin: 0 auto;">

@@ -232,6 +232,40 @@ function gano_enqueue_hero_holograma(): void {
 }
 
 // =============================================================================
+// SCROLL ANIMATIONS (F3.2 — Front Page, scroll reveal with stagger)
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_scroll_animations', 12 );
+function gano_enqueue_scroll_animations(): void {
+    if ( is_admin() ) {
+        return;
+    }
+
+    // Solo en front page
+    if ( ! is_front_page() ) {
+        return;
+    }
+
+    $css_path = get_stylesheet_directory() . '/css/gano-scroll-animations.css';
+    $js_path  = get_stylesheet_directory() . '/js/gano-scroll-reveal.js';
+
+    wp_enqueue_style(
+        'gano-scroll-animations',
+        get_stylesheet_directory_uri() . '/css/gano-scroll-animations.css',
+        array(),
+        file_exists( $css_path ) ? (string) filemtime( $css_path ) : '1.0.0'
+    );
+
+    wp_enqueue_script(
+        'gano-scroll-reveal',
+        get_stylesheet_directory_uri() . '/js/gano-scroll-reveal.js',
+        array(),
+        file_exists( $js_path ) ? (string) filemtime( $js_path ) : '1.0.0',
+        true  // Load in footer
+    );
+}
+
+// =============================================================================
 // PRE-REGISTRO AJAX HANDLER (Lead Capture)
 // =============================================================================
 add_action( 'wp_ajax_gano_pre_registro', 'gano_handle_pre_registro' );
