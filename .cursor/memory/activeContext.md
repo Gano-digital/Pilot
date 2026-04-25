@@ -1,6 +1,17 @@
 # Active Context — Estado Actual
 
-_Última actualización: 2026-04-22._
+_Última actualización: 2026-04-24._
+
+## Snapshot 2026-04-24 (fix funnel diagnóstico — REST whitelist)
+
+- **Fix crítico en `functions.php`:** el endpoint `POST /wp-json/gano/v1/lead` retornaba **401** porque el filtro `rest_authentication_errors` no incluía la ruta en la lista blanca. Añadida `/wp-json/gano/v1/lead` al array `$chat_routes`; ahora el endpoint llega correctamente al `permission_callback` (`gano_verify_diagnostico_nonce`), que valida nonce CSRF + rate limiting (5 req/IP/60s).
+- **Estado del funnel Zero-Plugin:**
+  - `/diagnostico-digital/` — template `page-diagnostico.php`, CSS `diagnostico.css`, JS `diagnostico.js` con `wp_localize_script` (nonce + restUrl). Enqueue + localize ya estaban en `functions.php`.
+  - `/servicios/` — template `page-servicios.php` con 4 pilares y catálogo rápido.
+  - `/hosting/` — template `page-hosting.php` con tabla comparativa de 4 planes.
+  - Lead capture: guarda en CSV (`wp-content/uploads/gano-leads.csv`) + DB fallback (`gano_diagnostico_leads`).
+- **Commit local:** `16fc7dcd` en `main` (sin push — esperando aprobación).
+- **Pendiente inmediato:** deploy del fix a producción (SCP o webhook 04), validación end-to-end del envío de leads en `/diagnostico-digital/`.
 
 ## Snapshot 2026-04-22 (comercio crypto + política Reseller)
 

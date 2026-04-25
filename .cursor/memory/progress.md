@@ -1,5 +1,21 @@
 # Progress Tracker
 
+## 2026-04-24 — Fix funnel diagnóstico (REST whitelist)
+
+### Completado
+
+- [x] Identificar causa raíz del 401 en `/wp-json/gano/v1/lead`: filtro `rest_authentication_errors` bloqueaba la ruta.
+- [x] Añadir `/wp-json/gano/v1/lead` a la whitelist del filtro en `functions.php`.
+- [x] Validar sintaxis PHP (`php -l` sin errores).
+- [x] Commit local `16fc7dcd` en `main`.
+
+### Pendiente
+
+- [ ] Deploy a producción (SCP o webhook 04).
+- [ ] Smoke test end-to-end: completar quiz en `/diagnostico-digital/` → enviar lead → verificar CSV + email admin.
+
+---
+
 ## 2026-04-22 — Second brain sistemas visuales (memoria repo)
 
 ### Completado
