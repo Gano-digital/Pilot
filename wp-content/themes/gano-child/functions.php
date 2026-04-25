@@ -1574,6 +1574,7 @@ add_filter( 'rest_authentication_errors', function ( $result ) {
         '/wp-json/gano-agent/v1/log',
         '/wp-json/gano/v1/chat',
         '/wp-json/gano/v1/csp-report',
+        '/wp-json/gano/v1/lead',
     );
     foreach ( $chat_routes as $route ) {
         if ( strpos( $request_uri, $route ) !== false ) {
