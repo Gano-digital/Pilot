@@ -59,9 +59,16 @@ class Gano_Leads_Handler {
 	private static function protect_leads_file() {
 		$htaccess_dir = dirname( self::$leads_file );
 		$htaccess_file = $htaccess_dir . '/.htaccess';
+		$rules = "<Files \"gano-leads.csv\">\n    Require all denied\n</Files>\n";
+		
 		if ( ! file_exists( $htaccess_file ) ) {
-			$rules = "<Files \"gano-leads.csv\">\nOrder Allow,Deny\nDeny from all\n</Files>";
 			@file_put_contents( $htaccess_file, $rules );
+		} else {
+			// Upgrade Apache 2.2 syntax to 2.4 if detected
+			$current = @file_get_contents( $htaccess_file );
+			if ( $current !== false && strpos( $current, 'Order Allow,Deny' ) !== false ) {
+				@file_put_contents( $htaccess_file, $rules );
+			}
 		}
 	}
 }
