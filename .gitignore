@@ -132,3 +132,6 @@ vendor/graphify/
 audit_content.php
 cleanup_content.php
 *.staging.php
+
+# Local test/prototype HTML files
+test-*.html
