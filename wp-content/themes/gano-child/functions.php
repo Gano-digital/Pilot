@@ -1907,14 +1907,12 @@ function gano_rstore_cart_url( $pfid, $duration = 12 ) {
 		)
 	);
 
-	return esc_url(
-		add_query_arg(
-			array(
-				'plid'  => $pl_id,
-				'items' => $items,
-			),
-			'https://cart.secureserver.net/'
-		)
+	// esc_url() strips {, }, and " from query strings, breaking JSON format.
+	// Build manually with rawurlencode() to preserve the JSON structure.
+	return sprintf(
+		'https://cart.secureserver.net/?plid=%d&items=%s',
+		$pl_id,
+		rawurlencode( $items )
 	);
 }
 
