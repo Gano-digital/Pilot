@@ -13,7 +13,7 @@ from openai import OpenAI
 
 # Initialize with DeepSeek endpoint
 deepseek = OpenAI(
-    api_key="sk-0302b562eb404d1097c13d70dc64bb87",
+    api_key="sk-REDACTED_ROTATE_THIS_KEY",
     base_url="https://api.deepseek.com/v1"
 )
 
@@ -39,7 +39,7 @@ class FallbackChain:
     def __init__(self):
         self.claude = OpenAI(api_key="YOUR_ANTHROPIC_KEY", base_url="https://api.anthropic.com")
         self.deepseek = OpenAI(
-            api_key="sk-0302b562eb404d1097c13d70dc64bb87",
+            api_key="sk-REDACTED_ROTATE_THIS_KEY",
             base_url="https://api.deepseek.com/v1"
         )
         self.fallback_nvidia = None  # Configure as needed
@@ -139,7 +139,7 @@ class DeepSeekClient:
         raise Exception("Max retries exceeded")
 
 # Usage
-client = DeepSeekClient("sk-0302b562eb404d1097c13d70dc64bb87")
+client = DeepSeekClient("sk-REDACTED_ROTATE_THIS_KEY")
 result = client.chat_completion(
     model="deepseek-v4-pro",
     messages=[{"role": "user", "content": "Hello"}]
@@ -157,7 +157,7 @@ print(result)
 import OpenAI from "openai";
 
 const deepseek = new OpenAI({
-  apiKey: "sk-0302b562eb404d1097c13d70dc64bb87",
+  apiKey: "sk-REDACTED_ROTATE_THIS_KEY",
   baseURL: "https://api.deepseek.com/v1",
 });
 
@@ -209,7 +209,7 @@ await chatStream("Write a poem about AI");
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="sk-0302b562eb404d1097c13d70dc64bb87",
+    api_key="sk-REDACTED_ROTATE_THIS_KEY",
     base_url="https://api.deepseek.com/v1"
 )
 
@@ -384,7 +384,7 @@ print(tracker.summary())
 
 ```bash
 # DeepSeek Configuration
-DEEPSEEK_API_KEY=sk-0302b562eb404d1097c13d70dc64bb87
+DEEPSEEK_API_KEY=sk-REDACTED_ROTATE_THIS_KEY
 DEEPSEEK_BASE_URL=https://api.deepseek.com/v1
 
 # Model Selection
@@ -435,7 +435,7 @@ PARAMS = {
 # Test with curl
 curl -X POST https://api.deepseek.com/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer sk-0302b562eb404d1097c13d70dc64bb87" \
+  -H "Authorization: Bearer sk-REDACTED_ROTATE_THIS_KEY" \
   -d '{
     "model": "deepseek-v4-flash",
     "messages": [
@@ -458,7 +458,7 @@ import sys
 def test_deepseek():
     try:
         client = OpenAI(
-            api_key="sk-0302b562eb404d1097c13d70dc64bb87",
+            api_key="sk-REDACTED_ROTATE_THIS_KEY",
             base_url="https://api.deepseek.com/v1"
         )
 
@@ -491,7 +491,7 @@ if __name__ == "__main__":
 from openai import OpenAI, RateLimitError, APIError
 
 client = OpenAI(
-    api_key="sk-0302b562eb404d1097c13d70dc64bb87",
+    api_key="sk-REDACTED_ROTATE_THIS_KEY",
     base_url="https://api.deepseek.com/v1"
 )
 
