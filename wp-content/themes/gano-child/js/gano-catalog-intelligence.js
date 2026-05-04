@@ -30,9 +30,8 @@
     panel.innerHTML =
       '<a href="/">Inicio</a>' +
       '<a href="/ecosistemas/">Ecosistemas</a>' +
-      '<a href="/shop-premium/">Catálogo</a>' +
-      '<a href="/sota-hub/">SOTA Hub</a>' +
-      '<a href="/diagnostico-digital/">Diagnóstico</a>' +
+      '<a href="/catalogo/">Catálogo</a>' +
+      '<a href="/contacto/">Contacto</a>' +
       '<a href="/contacto/" class="gano-mobile-nav-cta">Hablar con ventas</a>' +
       '<a href="#" data-gano-close-mobile-nav>Cerrar</a>';
 

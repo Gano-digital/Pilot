@@ -571,10 +571,10 @@ $url_login = wp_login_url( home_url() );
 				<div class="footer-col">
 					<h4><?php esc_html_e( 'Legal', 'gano-child' ); ?></h4>
 					<ul>
-						<li><a href="<?php echo esc_url( home_url( '/terminos/' ) ); ?>"><?php esc_html_e( 'Términos y condiciones', 'gano-child' ); ?></a></li>
-						<li><a href="<?php echo esc_url( home_url( '/privacidad/' ) ); ?>"><?php esc_html_e( 'Política de privacidad', 'gano-child' ); ?></a></li>
-						<li><a href="<?php echo esc_url( home_url( '/terminos/' ) ); ?>"><?php esc_html_e( 'Política de uso', 'gano-child' ); ?></a></li>
-						<li><a href="<?php echo esc_url( home_url( '/sla/' ) ); ?>"><?php esc_html_e( 'SLA', 'gano-child' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/terminos-y-condiciones/' ) ); ?>"><?php esc_html_e( 'Términos y condiciones', 'gano-child' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/politica-de-privacidad/' ) ); ?>"><?php esc_html_e( 'Política de privacidad', 'gano-child' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/terminos-y-condiciones/' ) ); ?>"><?php esc_html_e( 'Política de uso', 'gano-child' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/terminos-y-condiciones/' ) ); ?>"><?php esc_html_e( 'SLA', 'gano-child' ); ?></a></li>
 					</ul>
 				</div>
 			</div>
