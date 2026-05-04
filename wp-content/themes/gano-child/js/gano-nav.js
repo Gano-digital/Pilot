@@ -24,10 +24,10 @@
   // No rompe si Elementor no renderiza los sub-ítems exactos.
   (function injectNavPrices() {
     var priceMap = {
-      'nucleo-prime':    '$196.000',
-      'fortaleza-delta': '$450.000',
-      'bastion-sota':    '$890.000',
-      'ultimate-wp':     '$1.200.000',
+      'wordpress-basic':    '$196.000',
+      'wordpress-deluxe': '$450.000',
+      'wordpress-ultimate':    '$890.000',
+      'cpanel-ultimate':     '$1.200.000',
     };
     Object.keys(priceMap).forEach(function (slug) {
       var link = document.querySelector('header a[href*="' + slug + '"], nav a[href*="' + slug + '"]');

@@ -38,7 +38,7 @@ function gano_render_planes_premium(): string {
             'precio'     => '196.000',
             'featured'   => false,
             'cta_text'   => 'Elegir Núcleo Prime',
-            'cta_url'    => '/ecosistemas#nucleo-prime',
+            'cta_url'    => '/ecosistemas#wordpress-basic',
             'features'   => array(
                 'NVMe SSD de última generación',
                 'Almacenamiento seguro y backups diarios',
@@ -54,7 +54,7 @@ function gano_render_planes_premium(): string {
             'featured'   => true,
             'badge'      => 'MÁS ELEGIDO',
             'cta_text'   => 'Activar Fortaleza Delta',
-            'cta_url'    => '/ecosistemas#fortaleza-delta',
+            'cta_url'    => '/ecosistemas#wordpress-deluxe',
             'features'   => array(
                 'Todo de Núcleo Prime +',
                 'Mayor capacidad de cómputo',
@@ -69,7 +69,7 @@ function gano_render_planes_premium(): string {
             'precio'     => '890.000',
             'featured'   => false,
             'cta_text'   => 'Solicitar Bastión SOTA',
-            'cta_url'    => '/ecosistemas#bastion-sota',
+            'cta_url'    => '/ecosistemas#wordpress-ultimate',
             'features'   => array(
                 'Todo de Fortaleza Delta +',
                 'Recursos dedicados/aislados',

@@ -16,25 +16,25 @@
 
   // ── Productos Gano (mapeo para resultados) ──────────────────────────
   var GANO_PRODUCTS = {
-    'nucleo-prime': {
+    'wordpress-basic': {
       cat: 'Hosting WordPress', catColor: '#c0c1ff', catIcon: 'dns',
-      name: 'Núcleo Prime — Start WP',
+      name: 'WordPress Básico',
       why: 'El punto de partida correcto para tu presencia digital. NVMe real, WordPress preinstalado, soporte en español y activación sin fricciones.',
       price: '$19.800 COP/mes',
       url: '/ecosistemas/',
       priority: false
     },
-    'fortaleza-delta': {
+    'wordpress-deluxe': {
       cat: 'Hosting WordPress', catColor: '#c0c1ff', catIcon: 'dns',
-      name: 'Fortaleza Delta — Pro Managed',
+      name: 'WordPress Deluxe',
       why: 'Para marcas que ya generan ingresos. Más recursos, hardening activo, WooCommerce soportado y visibilidad operativa.',
       price: '$45.000 COP/mes',
       url: '/ecosistemas/',
       priority: true
     },
-    'bastion-sota': {
+    'wordpress-ultimate': {
       cat: 'Hosting NVMe Gen4', catColor: '#4cd7f6', catIcon: 'bolt',
-      name: 'Bastión SOTA — Business NVMe',
+      name: 'WordPress Ultimate',
       why: 'Rendimiento crítico para operaciones que no toleran degradación. Recursos dedicados, monitoreo proactivo, agente IA y SLA 99.9%.',
       price: '$89.000 COP/mes',
       url: '/ecosistemas/',
@@ -323,11 +323,11 @@
 
     // Siempre recomendar hosting según tamaño y situación
     if (answers.size === 'solo' || answers.size === 'micro') {
-      recos.push(GANO_PRODUCTS['nucleo-prime']);
+      recos.push(GANO_PRODUCTS['wordpress-basic']);
     } else if (answers.size === 'small') {
-      recos.push(GANO_PRODUCTS['fortaleza-delta']);
+      recos.push(GANO_PRODUCTS['wordpress-deluxe']);
     } else {
-      recos.push(GANO_PRODUCTS['bastion-sota']);
+      recos.push(GANO_PRODUCTS['wordpress-ultimate']);
     }
 
     // Si no tiene dominio
@@ -347,10 +347,10 @@
 
     // Si es empresa mediana+ o e-commerce
     if (answers.size === 'medium' || answers.size === 'large' || answers.web === 'ecommerce') {
-      // Reemplazar nucleo-prime por bastion-sota si ya está en la lista
+      // Reemplazar wordpress-basic por wordpress-ultimate si ya está en la lista
       var hasBastion = recos.some(function (r) { return r.name.indexOf('Bastión') > -1; });
       if (!hasBastion) {
-        recos.unshift(GANO_PRODUCTS['bastion-sota']);
+        recos.unshift(GANO_PRODUCTS['wordpress-ultimate']);
       }
     }
 
