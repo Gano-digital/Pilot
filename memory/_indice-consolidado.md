@@ -75,4 +75,6 @@
 - `claude/gh-issue-close-guide.md`
 
 ## Sesiones recientes (vivas)
-- `sessions/2026-04-06-arranque-contenidos-web.md` ← sesión de hoy
+- `sessions/2026-05-03-limpieza-sota-cta-recuperacion.md` ← sesión de hoy (limpieza SOTA masiva + recuperación CTA + alineación repo)
+- `sessions/2026-04-19-auditoria-ssh-inventario-sota.md` — auditoría SSH + inventario SOTA + convergencia repo-servidor
+- `sessions/2026-04-06-arranque-contenidos-web.md`
