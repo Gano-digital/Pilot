@@ -19,7 +19,7 @@ get_header();
   <!-- ── HERO DE SECCIÓN ─────────────────────────────────────────── -->
   <section class="gano-ecosistemas-hero gano-dark-section gano-km-shell">
     <div class="gano-container gano-km-container">
-      <p class="gano-label-pill gano-km-live-badge">Arquitecturas Gano Digital</p>
+      <p class="gano-label-pill gano-km-live-badge">Planes de Hosting Gano Digital</p>
       <h1 class="gano-km-title">Elige la infraestructura que merece tu proyecto.</h1>
       <p class="gano-ecosistemas-hero__sub gano-km-lead">
         Cuatro planes construidos sobre el programa Reseller de GoDaddy, operados en español
@@ -39,8 +39,8 @@ get_header();
       // **NUEVO:** Slugs RCC para integración dinámica con WP_Query
       $planes = [
         [
-          'id'           => 'nucleo-prime',
-          'nombre'       => 'Núcleo Prime',
+          'id'           => 'wordpress-basic',
+          'nombre'       => 'WordPress Básico',
           'precio'       => '$ 196.000',
           'periodo'      => '/mes (IVA incluido)',
           'tag'          => '',
@@ -58,16 +58,16 @@ get_header();
           ],
           'objecion'     => '"Es caro para lo que necesito ahora."',
           'respuesta'    => 'Incluye NVMe real (no HDD compartido), soporte en tu idioma y activación rápida. Más que un hosting genérico al mismo precio.',
-          'cta_primario' => 'Elegir Núcleo Prime',
+          'cta_primario' => 'Elegir WordPress Básico',
           'cta_secundario' => 'Ver especificaciones',
           'rcc_slug'     => 'wordpress-basico',
           'catalog_cat'  => 'wordpressadministrado',
           'pfid_const'   => 'GANO_PFID_HOSTING_ECONOMIA',
-          'enlace_detalle' => '/ecosistemas/nucleo-prime',
+          'enlace_detalle' => '/producto/wordpress-basic/',
         ],
         [
-          'id'           => 'fortaleza-delta',
-          'nombre'       => 'Fortaleza Delta',
+          'id'           => 'wordpress-deluxe',
+          'nombre'       => 'WordPress Deluxe',
           'precio'       => '$ 450.000',
           'periodo'      => '/mes (IVA incluido)',
           'tag'          => 'Más popular',
@@ -75,7 +75,7 @@ get_header();
           'gold'         => false,
           'promesa'      => 'Para marcas que ya generan ingresos. Más recursos, hardening activo y visibilidad operativa sin tener que pedirla.',
           'beneficios'   => [
-            '40 GB NVMe · doble de recursos de cómputo que Núcleo Prime',
+            '40 GB NVMe · doble de recursos de cómputo que WordPress Básico',
             'Hardening WordPress incluido (gano-security MU plugin)',
             'Backups diarios + on-demand · retención 30 días',
             'Soporte chat + ticket priorizado · respuesta < 4 h laborales',
@@ -85,16 +85,16 @@ get_header();
           ],
           'objecion'     => '"¿Por qué pagar el doble si mi host actual funciona?"',
           'respuesta'    => 'El salto de precio compra hardening activo, más recursos y visibilidad operativa: no es pagar dos veces el mismo servicio.',
-          'cta_primario' => 'Activar Fortaleza Delta',
+          'cta_primario' => 'Activar WordPress Deluxe',
           'cta_secundario' => 'Comparar planes',
           'rcc_slug'     => 'wordpress-deluxe',
           'catalog_cat'  => 'wordpressadministrado',
           'pfid_const'   => 'GANO_PFID_HOSTING_DELUXE',
-          'enlace_detalle' => '/ecosistemas/fortaleza-delta',
+          'enlace_detalle' => '/producto/wordpress-deluxe/',
         ],
         [
-          'id'           => 'bastion-sota',
-          'nombre'       => 'Bastión SOTA',
+          'id'           => 'wordpress-ultimate',
+          'nombre'       => 'WordPress Ultimate',
           'precio'       => '$ 890.000',
           'periodo'      => '/mes (IVA incluido)',
           'tag'          => 'Recomendado para comercio',
@@ -112,16 +112,16 @@ get_header();
           ],
           'objecion'     => '"¿Qué me da que un VPS gestionado no dé?"',
           'respuesta'    => 'Capa de servicio en español, hardening WordPress específico, agente IA integrado y SLA documentado. El VPS genérico no incluye nada de eso.',
-          'cta_primario' => 'Solicitar Bastión SOTA',
+          'cta_primario' => 'Solicitar WordPress Ultimate',
           'cta_secundario' => 'Hablar con ventas',
           'rcc_slug'     => 'wordpress-ultimate',
           'catalog_cat'  => 'webhostingplus',
           'pfid_const'   => 'GANO_PFID_HOSTING_PREMIUM',
-          'enlace_detalle' => '/ecosistemas/bastion-sota',
+          'enlace_detalle' => '/producto/wordpress-ultimate/',
         ],
         [
-          'id'           => 'ultimate-wp',
-          'nombre'       => 'Ultimate WP',
+          'id'           => 'cpanel-ultimate',
+          'nombre'       => 'cPanel Ultimate',
           'precio'       => '$ 1.200.000',
           'periodo'      => '/mes (IVA incluido)',
           'tag'          => 'Agencias y alto tráfico',
@@ -139,12 +139,12 @@ get_header();
           ],
           'objecion'     => '"¿Por qué no un cloud propio?"',
           'respuesta'    => 'Sin overhead de DevOps, sin gestión de infraestructura. Tú operas, nosotros sostenemos el piso técnico con SLA documentado.',
-          'cta_primario' => 'Cotizar Ultimate WP',
+          'cta_primario' => 'Cotizar cPanel Ultimate',
           'cta_secundario' => 'Hablar con ventas',
           'rcc_slug'     => 'cpanel-ultimate',
           'catalog_cat'  => 'hostingwebcpanel',
           'pfid_const'   => 'GANO_PFID_HOSTING_ULTIMATE',
-          'enlace_detalle' => '/ecosistemas/ultimate-wp',
+          'enlace_detalle' => '/producto/cpanel-ultimate/',
         ],
       ];
 
@@ -159,7 +159,7 @@ get_header();
         <?php endforeach; ?>
       </div>
       <p class="gano-catalog-mode-desc" data-gano-mode-description>
-        Cambia la forma de explorar los ecosistemas según tu nivel de madurez.
+        Cambia la forma de explorar los planes según tu nivel de madurez.
       </p>
       <section class="gano-catalog-guided-panel" data-gano-guided-panel aria-label="Asistente de selección">
         <ul class="gano-catalog-guided-list" data-gano-guided-list></ul>
@@ -263,6 +263,13 @@ get_header();
     </div>
   </section>
 
+  <!-- ── TRANSPARENCIA RESELLER ────────────────────────────────── -->
+  <section class="gano-ecosistemas-nota">
+    <div class="gano-container">
+      <p class="gano-km-glass"><strong>Operamos sobre infraestructura GoDaddy Reseller.</strong> Gano Digital aprovisiona capacidad de servidor a trav&eacute;s del programa de reseller autorizado de GoDaddy. La infraestructura subyacente cumple est&aacute;ndares globales de datacenter; nosotros sumamos configuraci&oacute;n experta, hardening y soporte en espa&ntilde;ol.</p>
+    </div>
+  </section>
+
   <!-- ── SEÑALES DE CONFIANZA ───────────────────────────────────── -->
   <section class="gano-ecosistemas-trust-signals">
     <div class="gano-container">
@@ -270,7 +277,7 @@ get_header();
 
         <!-- Signal 1: GoDaddy Reseller -->
         <div class="gano-trust-signal">
-          <div class="gano-trust-signal-icon">🛡️</div>
+          <div class="gano-trust-signal-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           <div class="gano-trust-signal-content">
             <h4>Infraestructura GoDaddy</h4>
             <p>Programa reseller autorizado · Estándares globales de datacenter</p>
@@ -279,7 +286,7 @@ get_header();
 
         <!-- Signal 2: Uptime Guarantee -->
         <div class="gano-trust-signal">
-          <div class="gano-trust-signal-icon">📊</div>
+          <div class="gano-trust-signal-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
           <div class="gano-trust-signal-content">
             <h4>99.9% Disponibilidad</h4>
             <p>SLA comprometido · Monitoreo proactivo incluido</p>
@@ -288,7 +295,7 @@ get_header();
 
         <!-- Signal 3: COP Billing -->
         <div class="gano-trust-signal">
-          <div class="gano-trust-signal-icon">💵</div>
+          <div class="gano-trust-signal-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
           <div class="gano-trust-signal-content">
             <h4>Facturación en COP</h4>
             <p>Pesos colombianos · Sin sorpresas de tipo de cambio</p>
@@ -297,7 +304,7 @@ get_header();
 
         <!-- Signal 4: Support Response -->
         <div class="gano-trust-signal">
-          <div class="gano-trust-signal-icon">⚡</div>
+          <div class="gano-trust-signal-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
           <div class="gano-trust-signal-content">
             <h4>Soporte Priorizado</h4>
             <p>Primera respuesta en 8 horas · En tu idioma</p>
@@ -317,10 +324,10 @@ get_header();
           <thead>
             <tr>
               <th scope="col">Característica</th>
-              <th scope="col">Núcleo Prime</th>
-              <th scope="col">Fortaleza Delta</th>
-              <th scope="col">Bastión SOTA</th>
-              <th scope="col">Ultimate WP</th>
+              <th scope="col">WordPress Básico</th>
+              <th scope="col">WordPress Deluxe</th>
+              <th scope="col">WordPress Ultimate</th>
+              <th scope="col">cPanel Ultimate</th>
             </tr>
           </thead>
           <tbody>
@@ -349,17 +356,17 @@ get_header();
 
         <!-- Objeción 1: Precio -->
         <article class="gano-objecion-card gano-objecion-card-precio">
-          <h3>💰 "Es caro para lo que necesito"</h3>
+          <h3><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block;vertical-align:middle;margin-right:6px"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg> "Es caro para lo que necesito"</h3>
           <div class="gano-objecion-card-content">
-            <p><strong>Núcleo Prime:</strong> NVMe real (no HDD) + soporte en español = más que un hosting compartido genérico al mismo precio.</p>
-            <p><strong>Fortaleza Delta:</strong> Hardening activo + más recursos + visibilidad = no pagas dos veces el mismo servicio.</p>
-            <p><strong>Bastión SOTA:</strong> Una hora de caída supera la diferencia de precio mensual. Es inversión en continuidad.</p>
+            <p><strong>WordPress Básico:</strong> NVMe real (no HDD) + soporte en español = más que un hosting compartido genérico al mismo precio.</p>
+            <p><strong>WordPress Deluxe:</strong> Hardening activo + más recursos + visibilidad = no pagas dos veces el mismo servicio.</p>
+            <p><strong>WordPress Ultimate:</strong> Una hora de caída supera la diferencia de precio mensual. Es inversión en continuidad.</p>
           </div>
         </article>
 
         <!-- Objeción 2: Confianza -->
         <article class="gano-objecion-card gano-objecion-card-confianza">
-          <h3>🤝 "¿Quién es Gano Digital?"</h3>
+          <h3><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block;vertical-align:middle;margin-right:6px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> "¿Quién es Gano Digital?"</h3>
           <div class="gano-objecion-card-content">
             <p><strong>La infraestructura:</strong> GoDaddy Managed WordPress — años de trayectoria, datacenter con estándares globales.</p>
             <p><strong>Lo que sumamos:</strong> Configuración experta, hardening que el reseller no hace por omisión, soporte en tu idioma y contexto local.</p>
@@ -369,11 +376,11 @@ get_header();
 
         <!-- Objeción 3: Soporte -->
         <article class="gano-objecion-card gano-objecion-card-soporte">
-          <h3>📞 "¿Recibiré soporte real?"</h3>
+          <h3><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block;vertical-align:middle;margin-right:6px"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg> "¿Recibiré soporte real?"</h3>
           <div class="gano-objecion-card-content">
-            <p><strong>Núcleo Prime:</strong> Ticket en español con contexto de tu instalación — no un bot genérico.</p>
-            <p><strong>Fortaleza Delta:</strong> Canal priorizado para clientes Fortaleza (respuesta dentro de horario hábil).</p>
-            <p><strong>Bastión SOTA:</strong> Contacto dedicado, monitoreo proactivo, política de escalamiento documentada.</p>
+            <p><strong>WordPress Básico:</strong> Ticket en español con contexto de tu instalación — no un bot genérico.</p>
+            <p><strong>WordPress Deluxe:</strong> Canal priorizado para clientes Deluxe (respuesta dentro de horario hábil).</p>
+            <p><strong>WordPress Ultimate:</strong> Contacto dedicado, monitoreo proactivo, política de escalamiento documentada.</p>
           </div>
         </article>
 
@@ -385,7 +392,7 @@ get_header();
   <section class="gano-reseller-checkout-section">
     <div class="gano-container">
       <h2>Elige tu plan y activa hoy</h2>
-      <p>Selecciona el ecosistema que se adapte a tu proyecto. El checkout está integrado y listo.</p>
+      <p>Selecciona el plan que se adapte a tu proyecto. El checkout está integrado y listo.</p>
 
       <!-- Tabs para seleccionar ecosistema -->
       <div class="gano-reseller-tabs" role="tablist" aria-label="Selecciona ecosistema">
@@ -393,45 +400,45 @@ get_header();
                 data-tab="hosting_economia"
                 role="tab"
                 aria-selected="true"
-                aria-label="Seleccionar ecosistema Núcleo Prime">
-          Núcleo Prime
+                aria-label="Seleccionar plan WordPress Básico">
+          WordPress Básico
         </button>
         <button class="gano-reseller-tab-btn"
                 data-tab="hosting_deluxe"
                 role="tab"
                 aria-selected="false"
-                aria-label="Seleccionar ecosistema Fortaleza Delta">
-          Fortaleza Delta
+                aria-label="Seleccionar plan WordPress Deluxe">
+          WordPress Deluxe
         </button>
         <button class="gano-reseller-tab-btn"
                 data-tab="hosting_premium"
                 role="tab"
                 aria-selected="false"
-                aria-label="Seleccionar ecosistema Bastión SOTA">
-          Bastión SOTA
+                aria-label="Seleccionar plan WordPress Ultimate">
+          WordPress Ultimate
         </button>
         <button class="gano-reseller-tab-btn"
                 data-tab="hosting_ultimate"
                 role="tab"
                 aria-selected="false"
-                aria-label="Seleccionar ecosistema Ultimate WP">
-          Ultimate WP
+                aria-label="Seleccionar plan cPanel Ultimate">
+          cPanel Ultimate
         </button>
       </div>
 
       <!-- Iframes para cada ecosistema -->
       <div class="gano-reseller-tabs-content">
         <div class="gano-reseller-tab-pane active" data-tab="hosting_economia" role="tabpanel">
-          <?php echo do_shortcode( '[gano_reseller_iframe ecosistema="hosting_economia" heading="Núcleo Prime — Elige tu plan"]' ); ?>
+          <?php echo do_shortcode( '[gano_reseller_iframe ecosistema="hosting_economia" heading="WordPress Básico — Elige tu plan"]' ); ?>
         </div>
         <div class="gano-reseller-tab-pane" data-tab="hosting_deluxe" role="tabpanel">
-          <?php echo do_shortcode( '[gano_reseller_iframe ecosistema="hosting_deluxe" heading="Fortaleza Delta — Elige tu plan"]' ); ?>
+          <?php echo do_shortcode( '[gano_reseller_iframe ecosistema="hosting_deluxe" heading="WordPress Deluxe — Elige tu plan"]' ); ?>
         </div>
         <div class="gano-reseller-tab-pane" data-tab="hosting_premium" role="tabpanel">
-          <?php echo do_shortcode( '[gano_reseller_iframe ecosistema="hosting_premium" heading="Bastión SOTA — Elige tu plan"]' ); ?>
+          <?php echo do_shortcode( '[gano_reseller_iframe ecosistema="hosting_premium" heading="WordPress Ultimate — Elige tu plan"]' ); ?>
         </div>
         <div class="gano-reseller-tab-pane" data-tab="hosting_ultimate" role="tabpanel">
-          <?php echo do_shortcode( '[gano_reseller_iframe ecosistema="hosting_ultimate" heading="Ultimate WP — Elige tu plan"]' ); ?>
+          <?php echo do_shortcode( '[gano_reseller_iframe ecosistema="hosting_ultimate" heading="cPanel Ultimate — Elige tu plan"]' ); ?>
         </div>
       </div>
     </div>
