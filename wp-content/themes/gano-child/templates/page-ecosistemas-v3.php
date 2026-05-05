@@ -1518,6 +1518,26 @@ html { scroll-behavior: smooth; }
   transform: translateY(-1px);
 }
 
+/* ─── Compare Section ─── */
+.gano-eco-v3 .eco-compare {
+  padding: 80px 0;
+  background: var(--eco-bg-alt);
+}
+
+/* ─── Product Card Hidden State ─── */
+.gano-eco-v3 .eco-product-card--hidden {
+  display: none;
+}
+.gano-eco-v3 .eco-products__grid.is-expanded .eco-product-card--hidden {
+  display: flex;
+  animation: ecoFadeUp 0.5s ease forwards;
+}
+.gano-eco-v3 .eco-products__more {
+  grid-column: 1 / -1;
+  justify-self: center;
+  margin-top: 8px;
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 639px) {
   .eco-plans { padding: 40px 0; }
@@ -1585,7 +1605,7 @@ html { scroll-behavior: smooth; }
           $card_class = ! empty( $plan['featured'] ) ? 'eco-plan-card eco-plan-card--featured eco-reveal' : 'eco-plan-card eco-reveal';
           $illust_mod = ( 'wordpress-basico' === $card_id ) ? 'basic' : ( ( 'wordpress-deluxe' === $card_id ) ? 'deluxe' : ( ( 'wordpress-ultimate' === $card_id ) ? 'premium' : 'ultimate' ) );
           ?>
-          <article class="<?php echo esc_attr( $card_class ); ?>" id="<?php echo esc_attr( $card_id ); ?>">
+          <article class="<?php echo esc_attr( $card_class ); ?>" id="<?php echo esc_attr( $card_id ); ?>" data-post-id="<?php echo (int) $plan['post_id']; ?>">
             <?php if ( ! empty( $plan['tag'] ) ) : ?>
               <span class="eco-plan-card__badge"><?php echo esc_html( $plan['tag'] ); ?></span>
             <?php endif; ?>
@@ -1674,12 +1694,28 @@ html { scroll-behavior: smooth; }
               ?>
             </span>
           </div>
-          <div class="eco-products__grid">
-            <?php while ( $cat_query->have_posts() ) : $cat_query->the_post(); ?>
-              <div class="eco-product-card eco-reveal">
+          <div class="eco-products__grid" data-cat-products="<?php echo (int) $cat_query->found_posts; ?>">
+            <?php
+            $product_index = 0;
+            while ( $cat_query->have_posts() ) : $cat_query->the_post();
+              $product_index++;
+              $hidden_class = ( $product_index > 6 ) ? ' eco-product-card--hidden' : '';
+            ?>
+              <div class="eco-product-card eco-reveal<?php echo esc_attr( $hidden_class ); ?>" data-post-id="<?php echo get_the_ID(); ?>">
                 <?php echo do_shortcode( '[rstore_product post_id=' . get_the_ID() . ']' ); ?>
               </div>
             <?php endwhile; ?>
+            <?php if ( $cat_query->found_posts > 6 ) : ?>
+              <button type="button" class="eco-btn eco-btn--ghost eco-products__more" onclick="this.parentElement.classList.add('is-expanded');this.remove();">
+                <?php
+                printf(
+                  /* translators: %d: number of additional products */
+                  esc_html( _n( 'Ver %d producto más', 'Ver %d productos más', $cat_query->found_posts - 6, 'gano-child' ) ),
+                  (int) $cat_query->found_posts - 6
+                );
+                ?>
+              </button>
+            <?php endif; ?>
           </div>
         </div>
       </section>
@@ -1710,6 +1746,117 @@ html { scroll-behavior: smooth; }
             <a href="<?php echo esc_url( $b['link'] ); ?>" class="eco-btn eco-btn--secondary" style="width:100%;"><?php echo esc_html( $b['cta'] ); ?></a>
           </div>
         <?php endforeach; ?>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       COMPARATIVA DE PLANES
+       ════════════════════════════════════════════════════════════════ -->
+  <section class="eco-compare">
+    <div class="eco-container">
+      <div class="eco-section-header eco-reveal">
+        <h2 class="eco-section-header__title"><?php esc_html_e( 'Comparativa de planes', 'gano-child' ); ?></h2>
+        <p class="eco-section-header__subtitle"><?php esc_html_e( 'Encuentra el plan perfecto para tu proyecto comparando todas las características.', 'gano-child' ); ?></p>
+      </div>
+      <div class="eco-table-wrap eco-reveal">
+        <table class="eco-table">
+          <thead>
+            <tr>
+              <th><?php esc_html_e( 'Característica', 'gano-child' ); ?></th>
+              <th><?php esc_html_e( 'WordPress Básico', 'gano-child' ); ?></th>
+              <th><?php esc_html_e( 'WordPress Deluxe', 'gano-child' ); ?></th>
+              <th><?php esc_html_e( 'WordPress Ultimate', 'gano-child' ); ?></th>
+              <th><?php esc_html_e( 'cPanel Ultimate', 'gano-child' ); ?></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="eco-table__highlight"><?php esc_html_e( 'Almacenamiento', 'gano-child' ); ?></td>
+              <td>20 GB NVMe</td>
+              <td>40 GB NVMe</td>
+              <td>75 GB NVMe</td>
+              <td>100 GB NVMe</td>
+            </tr>
+            <tr>
+              <td class="eco-table__highlight"><?php esc_html_e( 'Sitios web', 'gano-child' ); ?></td>
+              <td>1</td>
+              <td>1</td>
+              <td>1</td>
+              <td><?php esc_html_e( 'Ilimitado', 'gano-child' ); ?></td>
+            </tr>
+            <tr>
+              <td class="eco-table__highlight"><?php esc_html_e( 'WordPress preinstalado', 'gano-child' ); ?></td>
+              <td><span class="eco-table__check"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></td>
+              <td><span class="eco-table__check"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></td>
+              <td><span class="eco-table__check"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></td>
+              <td><span class="eco-table__dash">—</span></td>
+            </tr>
+            <tr>
+              <td class="eco-table__highlight"><?php esc_html_e( 'SSL', 'gano-child' ); ?></td>
+              <td><span class="eco-table__check"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></td>
+              <td><span class="eco-table__check"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></td>
+              <td><span class="eco-table__check"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></td>
+              <td><span class="eco-table__check"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></td>
+            </tr>
+            <tr>
+              <td class="eco-table__highlight"><?php esc_html_e( 'Backups', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Diarios · 30 días', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Diarios + on-demand', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Continuos + DR', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Continuos + DR', 'gano-child' ); ?></td>
+            </tr>
+            <tr>
+              <td class="eco-table__highlight"><?php esc_html_e( 'CDN global', 'gano-child' ); ?></td>
+              <td><span class="eco-table__check"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></td>
+              <td><span class="eco-table__check"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></td>
+              <td><span class="eco-table__check"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></td>
+              <td><span class="eco-table__check"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></td>
+            </tr>
+            <tr>
+              <td class="eco-table__highlight"><?php esc_html_e( 'Soporte', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Ticket < 8h', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Prioritario < 4h', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Dedicado < 2h', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Dedicado < 1h 24/7', 'gano-child' ); ?></td>
+            </tr>
+            <tr>
+              <td class="eco-table__highlight"><?php esc_html_e( 'WooCommerce', 'gano-child' ); ?></td>
+              <td><span class="eco-table__dash">—</span></td>
+              <td><?php esc_html_e( 'Optimizado', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Avanzado', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Avanzado', 'gano-child' ); ?></td>
+            </tr>
+            <tr>
+              <td class="eco-table__highlight"><?php esc_html_e( 'Monitoreo', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Básico', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Uptime', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Proactivo 24/7', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Proactivo 24/7', 'gano-child' ); ?></td>
+            </tr>
+            <tr>
+              <td class="eco-table__highlight"><?php esc_html_e( 'Hardening', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Básico', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Activo', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Avanzado + auditoría', 'gano-child' ); ?></td>
+              <td><?php esc_html_e( 'Avanzado + auditoría', 'gano-child' ); ?></td>
+            </tr>
+            <tr>
+              <td class="eco-table__highlight"><?php esc_html_e( 'SLA', 'gano-child' ); ?></td>
+              <td><span class="eco-table__dash">—</span></td>
+              <td><span class="eco-table__dash">—</span></td>
+              <td>≥ 99.9%</td>
+              <td>≥ 99.9%</td>
+            </tr>
+            <tr>
+              <td class="eco-table__highlight"><?php esc_html_e( 'Agente IA', 'gano-child' ); ?></td>
+              <td><span class="eco-table__dash">—</span></td>
+              <td><span class="eco-table__dash">—</span></td>
+              <td><span class="eco-table__check"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></td>
+              <td><span class="eco-table__check"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -1847,6 +1994,31 @@ html { scroll-behavior: smooth; }
     }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
     sections.forEach(sec => observer.observe(sec));
   }
+
+  // ── Sync featured plan prices from catalog (RCC real prices) ────
+  document.querySelectorAll('.eco-plan-card[data-post-id]').forEach(featuredCard => {
+    const postId = featuredCard.dataset.postId;
+    if (!postId) return;
+    const catalogCard = document.querySelector('.eco-product-card[data-post-id="' + postId + '"]');
+    if (!catalogCard) return;
+    const priceEl = catalogCard.querySelector('.rstore-price');
+    if (!priceEl) return;
+    const realPrice = priceEl.textContent.trim();
+    const priceWrap = featuredCard.querySelector('.eco-plan-card__price');
+    if (priceWrap) {
+      const monthlyEl = priceWrap.querySelector('.eco-plan-card__price');
+      if (monthlyEl) {
+        monthlyEl.dataset.monthly = realPrice;
+        monthlyEl.textContent = realPrice;
+        // Simple annual estimation (20% discount)
+        const numeric = parseFloat(realPrice.replace(/[^0-9]/g, ''));
+        if (!isNaN(numeric)) {
+          const annual = numeric * 10; // 12 months - 20% ≈ 10 months
+          monthlyEl.dataset.annual = '$' + annual.toLocaleString('es-CO');
+        }
+      }
+    }
+  });
 })();
 </script>
 
