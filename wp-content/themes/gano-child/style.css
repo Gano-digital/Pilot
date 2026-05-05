@@ -1257,24 +1257,25 @@ input:checked + .slider { background-color: var(--gano-gold-soft); border-color:
 }
 
 .rstore-add-to-cart-form button.rstore-add-to-cart {
-    background: var(--gano-gold) !important;
-    color: #000 !important;
+    background: linear-gradient(135deg, var(--gano-blue, #1B4FD8), var(--gano-blue-dark, #1240B0)) !important;
+    color: #fff !important;
     width: 100%;
-    padding: 16px !important;
-    border-radius: 14px !important;
-    font-weight: 800 !important;
+    padding: 12px !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
     border: none !important;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    transition: all 0.4s ease !important;
+    text-transform: none;
+    letter-spacing: 0;
+    transition: all 0.2s ease !important;
     cursor: pointer;
-    margin-top: 15px;
+    margin-top: 12px;
+    font-size: 0.875rem;
 }
 
 .rstore-add-to-cart-form button.rstore-add-to-cart:hover {
-    background: #fff !important;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+    background: linear-gradient(135deg, var(--gano-blue-dark, #1240B0), var(--gano-blue, #1B4FD8)) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(27, 79, 216, 0.25);
 }
 
 .rstore-product-summary .gano-product-specs {
