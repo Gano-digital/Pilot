@@ -226,6 +226,52 @@ Repo: `Gano-digital/Pilot` @ `main`
    - El repo `Pilot` no incluye todos los archivos del tema (`css/`, `js/`, `components/`, `assets/`, etc.)
    - Requiere decisión sobre si el repo debe contener el tema completo o solo archivos críticos
 
+## Reconstrucción /ecosistemas/ (post-limpieza)
+
+Tras la limpieza SOTA se descubrió que **todos los CSS/JS del tema devolvían 404** — el deploy anterior había eliminado los archivos del servidor. La página `/ecosistemas/` quedó sin estilos.
+
+### Solución: template autocontenido v2
+
+| Aspecto | Implementación |
+|---|---|
+| **CSS** | `css/ecosistemas-v2.css` — archivo único, no depende de otros CSS rotos |
+| **PHP** | `templates/page-ecosistemas-v2.php` — incluye el CSS vía `<style>` inline |
+| **Página** | Template asignado a la página `ecosistemas` (ID 1656) vía DB |
+
+### Estructura del nuevo diseño
+
+1. **Hero** — gradiente sutil con orbs difuminados, toggle mensual/anual (-20%)
+2. **4 tarjetas de planes** — icono SVG, precio, features con checkmarks, CTA primario + ghost
+3. **3 Bundles** — Starter Pack (-15%), Business Pro (-20%), Enterprise Suite (-25%)
+4. **Tabla comparativa** — 11 características, responsive con scroll horizontal
+5. **Trust signals** — dark section con 4 pilares (GoDaddy, 99.9%, COP, español)
+6. **FAQ accordion** — 5 preguntas, interactivo con toggle
+7. **CTA final** — contacto + dominios
+
+### Paleta usada
+
+- Primario: `#1B4FD8` (azul corporativo)
+- CTA: `#FF6B35` (naranja) / `#1B4FD8` (azul) para featured
+- Acento: `#D4AF37` (dorado) — badge plan destacado
+- Éxito: `#00C26B` (verde) — checks, ahorros
+- Fondos: `#FFFFFF` → `#F8FAFC` gradientes
+- Dark: `#0F1923` → `#1A2535` — trust section
+
+### Animaciones
+
+- `ecoFadeUp` — hero textos
+- `ecoScaleIn` — tarjetas con stagger
+- `eco-reveal` + IntersectionObserver — scroll reveal en todas las secciones
+- Hover en tarjetas: translateY(-8px) + shadow
+- FAQ: max-height transition
+
+### Estado
+
+- URL: `https://gano.digital/ecosistemas/` → HTTP 200, 94KB
+- CSS: `css/ecosistemas-v2.css` → HTTP 200
+- Sin errores PHP
+- Commit: `4c5cb68f`
+
 ## Índice maestro
 
 - [2026-04-19-trazabilidad-ops-wave-handoff.md](2026-04-19-trazabilidad-ops-wave-handoff.md) — handoff anterior
