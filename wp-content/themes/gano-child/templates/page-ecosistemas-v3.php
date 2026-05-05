@@ -327,14 +327,14 @@ $faqs = array(
 
 /* ─── Scroll reveal ─── */
 .gano-eco-v3 .eco-reveal {
-  opacity: 0;
-  transform: translateY(40px);
+  opacity: 1;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .gano-eco-v3 .eco-reveal.visible {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ─── Container ─── */
@@ -1574,6 +1574,12 @@ html { scroll-behavior: smooth; }
 .gano-eco-v3 .eco-product-card .rstore-pricing .rstore-price {
   color: var(--eco-text);
 }
+.gano-eco-v3 .eco-product-card .rstore-pricing {
+  font-size: 0; /* Hide text nodes */
+}
+.gano-eco-v3 .eco-product-card .rstore-pricing .rstore-price {
+  font-size: 1.25rem;
+}
 .gano-eco-v3 .eco-product-card .rstore-add-to-cart-form {
   margin: 0;
 }
@@ -2020,8 +2026,15 @@ html { scroll-behavior: smooth; }
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    revealEls.forEach(el => io.observe(el));
+    }, { threshold: 0.05, rootMargin: '100px 0px 0px 0px' });
+    revealEls.forEach(el => {
+      io.observe(el);
+      // Immediate visibility check for above-the-fold elements
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        el.classList.add('visible');
+      }
+    });
   } else {
     revealEls.forEach(el => el.classList.add('visible'));
   }
@@ -2080,7 +2093,7 @@ html { scroll-behavior: smooth; }
     const priceEl = catalogCard.querySelector('.rstore-price');
     if (!priceEl) return;
     const realPrice = priceEl.textContent.trim();
-    const priceWrap = featuredCard.querySelector('.eco-plan-card__price');
+    const priceWrap = featuredCard.querySelector('.eco-plan-card__price-wrap');
     if (priceWrap) {
       const monthlyEl = priceWrap.querySelector('.eco-plan-card__price');
       if (monthlyEl) {
