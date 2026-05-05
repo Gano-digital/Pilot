@@ -1538,6 +1538,82 @@ html { scroll-behavior: smooth; }
   margin-top: 8px;
 }
 
+/* ─── RStore Product Card Overrides ─── */
+.gano-eco-v3 .eco-product-card .rstore-product {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.gano-eco-v3 .eco-product-card .rstore-product-icons {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+}
+.gano-eco-v3 .eco-product-card .rstore-product-icons svg {
+  width: 100%;
+  height: 100%;
+}
+.gano-eco-v3 .eco-product-card .rstore-product-header {
+  flex-grow: 1;
+}
+.gano-eco-v3 .eco-product-card .widget-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--eco-text);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.gano-eco-v3 .eco-product-card .rstore-pricing {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--eco-text);
+  margin-bottom: 12px;
+}
+.gano-eco-v3 .eco-product-card .rstore-pricing .rstore-price {
+  color: var(--eco-text);
+}
+.gano-eco-v3 .eco-product-card .rstore-add-to-cart-form {
+  margin: 0;
+}
+.gano-eco-v3 .eco-product-card .rstore-add-to-cart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1B4FD8, #1240B0);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+.gano-eco-v3 .eco-product-card .rstore-add-to-cart:hover {
+  box-shadow: 0 4px 12px rgba(27,79,216,0.25);
+  transform: translateY(-1px);
+}
+.gano-eco-v3 .eco-product-card .rstore-product-summary {
+  display: none; /* Hide duplicate price/description */
+}
+.gano-eco-v3 .eco-product-card .rstore-product-permalink {
+  margin-top: 12px;
+  text-align: center;
+}
+.gano-eco-v3 .eco-product-card .rstore-product-permalink a {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--eco-primary);
+  text-decoration: none;
+}
+.gano-eco-v3 .eco-product-card .rstore-product-permalink a:hover {
+  text-decoration: underline;
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 639px) {
   .eco-plans { padding: 40px 0; }
