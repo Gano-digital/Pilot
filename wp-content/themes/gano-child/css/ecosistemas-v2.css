@@ -1,0 +1,538 @@
+/* ================================================================
+   ECOSISTEMAS V2 — Gano Digital Pricing Page
+   Autocontenido, no depende de otros CSS del tema.
+   Paleta: azul #1B4FD8, naranja #FF6B35, dorado #D4AF37, dark #0F1923
+   ================================================================ */
+
+/* ---- FONTS ----------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ---- RESET LOCAL ------------------------------------------------ */
+.gano-eco-v2,
+.gano-eco-v2 * { box-sizing: border-box; }
+.gano-eco-v2 {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #374151;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.gano-eco-v2 h1, .gano-eco-v2 h2, .gano-eco-v2 h3, .gano-eco-v2 h4 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: #0F1923;
+  margin: 0;
+  line-height: 1.15;
+}
+.gano-eco-v2 p { margin: 0; }
+.gano-eco-v2 a { text-decoration: none; color: inherit; }
+.gano-eco-v2 ul, .gano-eco-v2 ol { margin: 0; padding: 0; list-style: none; }
+.gano-eco-v2 img, .gano-eco-v2 svg { display: block; max-width: 100%; }
+.gano-eco-v2 button {
+  font-family: inherit; cursor: pointer; border: none; background: none;
+}
+
+/* ---- CONTAINER -------------------------------------------------- */
+.gano-eco__container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+@media (min-width: 768px) { .gano-eco__container { padding: 0 32px; } }
+
+/* ---- ANIMATIONS ------------------------------------------------- */
+@keyframes ecoFadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes ecoFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes ecoScaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes ecoPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(27, 79, 216, 0.2); }
+  50%      { box-shadow: 0 0 0 12px rgba(27, 79, 216, 0); }
+}
+@keyframes ecoFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+@keyframes ecoCheck {
+  0%   { transform: scale(0) rotate(-45deg); }
+  50%  { transform: scale(1.2) rotate(0deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.gano-eco-animate {
+  opacity: 0;
+  animation: ecoFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.gano-eco-animate-d1 { animation-delay: 0.1s; }
+.gano-eco-animate-d2 { animation-delay: 0.2s; }
+.gano-eco-animate-d3 { animation-delay: 0.3s; }
+.gano-eco-animate-d4 { animation-delay: 0.4s; }
+
+/* ---- HERO ------------------------------------------------------- */
+.gano-eco-hero {
+  position: relative;
+  padding: 80px 0 60px;
+  text-align: center;
+  background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
+  overflow: hidden;
+}
+.gano-eco-hero__bg {
+  position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+}
+.gano-eco-hero__orb {
+  position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.35;
+}
+.gano-eco-hero__orb--1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, #1B4FD8 0%, transparent 70%);
+  top: -200px; right: -100px;
+}
+.gano-eco-hero__orb--2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, #00C26B 0%, transparent 70%);
+  bottom: -150px; left: -100px;
+}
+.gano-eco-hero__orb--3 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, #D4AF37 0%, transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+}
+
+.gano-eco-hero__label {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 18px; border-radius: 999px;
+  background: rgba(27, 79, 216, 0.08); color: #1B4FD8;
+  font-size: 0.875rem; font-weight: 600; margin-bottom: 24px;
+  animation: ecoFadeIn 0.6s ease forwards;
+}
+.gano-eco-hero__label svg {
+  width: 16px; height: 16px; color: #00C26B;
+}
+
+.gano-eco-hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 800; letter-spacing: -0.02em;
+  max-width: 750px; margin: 0 auto 20px;
+  animation: ecoFadeUp 0.7s 0.1s cubic-bezier(0.22,1,0.36,1) both;
+}
+.gano-eco-hero h1 span {
+  background: linear-gradient(135deg, #1B4FD8, #00C26B);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gano-eco-hero__lead {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  color: #6B7280; max-width: 620px; margin: 0 auto 32px;
+  line-height: 1.65;
+  animation: ecoFadeUp 0.7s 0.2s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+/* Toggle mensual/anual */
+.gano-eco-toggle {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: #F3F4F6; border-radius: 999px; padding: 4px;
+  animation: ecoFadeUp 0.7s 0.3s cubic-bezier(0.22,1,0.36,1) both;
+}
+.gano-eco-toggle__btn {
+  padding: 10px 24px; border-radius: 999px;
+  font-size: 0.9375rem; font-weight: 600; color: #6B7280;
+  transition: all 0.3s ease; white-space: nowrap;
+}
+.gano-eco-toggle__btn.active {
+  background: #FFFFFF; color: #0F1923;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.gano-eco-toggle__save {
+  font-size: 0.75rem; font-weight: 600; color: #00C26B;
+  background: #E0FAF0; padding: 4px 10px; border-radius: 999px;
+}
+
+/* ---- PLAN CARDS GRID -------------------------------------------- */
+.gano-eco-plans {
+  padding: 40px 0 80px;
+  background: #FFFFFF;
+}
+.gano-eco-plans__grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .gano-eco-plans__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+  .gano-eco-plans__grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Plan Card */
+.gano-eco-card {
+  position: relative;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 20px;
+  padding: 32px 24px;
+  display: flex; flex-direction: column;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: ecoScaleIn 0.6s cubic-bezier(0.22,1,0.36,1) both;
+}
+.gano-eco-card:nth-child(1) { animation-delay: 0.1s; }
+.gano-eco-card:nth-child(2) { animation-delay: 0.2s; }
+.gano-eco-card:nth-child(3) { animation-delay: 0.3s; }
+.gano-eco-card:nth-child(4) { animation-delay: 0.4s; }
+
+.gano-eco-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 48px -12px rgba(15, 25, 35, 0.12);
+  border-color: #D1D5DB;
+}
+
+/* Featured card (gold accent) */
+.gano-eco-card--featured {
+  border-color: #D4AF37;
+  box-shadow: 0 0 0 1px #D4AF37, 0 12px 32px -8px rgba(212, 175, 55, 0.2);
+}
+.gano-eco-card--featured:hover {
+  box-shadow: 0 0 0 1px #D4AF37, 0 24px 48px -12px rgba(212, 175, 55, 0.25);
+}
+.gano-eco-card--featured::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, #D4AF37, #F0D878, #D4AF37);
+  border-radius: 20px 20px 0 0;
+}
+
+.gano-eco-card__badge {
+  position: absolute; top: -1px; right: 24px;
+  background: linear-gradient(135deg, #D4AF37, #B8941D);
+  color: #fff; font-size: 0.75rem; font-weight: 700;
+  padding: 6px 14px; border-radius: 0 0 10px 10px;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+/* Card illustration */
+.gano-eco-card__illust {
+  width: 72px; height: 72px; margin-bottom: 20px;
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.gano-eco-card__illust--basic   { background: linear-gradient(135deg, #E8EEFB, #D4E0F9); }
+.gano-eco-card__illust--deluxe  { background: linear-gradient(135deg, #E0FAF0, #C8F5E0); }
+.gano-eco-card__illust--premium { background: linear-gradient(135deg, #FFF8E1, #FFECB3); }
+.gano-eco-card__illust--ultimate{ background: linear-gradient(135deg, #F3E5F5, #E1BEE7); }
+
+.gano-eco-card__illust svg {
+  width: 36px; height: 36px;
+}
+
+.gano-eco-card h3 {
+  font-size: 1.25rem; font-weight: 700; margin-bottom: 8px;
+}
+.gano-eco-card__desc {
+  font-size: 0.875rem; color: #6B7280; line-height: 1.55;
+  margin-bottom: 20px; flex-grow: 1;
+}
+
+/* Price */
+.gano-eco-card__price {
+  margin-bottom: 24px;
+}
+.gano-eco-card__price-value {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2.5rem; font-weight: 800; color: #0F1923;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.gano-eco-card__price-value small {
+  font-size: 1rem; font-weight: 500; color: #6B7280;
+}
+.gano-eco-card__price-period {
+  font-size: 0.875rem; color: #9CA3AF; margin-top: 4px;
+}
+.gano-eco-card__price-note {
+  font-size: 0.75rem; color: #00C26B; font-weight: 600;
+  margin-top: 6px;
+}
+
+/* Features */
+.gano-eco-card__features {
+  margin-bottom: 24px;
+}
+.gano-eco-card__features li {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; font-size: 0.875rem;
+  color: #4B5563; border-bottom: 1px solid #F3F4F6;
+}
+.gano-eco-card__features li:last-child { border-bottom: none; }
+.gano-eco-card__features li svg {
+  width: 18px; height: 18px; color: #00C26B; flex-shrink: 0; margin-top: 1px;
+}
+
+/* CTA Buttons */
+.gano-eco-card__cta {
+  display: flex; flex-direction: column; gap: 10px;
+}
+.gano-eco-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 14px 24px; border-radius: 12px;
+  font-size: 0.9375rem; font-weight: 700;
+  transition: all 0.3s ease; text-align: center;
+}
+.gano-eco-btn--primary {
+  background: linear-gradient(135deg, #FF6B35, #E55520);
+  color: #fff; box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
+}
+.gano-eco-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 107, 53, 0.4);
+}
+.gano-eco-btn--secondary {
+  background: #F3F4F6; color: #374151;
+}
+.gano-eco-btn--secondary:hover {
+  background: #E5E7EB;
+}
+.gano-eco-btn--ghost {
+  color: #1B4FD8; font-weight: 600; font-size: 0.875rem;
+  padding: 8px;
+}
+.gano-eco-btn--ghost:hover { color: #1240B0; text-decoration: underline; }
+
+.gano-eco-card--featured .gano-eco-btn--primary {
+  background: linear-gradient(135deg, #1B4FD8, #1240B0);
+  box-shadow: 0 4px 16px rgba(27, 79, 216, 0.3);
+}
+.gano-eco-card--featured .gano-eco-btn--primary:hover {
+  box-shadow: 0 8px 24px rgba(27, 79, 216, 0.4);
+}
+
+/* ---- BUNDLES SECTION -------------------------------------------- */
+.gano-eco-bundles {
+  padding: 80px 0;
+  background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
+}
+.gano-eco-bundles__header {
+  text-align: center; margin-bottom: 48px;
+}
+.gano-eco-bundles__header h2 {
+  font-size: clamp(1.6rem, 3.5vw, 2.25rem); font-weight: 800;
+  margin-bottom: 12px;
+}
+.gano-eco-bundles__header p {
+  color: #6B7280; font-size: 1.05rem; max-width: 540px; margin: 0 auto;
+}
+
+.gano-eco-bundles__grid {
+  display: grid; gap: 24px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .gano-eco-bundles__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.gano-eco-bundle {
+  background: #FFFFFF; border: 2px solid #E5E7EB;
+  border-radius: 20px; padding: 32px;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
+  position: relative; overflow: hidden;
+}
+.gano-eco-bundle:hover {
+  border-color: #1B4FD8;
+  box-shadow: 0 20px 40px -12px rgba(27, 79, 216, 0.15);
+  transform: translateY(-4px);
+}
+.gano-eco-bundle__icon {
+  width: 64px; height: 64px; margin: 0 auto 20px;
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #E8EEFB, #D4E0F9);
+}
+.gano-eco-bundle__icon svg { width: 32px; height: 32px; color: #1B4FD8; }
+
+.gano-eco-bundle h4 {
+  font-size: 1.125rem; font-weight: 700; margin-bottom: 8px;
+}
+.gano-eco-bundle p {
+  font-size: 0.875rem; color: #6B7280; margin-bottom: 20px;
+}
+.gano-eco-bundle__price {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.75rem; font-weight: 800; color: #0F1923;
+  margin-bottom: 4px;
+}
+.gano-eco-bundle__price small { font-size: 0.875rem; font-weight: 500; color: #6B7280; }
+.gano-eco-bundle__save {
+  display: inline-block; font-size: 0.75rem; font-weight: 700;
+  color: #00C26B; background: #E0FAF0;
+  padding: 4px 12px; border-radius: 999px; margin-bottom: 20px;
+}
+
+/* ---- COMPARISON TABLE ------------------------------------------- */
+.gano-eco-compare {
+  padding: 80px 0;
+  background: #FFFFFF;
+}
+.gano-eco-compare__header {
+  text-align: center; margin-bottom: 48px;
+}
+.gano-eco-compare__header h2 {
+  font-size: clamp(1.6rem, 3.5vw, 2.25rem); font-weight: 800;
+  margin-bottom: 12px;
+}
+.gano-eco-compare__header p {
+  color: #6B7280;
+}
+
+.gano-eco-table-wrap {
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+}
+.gano-eco-table {
+  width: 100%; border-collapse: collapse; min-width: 700px;
+}
+.gano-eco-table th, .gano-eco-table td {
+  padding: 16px 20px; text-align: left; font-size: 0.9375rem;
+}
+.gano-eco-table thead th {
+  background: #F8FAFC; font-weight: 700; color: #0F1923;
+  border-bottom: 2px solid #E5E7EB;
+  white-space: nowrap;
+}
+.gano-eco-table thead th:first-child { border-radius: 16px 0 0 0; }
+.gano-eco-table thead th:last-child  { border-radius: 0 16px 0 0; }
+.gano-eco-table tbody tr { border-bottom: 1px solid #F3F4F6; }
+.gano-eco-table tbody tr:last-child { border-bottom: none; }
+.gano-eco-table tbody tr:hover { background: #FAFBFC; }
+.gano-eco-table tbody th {
+  font-weight: 600; color: #374151; white-space: nowrap;
+}
+.gano-eco-table tbody td { color: #6B7280; }
+.gano-eco-table .check {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #E0FAF0; color: #00C26B;
+}
+.gano-eco-table .check svg { width: 14px; height: 14px; }
+.gano-eco-table .dash { color: #D1D5DB; font-size: 1.2rem; }
+.gano-eco-table .highlight { color: #0F1923; font-weight: 600; }
+
+/* ---- TRUST / SOCIAL PROOF --------------------------------------- */
+.gano-eco-trust {
+  padding: 60px 0;
+  background: linear-gradient(135deg, #0F1923 0%, #1A2535 100%);
+  color: #fff; text-align: center;
+}
+.gano-eco-trust h2 {
+  color: #fff; font-size: clamp(1.4rem, 3vw, 1.875rem);
+  font-weight: 700; margin-bottom: 40px;
+}
+.gano-eco-trust__grid {
+  display: grid; gap: 32px;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 768px) {
+  .gano-eco-trust__grid { grid-template-columns: repeat(4, 1fr); }
+}
+.gano-eco-trust__item svg {
+  width: 40px; height: 40px; color: #D4AF37; margin: 0 auto 16px;
+}
+.gano-eco-trust__item h4 {
+  color: #fff; font-size: 1.05rem; font-weight: 700; margin-bottom: 6px;
+}
+.gano-eco-trust__item p {
+  color: #94A3B8; font-size: 0.875rem;
+}
+
+/* ---- FAQ -------------------------------------------------------- */
+.gano-eco-faq {
+  padding: 80px 0; background: #F8FAFC;
+}
+.gano-eco-faq__header {
+  text-align: center; margin-bottom: 48px;
+}
+.gano-eco-faq__header h2 {
+  font-size: clamp(1.6rem, 3.5vw, 2.25rem); font-weight: 800;
+  margin-bottom: 12px;
+}
+.gano-eco-faq__list {
+  max-width: 800px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.gano-eco-faq__item {
+  background: #FFFFFF; border-radius: 14px;
+  border: 1px solid #E5E7EB; overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+.gano-eco-faq__item:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
+.gano-eco-faq__q {
+  width: 100%; padding: 20px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 1rem; font-weight: 600; color: #0F1923; text-align: left;
+}
+.gano-eco-faq__q svg {
+  width: 20px; height: 20px; color: #6B7280;
+  transition: transform 0.3s ease; flex-shrink: 0; margin-left: 12px;
+}
+.gano-eco-faq__item.open .gano-eco-faq__q svg { transform: rotate(180deg); }
+.gano-eco-faq__a {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+}
+.gano-eco-faq__item.open .gano-eco-faq__a {
+  max-height: 300px;
+  padding: 0 24px 20px;
+}
+.gano-eco-faq__a p {
+  color: #6B7280; font-size: 0.9375rem; line-height: 1.65;
+}
+
+/* ---- FINAL CTA -------------------------------------------------- */
+.gano-eco-final {
+  padding: 80px 0; text-align: center;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+}
+.gano-eco-final h2 {
+  font-size: clamp(1.6rem, 3.5vw, 2.25rem); font-weight: 800;
+  margin-bottom: 16px;
+}
+.gano-eco-final p {
+  color: #6B7280; font-size: 1.05rem; max-width: 520px;
+  margin: 0 auto 32px;
+}
+.gano-eco-final__btns {
+  display: flex; flex-wrap: wrap; gap: 16px;
+  justify-content: center;
+}
+.gano-eco-final__btns .gano-eco-btn { padding: 16px 32px; font-size: 1rem; }
+
+/* ---- SCROLL REVEAL UTILITIES ------------------------------------ */
+.eco-reveal {
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1),
+              transform 0.8s cubic-bezier(0.22,1,0.36,1);
+}
+.eco-reveal.visible {
+  opacity: 1; transform: translateY(0);
+}
+
+/* ---- RESPONSIVE ------------------------------------------------- */
+@media (max-width: 1023px) {
+  .gano-eco-card--featured { order: -1; }
+}
+@media (max-width: 639px) {
+  .gano-eco-hero { padding: 60px 0 40px; }
+  .gano-eco-card { padding: 28px 20px; }
+  .gano-eco-card__price-value { font-size: 2rem; }
+  .gano-eco-table-wrap { border-radius: 12px; }
+  .gano-eco-table th, .gano-eco-table td { padding: 12px 14px; font-size: 0.875rem; }
+}
