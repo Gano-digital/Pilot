@@ -122,14 +122,14 @@
 
 /* ─── Scroll reveal ─── */
 .gano-eco-v3 .eco-reveal {
-  opacity: 0;
-  transform: translateY(40px);
+  opacity: 1;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .gano-eco-v3 .eco-reveal.visible {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ─── Container ─── */
@@ -618,6 +618,61 @@
   color: white;
 }
 
+/* ─── Trust Signals ─── */
+.gano-eco-v3 .eco-trust {
+  padding: 80px 0;
+  background: #FFFFFF;
+}
+
+.gano-eco-v3 .eco-trust__title {
+  text-align: center;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: var(--eco-text);
+  margin-bottom: 60px;
+}
+
+.gano-eco-v3 .eco-trust__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 32px;
+}
+
+.gano-eco-v3 .eco-trust__item {
+  text-align: center;
+  padding: 32px 24px;
+  background: #F8FAFC;
+  border-radius: 16px;
+  border: 1px solid #E5E7EB;
+  transition: all 0.35s ease;
+}
+
+.gano-eco-v3 .eco-trust__item:hover {
+  border-color: var(--eco-accent);
+  background: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+}
+
+.gano-eco-v3 .eco-trust__icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 20px;
+  color: var(--eco-accent);
+}
+
+.gano-eco-v3 .eco-trust__item-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--eco-text);
+  margin-bottom: 12px;
+}
+
+.gano-eco-v3 .eco-trust__item-desc {
+  font-size: 0.9rem;
+  color: var(--eco-text-muted);
+  line-height: 1.6;
+}
+
 /* ─── Bundles Section ─── */
 .gano-eco-v3 .eco-bundles {
   background: var(--eco-bg-alt);
@@ -983,4 +1038,441 @@
   .gano-eco-v3 .eco-section {
     padding: 60px 0;
   }
+}
+
+/* ================================================================
+   ECOSISTEMAS V3 — Estilos adicionales para clases no cubiertas
+   ================================================================ */
+
+html { scroll-behavior: smooth; }
+
+/* ---- .eco-plans ---- */
+.eco-plans {
+  padding: 60px 0;
+  background: var(--eco-bg);
+}
+
+/* ---- .eco-btn system ---- */
+.eco-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 28px;
+  border-radius: var(--eco-radius-sm);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.eco-btn--primary {
+  background: linear-gradient(135deg, #FF6B35, #E55520);
+  color: white;
+  box-shadow: 0 4px 16px rgba(255,107,53,0.25);
+}
+
+.eco-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255,107,53,0.35);
+}
+
+.eco-btn--ghost {
+  background: transparent;
+  color: var(--eco-primary);
+  font-weight: 600;
+  padding: 12px;
+}
+
+.eco-btn--ghost:hover {
+  background: var(--eco-primary-light);
+}
+
+.eco-btn--secondary {
+  background: white;
+  color: var(--eco-primary);
+  border: 1px solid var(--eco-border);
+}
+
+.eco-btn--secondary:hover {
+  background: var(--eco-primary-light);
+  border-color: var(--eco-primary);
+}
+
+/* Ghost button inside plan card */
+.eco-plan-card .eco-btn--ghost {
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* ---- Tabs button extras ---- */
+.eco-tabs__btn {
+  text-decoration: none;
+}
+
+/* ---- Category section ---- */
+.eco-category {
+  padding: 60px 0;
+  background: #FFFFFF;
+  border-top: 1px solid #F3F4F6;
+}
+
+.eco-category:nth-child(even) {
+  background: #F8FAFC;
+}
+
+.eco-category__header {
+  margin-bottom: 32px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.eco-category__header h2 {
+  font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+  font-weight: 700;
+}
+
+.eco-category__count {
+  font-size: 0.875rem;
+  color: #9CA3AF;
+  font-weight: 500;
+}
+
+/* ---- Products grid (BEM variant) ---- */
+.eco-products__grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .eco-products__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .eco-products__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ---- Bundles ---- */
+.eco-bundles__header {
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.eco-bundles__header h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 800;
+  color: var(--eco-text);
+  margin-bottom: 12px;
+}
+
+.eco-bundles__header p {
+  font-size: 1.0625rem;
+  color: var(--eco-text-muted);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.65;
+}
+
+.eco-bundles__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 640px) {
+  .eco-bundles__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .eco-bundles__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.eco-bundle {
+  background: white;
+  border: 2px solid transparent;
+  border-radius: var(--eco-radius-lg);
+  padding: 32px;
+  text-align: center;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.eco-bundle:hover {
+  border-color: var(--eco-primary);
+  box-shadow: var(--eco-shadow-lg);
+}
+
+.eco-bundle__icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  background: var(--eco-primary-light);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--eco-primary);
+}
+
+.eco-bundle h4 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--eco-text);
+  margin-bottom: 8px;
+}
+
+.eco-bundle p {
+  font-size: 0.9375rem;
+  color: var(--eco-text-muted);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.eco-bundle__price {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--eco-text);
+  margin-bottom: 8px;
+}
+
+.eco-bundle__save {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--eco-accent);
+  background: var(--eco-accent-light);
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+/* ---- FAQ ---- */
+.eco-faq__header {
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.eco-faq__header h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 800;
+  color: var(--eco-text);
+  margin-bottom: 12px;
+}
+
+.eco-faq__list {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.eco-faq__question {
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+
+/* ---- Final CTA ---- */
+.eco-final {
+  padding: 80px 0;
+  text-align: center;
+}
+
+.eco-final h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 800;
+  color: var(--eco-text);
+  margin-bottom: 24px;
+}
+
+.eco-final p {
+  font-size: 1.0625rem;
+  color: var(--eco-text-muted);
+  max-width: 560px;
+  margin: 0 auto 32px;
+  line-height: 1.65;
+}
+
+.eco-final__actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ---- Plan card illustration modifiers ---- */
+.eco-plan-card__illustration--basic { background: #E8EEFB; }
+.eco-plan-card__illustration--deluxe { background: #E0FAF0; }
+.eco-plan-card__illustration--premium { background: #FFF8E1; }
+.eco-plan-card__illustration--ultimate { background: #F3E8FF; }
+
+/* ---- Product card shortcode overrides ---- */
+.eco-product-card .rstore-product,
+.eco-product-card .reseller-product {
+  margin: 0;
+}
+
+.eco-product-card .rstore-product-title,
+.eco-product-card .reseller-product-title,
+.eco-product-card h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #0F1923;
+}
+
+.eco-product-card .rstore-product-price,
+.eco-product-card .reseller-product-price {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0F1923;
+  margin: 12px 0;
+  display: block;
+}
+
+.eco-product-card .rstore-product-button,
+.eco-product-card .reseller-product-button,
+.eco-product-card .button,
+.eco-product-card a.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1B4FD8, #1240B0);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.eco-product-card .rstore-product-button:hover,
+.eco-product-card .reseller-product-button:hover,
+.eco-product-card .button:hover,
+.eco-product-card a.button:hover {
+  box-shadow: 0 4px 12px rgba(27,79,216,0.25);
+  transform: translateY(-1px);
+}
+
+/* ─── Compare Section ─── */
+.gano-eco-v3 .eco-compare {
+  padding: 80px 0;
+  background: var(--eco-bg-alt);
+}
+
+/* ─── Product Card Hidden State ─── */
+.gano-eco-v3 .eco-product-card--hidden {
+  display: none;
+}
+.gano-eco-v3 .eco-products__grid.is-expanded .eco-product-card--hidden {
+  display: flex;
+  animation: ecoFadeUp 0.5s ease forwards;
+}
+.gano-eco-v3 .eco-products__more {
+  grid-column: 1 / -1;
+  justify-self: center;
+  margin-top: 8px;
+}
+
+/* ─── RStore Product Card Overrides ─── */
+.gano-eco-v3 .eco-product-card .rstore-product {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.gano-eco-v3 .eco-product-card .rstore-product-icons {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+}
+.gano-eco-v3 .eco-product-card .rstore-product-icons svg {
+  width: 100%;
+  height: 100%;
+}
+.gano-eco-v3 .eco-product-card .rstore-product-header {
+  flex-grow: 1;
+}
+.gano-eco-v3 .eco-product-card .widget-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--eco-text);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.gano-eco-v3 .eco-product-card .rstore-pricing {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--eco-text);
+  margin-bottom: 12px;
+}
+.gano-eco-v3 .eco-product-card .rstore-pricing .rstore-price {
+  color: var(--eco-text);
+}
+.gano-eco-v3 .eco-product-card .rstore-pricing {
+  font-size: 0;
+}
+.gano-eco-v3 .eco-product-card .rstore-pricing .rstore-price {
+  font-size: 1.25rem;
+}
+.gano-eco-v3 .eco-product-card .rstore-add-to-cart-form {
+  margin: 0;
+}
+.gano-eco-v3 .eco-product-card .rstore-add-to-cart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1B4FD8, #1240B0);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+.gano-eco-v3 .eco-product-card .rstore-add-to-cart:hover {
+  box-shadow: 0 4px 12px rgba(27,79,216,0.25);
+  transform: translateY(-1px);
+}
+.gano-eco-v3 .eco-product-card .rstore-product-summary {
+  display: none;
+}
+.gano-eco-v3 .eco-product-card .rstore-product-permalink {
+  margin-top: 12px;
+  text-align: center;
+}
+.gano-eco-v3 .eco-product-card .rstore-product-permalink a {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--eco-primary);
+  text-decoration: none;
+}
+.gano-eco-v3 .eco-product-card .rstore-product-permalink a:hover {
+  text-decoration: underline;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 639px) {
+  .eco-plans { padding: 40px 0; }
+  .eco-category { padding: 40px 0; }
+  .eco-category__header h2 { font-size: 1.25rem; }
+  .eco-final { padding: 60px 0; }
 }

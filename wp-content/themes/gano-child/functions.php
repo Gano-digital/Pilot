@@ -3243,3 +3243,33 @@ function gano_enqueue_theme_styles() {
 	);
 }
 add_action('wp_enqueue_scripts', 'gano_enqueue_theme_styles', 5);
+
+/**
+ * Enqueue Ecosystems v3 styles and scripts
+ * Handles pricing page design and billing toggle functionality
+ */
+function gano_enqueue_ecosystems_v3() {
+	// Only load on ecosistemas page
+	if ( ! is_page( 'ecosistemas' ) ) {
+		return;
+	}
+
+	// Enqueue v3 CSS with design system
+	wp_enqueue_style(
+		'gano-ecosistemas-v3',
+		get_stylesheet_directory_uri() . '/css/ecosistemas-v3.css',
+		[],
+		'1.0.0'
+	);
+
+	// Enqueue billing toggle script
+	$js_path = get_stylesheet_directory() . '/js/ecosystems-billing-toggle.js';
+	wp_enqueue_script(
+		'gano-ecosystems-billing-toggle',
+		get_stylesheet_directory_uri() . '/js/ecosystems-billing-toggle.js',
+		[],
+		file_exists( $js_path ) ? (string) filemtime( $js_path ) : '1.0.0',
+		true
+	);
+}
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_ecosystems_v3', 11 );
