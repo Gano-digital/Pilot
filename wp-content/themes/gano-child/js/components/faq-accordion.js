@@ -36,7 +36,7 @@
 
 			// Close all other items
 			this.container.querySelectorAll('.faq-answer').forEach(div => {
-				if (div.id !== targetId) {
+				if (div !== answerDiv) {
 					this.closeItem(div);
 				}
 			});

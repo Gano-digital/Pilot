@@ -24,7 +24,7 @@
 			<a href="#ecosystems" class="btn btn-primary btn-lg">
 				<?php esc_html_e( 'Ver Planes', 'gano-child' ); ?>
 			</a>
-			<a href="#contact" class="btn btn-secondary btn-lg">
+			<a href="#cta-final" class="btn btn-secondary btn-lg">
 				<?php esc_html_e( 'Solicitar Demostración', 'gano-child' ); ?>
 			</a>
 		</div>

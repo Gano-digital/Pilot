@@ -9,7 +9,7 @@
 get_header();
 
 // Load component helpers
-require_once get_template_directory() . '/template-parts/components.php';
+require_once get_stylesheet_directory() . '/template-parts/components.php';
 
 ?>
 

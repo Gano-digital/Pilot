@@ -309,7 +309,7 @@ function gano_handle_pre_registro() {
 
 add_action( 'wp_enqueue_scripts', 'gano_enqueue_homepage_sections', 11 );
 function gano_enqueue_homepage_sections() {
-    if ( is_admin() ) {
+    if ( is_admin() || ! is_front_page() ) {
         return;
     }
 
@@ -340,6 +340,24 @@ function gano_enqueue_homepage_sections() {
         file_exists( $cta_css ) ? (string) filemtime( $cta_css ) : '1.0.0'
     );
 
+    // Enqueue trust signals section styles
+    $trust_css = get_stylesheet_directory() . '/css/components/trust-signals.css';
+    wp_enqueue_style(
+        'gano-trust-signals-section',
+        get_stylesheet_directory_uri() . '/css/components/trust-signals.css',
+        array(),
+        file_exists( $trust_css ) ? (string) filemtime( $trust_css ) : '1.0.0'
+    );
+
+    // Enqueue comparison table section styles
+    $comparison_css = get_stylesheet_directory() . '/css/components/comparison-table.css';
+    wp_enqueue_style(
+        'gano-comparison-table-section',
+        get_stylesheet_directory_uri() . '/css/components/comparison-table.css',
+        array(),
+        file_exists( $comparison_css ) ? (string) filemtime( $comparison_css ) : '1.0.0'
+    );
+
     // Enqueue FAQ accordion JavaScript
     $faq_js = get_stylesheet_directory() . '/js/components/faq-accordion.js';
     wp_enqueue_script(
@@ -360,11 +378,11 @@ function gano_enqueue_homepage_sections() {
         true
     );
 
-    // Localize ajaxurl for form handler
+    // Localize form handler with AJAX URL
     wp_localize_script(
         'gano-form-handler',
-        'ajaxurl',
-        admin_url( 'admin-ajax.php' )
+        'ganoFormVars',
+        array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
     );
 }
 

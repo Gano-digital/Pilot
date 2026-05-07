@@ -40,7 +40,8 @@
 			}
 
 			// Submit form via AJAX
-			const response = await fetch(ajaxurl || window.location.href, {
+			const ganoVars = window.ganoFormVars || { ajax_url: admin_url('admin-ajax.php') };
+			const response = await fetch(ganoVars.ajax_url || '/wp-admin/admin-ajax.php', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded',
@@ -70,7 +71,7 @@
 					});
 				}
 			} else {
-				showMessage('Error: ' + (result.message || 'No se pudo enviar el formulario.'), 'error');
+				showMessage('Error: ' + (result.data || 'No se pudo enviar el formulario.'), 'error');
 			}
 		} catch (error) {
 			console.error('Form submission error:', error);
