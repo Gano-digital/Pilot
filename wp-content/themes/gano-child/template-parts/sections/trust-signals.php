@@ -68,7 +68,7 @@ $certifications = gano_get_certifications();
 			<?php foreach ( $certifications as $cert ) : ?>
 				<div class="cert-badge">
 					<img
-						src="<?php echo esc_url( get_template_directory_uri() . '/assets/icons/' . $cert['icon'] ); ?>"
+						src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/icons/' . $cert['icon'] ); ?>"
 						alt="<?php echo esc_attr( $cert['name'] ); ?>"
 						class="cert-icon"
 					>

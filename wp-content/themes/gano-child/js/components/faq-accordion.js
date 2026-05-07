@@ -34,9 +34,9 @@
 				return;
 			}
 
-			// Close all other items
+			// Close all other items (only if they're actually different)
 			this.container.querySelectorAll('.faq-answer').forEach(div => {
-				if (div !== answerDiv) {
+				if (div.id !== answerDiv.id) {
 					this.closeItem(div);
 				}
 			});
