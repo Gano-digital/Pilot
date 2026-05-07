@@ -205,6 +205,32 @@ $faqs = array(
 	array( '¿Cómo es el uptime 99.9%?', 'Monitoreamos constantemente. Si caemos, compensa automáticamente créditos al mes siguiente. Ultra es una promesa, no un compromiso vago.' ),
 	array( '¿Puedo usar bases de datos ilimitadas?', 'Sí, en Deluxe y superiores. Básico incluye 5 bases de datos MySQL, lo cual es suficiente para 99% de sitios WordPress. Escala bajo demanda.' ),
 );
+
+// ------------------------------------------------------------------
+// Trust Signals
+// ------------------------------------------------------------------
+$trust_signals = array(
+	array(
+		'icon'    => 'M9 12l2 2 4-4m7 0a9 9 0 11-18 0 9 9 0 0118 0z',
+		'title'   => '99.9% Uptime SLA',
+		'desc'    => 'Monitoreo 24/7 y redundancia. Si caemos, compensamos con créditos automáticos.'
+	),
+	array(
+		'icon'    => 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z',
+		'title'   => 'ISO 27001 Certificado',
+		'desc'    => 'Seguridad informática certificada. Auditoría anual independiente.'
+	),
+	array(
+		'icon'    => 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0110.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064',
+		'title'   => 'Soberanía Digital',
+		'desc'    => 'Datacenter en Colombia. Datos en territorio nacional. Cumplimiento GDPR + regulación local.'
+	),
+	array(
+		'icon'    => 'M14.828 14.828a4 4 0 01-5.656 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9 9h.01M15 9h.01',
+		'title'   => 'Soporte 24/7 en Español',
+		'desc'    => 'Equipo dedicado en tu zona horaria. Email, chat y teléfono. Respuesta < 2h.'
+	),
+);
 ?>
 
 <style>
@@ -826,6 +852,61 @@ $faqs = array(
 .gano-eco-v3 .eco-product-card__cta:hover {
   background: var(--eco-primary);
   color: white;
+}
+
+/* ─── Trust Signals ─── */
+.gano-eco-v3 .eco-trust {
+  padding: 80px 0;
+  background: #FFFFFF;
+}
+
+.gano-eco-v3 .eco-trust__title {
+  text-align: center;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: var(--eco-text);
+  margin-bottom: 60px;
+}
+
+.gano-eco-v3 .eco-trust__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 32px;
+}
+
+.gano-eco-v3 .eco-trust__item {
+  text-align: center;
+  padding: 32px 24px;
+  background: #F8FAFC;
+  border-radius: 16px;
+  border: 1px solid #E5E7EB;
+  transition: all 0.35s ease;
+}
+
+.gano-eco-v3 .eco-trust__item:hover {
+  border-color: var(--eco-accent);
+  background: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+}
+
+.gano-eco-v3 .eco-trust__icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 20px;
+  color: var(--eco-accent);
+}
+
+.gano-eco-v3 .eco-trust__item-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--eco-text);
+  margin-bottom: 12px;
+}
+
+.gano-eco-v3 .eco-trust__item-desc {
+  font-size: 0.9rem;
+  color: var(--eco-text-muted);
+  line-height: 1.6;
 }
 
 /* ─── Bundles Section ─── */
@@ -1810,6 +1891,26 @@ html { scroll-behavior: smooth; }
       <?php wp_reset_postdata(); ?>
     <?php endforeach; ?>
   <?php endif; ?>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       TRUST SIGNALS
+       ════════════════════════════════════════════════════════════════ -->
+  <section class="eco-trust">
+    <div class="eco-container">
+      <div class="eco-trust__title"><?php esc_html_e( 'Confía en nosotros', 'gano-child' ); ?></div>
+      <div class="eco-trust__grid">
+        <?php foreach ( $trust_signals as $signal ) : ?>
+          <div class="eco-trust__item eco-reveal">
+            <svg class="eco-trust__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="<?php echo esc_attr( $signal['icon'] ); ?>"/>
+            </svg>
+            <div class="eco-trust__item-title"><?php echo esc_html( $signal['title'] ); ?></div>
+            <div class="eco-trust__item-desc"><?php echo esc_html( $signal['desc'] ); ?></div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </section>
 
   <!-- ════════════════════════════════════════════════════════════════
        BUNDLES
