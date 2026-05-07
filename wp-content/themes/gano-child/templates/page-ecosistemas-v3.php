@@ -199,6 +199,11 @@ $faqs = array(
 	array( '¿El dominio está incluido?', 'Los planes de hosting no incluyen dominio por defecto. Revisa nuestros Bundles que combinan dominio + hosting + SSL con descuento.' ),
 	array( '¿Qué es el Agente IA?', 'Es un asistente inteligente integrado en WordPress Ultimate y cPanel Ultimate que monitorea tu sitio, detecta anomalías y sugiere optimizaciones automáticamente.' ),
 	array( '¿Tienen garantía de reembolso?', 'Sí. Todos los planes incluyen 30 días de garantía. Si no estás satisfecho, te devolvemos el 100% sin preguntas.' ),
+	array( '¿Dónde están físicamente alojados los datos?', 'En datacenters con certificación ISO 27001 ubicados en Colombia. Soberanía digital garantizada: tus datos nunca salen del país a menos que lo autorices.' ),
+	array( '¿Cómo migro desde otro hosting?', 'Nuestro equipo maneja la migración gratis. Copiamos archivos, base de datos y configuración. Tu sitio estará online sin downtime. Coordina con soporte@gano.digital.' ),
+	array( '¿Qué incluye el "Soporte 24/7"?', 'Atención por email, chat y teléfono en español. Planes Deluxe y superiores tienen prioridad. Ultimate y cPanel tienen gestor dedicado que conoce tu sitio.' ),
+	array( '¿Cómo es el uptime 99.9%?', 'Monitoreamos constantemente. Si caemos, compensa automáticamente créditos al mes siguiente. Ultra es una promesa, no un compromiso vago.' ),
+	array( '¿Puedo usar bases de datos ilimitadas?', 'Sí, en Deluxe y superiores. Básico incluye 5 bases de datos MySQL, lo cual es suficiente para 99% de sitios WordPress. Escala bajo demanda.' ),
 );
 ?>
 
