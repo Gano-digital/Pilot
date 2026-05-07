@@ -40,8 +40,9 @@
 			}
 
 			// Submit form via AJAX
-			const ganoVars = window.ganoFormVars || { ajax_url: admin_url('admin-ajax.php') };
-			const response = await fetch(ganoVars.ajax_url || '/wp-admin/admin-ajax.php', {
+			const ganoVars = window.ganoFormVars || {};
+			const ajaxUrl = ganoVars.ajax_url || '/wp-admin/admin-ajax.php';
+			const response = await fetch(ajaxUrl, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded',
@@ -71,7 +72,8 @@
 					});
 				}
 			} else {
-				showMessage('Error: ' + (result.data || 'No se pudo enviar el formulario.'), 'error');
+				const errorMsg = (result.data && typeof result.data === 'string') ? result.data : 'No se pudo enviar el formulario.';
+				showMessage('Error: ' + errorMsg, 'error');
 			}
 		} catch (error) {
 			console.error('Form submission error:', error);
