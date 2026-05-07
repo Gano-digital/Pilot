@@ -107,7 +107,10 @@ function gano_enqueue_premium_styles() {
 // HUD sitewide — status bar (CRT + glitch postpunk)
 // =============================================================================
 
-add_action( 'wp_enqueue_scripts', 'gano_enqueue_status_hud', 12 );
+// HUD telemetry (FPS/DCL/PING) — disabled on landing/SOTA pages to keep production clean.
+// Re-enable per-page by re-adding the hook with an is_page() guard.
+// add_action( 'wp_enqueue_scripts', 'gano_enqueue_status_hud', 12 );
+if ( false ) add_action( 'wp_enqueue_scripts', 'gano_enqueue_status_hud', 12 );
 function gano_enqueue_status_hud(): void {
     if ( is_admin() ) {
         return;
@@ -132,7 +135,8 @@ function gano_enqueue_status_hud(): void {
     );
 }
 
-add_action( 'wp_footer', 'gano_render_status_hud', 20 );
+// HUD telemetry render — disabled in production (was tapping content + showing dev metrics on live site)
+// add_action( 'wp_footer', 'gano_render_status_hud', 20 );
 
 // =============================================================================
 // MOBILE MENU (F2.3 — Front Page + all pages)
