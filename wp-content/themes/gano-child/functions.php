@@ -304,6 +304,193 @@ function gano_handle_pre_registro() {
 }
 
 // =============================================================================
+// TASK 7-10: HOMEPAGE SECTIONS ENQUEUE (Hero, FAQ, CTA Form)
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_homepage_sections', 11 );
+function gano_enqueue_homepage_sections() {
+    if ( is_admin() || ! is_front_page() ) {
+        return;
+    }
+
+    // Enqueue hero section styles
+    $hero_css = get_stylesheet_directory() . '/css/components/hero.css';
+    wp_enqueue_style(
+        'gano-hero-section',
+        get_stylesheet_directory_uri() . '/css/components/hero.css',
+        array(),
+        file_exists( $hero_css ) ? (string) filemtime( $hero_css ) : '1.0.0'
+    );
+
+    // Enqueue FAQ section styles
+    $faq_css = get_stylesheet_directory() . '/css/components/faq.css';
+    wp_enqueue_style(
+        'gano-faq-section',
+        get_stylesheet_directory_uri() . '/css/components/faq.css',
+        array(),
+        file_exists( $faq_css ) ? (string) filemtime( $faq_css ) : '1.0.0'
+    );
+
+    // Enqueue CTA final section styles
+    $cta_css = get_stylesheet_directory() . '/css/components/cta-final.css';
+    wp_enqueue_style(
+        'gano-cta-final-section',
+        get_stylesheet_directory_uri() . '/css/components/cta-final.css',
+        array(),
+        file_exists( $cta_css ) ? (string) filemtime( $cta_css ) : '1.0.0'
+    );
+
+    // Enqueue trust signals section styles
+    $trust_css = get_stylesheet_directory() . '/css/components/trust-signals.css';
+    wp_enqueue_style(
+        'gano-trust-signals-section',
+        get_stylesheet_directory_uri() . '/css/components/trust-signals.css',
+        array(),
+        file_exists( $trust_css ) ? (string) filemtime( $trust_css ) : '1.0.0'
+    );
+
+    // Enqueue comparison table section styles
+    $comparison_css = get_stylesheet_directory() . '/css/components/comparison-table.css';
+    wp_enqueue_style(
+        'gano-comparison-table-section',
+        get_stylesheet_directory_uri() . '/css/components/comparison-table.css',
+        array(),
+        file_exists( $comparison_css ) ? (string) filemtime( $comparison_css ) : '1.0.0'
+    );
+
+    // Enqueue FAQ accordion JavaScript
+    $faq_js = get_stylesheet_directory() . '/js/components/faq-accordion.js';
+    wp_enqueue_script(
+        'gano-faq-accordion',
+        get_stylesheet_directory_uri() . '/js/components/faq-accordion.js',
+        array(),
+        file_exists( $faq_js ) ? (string) filemtime( $faq_js ) : '1.0.0',
+        true
+    );
+
+    // Enqueue form handler JavaScript
+    $form_js = get_stylesheet_directory() . '/js/components/form-handler.js';
+    wp_enqueue_script(
+        'gano-form-handler',
+        get_stylesheet_directory_uri() . '/js/components/form-handler.js',
+        array(),
+        file_exists( $form_js ) ? (string) filemtime( $form_js ) : '1.0.0',
+        true
+    );
+
+    // Localize form handler with AJAX URL
+    wp_localize_script(
+        'gano-form-handler',
+        'ganoFormVars',
+        array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
+    );
+}
+
+// =============================================================================
+// LEAD FORM SUBMISSION HANDLER (CTA Final Form)
+// =============================================================================
+
+add_action( 'wp_ajax_gano_process_lead_form', 'gano_handle_lead_form_submission' );
+add_action( 'wp_ajax_nopriv_gano_process_lead_form', 'gano_handle_lead_form_submission' );
+function gano_handle_lead_form_submission() {
+    // Verify nonce
+    check_ajax_referer( 'gano_lead_form', 'nonce' );
+
+    // Collect and sanitize data
+    $raw_name = wp_unslash( $_POST['full_name'] ?? '' );
+    $raw_email = wp_unslash( $_POST['email'] ?? '' );
+    $raw_company = wp_unslash( $_POST['company'] ?? '' );
+    $raw_role = wp_unslash( $_POST['role'] ?? '' );
+    $raw_message = wp_unslash( $_POST['message'] ?? '' );
+    $consent = isset( $_POST['consent'] ) && 'on' === $_POST['consent'];
+
+    $full_name = sanitize_text_field( $raw_name );
+    $email = sanitize_email( $raw_email );
+    $company = sanitize_text_field( $raw_company );
+    $role = sanitize_text_field( $raw_role );
+    $message = sanitize_textarea_field( $raw_message );
+
+    // Validate required fields
+    if ( empty( $full_name ) || empty( $email ) || empty( $company ) || empty( $role ) ) {
+        wp_send_json_error( 'Por favor completa todos los campos requeridos.' );
+    }
+
+    // Validate email format
+    if ( ! is_email( $email ) ) {
+        wp_send_json_error( 'Por favor ingresa un email válido.' );
+    }
+
+    // Validate consent
+    if ( ! $consent ) {
+        wp_send_json_error( 'Debes aceptar el tratamiento de datos.' );
+    }
+
+    // Store lead in wp_options (similar to pre-registro)
+    $leads = (array) get_option( 'gano_cta_leads', array() );
+    $leads[] = array(
+        'full_name' => $full_name,
+        'email'     => $email,
+        'company'   => $company,
+        'role'      => $role,
+        'message'   => $message,
+        'timestamp' => current_time( 'mysql' ),
+        'ip'        => sanitize_text_field( $_SERVER['REMOTE_ADDR'] ?? '' ),
+    );
+
+    // Limit to 500 leads to prevent unbounded wp_options growth
+    if ( count( $leads ) > 500 ) {
+        $leads = array_slice( $leads, -500 );
+    }
+
+    update_option( 'gano_cta_leads', $leads );
+
+    wp_send_json_success( '¡Gracias! Nos pondremos en contacto pronto.' );
+}
+
+// =============================================================================
+// FAQ DATA HOOK — provide sample FAQ items organized by category
+// =============================================================================
+
+add_filter( 'gano_get_faq_items', 'gano_provide_faq_items' );
+function gano_provide_faq_items( $items ) {
+    if ( ! empty( $items ) ) {
+        return $items;
+    }
+
+    // Default FAQ items organized by category for template compatibility
+    return array(
+        'soberania_digital' => array(
+            array(
+                'id'       => 'faq-1',
+                'question' => '¿Qué es la Soberanía Digital?',
+                'answer'   => 'La Soberanía Digital es el derecho de controlar tus datos en tu territorio. En Gano Digital, tus datos residen en Colombia y se rigen por leyes locales, no por servidores externos.',
+            ),
+        ),
+        'seguridad' => array(
+            array(
+                'id'       => 'faq-2',
+                'question' => '¿Cómo protegen mis datos?',
+                'answer'   => 'Usamos encriptación de nivel empresarial, backups continuos en tiempo real y cumplimos con GDPR y normativas locales. Además, contamos con certificación ISO 27001.',
+            ),
+        ),
+        'planes' => array(
+            array(
+                'id'       => 'faq-3',
+                'question' => '¿Puedo escalar mi plan?',
+                'answer'   => 'Sí. Todos nuestros planes pueden escalarse sin tiempo de inactividad. Simplemente contacta a nuestro equipo y actualizamos tu plan en minutos.',
+            ),
+        ),
+        'soporte' => array(
+            array(
+                'id'       => 'faq-4',
+                'question' => '¿Qué incluye el soporte?',
+                'answer'   => 'Incluimos soporte 24/7 en español vía chat, email y teléfono. Nuestro tiempo de respuesta es menor a 1 hora para problemas críticos.',
+            ),
+        ),
+    );
+}
+
+// =============================================================================
 // 0.4 URL HELPERS — slugs comerciales (catálogo, contacto, esta página, etc.)
 // =============================================================================
 add_filter(
@@ -3056,3 +3243,33 @@ function gano_enqueue_theme_styles() {
 	);
 }
 add_action('wp_enqueue_scripts', 'gano_enqueue_theme_styles', 5);
+
+/**
+ * Enqueue Ecosystems v3 styles and scripts
+ * Handles pricing page design and billing toggle functionality
+ */
+function gano_enqueue_ecosystems_v3() {
+	// Only load on ecosistemas page
+	if ( ! is_page( 'ecosistemas' ) ) {
+		return;
+	}
+
+	// Enqueue v3 CSS with design system
+	wp_enqueue_style(
+		'gano-ecosistemas-v3',
+		get_stylesheet_directory_uri() . '/css/ecosistemas-v3.css',
+		[],
+		'1.0.0'
+	);
+
+	// Enqueue billing toggle script
+	$js_path = get_stylesheet_directory() . '/js/ecosystems-billing-toggle.js';
+	wp_enqueue_script(
+		'gano-ecosystems-billing-toggle',
+		get_stylesheet_directory_uri() . '/js/ecosystems-billing-toggle.js',
+		[],
+		file_exists( $js_path ) ? (string) filemtime( $js_path ) : '1.0.0',
+		true
+	);
+}
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_ecosystems_v3', 11 );

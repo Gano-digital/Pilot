@@ -66,8 +66,8 @@ $featured_config = array(
 		'color'        => '#1B4FD8',
 		'colorBg'      => '#E8EEFB',
 		'icon'         => 'M4 6h16M4 12h16M4 18h7',
-		'desc'         => 'Ideal para proyectos personales, blogs y sitios corporativos pequeños que recién empiezan.',
-		'features'     => array( '20 GB almacenamiento NVMe', 'WordPress preinstalado', 'SSL Let\'s Encrypt incluido', 'Backups diarios · 30 días', 'CDN global', 'Soporte ticket < 8h' ),
+		'desc'         => 'Perfecto para starters, blogs y pequeños negocios que necesitan un sitio rápido y confiable. WordPress preinstalado, SSL gratuito, y actualizaciones automáticas. Soporte en español incluido.',
+		'features'     => array( '20 GB almacenamiento NVMe', 'WordPress preinstalado', 'SSL Let\'s Encrypt incluido', 'Backups diarios · 30 días', 'CDN global', 'Actualizaciones automáticas', 'Soporte ticket < 8h' ),
 		'cta'          => 'Elegir plan',
 		'precio'       => '$196.000',
 		'precio_anual' => '$1.960.000',
@@ -79,8 +79,8 @@ $featured_config = array(
 		'color'        => '#00C26B',
 		'colorBg'      => '#E0FAF0',
 		'icon'         => 'M13 10V3L4 14h7v7l9-11h-7z',
-		'desc'         => 'Perfecto para negocios en crecimiento, tiendas WooCommerce y sitios con tráfico moderado.',
-		'features'     => array( '40 GB NVMe · doble recursos', 'Hardening WordPress activo', 'Backups diarios + on-demand', 'Soporte priorizado < 4h', 'Monitoreo uptime', 'WooCommerce optimizado' ),
+		'desc'         => 'Ideal para tiendas WooCommerce, agencias y sitios con tráfico moderado. Hardening de seguridad, backups diarios y soporte priorizado. Escala sin perder rendimiento.',
+		'features'     => array( '40 GB NVMe · doble recursos', 'Hardening WordPress activo', 'Backups diarios + on-demand', 'Soporte priorizado < 4h', 'Monitoreo uptime', 'Migración gratis desde otro hosting', 'WooCommerce optimizado' ),
 		'cta'          => 'Activar ahora',
 		'precio'       => '$450.000',
 		'precio_anual' => '$4.500.000',
@@ -92,8 +92,8 @@ $featured_config = array(
 		'color'        => '#D4AF37',
 		'colorBg'      => '#FFF8E1',
 		'icon'         => 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
-		'desc'         => 'Rendimiento empresarial Gen4 con seguridad de nivel militar. Para comercio que no puede fallar.',
-		'features'     => array( '75 GB NVMe · recursos dedicados', 'SLA ≥ 99.9% disponibilidad', 'Monitoreo proactivo 24/7', 'Hardening avanzado + auditoría', 'Agente IA administración', 'Soporte dedicado < 2h' ),
+		'desc'         => 'Hosting empresarial Gen4 con SLA 99.9%, Agente IA de administración, y soporte dedicado. Para ecommerces, plataformas y negocios que no pueden fallar.',
+		'features'     => array( '75 GB NVMe · recursos dedicados', 'SLA ≥ 99.9% disponibilidad', 'Monitoreo proactivo 24/7', 'Hardening avanzado + auditoría', 'Agente IA de administración', 'Staging site ilimitado', 'Soporte dedicado < 2h' ),
 		'cta'          => 'Solicitar Ultimate',
 		'precio'       => '$890.000',
 		'precio_anual' => '$8.900.000',
@@ -105,8 +105,8 @@ $featured_config = array(
 		'color'        => '#7C3AED',
 		'colorBg'      => '#F3E8FF',
 		'icon'         => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
-		'desc'         => 'Máxima capacidad para agencias, portafolios masivos y plataformas de alto tráfico.',
-		'features'     => array( '100 GB NVMe · máximos recursos', 'Multi-site ilimitado', 'Soporte dedicado < 1h 24/7', 'Backups continuos + DR', 'Escalado automático', 'Onboarding técnico incluido' ),
+		'desc'         => 'Máxima capacidad para agencias, portafolios masivos y plataformas de alto tráfico. Multi-site ilimitado, escaling automático, y onboarding técnico dedicado.',
+		'features'     => array( '100 GB NVMe · máximos recursos', 'Multi-site ilimitado', 'Soporte dedicado 24/7 < 1 hora', 'Backups continuos + DR', 'Escalado automático bajo carga', 'cPanel y Softaculous incluidos', 'Onboarding técnico personalizado' ),
 		'cta'          => 'Cotizar ahora',
 		'precio'       => '$1.200.000',
 		'precio_anual' => '$12.000.000',
@@ -163,7 +163,7 @@ $categories = get_terms(
 $bundles = array(
 	array(
 		'nombre' => 'Dominio + Hosting + SSL',
-		'desc'   => 'Todo lo que necesitas para lanzar tu sitio web con seguridad y profesionalismo.',
+		'desc'   => 'Lanza tu presencia online profesional en 24 horas. Incluye dominio, alojamiento rápido y certificado SSL. Ahorra 15% vs. comprar separado.',
 		'precio' => '$245.000',
 		'ahorro' => 'Ahorra 15%',
 		'icon'   => 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064',
@@ -172,7 +172,7 @@ $bundles = array(
 	),
 	array(
 		'nombre' => 'Email + Hosting',
-		'desc'   => 'Comunicación profesional con tu marca y alojamiento rápido en un solo lugar.',
+		'desc'   => 'Comunicación profesional con dominio propio. Mailboxes corporativas ilimitadas + Spam filter + 50 GB almacenamiento. Perfecto para equipos pequeños.',
 		'precio' => '$520.000',
 		'ahorro' => 'Ahorra 20%',
 		'icon'   => 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
@@ -181,7 +181,7 @@ $bundles = array(
 	),
 	array(
 		'nombre' => 'Seguridad + Backup',
-		'desc'   => 'Protección completa para tu sitio con monitoreo y respaldos automatizados.',
+		'desc'   => 'Protección multinivel: firewall, malware scanner, backups automáticos diarios + almacenamiento 90 días. Duerme tranquilo.',
 		'precio' => '$350.000',
 		'ahorro' => 'Ahorra 20%',
 		'icon'   => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
@@ -199,6 +199,37 @@ $faqs = array(
 	array( '¿El dominio está incluido?', 'Los planes de hosting no incluyen dominio por defecto. Revisa nuestros Bundles que combinan dominio + hosting + SSL con descuento.' ),
 	array( '¿Qué es el Agente IA?', 'Es un asistente inteligente integrado en WordPress Ultimate y cPanel Ultimate que monitorea tu sitio, detecta anomalías y sugiere optimizaciones automáticamente.' ),
 	array( '¿Tienen garantía de reembolso?', 'Sí. Todos los planes incluyen 30 días de garantía. Si no estás satisfecho, te devolvemos el 100% sin preguntas.' ),
+	array( '¿Dónde están físicamente alojados los datos?', 'En datacenters con certificación ISO 27001 ubicados en Colombia. Soberanía digital garantizada: tus datos nunca salen del país a menos que lo autorices.' ),
+	array( '¿Cómo migro desde otro hosting?', 'Nuestro equipo maneja la migración gratis. Copiamos archivos, base de datos y configuración. Tu sitio estará online sin downtime. Coordina con soporte@gano.digital.' ),
+	array( '¿Qué incluye el "Soporte 24/7"?', 'Atención por email, chat y teléfono en español. Planes Deluxe y superiores tienen prioridad. Ultimate y cPanel tienen gestor dedicado que conoce tu sitio.' ),
+	array( '¿Cómo es el uptime 99.9%?', 'Monitoreamos constantemente. Si caemos, compensa automáticamente créditos al mes siguiente. Ultra es una promesa, no un compromiso vago.' ),
+	array( '¿Puedo usar bases de datos ilimitadas?', 'Sí, en Deluxe y superiores. Básico incluye 5 bases de datos MySQL, lo cual es suficiente para 99% de sitios WordPress. Escala bajo demanda.' ),
+);
+
+// ------------------------------------------------------------------
+// Trust Signals
+// ------------------------------------------------------------------
+$trust_signals = array(
+	array(
+		'icon'    => 'M9 12l2 2 4-4m7 0a9 9 0 11-18 0 9 9 0 0118 0z',
+		'title'   => '99.9% Uptime SLA',
+		'desc'    => 'Monitoreo 24/7 y redundancia. Si caemos, compensamos con créditos automáticos.'
+	),
+	array(
+		'icon'    => 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z',
+		'title'   => 'ISO 27001 Certificado',
+		'desc'    => 'Seguridad informática certificada. Auditoría anual independiente.'
+	),
+	array(
+		'icon'    => 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0110.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064',
+		'title'   => 'Soberanía Digital',
+		'desc'    => 'Datacenter en Colombia. Datos en territorio nacional. Cumplimiento GDPR + regulación local.'
+	),
+	array(
+		'icon'    => 'M14.828 14.828a4 4 0 01-5.656 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9 9h.01M15 9h.01',
+		'title'   => 'Soporte 24/7 en Español',
+		'desc'    => 'Equipo dedicado en tu zona horaria. Email, chat y teléfono. Respuesta < 2h.'
+	),
 );
 ?>
 
@@ -821,6 +852,61 @@ $faqs = array(
 .gano-eco-v3 .eco-product-card__cta:hover {
   background: var(--eco-primary);
   color: white;
+}
+
+/* ─── Trust Signals ─── */
+.gano-eco-v3 .eco-trust {
+  padding: 80px 0;
+  background: #FFFFFF;
+}
+
+.gano-eco-v3 .eco-trust__title {
+  text-align: center;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: var(--eco-text);
+  margin-bottom: 60px;
+}
+
+.gano-eco-v3 .eco-trust__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 32px;
+}
+
+.gano-eco-v3 .eco-trust__item {
+  text-align: center;
+  padding: 32px 24px;
+  background: #F8FAFC;
+  border-radius: 16px;
+  border: 1px solid #E5E7EB;
+  transition: all 0.35s ease;
+}
+
+.gano-eco-v3 .eco-trust__item:hover {
+  border-color: var(--eco-accent);
+  background: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+}
+
+.gano-eco-v3 .eco-trust__icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 20px;
+  color: var(--eco-accent);
+}
+
+.gano-eco-v3 .eco-trust__item-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--eco-text);
+  margin-bottom: 12px;
+}
+
+.gano-eco-v3 .eco-trust__item-desc {
+  font-size: 0.9rem;
+  color: var(--eco-text-muted);
+  line-height: 1.6;
 }
 
 /* ─── Bundles Section ─── */
@@ -1805,6 +1891,26 @@ html { scroll-behavior: smooth; }
       <?php wp_reset_postdata(); ?>
     <?php endforeach; ?>
   <?php endif; ?>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       TRUST SIGNALS
+       ════════════════════════════════════════════════════════════════ -->
+  <section class="eco-trust">
+    <div class="eco-container">
+      <div class="eco-trust__title"><?php esc_html_e( 'Confía en nosotros', 'gano-child' ); ?></div>
+      <div class="eco-trust__grid">
+        <?php foreach ( $trust_signals as $signal ) : ?>
+          <div class="eco-trust__item eco-reveal">
+            <svg class="eco-trust__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="<?php echo esc_attr( $signal['icon'] ); ?>"/>
+            </svg>
+            <div class="eco-trust__item-title"><?php echo esc_html( $signal['title'] ); ?></div>
+            <div class="eco-trust__item-desc"><?php echo esc_html( $signal['desc'] ); ?></div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </section>
 
   <!-- ════════════════════════════════════════════════════════════════
        BUNDLES
