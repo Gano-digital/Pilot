@@ -163,7 +163,7 @@ $categories = get_terms(
 $bundles = array(
 	array(
 		'nombre' => 'Dominio + Hosting + SSL',
-		'desc'   => 'Todo lo que necesitas para lanzar tu sitio web con seguridad y profesionalismo.',
+		'desc'   => 'Lanza tu presencia online profesional en 24 horas. Incluye dominio, alojamiento rápido y certificado SSL. Ahorra 15% vs. comprar separado.',
 		'precio' => '$245.000',
 		'ahorro' => 'Ahorra 15%',
 		'icon'   => 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064',
@@ -172,7 +172,7 @@ $bundles = array(
 	),
 	array(
 		'nombre' => 'Email + Hosting',
-		'desc'   => 'Comunicación profesional con tu marca y alojamiento rápido en un solo lugar.',
+		'desc'   => 'Comunicación profesional con dominio propio. Mailboxes corporativas ilimitadas + Spam filter + 50 GB almacenamiento. Perfecto para equipos pequeños.',
 		'precio' => '$520.000',
 		'ahorro' => 'Ahorra 20%',
 		'icon'   => 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
@@ -181,7 +181,7 @@ $bundles = array(
 	),
 	array(
 		'nombre' => 'Seguridad + Backup',
-		'desc'   => 'Protección completa para tu sitio con monitoreo y respaldos automatizados.',
+		'desc'   => 'Protección multinivel: firewall, malware scanner, backups automáticos diarios + almacenamiento 90 días. Duerme tranquilo.',
 		'precio' => '$350.000',
 		'ahorro' => 'Ahorra 20%',
 		'icon'   => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
