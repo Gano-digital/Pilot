@@ -106,6 +106,133 @@ body:has(.gano-landing-sota),
   background: var(--bg-void) !important;
 }
 
+/* CRITICAL — royal-elementor-kit/style.css sets `#page-wrap { max-width: 960px }`
+   which collapses the entire SOTA dark landing into a 960px column on wide
+   monitors (4K, ultrawide). Force the wrapper to span the full viewport when
+   the SOTA dark landing is rendered inside it. */
+#page-wrap:has(.gano-landing-sota),
+body.home #page-wrap,
+body.home-id-1745 #page-wrap,
+body.page-template-front-page #page-wrap {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Hero/sections/nav must NOT have an arbitrary fixed width; span full viewport */
+.gano-landing-sota,
+.gano-landing-sota > .hero,
+.gano-landing-sota > .section,
+.gano-landing-sota > nav.nav,
+.gano-landing-sota > footer.footer,
+.gano-landing-sota > section {
+  width: 100% !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* Hero is the positioning context; force block layout so .container centers via margin auto */
+.gano-landing-sota .hero {
+  display: block !important;
+  position: relative;
+  min-height: 100vh;
+  padding: 120px 0 80px !important;
+  overflow: hidden;
+}
+
+/* All .container/.container-narrow elements centered within their full-width parents.
+   Scales with viewport: 1200px default, up to 1600px on wide monitors (≥1700px),
+   and 1800px on ultrawide (≥2400px) — uses real estate without going edge-to-edge. */
+.gano-landing-sota .container,
+.gano-landing-sota .container-narrow {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  max-width: min(1200px, 95vw) !important;
+  padding-left: 24px;
+  padding-right: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+@media (min-width: 1700px) {
+  .gano-landing-sota .container { max-width: 1480px !important; }
+  .gano-landing-sota .container-narrow { max-width: 1100px !important; }
+}
+@media (min-width: 2400px) {
+  .gano-landing-sota .container { max-width: 1760px !important; }
+  .gano-landing-sota .container-narrow { max-width: 1280px !important; }
+}
+
+/* Hero text column — limited width, ALIGNED LEFT so the visual has room on the right */
+.gano-landing-sota .hero .container {
+  position: relative;
+  z-index: 2;
+  display: block !important;
+}
+.gano-landing-sota .hero .hero-content {
+  display: block !important;
+  max-width: 720px !important;
+  width: 100%;
+  position: static !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+@media (min-width: 1700px) {
+  .gano-landing-sota .hero .hero-content { max-width: 820px !important; }
+}
+@media (min-width: 2400px) {
+  .gano-landing-sota .hero .hero-content { max-width: 920px !important; }
+}
+
+/* Hero visual: floats on the right of the viewport, vertically centered, never overlaps the text */
+.gano-landing-sota .hero .hero-visual {
+  position: absolute !important;
+  top: 50% !important;
+  right: max(5vw, calc((100vw - 1200px) / 2 + 24px)) !important;
+  left: auto !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+  width: clamp(280px, 32vw, 480px) !important;
+  height: auto !important;
+  min-height: 480px !important;
+  max-width: 480px !important;
+  display: flex !important;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  z-index: 1;
+}
+.gano-landing-sota .hero .hero-visual .server-rack,
+.gano-landing-sota .hero .hero-visual > * {
+  display: block;
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Mobile/tablet: hide the floating visual to prevent overlap with text */
+@media (max-width: 1100px) {
+  .gano-landing-sota .hero .hero-visual {
+    display: none !important;
+  }
+  .gano-landing-sota .hero .hero-content {
+    max-width: 720px !important;
+    margin: 0 auto !important;
+  }
+}
+
+/* Nav: ensure inner .nav-inner centers (nav.nav already has its own centering layout in original CSS) */
+.gano-landing-sota nav.nav {
+  display: flex !important;
+  justify-content: center !important;
+}
+.gano-landing-sota nav.nav .nav-inner {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
 .gano-landing-sota ::selection {
   background: rgba(0,212,170,0.3);
   color: var(--text-primary);
