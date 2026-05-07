@@ -53,6 +53,59 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
+/* HARD OVERRIDE — gano-child/style.css sets all h1..h6 to var(--gano-dark) (#0F1923)
+   which is invisible on the SOTA dark bg. style.css is enqueued TWICE (positions
+   5 and 17 in <head>), so the second instance loads AFTER landing-sota-v2.css and
+   wins normal cascade. !important is required to break the tie. */
+.gano-landing-sota h1,
+.gano-landing-sota h2,
+.gano-landing-sota h3,
+.gano-landing-sota h4,
+.gano-landing-sota h5,
+.gano-landing-sota h6,
+.gano-landing-sota .hero-title,
+.gano-landing-sota .hero-title .line,
+.gano-landing-sota .section-title,
+.gano-landing-sota .section-label,
+.gano-landing-sota p,
+.gano-landing-sota li,
+.gano-landing-sota a,
+.gano-landing-sota label,
+.gano-landing-sota strong,
+.gano-landing-sota span:not(.gradient-text):not(.badge):not(.pricing-badge) {
+  color: var(--text-primary) !important;
+}
+
+/* Gradient text: keep transparent fill so the linear-gradient shows through */
+.gano-landing-sota .gradient-text,
+.gano-landing-sota .hero-title .line.gradient-text {
+  color: transparent !important;
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gano-landing-sota .section-desc,
+.gano-landing-sota .pricing-desc,
+.gano-landing-sota .hero-subtitle,
+.gano-landing-sota .pricing-features li,
+.gano-landing-sota .footer-col p,
+.gano-landing-sota .footer-col li,
+.gano-landing-sota .footer-bottom {
+  color: var(--text-secondary) !important;
+}
+
+.gano-landing-sota .pricing-features li.muted {
+  color: var(--text-muted) !important;
+}
+
+/* Background must stay dark — style.css and other globals can repaint body bg */
+body:has(.gano-landing-sota),
+.gano-landing-sota {
+  background: var(--bg-void) !important;
+}
+
 .gano-landing-sota ::selection {
   background: rgba(0,212,170,0.3);
   color: var(--text-primary);
