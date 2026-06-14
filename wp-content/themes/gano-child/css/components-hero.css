@@ -1,0 +1,193 @@
+/* Hero Section Component */
+.gano-hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 500px;
+    padding: 80px 24px;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+/* Hero Size Variants */
+.gano-hero--sm {
+    min-height: 300px;
+    padding: 40px 24px;
+}
+
+.gano-hero--md {
+    min-height: 400px;
+    padding: 60px 24px;
+}
+
+.gano-hero--lg {
+    min-height: 600px;
+    padding: 100px 24px;
+}
+
+/* Hero Light Theme */
+.gano-hero--light {
+    background: linear-gradient(135deg, #FFFFFF 0%, #F8FBFF 100%);
+    color: var(--gano-text, #1F2937);
+}
+
+.gano-hero--light .gano-hero__subheading {
+    color: var(--gano-text-muted, #6B7280);
+}
+
+/* Hero Dark Theme */
+.gano-hero--dark {
+    background: linear-gradient(135deg, var(--gano-bg-dark, #0F1115) 0%, #1A2332 100%);
+    color: white;
+}
+
+.gano-hero--dark .gano-hero__subheading {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Hero Overlay */
+.gano-hero__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 0;
+}
+
+.gano-hero--light .gano-hero__overlay {
+    display: none;
+}
+
+/* Hero Container */
+.gano-hero__container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    width: 100%;
+    animation: gano-hero-fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+/* Hero Heading */
+.gano-hero__heading {
+    margin: 0 0 16px 0;
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    font-weight: var(--gano-fw-extrabold, 800);
+    line-height: var(--gano-lh-tight);
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--gano-blue, #1B4FD8), var(--gano-green, #00C26B));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gano-hero-slideInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.gano-hero--dark .gano-hero__heading {
+    background: linear-gradient(135deg, var(--gano-color-accent, #D4AF37), white);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Hero Subheading */
+.gano-hero__subheading {
+    margin: 0 0 32px 0;
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-weight: var(--gano-fw-semibold);
+    line-height: var(--gano-lh-relaxed);
+    animation: gano-hero-slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+}
+
+/* Hero Content */
+.gano-hero__content {
+    margin: 0 0 32px 0;
+    font-size: 1.1rem;
+    line-height: var(--gano-lh-relaxed);
+    animation: gano-hero-slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
+}
+
+/* Hero CTA */
+.gano-hero__cta {
+    display: inline-flex;
+    animation: gano-hero-slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+}
+
+/* Hero Alignment */
+.gano-hero--align-left .gano-hero__container {
+    text-align: left;
+}
+
+.gano-hero--align-center .gano-hero__container {
+    text-align: center;
+}
+
+.gano-hero--align-right .gano-hero__container {
+    text-align: right;
+}
+
+/* Animations */
+@keyframes gano-hero-fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gano-hero-slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gano-hero-slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .gano-hero {
+        min-height: 400px;
+        padding: 40px 16px;
+    }
+
+    .gano-hero--sm {
+        min-height: 250px;
+        padding: 24px 16px;
+    }
+
+    .gano-hero--lg {
+        min-height: 450px;
+        padding: 60px 16px;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .gano-hero__container,
+    .gano-hero__heading,
+    .gano-hero__subheading,
+    .gano-hero__content,
+    .gano-hero__cta {
+        animation: none;
+    }
+}

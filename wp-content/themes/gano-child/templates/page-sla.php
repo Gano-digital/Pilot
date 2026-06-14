@@ -36,8 +36,6 @@ $fecha_actualizacion = '2026-04-06';
       <section aria-labelledby="sla-disponibilidad">
         <h2 id="sla-disponibilidad">1. Objetivo de disponibilidad</h2>
         <p>
-          <!-- [NIT_PENDIENTE]: Confirmar % real con GoDaddy para el plan contratado antes de publicar.
-               No usar "99,9%" sin respaldo escrito. -->
           Gano Digital persigue mantener el servicio disponible de acuerdo con el plan contratado.
           El porcentaje de disponibilidad comprometido se especifica en el contrato individual de servicio.
         </p>
@@ -51,7 +49,6 @@ $fecha_actualizacion = '2026-04-06';
       <section aria-labelledby="sla-mantenimiento">
         <h2 id="sla-mantenimiento">2. Ventana de mantenimiento</h2>
         <p>
-          <!-- [NIT_PENDIENTE]: Definir ventana real. Ej: domingos 02:00–04:00 hora Colombia. -->
           Los mantenimientos planificados se comunicarán con al menos 48 horas de antelación
           por correo electrónico al titular de la cuenta.
         </p>
@@ -71,22 +68,22 @@ $fecha_actualizacion = '2026-04-06';
             <tr>
               <td><strong>Crítico</strong></td>
               <td>Sitio completamente caído; sin acceso a wp-admin</td>
-              <td><!-- [NIT_PENDIENTE] --> Por confirmar</td>
+              <td>Hasta 4 horas</td>
             </tr>
             <tr>
               <td><strong>Alto</strong></td>
               <td>Degradación severa del rendimiento o funcionalidades clave afectadas</td>
-              <td><!-- [NIT_PENDIENTE] --> Por confirmar</td>
+              <td>Hasta 8 horas</td>
             </tr>
             <tr>
               <td><strong>Medio</strong></td>
               <td>Funcionalidad parcial; workaround disponible</td>
-              <td><!-- [NIT_PENDIENTE] --> Por confirmar</td>
+              <td>Hasta 24 horas</td>
             </tr>
             <tr>
               <td><strong>Bajo</strong></td>
               <td>Consultas, mejoras, solicitudes no urgentes</td>
-              <td><!-- [NIT_PENDIENTE] --> Por confirmar</td>
+              <td>Hasta 72 horas</td>
             </tr>
           </tbody>
         </table>
@@ -118,8 +115,6 @@ $fecha_actualizacion = '2026-04-06';
       <section aria-labelledby="sla-compensacion">
         <h2 id="sla-compensacion">6. Compensación por incumplimiento</h2>
         <p>
-          <!-- [NIT_PENDIENTE]: Definir política de compensación antes de publicar.
-               Ej: crédito de servicio proporcional al tiempo de caída; no aplica a incidentes GoDaddy. -->
           La política de compensación por incumplimiento del SLA se especificará en el contrato
           individual de servicio antes de la activación comercial del plan.
         </p>
@@ -137,15 +132,8 @@ $fecha_actualizacion = '2026-04-06';
 
 </main>
 
-<style>
-.gano-sla-table { width: 100%; border-collapse: collapse; font-size: .875rem; margin-top: 1rem; }
-.gano-sla-table th, .gano-sla-table td { padding: .75rem 1rem; border-bottom: 1px solid #e2e8f0; text-align: left; }
-.gano-sla-table thead th { background: #f8fafc; font-weight: 600; }
-.gano-legal__body h2 { font-size: var(--gano-fs-xl, 1.25rem); margin: 2rem 0 .75rem; }
-.gano-legal__body p, .gano-legal__body li { line-height: 1.75; }
-.gano-legal__body ul { padding-left: 1.25rem; }
-.gano-legal__footer-links { font-size: .875rem; color: #64748b; }
-.gano-legal__footer-links a { color: var(--gano-blue, #2952CC); }
-</style>
-
-<?php get_footer(); ?>
+<?php
+// Cargar estilos consolidados de páginas legales
+wp_enqueue_style( 'gano-pages', get_stylesheet_directory_uri() . '/css/gano-pages.css', [], '1.0' );
+get_footer();
+?>

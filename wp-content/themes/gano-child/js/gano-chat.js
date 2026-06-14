@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     chatWindow.id = 'gano-chat-window';
     chatWindow.setAttribute('role', 'dialog');
     chatWindow.setAttribute('aria-label', 'Chat de soporte Gano Digital');
+    chatWindow.setAttribute('aria-modal', 'true');
     chatWindow.innerHTML = `
         <div class="gano-chat-header">
             <div class="status-dot" aria-hidden="true"></div>
@@ -58,17 +59,60 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.appendChild(chatWindow);
 
     // ─── TOGGLE DE APERTURA ───────────────────────────────────────────────────
-    function toggleChat() {
-        chatWindow.classList.toggle('active');
-        if (chatWindow.classList.contains('active')) {
-            document.getElementById('gano-chat-input').focus();
-            postLog('EVENT: Chat Window Opened');
-        }
+    function openChat() {
+        chatWindow.classList.add('active');
+        chatBubble.setAttribute('aria-expanded', 'true');
+        document.getElementById('gano-chat-input').focus();
+        postLog('EVENT: Chat Window Opened');
     }
+
+    function closeChat() {
+        chatWindow.classList.remove('active');
+        chatBubble.setAttribute('aria-expanded', 'false');
+        chatBubble.focus();
+    }
+
+    function toggleChat() {
+        chatWindow.classList.contains('active') ? closeChat() : openChat();
+    }
+
+    chatBubble.setAttribute('aria-expanded', 'false');
+    chatBubble.setAttribute('aria-controls', 'gano-chat-window');
 
     chatBubble.addEventListener('click', toggleChat);
     chatBubble.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') toggleChat();
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleChat(); }
+    });
+
+    // Focus trap — cicla entre inputField y sendBtn dentro del diálogo
+    chatWindow.addEventListener('keydown', function (e) {
+        if (!chatWindow.classList.contains('active')) return;
+
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            closeChat();
+            return;
+        }
+
+        if (e.key !== 'Tab') return;
+
+        const focusable = [inputField, sendBtn].filter(el => !el.disabled);
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last  = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+            if (document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            }
+        } else {
+            if (document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        }
     });
 
     // ─── REFERENCIAS ─────────────────────────────────────────────────────────
@@ -81,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let nudged   = false;
 
     // ─── NUDGE PROACTIVO ─────────────────────────────────────────────────────
-    // Activado a los 45 segundos si el chat no está abierto.
+    // Activado a los 20 segundos si el chat no está abierto (patrón SOTA).
     // Mensaje empático, sin afirmaciones falsas sobre vulnerabilidades.
     setTimeout(function () {
         if (!chatWindow.classList.contains('active') && !nudged) {
@@ -101,9 +145,8 @@ document.addEventListener('DOMContentLoaded', function () {
             notification.innerHTML = '💬 ¿Tienes alguna duda sobre hosting o seguridad?<br><span style="color:#D4AF37;font-size:0.75rem;">El Agente Gano está disponible ahora.</span>';
 
             notification.addEventListener('click', function () {
-                chatWindow.classList.add('active');
                 notification.remove();
-                inputField.focus();
+                openChat();
             });
 
             document.body.appendChild(notification);
@@ -112,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 setTimeout(function () { notification.remove(); }, 300);
             }, 8000);
         }
-    }, 45000);
+    }, 20000);
 
     // ─── HELPERS ─────────────────────────────────────────────────────────────
 

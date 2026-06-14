@@ -1,0 +1,753 @@
+/* ============================================================
+ * GANO DIGITAL — HOMEPAGE SOTA 2026
+ * Uniformidad visual + continuidad entre secciones
+ * ============================================================ */
+
+.gano-home,
+.gano-home * {
+    box-sizing: border-box;
+}
+
+.gano-home {
+    --gc-primary: var(--gano-color-primary);
+    --gc-secondary: var(--gano-color-secondary);
+    --gc-accent: var(--gano-color-accent);
+    --gc-dark: var(--gano-color-surface-dark);
+    --gc-text: var(--gano-color-text-on-dark);
+    --gc-muted: var(--gano-color-text-muted-on-dark);
+    --gc-outline: var(--gano-color-outline-on-dark);
+    --gc-surface: rgba(11, 17, 24, 0.82);
+    --gc-surface-soft: rgba(15, 25, 35, 0.68);
+    --gc-shell: min(1200px, 92vw);
+    --gc-section-y: clamp(56px, 7vw, 96px);
+    --transition:
+        transform var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
+        box-shadow var(--motion-slow, 400ms) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
+        background-color var(--motion-normal, 220ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
+        border-color var(--motion-normal, 220ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1)),
+        color var(--motion-normal, 220ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1));
+    font-family: var(--gano-font-body);
+    color: var(--gc-text);
+    overflow-x: hidden;
+    line-height: 1.65;
+    background:
+        radial-gradient(circle at 10% 0%, rgba(212, 175, 55, 0.12), transparent 32%),
+        radial-gradient(circle at 90% 10%, rgba(27, 79, 216, 0.18), transparent 38%),
+        linear-gradient(180deg, #070d14 0%, #0b1118 45%, #0a0f16 100%);
+}
+
+.gano-shell {
+    width: var(--gc-shell);
+    margin-inline: auto;
+}
+
+.section-gano.gano-home-section {
+    margin: 0;
+    max-width: none;
+    padding: var(--gc-section-y) 0;
+    border: 0;
+}
+
+.gano-home-section--surface {
+    background: linear-gradient(180deg, rgba(11, 17, 24, 0.72), rgba(15, 25, 35, 0.64));
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.section-title-gano {
+    text-align: center;
+    margin: 0 0 clamp(28px, 3.5vw, 48px);
+}
+
+.section-title-gano h2 {
+    margin: 0 0 10px;
+    font-family: var(--gano-font-heading);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #f8fbff;
+}
+
+.section-title-gano p {
+    margin: 0 auto;
+    max-width: 760px;
+    color: var(--gc-muted);
+    font-size: clamp(0.98rem, 1.7vw, 1.12rem);
+}
+
+.hero-gano {
+    min-height: min(820px, 100vh);
+    display: grid;
+    place-items: center;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+/* `gano-hero-overlay` (style.css) está pensado para Elementor y tapa nuestro hero custom.
+   En `front-page.php` subimos el contenido por encima del overlay. */
+.hero-gano.gano-hero-overlay::before {
+    z-index: 0;
+}
+
+.hero-gano.gano-hero-overlay .hero-content {
+    z-index: 2;
+}
+
+/* Ghost headline — detrás del copy, encima del fondo animado */
+.hero-gano__ghost {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.25rem, 1.2vw, 0.75rem);
+    padding: clamp(1rem, 4vw, 2.5rem);
+    overflow: hidden;
+}
+
+.hero-gano__ghost-line {
+    font-family: var(--gano-font-mono);
+    font-weight: 800;
+    font-size: clamp(3.25rem, 14vw, 11rem);
+    line-height: 0.88;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.035);
+    text-shadow: 0 0 42px rgba(27, 79, 216, 0.08);
+    user-select: none;
+}
+
+.hero-gano__ghost-line--accent {
+    color: rgba(212, 175, 55, 0.06);
+    letter-spacing: 0.28em;
+}
+
+@media (max-width: 520px) {
+    .hero-gano__ghost-line {
+        letter-spacing: 0.12em;
+    }
+    .hero-gano__ghost-line--accent {
+        letter-spacing: 0.18em;
+    }
+}
+
+/* Tarjeta glass — prueba de autoridad (SLA / Hardening / COP) */
+.hero-gano__proof-glass {
+    margin: 34px auto 0;
+    max-width: min(920px, 100%);
+    padding: clamp(14px, 2vw, 20px) clamp(16px, 2.4vw, 22px) clamp(18px, 2.2vw, 22px);
+    border-radius: 20px;
+    border: 1px solid rgba(192, 193, 255, 0.22);
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.07) 0%, rgba(11, 17, 24, 0.45) 45%, rgba(5, 8, 12, 0.55) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+        0 24px 64px rgba(0, 0, 0, 0.35),
+        0 0 48px rgba(27, 79, 216, 0.12);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-gano__proof-glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0.85;
+    background:
+        radial-gradient(circle at 12% 0%, rgba(212, 175, 55, 0.14), transparent 42%),
+        radial-gradient(circle at 88% 100%, rgba(27, 79, 216, 0.18), transparent 48%);
+}
+
+.hero-gano__proof-label {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 10px;
+    font-family: var(--gano-font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(226, 232, 240, 0.55);
+    text-align: center;
+}
+
+.hero-gano__proof-glass .hero-proof-bar {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    border: 0;
+    border-radius: 14px;
+    background: rgba(5, 8, 12, 0.35);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.hero-gano::before,
+.hero-gano::after {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    pointer-events: none;
+}
+
+.hero-gano::before {
+    background:
+        radial-gradient(circle at 70% 25%, rgba(27, 79, 216, 0.35), transparent 35%),
+        radial-gradient(circle at 25% 70%, rgba(212, 175, 55, 0.2), transparent 42%);
+    filter: blur(6px);
+    animation: ganoHeroPulse 18s ease-in-out infinite;
+}
+
+.hero-gano::after {
+    opacity: 0.2;
+    background-image:
+        linear-gradient(transparent 96%, rgba(148, 163, 184, 0.3) 97%),
+        linear-gradient(90deg, transparent 96%, rgba(148, 163, 184, 0.2) 97%);
+    background-size: 38px 38px;
+}
+
+@keyframes ganoHeroPulse {
+    0%,
+    100% {
+        transform: scale(1) translateY(0);
+    }
+    50% {
+        transform: scale(1.06) translateY(-12px);
+    }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 920px;
+    animation: ganoEnterUp 680ms ease-out both;
+}
+
+@keyframes ganoEnterUp {
+    from {
+        opacity: 0;
+        transform: translateY(26px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.overline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--gano-font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    color: var(--gc-accent);
+    margin: 0 0 16px;
+}
+
+.hero-content h1 {
+    margin: 0 0 18px;
+    font-family: var(--gano-font-heading);
+    font-size: clamp(2rem, 4.9vw, 4.1rem);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    text-wrap: balance;
+}
+
+.hero-content p {
+    margin: 0 auto;
+    max-width: 760px;
+    color: var(--gc-muted);
+    font-size: clamp(1rem, 1.7vw, 1.2rem);
+}
+
+.hero-cta-row {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+.btn-gano,
+.btn-holo {
+    text-decoration: none;
+    border: 0;
+    cursor: pointer;
+}
+
+.btn-gano {
+    background: linear-gradient(120deg, var(--gc-primary), var(--gc-secondary));
+    color: #fff;
+    border-radius: 999px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0.78rem 1.4rem;
+    box-shadow: 0 10px 28px rgba(27, 79, 216, 0.28);
+    transition: var(--transition);
+}
+
+.btn-gano:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 38px rgba(27, 79, 216, 0.34);
+}
+
+.btn-gano--secondary {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--gc-text);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    box-shadow: none;
+}
+
+.btn-holo {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 46px;
+    border-radius: 999px;
+    padding: 0.78rem 1.4rem;
+    font-weight: 800;
+    font-size: 0.84rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #121212;
+    background:
+        linear-gradient(120deg,
+            var(--gc-accent) 0%,
+            #f3df95 21%,
+            #87a7ff 52%,
+            #7f60ff 79%,
+            var(--gc-accent) 100%);
+    background-size: 240% 240%;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.6),
+        0 10px 30px rgba(212, 175, 55, 0.35);
+    animation: ganoHolo 8s ease-in-out infinite;
+}
+
+@keyframes ganoHolo {
+    0%,
+    100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.hero-proof-bar {
+    margin: 34px 0 0;
+    padding: 16px 18px;
+    list-style: none;
+    border-radius: 16px;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    background: rgba(11, 17, 24, 0.7);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.hero-proof-bar li {
+    display: grid;
+    gap: 2px;
+}
+
+.hero-proof-bar strong {
+    font-family: var(--gano-font-heading);
+    font-size: clamp(1.05rem, 2vw, 1.42rem);
+    color: #fff;
+}
+
+.hero-proof-bar span {
+    font-size: 0.82rem;
+    color: var(--gc-muted);
+}
+
+/* Barra de confianza post-hero (PR #273 — UX) */
+.gano-trust-bar {
+    background: rgba(27, 79, 216, 0.06);
+    border-top: 1px solid rgba(27, 79, 216, 0.15);
+    border-bottom: 1px solid rgba(27, 79, 216, 0.15);
+    padding: 14px clamp(16px, 4vw, 5%);
+}
+
+.gano-trust-bar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px 32px;
+    max-width: var(--gc-shell);
+    margin: 0 auto;
+}
+
+.gano-trust-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--gc-muted);
+    font-size: 0.83rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.gano-trust-item svg {
+    color: var(--gano-color-secondary, #00c26b);
+    flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+    .gano-trust-bar__inner {
+        gap: 8px 20px;
+    }
+
+    .gano-trust-item {
+        font-size: 0.78rem;
+    }
+}
+
+.gano-domain-search-wrap {
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 18px;
+    padding: clamp(16px, 2.2vw, 30px);
+    background: var(--gc-surface-soft);
+}
+
+.gano-catalog-mode-switch {
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.gano-catalog-advanced-toggle {
+    border: 1px dashed rgba(148, 163, 184, 0.36);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--gc-text);
+    border-radius: 999px;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.gano-catalog-advanced-toggle[aria-expanded="true"] {
+    border-color: rgba(212, 175, 55, 0.5);
+    color: var(--gc-accent);
+}
+
+.gano-catalog-advanced-modes {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.gano-home-section--atlas-below-hero {
+    padding-block: clamp(1rem, 2.5vw, 1.75rem);
+}
+
+/* Teaser comercial home: sin grid rStore (catálogo vive en /ecosistemas/) */
+.gano-home-section--commerce-teaser {
+    border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.gano-home-commerce-teaser {
+    text-align: center;
+    max-width: 46rem;
+    margin-inline: auto;
+}
+
+.gano-home-commerce-teaser .section-title-gano p {
+    color: rgba(203, 213, 225, 0.92);
+    font-size: clamp(0.95rem, 1.6vw, 1.05rem);
+    line-height: 1.65;
+}
+
+.gano-home-commerce-teaser__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
+.ecosistemas-grid {
+    margin-bottom: 20px;
+}
+
+.ecosystem-card {
+    background: var(--gc-surface);
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    border-radius: 18px;
+    padding: clamp(20px, 2.8vw, 32px);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.ecosystem-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212, 175, 55, 0.55);
+    box-shadow: 0 18px 40px rgba(3, 8, 16, 0.45);
+}
+
+.ecosystem-card h3 {
+    margin: 0 0 12px;
+    font-family: var(--gano-font-heading);
+    font-size: clamp(1.3rem, 2.1vw, 1.55rem);
+    color: #f9fbff;
+}
+
+.ecosystem-card .price {
+    margin: 0 0 16px;
+    color: var(--gc-accent);
+    font-family: var(--gano-font-heading);
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    font-weight: 800;
+}
+
+.ecosystem-card ul {
+    margin: 0 0 20px;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 8px;
+    color: var(--gc-muted);
+    font-size: 0.95rem;
+}
+
+.ecosystem-card ul li {
+    position: relative;
+    padding-left: 18px;
+}
+
+.ecosystem-card ul li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--gc-secondary);
+}
+
+.ecosystem-card .btn-gano,
+.ecosystem-card .rstore-add-to-cart {
+    width: 100%;
+    margin-top: auto;
+}
+
+.gano-catalog-mobile-actions {
+    display: none;
+}
+
+.value-section,
+.gano-panel {
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    border-radius: 18px;
+    background: var(--gc-surface);
+    padding: clamp(22px, 3vw, 42px);
+}
+
+.value-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(14px, 2vw, 24px);
+}
+
+.value-item {
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 18px;
+}
+
+.value-item h3 {
+    margin: 0 0 8px;
+    font-family: var(--gano-font-heading);
+    font-size: 1.08rem;
+    color: #f8fbff;
+}
+
+.value-item p {
+    margin: 0;
+    color: var(--gc-muted);
+    font-size: 0.95rem;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(12px, 2vw, 24px);
+}
+
+.metric-box {
+    border-radius: 14px;
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    background: var(--gc-surface);
+    padding: 24px 16px;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.metric-box:hover {
+    border-color: rgba(212, 175, 55, 0.48);
+}
+
+.metric-box .number {
+    margin: 0 0 4px;
+    font-size: clamp(1.45rem, 2.5vw, 2.05rem);
+    font-family: var(--gano-font-heading);
+    font-weight: 800;
+    color: var(--gc-accent);
+}
+
+.metric-box .label {
+    color: var(--gc-muted);
+    font-size: 0.86rem;
+}
+
+.gano-panel {
+    text-align: center;
+}
+
+.gano-panel h2 {
+    margin: 0 0 10px;
+    font-size: clamp(1.5rem, 2.8vw, 2.15rem);
+    color: #f8fbff;
+}
+
+.gano-panel p {
+    margin: 0 auto 20px;
+    color: var(--gc-muted);
+    max-width: 660px;
+}
+
+.gano-lead-form {
+    max-width: 560px;
+    margin: 0 auto;
+    display: grid;
+    gap: 12px;
+}
+
+.gano-lead-form input[type="email"] {
+    width: 100%;
+    min-height: 46px;
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.34);
+    background: rgba(255, 255, 255, 0.04);
+    color: #f5f8ff;
+    padding: 0.75rem 0.95rem;
+    font-size: 0.98rem;
+}
+
+.gano-lead-form input::placeholder {
+    color: rgba(148, 163, 184, 0.86);
+}
+
+.gano-lead-form .btn-gano {
+    width: 100%;
+}
+
+.gano-form-status {
+    min-height: 1.3em;
+    margin: 0;
+    color: var(--gc-muted);
+    font-size: 0.86rem;
+}
+
+.gano-panel small {
+    color: var(--gc-muted);
+}
+
+.gano-panel-cta {
+    margin: 1.6rem 0 0;
+}
+
+@media (max-width: 1024px) {
+    .value-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .hero-proof-bar {
+        grid-template-columns: 1fr;
+        text-align: left;
+    }
+
+    .hero-cta-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-cta-row .btn-gano,
+    .hero-cta-row .btn-holo {
+        width: 100%;
+    }
+
+    .value-grid,
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ecosistemas-grid .ecosystem-card:nth-child(n + 3) {
+        display: none;
+    }
+
+    .gano-home.catalog-mobile-expanded .ecosistemas-grid .ecosystem-card:nth-child(n + 3) {
+        display: flex;
+    }
+
+    .gano-catalog-mobile-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 8px;
+    }
+}
+
+/* Enlace secundario a la guía de checkout (conversión) */
+.gano-home-comenzar-link {
+    margin-top: 1.25rem;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.gano-home-comenzar-link a {
+    color: rgba(226, 232, 240, 0.88);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+.gano-home-comenzar-link a:hover {
+    color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-content,
+    .hero-gano::before,
+    .btn-holo {
+        animation: none !important;
+    }
+
+    .btn-gano:hover,
+    .btn-holo:hover,
+    .ecosystem-card:hover {
+        transform: none;
+    }
+}

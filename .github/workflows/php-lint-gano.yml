@@ -1,4 +1,35 @@
 # Sintaxis PHP en código propio (tema child, MU-plugins, plugins gano-*).
+#
+# Auditoría de rutas (2026-04-19 — issue #233):
+#   CUBIERTO por este workflow:
+#     · wp-content/mu-plugins/         → gano-security.php, gano-seo.php,
+#                                         gano-agent-core.php, gano-agent/,
+#                                         gano-p6-security-audit.php,
+#                                         gano-phase6-setup.php
+#                                         (elementor-safe-mode.php también queda
+#                                          incluido; php -l es inofensivo en código
+#                                          de terceros y no genera falsos positivos)
+#     · wp-content/themes/gano-child/  → child theme Gano Digital
+#     · wp-content/plugins/gano-*/     → gano-content-importer,
+#                                         gano-fix-coming-soon,
+#                                         gano-phase{1,2,3,6,7}-*,
+#                                         gano-reseller-enhancements
+#
+#   EXCLUIDO intencionalmente (código de terceros):
+#     · wp-content/plugins/reseller-store/          → GoDaddy oficial
+#     · wp-content/plugins/pojo-accessibility/      → Elementor/Ally
+#     · wp-content/plugins/wpr-addons-pro/          → Royal Elementor Addons Pro
+#     · wp-content/plugins/image-optimization/      → Elementor Image Optimizer
+#     · wp-content/plugins/elementor/               → Elementor core
+#     · wp-content/plugins/essential-addons-*/      → tercero
+#     · wp-content/plugins/royal-elementor-addons/  → tercero
+#     · wp-content/plugins/seo-by-rank-math/        → Rank Math
+#     · wp-content/plugins/woocommerce/             → WooCommerce
+#     · wp-content/plugins/wordfence/               → Wordfence
+#     · wp-content/plugins/wp-file-manager/         → tercero (pendiente eliminar)
+#     · wp-content/themes/royal-elementor-kit/      → tercero
+#
+#   CONCLUSIÓN: no se requiere ampliar rutas. Cobertura completa sobre PHP custom Gano.
 name: "01 · CI · Sintaxis PHP (Gano)"
 
 on:

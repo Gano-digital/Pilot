@@ -58,6 +58,11 @@ function gano_enrich_sota_content() {
     }
 }
 // Run once on admin init if requested
+// URL: /wp-admin/?gano_enrich_sota=1&_wpnonce=<nonce>
+// Generate nonce: wp_create_nonce('gano_enrich_sota_action')
 if (isset($_GET['gano_enrich_sota'])) {
+    if (!current_user_can('manage_options') || !wp_verify_nonce($_GET['_wpnonce'] ?? '', 'gano_enrich_sota_action')) {
+        wp_die('Acceso denegado. Se requiere nonce válido y capacidad de administrador.', '403');
+    }
     add_action('admin_init', 'gano_enrich_sota_content');
 }

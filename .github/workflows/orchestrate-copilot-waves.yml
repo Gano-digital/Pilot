@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Merge oleada 1 + seed oleada 2
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           MERGE_WAVE1: ${{ github.event.inputs.merge_wave1 }}
           SEED_WAVE2: ${{ github.event.inputs.seed_wave2 }}

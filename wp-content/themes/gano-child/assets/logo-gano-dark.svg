@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 240 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+  <!-- Dark mode logo: Gano Digital wordmark with gold accent (SOTA Hub) -->
+  <defs>
+    <linearGradient id="gano-gradient-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFD700;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background shield shape (brand mark) -->
+  <path d="M 20 8 L 40 8 C 42 8 44 10 44 12 L 44 28 C 44 38 32 48 32 48 C 32 48 20 38 20 28 L 20 12 C 20 10 22 8 24 8"
+        fill="url(#gano-gradient-dark)" opacity="1"/>
+
+  <!-- "G" mark inside shield -->
+  <text x="32" y="38" font-family="Plus Jakarta Sans, sans-serif" font-size="24" font-weight="700"
+        fill="#0F1115" text-anchor="middle">G</text>
+
+  <!-- "GANO DIGITAL" wordmark -->
+  <text x="58" y="28" font-family="Plus Jakarta Sans, sans-serif" font-size="18" font-weight="700"
+        fill="#FFFFFF">GANO</text>
+  <text x="58" y="48" font-family="Inter, sans-serif" font-size="10" font-weight="600"
+        fill="#D4AF37" letter-spacing="1.5">DIGITAL</text>
+
+  <!-- Accent glow dot -->
+  <circle cx="178" cy="16" r="2.5" fill="#D4AF37" />
+  <circle cx="178" cy="16" r="4" fill="none" stroke="#D4AF37" stroke-width="0.8" opacity="0.5" />
+</svg>

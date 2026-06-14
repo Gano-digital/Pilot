@@ -72,11 +72,25 @@ function gano_installer_activate() {
             $security_rules
         );
 
+        // Omitir TODOS los bloques <IfModule mod_headers.c> del .htaccess.
+        // Los HTTP security headers (CSP, HSTS, X-Frame-Options, etc.) son
+        // gestionados exclusivamente por el MU plugin gano-security.php, que
+        // ya fue instalado en el paso anterior. Aplicar ambos causaría headers
+        // duplicados o conflictivos (ej: X-Frame-Options DENY vs SAMEORIGIN).
+        // Ver issue #232 — .htaccess vs headers CSP (gano-security.php).
+        $security_no_headers = preg_replace(
+            '/<IfModule mod_headers\.c>.*?<\/IfModule>/s',
+            '',
+            $security_no_rewrite
+        );
+
         // Construir nuevo .htaccess: seguridad primero + WP block al final
         $new_htaccess  = "# ============================================================\n";
         $new_htaccess .= "# GANO DIGITAL — Security Hardening | " . date( 'Y-m-d' ) . "\n";
+        $new_htaccess .= "# NOTA: HTTP Security Headers omitidos — gestionados por\n";
+        $new_htaccess .= "#        el MU plugin gano-security.php (issue #232).\n";
         $new_htaccess .= "# ============================================================\n\n";
-        $new_htaccess .= $security_no_rewrite . "\n\n";
+        $new_htaccess .= $security_no_headers . "\n\n";
         $new_htaccess .= $wp_rules . "\n";
 
         $written = file_put_contents( $htaccess_path, $new_htaccess );

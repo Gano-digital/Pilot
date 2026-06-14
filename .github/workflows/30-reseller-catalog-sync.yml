@@ -52,7 +52,7 @@ jobs:
           echo "Catalog fetched"
       
       - name: "Upload catalog artifact"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           name: rcc-catalog
           path: /tmp/rcc-catalog.json

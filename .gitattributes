@@ -1,0 +1,52 @@
+# Git Line Ending Normalization
+# Normalize all line endings to LF (Unix standard) for consistency across platforms
+# This prevents divergence between Windows (CRLF) and Linux (LF) development
+
+# Core file types - enforce LF
+*.php text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.less text eol=lf
+*.html text eol=lf
+*.xml text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sh text eol=lf
+*.bash text eol=lf
+*.ps1 text eol=lf
+*.py text eol=lf
+
+# Configuration files
+*.conf text eol=lf
+*.config text eol=lf
+.htaccess text eol=lf
+.gitignore text eol=lf
+.env* text eol=lf
+Makefile text eol=lf
+
+# WordPress specific
+wp-config*.php text eol=lf merge=union
+.wordpress-org/** text eol=lf
+
+# Binary files - do not modify
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.gif binary
+*.ico binary
+*.mov binary
+*.mp4 binary
+*.mp3 binary
+*.gz binary
+*.zip binary
+*.7z binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary

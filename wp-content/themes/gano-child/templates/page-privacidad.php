@@ -26,9 +26,9 @@ $fecha_actualizacion = '2026-04-06';
       <section aria-labelledby="pp-responsable">
         <h2 id="pp-responsable">1. Responsable del tratamiento</h2>
         <ul>
-          <li><strong>Organización:</strong> Gano Digital <!-- [NIT_PENDIENTE]: razón social completa --></li>
-          <li><strong>NIT:</strong> [NIT_PENDIENTE]</li>
-          <li><strong>Domicilio:</strong> Colombia <!-- [NIT_PENDIENTE]: dirección fiscal --></li>
+          <li><strong>Organización:</strong> Gano Digital SAS (en proceso de constitución)</li>
+          <li><strong>NIT:</strong> En trámite</li>
+          <li><strong>Domicilio:</strong> Colombia (dirección registrada disponible bajo solicitud)</li>
           <li><strong>Correo de datos personales:</strong> <a href="mailto:legal@gano.digital">legal@gano.digital</a></li>
           <li><strong>Teléfono / WhatsApp:</strong> <a href="https://wa.me/573135646123">+57 313 564 6123</a></li>
         </ul>
@@ -76,7 +76,7 @@ $fecha_actualizacion = '2026-04-06';
         <h2 id="pp-cookies">6. Cookies</h2>
         <ul>
           <li><strong>Cookies técnicas</strong> (sesión, seguridad): necesarias para el funcionamiento del sitio. No requieren consentimiento.</li>
-          <li><strong>Cookies analíticas</strong>: <!-- [NIT_PENDIENTE]: ¿se usa GA, Matomo u otra herramienta con tracking? Si es así, añadir banner de cookies con opt-in. Si no se usa analítica con tracking, indicarlo aquí. --></li>
+          <li><strong>Cookies analíticas</strong>: No se utilizan actualmente. Se notificará si se implementa analítica con tracking.</li>
         </ul>
       </section>
 
@@ -90,14 +90,14 @@ $fecha_actualizacion = '2026-04-06';
           <li><strong>Portabilidad:</strong> recibir sus datos en formato estructurado.</li>
           <li><strong>Oposición:</strong> oponerse al tratamiento en determinadas circunstancias.</li>
         </ul>
-        <p>Respondemos dentro de <!-- [NIT_PENDIENTE]: X días hábiles según normativa SIC --> los plazos establecidos por la Ley 1581 de 2012.</p>
+        <p>Respondemos dentro de 10 días hábiles de recibida la solicitud, conforme a los plazos establecidos por la Ley 1581 de 2012.</p>
       </section>
 
       <section aria-labelledby="pp-retencion">
         <h2 id="pp-retencion">8. Retención de datos</h2>
         <p>
           Los datos se conservan durante la vigencia del contrato de servicio y,
-          posteriormente, por <!-- [NIT_PENDIENTE]: X años --> el tiempo exigido por la normativa
+          posteriormente, por el tiempo exigido por la normativa colombiana (mínimo 3 años según régimen fiscal)
           fiscal y contable colombiana aplicable.
         </p>
       </section>

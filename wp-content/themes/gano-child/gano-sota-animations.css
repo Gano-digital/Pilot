@@ -41,7 +41,7 @@
    ============================================================================ */
 
 .gano-sota-page {
-  max-width: var(--gano-container-sm, 800px);
+  max-width: var(--gano-container-sm, 900px);
   margin: 0 auto;
   padding: 40px 20px;
   font-family: var(--gano-font-body);

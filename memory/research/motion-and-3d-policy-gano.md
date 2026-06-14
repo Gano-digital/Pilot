@@ -225,4 +225,5 @@ add_action( 'wp_enqueue_scripts', 'gano_enqueue_lottie' );
 - `wp-content/themes/gano-child/js/gano-sota-fx.js` — implementación GSAP de referencia (guard `prefers-reduced-motion` ✅)
 - `wp-content/themes/gano-child/js/scroll-reveal.js` — IntersectionObserver de referencia
 - `memory/research/gano-wave3-brand-ux-master-brief.md` §3 — sistema visual
+- `memory/research/visual-systems-canvas-svg-second-brain-2026-04.md` — second brain Canvas/SVG/generativo (fractales, metabolas, caleidoscopios), integración WP y bibliografía; skill `.cursor/skills/gano-web-visual-systems/`
 - `wp-content/mu-plugins/gano-security.php` — revisar CSP si se agregan dominios externos (p. ej. `cdn.spline.design`)

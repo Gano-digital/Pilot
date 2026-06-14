@@ -24,7 +24,14 @@ function gano_p6_final_setup_check() {
 
     // 3. Register Shop Page if it doesn't exist
     $page_title = 'Ecosistemas';
-    $page_check = get_page_by_title($page_title);
+    $found_pages = get_posts([
+        'post_type'      => 'page',
+        'title'          => $page_title,
+        'posts_per_page' => 1,
+        'post_status'    => 'any',
+        'fields'         => 'ids',
+    ]);
+    $page_check = !empty($found_pages) ? (object)['ID' => $found_pages[0]] : null;
     if(!isset($page_check->ID)){
         $new_page = array(
             'post_type'     => 'page',
@@ -40,7 +47,14 @@ function gano_p6_final_setup_check() {
     }
 
     // 4. Update WooCommerce Shop Page setting
-    $shop_page = get_page_by_title('Ecosistemas');
+    $shop_pages = get_posts([
+        'post_type'      => 'page',
+        'title'          => 'Ecosistemas',
+        'posts_per_page' => 1,
+        'post_status'    => 'any',
+        'fields'         => 'ids',
+    ]);
+    $shop_page = !empty($shop_pages) ? (object)['ID' => $shop_pages[0]] : null;
     if ($shop_page) {
         update_option('woocommerce_shop_page_id', $shop_page->ID);
     }

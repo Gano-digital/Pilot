@@ -94,13 +94,32 @@ add_action('rest_api_init', function () {
     register_rest_route('gano/v1', '/audit-p6', array(
         'methods' => 'GET',
         'callback' => function() {
-            // Only allow if agent key matches (basic security)
-            $agent_key = isset($_SERVER['HTTP_X_GANO_AGENT_KEY']) ? $_SERVER['HTTP_X_GANO_AGENT_KEY'] : '';
-            if ($agent_key !== get_option('GANO_AGENT_API_KEY', 'dev-local-key-123')) {
-                return new WP_Error('forbidden', 'Unauthorized', array('status' => 403));
+            // Key resolution priority: wp-config constant > wp_options > none.
+            // Sin key configurada, el endpoint responde 503 (no 403) para indicar
+            // "servicio no configurado" vs "credencial inválida".
+            $expected_key = defined( 'GANO_AGENT_API_KEY' ) ? (string) GANO_AGENT_API_KEY : (string) get_option( 'gano_agent_api_key', '' );
+            if ( '' === $expected_key ) {
+                return new WP_Error( 'service_unavailable', 'Auditoría no configurada: define GANO_AGENT_API_KEY en wp-config.php.', array( 'status' => 503 ) );
+            }
+            $agent_key = isset( $_SERVER['HTTP_X_GANO_AGENT_KEY'] ) ? (string) $_SERVER['HTTP_X_GANO_AGENT_KEY'] : '';
+            if ( ! hash_equals( $expected_key, $agent_key ) ) {
+                return new WP_Error( 'forbidden', 'Unauthorized', array( 'status' => 403 ) );
             }
             return Gano_P6_Audit::run_audit();
         },
         'permission_callback' => '__return_true'
     ));
+});
+
+// Admin notice: alerta si la key del agente de auditoría no está configurada.
+add_action( 'admin_notices', function () {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        return;
+    }
+    $has_constant = defined( 'GANO_AGENT_API_KEY' ) && '' !== (string) GANO_AGENT_API_KEY;
+    $has_option   = '' !== (string) get_option( 'gano_agent_api_key', '' );
+    if ( $has_constant || $has_option ) {
+        return;
+    }
+    echo '<div class="notice notice-warning"><p><strong>Gano P6 Audit:</strong> <code>GANO_AGENT_API_KEY</code> no está definida en <code>wp-config.php</code> — el endpoint <code>/gano/v1/audit-p6</code> responderá 503 hasta que se configure.</p></div>';
 });

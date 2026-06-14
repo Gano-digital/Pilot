@@ -1,64 +1,37 @@
-# Checklist Wordfence + 2FA (wp-admin)
+# Checklist: Wordfence + 2FA en wp-admin
 
-Objetivo: habilitar 2FA operativo para cuentas administrativas y reducir riesgo de acceso no autorizado.
+Objetivo: habilitar 2FA para cuentas administrativas y reducir riesgo de acceso no autorizado.
 
 Referencia:
 
-- `TASKS.md` (item MEDIA: habilitar 2FA en wp-admin)
+- `TASKS.md` (item 2FA / Wordfence)
 
 ## 1) Precondiciones
 
-- [ ] Confirmar plugin Wordfence activo y actualizado.
-- [ ] Identificar cuentas admin que deben usar 2FA (al menos owner + backup admin).
-- [ ] Definir canal de backup de codigos (recovery codes en lugar seguro).
+- Confirmar Wordfence activo y actualizado.
+- Identificar cuentas admin criticas (owner + backup admin).
+- Definir almacenamiento seguro para recovery codes.
 
-## 2) Configuracion en Wordfence
+## 2) Configuracion base
 
-- [ ] Ir a Wordfence -> Login Security.
-- [ ] Habilitar 2FA para rol Administrator (y editores criticos si aplica).
-- [ ] Revisar politicas de fuerza de password y lockout.
+1. Ir a `wp-admin -> Wordfence -> Login Security` (o menu equivalente).
+2. Activar 2FA para rol `Administrator`.
+3. Revisar politicas de password y lockout.
 
-## 3) Enrolamiento de usuarios
+## 3) Enrolamiento
 
-- [ ] Cada admin escanea QR con app TOTP (ej: Authenticator).
-- [ ] Guardar recovery codes de cada cuenta en almacenamiento seguro.
-- [ ] Probar cierre y nuevo login con OTP valido.
+1. Escanear QR con app TOTP por cada admin.
+2. Guardar recovery codes fuera de WordPress.
+3. Probar login completo con OTP.
 
 ## 4) Validacion
 
-- [ ] Confirmar que login sin OTP ya no permite acceso para admins.
-- [ ] Confirmar que recovery code funciona en prueba controlada.
-- [ ] Verificar que no se bloqueo ninguna cuenta critica por error.
+- Verificar que un admin ya no entra sin OTP.
+- Probar un recovery code en prueba controlada.
+- Confirmar que no se bloquea ninguna cuenta critica.
 
-## 5) Evidencia
+## 5) Buenas practicas
 
-- [ ] Captura de pantalla de Wordfence Login Security con 2FA activo.
-- [ ] Registro de cuentas enroladas (sin exponer secretos ni codigos).
-
-## 6) DoD (Definition of Done)
-
-- [ ] 2FA activo para cuentas administrativas clave.
-- [ ] Recovery codes almacenados de forma segura.
-- [ ] Login de prueba exitoso con OTP y fallback probado.
-
-# Checklist: 2FA en wp-admin (Wordfence)
-
-**Plugins:** Wordfence (u otro 2FA compatible). **Antes:** asegurar acceso a email y guardar **códigos de recuperación** en lugar seguro.
-
-## Pasos (genéricos — nombres de menú pueden variar según versión)
-
-1. **wp-admin → Wordfence → Login Security** (o ruta equivalente “2FA”).
-2. Activar **2FA** para al menos un rol **Administrator**.
-3. Escanear QR con app autenticadora (Google Authenticator, Authy, etc.) o usar métodos alternativos que ofrezca Wordfence.
-4. Probar **cerrar sesión** y volver a entrar con código TOTP.
-5. Generar y archivar **códigos de respaldo**; sin ellos, un fallo del teléfono bloquea el acceso.
-6. (Opcional) Usuario de emergencia o segundo admin con 2FA distinto.
-
-## Advertencias
-
-- No desactivar 2FA en producción “temporalmente” sin plan.
-- Documentar en bitácora interna **quién** tiene acceso 2FA (sin pegar secretos en GitHub).
-
-## Referencia
-
-- `TASKS.md` — ítem 2FA / Wordfence.
+- Mantener un usuario de emergencia con proceso documentado.
+- No publicar secretos o codigos en GitHub.
+- Registrar fecha/responsable en bitacora interna.

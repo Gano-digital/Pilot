@@ -1,0 +1,149 @@
+/**
+ * Gano Digital — Texturas Procedurales SOTA
+ * ==========================================
+ * Fondos de ruido, scanlines, grid y vignette para uso en
+ * landing, showcase, login y páginas dark del sitio.
+ *
+ * Todas las texturas son CSS puro (SVG inline base64 o gradientes)
+ * sin dependencias externas.
+ *
+ * @version 1.0.0
+ * @package gano-child
+ */
+
+/* ==========================================================================
+   RUIDO SVG PROCEDURAL (base64 inline, ~300 bytes)
+   ========================================================================== */
+
+.gano-texture-noise,
+.gano-sota-theme::before,
+[data-sota-theme="dark"]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: var(--gano-tex-noise-opacity, 0.04);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* No aplicar ruido en móvil para ahorrar GPU */
+@media (max-width: 768px) {
+  .gano-texture-noise,
+  .gano-sota-theme::before,
+  [data-sota-theme="dark"]::before {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   SCANLINES CSS
+   ========================================================================== */
+
+.gano-texture-scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: var(--gano-tex-scanline-opacity, 0.03);
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
+  );
+}
+
+/* Animación sutil de scanlines (opcional, clase adicional) */
+.gano-texture-scanlines-animated::after {
+  animation: gano-scanline-drift 8s linear infinite;
+}
+
+@keyframes gano-scanline-drift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 8px; }
+}
+
+/* ==========================================================================
+   GRID DE PERSPECTIVA / HUD
+   ========================================================================== */
+
+.gano-texture-grid {
+  position: relative;
+  overflow: hidden;
+}
+
+.gano-texture-grid::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--gano-tex-grid-opacity, 0.06);
+  background-image:
+    linear-gradient(rgba(192, 193, 255, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(192, 193, 255, 0.15) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transform: perspective(500px) rotateX(60deg);
+  transform-origin: center top;
+  animation: gano-grid-pulse 12s ease-in-out infinite alternate;
+}
+
+@keyframes gano-grid-pulse {
+  0%   { opacity: 0.04; }
+  50%  { opacity: 0.08; }
+  100% { opacity: 0.04; }
+}
+
+/* ==========================================================================
+   VIGNETTE RADIAL
+   ========================================================================== */
+
+.gano-texture-vignette {
+  position: relative;
+}
+
+.gano-texture-vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: var(--gano-tex-vignette);
+}
+
+/* ==========================================================================
+   COMBINACIONES COMUNES
+   ========================================================================== */
+
+.gano-texture-full {
+  position: relative;
+  background-color: var(--gano-sota-deep);
+}
+
+.gano-texture-full::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .gano-texture-scanlines-animated::after,
+  .gano-texture-grid::before {
+    animation: none;
+  }
+}

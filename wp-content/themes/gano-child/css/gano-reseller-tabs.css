@@ -1,0 +1,22 @@
+/**
+ * Gano Reseller Tabs Styling
+ *
+ * Estilos específicos para los tabs de Reseller Store en page-ecosistemas.php.
+ * Separados del ecosistemas.css para mejor mantenibilidad y carga condicional.
+ *
+ * @since 1.0.0
+ */
+
+.gano-reseller-tab-btn.active {
+    background-color: #FF6B35 !important;
+    color: white !important;
+    border-color: #FF6B35 !important;
+}
+
+.gano-reseller-tab-pane {
+    display: none;
+}
+
+.gano-reseller-tab-pane.active {
+    display: block;
+}

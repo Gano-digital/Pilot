@@ -1,0 +1,39 @@
+{
+  "server": {
+    "host": "72.167.102.145",
+    "user": "f1rml03th382",
+    "sshKey": "C:/Users/diego/.ssh/id_rsa_deploy",
+    "docroot": "/home/f1rml03th382/public_html/gano.digital",
+    "backupDir": ".deploy-backups"
+  },
+  "deploy": {
+    "paths": [
+      "wp-content/themes/gano-child/",
+      "wp-content/mu-plugins/",
+      "wp-content/plugins/gano-*/",
+      "wp-content/gano-deploy/"
+    ],
+    "exclude": [
+      "*.log",
+      "*.tmp",
+      "node_modules/",
+      ".git/",
+      ".github/",
+      ".gano-skills/",
+      "wiki/",
+      "memory/",
+      "reports/",
+      "deploys/"
+    ],
+    "verifyPhpSyntax": true,
+    "flushCache": true,
+    "flushRewrite": true
+  },
+  "hooks": {
+    "preDeploy": [],
+    "postDeploy": [
+      "wp cache flush --allow-root",
+      "wp rewrite flush --allow-root"
+    ]
+  }
+}

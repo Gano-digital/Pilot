@@ -55,6 +55,7 @@
 | `.github/DEV-COORDINATION.md` | Flujo git ↔ servidor |
 | `memory/research/sota-workflow-ops-parallel-2026-04.md` | Carriles A/B/C |
 | Redacción huella operativa (abr 2026) | Skills cPanel/QUICK_START + memoria — placeholders `<IP_SERVIDOR>` |
+| [`investigacion-servidor-cpanel-evidencias-reparacion-2026-04.md`](../ops/investigacion-servidor-cpanel-evidencias-reparacion-2026-04.md) | SSL, Installatron/Drupal vs WordPress, backups — complemento ops |
 | `.gano-skills/gano-github-copilot-orchestration/SKILL.md` | Orquestación + sección SOTA 2026-04-09 |
 | `.gano-skills/gano-github-ops/SKILL.md` | Ops GitHub + runners |
 

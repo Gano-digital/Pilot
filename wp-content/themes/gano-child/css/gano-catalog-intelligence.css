@@ -1,0 +1,218 @@
+.gano-catalog-shell {
+    position: relative;
+    z-index: 2;
+}
+
+.gano-catalog-mode-switch {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0 0 1rem;
+}
+
+.gano-catalog-mode-btn {
+    border: 1px solid var(--gano-color-outline-on-dark, rgba(148, 163, 184, 0.28));
+    background: rgba(15, 25, 35, 0.88);
+    color: var(--gano-color-text-on-dark, #e2e8f0);
+    border-radius: 999px;
+    font-size: var(--gano-fs-xs, 0.75rem);
+    letter-spacing: var(--gano-ls-wide, 0.04em);
+    text-transform: uppercase;
+    font-weight: var(--gano-fw-bold, 700);
+    padding: 0.5rem 0.85rem;
+    cursor: pointer;
+    transition: var(--gano-transition, all 220ms cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.gano-catalog-mode-btn:hover,
+.gano-catalog-mode-btn[aria-pressed="true"] {
+    border-color: var(--gano-color-accent, #d4af37);
+    color: var(--gano-color-accent, #d4af37);
+}
+
+.gano-catalog-mode-desc {
+    color: var(--gano-color-text-muted-on-dark, #94a3b8);
+    margin: 0 0 1.2rem;
+    font-size: var(--gano-fs-sm, 0.875rem);
+}
+
+.gano-catalog-guided-panel {
+    display: none;
+    margin: 0 0 1.2rem;
+    padding: 1rem;
+    border-radius: var(--gano-radius-lg, 12px);
+    border: 1px solid var(--gano-color-outline-on-dark, rgba(148, 163, 184, 0.28));
+    background: rgba(11, 17, 24, 0.78);
+}
+
+.gano-catalog-guided-panel.is-visible {
+    display: block;
+}
+
+.gano-catalog-guided-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.6rem;
+}
+
+.gano-catalog-guided-btn {
+    width: 100%;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    border-radius: var(--gano-radius-md, 8px);
+    color: var(--gano-color-text-on-dark, #e2e8f0);
+    padding: 0.7rem 0.8rem;
+    cursor: pointer;
+}
+
+.gano-catalog-guided-btn strong {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--gano-color-accent, #d4af37);
+}
+
+.gano-catalog-family-section {
+    margin: 1.25rem 0;
+}
+
+.gano-catalog-family-title {
+    margin: 0 0 0.6rem;
+    font-size: var(--gano-fs-xl, 1.25rem);
+    color: var(--gano-color-text-on-dark, #e2e8f0);
+}
+
+.gano-catalog-comparator {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border-radius: var(--gano-radius-lg, 12px);
+    border: 1px solid rgba(212, 175, 55, 0.28);
+    background: rgba(15, 25, 35, 0.72);
+}
+
+.gano-catalog-comparator[hidden] {
+    display: none !important;
+}
+
+.gano-catalog-comparator-title {
+    margin: 0 0 0.5rem;
+    color: var(--gano-color-accent, #d4af37);
+    font-size: var(--gano-fs-sm, 0.875rem);
+    text-transform: uppercase;
+    letter-spacing: var(--gano-ls-wide, 0.04em);
+}
+
+.gano-catalog-compare-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.gano-catalog-compare-chip {
+    border-radius: var(--gano-radius-pill, 9999px);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    color: var(--gano-color-text-on-dark, #e2e8f0);
+    padding: 0.25rem 0.65rem;
+    font-size: var(--gano-fs-xs, 0.75rem);
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.gano-catalog-compare-toggle {
+    margin-top: 0.7rem;
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    background: rgba(11, 17, 24, 0.82);
+    color: var(--gano-color-text-on-dark, #e2e8f0);
+    border-radius: var(--gano-radius-md, 8px);
+    font-size: var(--gano-fs-xs, 0.75rem);
+    text-transform: uppercase;
+    letter-spacing: var(--gano-ls-wide, 0.04em);
+    font-weight: var(--gano-fw-semibold, 600);
+    padding: 0.45rem 0.7rem;
+    cursor: pointer;
+}
+
+.gano-catalog-compare-toggle[aria-pressed="true"] {
+    border-color: var(--gano-color-accent, #d4af37);
+    color: var(--gano-color-accent, #d4af37);
+}
+
+.gano-catalog-compare-grid {
+    margin-top: 0.8rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 0.7rem;
+}
+
+.gano-catalog-compare-card {
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    border-radius: var(--gano-radius-md, 8px);
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.gano-catalog-sync-missing {
+    border-color: rgba(251, 191, 36, 0.7) !important;
+}
+
+.gano-catalog-sync-note {
+    display: inline-flex;
+    margin-top: 0.45rem;
+    font-size: var(--gano-fs-xs, 0.75rem);
+    color: #fbbf24;
+}
+
+.gano-mobile-nav-toggle {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .gano-mobile-nav-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(148, 163, 184, 0.32);
+        background: rgba(15, 25, 35, 0.92);
+        color: var(--gano-color-text-on-dark, #e2e8f0);
+        border-radius: var(--gano-radius-md, 8px);
+        width: 44px;
+        height: 44px;
+        cursor: pointer;
+    }
+
+    .gano-mobile-nav-panel {
+        position: fixed;
+        inset: 0;
+        z-index: 1300;
+        background: rgba(5, 8, 12, 0.96);
+        transform: translateY(100%);
+        transition: transform var(--motion-normal, 220ms) var(--ease-out, cubic-bezier(0.4, 0, 0.2, 1));
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    body.gano-mobile-nav-open .gano-mobile-nav-panel {
+        transform: translateY(0);
+    }
+
+    .gano-mobile-nav-panel a {
+        color: var(--gano-color-text-on-dark, #e2e8f0);
+        text-decoration: none;
+        border: 1px solid rgba(148, 163, 184, 0.26);
+        border-radius: var(--gano-radius-md, 8px);
+        padding: 0.7rem 0.8rem;
+        font-weight: var(--gano-fw-semibold, 600);
+    }
+
+    .gano-mobile-nav-panel .gano-mobile-nav-cta {
+        border-color: rgba(212, 175, 55, 0.4);
+        color: var(--gano-color-accent, #d4af37);
+    }
+}

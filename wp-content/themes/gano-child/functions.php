@@ -13,7 +13,687 @@
 // =============================================================================
 
 require_once get_stylesheet_directory() . '/inc/homepage-blocks.php';
+require_once get_stylesheet_directory() . '/inc/gano-content-atlas.php';
+require_once get_stylesheet_directory() . '/inc/draft-home-rstore-catalog-home.php';
 require_once get_stylesheet_directory() . '/inc/contact-form-handler.php';
+require_once get_stylesheet_directory() . '/inc/lead-magnet-handler.php';
+require_once get_stylesheet_directory() . '/inc/gano-premium-components.php';
+require_once get_stylesheet_directory() . '/inc/gano-hud-status.php';
+
+// =============================================================================
+// 0.1 INCLUDES — Componentes reutilizables (Shadcn-inspired, WordPress)
+// =============================================================================
+
+require_once get_stylesheet_directory() . '/components/icon.php';
+require_once get_stylesheet_directory() . '/components/button.php';
+require_once get_stylesheet_directory() . '/components/card.php';
+require_once get_stylesheet_directory() . '/components/cta-registro.php';
+
+// =============================================================================
+// 0.3 ENQUEUE CSS PREMIUM (Frontend Design + UI/UX Pro Max merged + Design System)
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_premium_styles', 11 );
+function gano_enqueue_premium_styles() {
+    // CSS Design System: Componentes + Tokens + Grid + Motion
+    wp_enqueue_style(
+        'gano-design-system',
+        get_stylesheet_directory_uri() . '/css/gano-design-system.css',
+        array(),
+        '1.0.0'
+    );
+
+    // CSS Premium: Frontend Design con patrones Trust & Authority de UI/UX Pro Max
+    wp_enqueue_style(
+        'gano-frontend-design-premium',
+        get_stylesheet_directory_uri() . '/css/gano-frontend-design-premium.css',
+        array(),
+        '1.0.0'
+    );
+
+    // CSS de páginas consolidadas
+    wp_enqueue_style(
+        'gano-pages',
+        get_stylesheet_directory_uri() . '/css/gano-pages.css',
+        array(),
+        '1.0.0'
+    );
+
+    // CSS de ecosistemas (mejorado)
+    wp_enqueue_style(
+        'gano-ecosistemas',
+        get_stylesheet_directory_uri() . '/css/ecosistemas.css',
+        array(),
+        '1.0.0'
+    );
+
+    // CSS de página Dominios
+    wp_enqueue_style(
+        'gano-dominios',
+        get_stylesheet_directory_uri() . '/css/dominios.css',
+        array(),
+        '1.0.0'
+    );
+
+    // CSS de CTA Registro (Fase 2)
+    wp_enqueue_style(
+        'gano-cta-registro',
+        get_stylesheet_directory_uri() . '/css/gano-cta-registro.css',
+        array(),
+        '1.0.0'
+    );
+
+    // JS de Pre-registro (Lead capture)
+    $pr_js_path = get_stylesheet_directory() . '/js/gano-pre-registro.js';
+    wp_enqueue_script(
+        'gano-pre-registro',
+        get_stylesheet_directory_uri() . '/js/gano-pre-registro.js',
+        array(),
+        file_exists( $pr_js_path ) ? (string) filemtime( $pr_js_path ) : '1.0.0',
+        true
+    );
+
+    wp_localize_script(
+        'gano-pre-registro',
+        'gano_vars',
+        array(
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'nonce'    => wp_create_nonce( 'gano_pre_registro_nonce' ),
+        )
+    );
+}
+
+// =============================================================================
+// HUD sitewide — status bar (CRT + glitch postpunk)
+// =============================================================================
+
+// HUD telemetry (FPS/DCL/PING) — disabled on landing/SOTA pages to keep production clean.
+// Re-enable per-page by re-adding the hook with an is_page() guard.
+// add_action( 'wp_enqueue_scripts', 'gano_enqueue_status_hud', 12 );
+if ( false ) add_action( 'wp_enqueue_scripts', 'gano_enqueue_status_hud', 12 );
+function gano_enqueue_status_hud(): void {
+    if ( is_admin() ) {
+        return;
+    }
+
+    $css_path = get_stylesheet_directory() . '/css/gano-hud-status.css';
+    $js_path  = get_stylesheet_directory() . '/js/gano-hud-status.js';
+
+    wp_enqueue_style(
+        'gano-hud-status',
+        get_stylesheet_directory_uri() . '/css/gano-hud-status.css',
+        array(),
+        file_exists( $css_path ) ? (string) filemtime( $css_path ) : '1.0.0'
+    );
+
+    wp_enqueue_script(
+        'gano-hud-status',
+        get_stylesheet_directory_uri() . '/js/gano-hud-status.js',
+        array(),
+        file_exists( $js_path ) ? (string) filemtime( $js_path ) : '1.0.0',
+        true
+    );
+}
+
+// HUD telemetry render — disabled in production (was tapping content + showing dev metrics on live site)
+// add_action( 'wp_footer', 'gano_render_status_hud', 20 );
+
+// =============================================================================
+// MOBILE MENU (F2.3 — Front Page + all pages)
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_mobile_menu', 12 );
+function gano_enqueue_mobile_menu(): void {
+    if ( is_admin() ) {
+        return;
+    }
+
+    $css_path = get_stylesheet_directory() . '/css/gano-mobile-menu.css';
+    $js_path  = get_stylesheet_directory() . '/js/gano-mobile-menu.js';
+
+    wp_enqueue_style(
+        'gano-mobile-menu',
+        get_stylesheet_directory_uri() . '/css/gano-mobile-menu.css',
+        array(),
+        file_exists( $css_path ) ? (string) filemtime( $css_path ) : '1.0.0'
+    );
+
+    wp_enqueue_script(
+        'gano-mobile-menu',
+        get_stylesheet_directory_uri() . '/js/gano-mobile-menu.js',
+        array(),
+        file_exists( $js_path ) ? (string) filemtime( $js_path ) : '1.0.0',
+        true  // Load in footer
+    );
+}
+
+// =============================================================================
+// RESELLER TABS (page-ecosistemas.php)
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_reseller_tabs', 12 );
+function gano_enqueue_reseller_tabs(): void {
+    if ( is_admin() ) {
+        return;
+    }
+
+    // Solo enqueue en la página de ecosistemas
+    if ( ! is_page_template( 'templates/page-ecosistemas.php' ) ) {
+        return;
+    }
+
+    $css_path = get_stylesheet_directory() . '/css/gano-reseller-tabs.css';
+    $js_path  = get_stylesheet_directory() . '/js/gano-reseller-tabs.js';
+
+    wp_enqueue_style(
+        'gano-reseller-tabs',
+        get_stylesheet_directory_uri() . '/css/gano-reseller-tabs.css',
+        array(),
+        file_exists( $css_path ) ? (string) filemtime( $css_path ) : '1.0.0'
+    );
+
+    wp_enqueue_script(
+        'gano-reseller-tabs',
+        get_stylesheet_directory_uri() . '/js/gano-reseller-tabs.js',
+        array(),
+        file_exists( $js_path ) ? (string) filemtime( $js_path ) : '1.0.0',
+        true  // Load in footer
+    );
+}
+
+// =============================================================================
+// HERO HOLOGRAMA (F3.1 — Front Page only, Canvas logo + SVG fallback)
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_hero_holograma', 12 );
+function gano_enqueue_hero_holograma(): void {
+    if ( is_admin() ) {
+        return;
+    }
+
+    // Solo en front page
+    if ( ! is_front_page() ) {
+        return;
+    }
+
+    $css_path = get_stylesheet_directory() . '/css/gano-hero-holograma.css';
+    $js_path  = get_stylesheet_directory() . '/js/gano-hero-holograma.js';
+
+    wp_enqueue_style(
+        'gano-hero-holograma',
+        get_stylesheet_directory_uri() . '/css/gano-hero-holograma.css',
+        array(),
+        file_exists( $css_path ) ? (string) filemtime( $css_path ) : '1.0.0'
+    );
+
+    wp_enqueue_script(
+        'gano-hero-holograma',
+        get_stylesheet_directory_uri() . '/js/gano-hero-holograma.js',
+        array(),
+        file_exists( $js_path ) ? (string) filemtime( $js_path ) : '1.0.0',
+        true  // Load in footer
+    );
+}
+
+// =============================================================================
+// SCROLL ANIMATIONS (F3.2 — Front Page, scroll reveal with stagger)
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_scroll_animations', 12 );
+function gano_enqueue_scroll_animations(): void {
+    if ( is_admin() ) {
+        return;
+    }
+
+    // Solo en front page
+    if ( ! is_front_page() ) {
+        return;
+    }
+
+    $css_path = get_stylesheet_directory() . '/css/gano-scroll-animations.css';
+    $js_path  = get_stylesheet_directory() . '/js/gano-scroll-reveal.js';
+
+    wp_enqueue_style(
+        'gano-scroll-animations',
+        get_stylesheet_directory_uri() . '/css/gano-scroll-animations.css',
+        array(),
+        file_exists( $css_path ) ? (string) filemtime( $css_path ) : '1.0.0'
+    );
+
+    wp_enqueue_script(
+        'gano-scroll-reveal',
+        get_stylesheet_directory_uri() . '/js/gano-scroll-reveal.js',
+        array(),
+        file_exists( $js_path ) ? (string) filemtime( $js_path ) : '1.0.0',
+        true  // Load in footer
+    );
+}
+
+// =============================================================================
+// PRE-REGISTRO AJAX HANDLER (Lead Capture)
+// =============================================================================
+add_action( 'wp_ajax_gano_pre_registro', 'gano_handle_pre_registro' );
+add_action( 'wp_ajax_nopriv_gano_pre_registro', 'gano_handle_pre_registro' );
+function gano_handle_pre_registro() {
+    check_ajax_referer( 'gano_pre_registro_nonce', 'nonce' );
+
+    // wp_unslash antes de sanitizar (WordPress añade magic quotes a $_POST)
+    $raw_name  = wp_unslash( $_POST['gano_name'] ?? '' );
+    $raw_email = wp_unslash( $_POST['gano_email'] ?? '' );
+
+    $name  = sanitize_text_field( $raw_name );
+    $email = sanitize_email( $raw_email );
+
+    if ( empty( $email ) ) {
+        wp_send_json_error( 'El email es obligatorio.' );
+    }
+
+    $leads = (array) get_option( 'gano_leads', array() );
+    $leads[] = array(
+        'name'  => $name,
+        'email' => $email,
+        'time'  => current_time( 'mysql' ),
+        'ip'    => sanitize_text_field( $_SERVER['REMOTE_ADDR'] ?? '' ),
+        'plan'  => 'Interés General (SOTA Hub)',
+    );
+
+    // Limitar a 500 leads para evitar crecimiento infinito de wp_options
+    if ( count( $leads ) > 500 ) {
+        $leads = array_slice( $leads, -500 );
+    }
+
+    update_option( 'gano_leads', $leads );
+
+    wp_send_json_success( 'Lead capturado con éxito.' );
+}
+
+// =============================================================================
+// TASK 7-10: HOMEPAGE SECTIONS ENQUEUE (Hero, FAQ, CTA Form)
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_homepage_sections', 11 );
+function gano_enqueue_homepage_sections() {
+    if ( is_admin() || ! is_front_page() ) {
+        return;
+    }
+
+    // Enqueue hero section styles
+    $hero_css = get_stylesheet_directory() . '/css/components/hero.css';
+    wp_enqueue_style(
+        'gano-hero-section',
+        get_stylesheet_directory_uri() . '/css/components/hero.css',
+        array(),
+        file_exists( $hero_css ) ? (string) filemtime( $hero_css ) : '1.0.0'
+    );
+
+    // Enqueue FAQ section styles
+    $faq_css = get_stylesheet_directory() . '/css/components/faq.css';
+    wp_enqueue_style(
+        'gano-faq-section',
+        get_stylesheet_directory_uri() . '/css/components/faq.css',
+        array(),
+        file_exists( $faq_css ) ? (string) filemtime( $faq_css ) : '1.0.0'
+    );
+
+    // Enqueue CTA final section styles
+    $cta_css = get_stylesheet_directory() . '/css/components/cta-final.css';
+    wp_enqueue_style(
+        'gano-cta-final-section',
+        get_stylesheet_directory_uri() . '/css/components/cta-final.css',
+        array(),
+        file_exists( $cta_css ) ? (string) filemtime( $cta_css ) : '1.0.0'
+    );
+
+    // Enqueue trust signals section styles
+    $trust_css = get_stylesheet_directory() . '/css/components/trust-signals.css';
+    wp_enqueue_style(
+        'gano-trust-signals-section',
+        get_stylesheet_directory_uri() . '/css/components/trust-signals.css',
+        array(),
+        file_exists( $trust_css ) ? (string) filemtime( $trust_css ) : '1.0.0'
+    );
+
+    // Enqueue comparison table section styles
+    $comparison_css = get_stylesheet_directory() . '/css/components/comparison-table.css';
+    wp_enqueue_style(
+        'gano-comparison-table-section',
+        get_stylesheet_directory_uri() . '/css/components/comparison-table.css',
+        array(),
+        file_exists( $comparison_css ) ? (string) filemtime( $comparison_css ) : '1.0.0'
+    );
+
+    // Enqueue FAQ accordion JavaScript
+    $faq_js = get_stylesheet_directory() . '/js/components/faq-accordion.js';
+    wp_enqueue_script(
+        'gano-faq-accordion',
+        get_stylesheet_directory_uri() . '/js/components/faq-accordion.js',
+        array(),
+        file_exists( $faq_js ) ? (string) filemtime( $faq_js ) : '1.0.0',
+        true
+    );
+
+    // Enqueue form handler JavaScript
+    $form_js = get_stylesheet_directory() . '/js/components/form-handler.js';
+    wp_enqueue_script(
+        'gano-form-handler',
+        get_stylesheet_directory_uri() . '/js/components/form-handler.js',
+        array(),
+        file_exists( $form_js ) ? (string) filemtime( $form_js ) : '1.0.0',
+        true
+    );
+
+    // Localize form handler with AJAX URL
+    wp_localize_script(
+        'gano-form-handler',
+        'ganoFormVars',
+        array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
+    );
+}
+
+// =============================================================================
+// LEAD FORM SUBMISSION HANDLER (CTA Final Form)
+// =============================================================================
+
+add_action( 'wp_ajax_gano_process_lead_form', 'gano_handle_lead_form_submission' );
+add_action( 'wp_ajax_nopriv_gano_process_lead_form', 'gano_handle_lead_form_submission' );
+function gano_handle_lead_form_submission() {
+    // Verify nonce
+    check_ajax_referer( 'gano_lead_form', 'nonce' );
+
+    // Collect and sanitize data
+    $raw_name = wp_unslash( $_POST['full_name'] ?? '' );
+    $raw_email = wp_unslash( $_POST['email'] ?? '' );
+    $raw_company = wp_unslash( $_POST['company'] ?? '' );
+    $raw_role = wp_unslash( $_POST['role'] ?? '' );
+    $raw_message = wp_unslash( $_POST['message'] ?? '' );
+    $consent = isset( $_POST['consent'] ) && 'on' === $_POST['consent'];
+
+    $full_name = sanitize_text_field( $raw_name );
+    $email = sanitize_email( $raw_email );
+    $company = sanitize_text_field( $raw_company );
+    $role = sanitize_text_field( $raw_role );
+    $message = sanitize_textarea_field( $raw_message );
+
+    // Validate required fields
+    if ( empty( $full_name ) || empty( $email ) || empty( $company ) || empty( $role ) ) {
+        wp_send_json_error( 'Por favor completa todos los campos requeridos.' );
+    }
+
+    // Validate email format
+    if ( ! is_email( $email ) ) {
+        wp_send_json_error( 'Por favor ingresa un email válido.' );
+    }
+
+    // Validate consent
+    if ( ! $consent ) {
+        wp_send_json_error( 'Debes aceptar el tratamiento de datos.' );
+    }
+
+    // Store lead in wp_options (similar to pre-registro)
+    $leads = (array) get_option( 'gano_cta_leads', array() );
+    $leads[] = array(
+        'full_name' => $full_name,
+        'email'     => $email,
+        'company'   => $company,
+        'role'      => $role,
+        'message'   => $message,
+        'timestamp' => current_time( 'mysql' ),
+        'ip'        => sanitize_text_field( $_SERVER['REMOTE_ADDR'] ?? '' ),
+    );
+
+    // Limit to 500 leads to prevent unbounded wp_options growth
+    if ( count( $leads ) > 500 ) {
+        $leads = array_slice( $leads, -500 );
+    }
+
+    update_option( 'gano_cta_leads', $leads );
+
+    wp_send_json_success( '¡Gracias! Nos pondremos en contacto pronto.' );
+}
+
+// =============================================================================
+// FAQ DATA HOOK — provide sample FAQ items organized by category
+// =============================================================================
+
+add_filter( 'gano_get_faq_items', 'gano_provide_faq_items' );
+function gano_provide_faq_items( $items ) {
+    if ( ! empty( $items ) ) {
+        return $items;
+    }
+
+    // Default FAQ items organized by category for template compatibility
+    return array(
+        'soberania_digital' => array(
+            array(
+                'id'       => 'faq-1',
+                'question' => '¿Qué es la Soberanía Digital?',
+                'answer'   => 'La Soberanía Digital es el derecho de controlar tus datos en tu territorio. En Gano Digital, tus datos residen en Colombia y se rigen por leyes locales, no por servidores externos.',
+            ),
+        ),
+        'seguridad' => array(
+            array(
+                'id'       => 'faq-2',
+                'question' => '¿Cómo protegen mis datos?',
+                'answer'   => 'Usamos encriptación de nivel empresarial, backups continuos en tiempo real y cumplimos con GDPR y normativas locales. Además, contamos con certificación ISO 27001.',
+            ),
+        ),
+        'planes' => array(
+            array(
+                'id'       => 'faq-3',
+                'question' => '¿Puedo escalar mi plan?',
+                'answer'   => 'Sí. Todos nuestros planes pueden escalarse sin tiempo de inactividad. Simplemente contacta a nuestro equipo y actualizamos tu plan en minutos.',
+            ),
+        ),
+        'soporte' => array(
+            array(
+                'id'       => 'faq-4',
+                'question' => '¿Qué incluye el soporte?',
+                'answer'   => 'Incluimos soporte 24/7 en español vía chat, email y teléfono. Nuestro tiempo de respuesta es menor a 1 hora para problemas críticos.',
+            ),
+        ),
+    );
+}
+
+// =============================================================================
+// 0.4 URL HELPERS — slugs comerciales (catálogo, contacto, esta página, etc.)
+// =============================================================================
+add_filter(
+    'body_class',
+    static function ( array $classes ): array {
+        if ( is_page_template( 'templates/page-comenzar-aqui.php' ) ) {
+            $classes[] = 'gano-page-start-journey';
+        }
+        return $classes;
+    }
+);
+
+if ( ! function_exists( 'gano_resolve_page_url' ) ) {
+    /**
+     * Resuelve la URL de una página probando varios slugs (p. ej. staging vs producción).
+     *
+     * @param string ...$path_variants Slugs sin barra inicial.
+     * @return string URL absoluta.
+     */
+    function gano_resolve_page_url( string ...$path_variants ): string {
+        foreach ( $path_variants as $slug ) {
+            $slug = trim( $slug, '/' );
+            if ( '' === $slug ) {
+                continue;
+            }
+            $page = get_page_by_path( $slug );
+            if ( $page instanceof WP_Post && 'publish' === $page->post_status ) {
+                return get_permalink( $page );
+            }
+        }
+        $fallback = isset( $path_variants[0] ) ? trim( (string) $path_variants[0], '/' ) : '';
+        if ( '' === $fallback || 'inicio' === $fallback ) {
+            return home_url( '/' );
+        }
+        return home_url( '/' . $fallback . '/' );
+    }
+}
+
+// =============================================================================
+// 0.5 CSS CRÍTICO — Prioridad 1 (inline en wp_head antes de Elementor)
+// FIX: Homepage blanca - garantizar visibilidad del hero sobre especificidad CSS de Royal Elementor
+// =============================================================================
+
+if ( ! function_exists( 'gano_critical_css_hero_visibility' ) ) {
+    /**
+     * Inyecta CSS crítico para garantizar visibilidad del hero.
+     * Prioridad 99 = después de Elementor, pero antes de otros plugins.
+     *
+     * Issue: Royal Elementor Addons aplica estilos con ! important que ocultan el hero.
+     * Solución: usar especificidad alta + !important para garantizar visibilidad.
+     */
+    add_action( 'wp_head', function() {
+        if ( ! is_home() && ! is_front_page() ) {
+            return;
+        }
+        ?>
+        <style id="gano-hero-critical">
+        /* Hero visibility fix: garantizar que el hero es visible sobre Royal Elementor */
+        body .gano-home {
+            display: block !important;
+        }
+
+        .gano-home .hero-gano {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: flex-start !important;
+            min-height: 100vh !important;
+            background: radial-gradient(circle at 50% 50%, var(--gano-gray-900, #1e2530) 0%, var(--gano-color-surface-dark, #05080b) 100%) !important;
+            color: white !important;
+            position: relative !important;
+            z-index: 1 !important;
+        }
+
+        .hero-gano .hero-content {
+            display: flex !important;
+            flex-direction: column !important;
+            z-index: 10 !important;
+        }
+
+        .hero-gano h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem) !important;
+            font-weight: 800 !important;
+            line-height: 1.1 !important;
+            color: white !important;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .hero-gano > p {
+            font-size: 1.125rem !important;
+            color: rgba(255,255,255,0.95) !important;
+            line-height: 1.6 !important;
+            margin-bottom: 2rem !important;
+            max-width: 700px !important;
+        }
+
+        .hero-cta-row {
+            display: flex !important;
+            gap: 1rem !important;
+            flex-wrap: wrap !important;
+            margin-bottom: 2rem !important;
+            z-index: 10 !important;
+        }
+
+        .hero-proof-bar {
+            color: rgba(255,255,255,0.8) !important;
+            font-size: 0.875rem !important;
+        }
+
+        /* Asegurar que el hero sea visible sobre cualquier overlay de Elementor */
+        .royal-elementor-style-wrapper { display: none !important; }
+        body.elementor .hero-gano { z-index: 999 !important; }
+        </style>
+        <?php
+    }, 99 );
+}
+/**
+ * Inyecta estilos críticos inline con prioridad 1.
+ * Esto asegura que nuestras variables y estilos fundamentales ganen
+ * contra la especificidad de Elementor (que corre a prioridad 10).
+ *
+ * Solo en homepage para no contaminar el resto del sitio.
+ */
+add_action( 'wp_head', 'gano_font_preconnect', 1 );
+function gano_font_preconnect() {
+    echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
+    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+}
+
+add_action( 'wp_head', 'gano_critical_css', 1 );
+function gano_critical_css() {
+    if ( ! is_front_page() ) {
+        return;
+    }
+
+    echo '<style id="gano-critical">';
+    echo '.gano-home { background: var(--gano-color-surface-dark, #05080b) !important; color: var(--gano-color-text-on-dark, #e2e8f0) !important; }';
+    echo '.hero-gano { background: radial-gradient(circle at 50% 50%, var(--gano-gray-900, #1e2530) 0%, var(--gano-color-surface-dark, #05080b) 100%) !important; }';
+    echo '</style>';
+}
+
+// =============================================================================
+// 0.6 ADMIN PAGE — Ver leads capturados
+// =============================================================================
+
+add_action( 'admin_menu', 'gano_add_leads_admin_page' );
+function gano_add_leads_admin_page(): void {
+    add_menu_page(
+        'Leads Capturados',
+        'Leads',
+        'manage_options',
+        'gano-leads',
+        'gano_render_leads_page',
+        'dashicons-email-alt',
+        20
+    );
+}
+
+function gano_render_leads_page(): void {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_die( 'No tienes permiso para acceder a esta página.' );
+    }
+    ?>
+    <div class="wrap">
+        <h1><?php esc_html_e( 'Leads Capturados', 'gano-child' ); ?></h1>
+        <?php
+        $leads = (array) get_option( 'gano_leads', array() );
+        if ( empty( $leads ) ) {
+            echo '<p><em>' . esc_html__( 'No hay leads capturados aún.', 'gano-child' ) . '</em></p>';
+            return;
+        }
+        ?>
+        <table class="widefat striped">
+            <thead>
+                <tr>
+                    <th><?php esc_html_e( 'Email', 'gano-child' ); ?></th>
+                    <th><?php esc_html_e( 'Plan', 'gano-child' ); ?></th>
+                    <th><?php esc_html_e( 'Fecha', 'gano-child' ); ?></th>
+                    <th><?php esc_html_e( 'IP', 'gano-child' ); ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ( array_reverse( $leads ) as $lead ) : ?>
+                    <tr>
+                        <td><?php echo esc_html( $lead['email'] ); ?></td>
+                        <td><?php echo esc_html( $lead['plan'] ); ?></td>
+                        <td><?php echo esc_html( $lead['time'] ); ?></td>
+                        <td><?php echo esc_html( $lead['ip'] ); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">
+            <?php echo esc_html( sprintf( __( 'Total: %d leads', 'gano-child' ), count( $leads ) ) ); ?>
+        </p>
+    </div>
+    <?php
+}
 
 // =============================================================================
 // 1. ENQUEUE DE ESTILOS Y SCRIPTS
@@ -24,6 +704,56 @@ function gano_child_enqueue_styles() {
     // Estilos del tema padre y hijo
     wp_enqueue_style( 'royal-elementor-kit-parent', get_template_directory_uri() . '/style.css' );
     wp_enqueue_style( 'gano-child-style', get_stylesheet_uri(), array( 'royal-elementor-kit-parent' ), wp_get_theme()->get( 'Version' ) );
+
+    // Tokens SOTA unificados — disponibles en todo el sitio
+    wp_enqueue_style( 'gano-tokens-unified', get_stylesheet_directory_uri() . '/css/gano-tokens-unified.css', array( 'gano-child-style' ), '1.0.0' );
+
+    // Texturas procedurales SOTA
+    wp_enqueue_style( 'gano-textures', get_stylesheet_directory_uri() . '/css/gano-textures.css', array( 'gano-tokens-unified' ), '1.0.0' );
+
+    // Homepage SOTA — solo en front page
+    /* -------------------------------------------------------------------------
+       Landing SOTA v2 — reemplazo completo de front-page.php
+       ---------------------------------------------------------------------- */
+    if ( is_front_page() ) {
+        // CSS landing SOTA v2
+        $landing_css_path = get_stylesheet_directory() . '/css/landing-sota-v2.css';
+        $landing_css_ver  = file_exists( $landing_css_path ) ? (string) filemtime( $landing_css_path ) : wp_get_theme()->get( 'Version' );
+        wp_enqueue_style( 'gano-landing-sota-v2', get_stylesheet_directory_uri() . '/css/landing-sota-v2.css', array( 'gano-child-style' ), $landing_css_ver );
+
+        // JS landing SOTA v2
+        $landing_js_path = get_stylesheet_directory() . '/js/landing-sota-v2.js';
+        $landing_js_ver  = file_exists( $landing_js_path ) ? (string) filemtime( $landing_js_path ) : wp_get_theme()->get( 'Version' );
+        wp_enqueue_script(
+            'gano-landing-sota-v2-js',
+            get_stylesheet_directory_uri() . '/js/landing-sota-v2.js',
+            array(),
+            $landing_js_ver,
+            true
+        );
+
+        // Ocultar header del tema padre (royal-elementor-kit) en landing
+        wp_add_inline_style( 'gano-child-style', '#site-header { display: none !important; }' );
+
+        // Font Awesome 6.5.1 si no está cargado por otro plugin/tema
+        if ( ! wp_script_is( 'font-awesome', 'enqueued' ) && ! wp_script_is( 'fontawesome', 'enqueued' ) ) {
+            wp_enqueue_style( 'font-awesome-6', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css', array(), '6.5.1' );
+        }
+    }
+
+    // Navegación sticky — todas las páginas
+    wp_enqueue_style( 'gano-nav-css', get_stylesheet_directory_uri() . '/css/gano-nav.css', array( 'gano-child-style' ), '1.0.0' );
+
+    // Página de conversión — registro / flujo de compra Reseller
+    if ( is_page_template( 'templates/page-comenzar-aqui.php' ) ) {
+        $gano_start_css = get_stylesheet_directory() . '/css/gano-start-journey.css';
+        wp_enqueue_style(
+            'gano-start-journey',
+            get_stylesheet_directory_uri() . '/css/gano-start-journey.css',
+            array( 'gano-child-style' ),
+            file_exists( $gano_start_css ) ? (string) filemtime( $gano_start_css ) : '1.0.0'
+        );
+    }
 
     // Chat IA — se carga con nonce CSRF (V-05 Fix)
     wp_enqueue_style( 'gano-chat-css', get_stylesheet_directory_uri() . '/css/gano-chat.css', array(), '1.2.0' );
@@ -41,32 +771,62 @@ function gano_child_enqueue_styles() {
     wp_enqueue_style( 'gano-quiz-css', get_stylesheet_directory_uri() . '/css/gano-quiz.css', array(), '1.0.0' );
     wp_enqueue_script( 'gano-quiz-js', get_stylesheet_directory_uri() . '/js/gano-sovereignty-quiz.js', array(), '1.0.0', true );
 
-    // Custom Cursor (Phase 4 - Visual Polish)
-    wp_enqueue_style( 'gano-cursor-style', get_stylesheet_directory_uri() . '/css/gano-cursor.css', array(), '1.1.0' );
-    wp_enqueue_script( 'gano-cursor-js', get_stylesheet_directory_uri() . '/js/gano-cursor.js', array(), '1.1.0', true );
+    // Custom Cursor — WC3 guantelete (atlas en assets/cursor). Mitigar: add_filter( 'gano_enable_wc3_cursor', '__return_false' ); (MU-plugin o snippets).
+    if ( apply_filters( 'gano_enable_wc3_cursor', true ) ) {
+        $gano_cursor_css = get_stylesheet_directory() . '/css/gano-cursor.css';
+        $gano_cursor_js  = get_stylesheet_directory() . '/js/gano-cursor.js';
+        wp_enqueue_style(
+            'gano-cursor-style',
+            get_stylesheet_directory_uri() . '/css/gano-cursor.css',
+            array(),
+            file_exists( $gano_cursor_css ) ? (string) filemtime( $gano_cursor_css ) : '2.0.0'
+        );
+        wp_enqueue_script(
+            'gano-cursor-js',
+            get_stylesheet_directory_uri() . '/js/gano-cursor.js',
+            array(),
+            file_exists( $gano_cursor_js ) ? (string) filemtime( $gano_cursor_js ) : '2.0.0',
+            true
+        );
+    }
 
-    // GSAP 3 Core & Plugins (Phase 5 - SOTA Animation)
-    wp_enqueue_script( 'gsap-js', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', array(), '3.12.5', true );
-    wp_enqueue_script( 'gsap-scroll-trigger', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', array( 'gsap-js' ), '3.12.5', true );
-    wp_enqueue_script( 'gsap-text-plugin', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js', array( 'gsap-js' ), '3.12.5', true );
+    // GSAP 3 Core & Plugins — Solo en páginas que lo necesitan (Phase 5 - SOTA Animation)
+    $needs_gsap = is_page_template( 'templates/page-sota-hub.php' )
+        || is_page_template( 'templates/sota-single-template.php' )
+        || is_page_template( 'templates/shop-premium.php' )
+        || is_page_template( 'templates/page-ecosistemas.php' );
 
-    // Gano SOTA FX Handler (The "Vivid & Animated" Experience)
-    wp_enqueue_script( 'gano-sota-fx', get_stylesheet_directory_uri() . '/js/gano-sota-fx.js', array( 'gsap-scroll-trigger' ), '1.0.0', true );
+    if ( $needs_gsap ) {
+        wp_enqueue_script( 'gsap-js', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', array(), '3.12.5', true );
+        wp_enqueue_script( 'gsap-scroll-trigger', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', array( 'gsap-js' ), '3.12.5', true );
+        wp_enqueue_script( 'gsap-text-plugin', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js', array( 'gsap-js' ), '3.12.5', true );
+
+        // Gano SOTA FX Handler (The "Vivid & Animated" Experience)
+        wp_enqueue_script( 'gano-sota-fx', get_stylesheet_directory_uri() . '/js/gano-sota-fx.js', array( 'gsap-scroll-trigger' ), '1.0.0', true );
+    }
     wp_enqueue_style( 'gano-sota-animations', get_stylesheet_directory_uri() . '/gano-sota-animations.css', array(), '2.0.0' );
 
     // Constellation — HUD base (chips, paneles) con motion tokens unificados
     wp_enqueue_style( 'gano-constellation', get_stylesheet_directory_uri() . '/css/gano-constellation.css', array( 'gano-child-style' ), '1.0.0' );
 
+    // Capa de convergencia visual SOTA (bridge entre identidad base y Kinetic Monolith)
+    wp_enqueue_style(
+        'gano-sota-convergence',
+        get_stylesheet_directory_uri() . '/css/gano-sota-convergence.css',
+        array( 'gano-child-style' ),
+        '1.0.0'
+    );
+
     // Ecosistemas — catálogo de planes (cd-content-002)
     if ( is_page_template( 'templates/page-ecosistemas.php' ) ) {
         wp_enqueue_style( 'gano-ecosistemas-css', get_stylesheet_directory_uri() . '/css/ecosistemas.css', array( 'gano-child-style' ), '1.0.0' );
+        wp_enqueue_style( 'gano-mobile-cta-css', get_stylesheet_directory_uri() . '/css/gano-mobile-cta.css', array( 'gano-child-style' ), '1.0.0' );
     }
 
     // Constellation 3D Hero — se carga cuando el template o shortcode lo necesite
     // Detecta la clase .gano-constellation-wrap en páginas/templates que la incluyan.
     wp_register_script( 'gano-constellation', get_stylesheet_directory_uri() . '/js/gano-constellation.js', array(), '1.0.0', true );
     if (
-        is_front_page() ||
         is_page_template( 'templates/page-sota-hub.php' ) ||
         is_page_template( 'templates/sota-single-template.php' )
     ) {
@@ -82,7 +842,7 @@ function gano_child_enqueue_styles() {
         wp_enqueue_script( 'gano-bundle-quiz-js', get_stylesheet_directory_uri() . '/js/gano-bundle-quiz.js', array(), '1.0.0', true );
     }
 
-    // Constellation SC Overlays — responsive TL/TR/modal/portals (cx-06)
+    // Constellation SC Overlays — experimental: solo shop-premium; ampliar al sitio cuando se valide.
     if ( is_page_template( 'templates/shop-premium.php' ) ) {
         wp_enqueue_style(
             'gano-constellation-overlay',
@@ -97,7 +857,120 @@ function gano_child_enqueue_styles() {
             '1.0.0',
             true
         );
+
+        $gano_shop_cold = get_stylesheet_directory() . '/css/gano-shop-cold-tokens.css';
+        wp_enqueue_style(
+            'gano-shop-cold-tokens',
+            get_stylesheet_directory_uri() . '/css/gano-shop-cold-tokens.css',
+            array( 'gano-child-style' ),
+            file_exists( $gano_shop_cold ) ? (string) filemtime( $gano_shop_cold ) : '1.0.0'
+        );
     }
+
+    // Smart catalog UX — shared by commercial templates (grid/family/guided + comparator + analytics hooks)
+    // Home (front-page) ya no incluye `[data-gano-catalog]` — no cargar UX catálogo ahí.
+    $is_commerce_template =
+        is_page_template( 'templates/shop-premium.php' ) ||
+        is_page_template( 'templates/page-ecosistemas.php' ) ||
+        is_page_template( 'templates/page-seo-landing.php' );
+    if ( $is_commerce_template ) {
+        wp_enqueue_style(
+            'gano-catalog-intelligence-css',
+            get_stylesheet_directory_uri() . '/css/gano-catalog-intelligence.css',
+            array( 'gano-child-style', 'gano-sota-convergence' ),
+            '1.0.0'
+        );
+        wp_enqueue_script(
+            'gano-catalog-intelligence-js',
+            get_stylesheet_directory_uri() . '/js/gano-catalog-intelligence.js',
+            array(),
+            '1.0.0',
+            true
+        );
+        wp_localize_script(
+            'gano-catalog-intelligence-js',
+            'ganoCatalogConfig',
+            array(
+                'defaultMode' => gano_resolve_catalog_mode( $_GET['catalog_mode'] ?? null ),
+                'modes'       => gano_get_catalog_nav_modes(),
+                'guided'      => gano_get_catalog_guided_intents(),
+            )
+        );
+    }
+
+    // Navegación sticky + mega-dropdown — todas las páginas
+    wp_enqueue_script( 'gano-nav', get_stylesheet_directory_uri() . '/js/gano-nav.js', array(), '1.0.0', true );
+}
+
+// =============================================================================
+// Task 2: Scroll-Spy Navigation Enhanced — Enqueue CSS & JS
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_nav_enhanced', 12 );
+
+function gano_enqueue_nav_enhanced() {
+    if ( is_admin() ) { return; }
+    if ( ! is_front_page() ) { return; }
+
+    $css_path = get_stylesheet_directory() . '/css/gano-nav-enhanced.css';
+    $css_version = file_exists( $css_path ) ? (string) filemtime( $css_path ) : '1.0.0';
+
+    wp_enqueue_style(
+        'gano-nav-enhanced',
+        get_stylesheet_directory_uri() . '/css/gano-nav-enhanced.css',
+        [],
+        $css_version
+    );
+}
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_nav_scroll_spy', 12 );
+
+function gano_enqueue_nav_scroll_spy() {
+    if ( is_admin() ) { return; }
+    if ( ! is_front_page() ) { return; }
+
+    $js_path = get_stylesheet_directory() . '/js/gano-nav-scroll-spy.js';
+    $js_version = file_exists( $js_path ) ? (string) filemtime( $js_path ) : '1.0.0';
+
+    wp_enqueue_script(
+        'gano-nav-scroll-spy',
+        get_stylesheet_directory_uri() . '/js/gano-nav-scroll-spy.js',
+        [],
+        $js_version,
+        true
+    );
+}
+
+// =============================================================================
+// Task 6: Hero Particles System — Enqueue CSS & JS
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_particles', 12 );
+
+function gano_enqueue_particles() {
+    if ( is_admin() ) { return; }
+    if ( ! is_front_page() ) { return; }
+
+    $css_path = get_stylesheet_directory() . '/css/gano-particles.css';
+    $css_version = file_exists( $css_path ) ? (string) filemtime( $css_path ) : '1.0.0';
+
+    wp_enqueue_style(
+        'gano-particles',
+        get_stylesheet_directory_uri() . '/css/gano-particles.css',
+        [],
+        $css_version
+    );
+
+    $js_path = get_stylesheet_directory() . '/js/gano-hero-particles.js';
+    $js_version = file_exists( $js_path ) ? (string) filemtime( $js_path ) : '1.0.0';
+
+    wp_enqueue_script(
+        'gano-hero-particles',
+        get_stylesheet_directory_uri() . '/js/gano-hero-particles.js',
+        [],
+        $js_version,
+        true
+    );
 }
 
 /**
@@ -150,9 +1023,18 @@ function gano_skip_link(): void {
  *
  * Para plantillas Elementor full-width: asigna el ID "gano-main-content" a la
  * primera sección del canvas desde el editor de Elementor (Advanced > CSS ID).
+ *
+ * Si existe `front-page.php` en el child y se muestra la portada, el propio
+ * template define `<main id="gano-main-content" tabindex="-1">` y aquí no se
+ * inyecta el span vacío (evita id duplicado y mejora el foco del skip link).
  */
 add_action( 'wp_body_open', 'gano_main_content_anchor', 5 );
 function gano_main_content_anchor(): void {
+    // Si el child define `front-page.php`, ese `<main id="gano-main-content">` es el destino
+    // real del skip link: no inyectar un segundo elemento con el mismo id.
+    if ( is_front_page() && '' !== locate_template( array( 'front-page.php' ), false, false ) ) {
+        return;
+    }
     echo '<span id="gano-main-content" tabindex="-1" class="gano-a11y-anchor"></span>';
 }
 
@@ -291,17 +1173,14 @@ add_filter( 'script_loader_tag', function( string $tag, string $handle ): string
 }, 10, 2 );
 
 /**
- * Precargar fuentes críticas para evitar FOIT (flash of invisible text).
- * Ajustar las URLs si se cambia la tipografía en Elementor.
+ * Prioridad de fetch para el hero image de Elementor y fetchpriority alto en img LCP.
+ * Ajustar los selectores si cambia la estructura del hero en Elementor.
  */
 add_action( 'wp_head', function() {
     // Solo en frontend (no wp-admin)
     if ( is_admin() ) {
         return;
     }
-    // Fuente principal — si se usa Google Fonts vía Elementor, agregar aquí la URL del woff2
-    // $font_url = 'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hiA.woff2';
-    // echo '<link rel="preload" href="' . esc_url( $font_url ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
 
     // fetchpriority en img hero via JavaScript inline mínimo (Elementor no expone PHP hook para esto)
     // Solo se aplica en homepage para no afectar otras páginas ni el admin
@@ -352,6 +1231,26 @@ add_action( 'wp_head', function() {
 }, 2 );
 
 /**
+ * Fix #222 — Fallback de imagen hero para el widget Imagen de Elementor.
+ *
+ * Cuando Elementor almacena attachment_id = 0 (imagen sin registro en la BD),
+ * el widget renderiza sin <img> o con el placeholder genérico de Elementor.
+ * Este filtro sustituye el placeholder URL por hero-datacenter.jpg del tema,
+ * asegurando que la sección hero siempre muestre una imagen coherente con la
+ * marca hasta que el admin registre la imagen definitiva en la Biblioteca.
+ *
+ * Elementor: 'elementor/image_placeholder' (desde Elementor 3.x).
+ * Solo actúa en el frontend, no en el editor wp-admin.
+ */
+add_filter( 'elementor/image_placeholder', 'gano_elementor_image_placeholder', 10, 1 );
+function gano_elementor_image_placeholder( string $placeholder ): string {
+    if ( is_admin() ) {
+        return $placeholder;
+    }
+    return esc_url( get_stylesheet_directory_uri() . '/assets/images/hero-datacenter.jpg' );
+}
+
+/**
  * Agregar etiqueta de idioma y charset explícito (mejora SEO y accesibilidad).
  */
 add_filter( 'language_attributes', function( string $output ): string {
@@ -386,6 +1285,37 @@ function gano_register_shop_page() {
             'post_author' => 1,
             'meta_input'  => array( '_wp_page_template' => 'templates/shop-premium.php' ),
         ) );
+    }
+}
+
+/**
+ * Crea la página “Cómo comprar” si no existe (admin, una vez por carga hasta existir).
+ * Herramienta principal de conversión: explica checkout Reseller y reduce fricción.
+ */
+add_action( 'admin_init', 'gano_register_comenzar_aqui_page', 26 );
+function gano_register_comenzar_aqui_page(): void {
+    if ( ! current_user_can( 'publish_pages' ) ) {
+        return;
+    }
+    if ( get_page_by_path( 'comenzar-aqui' ) instanceof WP_Post ) {
+        return;
+    }
+    $created = wp_insert_post(
+        array(
+            'post_type'    => 'page',
+            'post_title'   => __( 'Cómo comprar — registro y checkout', 'gano-child' ),
+            'post_name'    => 'comenzar-aqui',
+            'post_content' => '',
+            'post_status'  => 'publish',
+            'post_author'  => get_current_user_id() ?: 1,
+            'meta_input'   => array(
+                '_wp_page_template' => 'templates/page-comenzar-aqui.php',
+            ),
+        ),
+        true
+    );
+    if ( is_wp_error( $created ) ) {
+        return;
     }
 }
 
@@ -512,12 +1442,13 @@ function gano_chat_response_callback( WP_REST_Request $request ): WP_REST_Respon
 
     /**
      * ESTRATEGIA: IA DINÁMICA VS ESTÁTICA
-     * Si GANO_API_TOKEN está definido en wp-config.php y no es el valor por defecto,
+     * Si GANO_API_TOKEN está definido en wp-config.php con un valor no vacío,
      * se intenta una llamada a un LLM (modelo: gpt-3.5-turbo o superior).
+     * Sin token, cae al fallback estático al final de la función.
      */
-    $api_token = defined( 'GANO_API_TOKEN' ) ? GANO_API_TOKEN : '';
+    $api_token = defined( 'GANO_API_TOKEN' ) ? (string) GANO_API_TOKEN : '';
 
-    if ( ! empty( $api_token ) && 'TU_TOKEN_AQUÍ' !== $api_token ) {
+    if ( ! empty( $api_token ) ) {
         // --- LLAMADA A LLM (OpenAI API) ---
         $response = wp_remote_post( 'https://api.openai.com/v1/chat/completions', array(
             'timeout' => 15,
@@ -571,6 +1502,198 @@ function gano_chat_response_callback( WP_REST_Request $request ): WP_REST_Respon
     }
 
     return new WP_REST_Response( array( 'reply' => $reply ), 200 );
+}
+
+// =============================================================================
+// 3.5 ENDPOINT REST DEL DIAGNÓSTICO DIGITAL — Lead capture + rate limiting
+// =============================================================================
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_diagnostico_assets', 12 );
+function gano_enqueue_diagnostico_assets() {
+    if ( ! is_page_template( 'page-diagnostico.php' ) && ! is_page( 'diagnostico' ) ) {
+        return;
+    }
+    wp_enqueue_style(
+        'gano-diagnostico',
+        get_stylesheet_directory_uri() . '/css/diagnostico.css',
+        array(),
+        '1.0.0'
+    );
+    wp_enqueue_script(
+        'gano-diagnostico',
+        get_stylesheet_directory_uri() . '/js/diagnostico.js',
+        array(),
+        '1.0.0',
+        true
+    );
+    wp_localize_script(
+        'gano-diagnostico',
+        'ganoDiagnosticoVars',
+        array(
+            'restUrl' => esc_url_raw( rest_url( 'gano/v1/' ) ),
+            'nonce'   => wp_create_nonce( 'gano_diagnostico_nonce' ),
+        )
+    );
+}
+
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_showcase_assets', 12 );
+function gano_enqueue_showcase_assets() {
+    if ( ! is_page_template( 'templates/page-showcase.php' ) ) {
+        return;
+    }
+    wp_enqueue_style(
+        'gano-showcase',
+        get_stylesheet_directory_uri() . '/css/gano-showcase.css',
+        array(),
+        '1.0.0'
+    );
+    wp_enqueue_script(
+        'gano-showcase',
+        get_stylesheet_directory_uri() . '/js/gano-showcase.js',
+        array(),
+        '1.0.0',
+        true
+    );
+}
+
+add_action( 'rest_api_init', 'gano_register_diagnostico_rest_routes' );
+function gano_register_diagnostico_rest_routes() {
+    register_rest_route( 'gano/v1', '/lead', array(
+        'methods'             => 'POST',
+        'callback'            => 'gano_diagnostico_lead_callback',
+        'permission_callback' => 'gano_verify_diagnostico_nonce',
+    ) );
+}
+
+/**
+ * Verificar nonce CSRF + rate limiting del diagnóstico.
+ * Rate limiting: max 5 peticiones por IP cada 60 segundos.
+ *
+ * @return true|WP_Error
+ */
+function gano_verify_diagnostico_nonce( WP_REST_Request $request ) {
+    $ip        = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+    $transient = 'gano_diag_rate_' . md5( $ip );
+    $window    = 60;
+    $max       = 5;
+    $hits      = (int) get_transient( $transient );
+
+    if ( $hits >= $max ) {
+        return new WP_Error(
+            'gano_rate_limited',
+            'Demasiadas peticiones. Intenta de nuevo en un momento.',
+            array( 'status' => 429 )
+        );
+    }
+
+    if ( 0 === $hits ) {
+        set_transient( $transient, 1, $window );
+    } else {
+        $window_start = get_transient( $transient . '_start' );
+        if ( false === $window_start ) {
+            set_transient( $transient . '_start', time(), $window );
+        }
+        $remaining = $window - ( time() - (int) $window_start );
+        if ( $remaining > 0 ) {
+            set_transient( $transient, $hits + 1, $remaining );
+        } else {
+            set_transient( $transient, 1, $window );
+            set_transient( $transient . '_start', time(), $window );
+        }
+    }
+
+    $nonce = $request->get_header( 'X-WP-Nonce' );
+    if ( ! wp_verify_nonce( $nonce, 'gano_diagnostico_nonce' ) ) {
+        return new WP_Error(
+            'gano_invalid_nonce',
+            'Nonce inválido o expirado.',
+            array( 'status' => 403 )
+        );
+    }
+
+    return true;
+}
+
+/**
+ * Callback: guardar lead del diagnóstico en CSV + DB fallback.
+ */
+function gano_diagnostico_lead_callback( WP_REST_Request $request ): WP_REST_Response {
+    $body    = $request->get_json_params();
+    $name    = isset( $body['name'] )    ? sanitize_text_field( $body['name'] )    : '';
+    $email   = isset( $body['email'] )   ? sanitize_email( $body['email'] )        : '';
+    $phone   = isset( $body['phone'] )   ? sanitize_text_field( $body['phone'] )   : '';
+    $company = isset( $body['company'] ) ? sanitize_text_field( $body['company'] ) : '';
+    $source  = isset( $body['source'] )  ? sanitize_text_field( $body['source'] )  : 'diagnostico_digital';
+    $answers = isset( $body['answers'] ) ? (array) $body['answers'] : array();
+
+    if ( empty( $name ) || empty( $email ) ) {
+        return new WP_REST_Response( array( 'error' => 'Nombre y correo son obligatorios.' ), 400 );
+    }
+
+    $date     = current_time( 'mysql' );
+    $leads_file = WP_CONTENT_DIR . '/uploads/gano-leads.csv';
+
+    // Ensure directory and file exist
+    $upload_dir = dirname( $leads_file );
+    if ( ! is_dir( $upload_dir ) ) {
+        wp_mkdir_p( $upload_dir );
+    }
+    if ( ! file_exists( $leads_file ) ) {
+        $header = "Date,Name,Email,Phone,Company,Source,Answers\n";
+        @file_put_contents( $leads_file, $header );
+        // Protect with .htaccess
+        $htaccess = $upload_dir . '/.htaccess';
+        if ( ! file_exists( $htaccess ) ) {
+            @file_put_contents( $htaccess, "<Files \"gano-leads.csv\">\n    Require all denied\n</Files>\n" );
+        }
+    }
+
+    $answers_json = wp_json_encode( $answers );
+    $line = sprintf(
+        '"%s","%s","%s","%s","%s","%s","%s"\n',
+        $date,
+        str_replace( '"', '""', $name ),
+        str_replace( '"', '""', $email ),
+        str_replace( '"', '""', $phone ),
+        str_replace( '"', '""', $company ),
+        str_replace( '"', '""', $source ),
+        str_replace( '"', '""', $answers_json )
+    );
+
+    @file_put_contents( $leads_file, $line, FILE_APPEND );
+
+    // DB fallback (last 100 leads)
+    $db_leads = get_option( 'gano_diagnostico_leads', array() );
+    $db_leads[] = array(
+        'date'     => $date,
+        'name'     => $name,
+        'email'    => $email,
+        'phone'    => $phone,
+        'company'  => $company,
+        'source'   => $source,
+        'answers'  => $answers,
+    );
+    if ( count( $db_leads ) > 100 ) {
+        array_shift( $db_leads );
+    }
+    update_option( 'gano_diagnostico_leads', $db_leads );
+
+    // Optional: send email notification
+    $admin_email = get_option( 'admin_email' );
+    if ( is_email( $admin_email ) ) {
+        $subject = sprintf( '[Gano Lead] Diagnóstico de %s', $name );
+        $message = sprintf(
+            "Nuevo lead desde el diagnóstico digital.\n\nNombre: %s\nEmail: %s\nTeléfono: %s\nEmpresa: %s\nFecha: %s\n",
+            $name,
+            $email,
+            $phone ?: 'No proporcionado',
+            $company ?: 'No proporcionada',
+            $date
+        );
+        wp_mail( $admin_email, $subject, $message );
+    }
+
+    return new WP_REST_Response( array( 'saved' => true ), 200 );
 }
 
 // =============================================================================
@@ -683,7 +1806,7 @@ function gano_render_cta_icons() {
         ),
         array(
             'icon'  => 'fa-circle-check',
-            'label' => 'Uptime 99,9 %',
+            'label' => 'Uptime 99,9%',
             'url'   => '',
             'title' => '',
         ),
@@ -731,6 +1854,129 @@ function gano_render_cta_icons() {
     return ob_get_clean();
 }
 
+/**
+ * Shortcode: [gano_reseller_iframe ecosistema="hosting_economia"]
+ *
+ * Renderiza un iframe embebido del Reseller Store de GoDaddy con fallback
+ * a página de configuración si el PFID aún no está disponible.
+ *
+ * Atributos:
+ * - ecosistema: "hosting_economia", "hosting_deluxe", "hosting_premium", "hosting_ultimate"
+ * - fallback_url: URL alternativa si PFID = PENDING_RCC (default: /contacto/)
+ * - heading: Título opcional del iframe (default: "Selecciona tu plan")
+ * - button_text: Texto del botón fallback (default: "Ir a configuración")
+ *
+ * Ejemplo:
+ *   [gano_reseller_iframe ecosistema="hosting_economia"]
+ *
+ * Requiere:
+ * - CSP header: frame-src https://reseller-store.godaddy.com (en gano-security.php)
+ * - iframe-resizer script para responsive height (enqueue en functions.php)
+ */
+add_shortcode( 'gano_reseller_iframe', 'gano_render_reseller_iframe' );
+function gano_render_reseller_iframe( $atts = array() ) {
+	$atts = shortcode_atts(
+		array(
+			'ecosistema'   => 'hosting_economia',
+			'fallback_url' => home_url( '/contacto/' ),
+			'heading'      => 'Selecciona tu plan',
+			'button_text'  => 'Ir a configuración',
+		),
+		$atts,
+		'gano_reseller_iframe'
+	);
+
+	// Mapeo de ecosistema a PFID constant
+	$ecosistema_map = array(
+		'hosting_economia' => 'GANO_PFID_HOSTING_ECONOMIA',
+		'hosting_deluxe'   => 'GANO_PFID_HOSTING_DELUXE',
+		'hosting_premium'  => 'GANO_PFID_HOSTING_PREMIUM',
+		'hosting_ultimate' => 'GANO_PFID_HOSTING_ULTIMATE',
+		'ssl_deluxe'       => 'GANO_PFID_SSL_DELUXE',
+		'security'         => 'GANO_PFID_SECURITY_ULTIMATE',
+		'm365'             => 'GANO_PFID_M365_PREMIUM',
+		'storage'          => 'GANO_PFID_ONLINE_STORAGE',
+	);
+
+	$ecosistema = sanitize_key( $atts['ecosistema'] );
+	$const_name = $ecosistema_map[ $ecosistema ] ?? null;
+
+	if ( ! $const_name || ! defined( $const_name ) ) {
+		return '<p class="gano-reseller-iframe-error">' . esc_html__( 'Ecosistema no válido.', 'gano-child' ) . '</p>';
+	}
+
+	$pfid = (string) constant( $const_name );
+
+	// Si PFID = PENDING_RCC, mostrar fallback
+	if ( 'PENDING_RCC' === $pfid ) {
+		$fallback_url = esc_url( $atts['fallback_url'] );
+		$button_text  = esc_html( $atts['button_text'] );
+		$heading      = esc_html( $atts['heading'] );
+
+		return sprintf(
+			'<div class="gano-reseller-iframe-pending">
+				<h3>%s</h3>
+				<p>' . esc_html__( 'Estamos configurando tu catálogo de productos. Por favor, habla con nosotros.', 'gano-child' ) . '</p>
+				<a href="%s" class="gano-btn gano-btn-primary">%s</a>
+			</div>',
+			$heading,
+			$fallback_url,
+			$button_text
+		);
+	}
+
+	if ( empty( $pfid ) ) {
+		return '<p class="gano-reseller-iframe-error">' . esc_html__( 'PFID vacío o no configurado.', 'gano-child' ) . '</p>';
+	}
+
+	// URL del Reseller Store con PFID
+	$reseller_base = 'https://reseller-store.godaddy.com';
+	$iframe_src    = esc_url( add_query_arg( 'pfid', $pfid, $reseller_base ) );
+
+	// Enqueue iframe-resizer script para responsive height
+	wp_enqueue_script(
+		'gano-iframe-resizer',
+		'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.2/iframeResizer.min.js',
+		array(),
+		'4.3.2',
+		true
+	);
+
+	// Script inline para inicializar iframeResizer
+	wp_add_inline_script(
+		'gano-iframe-resizer',
+		'
+		if ( window.iframeResizer ) {
+			window.iframeResizer(
+				{
+					log: false,
+					autoResize: true,
+					heightCalculationMethod: "documentElementOffset",
+					checkOrigin: ["https://reseller-store.godaddy.com"],
+				},
+				".gano-reseller-iframe-embed"
+			);
+		}
+		'
+	);
+
+	ob_start();
+	?>
+	<div class="gano-reseller-iframe-wrapper">
+		<h3><?php echo esc_html( $atts['heading'] ); ?></h3>
+		<iframe
+			class="gano-reseller-iframe-embed"
+			src="<?php echo esc_url( $iframe_src ); ?>"
+			title="<?php esc_attr_e( 'GoDaddy Reseller Store - Selecciona tu plan', 'gano-child' ); ?>"
+			style="border: none; width: 100%; min-height: 600px;"
+			sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals"
+			loading="lazy"
+		></iframe>
+	</div>
+	<?php
+	return ob_get_clean();
+}
+
 
 /**
  * El MU plugin gano-security.php bloquea la REST API para no autenticados.
@@ -747,6 +1993,7 @@ add_filter( 'rest_authentication_errors', function ( $result ) {
         '/wp-json/gano-agent/v1/log',
         '/wp-json/gano/v1/chat',
         '/wp-json/gano/v1/csp-report',
+        '/wp-json/gano/v1/lead',
     );
     foreach ( $chat_routes as $route ) {
         if ( strpos( $request_uri, $route ) !== false ) {
@@ -780,41 +2027,43 @@ add_filter( 'rest_authentication_errors', function ( $result ) {
 // NOTA: Los dominios (.CO / .COM) NO tienen pfid de carrito directo.
 //   Para dominios usar el shortcode [rstore-domain-search].
 //
-// TODO: Reemplazar los valores 'PENDING_RCC' con los pfids reales desde el RCC
-//       antes de activar el flujo de checkout en producción.
+// Los valores se leen desde wp_options (`gano_pfid_*`) gestionadas en
+// Ajustes → Gano Reseller (plugin gano-reseller-enhancements). Si no hay option
+// guardada, el fallback es 'PENDING_RCC' y `gano_rstore_cart_url()` devuelve '#'.
+// Definir la constante en wp-config.php gana sobre la option (útil para staging).
 // =============================================================================
 
 // --- Hosting WordPress ---
 // Fuente: RCC → Productos → Web Hosting → WordPress Hosting
 if ( ! defined( 'GANO_PFID_HOSTING_ECONOMIA' ) ) {
-	define( 'GANO_PFID_HOSTING_ECONOMIA', 'PENDING_RCC' ); // WordPress Hosting Economy  — Núcleo Prime
+	define( 'GANO_PFID_HOSTING_ECONOMIA', get_option( 'gano_pfid_hosting_economia', 'PENDING_RCC' ) ); // Núcleo Prime
 }
 if ( ! defined( 'GANO_PFID_HOSTING_DELUXE' ) ) {
-	define( 'GANO_PFID_HOSTING_DELUXE', 'PENDING_RCC' );   // WordPress Hosting Deluxe   — Fortaleza Delta
+	define( 'GANO_PFID_HOSTING_DELUXE', get_option( 'gano_pfid_hosting_deluxe', 'PENDING_RCC' ) );     // Fortaleza Delta
 }
 if ( ! defined( 'GANO_PFID_HOSTING_PREMIUM' ) ) {
-	define( 'GANO_PFID_HOSTING_PREMIUM', 'PENDING_RCC' );  // WordPress Hosting Premium  — Bastión SOTA
+	define( 'GANO_PFID_HOSTING_PREMIUM', get_option( 'gano_pfid_hosting_premium', 'PENDING_RCC' ) );   // Bastión SOTA
 }
 if ( ! defined( 'GANO_PFID_HOSTING_ULTIMATE' ) ) {
-	define( 'GANO_PFID_HOSTING_ULTIMATE', 'PENDING_RCC' ); // WordPress Hosting Ultimate — Ultimate WP
+	define( 'GANO_PFID_HOSTING_ULTIMATE', get_option( 'gano_pfid_hosting_ultimate', 'PENDING_RCC' ) ); // Ultimate WP
 }
 
 // --- Seguridad / SSL ---
 // Fuente: RCC → Productos → SSL & Seguridad
 if ( ! defined( 'GANO_PFID_SSL_DELUXE' ) ) {
-	define( 'GANO_PFID_SSL_DELUXE', 'PENDING_RCC' );        // SSL DV Deluxe              — SSL Deluxe
+	define( 'GANO_PFID_SSL_DELUXE', get_option( 'gano_pfid_ssl_deluxe', 'PENDING_RCC' ) );
 }
 if ( ! defined( 'GANO_PFID_SECURITY_ULTIMATE' ) ) {
-	define( 'GANO_PFID_SECURITY_ULTIMATE', 'PENDING_RCC' ); // Website Security Premium   — Security Ultimate
+	define( 'GANO_PFID_SECURITY_ULTIMATE', get_option( 'gano_pfid_security_ultimate', 'PENDING_RCC' ) );
 }
 
 // --- Email / Colaboración ---
 // Fuente: RCC → Productos → Email & Office
 if ( ! defined( 'GANO_PFID_M365_PREMIUM' ) ) {
-	define( 'GANO_PFID_M365_PREMIUM', 'PENDING_RCC' );   // Microsoft 365 Business Premium — M365 Premium
+	define( 'GANO_PFID_M365_PREMIUM', get_option( 'gano_pfid_m365_premium', 'PENDING_RCC' ) );
 }
 if ( ! defined( 'GANO_PFID_ONLINE_STORAGE' ) ) {
-	define( 'GANO_PFID_ONLINE_STORAGE', 'PENDING_RCC' ); // Online Storage 1 TB            — Online Storage
+	define( 'GANO_PFID_ONLINE_STORAGE', get_option( 'gano_pfid_online_storage', 'PENDING_RCC' ) );
 }
 
 /**
@@ -849,14 +2098,795 @@ function gano_rstore_cart_url( $pfid, $duration = 12 ) {
 		)
 	);
 
-	return esc_url(
-		add_query_arg(
-			array(
-				'plid'  => $pl_id,
-				'items' => $items,
-			),
-			'https://cart.secureserver.net/'
-		)
+	// esc_url() strips {, }, and " from query strings, breaking JSON format.
+	// Build manually with rawurlencode() to preserve the JSON structure.
+	return sprintf(
+		'https://cart.secureserver.net/?plid=%d&items=%s',
+		$pl_id,
+		rawurlencode( $items )
+	);
+}
+
+/**
+ * Returns normalized catalog status.
+ *
+ * @param mixed $raw_status Raw status value.
+ * @return string active|pending|coming-soon|sync-missing
+ */
+function gano_normalize_catalog_status( $raw_status ) {
+	$status = is_string( $raw_status ) ? sanitize_key( $raw_status ) : '';
+	if ( in_array( $status, array( 'active', 'pending', 'coming-soon', 'sync-missing' ), true ) ) {
+		return $status;
+	}
+	return 'pending';
+}
+
+/**
+ * Determines if a catalog price string can be treated as commercially valid.
+ *
+ * @param mixed $raw_price Price string.
+ * @return bool
+ */
+function gano_catalog_price_is_valid( $raw_price ) {
+	$price = is_string( $raw_price ) ? trim( $raw_price ) : '';
+	if ( '' === $price ) {
+		return false;
+	}
+
+	$normalized = sanitize_text_field( wp_strip_all_tags( strtolower( $price ) ) );
+	if ( str_contains( $normalized, 'pendiente' ) || str_contains( $normalized, 'consultar' ) ) {
+		return false;
+	}
+
+	return (bool) preg_match( '/\d/', $normalized );
+}
+
+/**
+ * Resolves robust commercial status for catalog item.
+ *
+ * @param array<string, mixed> $product Product row.
+ * @return string active|pending|coming-soon|sync-missing
+ */
+function gano_catalog_product_status( array $product ) {
+	$status = gano_normalize_catalog_status( $product['status'] ?? '' );
+	if ( 'coming-soon' === $status ) {
+		return $status;
+	}
+
+	$pfid = isset( $product['pfid'] ) ? (string) $product['pfid'] : '';
+	$has_external = ! empty( $product['external_url'] );
+	$is_domain = 'domain_search' === $pfid;
+	$has_price = gano_catalog_price_is_valid( $product['price'] ?? '' );
+
+	if ( ! $has_price ) {
+		return 'sync-missing';
+	}
+
+	if ( $has_external || $is_domain ) {
+		return 'active';
+	}
+
+	if ( '' === $pfid || 'PENDING_RCC' === $pfid ) {
+		return 'pending';
+	}
+
+	return $status;
+}
+
+/**
+ * Returns canonical category labels for the premium catalog.
+ *
+ * @return array<string, string>
+ */
+function gano_get_reseller_catalog_categories() {
+	return array(
+		'hostingwebcpanel'      => 'Hosting Web (cPanel)',
+		'webhostingplus'        => 'Web Hosting Plus',
+		'wordpressadministrado' => 'WordPress Administrado',
+		'servidoresvps'         => 'Servidores VPS',
+		'vpshighperformance'    => 'VPS High Performance',
+		'certificadosssl'       => 'Certificados SSL',
+		'correomicrosoft365'    => 'Correo Microsoft 365',
+		'seguridadweb'          => 'Seguridad Web',
+		'creadordesitiosweb'    => 'Creador de Sitios Web',
+		'marketingdigital'      => 'Marketing Digital',
+		'dominios'              => 'Dominios',
+	);
+}
+
+/**
+ * Returns available navigation modes for the commercial catalog.
+ *
+ * @return array<string, array<string, string>>
+ */
+function gano_get_catalog_nav_modes() {
+	return array(
+		'grid'   => array(
+			'label'       => 'Vista general',
+			'description' => 'Todos los productos en una sola grilla filtrable.',
+		),
+		'family' => array(
+			'label'       => 'Por familia',
+			'description' => 'Organiza la navegación por familias comerciales.',
+		),
+		'guided' => array(
+			'label'       => 'Asistente',
+			'description' => 'Flujo guiado por objetivo del negocio.',
+		),
+	);
+}
+
+/**
+ * Sanitizes and resolves a valid catalog navigation mode.
+ *
+ * @param string|null $candidate Candidate mode.
+ * @return string grid|family|guided
+ */
+function gano_resolve_catalog_mode( $candidate = null ) {
+	$modes = array_keys( gano_get_catalog_nav_modes() );
+	$mode  = is_string( $candidate ) ? sanitize_key( $candidate ) : '';
+	if ( in_array( $mode, $modes, true ) ) {
+		return $mode;
+	}
+	return 'grid';
+}
+
+/**
+ * Builds guided intents for smart catalog navigation.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function gano_get_catalog_guided_intents() {
+	return array(
+		array(
+			'id'          => 'launch',
+			'label'       => 'Lanzar o validar',
+			'description' => 'Iniciar rápido con costos controlados y base sólida.',
+			'categories'  => array( 'hostingwebcpanel', 'wordpressadministrado', 'dominios' ),
+		),
+		array(
+			'id'          => 'scale',
+			'label'       => 'Escalar conversiones',
+			'description' => 'Más capacidad, resiliencia y seguridad para e-commerce o campañas.',
+			'categories'  => array( 'webhostingplus', 'vpshighperformance', 'seguridadweb', 'certificadosssl' ),
+		),
+		array(
+			'id'          => 'enterprise',
+			'label'       => 'Operación crítica',
+			'description' => 'Alta disponibilidad, soporte prioritario y controles empresariales.',
+			'categories'  => array( 'servidoresvps', 'vpshighperformance', 'correomicrosoft365', 'seguridadweb' ),
+		),
+	);
+}
+
+/**
+ * Builds VPS catalog URL for the current reseller storefront.
+ *
+ * @return string
+ */
+function gano_rstore_vps_catalog_url() {
+	$pl_id = function_exists( 'rstore_get_option' ) ? (int) rstore_get_option( 'pl_id' ) : 0;
+	if ( $pl_id <= 0 ) {
+		$pl_id = 599667;
+	}
+	return esc_url( add_query_arg( 'pl_id', $pl_id, 'https://www.secureserver.net/hosting/vps' ) );
+}
+
+/**
+ * Returns the commercial catalog used by premium shop templates.
+ *
+ * Status conventions:
+ * - active: CTA opens Reseller cart
+ * - pending: CTA redirects to contacto while PFID/RCC is pending
+ * - coming-soon: CTA disabled with "Próximamente"
+ * - sync-missing: product remains visible, price not trusted, CTA opens details/contact
+ *
+ * @return array<int, array<string, string>>
+ */
+function gano_get_reseller_catalog_products() {
+	$vps_url = gano_rstore_vps_catalog_url();
+
+	return array(
+		array(
+			'cat'           => 'ecosistemas',
+			'name'          => 'Núcleo Prime',
+			'desc'          => 'El punto de partida correcto para sitios en crecimiento.',
+			'price'         => '$196.000',
+			'price_context' => 'COP/mes',
+			'icon'          => 'fa-server',
+			'pfid'          => GANO_PFID_HOSTING_ECONOMIA,
+			'status'        => 'active',
+			'cta_label'     => 'Elegir Núcleo Prime',
+		),
+		array(
+			'cat'           => 'ecosistemas',
+			'name'          => 'Fortaleza Delta',
+			'desc'          => 'Para marcas que ya generan ingresos con hardening activo.',
+			'price'         => '$450.000',
+			'price_context' => 'COP/mes',
+			'icon'          => 'fa-shield',
+			'pfid'          => GANO_PFID_HOSTING_DELUXE,
+			'status'        => 'active',
+			'badge'         => 'Más popular',
+			'cta_label'     => 'Activar Fortaleza Delta',
+		),
+		array(
+			'cat'           => 'ecosistemas',
+			'name'          => 'Bastión SOTA',
+			'desc'          => 'Rendimiento crítico con seguridad de nivel empresarial.',
+			'price'         => '$890.000',
+			'price_context' => 'COP/mes',
+			'icon'          => 'fa-fort',
+			'pfid'          => GANO_PFID_HOSTING_PREMIUM,
+			'status'        => 'active',
+			'badge'         => 'Recomendado',
+			'cta_label'     => 'Solicitar Bastión SOTA',
+		),
+		array(
+			'cat'           => 'ecosistemas',
+			'name'          => 'Ultimate WP',
+			'desc'          => 'Máxima capacidad para agencias y alto tráfico.',
+			'price'         => '$1.200.000',
+			'price_context' => 'COP/mes',
+			'icon'          => 'fa-crown',
+			'pfid'          => GANO_PFID_HOSTING_ULTIMATE,
+			'status'        => 'active',
+			'cta_label'     => 'Cotizar Ultimate WP',
+		),
+	);
+}
+
+/**
+ * LEGACY — Commented out for reference.
+ * Old gano_get_reseller_catalog_products featured generic GoDaddy products
+ * (Hosting, WordPress, VPS, Domains). Now replaced with Gano 4-plan ecosistema.
+ * If you need GoDaddy full catalog, contact reseller support for direct integration.
+ */
+/*
+	Old products (commented):
+		array(
+			'cat'           => 'webhostingplus',
+			'name'          => 'WHP Inicio',
+			'desc'          => '1 dominio, 10 GB SSD, 10 correos y SSL para pequeñas empresas.',
+			'price'         => '$21.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-rocket',
+			'pfid'          => '459',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'webhostingplus',
+			'name'          => 'WHP Mejora',
+			'desc'          => '3 dominios, 50 GB SSD y 25 cuentas de correo para e-commerce.',
+			'price'         => '$38.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-rocket',
+			'pfid'          => '459',
+			'status'        => 'active',
+			'badge'         => 'Recomendado',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'webhostingplus',
+			'name'          => 'WHP Crecimiento',
+			'desc'          => '5 dominios, 100 GB SSD, correos ilimitados y backups diarios.',
+			'price'         => '$54.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-rocket',
+			'pfid'          => '459',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'webhostingplus',
+			'name'          => 'WHP Expansión',
+			'desc'          => 'Dominios ilimitados y 200 GB SSD para empresas consolidadas.',
+			'price'         => '$76.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-rocket',
+			'pfid'          => '459',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'wordpressadministrado',
+			'name'          => 'WP Básico',
+			'desc'          => '1 sitio WordPress con actualizaciones automáticas y soporte especializado.',
+			'price'         => 'Desde $5.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-wordpress',
+			'pfid'          => '457',
+			'status'        => 'active',
+			'tip'           => 'Ideal cuando no tienes equipo técnico interno.',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'wordpressadministrado',
+			'name'          => 'WP Pro',
+			'desc'          => 'Hasta 3 sitios, staging y backups automáticos con caching avanzado.',
+			'price'         => 'Desde $9.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-wordpress',
+			'pfid'          => '457',
+			'status'        => 'active',
+			'badge'         => 'Popular',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'wordpressadministrado',
+			'name'          => 'WP Developer',
+			'desc'          => 'Sitios ilimitados y panel multi-cliente para agencias.',
+			'price'         => 'Desde $14.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-wordpress',
+			'pfid'          => '457',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'servidoresvps',
+			'name'          => 'VPS 1 vCPU / 1 GB',
+			'desc'          => '20 GB SSD, 1 TB de transferencia y acceso root para desarrollo.',
+			'price'         => '$4.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-microchip',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'servidoresvps',
+			'name'          => 'VPS 2 vCPU / 4 GB',
+			'desc'          => '80 GB SSD y 2 TB para aplicaciones de tráfico medio.',
+			'price'         => '$25.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-microchip',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'servidoresvps',
+			'name'          => 'VPS 4 vCPU / 8 GB',
+			'desc'          => '160 GB SSD y 3 TB para tiendas online y apps empresariales.',
+			'price'         => '$50.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-microchip',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'badge'         => 'Recomendado',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'servidoresvps',
+			'name'          => 'VPS 8 vCPU / 16 GB',
+			'desc'          => '320 GB SSD y 4 TB para alto tráfico y múltiples servicios.',
+			'price'         => '$87.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-microchip',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'servidoresvps',
+			'name'          => 'VPS 16 vCPU / 32 GB',
+			'desc'          => '640 GB SSD y 5 TB para cargas críticas empresariales.',
+			'price'         => '$146.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-microchip',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'vpshighperformance',
+			'name'          => 'HP 2 vCPU / 8 GB',
+			'desc'          => 'Infraestructura NVMe para apps sensibles a latencia.',
+			'price'         => '$38.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-gauge-high',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'vpshighperformance',
+			'name'          => 'HP 4 vCPU / 16 GB',
+			'desc'          => 'Para e-commerce de alto tráfico, SaaS y APIs exigentes.',
+			'price'         => '$63.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-gauge-high',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'badge'         => 'Popular',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'vpshighperformance',
+			'name'          => 'HP 8 vCPU / 32 GB',
+			'desc'          => 'Rendimiento enterprise para plataformas de misión crítica.',
+			'price'         => '$123.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-gauge-high',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'vpshighperformance',
+			'name'          => 'HP 16 vCPU / 64 GB',
+			'desc'          => 'Para IA, ML y procesamiento masivo de datos.',
+			'price'         => '$187.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-gauge-high',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'vpshighperformance',
+			'name'          => 'HP 32 vCPU / 128 GB',
+			'desc'          => 'Nivel datacenter para cargas corporativas máximas.',
+			'price'         => '$255.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-gauge-high',
+			'external_url'  => $vps_url,
+			'status'        => 'active',
+			'badge'         => 'Premium',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'certificadosssl',
+			'name'          => 'SSL DV · 1 sitio',
+			'desc'          => 'Candado HTTPS para dominio único, ideal para pymes.',
+			'price'         => '$33.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-lock',
+			'pfid'          => '75',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'certificadosssl',
+			'name'          => 'SSL DV · 5 sitios',
+			'desc'          => '5 dominios en un solo certificado y gestión centralizada.',
+			'price'         => '$61.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-lock',
+			'pfid'          => '75',
+			'status'        => 'active',
+			'badge'         => 'Popular',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'certificadosssl',
+			'name'          => 'SSL DV Comodín',
+			'desc'          => 'Protege subdominios ilimitados del dominio principal.',
+			'price'         => '$214.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-lock',
+			'pfid'          => '75',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'certificadosssl',
+			'name'          => 'SSL EV · 1 sitio',
+			'desc'          => 'Validación extendida para máxima confianza.',
+			'price'         => '$110.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-lock',
+			'pfid'          => '75',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'certificadosssl',
+			'name'          => 'SSL EV · 5 sitios',
+			'desc'          => '5 dominios con validación extendida para grupos empresariales.',
+			'price'         => '$262.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-lock',
+			'pfid'          => '75',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'certificadosssl',
+			'name'          => 'SSL Administrado',
+			'desc'          => 'GoDaddy instala, renueva y monitorea el certificado por ti.',
+			'price'         => '$144.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-lock',
+			'pfid'          => '75',
+			'status'        => 'active',
+			'badge'         => 'Sin complicaciones',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'correomicrosoft365',
+			'name'          => 'Correo Esencial',
+			'desc'          => 'Correo con dominio propio y buzón de 50 GB.',
+			'price'         => 'Desde $1.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-envelope',
+			'pfid'          => '466',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'correomicrosoft365',
+			'name'          => 'M365 Business Basic',
+			'desc'          => 'Email + Teams + SharePoint + 1 TB OneDrive.',
+			'price'         => 'Desde $5.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-envelope',
+			'pfid'          => '466',
+			'status'        => 'active',
+			'badge'         => 'Popular',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'correomicrosoft365',
+			'name'          => 'M365 Business Standard',
+			'desc'          => 'Suite Office completa + Teams para hasta 300 usuarios.',
+			'price'         => 'Desde $12.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-envelope',
+			'pfid'          => '466',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'correomicrosoft365',
+			'name'          => 'M365 Business Premium',
+			'desc'          => 'Incluye Intune, Defender y seguridad avanzada de identidad.',
+			'price'         => 'Desde $22.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-envelope',
+			'pfid'          => '466',
+			'status'        => 'active',
+			'badge'         => 'Premium',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'seguridadweb',
+			'name'          => 'Seguridad Esencial',
+			'desc'          => 'Escaneo diario de malware y alertas para sitios básicos.',
+			'price'         => '$3.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-shield-halved',
+			'pfid'          => '557',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'seguridadweb',
+			'name'          => 'Seguridad Deluxe',
+			'desc'          => 'Limpieza garantizada de malware con monitoreo continuo.',
+			'price'         => '$7.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-shield-halved',
+			'pfid'          => '557',
+			'status'        => 'active',
+			'badge'         => 'Popular',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'seguridadweb',
+			'name'          => 'Seguridad Ultimate',
+			'desc'          => 'WAF capa 7, anti-DDoS, reparación prioritaria y CDN.',
+			'price'         => '$23.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-shield-halved',
+			'pfid'          => '557',
+			'status'        => 'active',
+			'cta_label'     => 'Agregar al carrito',
+		),
+		array(
+			'cat'           => 'creadordesitiosweb',
+			'name'          => 'Constructor Básico',
+			'desc'          => 'Plantillas profesionales con editor drag & drop.',
+			'price'         => 'Desde $6.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-pen-ruler',
+			'status'        => 'coming-soon',
+			'badge'         => 'Pendiente PFID',
+			'cta_label'     => 'Próximamente',
+		),
+		array(
+			'cat'           => 'creadordesitiosweb',
+			'name'          => 'Constructor Comercio',
+			'desc'          => 'Tienda online completa con pagos e inventario.',
+			'price'         => 'Desde $14.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-pen-ruler',
+			'status'        => 'coming-soon',
+			'badge'         => 'Pendiente PFID',
+			'cta_label'     => 'Próximamente',
+		),
+		array(
+			'cat'           => 'marketingdigital',
+			'name'          => 'SEO Básico',
+			'desc'          => 'Palabras clave guiadas y optimización on-page.',
+			'price'         => 'Desde $6.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-chart-line',
+			'status'        => 'coming-soon',
+			'badge'         => 'Pendiente PFID',
+			'cta_label'     => 'Próximamente',
+		),
+		array(
+			'cat'           => 'marketingdigital',
+			'name'          => 'Email Marketing Starter',
+			'desc'          => 'Hasta 500 contactos y plantillas para campañas iniciales.',
+			'price'         => 'Desde $9.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-chart-line',
+			'status'        => 'coming-soon',
+			'badge'         => 'Pendiente PFID',
+			'cta_label'     => 'Próximamente',
+		),
+		array(
+			'cat'           => 'marketingdigital',
+			'name'          => 'Email Marketing Esencial',
+			'desc'          => 'Automatizaciones, segmentación y A/B testing.',
+			'price'         => 'Desde $19.99/mes',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-chart-line',
+			'status'        => 'coming-soon',
+			'badge'         => 'Pendiente PFID',
+			'cta_label'     => 'Próximamente',
+		),
+		array(
+			'cat'           => 'dominios',
+			'name'          => '.com',
+			'desc'          => 'El dominio más reconocido del mundo para tu marca.',
+			'price'         => '$9.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-globe',
+			'pfid'          => 'domain_search',
+			'status'        => 'active',
+			'badge'         => 'Más buscado',
+			'cta_label'     => 'Buscar dominio',
+		),
+		array(
+			'cat'           => 'dominios',
+			'name'          => '.co',
+			'desc'          => 'La extensión colombiana ideal para posicionamiento local.',
+			'price'         => '$19.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-globe',
+			'pfid'          => 'domain_search',
+			'status'        => 'active',
+			'badge'         => 'Colombia',
+			'cta_label'     => 'Buscar dominio',
+		),
+		array(
+			'cat'           => 'dominios',
+			'name'          => '.net',
+			'desc'          => 'Alternativa sólida para proyectos de tecnología y red.',
+			'price'         => '$12.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-globe',
+			'pfid'          => 'domain_search',
+			'status'        => 'active',
+			'cta_label'     => 'Buscar dominio',
+		),
+		array(
+			'cat'           => 'dominios',
+			'name'          => '.io',
+			'desc'          => 'Preferido para startups tecnológicas y productos SaaS.',
+			'price'         => '$39.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-globe',
+			'pfid'          => 'domain_search',
+			'status'        => 'active',
+			'cta_label'     => 'Buscar dominio',
+		),
+		array(
+			'cat'           => 'dominios',
+			'name'          => '.store',
+			'desc'          => 'Extensión ideal para tiendas online y marcas de comercio.',
+			'price'         => '$2.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-globe',
+			'pfid'          => 'domain_search',
+			'status'        => 'active',
+			'badge'         => 'Oferta',
+			'cta_label'     => 'Buscar dominio',
+		),
+		array(
+			'cat'           => 'dominios',
+			'name'          => '.org',
+			'desc'          => 'Ideal para organizaciones, fundaciones y proyectos sociales.',
+			'price'         => '$9.99/año',
+			'price_context' => 'Precio desde',
+			'icon'          => 'fa-globe',
+			'pfid'          => 'domain_search',
+			'status'        => 'active',
+			'cta_label'     => 'Buscar dominio',
+		),
+	);
+}
+
+/**
+ * Resolves CTA metadata for a commercial catalog item.
+ *
+ * @param array<string, string> $product Product row from catalog.
+ * @return array<string, string> url,label,target,status
+ */
+function gano_resolver_catalog_cta( $product ) {
+	$pfid      = isset( $product['pfid'] ) ? (string) $product['pfid'] : '';
+	$status    = gano_catalog_product_status( is_array( $product ) ? $product : array() );
+	$cta_label = isset( $product['cta_label'] ) ? (string) $product['cta_label'] : '';
+	$label     = '' !== $cta_label ? $cta_label : 'Adquirir Nodo';
+
+	if ( ! empty( $product['external_url'] ) ) {
+		return array(
+			'url'    => esc_url( (string) $product['external_url'] ),
+			'label'  => $label,
+			'target' => 'target="_blank" rel="noopener noreferrer"',
+			'status' => 'active',
+		);
+	}
+
+	if ( 'domain_search' === $pfid ) {
+		return array(
+			'url'    => esc_url( home_url( '/dominios/' ) ),
+			'label'  => '' !== $cta_label ? $cta_label : 'Buscar Dominio',
+			'target' => '',
+			'status' => 'active',
+		);
+	}
+
+	if ( 'coming-soon' === $status ) {
+		return array(
+			'url'    => '#',
+			'label'  => '' !== $cta_label ? $cta_label : 'Próximamente',
+			'target' => '',
+			'status' => 'coming-soon',
+		);
+	}
+
+	if ( 'sync-missing' === $status ) {
+		$details_url = ! empty( $product['details_url'] )
+			? esc_url( (string) $product['details_url'] )
+			: esc_url( home_url( '/contacto/' ) );
+		return array(
+			'url'    => $details_url,
+			'label'  => 'Ver detalles',
+			'target' => '',
+			'status' => 'sync-missing',
+		);
+	}
+
+	if ( 'pending' === $status || 'PENDING_RCC' === $pfid ) {
+		return array(
+			'url'    => esc_url( home_url( '/contacto/' ) ),
+			'label'  => '' !== $cta_label ? $cta_label : 'Hablar con ventas',
+			'target' => '',
+			'status' => 'pending',
+		);
+	}
+
+	$cart_url = gano_rstore_cart_url( $pfid );
+	if ( '#' === $cart_url ) {
+		return array(
+			'url'    => esc_url( home_url( '/contacto/' ) ),
+			'label'  => 'Ver detalles',
+			'target' => '',
+			'status' => 'sync-missing',
+		);
+	}
+
+	return array(
+		'url'    => $cart_url,
+		'label'  => $label,
+		'target' => 'target="_blank" rel="noopener noreferrer"',
+		'status' => 'active',
 	);
 }
 
@@ -899,7 +2929,7 @@ function gano_child_empty_cart_message(): string {
       </a>
       &ensp;
       <a href="<?php echo esc_url( home_url( '/contacto' ) ); ?>"
-         style="font-weight:600; color:var(--gano-blue,#2952CC);">
+         style="font-weight:600; color:var(--gano-blue,#1B4FD8);">
         Hablar con el equipo
       </a>
     </div>
@@ -1024,3 +3054,226 @@ function gano_get_sota_hub_pages(): array {
 
 	return $query->posts;
 }
+
+/**
+ * Localizar Reseller Store — Domain Search Widget
+ * Aplica filtros específicos de rstore para traducir textos a español
+ */
+add_filter( 'rstore_domain_text_placeholder', function() {
+	return esc_html__( 'Encuentra tu dominio perfecto', 'gano-child' );
+});
+
+add_filter( 'rstore_domain_text_search', function() {
+	return esc_html__( 'Buscar', 'gano-child' );
+});
+
+add_filter( 'rstore_domain_text_available', function() {
+	return esc_html__( '¡Felicidades! {domain_name} está disponible', 'gano-child' );
+});
+
+add_filter( 'rstore_domain_text_not_available', function() {
+	return esc_html__( 'Lo sentimos, {domain_name} ya está en uso', 'gano-child' );
+});
+
+add_filter( 'rstore_domain_text_cart', function() {
+	return esc_html__( 'Continuar al carrito', 'gano-child' );
+});
+
+add_filter( 'rstore_text_select', function() {
+	return esc_html__( 'Seleccionar', 'gano-child' );
+});
+
+add_filter( 'rstore_text_selected', function() {
+	return esc_html__( 'Seleccionado', 'gano-child' );
+});
+
+/**
+ * Localizar Reseller Store — Product Widget
+ */
+add_filter( 'rstore_product_button_label', function() {
+	return esc_html__( 'Añadir al carrito', 'gano-child' );
+});
+
+add_filter( 'rstore_product_text_cart', function() {
+	return esc_html__( 'Continuar al carrito', 'gano-child' );
+});
+
+add_filter( 'rstore_product_text_more', function() {
+	return esc_html__( 'Más información', 'gano-child' );
+});
+
+/**
+ * Display Gano Digital logo
+ *
+ * @param string $type 'light' or 'dark' (default: 'light')
+ * @param string $size 'sm', 'md', 'lg' (default: 'md')
+ * @return string SVG or img HTML
+ */
+function gano_logo($type = 'light', $size = 'md') {
+	$logo_url = '';
+
+	if ($type === 'dark') {
+		$logo_url = get_stylesheet_directory_uri() . '/assets/logo-gano-dark.svg';
+	} else {
+		$logo_url = get_stylesheet_directory_uri() . '/assets/logo-gano.svg';
+	}
+
+	$sizes = [
+		'sm' => '32px',
+		'md' => '48px',
+		'lg' => '64px'
+	];
+
+	$height = $sizes[$size] ?? $sizes['md'];
+
+	return sprintf(
+		'<img src="%s" alt="Gano Digital" class="gano-logo gano-logo--%s gano-logo--%s" height="%s" loading="lazy" />',
+		esc_url($logo_url),
+		esc_attr($type),
+		esc_attr($size),
+		esc_attr($height)
+	);
+}
+
+/**
+ * Display Gano mark (symbol only)
+ *
+ * @param string $size 'sm', 'md', 'lg'
+ * @return string SVG HTML
+ */
+function gano_logo_mark($size = 'md') {
+	$logo_url = get_stylesheet_directory_uri() . '/assets/logo-mark.svg';
+
+	$sizes = [
+		'sm' => '24px',
+		'md' => '32px',
+		'lg' => '48px'
+	];
+
+	$height = $sizes[$size] ?? $sizes['md'];
+
+	return sprintf(
+		'<img src="%s" alt="Gano" class="gano-logo-mark gano-logo-mark--%s" height="%s" loading="lazy" />',
+		esc_url($logo_url),
+		esc_attr($size),
+		esc_attr($height)
+	);
+}
+
+/**
+ * Initialize theme toggle functionality
+ * Detects user preference via prefers-color-scheme and localStorage
+ */
+function gano_init_theme_toggle() {
+	?>
+	<script>
+	// Theme toggle initialization
+	(function() {
+		const THEME_KEY = 'gano-theme-preference';
+		const DARK_PREFERENCE = '(prefers-color-scheme: dark)';
+
+		// Get saved preference or system preference
+		function getThemePreference() {
+			const saved = localStorage.getItem(THEME_KEY);
+			if (saved) return saved;
+
+			return window.matchMedia(DARK_PREFERENCE).matches ? 'dark' : 'light';
+		}
+
+		// Apply theme to document
+		function applyTheme(theme) {
+			document.documentElement.setAttribute('data-theme', theme);
+			localStorage.setItem(THEME_KEY, theme);
+		}
+
+		// Initialize on page load
+		applyTheme(getThemePreference());
+
+		// Listen for system preference changes
+		window.matchMedia(DARK_PREFERENCE).addListener(e => {
+			const current = localStorage.getItem(THEME_KEY);
+			if (!current) {
+				applyTheme(e.matches ? 'dark' : 'light');
+			}
+		});
+
+		// Expose toggle function globally
+		window.ganoToggleTheme = function(theme) {
+			if (theme !== 'light' && theme !== 'dark') {
+				theme = localStorage.getItem(THEME_KEY) === 'dark' ? 'light' : 'dark';
+			}
+			applyTheme(theme);
+
+			// Trigger custom event for components to react
+			window.dispatchEvent(new CustomEvent('gano-theme-changed', { detail: { theme } }));
+		};
+	})();
+	</script>
+	<?php
+}
+add_action('wp_head', 'gano_init_theme_toggle', 1);
+
+/**
+ * Get current theme preference
+ * Returns 'light' or 'dark'
+ */
+function gano_get_current_theme() {
+	return isset($_COOKIE['gano-theme-preference'])
+		? sanitize_text_field($_COOKIE['gano-theme-preference'])
+		: 'light';
+}
+
+/**
+ * Output theme toggle button
+ */
+function gano_theme_toggle_button() {
+	return sprintf(
+		'<button class="gano-theme-toggle" aria-label="Toggle dark mode" onclick="window.ganoToggleTheme()">
+			<i class="fa-solid fa-moon gano-theme-toggle__icon--dark"></i>
+			<i class="fa-solid fa-sun gano-theme-toggle__icon--light"></i>
+		</button>'
+	);
+}
+
+/**
+ * Enqueue theme toggle styles
+ */
+function gano_enqueue_theme_styles() {
+	wp_enqueue_style(
+		'gano-theme-toggle',
+		get_stylesheet_directory_uri() . '/css/theme-toggle.css',
+		[],
+		'1.0.0'
+	);
+}
+add_action('wp_enqueue_scripts', 'gano_enqueue_theme_styles', 5);
+
+/**
+ * Enqueue Ecosystems v3 styles and scripts
+ * Handles pricing page design and billing toggle functionality
+ */
+function gano_enqueue_ecosystems_v3() {
+	// Only load on ecosistemas page
+	if ( ! is_page( 'ecosistemas' ) ) {
+		return;
+	}
+
+	// Enqueue v3 CSS with design system
+	wp_enqueue_style(
+		'gano-ecosistemas-v3',
+		get_stylesheet_directory_uri() . '/css/ecosistemas-v3.css',
+		[],
+		'1.0.0'
+	);
+
+	// Enqueue billing toggle script
+	$js_path = get_stylesheet_directory() . '/js/ecosystems-billing-toggle.js';
+	wp_enqueue_script(
+		'gano-ecosystems-billing-toggle',
+		get_stylesheet_directory_uri() . '/js/ecosystems-billing-toggle.js',
+		[],
+		file_exists( $js_path ) ? (string) filemtime( $js_path ) : '1.0.0',
+		true
+	);
+}
+add_action( 'wp_enqueue_scripts', 'gano_enqueue_ecosystems_v3', 11 );

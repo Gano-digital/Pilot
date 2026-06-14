@@ -16,9 +16,10 @@ require_once GANO_RESELLER_PATH . 'includes/acf-reseller-fields.php';
 require_once GANO_RESELLER_PATH . 'includes/class-sandbox.php';
 require_once GANO_RESELLER_PATH . 'includes/class-bundle-handler.php';
 
-// Load smoke-test page only in admin context.
+// Load smoke-test page and PFID admin panel only in admin context.
 if ( is_admin() ) {
 	require_once GANO_RESELLER_PATH . 'includes/class-smoke-test.php';
+	require_once GANO_RESELLER_PATH . 'includes/class-pfid-admin.php';
 }
 
 /**
@@ -27,7 +28,7 @@ if ( is_admin() ) {
  */
 add_filter( 'rstore_sync_properties', 'gano_reseller_filter_sync_properties', 10, 2 );
 
-function gano_reseller_filter_sync_properties( $properties, $post_id ) {
+function gano_reseller_filter_sync_properties( $properties, $post_id = 0 ) {
     // Check if ACF is active and the override flag is set
     if ( function_exists( 'get_field' ) ) {
         $override = get_field( 'override_price', $post_id );

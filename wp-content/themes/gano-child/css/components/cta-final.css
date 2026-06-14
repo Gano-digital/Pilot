@@ -1,0 +1,230 @@
+/* Final CTA Section Styles */
+
+.cta-final-section {
+	padding: 80px 20px;
+	background: linear-gradient(135deg, var(--gano-blue, #166c96) 0%, #0d4a6e 100%);
+	color: white;
+	text-align: center;
+}
+
+.cta-content {
+	max-width: 600px;
+	margin: 0 auto;
+}
+
+.cta-final-section h2 {
+	font-size: 36px;
+	margin-bottom: 10px;
+	color: white;
+	font-weight: 700;
+}
+
+.cta-final-section > div > p {
+	font-size: 18px;
+	margin-bottom: 40px;
+	opacity: 0.95;
+	line-height: 1.5;
+}
+
+.lead-form {
+	background: white;
+	padding: 40px;
+	border-radius: 8px;
+	color: #333;
+	text-align: left;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.form-group {
+	margin-bottom: 20px;
+}
+
+.form-group label {
+	display: block;
+	margin-bottom: 8px;
+	font-weight: 600;
+	color: #333;
+	font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+	width: 100%;
+	padding: 12px 15px;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	font-size: 14px;
+	font-family: inherit;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+	outline: none;
+	border-color: var(--gano-blue, #166c96);
+	box-shadow: 0 0 0 3px rgba(22, 108, 150, 0.1);
+}
+
+.form-group textarea {
+	resize: vertical;
+	min-height: 100px;
+	line-height: 1.5;
+}
+
+.form-group input[type="checkbox"] {
+	width: auto;
+	margin-right: 8px;
+	cursor: pointer;
+}
+
+.form-group input[type="checkbox"] + label {
+	display: inline;
+	margin-bottom: 0;
+	margin-left: 0;
+	font-weight: normal;
+	cursor: pointer;
+}
+
+.lead-form .btn {
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
+
+.form-note {
+	font-size: 12px;
+	color: #666;
+	margin: 0;
+	font-style: italic;
+}
+
+.form-message {
+	padding: 15px 20px;
+	border-radius: 6px;
+	margin-bottom: 20px;
+	font-weight: 500;
+}
+
+.form-message.success {
+	background: #d4edda;
+	color: #155724;
+	border: 1px solid #c3e6cb;
+}
+
+.form-message.error {
+	background: #f8d7da;
+	color: #721c24;
+	border: 1px solid #f5c6cb;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+	.cta-final-section {
+		padding: 50px 15px;
+	}
+
+	.cta-final-section h2 {
+		font-size: 28px;
+	}
+
+	.cta-final-section > div > p {
+		font-size: 16px;
+	}
+
+	.lead-form {
+		padding: 30px 20px;
+	}
+
+	.form-group {
+		margin-bottom: 18px;
+	}
+}
+
+@media (max-width: 480px) {
+	.cta-final-section {
+		padding: 40px 12px;
+	}
+
+	.cta-final-section h2 {
+		font-size: 22px;
+		margin-bottom: 8px;
+	}
+
+	.cta-final-section > div > p {
+		font-size: 14px;
+		margin-bottom: 30px;
+	}
+
+	.lead-form {
+		padding: 20px 15px;
+	}
+
+	.form-group input,
+	.form-group select,
+	.form-group textarea {
+		padding: 10px 12px;
+		font-size: 13px;
+	}
+
+	.form-group label {
+		font-size: 13px;
+	}
+
+	.form-note {
+		font-size: 11px;
+	}
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+	.form-group input,
+	.form-group select,
+	.form-group textarea,
+	.btn {
+		transition: none;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	.lead-form {
+		background: #2a2a2a;
+		color: #e0e0e0;
+	}
+
+	.form-group label {
+		color: #e0e0e0;
+	}
+
+	.form-group input,
+	.form-group select,
+	.form-group textarea {
+		background: #1a1a1a;
+		color: #e0e0e0;
+		border-color: #444;
+	}
+
+	.form-group input:focus,
+	.form-group select:focus,
+	.form-group textarea:focus {
+		border-color: #81bcd6;
+		box-shadow: 0 0 0 3px rgba(129, 188, 214, 0.1);
+	}
+
+	.form-note {
+		color: #b0b0b0;
+	}
+
+	.form-message.success {
+		background: #1a472e;
+		color: #90ee90;
+		border-color: #22aa44;
+	}
+
+	.form-message.error {
+		background: #4d1a1a;
+		color: #ff6b6b;
+		border-color: #aa2222;
+	}
+}

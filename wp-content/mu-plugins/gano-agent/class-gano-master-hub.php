@@ -2,6 +2,7 @@
 /**
  * Gano Master Operations Hub
  * Centralizes all backlog tools (AI, CRM, Marketing) into a premium UI.
+ * Hardened 2026-04-24: API keys prefer constants in wp-config.php over wp_options.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -16,6 +17,24 @@ class Gano_Master_Hub {
 
 	public function add_hub_menu() {
 		add_menu_page( 'Gano Hub', 'Gano Hub', 'manage_options', 'gano-master-hub', array( $this, 'render_hub_page' ), 'dashicons-rest-api', 3 );
+	}
+
+	/**
+	 * Retrieve API key securely: prefers wp-config.php constant, falls back to wp_options.
+	 * This prevents keys from being stored in the database where any admin can read them.
+	 */
+	public static function get_ai_api_key() {
+		if (defined('GANO_AI_API_KEY') && !empty(GANO_AI_API_KEY)) {
+			return GANO_AI_API_KEY;
+		}
+		return get_option('gano_ai_api_key', '');
+	}
+
+	public static function get_crm_webhook() {
+		if (defined('GANO_CRM_WEBHOOK') && !empty(GANO_CRM_WEBHOOK)) {
+			return GANO_CRM_WEBHOOK;
+		}
+		return get_option('gano_crm_webhook', '');
 	}
 
 	public function register_hub_settings() {
@@ -42,6 +61,10 @@ class Gano_Master_Hub {
 	}
 
 	public function render_hub_page() {
+		$ai_key = self::get_ai_api_key();
+		$ai_key_from_const = defined('GANO_AI_API_KEY') && !empty(GANO_AI_API_KEY);
+		$crm_url = self::get_crm_webhook();
+		$crm_from_const = defined('GANO_CRM_WEBHOOK') && !empty(GANO_CRM_WEBHOOK);
 		?>
 		<div class="wrap gano-hub-wrap">
 			<div class="hub-header">
@@ -73,7 +96,12 @@ class Gano_Master_Hub {
 							<option value="gemini" <?php selected(get_option('gano_ai_model'), 'gemini'); ?>>Google Gemini Pro 1.5</option>
 						</select>
 						<label>API Key</label>
-						<input type="password" name="gano_ai_api_key" value="<?php echo esc_attr(get_option('gano_ai_api_key')); ?>" class="hub-input" placeholder="sk-...">
+						<input type="password" name="gano_ai_api_key" value="<?php echo esc_attr($ai_key_from_const ? '' : $ai_key); ?>" class="hub-input" placeholder="sk-..." <?php echo $ai_key_from_const ? 'disabled style="opacity:0.5;"' : ''; ?>>
+						<?php if ($ai_key_from_const) : ?>
+							<p style="color:#4ade80;font-size:0.8rem;">🔒 API Key cargada desde wp-config.php (más seguro). Para cambiarla, edita el archivo wp-config.php del servidor.</p>
+						<?php else : ?>
+							<p style="color:#D4AF37;font-size:0.8rem;">⚠️ Recomendado: mueve esta key a wp-config.php como <code>define('GANO_AI_API_KEY', 'sk-...');</code></p>
+						<?php endif; ?>
 						<?php submit_button('Guardar Configuración AI'); ?>
 					</div>
 				</div>
@@ -86,7 +114,10 @@ class Gano_Master_Hub {
 							Configura el flujo de salida de correos transaccionales y la sincronización con CRMs externos (Salesforce/HubSpot).
 						</div>
 						<label>CRM Webhook URL</label>
-						<input type="text" name="gano_crm_webhook" value="<?php echo esc_attr(get_option('gano_crm_webhook')); ?>" class="hub-input" placeholder="https://hooks.zapier.com/...">
+						<input type="text" name="gano_crm_webhook" value="<?php echo esc_attr($crm_from_const ? '' : $crm_url); ?>" class="hub-input" placeholder="https://hooks.zapier.com/..." <?php echo $crm_from_const ? 'disabled style="opacity:0.5;"' : ''; ?>>
+						<?php if ($crm_from_const) : ?>
+							<p style="color:#4ade80;font-size:0.8rem;">🔒 Webhook cargado desde wp-config.php.</p>
+						<?php endif; ?>
 						<p style="font-size:0.8rem;color:#888;">Nota: La infraestructura de cola de correos local está activa para el Onboarding.</p>
 						<?php submit_button('Vincular CRM'); ?>
 					</div>

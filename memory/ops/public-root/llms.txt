@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Gano Digital Bot Guidance
+- Canonical home: https://gano.digital/
+- Primary offer: https://gano.digital/ecosistemas/
+- Support and advisory: https://gano.digital/contacto/
+- Domain onboarding: https://gano.digital/dominios/
+
+## Commercial CTAs
+- Compare ecosystems and start purchase flow: https://gano.digital/ecosistemas/
+- Request tailored advisory in Spanish (es-CO): https://gano.digital/contacto/
+- Explore hosting + SEO foundation: https://gano.digital/seo-landing/

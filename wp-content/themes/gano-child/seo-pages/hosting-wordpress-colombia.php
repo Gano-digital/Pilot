@@ -188,7 +188,7 @@ $landing_content_html = <<<'HTML'
             Migración gratuita incluida. Pagos por PSE, Nequi o tarjeta.
         </p>
         <div class="gano-cta-buttons">
-            <a href="/ecosistemas" class="gano-btn-primary" rel="noopener">
+            <a href="/ecosistemas/" class="gano-btn-primary" rel="noopener">
                 Ver todos los planes →
             </a>
             <a href="https://wa.me/57TUNUMERO?text=Hola%2C%20quiero%20hosting%20WordPress%20en%20Colombia"

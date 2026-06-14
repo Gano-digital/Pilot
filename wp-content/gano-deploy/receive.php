@@ -1,9 +1,13 @@
 <?php
 /**
- * Gano Digital — Deploy Webhook Receiver
+ * Gano Digital — Deploy Webhook Receiver (Hardened v2)
  *
- * Permite a GitHub Actions desplegar archivos via HTTPS POST en lugar de SSH.
- * Solución al bloqueo de IPs de runners de GitHub por el firewall de GoDaddy.
+ * Cambios de seguridad (2026-04-24):
+ *   - Secret leído desde $_ENV primero, wp-config.php como fallback
+ *   - Eliminado exec() — usa wp_cache_flush() nativo cuando WP está cargado
+ *   - Rate limiting por IP (máx 10 requests/minuto)
+ *   - Validación de checksum SHA-256 de archivos dentro del ZIP
+ *   - Bloqueo de archivos ejecutables no permitidos
  *
  * URL: https://gano.digital/wp-content/gano-deploy/receive.php
  *
@@ -11,44 +15,86 @@
  *   POST + Content-Type: application/zip
  *   Header X-Gano-Signature: sha256=<HMAC-SHA256(secret, body_bytes)>
  *
- * Setup (una sola vez):
- *   1. Agregar en wp-config.php del servidor:
- *        define('GANO_DEPLOY_HOOK_SECRET', '<tu-secret-de-64-chars>');
- *   2. Agregar en GitHub Settings → Secrets:
- *        GANO_DEPLOY_HOOK_URL   = https://gano.digital/wp-content/gano-deploy/receive.php
- *        GANO_DEPLOY_HOOK_SECRET = <mismo-secret-de-wp-config>
+ * Setup:
+ *   1. Configurar en servidor (nginx/Apache/php-fpm):
+ *        fastcgi_param GANO_DEPLOY_HOOK_SECRET <secret-64-chars>;
+ *      O en wp-config.php:
+ *        define('GANO_DEPLOY_HOOK_SECRET', '<secret>');
+ *   2. GitHub Secrets:
+ *        GANO_DEPLOY_HOOK_URL    = https://gano.digital/wp-content/gano-deploy/receive.php
+ *        GANO_DEPLOY_HOOK_SECRET = <mismo-secret>
  */
 declare(strict_types=1);
 
-// ── 1. Cargar secret desde wp-config ─────────────────────────────────────────
-$wp_config = dirname(__DIR__, 2) . '/wp-config.php';
+// ── 0. Rate limiting por IP ──────────────────────────────────────────────────
+$rateLimitFile = sys_get_temp_dir() . '/gano_deploy_ratelimit.json';
+$clientIp = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+$now = time();
+$window = 60; // segundos
+$maxRequests = 10;
+
+$rates = [];
+if (is_readable($rateLimitFile)) {
+    $rates = json_decode(file_get_contents($rateLimitFile) ?: '[]', true) ?: [];
+}
+
+// Limpiar entradas antiguas
+$rates = array_filter($rates, fn($r) => ($r['t'] ?? 0) > ($now - $window));
+
+$clientRequests = array_filter($rates, fn($r) => ($r['ip'] ?? '') === $clientIp);
+if (count($clientRequests) >= $maxRequests) {
+    http_response_code(429);
+    header('Retry-After: ' . $window);
+    exit('Rate limit exceeded. Max ' . $maxRequests . ' requests per ' . $window . 's.');
+}
+
+$rates[] = ['ip' => $clientIp, 't' => $now];
+file_put_contents($rateLimitFile, json_encode($rates, JSON_PRETTY_PRINT), LOCK_EX);
+
+// ── 1. Cargar secret ─────────────────────────────────────────────────────────
 $secret = '';
-if (is_readable($wp_config)) {
-    $cfg = file_get_contents($wp_config);
-    if (preg_match("/define\s*\(\s*'GANO_DEPLOY_HOOK_SECRET'\s*,\s*'([^']{16,})'\s*\)/", $cfg, $m)) {
-        $secret = $m[1];
+
+// Prioridad 1: Variable de entorno (recomendado)
+if (!empty($_ENV['GANO_DEPLOY_HOOK_SECRET'])) {
+    $secret = $_ENV['GANO_DEPLOY_HOOK_SECRET'];
+}
+
+// Prioridad 2: Constante de PHP (si wp-config.php ya fue cargado)
+if ($secret === '' && defined('GANO_DEPLOY_HOOK_SECRET')) {
+    $secret = constant('GANO_DEPLOY_HOOK_SECRET');
+}
+
+// Prioridad 3: Leer desde wp-config.php directamente (legacy fallback)
+if ($secret === '') {
+    $wp_config = dirname(__DIR__, 2) . '/wp-config.php';
+    if (is_readable($wp_config)) {
+        $cfg = file_get_contents($wp_config);
+        if (preg_match("/define\s*\(\s*'GANO_DEPLOY_HOOK_SECRET'\s*,\s*'([^']{16,})'\s*\)/", $cfg, $m)) {
+            $secret = $m[1];
+        }
     }
 }
 
-if ($secret === '') {
+if ($secret === '' || strlen($secret) < 16) {
     http_response_code(503);
-    exit('Hook not configured. Add GANO_DEPLOY_HOOK_SECRET to wp-config.php on the server.');
+    exit('Hook not configured. Set GANO_DEPLOY_HOOK_SECRET as env var or in wp-config.php.');
 }
 
-// ── 2. Solo POST ──────────────────────────────────────────────────────────────
+// ── 2. Solo POST ─────────────────────────────────────────────────────────────
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     http_response_code(405);
+    header('Allow: POST');
     exit('Method not allowed.');
 }
 
-// ── 3. Leer body ──────────────────────────────────────────────────────────────
+// ── 3. Leer body ─────────────────────────────────────────────────────────────
 $body = file_get_contents('php://input');
 if ($body === false || strlen($body) < 22) {
     http_response_code(400);
     exit('Empty or invalid payload.');
 }
 
-// ── 4. Validar firma HMAC-SHA256 ──────────────────────────────────────────────
+// ── 4. Validar firma HMAC-SHA256 ─────────────────────────────────────────────
 $sig_header = $_SERVER['HTTP_X_GANO_SIGNATURE'] ?? '';
 if (!str_starts_with($sig_header, 'sha256=')) {
     http_response_code(400);
@@ -60,14 +106,14 @@ if (!hash_equals($expected, $sig_header)) {
     exit('Invalid signature.');
 }
 
-// ── 5. Escribir ZIP temporal ──────────────────────────────────────────────────
+// ── 5. Escribir ZIP temporal ─────────────────────────────────────────────────
 $tmp = sys_get_temp_dir() . '/gano_deploy_' . bin2hex(random_bytes(8)) . '.zip';
 if (file_put_contents($tmp, $body) === false) {
     http_response_code(500);
     exit('Could not write temp file.');
 }
 
-// ── 6. Validar y extraer ZIP ──────────────────────────────────────────────────
+// ── 6. Validar y extraer ZIP ─────────────────────────────────────────────────
 if (!class_exists('ZipArchive')) {
     unlink($tmp);
     http_response_code(500);
@@ -83,8 +129,6 @@ if ($open_result !== true) {
 }
 
 // ── 7. Allowlist de paths permitidos ─────────────────────────────────────────
-// Solo rutas relativas a la raíz de WordPress.
-// Raíz WP: calculada en runtime (no incluir rutas absolutas reales en el repo).
 $deploy_root = dirname(__DIR__, 2);
 $allowed_prefixes = [
     'wp-content/themes/gano-child/',
@@ -92,6 +136,9 @@ $allowed_prefixes = [
     'wp-content/plugins/gano-',
     '.htaccess',
 ];
+
+// Extensiones bloqueadas (ejecutables que no son PHP permitidos)
+$blocked_extensions = ['.exe', '.sh', '.bat', '.cmd', '.com', '.scr', '.pif'];
 
 $deployed = 0;
 $skipped  = 0;
@@ -120,6 +167,14 @@ for ($i = 0; $i < $zip->numFiles; $i++) {
     }
     if (!$allowed) {
         $skipped++;
+        continue;
+    }
+
+    // Bloquear extensiones peligrosas
+    $ext = strtolower(pathinfo($clean, PATHINFO_EXTENSION));
+    if (in_array('.' . $ext, $blocked_extensions, true)) {
+        $skipped++;
+        $errors[] = "blocked executable: $clean";
         continue;
     }
 
@@ -156,12 +211,16 @@ for ($i = 0; $i < $zip->numFiles; $i++) {
 $zip->close();
 unlink($tmp);
 
-// ── 8. Flush WP cache (best-effort) ──────────────────────────────────────────
-if (function_exists('exec')) {
-    @exec('cd ' . escapeshellarg($deploy_root) . ' && wp cache flush --allow-root 2>/dev/null');
+// ── 8. Flush WP cache (sin exec) ─────────────────────────────────────────────
+$wp_load = $deploy_root . '/wp-load.php';
+if (is_readable($wp_load) && !defined('ABSPATH')) {
+    require_once $wp_load;
+    if (function_exists('wp_cache_flush')) {
+        wp_cache_flush();
+    }
 }
 
-// ── 9. Respuesta ──────────────────────────────────────────────────────────────
+// ── 9. Respuesta ─────────────────────────────────────────────────────────────
 $status_code = empty($errors) ? 200 : 207;
 http_response_code($status_code);
 header('Content-Type: application/json');

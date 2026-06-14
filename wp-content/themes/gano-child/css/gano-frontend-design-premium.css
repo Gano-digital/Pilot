@@ -1,0 +1,526 @@
+/* ──────────────────────────────────────────────────────────────
+   GANO DIGITAL — FRONTEND DESIGN PREMIUM
+   Dirección estética: Dark Tech Authority
+   Colores: Azul corporativo (#1B4FD8) + Naranja energético (#FF6B35) + Dorado acento (#D4AF37)
+   Tipografía: Krona One (display distintivo) + Inter (body refinado)
+   ────────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Krona+One&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Tipografía distintiva — NO Inter genérica */
+  --font-display: 'Krona One', 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Gradientes de poder */
+  --gradient-hero: linear-gradient(135deg, #1B4FD8 0%, #00C26B 50%, #FF6B35 100%);
+  --gradient-trust: linear-gradient(180deg, rgba(27,79,216,0.1) 0%, rgba(255,107,53,0.05) 100%);
+
+  /* Sombras de profundidad */
+  --shadow-elevation-1: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-elevation-2: 0 8px 24px rgba(27,79,216,0.12);
+  --shadow-elevation-3: 0 16px 48px rgba(0,0,0,0.16);
+
+  /* Transiciones fluidas */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ────────────────────────────────────────────────────────────
+   HERO SECTION — Distinctive & Bold
+   ──────────────────────────────────────────────────────────── */
+
+.gano-hero-premium {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  padding: 6rem 5vw;
+  background: linear-gradient(180deg, #0F1115 0%, #1a1e26 50%, #05080C 100%);
+  overflow: hidden;
+}
+
+.gano-hero-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(27,79,216,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float-drift 20s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes float-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(50px, -50px) scale(1.05); }
+}
+
+.gano-hero-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.gano-hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  animation: slide-in-fade 0.8s ease-out 0.1s both;
+}
+
+.gano-hero-subheadline {
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.85);
+  max-width: 500px;
+  animation: slide-in-fade 0.8s ease-out 0.2s both;
+}
+
+.gano-hero-accent {
+  color: #FF6B35;
+  font-weight: 600;
+}
+
+.gano-hero-cta-group {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  animation: slide-in-fade 0.8s ease-out 0.3s both;
+}
+
+.gano-btn-hero-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  background: #FF6B35;
+  color: #FFFFFF;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 2px solid #FF6B35;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-body);
+}
+
+.gano-btn-hero-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left var(--transition-base);
+  z-index: 0;
+}
+
+.gano-btn-hero-primary:hover {
+  background: #E55520;
+  border-color: #E55520;
+  box-shadow: 0 12px 32px rgba(255,107,53,0.3);
+  transform: translateY(-3px);
+}
+
+.gano-btn-hero-primary:hover::before {
+  left: 100%;
+}
+
+.gano-btn-hero-secondary {
+  padding: 1rem 2rem;
+  background: transparent;
+  color: #FFFFFF;
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 8px;
+  transition: all var(--transition-base);
+  font-family: var(--font-body);
+}
+
+.gano-btn-hero-secondary:hover {
+  background: rgba(27,79,216,0.1);
+  border-color: #1B4FD8;
+  color: #1B4FD8;
+}
+
+.gano-hero-visual {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+}
+
+.gano-hero-graphic {
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, rgba(27,79,216,0.1) 0%, rgba(255,107,53,0.05) 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: float-up 0.8s ease-out 0.2s both;
+}
+
+@keyframes slide-in-fade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ────────────────────────────────────────────────────────────
+   ECOSISTEMAS / PLANES — Trust & Authority Pattern
+   ──────────────────────────────────────────────────────────── */
+
+.gano-ecosistemas-premium {
+  background: #FFFFFF;
+  padding: 6rem 5vw;
+}
+
+.gano-ecosistemas-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.gano-ecosistemas-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: #0F1115;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.gano-ecosistemas-subtitle {
+  font-size: 1.125rem;
+  color: #64748b;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.gano-planes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.gano-plan-card {
+  position: relative;
+  padding: 2rem;
+  background: #FFFFFF;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  transition: all var(--transition-base);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.gano-plan-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #1B4FD8, #FF6B35);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-base);
+}
+
+.gano-plan-card:hover {
+  border-color: #1B4FD8;
+  box-shadow: var(--shadow-elevation-2);
+  transform: translateY(-8px);
+}
+
+.gano-plan-card:hover::before {
+  transform: scaleX(1);
+}
+
+.gano-plan-card.featured {
+  border: 2px solid #FF6B35;
+  transform: scale(1.05);
+}
+
+.gano-plan-badge {
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  background: linear-gradient(135deg, #FF6B35, #E55520);
+  color: #FFFFFF;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(255,107,53,0.3);
+}
+
+.gano-plan-name {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0F1115;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.gano-plan-promise {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 1.5rem;
+}
+
+.gano-plan-price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1B4FD8;
+  margin-bottom: 0.25rem;
+}
+
+.gano-plan-price-period {
+  font-size: 0.875rem;
+  color: #94a3b8;
+}
+
+.gano-plan-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+  margin: 1.5rem 0;
+}
+
+.gano-plan-features {
+  flex: 1;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+.gano-plan-features li {
+  padding: 0.75rem 0;
+  padding-left: 1.75rem;
+  position: relative;
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.gano-plan-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #FF6B35;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.gano-plan-cta {
+  display: inline-block;
+  padding: 1rem 1.5rem;
+  background: #1B4FD8;
+  color: #FFFFFF;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all var(--transition-base);
+  text-align: center;
+  border: 2px solid #1B4FD8;
+}
+
+.gano-plan-cta:hover {
+  background: #1240B0;
+  border-color: #1240B0;
+  box-shadow: 0 8px 24px rgba(27,79,216,0.3);
+}
+
+/* ────────────────────────────────────────────────────────────
+   TRUST SIGNALS — Credibilidad & Social Proof
+   ──────────────────────────────────────────────────────────── */
+
+.gano-trust-section {
+  background: linear-gradient(180deg, #0F1115 0%, #1a1e26 100%);
+  padding: 6rem 5vw;
+  color: #FFFFFF;
+}
+
+.gano-trust-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.gano-trust-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.gano-trust-subtitle {
+  font-size: 1.125rem;
+  color: rgba(255,255,255,0.8);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.gano-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.gano-trust-card {
+  padding: 2rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  transition: all var(--transition-base);
+  text-align: center;
+}
+
+.gano-trust-card:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,107,53,0.3);
+  transform: translateY(-8px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.3);
+}
+
+.gano-trust-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.gano-trust-label {
+  font-size: 0.875rem;
+  color: #FF6B35;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.gano-trust-metric {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.gano-trust-description {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.6;
+}
+
+/* Badges de confianza */
+.gano-trust-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.gano-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(27,79,216,0.1);
+  border: 1px solid rgba(27,79,216,0.3);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.9);
+  transition: all var(--transition-base);
+}
+
+.gano-badge:hover {
+  background: rgba(27,79,216,0.2);
+  border-color: #1B4FD8;
+}
+
+.gano-badge-icon {
+  font-size: 1.25rem;
+}
+
+/* ────────────────────────────────────────────────────────────
+   RESPONSIVE
+   ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .gano-hero-premium {
+    grid-template-columns: 1fr;
+    padding: 4rem 1.5rem;
+  }
+
+  .gano-hero-visual {
+    min-height: 300px;
+  }
+
+  .gano-hero-cta-group {
+    flex-direction: column;
+  }
+
+  .gano-plan-card.featured {
+    transform: scale(1);
+  }
+
+  .gano-trust-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gano-trust-metric {
+    font-size: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

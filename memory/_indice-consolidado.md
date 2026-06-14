@@ -46,11 +46,15 @@
 - `ops/wordfence-2fa-checklist.md`
 - `ops/remover-wp-file-manager-checklist.md`
 - `ops/github-actions-audit-2026-04.md`
+- `ops/second-brain-portable-sync.md` — volcar `memory/sessions`, `memory/claude`, `.cursor/memory` y `wiki/dev-sessions` al paquete `Gano-SecondBrain-COMPLETO`
+- `ops/runbook-elementor-atlas-home-2026-04-22.md` — Atlas en home + alineación Elementor vs `front-page.php` + WP-CLI/SSH (§7)
 
 ## Investigación vigente
 - `research/fase4-plataforma.md` (referencia, no compromiso)
 - `research/gano-wave3-brand-ux-master-brief.md`
 - `research/motion-and-3d-policy-gano.md`
+- `research/visual-systems-canvas-svg-second-brain-2026-04.md` — **second brain** sistemas visuales (Canvas/SVG/generativo), integración WP, bibliografía y anti-patrones; skill `.cursor/skills/gano-web-visual-systems/`
+- `research/ux-audit-homepage-gano-2026-04.md` — auditoría UX + plan de formalización del home (template `front-page.php`)
 - `research/ux-heuristics-checklist-gano.md`
 - `research/competitive-framework-colombia-hosting.md`
 - `research/sota-operativo-2026-04.md`
@@ -71,4 +75,6 @@
 - `claude/gh-issue-close-guide.md`
 
 ## Sesiones recientes (vivas)
-- `sessions/2026-04-06-arranque-contenidos-web.md` ← sesión de hoy
+- `sessions/2026-05-03-limpieza-sota-cta-recuperacion.md` ← sesión de hoy (limpieza SOTA masiva + recuperación CTA + alineación repo)
+- `sessions/2026-04-19-auditoria-ssh-inventario-sota.md` — auditoría SSH + inventario SOTA + convergencia repo-servidor
+- `sessions/2026-04-06-arranque-contenidos-web.md`

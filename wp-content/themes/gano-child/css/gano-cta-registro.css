@@ -1,0 +1,188 @@
+/* CTA Registro — Call-to-action con animaciones SOTA
+ * Componente creativo para guiar usuarios al registro
+ * @package gano-child
+ */
+
+/* ========================================================================
+   Base container — Gradiente animado SOTA
+   ======================================================================== */
+.gano-cta-registro {
+    padding: 48px 32px;
+    border-radius: var(--gano-radius-lg);
+    background: linear-gradient(135deg, var(--gano-blue), var(--gano-green), var(--gano-orange));
+    background-size: 300% 300%;
+    animation: gano-gradient-flow 8s ease infinite;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--gano-shadow-lg);
+}
+
+/* ========================================================================
+   Heading — Texto prominente
+   ======================================================================== */
+.gano-cta-registro__heading {
+    font-size: 1.75rem;
+    font-weight: var(--gano-fw-bold);
+    color: white;
+    margin-bottom: 12px;
+    line-height: var(--gano-lh-tight);
+    margin-top: 0;
+}
+
+/* ========================================================================
+   Description — Párrafo de descripción
+   ======================================================================== */
+.gano-cta-registro__description {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.95);
+    line-height: var(--gano-lh-relaxed);
+    max-width: 500px;
+    margin-bottom: 32px;
+    margin-top: 0;
+}
+
+/* ========================================================================
+   Button — CTA primario con interactividad SOTA
+   ======================================================================== */
+.gano-cta-registro__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 36px;
+    background-color: var(--gano-orange); /* #FF6B35 */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: var(--gano-fw-semibold);
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--motion-normal) cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+    cursor: pointer;
+}
+
+/* Hover state — elevation + glow */
+.gano-cta-registro__button:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 12px 24px rgba(255, 107, 53, 0.4),
+        0 0 20px rgba(255, 107, 53, 0.5);
+    animation: gano-button-glow 1.5s ease-in-out infinite;
+}
+
+/* Focus state — accessibility */
+.gano-cta-registro__button:focus {
+    outline: 3px solid var(--gano-gold);
+    outline-offset: 2px;
+}
+
+/* Active state — compressed elevation */
+.gano-cta-registro__button:active {
+    transform: translateY(-2px);
+}
+
+/* ========================================================================
+   Ripple effect — pseudo-element expansion on click
+   ======================================================================== */
+.gano-cta-registro__button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.gano-cta-registro__button:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* ========================================================================
+   Keyframes — Animaciones SOTA
+   ======================================================================== */
+
+/* Gradiente fluido en fondo */
+@keyframes gano-gradient-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Glow pulse en botón */
+@keyframes gano-button-glow {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 107, 53, 0.4)); }
+    50% { filter: drop-shadow(0 0 16px rgba(255, 107, 53, 0.8)); }
+}
+
+/* ========================================================================
+   Responsive
+   ======================================================================== */
+@media (max-width: 768px) {
+    .gano-cta-registro {
+        padding: 40px 24px;
+    }
+
+    .gano-cta-registro__heading {
+        font-size: 1.5rem;
+    }
+
+    .gano-cta-registro__description {
+        font-size: 0.95rem;
+    }
+
+    .gano-cta-registro__button {
+        padding: 12px 28px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .gano-cta-registro {
+        padding: 32px 20px;
+    }
+
+    .gano-cta-registro__heading {
+        font-size: 1.25rem;
+    }
+
+    .gano-cta-registro__description {
+        font-size: 0.9rem;
+    }
+
+    .gano-cta-registro__button {
+        width: 100%;
+        padding: 12px 24px;
+    }
+}
+
+/* ========================================================================
+   Accessibility — Respeto por prefers-reduced-motion
+   ======================================================================== */
+@media (prefers-reduced-motion: reduce) {
+    .gano-cta-registro,
+    .gano-cta-registro__button {
+        animation: none;
+        transition: none;
+    }
+}
+
+/* ========================================================================
+   Wrapper — Espaciado adicional y alineación
+   ======================================================================== */
+.gano-cta-registro-wrapper {
+    display: block;
+    margin: 48px 0;
+}
+
+/* Variante para secciones hero — sin margen superior */
+.gano-cta-registro-wrapper.gano-cta-registro--hero-section {
+    margin-top: 64px;
+    margin-bottom: 48px;
+}

@@ -6,6 +6,8 @@ Idioma: español Colombia (es-CO). Voz: **tú** en marketing, **usted** en secci
 
 > ⚠️ Reemplaza los placeholders `[NIT]`, `[teléfono]`, `[dirección]` con los datos reales antes de publicar.
 
+> 📄 **Implementación consolidada:** ver [`trust-pages-bundle-2026.md`](trust-pages-bundle-2026.md) para los mensajes clave por página, el mapa completo de enlaces cruzados y el resumen de placeholders pendientes de Diego.
+
 ---
 
 ## 1. Footer corto

@@ -20,6 +20,16 @@ Antes de asumir que el repo es idéntico a producción, lee **[`.github/DEV-COOR
 - **Copy listo para homepage:** [`memory/content/homepage-copy-2026-04.md`](../memory/content/homepage-copy-2026-04.md). Sustituir Lorem y métricas falsas en https://gano.digital/ es **prioridad humana en panel**; el repo aporta texto y clases, no sustituye pegar en Elementor.
 - **Comercio:** RCC + Reseller Store; CTAs y `shop-premium.php` según `TASKS.md` Fase 4 y [`memory/commerce/rcc-pfid-checklist.md`](../memory/commerce/rcc-pfid-checklist.md). No inventar PFIDs.
 
+### Estado operativo SOTA (verificado 2026-04-11)
+
+- En repo ya existe integración SOTA (design system + templates + catálogo canónico).
+- En producción aún no está completo el despliegue; tratar toda tarea SOTA como **repo-first + deploy-pending** hasta verificación manual.
+- Catalogo canónico actual:
+  - fuente conceptual: `mockup_completo_ignorar.html` (backup marzo 2026),
+  - implementación viva: `gano_get_reseller_catalog_products()` y `gano_get_reseller_catalog_categories()` en `functions.php`,
+  - render: `templates/shop-premium.php`.
+- Estados comerciales obligatorios por producto: `active`, `pending`, `coming-soon`.
+
 ## Stack tecnológico
 
 - **CMS**: WordPress 6.x + Elementor Pro + Royal Elementor Addons
@@ -61,6 +71,14 @@ Antes de asumir que el repo es idéntico a producción, lee **[`.github/DEV-COOR
 - Respetar `prefers-reduced-motion` antes de animar
 - Vanilla JS preferido sobre jQuery para código nuevo
 - IntersectionObserver para scroll reveals (`scroll-reveal.js`)
+
+### Cursor personalizado WC3 (tema `gano-child`)
+
+- **Qué es:** puntero estilo *Warcraft III* (guantelete) implementado con DOM + sprite (`assets/cursor/wc3-human-atlas.png`), no con `cursor: url(*.ani)`.
+- **Archivos:** `wp-content/themes/gano-child/js/gano-cursor.js`, `css/gano-cursor.css`; el enqueue vive en `functions.php` y solo corre si el filtro devuelve verdadero.
+- **Apagar sin borrar código (producción o staging):** `add_filter( 'gano_enable_wc3_cursor', '__return_false' );` en un MU-plugin o plugin de snippets. Evita duplicar otro cursor global que ponga `cursor: none` en conflicto.
+- **Runbook (pruebas, SSH, rollback, conflictos típicos):** [`memory/ops/gano-wc3-cursor-maintenance.md`](../memory/ops/gano-wc3-cursor-maintenance.md).
+- **PRs de referencia:** [#274](https://github.com/Gano-digital/Pilot/pull/274), [#275](https://github.com/Gano-digital/Pilot/pull/275), [#276](https://github.com/Gano-digital/Pilot/pull/276).
 
 ## Arquitectura de archivos clave
 

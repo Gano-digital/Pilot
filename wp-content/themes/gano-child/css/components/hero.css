@@ -1,0 +1,259 @@
+/* Hero Section Styles */
+
+.hero-content {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 40px;
+	align-items: center;
+	padding: 80px 20px;
+	max-width: 1200px;
+	margin: 0 auto;
+	background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.hero-text h1.hero-headline {
+	font-size: 48px;
+	font-weight: 700;
+	color: var(--gano-blue, #166c96);
+	margin-bottom: 15px;
+	line-height: 1.2;
+}
+
+.hero-text h2.hero-subheadline {
+	font-size: 20px;
+	font-weight: 400;
+	color: #444;
+	margin-bottom: 20px;
+	line-height: 1.4;
+}
+
+.hero-description {
+	font-size: 16px;
+	color: #666;
+	line-height: 1.6;
+	margin-bottom: 30px;
+	max-width: 500px;
+}
+
+.hero-ctas {
+	display: flex;
+	gap: 15px;
+	margin-bottom: 30px;
+}
+
+.btn {
+	padding: 12px 30px;
+	border-radius: 6px;
+	text-decoration: none;
+	font-weight: 600;
+	text-align: center;
+	cursor: pointer;
+	border: none;
+	transition: all 0.3s ease;
+	display: inline-block;
+	font-size: 14px;
+}
+
+.btn-primary {
+	background: var(--gano-blue, #166c96);
+	color: white;
+}
+
+.btn-primary:hover {
+	background: #0d4a6e;
+	transform: translateY(-2px);
+	box-shadow: 0 5px 15px rgba(22, 108, 150, 0.3);
+}
+
+.btn-secondary {
+	background: white;
+	color: var(--gano-blue, #166c96);
+	border: 2px solid var(--gano-blue, #166c96);
+}
+
+.btn-secondary:hover {
+	background: var(--gano-blue, #166c96);
+	color: white;
+}
+
+.btn-lg {
+	padding: 14px 36px;
+	font-size: 16px;
+}
+
+.hero-trust {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	font-size: 14px;
+}
+
+.trust-item {
+	color: #22863a;
+	font-weight: 500;
+}
+
+.hero-visual {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.hero-illustration-placeholder {
+	width: 100%;
+	height: 400px;
+	background: linear-gradient(135deg, #e8f4f8 0%, #d4e8f0 100%);
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+	position: relative;
+	overflow: hidden;
+}
+
+.placeholder-pattern {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-image:
+		linear-gradient(45deg, rgba(22, 108, 150, 0.05) 25%, transparent 25%),
+		linear-gradient(-45deg, rgba(22, 108, 150, 0.05) 25%, transparent 25%),
+		linear-gradient(45deg, transparent 75%, rgba(22, 108, 150, 0.05) 75%),
+		linear-gradient(-45deg, transparent 75%, rgba(22, 108, 150, 0.05) 75%);
+	background-size: 20px 20px;
+	background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+	border-radius: 8px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+	.hero-content {
+		grid-template-columns: 1fr;
+		padding: 40px 20px;
+		gap: 30px;
+	}
+
+	.hero-text h1.hero-headline {
+		font-size: 32px;
+	}
+
+	.hero-text h2.hero-subheadline {
+		font-size: 18px;
+	}
+
+	.hero-description {
+		font-size: 15px;
+	}
+
+	.hero-ctas {
+		flex-direction: column;
+	}
+
+	.btn {
+		width: 100%;
+	}
+
+	.hero-illustration-placeholder {
+		height: 300px;
+	}
+}
+
+@media (max-width: 480px) {
+	.hero-content {
+		padding: 30px 15px;
+		gap: 20px;
+	}
+
+	.hero-text h1.hero-headline {
+		font-size: 24px;
+		margin-bottom: 12px;
+	}
+
+	.hero-text h2.hero-subheadline {
+		font-size: 16px;
+		margin-bottom: 15px;
+	}
+
+	.hero-description {
+		font-size: 14px;
+		margin-bottom: 20px;
+	}
+
+	.hero-ctas {
+		gap: 10px;
+		margin-bottom: 20px;
+	}
+
+	.btn {
+		padding: 12px 20px;
+		font-size: 13px;
+	}
+
+	.btn-lg {
+		padding: 12px 20px;
+		font-size: 13px;
+	}
+
+	.hero-trust {
+		gap: 10px;
+		font-size: 12px;
+	}
+
+	.hero-illustration-placeholder {
+		height: 250px;
+	}
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+	.btn {
+		transition: none;
+	}
+
+	.btn:hover {
+		transform: none;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	.hero-content {
+		background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+	}
+
+	.hero-text h1.hero-headline {
+		color: #81bcd6;
+	}
+
+	.hero-text h2.hero-subheadline {
+		color: #e0e0e0;
+	}
+
+	.hero-description {
+		color: #b0b0b0;
+	}
+
+	.btn-primary {
+		background: #81bcd6;
+		color: #0f0f0f;
+	}
+
+	.btn-primary:hover {
+		background: #5fa3c0;
+	}
+
+	.btn-secondary {
+		background: transparent;
+		color: #81bcd6;
+		border-color: #81bcd6;
+	}
+
+	.btn-secondary:hover {
+		background: #81bcd6;
+		color: #0f0f0f;
+	}
+
+	.hero-illustration-placeholder {
+		background: linear-gradient(135deg, #2a3f4f 0%, #1a2f3f 100%);
+	}
+}
