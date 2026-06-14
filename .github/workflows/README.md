@@ -42,7 +42,7 @@ Los **nombres mostrados en la barra lateral** siguen el patrón:
 | `actions/upload-pages-artifact` | `@v5` | `gano-ops-hub.yml` |
 | `actions/deploy-pages` | `@v5` | `gano-ops-hub.yml` |
 | `actions/labeler` | `@v6` | `labeler.yml` |
-| `actions/add-to-project` | `@v1.0.2` | `project-add-to-project.yml` |
+| `actions/add-to-project` | `@v2.0.0` | `project-add-to-project.yml` |
 | `shivammathur/setup-php` | `@v2` | `copilot-setup-steps.yml`, `php-lint-gano.yml` |
 | `webfactory/ssh-agent` | `@v0.10.0` | `verify-patches.yml`, `verify-remove-wp-file-manager.yml` |
 
