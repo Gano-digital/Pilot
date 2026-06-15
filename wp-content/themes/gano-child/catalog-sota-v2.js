@@ -1,18 +1,51 @@
 /**
- * catalog-sota.js v2.0.0
+ * catalog-sota.js v2.1.0
  * Gano Digital — Motor de catálogo SOTA
  * Arquitectura: IIFE · strict · sin dependencias externas
  * Filtro activo: solo productos MEDIO y ALTO (11 items)
  * Estilo: GoDaddy-inspired — bloques por categoría, pitch largo, specs detallados
+ *
+ * v2.1.0 — CORRECCIÓN CRÍTICA:
+ *   Los CTAs apuntan ahora al carrito Reseller de Gano Digital
+ *   (cart.secureserver.net con PFID) en lugar de godaddy.com público.
+ *   Cuando PFID = null (pendiente de configurar en RCC), el botón
+ *   cae back a WhatsApp para no perder la conversión.
+ *   PFIDs se configuran en wp-admin → Ajustes → Gano Reseller.
  */
 
 (function () {
   'use strict';
 
   /* ─── CONSTANTES ──────────────────────────────────────────────── */
-  const PLID      = '599667';
+  const PLID      = '599667';   // Private Label ID — verificar en RCC → Account
   const WA_NUM    = '573000000000';
   const WA_MSG    = encodeURIComponent('Hola, vi el catálogo de Gano Digital y quiero saber más.');
+
+  /**
+   * PFIDs del Reseller Control Center (RCC) de GoDaddy.
+   * Obtener en: https://reseller.godaddy.com → Products & Pricing → [producto] → Product ID
+   * Formato: número entero (ej. 123456). null = pendiente → fallback WA.
+   *
+   * INSTRUCCIÓN para Diego:
+   *   1. Ir a RCC → Products & Pricing
+   *   2. Buscar cada producto y copiar su Product ID (número en la URL o ficha)
+   *   3. Reemplazar null por el número aquí (ej. 'pro-managed': 123456)
+   *   4. Hacer commit + deploy del archivo actualizado al servidor
+   */
+  const PFIDS = {
+    'pro-managed':       null,  // TODO: Managed WordPress Pro   → RCC Product ID
+    'business-nvme':     null,  // TODO: Managed WordPress Business NVMe → RCC Product ID
+    'ultimate':          null,  // TODO: Managed WordPress Ultimate → RCC Product ID
+    'dom-co':            null,  // TODO: Domain .CO              → RCC Product ID
+    'ssl-pro':           null,  // TODO: SSL Pro / OV            → RCC Product ID
+    'email-pro':         null,  // TODO: Professional Email      → RCC Product ID
+    'builder-marketing': null,  // TODO: Website Builder         → RCC Product ID
+    // VPS, WAF, diagnóstico y diseño custom → siempre WhatsApp (no tienen PFID Reseller)
+    'vps-alpha':         'WA',
+    'waf-pro':           'WA',
+    'diagnostico':       'WA',
+    'disenio-custom':    'WA',
+  };
 
   /* ─── ESTADO ───────────────────────────────────────────────────── */
   let activeCategory  = 'all';
@@ -42,22 +75,43 @@
   }
 
   /* ─── URLS DE COMPRA ───────────────────────────────────────────── */
+  /**
+   * Construye la URL del carrito Reseller de Gano Digital.
+   *
+   * Flujo:
+   *   PFID válido  → cart.secureserver.net (carrito white-label branded Gano Digital)
+   *   PFID = 'WA'  → WhatsApp directo (productos que no tienen carrito Reseller)
+   *   PFID = null  → WhatsApp fallback (PFID pendiente de configurar en RCC)
+   *
+   * NUNCA redirige a godaddy.com público — eso sacaría al cliente de la marca.
+   */
   function buyUrl(productId) {
-    // deeplink GoDaddy reseller + fallback WA
-    const links = {
-      'pro-managed':        `https://www.godaddy.com/hosting/wordpress-hosting?plid=${PLID}`,
-      'business-nvme':      `https://www.godaddy.com/hosting/wordpress-hosting?plid=${PLID}`,
-      'ultimate':           `https://www.godaddy.com/hosting/wordpress-hosting?plid=${PLID}`,
-      'vps-alpha':          `https://wa.me/${WA_NUM}?text=${WA_MSG}`,
-      'dom-co':             `https://www.godaddy.com/domainsearch/find?domainToCheck=.co&plid=${PLID}`,
-      'waf-pro':            `https://wa.me/${WA_NUM}?text=${WA_MSG}`,
-      'ssl-pro':            `https://www.godaddy.com/web-security/ssl-certificate?plid=${PLID}`,
-      'email-pro':          `https://www.godaddy.com/email/professional-business-email?plid=${PLID}`,
-      'builder-marketing':  `https://www.godaddy.com/websites/website-builder?plid=${PLID}`,
-      'diagnostico':        `https://wa.me/${WA_NUM}?text=${encodeURIComponent('Quiero agendar un Diagnóstico de Soberanía con Gano Digital.')}`,
-      'disenio-custom':     `https://wa.me/${WA_NUM}?text=${encodeURIComponent('Me interesa el Ecosistema SOTA de Gano Digital.')}`,
+    const pfid = PFIDS[productId];
+
+    // Productos sin PFID reseller → WhatsApp personalizado
+    const waCustom = {
+      'diagnostico':    encodeURIComponent('Quiero agendar un Diagnóstico de Soberanía con Gano Digital.'),
+      'disenio-custom': encodeURIComponent('Me interesa el Ecosistema SOTA de Gano Digital.'),
+      'vps-alpha':      encodeURIComponent('Quiero información sobre el VPS Pro Alpha de Gano Digital.'),
+      'waf-pro':        encodeURIComponent('Quiero información sobre seguridad WAF Pro de Gano Digital.'),
     };
-    return links[productId] || `https://wa.me/${WA_NUM}?text=${WA_MSG}`;
+    if (waCustom[productId]) return `https://wa.me/${WA_NUM}?text=${waCustom[productId]}`;
+
+    // PFID configurado → carrito Reseller white-label de Gano Digital
+    if (pfid && pfid !== 'WA') {
+      return `https://cart.secureserver.net/order/main/add/${pfid}?plid=${PLID}&currencyType=COP&marketId=es-CO`;
+    }
+
+    // PFID = null (pendiente) → WhatsApp fallback para no perder la conversión
+    return `https://wa.me/${WA_NUM}?text=${WA_MSG}`;
+  }
+
+  /**
+   * Indica si el producto tiene PFID listo (para ajustar el label del CTA).
+   */
+  function pfidReady(productId) {
+    const pfid = PFIDS[productId];
+    return pfid !== null && pfid !== 'WA';
   }
 
   /* ─── BADGE HTML ───────────────────────────────────────────────── */
@@ -123,10 +177,21 @@
       `<span class="bf-chip"><i class="fas fa-check-circle"></i> ${b}</span>`
     ).join('');
 
-    /* CTA principal */
-    const ctaLabel = ['diagnostico','disenio-custom','vps-alpha','waf-pro'].includes(p.id)
+    /* CTA principal
+     * - Productos WA (VPS, WAF, diagnóstico, diseño) → siempre WhatsApp
+     * - Productos con PFID listo → "Comenzar ahora" (carrito Reseller)
+     * - Productos con PFID pendiente (null) → WhatsApp fallback + tooltip
+     */
+    const isWaProduct = ['diagnostico','disenio-custom','vps-alpha','waf-pro'].includes(p.id);
+    const hasCart     = pfidReady(p.id);
+    const ctaLabel = isWaProduct
       ? '<i class="fab fa-whatsapp"></i> Consultar por WhatsApp'
-      : '<i class="fas fa-rocket"></i> Comenzar ahora';
+      : hasCart
+        ? '<i class="fas fa-rocket"></i> Comenzar ahora'
+        : '<i class="fab fa-whatsapp"></i> Consultar disponibilidad';
+    const ctaTitle = (!isWaProduct && !hasCart)
+      ? 'title="Carrito en configuración — te atendemos por WhatsApp"'
+      : '';
 
     return `
 <article class="pcard ${classes}" data-id="${p.id}" data-cat="${p.category}" data-obj="${(p.objectives || []).join(' ')}">
@@ -156,7 +221,7 @@
 
     <!-- CTA PRINCIPAL -->
     <div class="card-cta-wrap">
-      <a class="btn-buy" href="${buyUrl(p.id)}" target="_blank" rel="noopener">
+      <a class="btn-buy" href="${buyUrl(p.id)}" target="_blank" rel="noopener" ${ctaTitle}>
         ${ctaLabel}
       </a>
       <button class="btn-wa-secondary" onclick="window.open('https://wa.me/${WA_NUM}?text=${WA_MSG}','_blank')">
