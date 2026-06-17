@@ -72,6 +72,17 @@
     'vps-alpha':         'WA',
     'diagnostico':       'WA',
     'disenio-custom':    'WA',
+
+    // ── Acceso — planes de entrada ────────────────────────────────
+    'wp-starter':        '457',   // WP Managed (misma familia)
+    'hosting-basico':    null,    // Hosting compartido — PFID pendiente en RCC
+    'dom-com':           null,    // Dominio .com — WA fallback
+    'ssl-dv':            '75',    // SSL familia 75
+
+    // ── Dev — herramientas para desarrolladores ───────────────────
+    'wp-deluxe':         '457',   // WP Managed (misma familia)
+    'hosting-plus-dev':  '459',   // Web Hosting Plus familia 459
+    'email-starter':     '466',   // Email familia 466
   };
 
   /* ─── ESTADO ───────────────────────────────────────────────────── */
