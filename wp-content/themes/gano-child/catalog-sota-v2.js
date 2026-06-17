@@ -1,131 +1,130 @@
-﻿/**
+/**
  * catalog-sota.js v2.2.0
- * Gano Digital ÔÇö Motor de cat├ílogo SOTA
- * Arquitectura: IIFE ┬À strict ┬À sin dependencias externas
+ * Gano Digital — Motor de catálogo SOTA
+ * Arquitectura: IIFE · strict · sin dependencias externas
  * Filtro activo: solo productos MEDIO y ALTO (11 items)
- * Estilo: GoDaddy-inspired ÔÇö bloques por categor├¡a, pitch largo, specs detallados
+ * Estilo: GoDaddy-inspired — bloques por categoría, pitch largo, specs detallados
  *
- * v2.2.0 ÔÇö PFIDS REALES desde servidor (2026-06-14):
- *   PFIDs extra├¡dos de functions.php en servidor v├¡a SSH:
+ * v2.2.0 — PFIDS REALES desde servidor (2026-06-14):
+ *   PFIDs extraídos de functions.php en servidor vía SSH:
  *   - Hosting WP (familia): 457
- *   - WHP Expansi├│n (webhosting plus): 459
+ *   - WHP Expansión (webhosting plus): 459
  *   - SSL (todos los tipos): 75
  *   - Email / M365: 466
  *   - Seguridad Web: 557
- *   - Dominios: domain_search (din├ímico ÔÇö el plugin maneja la b├║squeda)
- *   - Builder: pendiente de activaci├│n en RCC
+ *   - Dominios: domain_search (dinámico — el plugin maneja la búsqueda)
+ *   - Builder: pendiente de activación en RCC
  *
- * v2.1.0 ÔÇö CORRECCI├ôN CR├ìTICA:
+ * v2.1.0 — CORRECCIÓN CRÍTICA:
  *   Los CTAs apuntan ahora al carrito Reseller de Gano Digital
- *   (cart.secureserver.net con PFID) en lugar de godaddy.com p├║blico.
- *   Cuando PFID = null (pendiente de configurar en RCC), el bot├│n
- *   cae back a WhatsApp para no perder la conversi├│n.
+ *   (cart.secureserver.net con PFID) en lugar de godaddy.com público.
+ *   Cuando PFID = null (pendiente de configurar en RCC), el botón
+ *   cae back a WhatsApp para no perder la conversión.
  */
 
 (function () {
   'use strict';
 
-  /* ÔöÇÔöÇÔöÇ CONSTANTES ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
-  const PLID      = '599667';   // Private Label ID ÔÇö verificar en RCC ÔåÆ Account
+  /* ─── CONSTANTES ──────────────────────────────────────────────── */
+  const PLID      = '599667';   // Private Label ID — verificar en RCC → Account
   const WA_NUM    = '573000000000';
-  const WA_MSG    = encodeURIComponent('Hola, vi el cat├ílogo de Gano Digital y quiero saber m├ís.');
+  const WA_MSG    = encodeURIComponent('Hola, vi el catálogo de Gano Digital y quiero saber más.');
 
   /**
    * PFIDs del Reseller Control Center (RCC) de GoDaddy.
-   * Obtener en: https://reseller.godaddy.com ÔåÆ Products & Pricing ÔåÆ [producto] ÔåÆ Product ID
-   * Formato: n├║mero entero (ej. 123456). null = pendiente ÔåÆ fallback WA.
+   * Obtener en: https://reseller.godaddy.com → Products & Pricing → [producto] → Product ID
+   * Formato: número entero (ej. 123456). null = pendiente → fallback WA.
    *
-   * INSTRUCCI├ôN para Diego:
-   *   1. Ir a RCC ÔåÆ Products & Pricing
-   *   2. Buscar cada producto y copiar su Product ID (n├║mero en la URL o ficha)
-   *   3. Reemplazar null por el n├║mero aqu├¡ (ej. 'pro-managed': 123456)
+   * INSTRUCCIÓN para Diego:
+   *   1. Ir a RCC → Products & Pricing
+   *   2. Buscar cada producto y copiar su Product ID (número en la URL o ficha)
+   *   3. Reemplazar null por el número aquí (ej. 'pro-managed': 123456)
    *   4. Hacer commit + deploy del archivo actualizado al servidor
    */
   const PFIDS = {
-    // ÔöÇÔöÇ Hosting WordPress ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
-    // PFID familia 457 = WordPress Managed (B├ísico/Pro/Developer)
-    // Obtenido desde functions.php en servidor 2026-06-14
-    'pro-managed':       457,   // Managed WordPress Pro ÔåÆ familia WP (pfid 457)
-    'business-nvme':     457,   // Managed WordPress Business NVMe ÔåÆ familia WP (pfid 457)
-    'ultimate':          457,   // Managed WordPress Ultimate ÔåÆ familia WP (pfid 457)
+    // ── Hosting WordPress ──────────────────────────────────────────
+    'pro-managed':       'wordpress-basic',
+    'business-nvme':     'wordpress-deluxe',
+    'ultimate':          'wordpress-ultimate',
 
-    // ÔöÇÔöÇ Dominio ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
-    // 'domain_search' = din├ímico; el plugin reseller maneja la b├║squeda.
+    // ── Dominio ───────────────────────────────────────────────────
+    // 'domain_search' = dinámico; el plugin reseller maneja la búsqueda.
     // Apuntamos al buscador de dominios del carrito en lugar de PFID fijo.
-    'dom-co':            null,  // Dominio .CO ÔåÆ domain_search din├ímico ÔåÆ WA fallback
+    'dom-co':            null,  // Dominio .CO → domain_search dinámico → WA fallback
 
-    // ÔöÇÔöÇ SSL ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
-    'ssl-pro':           75,    // SSL (todos los tipos DV/EV/OV) ÔåÆ pfid 75
+    // ── SSL ───────────────────────────────────────────────────────
+    'ssl-pro':           'ssl-deluxe',
 
-    // ÔöÇÔöÇ Email / M365 ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
-    'email-pro':         466,   // Email Profesional / M365 ÔåÆ pfid 466
+    // ── Email / M365 ──────────────────────────────────────────────
+    'email-pro':         'microsoft-365-business-premium',
 
-    // ÔöÇÔöÇ Website Builder ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
-    'builder-marketing': null,  // Builder ÔÇö pendiente activaci├│n en RCC ÔåÆ WA fallback
+    // ── Website Builder ───────────────────────────────────────────
+    'builder-marketing': null,  // Builder — pendiente activación en RCC → WA fallback
 
-    // ÔöÇÔöÇ Servicios ÔåÆ siempre WhatsApp (sin PFID Reseller) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    // ── Servicios → siempre WhatsApp (sin PFID Reseller) ─────────
     'vps-alpha':         'WA',
     'waf-pro':           'WA',
     'diagnostico':       'WA',
     'disenio-custom':    'WA',
   };
 
-  /* ÔöÇÔöÇÔöÇ ESTADO ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── ESTADO ───────────────────────────────────────────────────── */
   let activeCategory  = 'all';
   let activeObjective = 'all';
   let isAnnual        = true;   // toggle mensual/anual
 
-  /* ÔöÇÔöÇÔöÇ HELPERS DE PRECIO ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── HELPERS DE PRECIO ────────────────────────────────────────── */
   function fCOP(n) {
-    if (n == null) return 'ÔÇö';
+    if (n == null) return '—';
     if (n >= 1000000) return '$' + (n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1).replace('.', ',') + 'M';
     if (n >= 1000)    return '$' + Math.round(n / 1000) + 'K';
     return '$' + n;
   }
   function fCOPFull(n) {
-    if (n == null) return 'ÔÇö';
+    if (n == null) return '—';
     return '$' + n.toLocaleString('es-CO');
   }
 
-  /* precio a mostrar seg├║n toggle */
+  /* precio a mostrar según toggle */
   function currentPrice(p) {
     if (p.yearly == null && p.monthly == null) return null;
-    if (p.monthly == null) return { amount: p.yearly, label: '/a├▒o',   cycle: 'a├▒o' };
+    if (p.monthly == null) return { amount: p.yearly, label: '/año',   cycle: 'año' };
     if (p.yearly  == null) return { amount: p.monthly, label: '/mes',  cycle: 'mes' };
     return isAnnual
-      ? { amount: Math.round(p.yearly / 12),  label: '/mes, facturado anual', cycle: 'a├▒o', save: p.monthly - Math.round(p.yearly / 12) }
+      ? { amount: Math.round(p.yearly / 12),  label: '/mes, facturado anual', cycle: 'año', save: p.monthly - Math.round(p.yearly / 12) }
       : { amount: p.monthly, label: '/mes', cycle: 'mes' };
   }
 
-  /* ÔöÇÔöÇÔöÇ URLS DE COMPRA ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── URLS DE COMPRA ───────────────────────────────────────────── */
   /**
    * Construye la URL del carrito Reseller de Gano Digital.
    *
    * Flujo:
-   *   PFID v├ílido  ÔåÆ cart.secureserver.net (carrito white-label branded Gano Digital)
-   *   PFID = 'WA'  ÔåÆ WhatsApp directo (productos que no tienen carrito Reseller)
-   *   PFID = null  ÔåÆ WhatsApp fallback (PFID pendiente de configurar en RCC)
+   *   PFID válido  → cart.secureserver.net (carrito white-label branded Gano Digital)
+   *   PFID = 'WA'  → WhatsApp directo (productos que no tienen carrito Reseller)
+   *   PFID = null  → WhatsApp fallback (PFID pendiente de configurar en RCC)
    *
-   * NUNCA redirige a godaddy.com p├║blico ÔÇö eso sacar├¡a al cliente de la marca.
+   * NUNCA redirige a godaddy.com público — eso sacaría al cliente de la marca.
    */
   function buyUrl(productId) {
     const pfid = PFIDS[productId];
 
-    // Productos sin PFID reseller ÔåÆ WhatsApp personalizado
+    // Productos sin PFID reseller → WhatsApp personalizado
     const waCustom = {
-      'diagnostico':    encodeURIComponent('Quiero agendar un Diagn├│stico de Soberan├¡a con Gano Digital.'),
+      'diagnostico':    encodeURIComponent('Quiero agendar un Diagnóstico de Soberanía con Gano Digital.'),
       'disenio-custom': encodeURIComponent('Me interesa el Ecosistema SOTA de Gano Digital.'),
-      'vps-alpha':      encodeURIComponent('Quiero informaci├│n sobre el VPS Pro Alpha de Gano Digital.'),
-      'waf-pro':        encodeURIComponent('Quiero informaci├│n sobre seguridad WAF Pro de Gano Digital.'),
+      'vps-alpha':      encodeURIComponent('Quiero información sobre el VPS Pro Alpha de Gano Digital.'),
+      'waf-pro':        encodeURIComponent('Quiero información sobre seguridad WAF Pro de Gano Digital.'),
     };
     if (waCustom[productId]) return `https://wa.me/${WA_NUM}?text=${waCustom[productId]}`;
 
-    // PFID configurado ÔåÆ carrito Reseller white-label de Gano Digital
+    // PFID configurado → carrito Reseller white-label de Gano Digital
     if (pfid && pfid !== 'WA') {
-      return `https://cart.secureserver.net/order/main/add/${pfid}?plid=${PLID}&currencyType=COP&marketId=es-CO`;
+      const items = JSON.stringify([{ id: pfid, quantity: 1, duration: 12 }]);
+      return `https://cart.secureserver.net/?plid=${PLID}&items=${encodeURIComponent(items)}&currencyType=COP&marketId=es-CO`;
     }
 
-    // PFID = null (pendiente) ÔåÆ WhatsApp fallback para no perder la conversi├│n
+    // PFID = null (pendiente) → WhatsApp fallback para no perder la conversión
     return `https://wa.me/${WA_NUM}?text=${WA_MSG}`;
   }
 
@@ -137,23 +136,23 @@
     return pfid !== null && pfid !== 'WA';
   }
 
-  /* ÔöÇÔöÇÔöÇ BADGE HTML ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── BADGE HTML ───────────────────────────────────────────────── */
   function badgeHtml(p) {
     if (!p.badge) return '';
     const cls = {
       'Popular':    'badge-popular',
-      '├ëlite':      'badge-elite',
+      'Élite':      'badge-elite',
       'SOTA':       'badge-sota',
       'A medida':   'badge-custom',
-      '├Ünico pago': 'badge-unique',
+      'Único pago': 'badge-unique',
     }[p.badge] || 'badge-default';
     return `<span class="badge ${cls}">${p.badge}</span>`;
   }
 
-  /* ÔöÇÔöÇÔöÇ RENDER PRECIO ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── RENDER PRECIO ────────────────────────────────────────────── */
   function renderPrice(p) {
     const pr = currentPrice(p);
-    if (!pr) return `<div class="card-price price-custom"><span class="price-label-custom">Precio a medida ┬À Consultar</span></div>`;
+    if (!pr) return `<div class="card-price price-custom"><span class="price-label-custom">Precio a medida · Consultar</span></div>`;
 
     let saveHtml = '';
     if (pr.save && pr.save > 0) {
@@ -170,13 +169,13 @@
       </div>`;
   }
 
-  /* ÔöÇÔöÇÔöÇ RENDER CARD ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── RENDER CARD ──────────────────────────────────────────────── */
   function renderCard(p) {
     const pr      = currentPrice(p);
     const classes = [
       'pcard',
       p.featured   ? 'is-featured' : '',
-      p.badge === '├ëlite' ? 'is-elite' : '',
+      p.badge === 'Élite' ? 'is-elite' : '',
       p.badge === 'SOTA'  ? 'is-sota'  : '',
       p.badge === 'A medida' ? 'is-medida' : '',
     ].filter(Boolean).join(' ');
@@ -190,7 +189,7 @@
       </li>`
     ).join('');
 
-    /* specs t├®cnicas */
+    /* specs técnicas */
     const specs = p.specs ? Object.entries(p.specs).map(([k, v]) =>
       `<div class="spec-row"><span class="sk">${k.charAt(0).toUpperCase() + k.slice(1)}</span><span class="sv">${v}</span></div>`
     ).join('') : '';
@@ -201,9 +200,9 @@
     ).join('');
 
     /* CTA principal
-     * - Productos WA (VPS, WAF, diagn├│stico, dise├▒o) ÔåÆ siempre WhatsApp
-     * - Productos con PFID listo ÔåÆ "Comenzar ahora" (carrito Reseller)
-     * - Productos con PFID pendiente (null) ÔåÆ WhatsApp fallback + tooltip
+     * - Productos WA (VPS, WAF, diagnóstico, diseño) → siempre WhatsApp
+     * - Productos con PFID listo → "Comenzar ahora" (carrito Reseller)
+     * - Productos con PFID pendiente (null) → WhatsApp fallback + tooltip
      */
     const isWaProduct = ['diagnostico','disenio-custom','vps-alpha','waf-pro'].includes(p.id);
     const hasCart     = pfidReady(p.id);
@@ -213,7 +212,7 @@
         ? '<i class="fas fa-rocket"></i> Comenzar ahora'
         : '<i class="fab fa-whatsapp"></i> Consultar disponibilidad';
     const ctaTitle = (!isWaProduct && !hasCart)
-      ? 'title="Carrito en configuraci├│n ÔÇö te atendemos por WhatsApp"'
+      ? 'title="Carrito en configuración — te atendemos por WhatsApp"'
       : '';
 
     return `
@@ -255,11 +254,11 @@
     <!-- FEATURES -->
     <ul class="feat-list">${feats}</ul>
 
-    <!-- SPECS T├ëCNICAS (desplegable) -->
+    <!-- SPECS TÉCNICAS (desplegable) -->
     ${specs ? `
     <div class="specs-section">
       <button class="specs-btn" onclick="window.ganoToggleSpecs(this)" aria-expanded="false">
-        <i class="fas fa-microchip"></i> Especificaciones t├®cnicas
+        <i class="fas fa-microchip"></i> Especificaciones técnicas
         <i class="fas fa-chevron-down specs-chevron"></i>
       </button>
       <div class="specs-body">
@@ -279,7 +278,7 @@
 </article>`;
   }
 
-  /* ÔöÇÔöÇÔöÇ RENDER CABECERA DE CATEGOR├ìA ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── RENDER CABECERA DE CATEGORÍA ────────────────────────────── */
   function renderCatHeader(catId) {
     const cat = (window.GANO_CATEGORIES || []).find(c => c.id === catId);
     if (!cat || catId === 'all') return '';
@@ -290,14 +289,14 @@
 </div>`;
   }
 
-  /* ÔöÇÔöÇÔöÇ RENDER GRID COMPLETO ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── RENDER GRID COMPLETO ─────────────────────────────────────── */
   function renderGrid() {
     const grid = document.getElementById('product-grid');
     if (!grid) return;
 
     const products = window.GANO_PRODUCTS || [];
 
-    /* Filtrar por categor├¡a y objetivo */
+    /* Filtrar por categoría y objetivo */
     const visible = products.filter(p => {
       const catOk = activeCategory === 'all' || p.category === activeCategory;
       const objOk = activeObjective === 'all' || (p.objectives || []).includes(activeObjective);
@@ -305,12 +304,12 @@
     });
 
     if (visible.length === 0) {
-      grid.innerHTML = '<div class="catalog-empty"><i class="fas fa-search"></i><p>Sin resultados para esta combinaci├│n. <button onclick="window.resetFilters()">Ver todos</button></p></div>';
+      grid.innerHTML = '<div class="catalog-empty"><i class="fas fa-search"></i><p>Sin resultados para esta combinación. <button onclick="window.resetFilters()">Ver todos</button></p></div>';
       updateCount(0);
       return;
     }
 
-    /* Agrupar por categor├¡a manteniendo orden de GANO_CATEGORIES */
+    /* Agrupar por categoría manteniendo orden de GANO_CATEGORIES */
     const catOrder = (window.GANO_CATEGORIES || []).map(c => c.id).filter(id => id !== 'all');
     const groups = {};
     catOrder.forEach(id => { groups[id] = []; });
@@ -321,7 +320,7 @@
       const items = groups[catId];
       if (!items || items.length === 0) return;
 
-      /* Si hay m├ís de 1 o filtramos todo, mostrar header de categor├¡a */
+      /* Si hay más de 1 o filtramos todo, mostrar header de categoría */
       if (activeCategory === 'all') {
         html += renderCatHeader(catId);
       }
@@ -335,17 +334,17 @@
 
     grid.innerHTML = html;
     updateCount(visible.length);
-    // No llamar updatePriceLabels() aqu├¡ ÔÇö el innerHTML ya tiene los precios correctos
+    // No llamar updatePriceLabels() aquí — el innerHTML ya tiene los precios correctos
     // updatePriceLabels() solo se usa en el toggle anual/mensual
   }
 
-  /* ÔöÇÔöÇÔöÇ UPDATE CONTADOR ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── UPDATE CONTADOR ──────────────────────────────────────────── */
   function updateCount(n) {
     const el = document.getElementById('results-count');
     if (el) el.textContent = n === 0 ? 'Sin resultados' : `${n} servicio${n === 1 ? '' : 's'}`;
   }
 
-  /* ÔöÇÔöÇÔöÇ UPDATE ETIQUETAS DE PRECIO (sin re-render) ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── UPDATE ETIQUETAS DE PRECIO (sin re-render) ───────────────── */
   function updatePriceLabels() {
     document.querySelectorAll('[data-id]').forEach(el => {
       const pid = el.dataset.id;
@@ -365,7 +364,7 @@
     });
   }
 
-  /* ÔöÇÔöÇÔöÇ TABS DE CATEGOR├ìA ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── TABS DE CATEGORÍA ────────────────────────────────────────── */
   function buildCatTabs() {
     const wrap = document.getElementById('cat-tabs');
     if (!wrap) return;
@@ -379,7 +378,7 @@
     ).join('');
   }
 
-  /* ÔöÇÔöÇÔöÇ CHIPS DE OBJETIVO ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── CHIPS DE OBJETIVO ────────────────────────────────────────── */
   function buildObjChips() {
     const wrap = document.getElementById('obj-chips');
     if (!wrap) return;
@@ -393,7 +392,7 @@
     ).join('');
   }
 
-  /* ÔöÇÔöÇÔöÇ TIMELINE ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── TIMELINE ─────────────────────────────────────────────────── */
   function buildTimeline() {
     const track = document.getElementById('timeline-track');
     if (!track) return;
@@ -411,7 +410,7 @@
     ).join('');
   }
 
-  /* ÔöÇÔöÇÔöÇ TOOLTIP GLOSARIO ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── TOOLTIP GLOSARIO ─────────────────────────────────────────── */
   function initGlossaryTooltip() {
     const tt = document.getElementById('gtooltip');
     if (!tt) return;
@@ -435,7 +434,7 @@
     });
   }
 
-  /* ÔöÇÔöÇÔöÇ URL PARAM ?cat= ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── URL PARAM ?cat= ──────────────────────────────────────────── */
   function applyUrlCatParam() {
     const params = new URLSearchParams(window.location.search);
     const cat    = params.get('cat');
@@ -458,7 +457,7 @@
     }
   }
 
-  /* ÔöÇÔöÇÔöÇ TOGGLE PRECIO ANUAL/MENSUAL ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── TOGGLE PRECIO ANUAL/MENSUAL ──────────────────────────────── */
   function initPriceToggle() {
     const toggle = document.getElementById('price-toggle');
     const lblM   = document.getElementById('lbl-monthly');
@@ -485,7 +484,7 @@
     toggle.addEventListener('change', applyToggle);
   }
 
-  /* ÔöÇÔöÇÔöÇ TOGGLE SPECS ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── TOGGLE SPECS ─────────────────────────────────────────────── */
   window.ganoToggleSpecs = function (btn) {
     const body = btn.nextElementSibling;
     const open = body.classList.toggle('show');
@@ -493,13 +492,13 @@
     btn.querySelector('.specs-chevron').style.transform = open ? 'rotate(180deg)' : '';
   };
 
-  /* ÔöÇÔöÇÔöÇ RESET FILTROS ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── RESET FILTROS ────────────────────────────────────────────── */
   window.resetFilters = function () {
     window.setCat(document.querySelector('[data-cat="all"]'), 'all');
     window.setObj(document.querySelector('[data-obj="all"]'), 'all');
   };
 
-  /* ÔöÇÔöÇÔöÇ FILTROS EXPUESTOS ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── FILTROS EXPUESTOS ────────────────────────────────────────── */
   window.setCat = function (btn, id) {
     activeCategory = id;
     document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
@@ -514,7 +513,7 @@
     renderGrid();
   };
 
-  /* ÔöÇÔöÇÔöÇ INIT PRINCIPAL ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── INIT PRINCIPAL ───────────────────────────────────────────── */
   function init() {
     buildCatTabs();
     buildObjChips();
@@ -523,11 +522,11 @@
     initGlossaryTooltip();
     initPriceToggle();
     applyUrlCatParam();
-    // re-render si URL param cambi├│ la categor├¡a
+    // re-render si URL param cambió la categoría
     if (activeCategory !== 'all') renderGrid();
   }
 
-  /* ÔöÇÔöÇÔöÇ BOOTSTRAP ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+  /* ─── BOOTSTRAP ────────────────────────────────────────────────── */
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {

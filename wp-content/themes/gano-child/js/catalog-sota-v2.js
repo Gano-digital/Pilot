@@ -43,11 +43,9 @@
    */
   const PFIDS = {
     // ── Hosting WordPress ──────────────────────────────────────────
-    // PFID familia 457 = WordPress Managed (Básico/Pro/Developer)
-    // Obtenido desde functions.php en servidor 2026-06-14
-    'pro-managed':       457,   // Managed WordPress Pro → familia WP (pfid 457)
-    'business-nvme':     457,   // Managed WordPress Business NVMe → familia WP (pfid 457)
-    'ultimate':          457,   // Managed WordPress Ultimate → familia WP (pfid 457)
+    'pro-managed':       'wordpress-basic',
+    'business-nvme':     'wordpress-deluxe',
+    'ultimate':          'wordpress-ultimate',
 
     // ── Dominio ───────────────────────────────────────────────────
     // 'domain_search' = dinámico; el plugin reseller maneja la búsqueda.
@@ -55,10 +53,10 @@
     'dom-co':            null,  // Dominio .CO → domain_search dinámico → WA fallback
 
     // ── SSL ───────────────────────────────────────────────────────
-    'ssl-pro':           75,    // SSL (todos los tipos DV/EV/OV) → pfid 75
+    'ssl-pro':           'ssl-deluxe',
 
     // ── Email / M365 ──────────────────────────────────────────────
-    'email-pro':         466,   // Email Profesional / M365 → pfid 466
+    'email-pro':         'microsoft-365-business-premium',
 
     // ── Website Builder ───────────────────────────────────────────
     'builder-marketing': null,  // Builder — pendiente activación en RCC → WA fallback
@@ -122,7 +120,8 @@
 
     // PFID configurado → carrito Reseller white-label de Gano Digital
     if (pfid && pfid !== 'WA') {
-      return `https://cart.secureserver.net/order/main/add/${pfid}?plid=${PLID}&currencyType=COP&marketId=es-CO`;
+      const items = JSON.stringify([{ id: pfid, quantity: 1, duration: 12 }]);
+      return `https://cart.secureserver.net/?plid=${PLID}&items=${encodeURIComponent(items)}&currencyType=COP&marketId=es-CO`;
     }
 
     // PFID = null (pendiente) → WhatsApp fallback para no perder la conversión
