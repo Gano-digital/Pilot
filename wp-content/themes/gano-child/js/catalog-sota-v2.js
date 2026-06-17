@@ -42,28 +42,31 @@
    *   4. Hacer commit + deploy del archivo actualizado al servidor
    */
   const PFIDS = {
-    // ── Hosting WordPress ──────────────────────────────────────────
-    'pro-managed':       'wordpress-basic',
-    'business-nvme':     'wordpress-deluxe',
-    'ultimate':          'wordpress-ultimate',
+    // ── Hosting WordPress — familia 457 (WP Managed) ───────────────
+    'pro-managed':       '457',
+    'business-nvme':     '457',
+    'ultimate':          '457',
+
+    // ── Web Hosting Plus — familia 459 ────────────────────────────
+    'whp-expansion':     '459',
 
     // ── Dominio ───────────────────────────────────────────────────
-    // 'domain_search' = dinámico; el plugin reseller maneja la búsqueda.
-    // Apuntamos al buscador de dominios del carrito en lugar de PFID fijo.
-    'dom-co':            null,  // Dominio .CO → domain_search dinámico → WA fallback
+    'dom-co':            null,
 
-    // ── SSL ───────────────────────────────────────────────────────
-    'ssl-pro':           'ssl-deluxe',
+    // ── SSL — familia 75 ─────────────────────────────────────────
+    'ssl-pro':           '75',
 
-    // ── Email / M365 ──────────────────────────────────────────────
-    'email-pro':         'microsoft-365-business-premium',
+    // ── Email / M365 — familia 466 ────────────────────────────────
+    'email-pro':         '466',
 
-    // ── Website Builder ───────────────────────────────────────────
-    'builder-marketing': null,  // Builder — pendiente activación en RCC → WA fallback
+    // ── Seguridad web — familia 557 ───────────────────────────────
+    'waf-pro':           '557',
 
-    // ── Servicios → siempre WhatsApp (sin PFID Reseller) ─────────
+    // ── Website Builder — pendiente activación en RCC ─────────────
+    'builder-marketing': null,
+
+    // ── Servicios → WhatsApp (sin PFID Reseller) ──────────────────
     'vps-alpha':         'WA',
-    'waf-pro':           'WA',
     'diagnostico':       'WA',
     'disenio-custom':    'WA',
   };
