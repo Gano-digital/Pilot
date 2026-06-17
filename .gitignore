@@ -128,6 +128,14 @@ agent-orchestrator.yml
 vendor/agentcraft/
 vendor/graphify/
 
+# ─── Plugins de desarrollo local (forks clonados — NO producción) ────────────
+# wp-reseller-store: fork de godaddy/wp-reseller-store para desarrollo local.
+# Registrado como submodule pendiente cuando se habilite en CI.
+wp-content/plugins/wp-reseller-store/
+
+# Alertas Dependabot exportadas vía API (datos en tiempo real, no versionar)
+alerts.json
+
 # Scripts con credenciales — NUNCA commitear
 audit_content.php
 cleanup_content.php
