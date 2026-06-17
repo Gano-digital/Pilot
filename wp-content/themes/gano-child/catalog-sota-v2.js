@@ -27,7 +27,7 @@
 
   /* ─── CONSTANTES ──────────────────────────────────────────────── */
   const PLID      = '599667';   // Private Label ID — verificar en RCC → Account
-  const WA_NUM    = '573000000000';
+  const WA_NUM    = '573135646123';
   const WA_MSG    = encodeURIComponent('Hola, vi el catálogo de Gano Digital y quiero saber más.');
 
   /**
