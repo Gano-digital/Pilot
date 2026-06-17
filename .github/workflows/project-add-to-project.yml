@@ -55,7 +55,7 @@ jobs:
           fi
           echo "add=$ADD" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/add-to-project@v1.0.2
+      - uses: actions/add-to-project@v2.0.0
         if: steps.cfg.outputs.enabled == 'true' && steps.decide.outputs.add == 'true'
         with:
           project-url: ${{ vars.GANO_PROJECT_URL }}

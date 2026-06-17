@@ -1,151 +1,78 @@
-<?php
+﻿<?php
 /**
- * Template Name: Gano Premium Shop SOTA
+ * Template Name: Cat├ílogo SOTA v2
+ * Template Post Type: page
  *
- * Este template renderiza el catálogo SOTA de forma agnóstica utilizando
- * el motor React-like (catalog-sota.js) que consume reseller-data.js.
- *
- * TRM COP/USD: opción `gano_usd_cop_rate` o filtro `gano_catalog_usd_cop_rate`.
+ * Gano Digital ÔÇö Cat├ílogo de Servicios
+ * v2.0.0 ÔÇö solo productos MEDIO/ALTO, dise├▒o GoDaddy-inspired
  */
 
-$gano_usd_cop_rate = (float) apply_filters(
-	'gano_catalog_usd_cop_rate',
-	(float) get_option( 'gano_usd_cop_rate', 4100 )
-);
-if ( $gano_usd_cop_rate <= 0 ) {
-	$gano_usd_cop_rate = 4100;
-}
-
-// Enqueue catalog assets specific to this template BEFORE get_header()
-wp_enqueue_style( 'gano-fonts-sota', 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600&display=swap', array(), null );
-wp_enqueue_style( 'gano-catalog-sota-css', get_stylesheet_directory_uri() . '/css/catalog-sota.css', array(), '1.1.0' );
-
-// Load font-awesome if not loaded
-wp_enqueue_style( 'font-awesome-6', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css', array(), '6.5.0' );
-
-// Enqueue data and logic
-wp_enqueue_script( 'gano-reseller-data', get_stylesheet_directory_uri() . '/js/reseller-data.js', array(), '1.1.0', true );
-wp_enqueue_script( 'gano-catalog-sota-js', get_stylesheet_directory_uri() . '/js/catalog-sota.js', array( 'gano-reseller-data' ), '1.1.0', true );
-
-// Pass PHP config variables to JS if needed
-wp_localize_script(
-	'gano-reseller-data',
-	'ganoCatalogWP',
-	array(
-		'ajaxurl'     => admin_url( 'admin-ajax.php' ),
-		'whatsappNum' => '573000000000',
-		'usdCop'      => $gano_usd_cop_rate,
-	)
-);
-
+defined('ABSPATH') || exit;
 get_header();
+$theme_uri = get_stylesheet_directory_uri();
 ?>
 
-<!-- START: SHOP PREMIUM SOTA WRAPPER -->
-<div class="sota-wrapper gano-catalog-shell">
-    
-    <!-- HERO SECTION -->
-    <section class="hero">
-      <div class="container">
-        <div class="hero-eyebrow"><i class="fa-solid fa-shield-halved"></i> Infraestructura SOTA · Nodo Bogotá</div>
-        <h1>Tu soberanía digital<br><span class="accent">sin concesiones</span></h1>
-        <p class="hero-sub">Hosting WordPress NVMe, VPS dedicado, dominios .co y seguridad de capa 7. Referencia en COP y USD* según catálogo; soporte en español.</p>
-        <div class="hero-stats">
-          <div class="hero-stat"><span class="stat-val">99.99%</span><span class="stat-lbl">SLA Elite</span></div>
-          <div class="stat-div"></div>
-          <div class="hero-stat"><span class="stat-val">&lt;20ms</span><span class="stat-lbl">Latencia Bogotá</span></div>
-          <div class="stat-div"></div>
-          <div class="hero-stat"><span class="stat-val">10 min</span><span class="stat-lbl">Activación</span></div>
-          <div class="stat-div"></div>
-          <div class="hero-stat"><span class="stat-val">24/7</span><span class="stat-lbl">Agente IA</span></div>
-        </div>
-      </div>
-    </section>
+<!----------- ASSETS ----------->
+<link rel="stylesheet" href="<?php echo $theme_uri; ?>/catalog-sota-v2.css?v=2.2.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous">
 
-    <!-- REACT-LIKE CATALOG MOUNT POINT -->
-    <div id="gano-catalog-root">
-        <!-- FILTERS -->
-        <section class="filter-section" id="catalogo">
-          <div class="container">
-            <div class="filter-inner">
-              <div class="filter-row-top">
-                <div class="filter-tabs" id="cat-tabs"></div>
-                <div class="price-toggle-wrap">
-                  <span class="ptl" id="lbl-monthly">Mensual</span>
-                  <label class="toggle-pill">
-                    <input type="checkbox" id="price-toggle">
-                    <div class="ttrack"><div class="tthumb"></div></div>
-                  </label>
-                  <span class="ptl on" id="lbl-annual">Anual</span>
-                  <span class="save-pill">Ahorra hasta 20%</span>
-                </div>
-              </div>
-              <div class="obj-row">
-                <span class="obj-label"><i class="fa-solid fa-sliders"></i> Objetivo:</span>
-                <div class="obj-chips" id="obj-chips"></div>
-              </div>
-              <div class="results-bar">
-                <span class="rcount">Mostrando <strong id="results-count">0</strong> productos</span>
-              </div>
-              <p class="catalog-price-disclaimer">
-				<?php
-				echo esc_html(
-					sprintf(
-						/* translators: %s: COP per 1 USD (integer reference rate). */
-						__( '*COP estimado con TRM de referencia (%s COP/USD). La facturación del proveedor puede aplicarse en USD; el tipo al momento del cobro puede variar.', 'gano-child' ),
-						number_format_i18n( $gano_usd_cop_rate, 0 )
-					)
-				);
-				?>
-              </p>
-            </div>
-          </div>
-        </section>
+<main id="catalog-main" class="catalog-wrapper">
 
-        <!-- CATALOG GRID -->
-        <section class="catalog-grid-wrap">
-          <div class="container">
-            <div class="product-grid" id="product-grid">
-              <div class="no-results">Cargando catálogo…</div>
-            </div>
-          </div>
-        </section>
+  <!-- ÔöÇÔöÇ HERO ÔöÇÔöÇ -->
+  <section class="catalog-hero">
+    <h1>Infraestructura digital<br><em>a tu medida</em></h1>
+    <p>Elige el plan que m├ís se ajuste a tu proyecto. Todos incluyen soporte por ingeniero SOTA, precios en pesos colombianos y activaci├│n en minutos.</p>
+  </section>
 
-        <!-- TIMELINE -->
-        <section class="timeline-section">
-          <div class="container">
-            <div class="section-eyebrow"><i class="fa-solid fa-clock"></i> Onboarding Express</div>
-            <h2 class="section-title">De cero a online<br>en <span class="accent">10 minutos</span></h2>
-            <p class="section-sub">El proceso más rápido del mercado colombiano. Sin burocracia, sin esperas.</p>
-            <div class="timeline-track" id="timeline-track"></div>
-          </div>
-        </section>
-        
-        <!-- GLOSSARY TOOLTIP -->
-        <div class="gtooltip" id="gtooltip">
-          <div class="gtt-title" id="gtt-title"></div>
-          <div class="gtt-body" id="gtt-body"></div>
-          <span class="gtt-metric" id="gtt-metric"></span>
-        </div>
+  <!-- ÔöÇÔöÇ CONTROLES ÔöÇÔöÇ -->
+  <div class="catalog-controls">
+
+    <!-- Toggle mensual / anual -->
+    <div class="price-toggle-wrap">
+      <label id="lbl-monthly" for="price-toggle">Mensual</label>
+      <label class="toggle-switch">
+        <input type="checkbox" id="price-toggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+      <label id="lbl-annual" class="active" for="price-toggle">Anual</label>
+      <span class="save-badge">Ahorra hasta 17%</span>
     </div>
 
-    <!-- FOOTER CTA -->
-    <section class="footer-cta">
-      <div class="container">
-        <h2>¿Tienes dudas sobre qué plan elegir?</h2>
-        <p>Un ingeniero SOTA te asesora sin costo. Respuesta en menos de 2 horas en horario laboral.</p>
-        <div class="footer-cta-btns">
-          <a href="https://wa.me/573000000000?text=Hola%2C%20necesito%20asesoría%20para%20elegir%20un%20plan" class="btn-primary-lg" target="_blank">
-            <i class="fa-brands fa-whatsapp"></i> Hablar por WhatsApp
-          </a>
-          <a href="mailto:hola@gano.digital" class="btn-ghost-lg">
-            <i class="fa-solid fa-envelope"></i> hola@gano.digital
-          </a>
-        </div>
-      </div>
-    </section>
+    <!-- Tabs categor├¡a -->
+    <div id="cat-tabs" role="tablist" aria-label="Categor├¡a de servicios"></div>
 
-</div>
-<!-- END: SHOP PREMIUM SOTA WRAPPER -->
+    <!-- Chips objetivo -->
+    <div id="obj-chips" role="group" aria-label="Filtrar por objetivo"></div>
+
+    <!-- Contador -->
+    <div class="results-meta">
+      <span id="results-count">CargandoÔÇª</span>
+    </div>
+
+  </div>
+
+  <!-- ÔöÇÔöÇ GRID ÔöÇÔöÇ -->
+  <div id="product-grid" role="list" aria-live="polite">
+    <!-- renderGrid() lo llena -->
+  </div>
+
+  <!-- ÔöÇÔöÇ TIMELINE ÔöÇÔöÇ -->
+  <section class="timeline-section">
+    <h2>┬┐C├│mo funciona la activaci├│n?</h2>
+    <div id="timeline-track"></div>
+  </section>
+
+  <!-- ÔöÇÔöÇ TOOLTIP GLOSARIO ÔöÇÔöÇ -->
+  <div id="gtooltip" role="tooltip">
+    <div id="gtt-title"></div>
+    <div id="gtt-body"></div>
+    <div id="gtt-metric"></div>
+  </div>
+
+</main>
+
+<!-- ÔöÇÔöÇ SCRIPTS ÔöÇÔöÇ -->
+<script src="<?php echo $theme_uri; ?>/reseller-data-v2.js?v=2.0.0"></script>
+<script src="<?php echo $theme_uri; ?>/catalog-sota-v2.js?v=2.2.0"></script>
 
 <?php get_footer(); ?>

@@ -514,11 +514,11 @@ $url_login = wp_login_url( home_url() );
 				<div class="footer-col">
 					<h4><?php esc_html_e( 'Productos', 'gano-child' ); ?></h4>
 					<ul>
-						<li><a href="<?php echo esc_url( $url_ecosistemas ); ?>"><?php esc_html_e( 'Hosting WordPress', 'gano-child' ); ?></a></li>
-						<li><a href="<?php echo esc_url( $url_ecosistemas ); ?>"><?php esc_html_e( 'Hosting Compartido', 'gano-child' ); ?></a></li>
-						<li><a href="<?php echo esc_url( $url_ecosistemas ); ?>"><?php esc_html_e( 'VPS Cloud', 'gano-child' ); ?></a></li>
-						<li><a href="<?php echo esc_url( $url_ecosistemas ); ?>"><?php esc_html_e( 'Servidores Dedicados', 'gano-child' ); ?></a></li>
-						<li><a href="<?php echo esc_url( $url_ecosistemas ); ?>"><?php esc_html_e( 'Creador de Sitios', 'gano-child' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/catalogo/?cat=hosting' ) ); ?>"><?php esc_html_e( 'Hosting WordPress', 'gano-child' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/catalogo/?cat=hosting' ) ); ?>"><?php esc_html_e( 'Hosting Compartido', 'gano-child' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/catalogo/?cat=vps' ) ); ?>"><?php esc_html_e( 'VPS Cloud', 'gano-child' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/catalogo/?cat=vps' ) ); ?>"><?php esc_html_e( 'Servidores Dedicados', 'gano-child' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/catalogo/?cat=builder' ) ); ?>"><?php esc_html_e( 'Creador de Sitios', 'gano-child' ); ?></a></li>
 					</ul>
 				</div>
 

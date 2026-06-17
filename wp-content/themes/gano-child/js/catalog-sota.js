@@ -391,6 +391,24 @@
     btn.classList.toggle('open', open);
   };
 
+  /* ── URL param: ?cat=hosting activates filter on load ── */
+  function applyUrlCatParam() {
+    const params = new URLSearchParams(window.location.search);
+    const cat = params.get('cat');
+    if (!cat || cat === 'all') return;
+    // find matching tab and activate it
+    const tabEl = document.querySelector('.ftab[data-cat="' + cat + '"]');
+    if (tabEl) {
+      document.querySelectorAll('.ftab').forEach(function(b) { b.classList.remove('active'); });
+      tabEl.classList.add('active');
+      activeCategory = cat;
+      renderGrid();
+      // smooth scroll to grid
+      const grid = document.getElementById('product-grid');
+      if (grid) { setTimeout(function() { grid.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100); }
+    }
+  }
+
   /* ── Init ── */
   function init() {
     const tog = document.getElementById('price-toggle');
@@ -404,6 +422,7 @@
     buildObjChips();
     renderGrid();
     buildTimeline();
+    applyUrlCatParam();
   }
 
   if (document.readyState === 'loading') {
