@@ -167,6 +167,15 @@ function gano_enqueue_mobile_menu(): void {
     );
 }
 
+// REDIRECT: /ecosistemas/ → /catalogo/ (canónico desde 2026-06-17)
+// Page ID: 1656
+add_action( 'template_redirect', function() {
+    if ( is_page( 'ecosistemas' ) && ! is_preview() ) {
+        wp_redirect( home_url( '/catalogo/' ), 301 );
+        exit;
+    }
+}, 10 );
+
 // =============================================================================
 // RESELLER TABS (page-ecosistemas.php)
 // =============================================================================
