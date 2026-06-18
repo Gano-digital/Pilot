@@ -9,16 +9,36 @@
  * 2. Título: "Hosting WordPress Colombia — Gano Digital"
  *    Slug: hosting-wordpress-colombia  (URL: gano.digital/hosting-wordpress-colombia)
  * 3. Plantilla: "SEO Landing Page — Gano Digital"
- * 4. Agregar los campos personalizados (usar plugin "Advanced Custom Fields" o "Custom Fields"):
+ * 4. En el editor de bloques, pegar el bloque HTML de abajo en un bloque "HTML personalizado"
+ * 5. Agregar/confirmar los campos personalizados (ACF opcional; con WordPress core basta habilitar
+ *    "Campos personalizados" desde Preferencias → Paneles):
  *    - seo_keyword_target = "hosting wordpress colombia"
  *    - seo_h1_override    = "Hosting WordPress en Colombia con Seguridad Empresarial"
  *    - seo_cta_text       = "Ver planes desde $196.000 COP/mes"
  *    - seo_cta_url        = https://gano.digital/ecosistemas
- * 5. Copiar el bloque HTML de abajo en el editor de WordPress (modo HTML/Código)
- * 6. En Rank Math → Editar página:
+ * 6. En Rank Math → Editar página (si Rank Math está disponible en el runtime):
  *    - Focus Keyword: hosting wordpress colombia
  *    - SEO Title: Hosting WordPress Colombia | Seguridad + Soporte 24/7 | Gano Digital
  *    - Meta Description: Hosting WordPress en Colombia desde $196.000 COP/mes. NVMe Gen4, SSL gratuito, Wordfence, soporte 24/7 en español y pago por PSE, Nequi o tarjeta. Migración incluida.
+ * 7. Guardar como borrador, revisar excerpt/CTA y publicar cuando la landing esté validada
+ *
+ * Roadmap manual para keywords adicionales:
+ * - vps-colombia                    → Título: "VPS Colombia — Servidores Virtuales en Bogotá | Gano Digital"
+ * - hosting-woocommerce-colombia    → Título: "Hosting WooCommerce Colombia | PSE + Nequi integrado | Gano Digital"
+ * - hosting-barato-colombia         → Título: "Hosting Barato Colombia | Desde $196.000 COP | Gano Digital"
+ * - hosting-bogota                  → Título: "Hosting en Bogotá Colombia | Servidor local + Soporte 24/7 | Gano Digital"
+ * En los 4 casos el proceso es el mismo: crear página, asignar plantilla, pegar HTML final,
+ * completar metas SEO y revisar CTA antes de publicar.
+ *
+ * Blockers técnicos verificados antes de publicar:
+ * - El template depende de `templates/page-seo-landing.php` y de los assets
+ *   `css/gano-catalog-intelligence.css` + `js/gano-catalog-intelligence.js`, que hoy sí se
+ *   encolan desde `functions.php` para esta plantilla.
+ * - Las 4 keywords adicionales solo tienen metadata/roadmap en este archivo; todavía no tienen
+ *   bloque HTML dedicado, por lo que requieren copy final antes de publicación.
+ * - Si el box de campos personalizados no aparece en wp-admin, hay que habilitarlo desde
+ *   Preferencias del editor antes de cargar `seo_keyword_target`, `seo_h1_override`,
+ *   `seo_cta_text` y `seo_cta_url`.
  * ──────────────────────────────────────────────────────────────────────────────
  *
  * Fase 3 — SEO y Performance — Gano Digital, Marzo 2026
@@ -28,8 +48,16 @@
  * CONTENIDO HTML PARA COPIAR EN WORDPRESS:
  * (Copiar todo el bloque HTML de abajo en el editor de bloques → Bloque HTML personalizado)
  */
-
-$landing_content_html = <<<'HTML'
+/**
+ * Devuelve el HTML base de la landing HWC (hosting-wordpress-colombia).
+ *
+ * Se usa como fuente única del contenido tanto para importación manual
+ * como para la creación programática del borrador.
+ *
+ * @return string
+ */
+function gano_get_seo_landing_hwc_content(): string {
+    return <<<'HTML'
 <!-- wp:html -->
 <div class="gano-landing-body">
 
@@ -204,12 +232,20 @@ $landing_content_html = <<<'HTML'
 </div>
 <!-- /wp:html -->
 HTML;
+}
 
 // ─── Exportar el contenido como archivo de importación para WordPress ──────────
 // Este archivo no se carga como plugin ni template; es una referencia de contenido.
-// El contenido HTML de $landing_content_html se importa manualmente a WordPress.
+// El contenido HTML de gano_get_seo_landing_hwc_content() se importa manualmente a WordPress.
 
-// Para uso programático al crear la página via WP-CLI o plugin de setup:
+/**
+ * Crea el borrador de la landing HWC (hosting-wordpress-colombia).
+ *
+ * Disponible para ejecuciones manuales vía WP-CLI o desde plugins/setup scripts
+ * que necesiten sembrar la landing principal con metadatos SEO base.
+ *
+ * @return int|false
+ */
 function gano_create_seo_landing_page_hwc(): int|false {
     $page_title = 'Hosting WordPress Colombia — Gano Digital';
     $slug       = 'hosting-wordpress-colombia';
@@ -223,7 +259,7 @@ function gano_create_seo_landing_page_hwc(): int|false {
     $page_id = wp_insert_post( array(
         'post_title'    => $page_title,
         'post_name'     => $slug,
-        'post_content'  => $GLOBALS['gano_landing_hwc_content'] ?? '',
+        'post_content'  => gano_get_seo_landing_hwc_content(),
         'post_status'   => 'draft', // Publicar manualmente después de revisar
         'post_type'     => 'page',
         'post_author'   => 1,
