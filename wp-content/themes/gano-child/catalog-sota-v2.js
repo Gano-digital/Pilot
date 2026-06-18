@@ -1,5 +1,5 @@
 /**
- * catalog-sota.js v2.2.0
+ * catalog-sota.js v2.2.1
  * Gano Digital — Motor de catálogo SOTA
  * Arquitectura: IIFE · strict · sin dependencias externas
  * Productos: tiers bajo/medio/alto — categorías hosting · vps · dominio · seguridad · email · acceso · dev
@@ -20,6 +20,10 @@
  *   (cart.secureserver.net con PFID) en lugar de godaddy.com público.
  *   Cuando PFID = null (pendiente de configurar en RCC), el botón
  *   cae back a WhatsApp para no perder la conversión.
+ *
+ * v2.2.1 — Auditoría issue #315:
+ *   - WAF Pro (PFID 557) vuelve a usar cart.secureserver.net
+ *   - Solo productos con PFID null o WA caen a WhatsApp
  */
 
 (function () {
@@ -137,7 +141,6 @@
       'diagnostico':    encodeURIComponent('Quiero agendar un Diagnóstico de Soberanía con Gano Digital.'),
       'disenio-custom': encodeURIComponent('Me interesa el Ecosistema SOTA de Gano Digital.'),
       'vps-alpha':      encodeURIComponent('Quiero información sobre el VPS Pro Alpha de Gano Digital.'),
-      'waf-pro':        encodeURIComponent('Quiero información sobre seguridad WAF Pro de Gano Digital.'),
     };
     if (waCustom[productId]) return `https://wa.me/${WA_NUM}?text=${waCustom[productId]}`;
 
@@ -223,11 +226,11 @@
     ).join('');
 
     /* CTA principal
-     * - Productos WA (VPS, WAF, diagnóstico, diseño) → siempre WhatsApp
+     * - Productos WA (VPS, diagnóstico, diseño) → siempre WhatsApp
      * - Productos con PFID listo → "Comenzar ahora" (carrito Reseller)
      * - Productos con PFID pendiente (null) → WhatsApp fallback + tooltip
      */
-    const isWaProduct = ['diagnostico','disenio-custom','vps-alpha','waf-pro'].includes(p.id);
+    const isWaProduct = ['diagnostico','disenio-custom','vps-alpha'].includes(p.id);
     const hasCart     = pfidReady(p.id);
     const ctaLabel = isWaProduct
       ? '<i class="fab fa-whatsapp"></i> Consultar por WhatsApp'
