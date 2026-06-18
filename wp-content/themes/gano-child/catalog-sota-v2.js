@@ -77,6 +77,9 @@
     'wp-starter':        '457',   // WP Managed (misma familia)
     'hosting-basico':    null,    // Hosting compartido — PFID pendiente en RCC
     'dom-com':           null,    // Dominio .com — WA fallback
+    'dom-net':           null,    // Dominio .net — WA fallback
+    'dom-io':            null,    // Dominio .io — WA fallback
+    'dom-store':         null,    // Dominio .store — WA fallback
     'ssl-dv':            '75',    // SSL familia 75
 
     // ── Dev — herramientas para desarrolladores ───────────────────

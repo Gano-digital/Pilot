@@ -491,6 +491,77 @@ window.GANO_PRODUCTS = [
     bestFor: ['Blog o portal que recopila datos de contacto', 'Tienda básica con formulario de pago', 'Área de clientes con login y contraseña'],
   },
 
+  // ======= ACCESO — Dominios adicionales =======
+  {
+    id: 'dom-net',
+    category: 'acceso',
+    tier_rank: 'bajo',
+    objectives: ['corporativo', 'agencia'],
+    tier: 'Dominio · Registro anual',
+    name: 'Dominio .net',
+    icon: 'fa-network-wired',
+    tagline: 'Alternativa sólida y respetada para proyectos de tecnología.',
+    pitch: 'Una de las extensiones originales de internet, con alta disponibilidad de nombres y reconocimiento global. Ideal si el .com de tu marca ya está tomado.',
+    monthly: null,
+    yearly: 52000,
+    featured: false,
+    badge: null,
+    features: [
+      { label: 'Extensión',        value: '.net — tecnología y redes' },
+      { label: 'Privacidad WHOIS', value: 'Incluida' },
+      { label: 'DNS anycast',      value: 'Alta velocidad global' },
+      { label: 'Transferencia',    value: 'Sin costo' },
+    ],
+    specs: { registro: 'ICANN acreditado', vigencia: '1 año renovable' },
+    bestFor: ['Proyecto tech sin .com disponible', 'Infraestructura de redes IT', 'Complemento de marca'],
+  },
+  {
+    id: 'dom-io',
+    category: 'acceso',
+    tier_rank: 'bajo',
+    objectives: ['agencia', 'ecommerce'],
+    tier: 'Dominio · Registro anual',
+    name: 'Dominio .io',
+    icon: 'fa-terminal',
+    tagline: 'El dominio preferido de startups tecnológicas y productos SaaS.',
+    pitch: 'Corto, moderno y con gran disponibilidad de nombres. El estándar de facto para productos de software, APIs y herramientas de desarrollo.',
+    monthly: null,
+    yearly: 160000,
+    featured: false,
+    badge: null,
+    features: [
+      { label: 'Extensión',        value: '.io — tech & SaaS' },
+      { label: 'Privacidad WHOIS', value: 'Incluida' },
+      { label: 'DNS anycast',      value: 'Alta velocidad global' },
+      { label: 'Reconocimiento',   value: 'Alto en comunidad tech' },
+    ],
+    specs: { registro: 'ICANN acreditado', vigencia: '1 año renovable' },
+    bestFor: ['SaaS y productos de software', 'Startups tecnológicas', 'Herramientas para desarrolladores'],
+  },
+  {
+    id: 'dom-store',
+    category: 'acceso',
+    tier_rank: 'bajo',
+    objectives: ['ecommerce'],
+    tier: 'Dominio · Registro anual',
+    name: 'Dominio .store',
+    icon: 'fa-store',
+    tagline: 'Dile al mundo exactamente qué haces desde la URL.',
+    pitch: 'Extensión diseñada para comercio electrónico. Alta disponibilidad de nombres de marca y precio de entrada muy bajo. Perfecto para tu primera tienda online.',
+    monthly: null,
+    yearly: 12000,
+    featured: false,
+    badge: null,
+    features: [
+      { label: 'Extensión',        value: '.store — comercio electrónico' },
+      { label: 'Privacidad WHOIS', value: 'Incluida' },
+      { label: 'DNS anycast',      value: 'Alta velocidad global' },
+      { label: 'Disponibilidad',   value: 'Alta — más nombres libres' },
+    ],
+    specs: { registro: 'ICANN acreditado', vigencia: '1 año renovable' },
+    bestFor: ['Primera tienda online', 'Marca de retail', 'E-commerce con presupuesto ajustado'],
+  },
+
   // ======= DEV — WordPress Deluxe =======
   {
     id: 'wp-deluxe',
@@ -596,18 +667,59 @@ window.GANO_PRODUCTS = [
 
 // ======= GLOSARIO =======
 window.GANO_GLOSSARY = {
-  'NVMe Gen4': { title: 'NVMe Gen4', body: 'Non-Volatile Memory Express sobre PCIe 4.0. Hasta 7.500 MB/s — 15× más rápido que un SSD SATA. Se traduce en cargas WordPress 3-5× más veloces.', metric: '7.500 MB/s' },
-  'WAF Capa 7': { title: 'WAF Capa 7', body: 'Firewall que opera en la capa de aplicación HTTP/HTTPS. Bloquea SQL injection, XSS, CSRF y bots antes de que toquen tu WordPress.', metric: 'OWASP Top 10' },
-  'TLS 1.3': { title: 'TLS 1.3', body: 'Protocolo que cifra HTTPS. Handshake más rápido (1-RTT), cifras obsoletas eliminadas, resistencia post-cuántica opcional.', metric: '1-RTT handshake' },
-  'CDN': { title: 'CDN Global', body: 'Red de servidores distribuidos que sirve tu contenido desde el POP más cercano al visitante. Reduce latencia 60-80% en audiencias internacionales.', metric: '200+ POPs' },
-  'Object Cache': { title: 'Object Cache (Redis)', body: 'Caché en RAM para queries repetitivas de WordPress. Evita que cada visita pegue a MySQL. Soporta 10× más tráfico sin degradarse.', metric: 'RAM-speed access' },
-  'Nodo Bogotá': { title: 'Nodo Alpha Bogotá', body: 'Centro de datos en Colombia. Latencia <20ms para usuarios locales. Cumple Ley 1581 de protección de datos.', metric: '<20ms latencia local' },
-  'WHOIS': { title: 'Privacidad WHOIS', body: 'Base de datos pública del dueño de un dominio. Sin privacidad, tu teléfono y dirección quedan expuestos. Gano activa privacidad WHOIS gratis, siempre.', metric: 'Datos protegidos' },
-  'SLA 99.95%': { title: 'SLA 99.95%', body: 'Service Level Agreement. 99.95% de uptime permite máximo 21.6 min de caída al mes. Si incumplimos, se acredita proporcional.', metric: '21.6 min/mes máx' },
-  'TTFB': { title: 'TTFB', body: 'Time to First Byte: tiempo entre que el navegador pide la página y recibe el primer byte. Google recomienda <200ms. Gano promedia 45-80ms.', metric: 'Target: <200ms' },
-  'DDoS': { title: 'Mitigación DDoS', body: 'Ataques que saturan tu servidor con tráfico falso. Gano mitiga hasta 10 Gbps en capa de red + filtrado inteligente en capa 7.', metric: 'Hasta 10 Gbps' },
-  'Post-Cuántico': { title: 'Cifrado Post-Cuántico', body: 'Algoritmos diseñados para resistir ataques de computadoras cuánticas. Kyber-768 opt-in en nodo Alpha Bogotá.', metric: 'Kyber-768' },
+  'NVMe Gen4':     { title: 'NVMe Gen4',              body: 'Non-Volatile Memory Express sobre PCIe 4.0. Hasta 7.500 MB/s — 15× más rápido que un SSD SATA. Se traduce en cargas WordPress 3-5× más veloces.',            metric: '7.500 MB/s' },
+  'WAF Capa 7':    { title: 'WAF Capa 7',              body: 'Firewall que opera en la capa de aplicación HTTP/HTTPS. Bloquea SQL injection, XSS, CSRF y bots antes de que toquen tu WordPress.',                           metric: 'OWASP Top 10' },
+  'TLS 1.3':       { title: 'TLS 1.3',                 body: 'Protocolo que cifra HTTPS. Handshake más rápido (1-RTT), cifras obsoletas eliminadas, resistencia post-cuántica opcional.',                                    metric: '1-RTT handshake' },
+  'CDN':           { title: 'CDN Global',               body: 'Red de servidores distribuidos que sirve tu contenido desde el POP más cercano al visitante. Reduce latencia 60-80% en audiencias internacionales.',           metric: '200+ POPs' },
+  'Object Cache':  { title: 'Object Cache (Redis)',     body: 'Caché en RAM para queries repetitivas de WordPress. Evita que cada visita pegue a MySQL. Soporta 10× más tráfico sin degradarse.',                            metric: 'RAM-speed access' },
+  'Nodo Bogotá':   { title: 'Nodo Alpha Bogotá',       body: 'Centro de datos en Colombia. Latencia <20ms para usuarios locales. Cumple Ley 1581 de protección de datos.',                                                   metric: '<20ms latencia local' },
+  'WHOIS':         { title: 'Privacidad WHOIS',         body: 'Base de datos pública del dueño de un dominio. Sin privacidad, tu teléfono y dirección quedan expuestos. Gano activa privacidad WHOIS gratis, siempre.',        metric: 'Datos protegidos' },
+  'SLA 99.95%':    { title: 'SLA 99.95%',              body: 'Service Level Agreement. 99.95% de uptime permite máximo 21.6 min de caída al mes. Si incumplimos, se acredita proporcional.',                                 metric: '21.6 min/mes máx' },
+  'TTFB':          { title: 'TTFB',                     body: 'Time to First Byte: tiempo entre que el navegador pide la página y recibe el primer byte. Google recomienda <200ms. Gano promedia 45-80ms.',                    metric: 'Target: <200ms' },
+  'DDoS':          { title: 'Mitigación DDoS',          body: 'Ataques que saturan tu servidor con tráfico falso. Gano mitiga hasta 10 Gbps en capa de red + filtrado inteligente en capa 7.',                                metric: 'Hasta 10 Gbps' },
+  'Post-Cuántico': { title: 'Cifrado Post-Cuántico',    body: 'Algoritmos diseñados para resistir ataques de computadoras cuánticas. Kyber-768 opt-in en nodo Alpha Bogotá.',                                                metric: 'Kyber-768' },
+  'KVM':           { title: 'Virtualización KVM',       body: 'Aislamiento a nivel de kernel. Tus recursos están 100% garantizados y no son compartidos con otros inquilinos. Sin overselling.',                              metric: 'Recursos dedicados' },
+  'cPanel':        { title: 'cPanel',                   body: 'Panel de control estándar de la industria web. Gestiona correos, bases de datos y archivos sin usar la terminal. Incluido en hosting compartido y WHP.',        metric: 'Estándar global' },
+  'AMD EPYC':      { title: 'Procesadores AMD EPYC™',   body: 'Arquitectura de servidores más eficiente de la actualidad. Frecuencia sostenida más alta y más cores que la generación anterior de Intel Xeon.',              metric: 'Alto throughput' },
+  'Redis':         { title: 'Redis Object Cache',       body: 'Base de datos en memoria RAM que almacena resultados de queries repetidas. Elimina carga de MySQL en picos de tráfico. Estándar en hosting WP premium.',       metric: 'RAM-speed' },
+  'SSL EV':        { title: 'SSL Validación Extendida', body: 'Certificado que verifica la identidad legal de tu empresa, no solo el dominio. Muestra el nombre de la organización en el certificado. Máxima confianza.',    metric: 'Verificación legal' },
 };
+
+// ======= FAQs =======
+window.GANO_FAQS = [
+  {
+    q: '¿Puedo cambiar de plan después?',
+    a: 'Sí. Puedes migrar a un plan superior en cualquier momento. El cambio se procesa en menos de 24 horas hábiles y mantienes todos tus datos intactos.',
+  },
+  {
+    q: '¿Qué significa "facturación en COP"?',
+    a: 'Tu tarjeta o transferencia se debita en pesos colombianos. No hay conversiones de divisa ni sorpresas de tipo de cambio al final del mes.',
+  },
+  {
+    q: '¿El dominio está incluido en el hosting?',
+    a: 'Los planes de hosting no incluyen dominio por defecto. Puedes añadir un .com o .co desde la categoría Acceso con descuento al contratar junto con un plan.',
+  },
+  {
+    q: '¿Qué es el Agente IA de Gano?',
+    a: 'Es un asistente inteligente disponible 24/7 que monitorea tu sitio, detecta anomalías, responde consultas técnicas y puede ejecutar tareas básicas de administración de forma autónoma.',
+  },
+  {
+    q: '¿Tienen garantía de reembolso?',
+    a: 'Sí. Todos los planes incluyen 30 días de garantía. Si no estás satisfecho, te devolvemos el 100% sin preguntas.',
+  },
+  {
+    q: '¿Necesito saber programar para usar los planes de hosting?',
+    a: 'No para los planes WordPress Starter y Business NVMe — están preinstalados y administrados. Los planes de la categoría Dev (cPanel, SSH) sí requieren conocimientos técnicos básicos.',
+  },
+];
+
+// ======= TRUST SIGNALS =======
+window.GANO_TRUST = [
+  { icon: 'fa-shield-halved', title: 'Infraestructura GoDaddy', body: 'Programa reseller autorizado con estándares globales de datacenter y red en más de 200 POPs.' },
+  { icon: 'fa-clock',          title: '99.9% Disponibilidad',    body: 'SLA comprometido con monitoreo proactivo 24/7. Si no cumplimos, se acredita proporcional.' },
+  { icon: 'fa-peso-sign',      title: 'Facturación en COP',      body: 'Pesos colombianos. Sin conversiones de divisa ni sorpresas de tipo de cambio.' },
+  { icon: 'fa-headset',        title: 'Soporte en español',      body: 'Primera respuesta en horas, no en días. Equipo técnico colombiano que entiende tu contexto.' },
+];
 
 // ======= TIMELINE =======
 window.GANO_TIMELINE = [
@@ -628,6 +740,7 @@ window.GANO_OBJECTIVES = [
   { id: 'corporativo',label: 'Corporativo', icon: 'fa-building' },
   { id: 'ecommerce',  label: 'E-commerce',  icon: 'fa-store' },
   { id: 'agencia',    label: 'Agencia',     icon: 'fa-sitemap' },
+  { id: 'enterprise', label: 'Enterprise',  icon: 'fa-city' },
 ];
 
 // ======= CATEGORÍAS =======
