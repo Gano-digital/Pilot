@@ -48,8 +48,8 @@
  * CONTENIDO HTML PARA COPIAR EN WORDPRESS:
  * (Copiar todo el bloque HTML de abajo en el editor de bloques → Bloque HTML personalizado)
  */
-
-$landing_content_html = <<<'HTML'
+function gano_get_seo_landing_hwc_content(): string {
+    return <<<'HTML'
 <!-- wp:html -->
 <div class="gano-landing-body">
 
@@ -224,15 +224,14 @@ $landing_content_html = <<<'HTML'
 </div>
 <!-- /wp:html -->
 HTML;
+}
 
 // ─── Exportar el contenido como archivo de importación para WordPress ──────────
 // Este archivo no se carga como plugin ni template; es una referencia de contenido.
-// El contenido HTML de $landing_content_html se importa manualmente a WordPress.
+// El contenido HTML de gano_get_seo_landing_hwc_content() se importa manualmente a WordPress.
 
 // Para uso programático al crear la página via WP-CLI o plugin de setup:
 function gano_create_seo_landing_page_hwc(): int|false {
-    global $landing_content_html;
-
     $page_title = 'Hosting WordPress Colombia — Gano Digital';
     $slug       = 'hosting-wordpress-colombia';
 
@@ -245,7 +244,7 @@ function gano_create_seo_landing_page_hwc(): int|false {
     $page_id = wp_insert_post( array(
         'post_title'    => $page_title,
         'post_name'     => $slug,
-        'post_content'  => $landing_content_html,
+        'post_content'  => gano_get_seo_landing_hwc_content(),
         'post_status'   => 'draft', // Publicar manualmente después de revisar
         'post_type'     => 'page',
         'post_author'   => 1,
