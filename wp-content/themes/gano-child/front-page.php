@@ -526,9 +526,9 @@ $url_login = wp_login_url( home_url() );
 					<h4><?php esc_html_e( 'Empresa', 'gano-child' ); ?></h4>
 					<ul>
 						<li><a href="<?php echo esc_url( home_url( '/nosotros/' ) ); ?>"><?php esc_html_e( 'Sobre nosotros', 'gano-child' ); ?></a></li>
-						<li><a href="#"><?php esc_html_e( 'Estado de red', 'gano-child' ); ?></a></li>
+						<li><a href="https://status.godaddy.com/" target="_blank" rel="noopener"><?php esc_html_e( 'Estado de red', 'gano-child' ); ?></a></li>
 						<li><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>"><?php esc_html_e( 'Blog', 'gano-child' ); ?></a></li>
-						<li><a href="#"><?php esc_html_e( 'Preguntas frecuentes', 'gano-child' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/comenzar-aqui/' ) ); ?>"><?php esc_html_e( 'Preguntas frecuentes', 'gano-child' ); ?></a></li>
 						<li><a href="<?php echo esc_url( home_url( '/contacto/' ) ); ?>"><?php esc_html_e( 'Contacto', 'gano-child' ); ?></a></li>
 					</ul>
 				</div>
@@ -538,7 +538,7 @@ $url_login = wp_login_url( home_url() );
 					<ul>
 						<li><a href="<?php echo esc_url( home_url( '/terminos/' ) ); ?>"><?php esc_html_e( 'Términos y condiciones', 'gano-child' ); ?></a></li>
 						<li><a href="<?php echo esc_url( home_url( '/privacidad/' ) ); ?>"><?php esc_html_e( 'Política de privacidad', 'gano-child' ); ?></a></li>
-						<li><a href="#"><?php esc_html_e( 'Política de uso', 'gano-child' ); ?></a></li>
+						<li><a href="<?php echo esc_url( home_url( '/terminos/' ) ); ?>"><?php esc_html_e( 'Política de uso', 'gano-child' ); ?></a></li>
 						<li><a href="<?php echo esc_url( home_url( '/sla/' ) ); ?>"><?php esc_html_e( 'SLA', 'gano-child' ); ?></a></li>
 					</ul>
 				</div>

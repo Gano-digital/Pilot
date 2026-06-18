@@ -105,8 +105,11 @@ jobs:
           mkdir -p "$TMPDIR/wp-content/plugins"
           mkdir -p "$TMPDIR/wp-content/mu-plugins"
 
-          # Copy theme
+          # Copy theme (excluir carpetas de desarrollo que no van a producción)
           cp -r wp-content/themes/gano-child "$TMPDIR/wp-content/themes/"
+          rm -rf "$TMPDIR/wp-content/themes/gano-child/archive"
+          rm -f  "$TMPDIR/wp-content/themes/gano-child/front-page-draft.php"
+          rm -f  "$TMPDIR/wp-content/themes/gano-child/front-page.backup-"*.php
 
           # Copy MU plugins
           cp wp-content/mu-plugins/gano-*.php "$TMPDIR/wp-content/mu-plugins/" 2>/dev/null || true

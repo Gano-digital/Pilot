@@ -59,21 +59,25 @@ function gano_enqueue_premium_styles() {
         '1.0.0'
     );
 
-    // CSS de ecosistemas (mejorado)
-    wp_enqueue_style(
-        'gano-ecosistemas',
-        get_stylesheet_directory_uri() . '/css/ecosistemas.css',
-        array(),
-        '1.0.0'
-    );
+    // CSS de ecosistemas — solo en templates que lo necesitan
+    if ( is_page_template( 'templates/page-ecosistemas-v3.php' ) || is_page( 'ecosistemas' ) || is_page( 'catalogo' ) ) {
+        wp_enqueue_style(
+            'gano-ecosistemas',
+            get_stylesheet_directory_uri() . '/css/ecosistemas.css',
+            array(),
+            '1.0.0'
+        );
+    }
 
-    // CSS de página Dominios
-    wp_enqueue_style(
-        'gano-dominios',
-        get_stylesheet_directory_uri() . '/css/dominios.css',
-        array(),
-        '1.0.0'
-    );
+    // CSS de página Dominios — solo en esa página
+    if ( is_page_template( 'templates/page-dominios.php' ) || is_page( 'dominios' ) ) {
+        wp_enqueue_style(
+            'gano-dominios',
+            get_stylesheet_directory_uri() . '/css/dominios.css',
+            array(),
+            '1.0.0'
+        );
+    }
 
     // CSS de CTA Registro (Fase 2)
     wp_enqueue_style(
@@ -813,7 +817,10 @@ function gano_child_enqueue_styles() {
         // Gano SOTA FX Handler (The "Vivid & Animated" Experience)
         wp_enqueue_script( 'gano-sota-fx', get_stylesheet_directory_uri() . '/js/gano-sota-fx.js', array( 'gsap-scroll-trigger' ), '1.0.0', true );
     }
-    wp_enqueue_style( 'gano-sota-animations', get_stylesheet_directory_uri() . '/gano-sota-animations.css', array(), '2.0.0' );
+    // SOTA animations — solo en páginas con animaciones complejas, no globalmente
+    if ( is_front_page() || $needs_gsap ) {
+        wp_enqueue_style( 'gano-sota-animations', get_stylesheet_directory_uri() . '/gano-sota-animations.css', array(), '2.0.0' );
+    }
 
     // Constellation — HUD base (chips, paneles) con motion tokens unificados
     wp_enqueue_style( 'gano-constellation', get_stylesheet_directory_uri() . '/css/gano-constellation.css', array( 'gano-child-style' ), '1.0.0' );
