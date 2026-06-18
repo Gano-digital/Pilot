@@ -73,7 +73,7 @@ get_header();
                 ?>
                 <div class="tld-card" data-tld="<?php echo esc_attr($tld['tld']); ?>">
                     <h3><?php echo esc_html($tld['extension']); ?></h3>
-                    <p class="tld-price"><?php esc_html_e( 'Ver precio actual →', 'gano-child' ); ?></p>
+                    <p class="tld-price"><?php esc_html_e( 'Consultar precio vigente en el buscador', 'gano-child' ); ?></p>
                     <p class="tld-description"><?php echo esc_html($tld['desc']); ?></p>
                     <a href="#dominios-search"
                        class="tld-button"

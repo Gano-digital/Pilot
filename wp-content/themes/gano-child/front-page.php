@@ -16,11 +16,27 @@ $url_dominios = function_exists( 'gano_resolve_page_url' )
 	? gano_resolve_page_url( 'dominios' )
 	: home_url( '/dominios/' );
 
+// /catalogo/ es la URL canónica; el resolver conserva compatibilidad con slugs históricos.
 $url_catalogo = function_exists( 'gano_resolve_page_url' )
 	? gano_resolve_page_url( 'shop-premium', 'catalogo', 'ecosistemas' )
 	: home_url( '/catalogo/' );
 
-$precio_desde = sanitize_text_field( (string) get_option( 'gano_precio_desde', '$39.000' ) );
+$precio_desde_default      = '$39.000';
+$precio_desde_raw          = get_option( 'gano_precio_desde', $precio_desde_default );
+$precio_desde_source       = is_scalar( $precio_desde_raw ) ? trim( (string) $precio_desde_raw ) : $precio_desde_default;
+$precio_desde_before_comma = strtok( $precio_desde_source, ',' );
+
+if ( false === $precio_desde_before_comma ) {
+	$precio_desde_before_comma = $precio_desde_source;
+}
+
+$precio_desde_num = preg_replace( '/\D+/', '', $precio_desde_before_comma );
+
+if ( '' === $precio_desde_num ) {
+	$precio_desde_num = preg_replace( '/\D+/', '', $precio_desde_default );
+}
+
+$precio_desde = '$' . number_format( (int) $precio_desde_num, 0, ',', '.' );
 
 $url_login = wp_login_url( home_url() );
 ?>
