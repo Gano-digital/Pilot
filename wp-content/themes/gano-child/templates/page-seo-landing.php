@@ -31,6 +31,7 @@ $keyword        = get_post_meta( $post_id, 'seo_keyword_target', true ) ?: '';
 $h1_override    = get_post_meta( $post_id, 'seo_h1_override',    true ) ?: get_the_title();
 $catalog_url    = function_exists( 'gano_resolve_page_url' ) ? gano_resolve_page_url( 'shop-premium', 'catalogo', 'ecosistemas' ) : home_url( '/catalogo/' );
 $contact_url    = function_exists( 'gano_resolve_page_url' ) ? gano_resolve_page_url( 'contacto' ) : home_url( '/contacto/' );
+$fallback_cta_label = 'Hablar con el equipo';
 $cta_text       = get_post_meta( $post_id, 'seo_cta_text',       true ) ?: 'Ver planes de hosting';
 $cta_url        = get_post_meta( $post_id, 'seo_cta_url',        true ) ?: $catalog_url;
 
@@ -172,15 +173,16 @@ get_header();
                         if ( ! in_array( $catalog_row['cat'], array( 'hostingwebcpanel', 'webhostingplus', 'wordpressadministrado' ), true ) ) {
                             continue;
                         }
+                        // Contrato mínimo de CTA para tarjetas del catálogo: url, label, target y status.
                         $cta = function_exists( 'gano_resolver_catalog_cta' ) ? gano_resolver_catalog_cta( $catalog_row ) : array(
                             'url'    => $contact_url,
-                            'label'  => 'Hablar con el equipo',
+                            'label'  => $fallback_cta_label,
                             'target' => '',
                             'status' => 'sync-missing',
                         );
                         if ( empty( $cta['url'] ) || '#' === $cta['url'] ) {
                             $cta['url']   = $contact_url;
-                            $cta['label'] = 'Hablar con el equipo';
+                            $cta['label'] = $fallback_cta_label;
                         }
                         $card_class = 'gano-plan-card gano-km-card';
                         if ( 'sync-missing' === $cta['status'] ) {
