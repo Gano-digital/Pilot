@@ -18,7 +18,7 @@ get_header();
     </section>
 
     <!-- BUSCADOR DE DOMINIOS -->
-    <section class="dominios-search-section">
+    <section id="dominios-search" class="dominios-search-section">
         <h2 class="dominios-search-title">Busca tu Dominio Ideal</h2>
         <div class="search-container">
             <?php echo do_shortcode('[rstore_domain_search page_size="5"]'); ?>
@@ -33,55 +33,83 @@ get_header();
             $tlds = [
                 [
                     'extension' => '.CO',
-                    'nombre' => 'Colombia',
-                    'precio' => '$90.000',
-                    'desc' => 'Presencia nacional de máxima autoridad',
+                    'tld'       => 'co',
+                    'nombre'    => 'Colombia',
+                    'precio'    => '$90.000',
+                    'desc'      => 'Presencia nacional de máxima autoridad',
                 ],
                 [
                     'extension' => '.COM',
-                    'nombre' => 'Global',
-                    'precio' => '$75.000',
-                    'desc' => 'El estándar internacional de credibilidad',
+                    'tld'       => 'com',
+                    'nombre'    => 'Global',
+                    'precio'    => '$75.000',
+                    'desc'      => 'El estándar internacional de credibilidad',
                 ],
                 [
                     'extension' => '.NET',
-                    'nombre' => 'Infraestructura',
-                    'precio' => '$85.000',
-                    'desc' => 'La red técnica de confianza',
+                    'tld'       => 'net',
+                    'nombre'    => 'Infraestructura',
+                    'precio'    => '$85.000',
+                    'desc'      => 'La red técnica de confianza',
                 ],
                 [
                     'extension' => '.TECH',
-                    'nombre' => 'Tecnología',
-                    'precio' => '$160.000',
-                    'desc' => 'Para startups e innovadores',
+                    'tld'       => 'tech',
+                    'nombre'    => 'Tecnología',
+                    'precio'    => '$160.000',
+                    'desc'      => 'Para startups e innovadores',
                 ],
                 [
                     'extension' => '.BIZ',
-                    'nombre' => 'Negocio',
-                    'precio' => '$110.000',
-                    'desc' => 'Enfoque operativo y profesional',
+                    'tld'       => 'biz',
+                    'nombre'    => 'Negocio',
+                    'precio'    => '$110.000',
+                    'desc'      => 'Enfoque operativo y profesional',
                 ],
                 [
                     'extension' => '.AI',
-                    'nombre' => 'Inteligencia Artificial',
-                    'precio' => '$350.000',
-                    'desc' => 'La frontera de la innovación',
+                    'tld'       => 'ai',
+                    'nombre'    => 'Inteligencia Artificial',
+                    'precio'    => '$350.000',
+                    'desc'      => 'La frontera de la innovación',
                 ],
             ];
 
             foreach ($tlds as $tld) {
                 ?>
-                <div class="tld-card">
+                <div class="tld-card" data-tld="<?php echo esc_attr($tld['tld']); ?>">
                     <h3><?php echo esc_html($tld['extension']); ?></h3>
                     <div class="tld-price"><?php echo esc_html($tld['precio']); ?><small>/año</small></div>
                     <p class="tld-description"><?php echo esc_html($tld['desc']); ?></p>
-                    <a href="#" class="tld-button">Registrar</a>
+                    <a href="#dominios-search"
+                       class="tld-button"
+                       data-tld="<?php echo esc_attr($tld['tld']); ?>"
+                       aria-label="Registrar dominio <?php echo esc_attr($tld['extension']); ?>">
+                        Registrar
+                    </a>
                 </div>
                 <?php
             }
             ?>
         </div>
     </section>
+
+    <!-- TLD pre-fill: cuando el usuario hace clic en un botón TLD, rellena el input del buscador -->
+    <script>
+    (function () {
+        document.querySelectorAll('.tld-button[data-tld]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var tld = btn.getAttribute('data-tld');
+                // El widget rstore renderiza un input[type=text] dentro de .rstore-domain-search
+                var input = document.querySelector('.rstore-domain-search input[type="text"]');
+                if (input && tld) {
+                    input.value = 'midominio.' + tld;
+                    input.focus();
+                }
+            });
+        });
+    })();
+    </script>
 
     <!-- CTA FINAL -->
     <section class="dominios-cta-final">

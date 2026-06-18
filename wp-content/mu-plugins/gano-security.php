@@ -337,6 +337,8 @@ add_action( 'send_headers', function() {
         //   • upgrade-insecure-requests fuerza HTTPS en todos los sub-recursos.
         //   • frame-src incluye reseller.godaddy.com para el carrito Reseller (Fase 4).
         //   • frame-src incluye reseller-store.godaddy.com para iframe embebido Reseller Store (Fase 4).
+        //   • connect-src incluye storefront/cart.secureserver.net para la búsqueda de dominios (rstore widget).
+        //   • frame-src incluye cart.secureserver.net para el checkout de dominios GoDaddy Reseller.
         //
         $csp = implode( '; ', [
             "default-src 'self'",
@@ -344,8 +346,8 @@ add_action( 'send_headers', function() {
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' data: https://fonts.gstatic.com",
             "img-src 'self' data: https:",
-            "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://api.godaddy.com https://myh.godaddy.com",
-            "frame-src 'self' https://reseller.godaddy.com https://reseller-store.godaddy.com https://www.godaddy.com",
+            "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://api.godaddy.com https://myh.godaddy.com https://storefront.secureserver.net https://cart.secureserver.net",
+            "frame-src 'self' https://reseller.godaddy.com https://reseller-store.godaddy.com https://www.godaddy.com https://cart.secureserver.net",
             "upgrade-insecure-requests",
             "report-uri /wp-json/gano/v1/csp-report",
         ] );
