@@ -3,7 +3,7 @@
   'use strict';
 
   const PLID = '599667';
-  const WA_NUM = '573000000000';
+  const WA_NUM = '573135646123';
   const waMsg = (name) => `Hola, quiero información sobre el plan ${name} de Gano Digital`;
 
   /* ── State ── */

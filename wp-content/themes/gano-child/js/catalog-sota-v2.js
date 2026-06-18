@@ -2,7 +2,7 @@
  * catalog-sota.js v2.2.0
  * Gano Digital — Motor de catálogo SOTA
  * Arquitectura: IIFE · strict · sin dependencias externas
- * Filtro activo: solo productos MEDIO y ALTO (11 items)
+ * Productos: tiers bajo/medio/alto — categorías hosting · vps · dominio · seguridad · email · acceso · dev
  * Estilo: GoDaddy-inspired — bloques por categoría, pitch largo, specs detallados
  *
  * v2.2.0 — PFIDS REALES desde servidor (2026-06-14):
@@ -27,7 +27,7 @@
 
   /* ─── CONSTANTES ──────────────────────────────────────────────── */
   const PLID      = '599667';   // Private Label ID — verificar en RCC → Account
-  const WA_NUM    = '573000000000';
+  const WA_NUM    = '573135646123';
   const WA_MSG    = encodeURIComponent('Hola, vi el catálogo de Gano Digital y quiero saber más.');
 
   /**
@@ -69,6 +69,23 @@
     'vps-alpha':         'WA',
     'diagnostico':       'WA',
     'disenio-custom':    'WA',
+
+    // ── Acceso — planes de entrada ────────────────────────────────
+    // Nota: GoDaddy maneja PFIDs por familia de producto, no por tier específico.
+    // wp-starter y wp-deluxe comparten PFID 457 (familia WP Managed); el usuario
+    // selecciona el plan concreto dentro del carrito GoDaddy.
+    'wp-starter':        '457',   // WP Managed — familia 457
+    'hosting-basico':    null,    // Hosting compartido — PFID pendiente en RCC
+    'dom-com':           null,    // Dominio .com — WA fallback
+    'dom-net':           null,    // Dominio .net — WA fallback
+    'dom-io':            null,    // Dominio .io — WA fallback
+    'dom-store':         null,    // Dominio .store — WA fallback
+    'ssl-dv':            '75',    // SSL — familia 75 (igual que ssl-pro)
+
+    // ── Dev — herramientas para desarrolladores ───────────────────
+    'wp-deluxe':         '457',   // WP Managed — familia 457 (igual que wp-starter)
+    'hosting-plus-dev':  '459',   // Web Hosting Plus — familia 459 (igual que whp-expansion)
+    'email-starter':     '466',   // Email — familia 466 (igual que email-pro)
   };
 
   /* ─── ESTADO ───────────────────────────────────────────────────── */
