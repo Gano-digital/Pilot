@@ -48,6 +48,14 @@
  * CONTENIDO HTML PARA COPIAR EN WORDPRESS:
  * (Copiar todo el bloque HTML de abajo en el editor de bloques → Bloque HTML personalizado)
  */
+/**
+ * Devuelve el HTML base de la landing HWC (hosting-wordpress-colombia).
+ *
+ * Se usa como fuente única del contenido tanto para importación manual
+ * como para la creación programática del borrador.
+ *
+ * @return string
+ */
 function gano_get_seo_landing_hwc_content(): string {
     return <<<'HTML'
 <!-- wp:html -->
@@ -230,7 +238,14 @@ HTML;
 // Este archivo no se carga como plugin ni template; es una referencia de contenido.
 // El contenido HTML de gano_get_seo_landing_hwc_content() se importa manualmente a WordPress.
 
-// Para uso programático al crear la página via WP-CLI o plugin de setup:
+/**
+ * Crea el borrador de la landing HWC (hosting-wordpress-colombia).
+ *
+ * Disponible para ejecuciones manuales vía WP-CLI o desde plugins/setup scripts
+ * que necesiten sembrar la landing principal con metadatos SEO base.
+ *
+ * @return int|false
+ */
 function gano_create_seo_landing_page_hwc(): int|false {
     $page_title = 'Hosting WordPress Colombia — Gano Digital';
     $slug       = 'hosting-wordpress-colombia';
