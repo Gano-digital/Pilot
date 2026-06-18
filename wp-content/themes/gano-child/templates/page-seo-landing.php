@@ -10,7 +10,7 @@
  *   1. Crear nueva página en wp-admin → Páginas → Añadir nueva
  *   2. En "Atributos de la página" → Plantilla → seleccionar "SEO Landing Page"
  *   3. Configurar la keyword objetivo en el campo personalizado "seo_keyword_target"
- *   4. Editar el contenido de la página con Elementor (el template solo provee el wrapper)
+ *   4. Editar el contenido de la página desde el editor de WordPress (el template solo provee el wrapper)
  *
  * Campos personalizados ACF/CMB2 opcionales (usar update_post_meta() si no hay ACF):
  *   - seo_keyword_target  : Keyword principal (ej: "hosting wordpress colombia")
@@ -29,8 +29,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 $post_id        = get_the_ID();
 $keyword        = get_post_meta( $post_id, 'seo_keyword_target', true ) ?: '';
 $h1_override    = get_post_meta( $post_id, 'seo_h1_override',    true ) ?: get_the_title();
+$catalog_url    = function_exists( 'gano_resolve_page_url' ) ? gano_resolve_page_url( 'shop-premium', 'catalogo', 'ecosistemas' ) : home_url( '/catalogo/' );
+$contact_url    = function_exists( 'gano_resolve_page_url' ) ? gano_resolve_page_url( 'contacto' ) : home_url( '/contacto/' );
 $cta_text       = get_post_meta( $post_id, 'seo_cta_text',       true ) ?: 'Ver planes de hosting';
-$cta_url        = get_post_meta( $post_id, 'seo_cta_url',        true ) ?: get_site_url() . '/ecosistemas';
+$cta_url        = get_post_meta( $post_id, 'seo_cta_url',        true ) ?: $catalog_url;
 
 // Schema específico de esta landing page (Service schema para Google)
 $cfg = function_exists( 'gano_seo_config' ) ? gano_seo_config() : array(
@@ -112,9 +114,9 @@ get_header();
 <!-- Gano Digital: SEO Landing Page Template -->
 <main id="gano-seo-landing" class="gano-seo-landing gano-km-shell" role="main">
 
-    <!-- H1 SEO — Visible para Google y usuarios, estilizado via Elementor o CSS del child theme -->
-    <section class="gano-landing-hero elementor-section gano-km-shell">
-        <div class="elementor-container gano-km-container">
+    <!-- H1 SEO — Visible para Google y usuarios, estilizado con el child theme -->
+    <section class="gano-landing-hero gano-km-shell">
+        <div class="gano-km-container">
             <span class="gano-km-live-badge">SEO landing operativa</span>
             <h1 class="gano-landing-h1 gano-km-title"><?php echo esc_html( $h1_override ); ?></h1>
 
@@ -128,9 +130,9 @@ get_header();
         </div>
     </section>
 
-    <!-- Contenido principal — editable con Elementor -->
+    <!-- Contenido principal — editable desde el contenido de la página -->
     <section class="gano-landing-content">
-        <div class="elementor-container">
+        <div class="gano-km-container">
             <?php
             while ( have_posts() ) :
                 the_post();
@@ -142,7 +144,7 @@ get_header();
 
     <!-- Tabla de precios en COP — visible solo en páginas de landing de hosting -->
     <section class="gano-landing-pricing gano-catalog-shell" aria-label="Planes de hosting" data-gano-catalog>
-        <div class="elementor-container">
+        <div class="gano-km-container">
             <h2>Planes de Hosting WordPress en Colombia</h2>
             <p class="gano-pricing-subtitle">Todos los precios en pesos colombianos (COP). Sin cargos por conversión de divisas.</p>
             <div class="gano-catalog-mode-switch" role="group" aria-label="Modo de navegación del catálogo">
@@ -171,11 +173,15 @@ get_header();
                             continue;
                         }
                         $cta = function_exists( 'gano_resolver_catalog_cta' ) ? gano_resolver_catalog_cta( $catalog_row ) : array(
-                            'url'    => '#',
-                            'label'  => 'Ver detalles',
+                            'url'    => $contact_url,
+                            'label'  => 'Hablar con el equipo',
                             'target' => '',
                             'status' => 'sync-missing',
                         );
+                        if ( empty( $cta['url'] ) || '#' === $cta['url'] ) {
+                            $cta['url']   = $contact_url;
+                            $cta['label'] = 'Hablar con el equipo';
+                        }
                         $card_class = 'gano-plan-card gano-km-card';
                         if ( 'sync-missing' === $cta['status'] ) {
                             $card_class .= ' gano-catalog-sync-missing';
@@ -231,7 +237,7 @@ get_header();
                                 <span class="gano-plan-period">/mes COP</span>
                             </div>
                             <p class="gano-plan-desc" itemprop="description"><?php echo esc_html( $plan['desc'] ); ?></p>
-                            <a href="<?php echo esc_url( get_site_url() . '/ecosistemas' ); ?>" class="gano-btn-secondary gano-km-btn-secondary">Ver plan</a>
+                            <a href="<?php echo esc_url( $catalog_url ); ?>" class="gano-btn-secondary gano-km-btn-secondary">Ver plan</a>
                             <button type="button" class="gano-catalog-compare-toggle" data-gano-compare-toggle aria-pressed="false">
                                 Comparar
                             </button>
@@ -251,7 +257,7 @@ get_header();
 
     <!-- Señales de confianza / Trust signals para conversión -->
     <section class="gano-landing-trust" aria-label="Por qué Gano Digital">
-        <div class="elementor-container">
+        <div class="gano-km-container">
             <h2>¿Por qué elegir hosting WordPress en Colombia con Gano Digital?</h2>
             <ul class="gano-trust-list">
                 <li><strong>Facturación en COP</strong> — Sin conversiones de divisas ni cargos internacionales.</li>
