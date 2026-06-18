@@ -670,7 +670,7 @@ window.GANO_PRODUCTS = [
     category: 'email',
     tier_rank: 'medio',
     objectives: ['corporativo', 'profesionales', 'agencias'],
-    tier: 'Microsoft 365 · Productividad',
+    tier: 'Email Corporativo · Microsoft 365',
     name: 'Microsoft 365 Business Basic',
     icon: 'fa-envelope-open-text',
     tagline: 'Correo corporativo con tu dominio. Teams + SharePoint + 1 TB OneDrive.',
@@ -694,7 +694,7 @@ window.GANO_PRODUCTS = [
       storage:  '50 GB por buzón',
       mobile:   'Apps móviles incluidas',
     },
-    bestFor: ['Empresa con equipo de 2-300 personas', 'Consultorios y estudios profesionales', 'Agencias que necesitan colaboración en equipo'],
+    bestFor: ['Equipos de hasta 300 personas (límite de licencia)', 'Consultorios y estudios profesionales', 'Agencias que necesitan colaboración en equipo'],
   },
 
   // ======= EMAIL PROFESIONAL · ENTRADA =======
@@ -799,7 +799,7 @@ window.GANO_PRODUCTS = [
     category: 'builder',
     tier_rank: 'bajo',
     objectives: ['blog', 'portafolio'],
-    tier: 'Constructor Web · Sin código',
+    tier: 'Constructor Web · Básico',
     name: 'Website Builder Plus',
     icon: 'fa-wand-magic-sparkles',
     tagline: 'Tu sitio web en 30 minutos. Sin código, sin hosting técnico, sin dolores de cabeza.',
