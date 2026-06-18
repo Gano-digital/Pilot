@@ -6,22 +6,36 @@
  */
 
 get_header();
+
+// Pre-fill del parámetro ?domain=X: el rstore plugin lo procesa en JS, pero capturarlo
+// en PHP permite pre-cargar el valor en el atributo data-domain para búsqueda inmediata.
+$searched_domain = isset( $_GET['domain'] ) ? sanitize_text_field( wp_unslash( $_GET['domain'] ) ) : '';
 ?>
 
 <main class="dominios-page">
     <!-- HERO -->
     <section class="dominios-hero">
         <div class="hero-content">
-            <h1>Tu Identidad Digital Comienza Aquí</h1>
-            <p>Busca, registra y gestiona dominios con la máxima libertad. Precios en COP, soporte en español y control total.</p>
+            <h1><?php esc_html_e( 'Tu Identidad Digital Comienza Aquí', 'gano-child' ); ?></h1>
+            <p><?php esc_html_e( 'Busca, registra y gestiona dominios con la máxima libertad. Precios en COP, soporte en español y control total.', 'gano-child' ); ?></p>
         </div>
     </section>
 
     <!-- BUSCADOR DE DOMINIOS -->
     <section id="dominios-search" class="dominios-search-section">
-        <h2 class="dominios-search-title">Busca tu Dominio Ideal</h2>
+        <h2 class="dominios-search-title"><?php esc_html_e( 'Busca tu Dominio Ideal', 'gano-child' ); ?></h2>
+        <?php if ( $searched_domain ) : ?>
+            <p class="dominios-search-hint"><?php printf( esc_html__( 'Resultados para: %s', 'gano-child' ), '<strong>' . esc_html( $searched_domain ) . '</strong>' ); ?></p>
+        <?php endif; ?>
         <div class="search-container">
-            <?php echo do_shortcode('[rstore_domain_search page_size="5"]'); ?>
+            <?php
+            // Pasa el dominio buscado como atributo extra para que el widget JS lo use
+            $shortcode_atts = 'page_size="5"';
+            if ( $searched_domain ) {
+                $shortcode_atts .= ' domain="' . esc_attr( $searched_domain ) . '"';
+            }
+            echo do_shortcode( '[rstore_domain_search ' . $shortcode_atts . ']' );
+            ?>
         </div>
     </section>
 
@@ -88,17 +102,29 @@ get_header();
         </div>
     </section>
 
-    <!-- TLD pre-fill: cuando el usuario hace clic en un botón TLD, rellena el input del buscador -->
+    <!-- TLD pre-fill: clic en card TLD → rellena buscador + dispara búsqueda + scroll -->
     <script>
     (function () {
         document.querySelectorAll('.tld-button[data-tld]').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                var tld = btn.getAttribute('data-tld');
-                // El widget rstore renderiza un input[type=text] dentro de .rstore-domain-search
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                var tld   = btn.getAttribute('data-tld');
                 var input = document.querySelector('.rstore-domain-search input[type="text"]');
-                if (input && tld) {
-                    input.value = 'midominio.' + tld;
-                    input.focus();
+                if ( ! input || ! tld ) { return; }
+
+                input.value = 'midominio.' + tld;
+                input.focus();
+
+                // Intentar enviar el formulario del widget rstore para disparar la búsqueda
+                var form = input.closest('form');
+                if ( form ) {
+                    form.dispatchEvent( new Event('submit', { bubbles: true, cancelable: true }) );
+                }
+
+                // Scroll suave al buscador
+                var section = document.getElementById('dominios-search');
+                if ( section ) {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
         });

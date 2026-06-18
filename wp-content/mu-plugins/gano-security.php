@@ -337,8 +337,15 @@ add_action( 'send_headers', function() {
         //   • upgrade-insecure-requests fuerza HTTPS en todos los sub-recursos.
         //   • frame-src incluye reseller.godaddy.com para el carrito Reseller (Fase 4).
         //   • frame-src incluye reseller-store.godaddy.com para iframe embebido Reseller Store (Fase 4).
-        //   • connect-src incluye storefront/cart.secureserver.net para la búsqueda de dominios (rstore widget).
-        //   • frame-src incluye cart.secureserver.net para el checkout de dominios GoDaddy Reseller.
+        //   • connect-src incluye *.secureserver.net completo para el rstore plugin (class-api.php):
+        //       - www.secureserver.net/api/v1/          → búsqueda disponibilidad de dominios
+        //       - www.secureserver.net/api/v1/cart/{pl} → carrito reseller
+        //       - gui.secureserver.net                  → GUI JSON (header/footer assets)
+        //       - sso.secureserver.net                  → autenticación GoDaddy
+        //       - account.secureserver.net              → cuenta GoDaddy
+        //       - storefront.secureserver.net           → catálogo reseller
+        //       - cart.secureserver.net                 → checkout
+        //   • frame-src incluye www.secureserver.net para modal de checkout GoDaddy.
         //
         $csp = implode( '; ', [
             "default-src 'self'",
@@ -346,8 +353,8 @@ add_action( 'send_headers', function() {
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com",
             "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com",
             "img-src 'self' data: https:",
-            "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://api.godaddy.com https://myh.godaddy.com https://storefront.secureserver.net https://cart.secureserver.net",
-            "frame-src 'self' https://reseller.godaddy.com https://reseller-store.godaddy.com https://www.godaddy.com https://cart.secureserver.net",
+            "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://api.godaddy.com https://myh.godaddy.com https://www.secureserver.net https://storefront.secureserver.net https://cart.secureserver.net https://gui.secureserver.net https://sso.secureserver.net https://account.secureserver.net",
+            "frame-src 'self' https://reseller.godaddy.com https://reseller-store.godaddy.com https://www.godaddy.com https://www.secureserver.net https://cart.secureserver.net",
             "upgrade-insecure-requests",
             "report-uri /wp-json/gano/v1/csp-report",
         ] );
