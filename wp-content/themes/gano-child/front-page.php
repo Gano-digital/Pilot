@@ -569,10 +569,10 @@ $url_login = wp_login_url( home_url() );
 			<div class="footer-bottom">
 				<p>© <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php echo esc_html( get_bloginfo( 'name' ) ); ?>. <?php esc_html_e( 'Soberanía digital · Operación Colombia.', 'gano-child' ); ?></p>
 				<div class="footer-social">
-					<a href="#" aria-label="X / Twitter"><i class="fab fa-x-twitter"></i></a>
-					<a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-					<a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-					<a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+					<a href="https://x.com/ganodigital2026" target="_blank" rel="noopener nofollow" aria-label="X / Twitter — @ganodigital2026"><i class="fab fa-x-twitter"></i></a>
+					<a href="https://linkedin.com/company/gano-digital" target="_blank" rel="noopener nofollow" aria-label="LinkedIn — Gano Digital"><i class="fab fa-linkedin-in"></i></a>
+					<a href="https://instagram.com/gano.digital2026" target="_blank" rel="noopener nofollow" aria-label="Instagram — @gano.digital2026"><i class="fab fa-instagram"></i></a>
+					<a href="https://github.com/Gano-digital" target="_blank" rel="noopener nofollow" aria-label="GitHub — Gano-digital"><i class="fab fa-github"></i></a>
 				</div>
 			</div>
 		</div>
