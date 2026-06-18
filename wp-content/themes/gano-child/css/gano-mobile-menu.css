@@ -33,7 +33,8 @@
   .mobile-toggle {
     display: flex;
   }
-  .nav {
+  .nav .nav-links,
+  .nav .nav-cta {
     display: none;
   }
 }

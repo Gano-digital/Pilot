@@ -65,6 +65,9 @@
 
   /* ---- Mobile menu toggle ---- */
   landing.addEventListener('click', function (e) {
+    if (landing.querySelector('.mobile-menu')) {
+      return;
+    }
     const toggle = e.target.closest('.mobile-toggle');
     if (!toggle) return;
     e.preventDefault();

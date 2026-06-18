@@ -12,6 +12,7 @@ class MobileMenu {
     }
 
     this.isOpen = false;
+    this.toggle.setAttribute('aria-expanded', 'false');
     this.attachEventListeners();
   }
 
@@ -74,6 +75,7 @@ class MobileMenu {
     document.body.style.overflow = 'hidden';
 
     this.isOpen = true;
+    this.toggle.setAttribute('aria-expanded', 'true');
 
     if (this.closeButton) {
       this.closeButton.focus();
@@ -91,6 +93,7 @@ class MobileMenu {
     document.body.style.overflow = '';
 
     this.isOpen = false;
+    this.toggle.setAttribute('aria-expanded', 'false');
 
     this.toggle.focus();
 
