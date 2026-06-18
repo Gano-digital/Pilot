@@ -424,6 +424,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  min-height: 44px;
   padding: 0.75rem 1.25rem;
   background: linear-gradient(135deg, var(--gano-purple), #6d28d9);
   color: #fff;
@@ -443,6 +444,7 @@
 }
 .btn-wa-secondary {
   width: 44px;
+  min-height: 44px;
   display: grid;
   place-items: center;
   background: rgba(37,211,102,0.12);
@@ -675,8 +677,17 @@
   .cat-grid--single { max-width: 100%; }
   .price-amount { font-size: 1.625rem; }
   .pcard-inner { padding: 1.125rem; }
-  #cat-tabs { gap: 0.375rem; }
-  .ftab { padding: 0.425rem 0.75rem; font-size: 0.8rem; }
+  #cat-tabs {
+    width: 100%;
+    gap: 0.375rem;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 0.25rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ftab { flex: 0 0 auto; padding: 0.425rem 0.75rem; font-size: 0.8rem; }
   .timeline-section { padding: 2rem 1rem; margin-top: 3rem; }
   .tl-content { padding-bottom: 1.5rem; }
 }
