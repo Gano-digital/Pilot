@@ -3293,3 +3293,98 @@ function gano_enqueue_ecosystems_v3() {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'gano_enqueue_ecosystems_v3', 11 );
+
+// =============================================================================
+// DOMAIN SEARCH PROXY — /wp-json/gano/v1/domains/search?q=X&pageSize=5
+//
+// GoDaddy no tiene CORS habilitado en www.secureserver.net/api/v1/domains/
+// para dominios de reseller. El JS del widget domain-search.min.js falla con
+// "Failed to fetch" cuando intenta llamar directamente desde el browser.
+//
+// Este proxy hace la llamada server-side (PHP → GoDaddy API) y devuelve el
+// JSON al browser desde el mismo origen (gano.digital), eliminando el CORS.
+// =============================================================================
+
+add_action( 'rest_api_init', 'gano_register_domain_search_proxy' );
+
+function gano_register_domain_search_proxy(): void {
+    register_rest_route(
+        'gano/v1',
+        '/domains/search',
+        array(
+            'methods'             => WP_REST_Server::READABLE,
+            'callback'            => 'gano_domain_search_proxy_callback',
+            'permission_callback' => '__return_true',
+            'args'                => array(
+                'q'        => array(
+                    'required'          => true,
+                    'sanitize_callback' => 'sanitize_text_field',
+                    'validate_callback' => function ( $v ) {
+                        return is_string( $v ) && strlen( trim( $v ) ) >= 1 && strlen( $v ) <= 255;
+                    },
+                ),
+                'pageSize' => array(
+                    'default'           => 5,
+                    'sanitize_callback' => 'absint',
+                ),
+            ),
+        )
+    );
+}
+
+function gano_domain_search_proxy_callback( WP_REST_Request $request ): WP_REST_Response {
+    // PLID: leer del plugin reseller-store; fallback hardcoded para el caso en que
+    // el plugin aún no esté activo o rstore_get_option() no esté disponible.
+    $plid = 0;
+    if ( function_exists( 'rstore_get_option' ) ) {
+        $plid = (int) rstore_get_option( 'pl_id' );
+    }
+    if ( $plid <= 0 ) {
+        $plid = (int) get_option( 'rstore_pl_id', 599667 );
+    }
+    if ( $plid <= 0 ) {
+        $plid = 599667; // PLID Gano Digital hard-coded como último fallback
+    }
+
+    $q         = trim( (string) $request->get_param( 'q' ) );
+    $page_size = min( (int) $request->get_param( 'pageSize' ), 10 );
+
+    $api_url = add_query_arg(
+        array(
+            'q'        => $q,
+            'pageSize' => $page_size,
+        ),
+        sprintf( 'https://www.secureserver.net/api/v1/domains/%d/', $plid )
+    );
+
+    $response = wp_remote_get(
+        $api_url,
+        array(
+            'timeout' => 12,
+            'headers' => array(
+                'Accept'     => 'application/json',
+                'User-Agent' => 'GanoDigital-DomainSearch/1.0 (+https://gano.digital)',
+            ),
+        )
+    );
+
+    if ( is_wp_error( $response ) ) {
+        return new WP_REST_Response(
+            array(
+                'error'   => 'Domain lookup temporarily unavailable.',
+                'details' => $response->get_error_message(),
+            ),
+            502
+        );
+    }
+
+    $http_code = (int) wp_remote_retrieve_response_code( $response );
+    $body      = wp_remote_retrieve_body( $response );
+    $data      = json_decode( $body, true );
+
+    if ( null === $data ) {
+        return new WP_REST_Response( array( 'error' => 'Invalid API response.' ), 502 );
+    }
+
+    return new WP_REST_Response( $data, $http_code );
+}

@@ -36,7 +36,9 @@
     text-align: center;
     max-width: 900px;
     margin-bottom: 20px;
-    animation: fadeInUp 1s ease-out 0.3s both;
+    color: #f1f5f9;
+    /* animation sin delay y sin fill-mode 'both' para evitar quedarse en opacity:0 */
+    animation: dominiosHeroFadeUp 0.8s ease-out forwards;
 }
 
 .dominios-hero p {
@@ -45,12 +47,149 @@
     text-align: center;
     max-width: 600px;
     margin: 0 auto 50px;
-    animation: fadeInUp 1s ease-out 0.6s both;
+    animation: dominiosHeroFadeUp 0.8s ease-out 0.2s forwards;
+    opacity: 0;
 }
 
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Keyframes únicos para dominios (evita colisión con fadeInUp global) */
+@keyframes dominiosHeroFadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Accesibilidad: respetar preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    .dominios-hero h1,
+    .dominios-hero p {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ─── BUSCADOR PROPIO (proxy PHP — sin CORS) ─── */
+.gano-domain-form { width: 100%; }
+
+.gano-domain-input-wrap {
+    display: flex;
+    gap: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    transition: border-color 0.2s ease;
+}
+.gano-domain-input-wrap:focus-within {
+    border-color: var(--gc-primary);
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.gano-domain-input {
+    flex: 1;
+    padding: 18px 22px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #f1f5f9;
+    font-size: 1.05rem;
+    font-family: inherit;
+}
+.gano-domain-input::placeholder { color: #64748b; }
+
+.gano-domain-btn {
+    padding: 18px 32px;
+    background: linear-gradient(135deg, var(--gc-primary), var(--gc-secondary));
+    color: #fff;
+    border: none;
+    font-weight: 700;
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    min-width: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.gano-domain-btn:hover:not(:disabled) { opacity: 0.88; }
+.gano-domain-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.gano-domain-btn__spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: domainSpin 0.7s linear infinite;
+}
+@keyframes domainSpin {
+    to { transform: rotate(360deg); }
+}
+
+/* Resultados */
+.gano-domain-results { margin-top: 28px; text-align: left; }
+.gano-domain-searching { color: #94a3b8; text-align: center; padding: 20px 0; }
+.gano-domain-error { color: #f87171; text-align: center; padding: 20px 0; }
+
+.gano-domain-list {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.gano-domain-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    flex-wrap: wrap;
+}
+.gano-domain-item--exact {
+    border-color: rgba(27, 79, 216, 0.4);
+    background: rgba(27, 79, 216, 0.06);
+}
+
+.gano-domain-item__name {
+    flex: 1;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #f1f5f9;
+    word-break: break-all;
+}
+
+.gano-domain-item__badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+.gano-domain-item__badge--ok  { background: rgba(0,194,107,0.18); color: #00C26B; }
+.gano-domain-item__badge--no  { background: rgba(248,113,113,0.18); color: #f87171; }
+
+.gano-domain-item__cta {
+    padding: 8px 18px;
+    background: linear-gradient(135deg, var(--gc-primary), var(--gc-secondary));
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+}
+.gano-domain-item__cta:hover { opacity: 0.85; }
+
+@media (max-width: 600px) {
+    .gano-domain-input-wrap { flex-direction: column; border-radius: 12px; }
+    .gano-domain-btn { border-radius: 0 0 12px 12px; width: 100%; padding: 14px; }
+    .gano-domain-input { border-radius: 12px 12px 0 0; }
+    .gano-domain-item { flex-wrap: wrap; gap: 8px; }
 }
 
 /* BUSCADOR SECTION */
