@@ -182,7 +182,7 @@ get_header();
                         );
                         if ( empty( $cta['url'] ) || '#' === $cta['url'] ) {
                             $cta['url'] = $contact_url;
-                            if ( empty( $cta['label'] ) || '#' === $cta['label'] ) {
+                            if ( empty( $cta['label'] ) ) {
                                 $cta['label'] = $fallback_cta_label;
                             }
                         }
