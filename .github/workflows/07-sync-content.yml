@@ -2,10 +2,10 @@
 name: "17 · Ops · Content Sync · Staging ↔ Producción"
 
 on:
-  schedule:
-    # Friday 20:00 UTC = Friday 3 PM COT
-    - cron: "0 20 * * 5"
-  
+  # schedule disabled: sync steps are stubs (no real implementation yet).
+  # Re-enable cron once staging↔prod sync logic is implemented.
+  # - cron: "0 20 * * 5"  # Friday 20:00 UTC = Friday 3 PM COT
+
   workflow_dispatch:
     inputs:
       direction:

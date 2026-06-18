@@ -1,7 +1,7 @@
 // Gano Digital — Catalog data v2
-// Filtro: solo productos MEDIO y ALTO de cada categoría
-// EXCLUIDOS: start-wp (hosting básico), dom-com (dominio básico)
-// Precios en COP.
+// Categorías: hosting · vps · dominio · seguridad · email · builder · servicio · acceso · dev
+// Tiers: bajo (entry/acceso) · medio · alto — todos los rangos incluidos
+// Precios en COP. PFIDs: ver catalog-sota-v2.js — los PFID son a nivel de familia de producto GoDaddy.
 
 window.GANO_PRODUCTS = [
   // ======= HOSTING WORDPRESS — MEDIO =======
@@ -359,22 +359,369 @@ window.GANO_PRODUCTS = [
     },
     bestFor: ['Marca que necesita diferenciación visual', 'Lanzamiento nuevo', 'Rediseño estratégico'],
   },
+
+  // ======= ACCESO — WordPress Starter =======
+  {
+    id: 'wp-starter',
+    category: 'acceso',
+    tier_rank: 'bajo',
+    objectives: ['blog', 'portafolio'],
+    tier: 'WordPress Managed · Entrada',
+    name: 'WordPress Starter',
+    icon: 'fa-seedling',
+    tagline: 'Tu primera web WordPress lista en 5 minutos, sin tocar un servidor.',
+    pitch: 'Ideal si estás arrancando: WordPress ya viene instalado, el SSL se activa solo y las actualizaciones se hacen automáticas mientras tú te concentras en tu contenido. Sin configuraciones raras, sin código, sin sorpresas.',
+    monthly: 15000,
+    yearly: 150000,
+    featured: false,
+    badge: null,
+    features: [
+      { label: 'Sitios WordPress',   value: '1 sitio incluido' },
+      { label: 'Almacenamiento',     value: '30 GB SSD NVMe' },
+      { label: 'Tráfico mensual',    value: 'Hasta 25.000 visitas/mes' },
+      { label: 'SSL gratuito',       value: 'Incluido y auto-renovado' },
+      { label: 'Actualizaciones WP', value: 'Automáticas — sin intervención' },
+      { label: 'Staging site',       value: 'Incluido para pruebas seguras' },
+      { label: 'Soporte',            value: '24/7 chat y teléfono' },
+    ],
+    specs: {
+      php:       'PHP 8.x (seleccionable)',
+      cdn:       'CDN global incluido',
+      backups:   'Diarios automáticos',
+      wordpress: 'Preinstalado — listo para usar',
+    },
+    bestFor: ['Blog personal o de contenido', 'Portafolio de diseñador o fotógrafo', 'Landing page de negocio local'],
+  },
+
+  // ======= ACCESO — Hosting Compartido Linux =======
+  {
+    id: 'hosting-basico',
+    category: 'acceso',
+    tier_rank: 'bajo',
+    objectives: ['blog', 'portafolio'],
+    tier: 'Hosting Compartido · Linux',
+    name: 'Hosting Compartido Linux',
+    icon: 'fa-server',
+    tagline: 'Sube tu propio HTML, PHP o MySQL. El mejor punto de partida para aprender.',
+    pitch: 'Si estás estudiando programación o quieres montar tu primer proyecto sin un CMS, este hosting te da cPanel completo para subir archivos por FTP, crear bases de datos y probar tu código PHP en un servidor real. Aprendes haciendo.',
+    monthly: 9000,
+    yearly: 90000,
+    featured: false,
+    badge: null,
+    features: [
+      { label: 'Almacenamiento',        value: '10 GB SSD' },
+      { label: 'Transferencia mensual', value: '100 GB' },
+      { label: 'Panel de control',      value: 'cPanel incluido' },
+      { label: 'Base de datos',         value: '1 MySQL incluida' },
+      { label: 'Lenguaje',              value: 'PHP 8.x' },
+      { label: 'Acceso FTP',            value: 'Incluido' },
+      { label: 'Correo corporativo',    value: 'Cuentas de email incluidas' },
+    ],
+    specs: {
+      php:    'PHP 8.x',
+      mysql:  'MySQL 8.x',
+      acceso: 'FTP / cPanel / SSH (opcional)',
+      os:     'Linux (AlmaLinux)',
+    },
+    bestFor: ['Portafolio estático hecho en HTML y CSS', 'Primer proyecto PHP/MySQL de un estudiante', 'App de gestión académica o inventario básico'],
+  },
+
+  // ======= ACCESO — Dominio .com =======
+  {
+    id: 'dom-com',
+    category: 'acceso',
+    tier_rank: 'bajo',
+    objectives: ['blog', 'portafolio', 'corporativo'],
+    tier: 'Dominio · Registro anual',
+    name: 'Dominio .com',
+    icon: 'fa-globe',
+    tagline: 'Tu nombre en internet. Protegido, tuyo y listo para cualquier sitio.',
+    pitch: 'Registra tu .com con privacidad WHOIS incluida para que tu dirección y teléfono no aparezcan en búsquedas públicas. DNS anycast y reenvío de URL sin costo extra. El primer paso para cualquier presencia digital seria.',
+    monthly: null,
+    yearly: 55000,
+    featured: false,
+    badge: null,
+    features: [
+      { label: 'Extensión',          value: '.com — reconocida mundialmente' },
+      { label: 'Privacidad WHOIS',   value: 'Incluida — tus datos protegidos' },
+      { label: 'DNS anycast',        value: 'Alta velocidad global' },
+      { label: 'Reenvío de URL',     value: 'Incluido sin costo extra' },
+      { label: 'Renovación',         value: 'Automática — nunca pierdas tu nombre' },
+      { label: 'Transferencia',      value: 'Sin costo si decides cambiar de proveedor' },
+    ],
+    specs: {
+      registro:   'ICANN acreditado · GoDaddy Reseller',
+      dns:        'Anycast — propagación < 5 min',
+      privacidad: 'WHOIS Proxy incluido',
+      vigencia:   '1 año renovable',
+    },
+    bestFor: ['Marca personal o negocio que vende a nivel internacional', 'Empresa colombiana que necesita dirección web profesional', 'Complemento de cualquier plan de hosting para email corporativo'],
+  },
+
+  // ======= ACCESO — SSL Estándar DV =======
+  {
+    id: 'ssl-dv',
+    category: 'acceso',
+    tier_rank: 'bajo',
+    objectives: ['blog', 'portafolio', 'corporativo', 'ecommerce'],
+    tier: 'SSL · Validación de Dominio',
+    name: 'SSL Estándar DV',
+    icon: 'fa-lock',
+    tagline: 'El candado que Google exige y tus clientes confían. En 1 clic.',
+    pitch: 'Google penaliza los sitios sin HTTPS y Chrome los marca como "No seguro". Este certificado activa el candado en el navegador, cifra los datos de tus formularios y le dice al cliente que tu sitio es legítimo. Imprescindible si recibes cualquier dato personal.',
+    monthly: null,
+    yearly: 95000,
+    featured: false,
+    badge: null,
+    features: [
+      { label: 'Dominios cubiertos', value: '1 dominio principal' },
+      { label: 'Validación',         value: 'DV — Domain Validated' },
+      { label: 'Algoritmo',          value: 'SHA-256 · RSA 2048-bit' },
+      { label: 'Protocolo',          value: 'TLS 1.2 y TLS 1.3' },
+      { label: 'Candado navegador',  value: 'Chrome · Firefox · Safari' },
+      { label: 'Instalación',        value: '1 clic desde el panel' },
+      { label: 'Garantía',           value: 'Hasta USD $10.000' },
+    ],
+    specs: {
+      validacion:  'DV (Domain Validation)',
+      cifrado:     'SHA-256 / RSA 2048-bit',
+      protocolos:  'TLS 1.2, TLS 1.3',
+      vigencia:    '1 año con renovación automática',
+    },
+    bestFor: ['Blog o portal que recopila datos de contacto', 'Tienda básica con formulario de pago', 'Área de clientes con login y contraseña'],
+  },
+
+  // ======= ACCESO — Dominios adicionales =======
+  {
+    id: 'dom-net',
+    category: 'acceso',
+    tier_rank: 'bajo',
+    objectives: ['corporativo', 'agencia'],
+    tier: 'Dominio · Registro anual',
+    name: 'Dominio .net',
+    icon: 'fa-network-wired',
+    tagline: 'Alternativa sólida y respetada para proyectos de tecnología.',
+    pitch: 'Una de las extensiones originales de internet, con alta disponibilidad de nombres y reconocimiento global. Ideal si el .com de tu marca ya está tomado.',
+    monthly: null,
+    yearly: 52000,
+    featured: false,
+    badge: null,
+    features: [
+      { label: 'Extensión',        value: '.net — tecnología y redes' },
+      { label: 'Privacidad WHOIS', value: 'Incluida' },
+      { label: 'DNS anycast',      value: 'Alta velocidad global' },
+      { label: 'Transferencia',    value: 'Sin costo' },
+    ],
+    specs: { registro: 'ICANN acreditado', vigencia: '1 año renovable' },
+    bestFor: ['Proyecto tech sin .com disponible', 'Infraestructura de redes IT', 'Complemento de marca'],
+  },
+  {
+    id: 'dom-io',
+    category: 'acceso',
+    tier_rank: 'bajo',
+    objectives: ['agencia', 'ecommerce'],
+    tier: 'Dominio · Registro anual',
+    name: 'Dominio .io',
+    icon: 'fa-terminal',
+    tagline: 'El dominio preferido de startups tecnológicas y productos SaaS.',
+    pitch: 'Corto, moderno y con gran disponibilidad de nombres. El estándar de facto para productos de software, APIs y herramientas de desarrollo.',
+    monthly: null,
+    yearly: 160000,
+    featured: false,
+    badge: null,
+    features: [
+      { label: 'Extensión',        value: '.io — tech & SaaS' },
+      { label: 'Privacidad WHOIS', value: 'Incluida' },
+      { label: 'DNS anycast',      value: 'Alta velocidad global' },
+      { label: 'Reconocimiento',   value: 'Alto en comunidad tech' },
+    ],
+    specs: { registro: 'ICANN acreditado', vigencia: '1 año renovable' },
+    bestFor: ['SaaS y productos de software', 'Startups tecnológicas', 'Herramientas para desarrolladores'],
+  },
+  {
+    id: 'dom-store',
+    category: 'acceso',
+    tier_rank: 'bajo',
+    objectives: ['ecommerce'],
+    tier: 'Dominio · Registro anual',
+    name: 'Dominio .store',
+    icon: 'fa-store',
+    tagline: 'Dile al mundo exactamente qué haces desde la URL.',
+    pitch: 'Extensión diseñada para comercio electrónico. Alta disponibilidad de nombres de marca y precio de entrada muy bajo. Perfecto para tu primera tienda online.',
+    monthly: null,
+    yearly: 12000,
+    featured: false,
+    badge: null,
+    features: [
+      { label: 'Extensión',        value: '.store — comercio electrónico' },
+      { label: 'Privacidad WHOIS', value: 'Incluida' },
+      { label: 'DNS anycast',      value: 'Alta velocidad global' },
+      { label: 'Disponibilidad',   value: 'Alta — más nombres libres' },
+    ],
+    specs: { registro: 'ICANN acreditado', vigencia: '1 año renovable' },
+    bestFor: ['Primera tienda online', 'Marca de retail', 'E-commerce con presupuesto ajustado'],
+  },
+
+  // ======= DEV — WordPress Deluxe =======
+  {
+    id: 'wp-deluxe',
+    category: 'dev',
+    tier_rank: 'bajo',
+    objectives: ['blog', 'portafolio', 'corporativo'],
+    tier: 'Managed WP · Dev',
+    name: 'WordPress Deluxe',
+    icon: 'fa-layer-group',
+    tagline: '3 sitios independientes con staging. Para freelancers que entregan proyectos de verdad.',
+    pitch: 'Maneja desarrollo, staging y producción en un solo plan — o tres clientes simultáneos sin que se mezcle nada. El staging te salva de esa llamada de "¿qué pasó con mi sitio?".',
+    monthly: 25000,
+    yearly: 250000,
+    featured: false,
+    badge: null,
+    features: [
+      { label: 'Sitios WP',         value: '3 instalaciones separadas' },
+      { label: 'Almacenamiento',    value: '75 GB NVMe' },
+      { label: 'Tráfico mensual',   value: 'Hasta 100.000 visitas' },
+      { label: 'Staging',           value: 'Incluido · clon con 1 clic' },
+      { label: 'CDN',               value: 'Global · entrega acelerada' },
+      { label: 'Backups',           value: 'Cada 24 h · restauración en 1 clic' },
+      { label: 'SSL',               value: 'Incluido en cada sitio' },
+    ],
+    specs: {
+      php:   'PHP 8.x administrado',
+      db:    'MySQL 8.0 · base por sitio',
+      cache: 'OPcache + caché de página',
+      tls:   'TLS 1.3',
+      panel: 'cPanel simplificado GoDaddy',
+    },
+    bestFor: ['Freelancer con 2-3 clientes activos', 'Agencia pequeña en crecimiento', 'Dev que usa staging para probar antes de publicar'],
+  },
+
+  // ======= DEV — Web Hosting Plus cPanel =======
+  {
+    id: 'hosting-plus-dev',
+    category: 'dev',
+    tier_rank: 'bajo',
+    objectives: ['portafolio', 'corporativo'],
+    tier: 'Web Hosting Plus · Dev',
+    name: 'Web Hosting Plus · Dev',
+    icon: 'fa-code',
+    tagline: 'cPanel con SSH, PHP 8.x, MySQL, Python y cronjobs. Control real sin complejidad de VPS.',
+    pitch: 'Cuando WordPress se te queda corto. SSH abierto, PHP + Python + Node.js básico en el mismo servidor, cronjobs para tus automatizaciones, y subdominios ilimitados para cada proyecto.',
+    monthly: 19000,
+    yearly: 190000,
+    featured: false,
+    badge: null,
+    features: [
+      { label: 'Almacenamiento', value: '50 GB SSD' },
+      { label: 'SSH',            value: 'Acceso completo activado' },
+      { label: 'Bases de datos', value: 'MySQL ilimitadas' },
+      { label: 'Lenguajes',      value: 'PHP 8.x · Python 3 · Node.js básico' },
+      { label: 'Cronjobs',       value: 'Ilimitados · editor visual' },
+      { label: 'Subdominios',    value: 'Ilimitados · DNS instantáneo' },
+      { label: 'Git',            value: 'Desde terminal vía SSH' },
+    ],
+    specs: {
+      php:    'PHP 8.1 / 8.2 seleccionable por dominio',
+      mysql:  'MySQL 8.0 · phpMyAdmin incluido',
+      python: 'Python 3.11 · pip disponible',
+      node:   'Node.js 20 LTS · uso básico',
+      panel:  'cPanel Linux · acceso completo',
+    },
+    bestFor: ['Dev PHP/Python con proyectos custom', 'Estudiante avanzado que necesita servidor real', 'App de gestión o inventario para negocio colombiano'],
+  },
+
+  // ======= DEV — Email Starter =======
+  {
+    id: 'email-starter',
+    category: 'dev',
+    tier_rank: 'bajo',
+    objectives: ['blog', 'portafolio'],
+    tier: 'Correo profesional · Starter',
+    name: 'Email Starter',
+    icon: 'fa-envelope',
+    tagline: 'tu@tunegocio.com desde el primer día. DKIM, SPF y compatible con Outlook y Gmail.',
+    pitch: 'Un buzón profesional con tu dominio. Sin pagar por 5 cuentas que no usas. DKIM y SPF ya configurados para que tus correos lleguen a la bandeja, no al spam.',
+    monthly: 6000,
+    yearly: 60000,
+    featured: false,
+    badge: null,
+    features: [
+      { label: 'Buzones incluidos', value: '1 cuenta profesional' },
+      { label: 'Espacio',           value: '10 GB por buzón' },
+      { label: 'Dominio propio',    value: 'tu@tunegocio.com' },
+      { label: 'Protocolo',         value: 'IMAP · POP3 · SMTP' },
+      { label: 'Anti-spam',         value: 'DKIM · SPF configurados' },
+      { label: 'Webmail',           value: 'Acceso desde navegador' },
+      { label: 'Clientes',          value: 'Outlook · Gmail · Thunderbird' },
+    ],
+    specs: {
+      storage:  '10 GB expandible',
+      auth:     'DKIM + SPF + DMARC básico',
+      access:   'IMAP / POP3 / SMTP estándar',
+      webmail:  'Roundcube o Horde incluido',
+      mobile:   'iOS · Android nativo',
+    },
+    bestFor: ['Freelancer independiente que quiere correo serio', 'Emprendedor unipersonal con dominio propio', 'Dev con portafolio que firma propuestas por correo'],
+  },
 ];
 
 // ======= GLOSARIO =======
+// GANO_FAQS y GANO_TRUST (abajo) se declaran aquí como datos listos para renderizar.
+// Los templates/shortcodes que los consuman los leen desde window.GANO_FAQS / window.GANO_TRUST.
 window.GANO_GLOSSARY = {
-  'NVMe Gen4': { title: 'NVMe Gen4', body: 'Non-Volatile Memory Express sobre PCIe 4.0. Hasta 7.500 MB/s — 15× más rápido que un SSD SATA. Se traduce en cargas WordPress 3-5× más veloces.', metric: '7.500 MB/s' },
-  'WAF Capa 7': { title: 'WAF Capa 7', body: 'Firewall que opera en la capa de aplicación HTTP/HTTPS. Bloquea SQL injection, XSS, CSRF y bots antes de que toquen tu WordPress.', metric: 'OWASP Top 10' },
-  'TLS 1.3': { title: 'TLS 1.3', body: 'Protocolo que cifra HTTPS. Handshake más rápido (1-RTT), cifras obsoletas eliminadas, resistencia post-cuántica opcional.', metric: '1-RTT handshake' },
-  'CDN': { title: 'CDN Global', body: 'Red de servidores distribuidos que sirve tu contenido desde el POP más cercano al visitante. Reduce latencia 60-80% en audiencias internacionales.', metric: '200+ POPs' },
-  'Object Cache': { title: 'Object Cache (Redis)', body: 'Caché en RAM para queries repetitivas de WordPress. Evita que cada visita pegue a MySQL. Soporta 10× más tráfico sin degradarse.', metric: 'RAM-speed access' },
-  'Nodo Bogotá': { title: 'Nodo Alpha Bogotá', body: 'Centro de datos en Colombia. Latencia <20ms para usuarios locales. Cumple Ley 1581 de protección de datos.', metric: '<20ms latencia local' },
-  'WHOIS': { title: 'Privacidad WHOIS', body: 'Base de datos pública del dueño de un dominio. Sin privacidad, tu teléfono y dirección quedan expuestos. Gano activa privacidad WHOIS gratis, siempre.', metric: 'Datos protegidos' },
-  'SLA 99.95%': { title: 'SLA 99.95%', body: 'Service Level Agreement. 99.95% de uptime permite máximo 21.6 min de caída al mes. Si incumplimos, se acredita proporcional.', metric: '21.6 min/mes máx' },
-  'TTFB': { title: 'TTFB', body: 'Time to First Byte: tiempo entre que el navegador pide la página y recibe el primer byte. Google recomienda <200ms. Gano promedia 45-80ms.', metric: 'Target: <200ms' },
-  'DDoS': { title: 'Mitigación DDoS', body: 'Ataques que saturan tu servidor con tráfico falso. Gano mitiga hasta 10 Gbps en capa de red + filtrado inteligente en capa 7.', metric: 'Hasta 10 Gbps' },
-  'Post-Cuántico': { title: 'Cifrado Post-Cuántico', body: 'Algoritmos diseñados para resistir ataques de computadoras cuánticas. Kyber-768 opt-in en nodo Alpha Bogotá.', metric: 'Kyber-768' },
+  'NVMe Gen4':     { title: 'NVMe Gen4',              body: 'Non-Volatile Memory Express sobre PCIe 4.0. Hasta 7.500 MB/s — 15× más rápido que un SSD SATA. Se traduce en cargas WordPress 3-5× más veloces.',            metric: '7.500 MB/s' },
+  'WAF Capa 7':    { title: 'WAF Capa 7',              body: 'Firewall que opera en la capa de aplicación HTTP/HTTPS. Bloquea SQL injection, XSS, CSRF y bots antes de que toquen tu WordPress.',                           metric: 'OWASP Top 10' },
+  'TLS 1.3':       { title: 'TLS 1.3',                 body: 'Protocolo que cifra HTTPS. Handshake más rápido (1-RTT), cifras obsoletas eliminadas, resistencia post-cuántica opcional.',                                    metric: '1-RTT handshake' },
+  'CDN':           { title: 'CDN Global',               body: 'Red de servidores distribuidos que sirve tu contenido desde el POP más cercano al visitante. Reduce latencia 60-80% en audiencias internacionales.',           metric: '200+ POPs' },
+  'Object Cache':  { title: 'Object Cache (Redis)',     body: 'Caché en RAM para queries repetitivas de WordPress. Evita que cada visita pegue a MySQL. Soporta 10× más tráfico sin degradarse.',                            metric: 'RAM-speed access' },
+  'Nodo Bogotá':   { title: 'Nodo Alpha Bogotá',       body: 'Centro de datos en Colombia. Latencia <20ms para usuarios locales. Cumple Ley 1581 de protección de datos.',                                                   metric: '<20ms latencia local' },
+  'WHOIS':         { title: 'Privacidad WHOIS',         body: 'Base de datos pública del dueño de un dominio. Sin privacidad, tu teléfono y dirección quedan expuestos. Gano activa privacidad WHOIS gratis, siempre.',        metric: 'Datos protegidos' },
+  'SLA 99.95%':    { title: 'SLA 99.95%',              body: 'Service Level Agreement. 99.95% de uptime permite máximo 21.6 min de caída al mes. Si incumplimos, se acredita proporcional.',                                 metric: '21.6 min/mes máx' },
+  'TTFB':          { title: 'TTFB',                     body: 'Time to First Byte: tiempo entre que el navegador pide la página y recibe el primer byte. Google recomienda <200ms. Gano promedia 45-80ms.',                    metric: 'Target: <200ms' },
+  'DDoS':          { title: 'Mitigación DDoS',          body: 'Ataques que saturan tu servidor con tráfico falso. Gano mitiga hasta 10 Gbps en capa de red + filtrado inteligente en capa 7.',                                metric: 'Hasta 10 Gbps' },
+  'Post-Cuántico': { title: 'Cifrado Post-Cuántico',    body: 'Algoritmos diseñados para resistir ataques de computadoras cuánticas. Kyber-768 opt-in en nodo Alpha Bogotá.',                                                metric: 'Kyber-768' },
+  'KVM':           { title: 'Virtualización KVM',       body: 'Aislamiento a nivel de kernel. Tus recursos están 100% garantizados y no son compartidos con otros inquilinos. Sin overselling.',                              metric: 'Recursos dedicados' },
+  'cPanel':        { title: 'cPanel',                   body: 'Panel de control estándar de la industria web. Gestiona correos, bases de datos y archivos sin usar la terminal. Incluido en hosting compartido y WHP.',        metric: 'Estándar global' },
+  'AMD EPYC':      { title: 'Procesadores AMD EPYC™',   body: 'Arquitectura de servidores más eficiente de la actualidad. Frecuencia sostenida más alta y más cores que la generación anterior de Intel Xeon.',              metric: 'Alto throughput' },
+  'Redis':         { title: 'Redis Object Cache',       body: 'Base de datos en memoria RAM que almacena resultados de queries repetidas. Elimina carga de MySQL en picos de tráfico. Estándar en hosting WP premium.',       metric: 'RAM-speed' },
+  'SSL EV':        { title: 'SSL Validación Extendida', body: 'Certificado que verifica la identidad legal de tu empresa, no solo el dominio. Muestra el nombre de la organización en el certificado. Máxima confianza.',    metric: 'Verificación legal' },
 };
+
+// ======= FAQs =======
+window.GANO_FAQS = [
+  {
+    q: '¿Puedo cambiar de plan después?',
+    a: 'Sí. Puedes migrar a un plan superior en cualquier momento. El cambio se procesa en menos de 24 horas hábiles y mantienes todos tus datos intactos.',
+  },
+  {
+    q: '¿Qué significa "facturación en COP"?',
+    a: 'Tu tarjeta o transferencia se debita en pesos colombianos. No hay conversiones de divisa ni sorpresas de tipo de cambio al final del mes.',
+  },
+  {
+    q: '¿El dominio está incluido en el hosting?',
+    a: 'Los planes de hosting no incluyen dominio por defecto. Puedes añadir un .com o .co desde la categoría Acceso con descuento al contratar junto con un plan.',
+  },
+  {
+    q: '¿Qué es el Agente IA de Gano?',
+    a: 'Es un asistente inteligente disponible 24/7 que monitorea tu sitio, detecta anomalías, responde consultas técnicas y puede ejecutar tareas básicas de administración de forma autónoma.',
+  },
+  {
+    q: '¿Tienen garantía de reembolso?',
+    a: 'Sí. Todos los planes incluyen 30 días de garantía. Si no estás satisfecho, te devolvemos el 100% sin preguntas.',
+  },
+  {
+    q: '¿Necesito saber programar para usar los planes de hosting?',
+    a: 'No para los planes WordPress Starter y Business NVMe — están preinstalados y administrados. Los planes de la categoría Dev (cPanel, SSH) sí requieren conocimientos técnicos básicos.',
+  },
+];
+
+// ======= TRUST SIGNALS =======
+window.GANO_TRUST = [
+  { icon: 'fa-shield-halved', title: 'Infraestructura GoDaddy', body: 'Programa reseller autorizado con estándares globales de datacenter y red en más de 200 POPs.' },
+  { icon: 'fa-clock',          title: '99.9% Disponibilidad',    body: 'SLA comprometido con monitoreo proactivo 24/7. Si no cumplimos, se acredita proporcional.' },
+  { icon: 'fa-peso-sign',      title: 'Facturación en COP',      body: 'Pesos colombianos. Sin conversiones de divisa ni sorpresas de tipo de cambio.' },
+  { icon: 'fa-headset',        title: 'Soporte en español',      body: 'Primera respuesta en horas, no en días. Equipo técnico colombiano que entiende tu contexto.' },
+];
 
 // ======= TIMELINE =======
 window.GANO_TIMELINE = [
@@ -395,6 +742,7 @@ window.GANO_OBJECTIVES = [
   { id: 'corporativo',label: 'Corporativo', icon: 'fa-building' },
   { id: 'ecommerce',  label: 'E-commerce',  icon: 'fa-store' },
   { id: 'agencia',    label: 'Agencia',     icon: 'fa-sitemap' },
+  { id: 'enterprise', label: 'Enterprise',  icon: 'fa-city' },
 ];
 
 // ======= CATEGORÍAS =======
@@ -407,6 +755,8 @@ window.GANO_CATEGORIES = [
   { id: 'email',    label: 'Email',            icon: 'fa-envelope' },
   { id: 'builder',  label: 'Builder',          icon: 'fa-paintbrush' },
   { id: 'servicio', label: 'Servicios Gano',   icon: 'fa-handshake' },
+  { id: 'acceso',   label: 'Acceso · Empezar', icon: 'fa-seedling' },
+  { id: 'dev',      label: 'Para Desarrolladores', icon: 'fa-code' },
 ];
 
 // Format helpers

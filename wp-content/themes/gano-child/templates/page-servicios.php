@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Template Name: Servicios — Qué ofrecemos
  * @package gano-child
@@ -74,25 +74,25 @@ get_header(); ?>
           <h3>Núcleo Prime</h3>
           <p class="gano-plan-price">$196.000 COP/mes</p>
           <p>El punto de partida correcto. NVMe real, WordPress preinstalado, soporte en español y activación sin fricciones.</p>
-          <a href="/ecosistemas/" class="gano-btn gano-btn--small">Ver detalles →</a>
+          <a href="/catalogo/" class="gano-btn gano-btn--small">Ver detalles →</a>
         </article>
         <article class="gano-el-pillar">
           <h3>Fortaleza Delta</h3>
           <p class="gano-plan-price">$450.000 COP/mes</p>
           <p>Para marcas que ya generan ingresos. Más recursos, hardening activo, WooCommerce soportado y visibilidad operativa.</p>
-          <a href="/ecosistemas/" class="gano-btn gano-btn--small">Ver detalles →</a>
+          <a href="/catalogo/" class="gano-btn gano-btn--small">Ver detalles →</a>
         </article>
         <article class="gano-el-pillar">
           <h3>Bastión SOTA</h3>
           <p class="gano-plan-price">$890.000 COP/mes</p>
           <p>Rendimiento crítico Gen4 con seguridad empresarial. Para operaciones que no toleran degradación ni incidentes visibles.</p>
-          <a href="/ecosistemas/" class="gano-btn gano-btn--small">Ver detalles →</a>
+          <a href="/catalogo/" class="gano-btn gano-btn--small">Ver detalles →</a>
         </article>
         <article class="gano-el-pillar">
           <h3>Ultimate WP</h3>
           <p class="gano-plan-price">$1.200.000 COP/mes</p>
           <p>Máxima capacidad y blindaje ante picos masivos. Para agencias con portafolios de alto tráfico.</p>
-          <a href="/ecosistemas/" class="gano-btn gano-btn--small">Ver detalles →</a>
+          <a href="/catalogo/" class="gano-btn gano-btn--small">Ver detalles →</a>
         </article>
       </div>
     </div>
@@ -104,7 +104,7 @@ get_header(); ?>
       <h2>¿Listo para una infraestructura que no te pida disculpas?</h2>
       <a href="/diagnostico/" class="gano-btn">Hacer diagnóstico gratuito</a>
       &nbsp;&nbsp;
-      <a href="/ecosistemas/" class="gano-nosotros__cta-link">Ver todos los planes →</a>
+      <a href="/catalogo/" class="gano-nosotros__cta-link">Ver todos los planes →</a>
     </div>
   </section>
 

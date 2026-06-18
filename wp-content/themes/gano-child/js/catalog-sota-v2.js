@@ -43,8 +43,6 @@
    */
   const PFIDS = {
     // ── Hosting WordPress — familia 457 (WP Managed) ───────────────
-    // Todos los tiers comparten el mismo Product Family ID en GoDaddy.
-    // El cliente selecciona el plan específico dentro del carrito.
     'pro-managed':       '457',
     'business-nvme':     '457',
     'ultimate':          '457',
@@ -53,7 +51,6 @@
     'whp-expansion':     '459',
 
     // ── Dominio ───────────────────────────────────────────────────
-    // Los dominios no tienen PFID de carrito directo → WA fallback.
     'dom-co':            null,
 
     // ── SSL — familia 75 ─────────────────────────────────────────
