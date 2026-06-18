@@ -16,6 +16,28 @@ $url_dominios = function_exists( 'gano_resolve_page_url' )
 	? gano_resolve_page_url( 'dominios' )
 	: home_url( '/dominios/' );
 
+// /catalogo/ es la URL canónica; el resolver conserva compatibilidad con slugs históricos.
+$url_catalogo = function_exists( 'gano_resolve_page_url' )
+	? gano_resolve_page_url( 'shop-premium', 'catalogo', 'ecosistemas' )
+	: home_url( '/catalogo/' );
+
+$precio_desde_default      = '$39.000';
+$precio_desde_raw          = get_option( 'gano_precio_desde', $precio_desde_default );
+$precio_desde_source       = is_scalar( $precio_desde_raw ) ? trim( (string) $precio_desde_raw ) : $precio_desde_default;
+$precio_desde_before_comma = strtok( $precio_desde_source, ',' );
+
+if ( false === $precio_desde_before_comma ) {
+	$precio_desde_before_comma = $precio_desde_source;
+}
+
+$precio_desde_num = preg_replace( '/\D+/', '', $precio_desde_before_comma );
+
+if ( '' === $precio_desde_num ) {
+	$precio_desde_num = preg_replace( '/\D+/', '', $precio_desde_default );
+}
+
+$precio_desde = '$' . number_format( (int) $precio_desde_num, 0, ',', '.' );
+
 $url_login = wp_login_url( home_url() );
 ?>
 
@@ -236,82 +258,26 @@ $url_login = wp_login_url( home_url() );
 		<div class="container">
 			<div class="section-header reveal">
 				<span class="section-label"><?php esc_html_e( 'Catálogo comercial', 'gano-child' ); ?></span>
-				<h2 class="section-title"><?php esc_html_e( 'Planes con precios en', 'gano-child' ); ?> <span class="gradient-text">COP</span></h2>
-				<p class="section-desc"><?php esc_html_e( 'Compara planes con referencia USD* y elige el que necesita tu operación.', 'gano-child' ); ?></p>
-			</div>
-
-			<div class="pricing-tabs reveal">
-				<button class="pricing-tab active"><?php esc_html_e( 'WordPress', 'gano-child' ); ?></button>
-				<button class="pricing-tab"><?php esc_html_e( 'Compartido', 'gano-child' ); ?></button>
-				<button class="pricing-tab"><?php esc_html_e( 'VPS', 'gano-child' ); ?></button>
+				<h2 class="section-title"><?php esc_html_e( 'Planes listos para comparar en', 'gano-child' ); ?> <span class="gradient-text">COP</span></h2>
+				<p class="section-desc"><?php esc_html_e( 'La homepage presenta la propuesta de valor. Los precios vigentes y la disponibilidad viven en el catálogo.', 'gano-child' ); ?></p>
 			</div>
 
 			<div class="pricing-grid" id="pricing-wordpress">
-				<div class="pricing-card reveal">
-					<div class="pricing-name"><?php esc_html_e( 'Esencial', 'gano-child' ); ?></div>
-					<div class="pricing-desc"><?php esc_html_e( 'Para emprendedores y proyectos nuevos', 'gano-child' ); ?></div>
+				<div class="pricing-card featured reveal" style="grid-column: 1 / -1; max-width: 640px; margin: 0 auto; text-align: center;">
+					<div class="pricing-badge"><?php esc_html_e( 'Catálogo en vivo', 'gano-child' ); ?></div>
+					<div class="pricing-name"><?php esc_html_e( 'Planes desde', 'gano-child' ); ?></div>
+					<div class="pricing-desc"><?php esc_html_e( 'Explora planes activos, compara capacidades y confirma el precio vigente antes de comprar.', 'gano-child' ); ?></div>
 					<div class="pricing-price">
-						<span class="currency">$</span>
-						<span class="amount">29.900</span>
-						<span class="period">/mes</span>
-						<div class="usd">~$7.50 USD</div>
+						<span class="amount"><?php echo esc_html( $precio_desde ); ?></span>
+						<span class="period"><?php esc_html_e( '/mes', 'gano-child' ); ?></span>
+						<div class="usd"><?php esc_html_e( 'Facturación en COP · Sin contratos anuales obligatorios', 'gano-child' ); ?></div>
 					</div>
 					<ul class="pricing-features">
-						<li><i class="fas fa-check"></i> <?php esc_html_e( '1 sitio web', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( '10 GB NVMe', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( '100 GB ancho de banda', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( 'SSL gratuito', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( 'cPanel incluido', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( 'Soporte 24/7', 'gano-child' ); ?></li>
-						<li class="muted"><i class="fas fa-xmark"></i> <?php esc_html_e( 'CDN Edge', 'gano-child' ); ?></li>
-						<li class="muted"><i class="fas fa-xmark"></i> <?php esc_html_e( 'Backups diarios', 'gano-child' ); ?></li>
+						<li><i class="fas fa-check"></i> <?php esc_html_e( 'Planes de hosting, VPS, dominios y servicios en una sola vista', 'gano-child' ); ?></li>
+						<li><i class="fas fa-check"></i> <?php esc_html_e( 'CTAs conectados al flujo comercial activo de Gano Digital', 'gano-child' ); ?></li>
+						<li><i class="fas fa-check"></i> <?php esc_html_e( 'Precio y disponibilidad sujetos al catálogo vigente', 'gano-child' ); ?></li>
 					</ul>
-					<a href="<?php echo esc_url( $url_ecosistemas ); ?>" class="btn btn-ghost" style="width:100%"><?php esc_html_e( 'Elegir plan', 'gano-child' ); ?></a>
-				</div>
-
-				<div class="pricing-card featured reveal">
-					<div class="pricing-badge"><?php esc_html_e( 'Más popular', 'gano-child' ); ?></div>
-					<div class="pricing-name"><?php esc_html_e( 'Profesional', 'gano-child' ); ?></div>
-					<div class="pricing-desc"><?php esc_html_e( 'Para negocios en crecimiento', 'gano-child' ); ?></div>
-					<div class="pricing-price">
-						<span class="currency">$</span>
-						<span class="amount">79.900</span>
-						<span class="period">/mes</span>
-						<div class="usd">~$19.90 USD</div>
-					</div>
-					<ul class="pricing-features">
-						<li><i class="fas fa-check"></i> <?php esc_html_e( '5 sitios web', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( '50 GB NVMe', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( 'Ancho de banda ilimitado', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( 'SSL gratuito', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( 'cPanel + Softaculous', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( 'CDN Edge Colombia', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( 'Backups diarios', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( 'Migración gratuita', 'gano-child' ); ?></li>
-					</ul>
-					<a href="<?php echo esc_url( $url_ecosistemas ); ?>" class="btn btn-primary" style="width:100%"><?php esc_html_e( 'Elegir plan', 'gano-child' ); ?></a>
-				</div>
-
-				<div class="pricing-card reveal">
-					<div class="pricing-name"><?php esc_html_e( 'Empresarial', 'gano-child' ); ?></div>
-					<div class="pricing-desc"><?php esc_html_e( 'Para operaciones de alto tráfico', 'gano-child' ); ?></div>
-					<div class="pricing-price">
-						<span class="currency">$</span>
-						<span class="amount">149.900</span>
-						<span class="period">/mes</span>
-						<div class="usd">~$37.50 USD</div>
-					</div>
-					<ul class="pricing-features">
-						<li><i class="fas fa-check"></i> <?php esc_html_e( 'Sitios ilimitados', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( '100 GB NVMe', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( 'Ancho de banda ilimitado', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( 'SSL Wildcard', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( 'cPanel + WHM', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( 'CDN Global + Edge', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( 'Backups en tiempo real', 'gano-child' ); ?></li>
-						<li><i class="fas fa-check"></i> <?php esc_html_e( 'IP dedicada', 'gano-child' ); ?></li>
-					</ul>
-					<a href="<?php echo esc_url( $url_ecosistemas ); ?>" class="btn btn-ghost" style="width:100%"><?php esc_html_e( 'Elegir plan', 'gano-child' ); ?></a>
+					<a href="<?php echo esc_url( $url_catalogo ); ?>" class="btn btn-primary btn-lg" style="width:100%"><?php esc_html_e( 'Ver catálogo completo →', 'gano-child' ); ?></a>
 				</div>
 			</div>
 		</div>
@@ -412,11 +378,11 @@ $url_login = wp_login_url( home_url() );
 				</form>
 
 				<div class="domain-tlds">
-					<div class="tld-tag">.com <span class="price">$45.000</span></div>
-					<div class="tld-tag">.co <span class="price">$55.000</span></div>
-					<div class="tld-tag">.com.co <span class="price">$35.000</span></div>
-					<div class="tld-tag">.net <span class="price">$48.000</span></div>
-					<div class="tld-tag">.org <span class="price">$50.000</span></div>
+					<div class="tld-tag">.com</div>
+					<div class="tld-tag">.co</div>
+					<div class="tld-tag">.com.co</div>
+					<div class="tld-tag">.net</div>
+					<div class="tld-tag">.org</div>
 				</div>
 			</div>
 		</div>

@@ -3,6 +3,15 @@
 // Tiers: bajo (entry/acceso) · medio · alto — todos los rangos incluidos
 // Precios en COP. PFIDs: ver catalog-sota-v2.js — los PFID son a nivel de familia de producto GoDaddy.
 
+/**
+ * POLÍTICA DE PRECIOS GANO DIGITAL
+ * Los valores `monthly`/`yearly` son los precios FINALES al cliente en COP.
+ * Incluyen el margen de Gano Digital sobre el costo GoDaddy.
+ * Se actualizan manualmente cuando se ajusta la política de precios.
+ * NO son precios GoDaddy directos — son la oferta comercial de Gano Digital.
+ * Para actualizar: cambiar los valores aquí y hacer deploy.
+ */
+
 window.GANO_PRODUCTS = [
   // ======= HOSTING WORDPRESS — MEDIO =======
   {
