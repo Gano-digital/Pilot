@@ -3,8 +3,8 @@ name: "31 · Plugin Health Phase 4"
 
 on:
   schedule:
-    # Every 12 hours
-    - cron: "0 */12 * * *"
+    # Weekly on Monday at 9 AM UTC — reduced from every 12h to avoid overlap with 08-health-check-plugins.yml.
+    - cron: "0 9 * * 1"
   
   push:
     branches: [main, master]

@@ -3,7 +3,8 @@ name: "18 · Ops · Health Check · Validar plugins gano-*"
 
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    # Once daily at 8 AM UTC (3 AM COT) — reduced from every 6h to limit activation noise on production.
+    - cron: "0 8 * * *"
   
   push:
     branches: [main, master]

@@ -92,34 +92,32 @@ jobs:
       - name: 📦 Export database
         run: |
           set -euo pipefail
-          DEPLOY="${{ secrets.DEPLOY_PATH }}"
-          BACKUP_DIR="/home/${{ secrets.SERVER_USER }}/backups/gano_db"
-          TIMESTAMP=$(date '+%Y%m%d_%H%M%S')
-          BACKUP_FILE="gano_db_${TIMESTAMP}.sql"
-          
+          # NOTE: single-quoted heredoc ('SCRIPT') prevents bash variable expansion on the runner,
+          # but ${{ }} GitHub Actions expressions ARE expanded by GH Actions BEFORE bash runs.
+          # Therefore all ${{ secrets.* }} inside the heredoc resolve correctly on the remote shell.
           ssh -i ~/.ssh/id_rsa "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" << 'SCRIPT'
             set -euo pipefail
             DEPLOY="${{ secrets.DEPLOY_PATH }}"
             BACKUP_DIR="/home/${{ secrets.SERVER_USER }}/backups/gano_db"
             TIMESTAMP=$(date '+%Y%m%d_%H%M%S')
             BACKUP_FILE="gano_db_${TIMESTAMP}.sql"
-            
+
             # Create backup directory if not exists
             mkdir -p "$BACKUP_DIR"
-            
+
             # Export database
             echo "Exporting database to $BACKUP_FILE..."
             wp db export "$BACKUP_DIR/$BACKUP_FILE" --allow-root --path="$DEPLOY" 2>&1 | head -5
-            
+
             # Compress
             echo "Compressing backup..."
             gzip -v "$BACKUP_DIR/$BACKUP_FILE"
-            
+
             # List recent backups
             echo "Recent backups:"
             ls -lh "$BACKUP_DIR" | tail -5
           SCRIPT
-          
+
           echo "✅ Database exported and compressed"
       
       - name: 🧹 Cleanup old backups
@@ -146,11 +144,13 @@ jobs:
           TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
           
           # Get latest backup info from server
+          # NOTE: using double-quoted heredoc ("SCRIPT") here to allow bash expansion for SERVER_USER.
+          # ${{ }} expressions are expanded by GH Actions; remaining $VARS are expanded by local bash.
           BACKUP_INFO=$(ssh -i ~/.ssh/id_rsa "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" << 'SCRIPT'
             BACKUP_DIR="/home/${{ secrets.SERVER_USER }}/backups/gano_db"
             if [ -d "$BACKUP_DIR" ]; then
               LATEST=$(ls -t "$BACKUP_DIR"/gano_db_*.sql.gz 2>/dev/null | head -1)
-              if [ ! -z "$LATEST" ]; then
+              if [ -n "$LATEST" ]; then
                 SIZE=$(du -h "$LATEST" | awk '{print $1}')
                 CHECKSUM=$(md5sum "$LATEST" | awk '{print $1}')
                 echo "$(basename "$LATEST"):$SIZE:$CHECKSUM"

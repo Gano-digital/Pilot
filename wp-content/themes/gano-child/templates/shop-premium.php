@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Template Name: Cat├ílogo SOTA v2
  * Template Post Type: page
@@ -16,7 +16,7 @@ $theme_uri = get_stylesheet_directory_uri();
 <link rel="stylesheet" href="<?php echo $theme_uri; ?>/catalog-sota-v2.css?v=2.2.0">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous">
 
-<main id="catalog-main" class="catalog-wrapper">
+<main id="catalog-main" class="catalog-wrapper gano-catalog-shell" data-gano-catalog>
 
   <!-- ÔöÇÔöÇ HERO ÔöÇÔöÇ -->
   <section class="catalog-hero">

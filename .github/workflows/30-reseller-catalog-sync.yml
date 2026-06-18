@@ -2,9 +2,9 @@
 name: "30 · Reseller Catalog Sync"
 
 on:
-  schedule:
-    # Tuesday 14:00 UTC = Tuesday 9 AM COT
-    - cron: "0 14 * * 2"
+  # schedule disabled: fetch-catalog step is a stub (no GoDaddy API calls implemented yet).
+  # Re-enable once real RCC API integration is in place.
+  # - cron: "0 14 * * 2"  # Tuesday 14:00 UTC = Tuesday 9 AM COT
   
   workflow_dispatch:
     inputs:
