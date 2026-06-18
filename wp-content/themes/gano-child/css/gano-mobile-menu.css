@@ -65,6 +65,12 @@
   border-bottom: 1px solid rgba(27, 79, 216, 0.2);
 }
 
+.mobile-menu-title {
+  margin: 0;
+  font-size: 1.25rem;
+  color: white;
+}
+
 .mobile-menu-close {
   background: none;
   border: none;

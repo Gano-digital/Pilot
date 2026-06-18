@@ -65,6 +65,7 @@
 
   /* ---- Mobile menu toggle ---- */
   landing.addEventListener('click', function (e) {
+    // Skip fallback toggle if dedicated mobile menu markup is present.
     if (landing.querySelector('.mobile-menu')) {
       return;
     }

@@ -53,7 +53,7 @@ $url_login = wp_login_url( home_url() );
 
 	<nav id="mobile-menu-panel" class="mobile-menu" aria-hidden="true">
 		<div class="mobile-menu-header">
-			<h2 style="margin: 0; font-size: 1.25rem; color: white;"><?php esc_html_e( 'Menú', 'gano-child' ); ?></h2>
+			<h2 class="mobile-menu-title"><?php esc_html_e( 'Menú', 'gano-child' ); ?></h2>
 			<button class="mobile-menu-close" aria-label="<?php esc_attr_e( 'Cerrar menú', 'gano-child' ); ?>">&times;</button>
 		</div>
 		<div class="mobile-menu-items">
