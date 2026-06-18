@@ -9,7 +9,10 @@
 /* ══════════════════════════════════════════════════════
    1. VARIABLES CSS
 ══════════════════════════════════════════════════════ */
-:root {
+/* Scoped con :has() — solo activa cuando shop-premium.php está en página.
+   Evita que el tema dark del catálogo contamine otras páginas del sitio. */
+:root:has(#catalog-main),
+:root:has([data-gano-catalog]) {
   --gano-bg:          #0a0a0f;
   --gano-surface:     #12121c;
   --gano-card:        #16162a;
