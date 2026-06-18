@@ -167,8 +167,17 @@ function gano_enqueue_mobile_menu(): void {
     );
 }
 
+// REDIRECT: /ecosistemas/ → /catalogo/ (canónico desde 2026-06-17)
+// Page ID: 1656
+add_action( 'template_redirect', function() {
+    if ( is_page( 'ecosistemas' ) && ! is_preview() ) {
+        wp_redirect( home_url( '/catalogo/' ), 301 );
+        exit;
+    }
+}, 10 );
+
 // =============================================================================
-// RESELLER TABS (page-ecosistemas.php)
+// RESELLER TABS (page-ecosistemas-v3.php)
 // =============================================================================
 
 add_action( 'wp_enqueue_scripts', 'gano_enqueue_reseller_tabs', 12 );
@@ -178,7 +187,7 @@ function gano_enqueue_reseller_tabs(): void {
     }
 
     // Solo enqueue en la página de ecosistemas
-    if ( ! is_page_template( 'templates/page-ecosistemas.php' ) ) {
+    if ( ! is_page_template( 'templates/page-ecosistemas-v3.php' ) ) {
         return;
     }
 
@@ -794,7 +803,7 @@ function gano_child_enqueue_styles() {
     $needs_gsap = is_page_template( 'templates/page-sota-hub.php' )
         || is_page_template( 'templates/sota-single-template.php' )
         || is_page_template( 'templates/shop-premium.php' )
-        || is_page_template( 'templates/page-ecosistemas.php' );
+        || is_page_template( 'templates/page-ecosistemas-v3.php' );
 
     if ( $needs_gsap ) {
         wp_enqueue_script( 'gsap-js', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', array(), '3.12.5', true );
@@ -818,7 +827,7 @@ function gano_child_enqueue_styles() {
     );
 
     // Ecosistemas — catálogo de planes (cd-content-002)
-    if ( is_page_template( 'templates/page-ecosistemas.php' ) ) {
+    if ( is_page_template( 'templates/page-ecosistemas-v3.php' ) ) {
         wp_enqueue_style( 'gano-ecosistemas-css', get_stylesheet_directory_uri() . '/css/ecosistemas.css', array( 'gano-child-style' ), '1.0.0' );
         wp_enqueue_style( 'gano-mobile-cta-css', get_stylesheet_directory_uri() . '/css/gano-mobile-cta.css', array( 'gano-child-style' ), '1.0.0' );
     }
@@ -871,7 +880,7 @@ function gano_child_enqueue_styles() {
     // Home (front-page) ya no incluye `[data-gano-catalog]` — no cargar UX catálogo ahí.
     $is_commerce_template =
         is_page_template( 'templates/shop-premium.php' ) ||
-        is_page_template( 'templates/page-ecosistemas.php' ) ||
+        is_page_template( 'templates/page-ecosistemas-v3.php' ) ||
         is_page_template( 'templates/page-seo-landing.php' );
     if ( $is_commerce_template ) {
         wp_enqueue_style(
