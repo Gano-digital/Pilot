@@ -10,7 +10,7 @@
  *   1. Crear nueva página en wp-admin → Páginas → Añadir nueva
  *   2. En "Atributos de la página" → Plantilla → seleccionar "SEO Landing Page"
  *   3. Configurar la keyword objetivo en el campo personalizado "seo_keyword_target"
- *   4. Editar el contenido de la página con Elementor (el template solo provee el wrapper)
+ *   4. Pegar el contenido de la landing en el editor de bloques o clásico (el template solo provee el wrapper y la capa comercial)
  *
  * Campos personalizados ACF/CMB2 opcionales (usar update_post_meta() si no hay ACF):
  *   - seo_keyword_target  : Keyword principal (ej: "hosting wordpress colombia")
@@ -112,7 +112,7 @@ get_header();
 <!-- Gano Digital: SEO Landing Page Template -->
 <main id="gano-seo-landing" class="gano-seo-landing gano-km-shell" role="main">
 
-    <!-- H1 SEO — Visible para Google y usuarios, estilizado via Elementor o CSS del child theme -->
+    <!-- H1 SEO — Visible para Google y usuarios, estilizado vía CSS del child theme -->
     <section class="gano-landing-hero elementor-section gano-km-shell">
         <div class="elementor-container gano-km-container">
             <span class="gano-km-live-badge">SEO landing operativa</span>
@@ -128,7 +128,7 @@ get_header();
         </div>
     </section>
 
-    <!-- Contenido principal — editable con Elementor -->
+    <!-- Contenido principal — editable con el editor de WordPress -->
     <section class="gano-landing-content">
         <div class="elementor-container">
             <?php
