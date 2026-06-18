@@ -343,8 +343,8 @@ add_action( 'send_headers', function() {
         $csp = implode( '; ', [
             "default-src 'self'",
             "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com https://www.googletagmanager.com https://ajax.googleapis.com https://cdnjs.cloudflare.com",
-            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-            "font-src 'self' data: https://fonts.gstatic.com",
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com",
+            "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com",
             "img-src 'self' data: https:",
             "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://api.godaddy.com https://myh.godaddy.com https://storefront.secureserver.net https://cart.secureserver.net",
             "frame-src 'self' https://reseller.godaddy.com https://reseller-store.godaddy.com https://www.godaddy.com https://cart.secureserver.net",
