@@ -35,42 +35,36 @@ get_header();
                     'extension' => '.CO',
                     'tld'       => 'co',
                     'nombre'    => 'Colombia',
-                    'precio'    => '$90.000',
                     'desc'      => 'Presencia nacional de máxima autoridad',
                 ],
                 [
                     'extension' => '.COM',
                     'tld'       => 'com',
                     'nombre'    => 'Global',
-                    'precio'    => '$75.000',
                     'desc'      => 'El estándar internacional de credibilidad',
                 ],
                 [
                     'extension' => '.NET',
                     'tld'       => 'net',
                     'nombre'    => 'Infraestructura',
-                    'precio'    => '$85.000',
                     'desc'      => 'La red técnica de confianza',
                 ],
                 [
                     'extension' => '.TECH',
                     'tld'       => 'tech',
                     'nombre'    => 'Tecnología',
-                    'precio'    => '$160.000',
                     'desc'      => 'Para startups e innovadores',
                 ],
                 [
                     'extension' => '.BIZ',
                     'tld'       => 'biz',
                     'nombre'    => 'Negocio',
-                    'precio'    => '$110.000',
                     'desc'      => 'Enfoque operativo y profesional',
                 ],
                 [
                     'extension' => '.AI',
                     'tld'       => 'ai',
                     'nombre'    => 'Inteligencia Artificial',
-                    'precio'    => '$350.000',
                     'desc'      => 'La frontera de la innovación',
                 ],
             ];
@@ -79,7 +73,7 @@ get_header();
                 ?>
                 <div class="tld-card" data-tld="<?php echo esc_attr($tld['tld']); ?>">
                     <h3><?php echo esc_html($tld['extension']); ?></h3>
-                    <div class="tld-price"><?php echo esc_html($tld['precio']); ?><small>/año</small></div>
+                    <p class="tld-price"><?php esc_html_e( 'Ver precio actual →', 'gano-child' ); ?></p>
                     <p class="tld-description"><?php echo esc_html($tld['desc']); ?></p>
                     <a href="#dominios-search"
                        class="tld-button"
