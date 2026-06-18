@@ -1,7 +1,7 @@
 // Gano Digital — Catalog data v2
-// Filtro: solo productos MEDIO y ALTO de cada categoría
-// EXCLUIDOS: start-wp (hosting básico), dom-com (dominio básico)
-// Precios en COP.
+// Categorías: hosting · vps · dominio · seguridad · email · builder · servicio · acceso · dev
+// Tiers: bajo (entry/acceso) · medio · alto — todos los rangos incluidos
+// Precios en COP. PFIDs: ver catalog-sota-v2.js — los PFID son a nivel de familia de producto GoDaddy.
 
 window.GANO_PRODUCTS = [
   // ======= HOSTING WORDPRESS — MEDIO =======
@@ -666,6 +666,8 @@ window.GANO_PRODUCTS = [
 ];
 
 // ======= GLOSARIO =======
+// GANO_FAQS y GANO_TRUST (abajo) se declaran aquí como datos listos para renderizar.
+// Los templates/shortcodes que los consuman los leen desde window.GANO_FAQS / window.GANO_TRUST.
 window.GANO_GLOSSARY = {
   'NVMe Gen4':     { title: 'NVMe Gen4',              body: 'Non-Volatile Memory Express sobre PCIe 4.0. Hasta 7.500 MB/s — 15× más rápido que un SSD SATA. Se traduce en cargas WordPress 3-5× más veloces.',            metric: '7.500 MB/s' },
   'WAF Capa 7':    { title: 'WAF Capa 7',              body: 'Firewall que opera en la capa de aplicación HTTP/HTTPS. Bloquea SQL injection, XSS, CSRF y bots antes de que toquen tu WordPress.',                           metric: 'OWASP Top 10' },
