@@ -24,7 +24,7 @@ jobs:
           php -l wp-content/themes/gano-child/functions.php
           php -l wp-content/themes/gano-child/front-page.php
           php -l wp-content/themes/gano-child/templates/shop-premium.php
-          php -l wp-content/themes/gano-child/templates/page-ecosistemas.php
+          php -l wp-content/themes/gano-child/templates/page-ecosistemas-v3.php
           php -l wp-content/themes/gano-child/templates/page-seo-landing.php
           php -l wp-content/themes/gano-child/templates/page-sota-hub.php
           php -l wp-content/themes/gano-child/templates/page-diagnostico-digital.php
