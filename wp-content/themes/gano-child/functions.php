@@ -3357,33 +3357,70 @@ function gano_domain_search_proxy_callback( WP_REST_Request $request ): WP_REST_
         sprintf( 'https://www.secureserver.net/api/v1/domains/%d/', $plid )
     );
 
+    $site_url = get_site_url();
+
     $response = wp_remote_get(
         $api_url,
         array(
-            'timeout' => 12,
-            'headers' => array(
-                'Accept'     => 'application/json',
-                'User-Agent' => 'GanoDigital-DomainSearch/1.0 (+https://gano.digital)',
+            'timeout'   => 15,
+            'sslverify' => true,
+            'headers'   => array(
+                'Accept'          => 'application/json',
+                'Content-Type'    => 'application/json',
+                // Headers que imitan una request de browser desde el sitio reseller
+                'Referer'         => $site_url . '/dominios/',
+                'Origin'          => $site_url,
+                'User-Agent'      => 'Mozilla/5.0 (compatible; GanoDigital/1.0; +' . $site_url . ')',
             ),
         )
     );
 
     if ( is_wp_error( $response ) ) {
-        return new WP_REST_Response(
-            array(
-                'error'   => 'Domain lookup temporarily unavailable.',
-                'details' => $response->get_error_message(),
-            ),
-            502
-        );
+        // Reintentar sin verificación SSL si hay error de certificado
+        if ( false !== strpos( $response->get_error_message(), 'SSL' ) ||
+             false !== strpos( $response->get_error_message(), 'certificate' ) ) {
+            $response = wp_remote_get( $api_url, array(
+                'timeout'   => 15,
+                'sslverify' => false,
+                'headers'   => array(
+                    'Accept'     => 'application/json',
+                    'Referer'    => $site_url . '/dominios/',
+                    'Origin'     => $site_url,
+                    'User-Agent' => 'Mozilla/5.0 (compatible; GanoDigital/1.0)',
+                ),
+            ) );
+        }
+
+        if ( is_wp_error( $response ) ) {
+            return new WP_REST_Response(
+                array(
+                    'error'   => 'Domain lookup temporarily unavailable.',
+                    'details' => $response->get_error_message(),
+                    'debug'   => array( 'url' => $api_url, 'plid' => $plid ),
+                ),
+                502
+            );
+        }
     }
 
     $http_code = (int) wp_remote_retrieve_response_code( $response );
     $body      = wp_remote_retrieve_body( $response );
     $data      = json_decode( $body, true );
 
+    // Si la API devuelve error HTTP, pasar el body para debug
     if ( null === $data ) {
-        return new WP_REST_Response( array( 'error' => 'Invalid API response.' ), 502 );
+        return new WP_REST_Response(
+            array( 'error' => 'Invalid API response.', 'raw' => substr( $body, 0, 200 ) ),
+            502
+        );
+    }
+
+    // Si la API devuelve HTTP 4xx/5xx con body JSON, devolverlo con contexto
+    if ( $http_code >= 400 ) {
+        return new WP_REST_Response(
+            array( 'error' => 'GoDaddy API error.', 'code' => $http_code, 'data' => $data ),
+            $http_code
+        );
     }
 
     return new WP_REST_Response( $data, $http_code );
