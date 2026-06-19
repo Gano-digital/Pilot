@@ -124,10 +124,11 @@ $proxy_url = rest_url( 'gano/v1/domains/search' );
                 // GoDaddy API usa el campo 'domain' (no 'fqdn')
                 function getDomainName(d) { return d.domain || d.fqdn || d.domainName || ''; }
 
-                // Botón de carrito: llama al proxy PHP que hace POST a GoDaddy cart API
-                function makeCartBtn( dName ) {
-                    return '<button class="gano-domain-item__cta" data-domain="' + escHtml(dName) + '">'
-                        + '<?php echo esc_js( __( 'Registrar →', 'gano-child' ) ); ?></button>';
+                // Botón de carrito con precio real de la API
+                function makeCartBtn( dName, price, productId ) {
+                    var priceHtml = price ? ' <span class="gano-domain-item__price">' + escHtml(price) + '</span>' : '';
+                    return '<button class="gano-domain-item__cta" data-domain="' + escHtml(dName) + '" data-pid="' + escHtml(String(productId||'')) + '">'
+                        + '<?php echo esc_js( __( 'Registrar →', 'gano-child' ) ); ?>' + priceHtml + '</button>';
                 }
 
                 if ( data.exactMatchDomain ) {
@@ -138,7 +139,7 @@ $proxy_url = rest_url( 'gano/v1/domains/search' );
                     html += '<span class="gano-domain-item__name">' + escHtml( dName ) + '</span>';
                     if ( avail ) {
                         html += '<span class="gano-domain-item__badge gano-domain-item__badge--ok"><?php echo esc_js( __( 'Disponible', 'gano-child' ) ); ?></span>';
-                        html += makeCartBtn( dName );
+                        html += makeCartBtn( dName, d.listPrice || d.salePrice, d.productId );
                     } else {
                         html += '<span class="gano-domain-item__badge gano-domain-item__badge--no"><?php echo esc_js( __( 'No disponible', 'gano-child' ) ); ?></span>';
                     }
@@ -154,7 +155,7 @@ $proxy_url = rest_url( 'gano/v1/domains/search' );
                         html += '<li class="gano-domain-item is-available">';
                         html += '<span class="gano-domain-item__name">' + escHtml( dName ) + '</span>';
                         html += '<span class="gano-domain-item__badge gano-domain-item__badge--ok"><?php echo esc_js( __( 'Disponible', 'gano-child' ) ); ?></span>';
-                        html += makeCartBtn( dName );
+                        html += makeCartBtn( dName, d.listPrice || d.salePrice, d.productId );
                         html += '</li>';
                     });
                 }
@@ -165,14 +166,15 @@ $proxy_url = rest_url( 'gano/v1/domains/search' );
                 // Vincular botones de carrito — POST al proxy PHP → redirect a GoDaddy
                 results.querySelectorAll('.gano-domain-item__cta[data-domain]').forEach( function(btn) {
                     btn.addEventListener('click', function() {
-                        var domain = btn.getAttribute('data-domain');
+                        var domain    = btn.getAttribute('data-domain');
+                        var productId = btn.getAttribute('data-pid') || '';
                         btn.disabled = true;
                         btn.textContent = '<?php echo esc_js( __( 'Abriendo…', 'gano-child' ) ); ?>';
 
                         fetch( CART_URL, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ domain: domain })
+                            body: JSON.stringify({ domain: domain, productId: productId })
                         })
                         .then( function(r) { return r.json(); } )
                         .then( function(data) {

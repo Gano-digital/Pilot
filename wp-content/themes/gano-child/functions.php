@@ -3472,50 +3472,16 @@ function gano_domain_cart_proxy_callback( WP_REST_Request $request ): WP_REST_Re
         $plid = 599667;
     }
 
-    $domain = trim( (string) $request->get_param( 'domain' ) );
+    $domain     = strtolower( trim( (string) $request->get_param( 'domain' ) ) );
+    $product_id = absint( $request->get_param( 'productId' ) );
 
-    // Payload exacto que usa domain-search.min.js v4.0.1
-    $items = wp_json_encode( array( array( 'id' => 'domain', 'domain' => $domain ) ) );
-
-    $cart_url = sprintf(
-        'https://www.secureserver.net/api/v1/cart/%d/?redirect=true',
-        $plid
-    );
-
-    $response = wp_remote_post(
-        $cart_url,
-        array(
-            'timeout' => 12,
-            'headers' => array(
-                'Content-Type' => 'application/json',
-                'Accept'       => 'application/json',
-                'User-Agent'   => 'GanoDigital-DomainCart/1.0 (+https://gano.digital)',
-            ),
-            'body' => $items,
-        )
-    );
-
-    if ( is_wp_error( $response ) ) {
-        return new WP_REST_Response(
-            array( 'error' => 'Cart temporarily unavailable.', 'details' => $response->get_error_message() ),
-            502
-        );
-    }
-
-    $http_code = (int) wp_remote_retrieve_response_code( $response );
-    $body      = wp_remote_retrieve_body( $response );
-    $data      = json_decode( $body, true );
-
-    // Si la API devuelve nextStepUrl, usarla directamente
-    if ( ! empty( $data['nextStepUrl'] ) ) {
-        return new WP_REST_Response( array( 'redirectUrl' => $data['nextStepUrl'] ), 200 );
-    }
-
-    // Fallback: construir URL de resultados de dominio en GoDaddy
-    $fallback = add_query_arg(
+    // Construir URL de registro directa — sin POST a GoDaddy (requiere cookies de sesión
+    // que el servidor no puede proveer). La página de resultados lleva al usuario al flujo
+    // completo de registro con el dominio pre-seleccionado.
+    $redirect_url = add_query_arg(
         array( 'plid' => $plid, 'keyword' => $domain ),
         'https://www.secureserver.net/domains/registration/results.aspx'
     );
 
-    return new WP_REST_Response( array( 'redirectUrl' => $fallback ), 200 );
+    return new WP_REST_Response( array( 'redirectUrl' => $redirect_url ), 200 );
 }
