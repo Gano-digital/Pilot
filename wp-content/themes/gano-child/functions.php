@@ -3346,8 +3346,21 @@ function gano_domain_search_proxy_callback( WP_REST_Request $request ): WP_REST_
         $plid = 599667; // PLID Gano Digital hard-coded como último fallback
     }
 
-    $q         = trim( (string) $request->get_param( 'q' ) );
+    $q_raw     = strtolower( trim( (string) $request->get_param( 'q' ) ) );
     $page_size = min( (int) $request->get_param( 'pageSize' ), 10 );
+
+    // Si el usuario escribe "basoccer.club", enviar solo "basoccer" a la API.
+    // GoDaddy sugiere los TLDs disponibles — el TLD específico puede no estar
+    // en el catálogo del Reseller y daría cero resultados.
+    $q = $q_raw;
+    if ( substr_count( $q, '.' ) >= 1 ) {
+        // Extraer solo el SLD (parte antes del primer punto)
+        $parts = explode( '.', $q );
+        $sld   = $parts[0];
+        if ( strlen( $sld ) >= 2 ) {
+            $q = $sld;
+        }
+    }
 
     $api_url = add_query_arg(
         array(
