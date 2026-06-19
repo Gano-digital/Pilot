@@ -3496,8 +3496,8 @@ function gano_domain_cart_redirect_callback( WP_REST_Request $request ): void {
     $domain = strtolower( trim( (string) $request->get_param( 'domain' ) ) );
 
     $redirect_url = add_query_arg(
-        array( 'plid' => $plid, 'keyword' => $domain ),
-        'https://www.secureserver.net/domains/registration/results.aspx'
+        array( 'plid' => $plid, 'domain' => $domain ),
+        'https://cart.secureserver.net/go/domainstep'
     );
 
     // 302 → GoDaddy domain registration (navegación normal, sin popup blocker)
