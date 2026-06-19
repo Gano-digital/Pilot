@@ -3440,27 +3440,35 @@ function gano_domain_search_proxy_callback( WP_REST_Request $request ): WP_REST_
 add_action( 'rest_api_init', 'gano_register_domain_cart_proxy' );
 
 function gano_register_domain_cart_proxy(): void {
+    $args = array(
+        'domain' => array(
+            'required'          => true,
+            'sanitize_callback' => 'sanitize_text_field',
+            'validate_callback' => function ( $v ) {
+                return is_string( $v ) && strlen( trim( $v ) ) >= 3 && strlen( $v ) <= 255;
+            },
+        ),
+        'productId' => array(
+            'required'          => false,
+            'sanitize_callback' => 'absint',
+        ),
+    );
+
+    // GET: el browser navega directamente a este endpoint → PHP hace 302 → GoDaddy
+    // Evita el problema de window.open() bloqueado como popup en callbacks async.
     register_rest_route(
         'gano/v1',
         '/domains/cart',
         array(
-            'methods'             => WP_REST_Server::CREATABLE,
-            'callback'            => 'gano_domain_cart_proxy_callback',
+            'methods'             => WP_REST_Server::READABLE,
+            'callback'            => 'gano_domain_cart_redirect_callback',
             'permission_callback' => '__return_true',
-            'args'                => array(
-                'domain' => array(
-                    'required'          => true,
-                    'sanitize_callback' => 'sanitize_text_field',
-                    'validate_callback' => function ( $v ) {
-                        return is_string( $v ) && strlen( trim( $v ) ) >= 3 && strlen( $v ) <= 255;
-                    },
-                ),
-            ),
+            'args'                => $args,
         )
     );
 }
 
-function gano_domain_cart_proxy_callback( WP_REST_Request $request ): WP_REST_Response {
+function gano_domain_cart_redirect_callback( WP_REST_Request $request ): void {
     $plid = 0;
     if ( function_exists( 'rstore_get_option' ) ) {
         $plid = (int) rstore_get_option( 'pl_id' );
@@ -3472,16 +3480,14 @@ function gano_domain_cart_proxy_callback( WP_REST_Request $request ): WP_REST_Re
         $plid = 599667;
     }
 
-    $domain     = strtolower( trim( (string) $request->get_param( 'domain' ) ) );
-    $product_id = absint( $request->get_param( 'productId' ) );
+    $domain = strtolower( trim( (string) $request->get_param( 'domain' ) ) );
 
-    // Construir URL de registro directa — sin POST a GoDaddy (requiere cookies de sesión
-    // que el servidor no puede proveer). La página de resultados lleva al usuario al flujo
-    // completo de registro con el dominio pre-seleccionado.
     $redirect_url = add_query_arg(
         array( 'plid' => $plid, 'keyword' => $domain ),
         'https://www.secureserver.net/domains/registration/results.aspx'
     );
 
-    return new WP_REST_Response( array( 'redirectUrl' => $redirect_url ), 200 );
+    // 302 → GoDaddy domain registration (navegación normal, sin popup blocker)
+    wp_redirect( esc_url_raw( $redirect_url ), 302 );
+    exit;
 }

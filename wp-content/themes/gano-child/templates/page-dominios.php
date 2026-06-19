@@ -168,27 +168,11 @@ $proxy_url = rest_url( 'gano/v1/domains/search' );
                     btn.addEventListener('click', function() {
                         var domain    = btn.getAttribute('data-domain');
                         var productId = btn.getAttribute('data-pid') || '';
-                        btn.disabled = true;
-                        btn.textContent = '<?php echo esc_js( __( 'Abriendo…', 'gano-child' ) ); ?>';
-
-                        fetch( CART_URL, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ domain: domain, productId: productId })
-                        })
-                        .then( function(r) { return r.json(); } )
-                        .then( function(data) {
-                            if ( data && data.redirectUrl ) {
-                                window.open( data.redirectUrl, '_blank', 'noopener' );
-                            } else {
-                                btn.disabled = false;
-                                btn.textContent = '<?php echo esc_js( __( 'Registrar →', 'gano-child' ) ); ?>';
-                            }
-                        })
-                        .catch( function() {
-                            btn.disabled = false;
-                            btn.textContent = '<?php echo esc_js( __( 'Registrar →', 'gano-child' ) ); ?>';
-                        });
+                        // GET directo al proxy PHP → 302 redirect a GoDaddy.
+                        // Sin fetch, sin window.open — navegación normal sin popup blocker.
+                        window.location.href = CART_URL
+                            + '?domain=' + encodeURIComponent(domain)
+                            + ( productId ? '&productId=' + encodeURIComponent(productId) : '' );
                     });
                 });
             }
