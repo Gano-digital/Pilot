@@ -122,14 +122,18 @@ $proxy_url = rest_url( 'gano/v1/domains/search' );
                 var html = '<ul class="gano-domain-list">';
 
                 // Resultado exacto primero
+                // GoDaddy API usa el campo 'domain' (no 'fqdn')
+                function getDomainName(d) { return d.domain || d.fqdn || d.domainName || ''; }
+
                 if ( data.exactMatchDomain ) {
-                    var d   = data.exactMatchDomain;
+                    var d     = data.exactMatchDomain;
+                    var dName = getDomainName(d);
                     var avail = d.available === true || d.available === 'true';
                     html += '<li class="gano-domain-item gano-domain-item--exact ' + ( avail ? 'is-available' : 'is-taken' ) + '">';
-                    html += '<span class="gano-domain-item__name">' + escHtml( d.fqdn ) + '</span>';
+                    html += '<span class="gano-domain-item__name">' + escHtml( dName ) + '</span>';
                     if ( avail ) {
                         html += '<span class="gano-domain-item__badge gano-domain-item__badge--ok"><?php echo esc_js( __( 'Disponible', 'gano-child' ) ); ?></span>';
-                        html += '<a class="gano-domain-item__cta" href="' + escHtml( cartUrl( d.fqdn ) ) + '" target="_blank" rel="noopener"><?php echo esc_js( __( 'Registrar →', 'gano-child' ) ); ?></a>';
+                        html += '<a class="gano-domain-item__cta" href="' + escHtml( cartUrl( dName ) ) + '" target="_blank" rel="noopener"><?php echo esc_js( __( 'Registrar →', 'gano-child' ) ); ?></a>';
                     } else {
                         html += '<span class="gano-domain-item__badge gano-domain-item__badge--no"><?php echo esc_js( __( 'No disponible', 'gano-child' ) ); ?></span>';
                     }
@@ -139,12 +143,13 @@ $proxy_url = rest_url( 'gano/v1/domains/search' );
                 // Sugerencias
                 if ( data.suggestedDomains && data.suggestedDomains.length ) {
                     data.suggestedDomains.forEach( function (d) {
+                        var dName = getDomainName(d);
                         var avail = d.available === true || d.available === 'true';
-                        if ( ! avail ) { return; } // solo mostrar disponibles en sugerencias
+                        if ( ! avail ) { return; }
                         html += '<li class="gano-domain-item is-available">';
-                        html += '<span class="gano-domain-item__name">' + escHtml( d.fqdn ) + '</span>';
+                        html += '<span class="gano-domain-item__name">' + escHtml( dName ) + '</span>';
                         html += '<span class="gano-domain-item__badge gano-domain-item__badge--ok"><?php echo esc_js( __( 'Disponible', 'gano-child' ) ); ?></span>';
-                        html += '<a class="gano-domain-item__cta" href="' + escHtml( cartUrl( d.fqdn ) ) + '" target="_blank" rel="noopener"><?php echo esc_js( __( 'Registrar →', 'gano-child' ) ); ?></a>';
+                        html += '<a class="gano-domain-item__cta" href="' + escHtml( cartUrl( dName ) ) + '" target="_blank" rel="noopener"><?php echo esc_js( __( 'Registrar →', 'gano-child' ) ); ?></a>';
                         html += '</li>';
                     });
                 }
