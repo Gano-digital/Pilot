@@ -24,16 +24,24 @@ real de hosting WordPress en Colombia. Workspace: esta carpeta raíz del proyect
 | **SEO** | MU `gano-seo.php` activo; Rank Math **instalado, inactivo** hasta cerrar copy |
 | **Tema padre** | Hello Elementor (child: gano-child) |
 | **UX** | Chat IA (gano-chat.js) + Quiz Soberanía Digital |
-| **Hosting actual** | **Managed WordPress Deluxe** (plan activo del servidor donde corre gano.digital) |
+| **Hosting actual** | **Web Hosting Deluxe** (cPanel — plan activo del servidor donde corre gano.digital) |
 
-## Infraestructura del servidor (Managed WordPress Deluxe)
-Plan actual donde está alojado gano.digital. Relevante para saber qué tenemos disponible:
-- 20 GB NVMe total storage
-- CDN incluido (hasta 2x más rápido)
-- Protección DDoS
-- Staging site disponible ← útil para probar cambios antes de subir a producción
-- Subdomains permitidos ✅ — my.gano.digital, support.gano.digital pueden crearse en este mismo plan; **ops.gano.digital** puede apuntar al Ops Hub (GitHub Pages o carpeta estática) — ver `memory/ops/gano-ops-hub-deployment.md`
-- **Implicación Fase 4**: El staging site permite probar cambios de vitrina, Reseller y plugins antes de producción. Los subdomains van en este mismo plan cuando apliquen.
+## Infraestructura del servidor (Web Hosting Deluxe — cPanel)
+Plan confirmado el 2026-06-18. **No** es Managed WordPress — es hosting cPanel estándar con WordPress instalado.
+- **Panel**: cPanel (acceso completo — File Manager, Terminal, Node.js Selector, etc.)
+- 50 GB NVMe storage
+- 10 sitios web en un mismo plan
+- Dominio gratis incluido
+- Correo gratis incluido
+- SSL gratuito e ilimitado para todos los sitios
+- CDN incluido
+- Garantía de devolución 30 días
+- **No tiene staging site built-in** (era feature de Managed WP) — staging vía rama/deploy workflow
+- **SSH disponible** vía cPanel → Terminal (habilitar en cPanel si no está activo)
+- **Node.js Selector** disponible en cPanel → permite instalar Claude CLI directamente en el servidor
+- Subdomains permitidos ✅ — my.gano.digital, support.gano.digital, ops.gano.digital
+
+⚠️ Todo el historial previo que mencione "Managed WordPress Deluxe" o "staging site" debe interpretarse con este contexto correcto.
 
 ## Términos clave
 | Término | Significado |
