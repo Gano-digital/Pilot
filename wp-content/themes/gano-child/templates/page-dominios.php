@@ -71,7 +71,9 @@ $proxy_url = rest_url( 'gano/v1/domains/search' );
             'use strict';
 
             var PROXY_URL  = <?php echo wp_json_encode( esc_url_raw( $proxy_url ) ); ?>;
-            var CART_URL   = <?php echo wp_json_encode( esc_url_raw( rest_url( 'gano/v1/domains/cart' ) ) ); ?>;
+            // Cart: form POST cross-origin (igual que domain-search.min.js del plugin rstore)
+            // Los form POST cross-origin no tienen restricciones CORS — GoDaddy redirige al checkout.
+            var CART_ACTION = 'https://www.secureserver.net/api/v1/cart/<?php echo (int) $plid; ?>/?redirect=true';
 
             var form       = document.getElementById('gano-domain-form');
             var input      = document.getElementById('gano-domain-input');
@@ -167,13 +169,24 @@ $proxy_url = rest_url( 'gano/v1/domains/search' );
                 // Vincular botones de carrito — POST al proxy PHP → redirect a GoDaddy
                 results.querySelectorAll('.gano-domain-item__cta[data-domain]').forEach( function(btn) {
                     btn.addEventListener('click', function() {
-                        var domain    = btn.getAttribute('data-domain');
-                        var productId = btn.getAttribute('data-pid') || '';
-                        // GET directo al proxy PHP → 302 redirect a GoDaddy.
-                        // Sin fetch, sin window.open — navegación normal sin popup blocker.
-                        window.location.href = CART_URL
-                            + '?domain=' + encodeURIComponent(domain)
-                            + ( productId ? '&productId=' + encodeURIComponent(productId) : '' );
+                        var domain = btn.getAttribute('data-domain');
+
+                        // Replica exacta del flujo de domain-search.min.js (plugin rstore):
+                        // POST cross-origin con hidden input "items" → GoDaddy redirige al checkout.
+                        // Los form POST no tienen restricciones CORS — a diferencia de fetch().
+                        var cartForm = document.createElement('form');
+                        cartForm.method  = 'POST';
+                        cartForm.action  = CART_ACTION;
+                        cartForm.style.display = 'none';
+
+                        var itemsInput = document.createElement('input');
+                        itemsInput.type  = 'hidden';
+                        itemsInput.name  = 'items';
+                        itemsInput.value = JSON.stringify( [ { id: 'domain', domain: domain } ] );
+
+                        cartForm.appendChild( itemsInput );
+                        document.body.appendChild( cartForm );
+                        cartForm.submit();
                     });
                 });
             }
