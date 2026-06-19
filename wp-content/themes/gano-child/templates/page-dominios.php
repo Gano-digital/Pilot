@@ -113,12 +113,13 @@ $proxy_url = rest_url( 'gano/v1/domains/search' );
             }
 
             function renderResults( data ) {
-                if ( ! data || ( ! data.exactMatchDomain && ! data.suggestedDomains ) ) {
-                    results.innerHTML = '<p class="gano-domain-error"><?php echo esc_js( __( 'No se encontraron resultados. Intenta con otro nombre.', 'gano-child' ) ); ?></p>';
+                if ( ! data || ( ! data.exactMatchDomain && ( ! data.suggestedDomains || ! data.suggestedDomains.length ) ) ) {
+                    results.innerHTML = '<p class="gano-domain-error"><?php echo esc_js( __( 'No se encontraron resultados. Intenta solo con el nombre sin extensión (ej: "miempresa" en lugar de "miempresa.com").', 'gano-child' ) ); ?></p>';
                     return;
                 }
 
                 var html = '<ul class="gano-domain-list">';
+                var itemCount = 0;
 
                 // Resultado exacto primero
                 // GoDaddy API usa el campo 'domain' (no 'fqdn')
