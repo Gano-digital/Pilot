@@ -3388,3 +3388,97 @@ function gano_domain_search_proxy_callback( WP_REST_Request $request ): WP_REST_
 
     return new WP_REST_Response( $data, $http_code );
 }
+
+// =============================================================================
+// DOMAIN CART PROXY — POST /wp-json/gano/v1/domains/cart
+//
+// El widget rstore agrega dominios al carrito via POST server-side:
+// POST https://www.secureserver.net/api/v1/cart/{plid}/?redirect=true
+// Body: [{"id":"domain","domain":"miempresa.com"}]
+// Respuesta: {"nextStepUrl":"https://cart.secureserver.net/..."}
+//
+// Sin este proxy el browser no puede hacer ese POST (CORS bloqueado).
+// =============================================================================
+
+add_action( 'rest_api_init', 'gano_register_domain_cart_proxy' );
+
+function gano_register_domain_cart_proxy(): void {
+    register_rest_route(
+        'gano/v1',
+        '/domains/cart',
+        array(
+            'methods'             => WP_REST_Server::CREATABLE,
+            'callback'            => 'gano_domain_cart_proxy_callback',
+            'permission_callback' => '__return_true',
+            'args'                => array(
+                'domain' => array(
+                    'required'          => true,
+                    'sanitize_callback' => 'sanitize_text_field',
+                    'validate_callback' => function ( $v ) {
+                        return is_string( $v ) && strlen( trim( $v ) ) >= 3 && strlen( $v ) <= 255;
+                    },
+                ),
+            ),
+        )
+    );
+}
+
+function gano_domain_cart_proxy_callback( WP_REST_Request $request ): WP_REST_Response {
+    $plid = 0;
+    if ( function_exists( 'rstore_get_option' ) ) {
+        $plid = (int) rstore_get_option( 'pl_id' );
+    }
+    if ( $plid <= 0 ) {
+        $plid = (int) get_option( 'rstore_pl_id', 599667 );
+    }
+    if ( $plid <= 0 ) {
+        $plid = 599667;
+    }
+
+    $domain = trim( (string) $request->get_param( 'domain' ) );
+
+    // Payload exacto que usa domain-search.min.js v4.0.1
+    $items = wp_json_encode( array( array( 'id' => 'domain', 'domain' => $domain ) ) );
+
+    $cart_url = sprintf(
+        'https://www.secureserver.net/api/v1/cart/%d/?redirect=true',
+        $plid
+    );
+
+    $response = wp_remote_post(
+        $cart_url,
+        array(
+            'timeout' => 12,
+            'headers' => array(
+                'Content-Type' => 'application/json',
+                'Accept'       => 'application/json',
+                'User-Agent'   => 'GanoDigital-DomainCart/1.0 (+https://gano.digital)',
+            ),
+            'body' => $items,
+        )
+    );
+
+    if ( is_wp_error( $response ) ) {
+        return new WP_REST_Response(
+            array( 'error' => 'Cart temporarily unavailable.', 'details' => $response->get_error_message() ),
+            502
+        );
+    }
+
+    $http_code = (int) wp_remote_retrieve_response_code( $response );
+    $body      = wp_remote_retrieve_body( $response );
+    $data      = json_decode( $body, true );
+
+    // Si la API devuelve nextStepUrl, usarla directamente
+    if ( ! empty( $data['nextStepUrl'] ) ) {
+        return new WP_REST_Response( array( 'redirectUrl' => $data['nextStepUrl'] ), 200 );
+    }
+
+    // Fallback: construir URL de resultados de dominio en GoDaddy
+    $fallback = add_query_arg(
+        array( 'plid' => $plid, 'keyword' => $domain ),
+        'https://www.secureserver.net/domains/registration/results.aspx'
+    );
+
+    return new WP_REST_Response( array( 'redirectUrl' => $fallback ), 200 );
+}
