@@ -1,3 +1,13 @@
+# Índice — Trabajo consolidado y vigente (actualizado 2026-06-18)
+
+## Claude Code SSH Agent — Jun 2026 (NUEVO)
+- `claude/2026-06-18-sesion-claude-code-ssh.md` — sesión inicial: auditoría servidor, SSH key GitHub, CSP bug gui.secureserver.net, runner limpiado, repo clonado
+- `claude/claude-code-server-state.md` — estado actual del servidor: rutas, bugs CSP activos, runner, SSH keys
+- `claude/claude-code-feedback.md` — reglas de trabajo con Claude Code en este proyecto
+- `claude/claude-code-user-diego.md` — perfil Diego para Claude Code
+
+---
+
 # Índice — Trabajo consolidado y vigente (2026-04-06)
 
 > Auditoría hecha por Claude el 2026-04-06. Lista qué archivos de `memory/` siguen siendo **fuente de verdad activa** para Gano Digital. No mueve archivos: solo cataloga, para no romper rutas referenciadas desde `CLAUDE.md`, `dispatch-queue.json`, scripts y la cola Copilot.
