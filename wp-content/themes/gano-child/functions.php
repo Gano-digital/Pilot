@@ -3295,6 +3295,77 @@ function gano_enqueue_ecosystems_v3() {
 add_action( 'wp_enqueue_scripts', 'gano_enqueue_ecosystems_v3', 11 );
 
 // =============================================================================
+// CATALOG INSPECTOR — /wp-json/gano/v1/catalog/products (TEMPORAL — admin only)
+// Extrae el catálogo real de GoDaddy con IDs, títulos, precios y categorías.
+// ELIMINAR después de extraer los PFIDs que necesitamos.
+// Uso: abrir en navegador con sesión admin activa.
+// =============================================================================
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'gano/v1', '/catalog/products', array(
+        'methods'             => 'GET',
+        'callback'            => 'gano_catalog_inspector_callback',
+        'permission_callback' => function () {
+            return current_user_can( 'manage_options' );
+        },
+    ) );
+} );
+
+function gano_catalog_inspector_callback(): WP_REST_Response {
+    $plid = 599667;
+    $url  = "https://www.secureserver.net/api/v1/catalog/{$plid}/products";
+
+    $response = wp_remote_get( $url, array(
+        'timeout'   => 15,
+        'sslverify' => true,
+        'headers'   => array(
+            'Accept'          => 'application/json',
+            'Referer'         => 'https://gano.digital/',
+            'Origin'          => 'https://gano.digital',
+            'User-Agent'      => 'Mozilla/5.0 (compatible; GanoDigital/1.0)',
+        ),
+    ) );
+
+    if ( is_wp_error( $response ) ) {
+        return new WP_REST_Response( array( 'error' => $response->get_error_message() ), 502 );
+    }
+
+    $code = wp_remote_retrieve_response_code( $response );
+    $body = wp_remote_retrieve_body( $response );
+    $data = json_decode( $body, true );
+
+    if ( ! $data ) {
+        return new WP_REST_Response( array(
+            'error'       => 'Respuesta vacía o no-JSON',
+            'http_status' => $code,
+            'raw'         => substr( $body, 0, 500 ),
+        ), 502 );
+    }
+
+    // Simplificar: extraer solo los campos útiles de cada producto
+    $products = array();
+    foreach ( (array) $data as $item ) {
+        if ( ! is_array( $item ) ) { continue; }
+        $products[] = array(
+            'id'         => $item['id']         ?? null,
+            'pfid'       => $item['pfid']        ?? $item['productId'] ?? $item['familyId'] ?? null,
+            'title'      => $item['title']       ?? null,
+            'categories' => $item['categories']  ?? array(),
+            'tags'       => $item['tags']        ?? array(),
+            'listPrice'  => $item['listPrice']   ?? null,
+            'salePrice'  => $item['salePrice']   ?? null,
+            'term'       => $item['term']        ?? null,
+        );
+    }
+
+    return new WP_REST_Response( array(
+        'total'    => count( $products ),
+        'plid'     => $plid,
+        'source'   => $url,
+        'products' => $products,
+    ), 200 );
+}
+
+// =============================================================================
 // DOMAIN SEARCH PROXY — /wp-json/gano/v1/domains/search?q=X&pageSize=5
 //
 // GoDaddy no tiene CORS habilitado en www.secureserver.net/api/v1/domains/
