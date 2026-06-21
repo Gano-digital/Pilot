@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      (function () {
+        try {
+          var u = new URL(location.href);
+          if (u.searchParams.has('airoShareToken')) {
+            u.searchParams.delete('airoShareToken');
+            history.replaceState(null, '', u.toString());
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <meta name="referrer" content="same-origin" />
+    <script>
+      // Anti-parpadeo de tema: aplica .dark ANTES del primer render si el
+      // usuario eligió oscuro explícitamente. El modo claro es el defecto
+      // (no auto-seguimos el sistema, para garantizar "claro por defecto").
+      (function () {
+        try {
+          if (localStorage.getItem('gano-theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="icon" href="/airo-assets/images/logo/primary" />
+    <link rel="apple-touch-icon" href="/airo-assets/images/logo/primary" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--app-head-->
+    <script src="/airo-video-slots.js"></script>
+    <script src="/airo-logo-orientation.js"></script>
+  </head>
+  <body class="fs-unmask-airo-app-builder">
+    <div id="app" class="fs-unmask-airo-app-builder"><!--app-html--></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script src="/analytics.js"></script>
+  </body>
+</html>

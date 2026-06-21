@@ -1,0 +1,33 @@
+# Gano Digital
+
+> Gano Digital es un estudio de infraestructura digital y reseller autorizado de GoDaddy en Colombia. Ofrecemos hosting WordPress administrado, dominios, correo profesional, seguridad web (SSL, WAF, backups) y desarrollo a medida. Nuestra propuesta es ingeniería curada por expertos —no autoservicio frío— con facturación en pesos colombianos (COP), soporte en español y onboarding selectivo. Acompañamos a emprendedores y pymes desde la idea hasta la operación digital crítica.
+
+## Páginas principales
+
+- [Inicio](https://gano.digital/): Visión, propuesta de valor y posicionamiento de Gano Digital como estudio de infraestructura soberana.
+- [Catálogo de servicios](https://gano.digital/catalogo): Los 22 servicios completos con precios en COP, un cuestionario para encontrar el plan ideal, búsqueda de dominios en vivo y comparador de hosting.
+- [Servicios](https://gano.digital/services): Resumen editorial de las cuatro áreas — hosting administrado, dominios y email, seguridad web e infraestructura a medida.
+- [Aprende](https://gano.digital/aprende): Sala de lectura educativa con un roadmap de 5 etapas para emprendedores que quieren construir su presencia digital con bases sólidas.
+- [Proceso de contratación](https://gano.digital/proceso): Cómo funciona la contratación, la seguridad del pago y la activación paso a paso.
+- [Proyectos](https://gano.digital/portfolio): Casos reales de infraestructura desplegada — migraciones sin downtime, blindaje de seguridad, optimización de velocidad y desarrollo a medida.
+- [Contacto](https://gano.digital/contact): Cómo ponerse en contacto con el equipo.
+
+## Servicios
+
+- **Hosting WordPress** (desde $15.000 COP/mes): Planes Starter, Pro Managed, Business NVMe y Ultimate sobre NVMe Gen4, CDN global, SSL automático y backups.
+- **Constructor Web** (desde $25.000 COP/mes): Sitios drag & drop para negocios locales, con dominio incluido y marketing integrado.
+- **Dominios** (desde $12.000 COP/año): Registro de .co, .com, .net, .io, .store, .digital con privacidad WHOIS y DNS Anycast.
+- **Email Profesional** (desde $6.000 COP/mes): Correo con tu dominio, desde un buzón hasta Microsoft 365 Business con Teams y OneDrive.
+- **Seguridad** (desde $18.000 COP/mes): Certificados SSL/EV, WAF Capa 7, mitigación de DDoS y backups automáticos con restauración en un clic.
+- **Para Desarrolladores** (desde $19.000 COP/mes): Hosting cPanel con SSH, PHP, Python, Node.js y cronjobs; planes con staging para freelancers y agencias.
+- **Servicios Gano** (desde $250.000 COP/mes): VPS gestionado con ingeniero asignado, diagnóstico técnico en 72h y desarrollo WordPress a medida de wireframe a producción.
+
+## Contacto
+
+- WhatsApp: +57 313 564 6123
+- Facturación en pesos colombianos (COP). Soporte en español.
+
+## Optional
+
+- [Demo técnica (juego FPS en el navegador)](https://gano.digital/game): Muestra en vivo de la capacidad de ingeniería front-end del equipo, construida con Three.js.
+- [Detalle completo de servicios (machine-readable)](https://gano.digital/llms-full.txt): Listado extendido de los 22 servicios con descripciones, precios y casos de uso.

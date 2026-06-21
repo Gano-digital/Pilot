@@ -1,0 +1,527 @@
+{
+  "portfolio/lumio-app": {
+    "mediaType": "video",
+    "currentUrl": "https://blobby.wsimg.com/getty/videos/2158439646",
+    "searchQuery": "UI UX mobile app design dark interface mockup",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/1304476690",
+      "https://img1.wsimg.com/isteam/getty/2239914694",
+      "https://img1.wsimg.com/isteam/getty/1731629004",
+      "https://img1.wsimg.com/isteam/getty/2177184278"
+    ],
+    "userModified": true,
+    "createdAt": "2026-06-19T05:25:37.939Z",
+    "lastUpdated": "2026-06-19T05:26:09.489Z",
+    "gettyId": "2158439646",
+    "alternativeGettyIds": [
+      "1304476690",
+      "2239914694",
+      "1731629004",
+      "2177184278"
+    ],
+    "orientations": "horizontal",
+    "graphicalStyles": "photography",
+    "minimumSize": "large",
+    "caption": "UI UX mobile app design dark interface mockup"
+  },
+  "portfolio/volta-brand": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/1332708128",
+    "searchQuery": "brand identity logo design studio minimal elegant",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/1467266231",
+      "https://img1.wsimg.com/isteam/getty/1745385748"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T05:25:39.653Z",
+    "lastUpdated": "2026-06-19T05:25:39.653Z",
+    "gettyId": "1332708128",
+    "alternativeGettyIds": [
+      "1467266231",
+      "1745385748"
+    ],
+    "orientations": "horizontal",
+    "graphicalStyles": "photography",
+    "minimumSize": "large"
+  },
+  "portfolio/meridian-campaign": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/2279017270",
+    "searchQuery": "digital marketing campaign design creative bold",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/2255496524",
+      "https://img1.wsimg.com/isteam/getty/2228647764"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T05:25:40.215Z",
+    "lastUpdated": "2026-06-19T05:25:40.215Z",
+    "gettyId": "2279017270",
+    "alternativeGettyIds": [
+      "2255496524",
+      "2228647764"
+    ],
+    "orientations": "horizontal",
+    "graphicalStyles": "photography",
+    "minimumSize": "large"
+  },
+  "portfolio/apex-dashboard": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/2257104903",
+    "searchQuery": "dashboard UI design data visualization dark theme",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/2275908565",
+      "https://img1.wsimg.com/isteam/getty/2239914696"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T05:25:41.147Z",
+    "lastUpdated": "2026-06-19T05:25:41.147Z",
+    "gettyId": "2257104903",
+    "alternativeGettyIds": [
+      "2275908565",
+      "2239914696"
+    ],
+    "orientations": "horizontal",
+    "graphicalStyles": "photography",
+    "minimumSize": "large"
+  },
+  "portfolio/crest-packaging": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/2243887744",
+    "searchQuery": "product packaging design minimal luxury branding",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/2273193462",
+      "https://img1.wsimg.com/isteam/getty/2235902920"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T05:25:42.329Z",
+    "lastUpdated": "2026-06-19T05:25:42.329Z",
+    "gettyId": "2243887744",
+    "alternativeGettyIds": [
+      "2273193462",
+      "2235902920"
+    ],
+    "orientations": "horizontal",
+    "graphicalStyles": "photography",
+    "minimumSize": "large"
+  },
+  "portfolio/nova-mobile": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/2280338100",
+    "searchQuery": "mobile app UI design clean modern interface screens",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/2247153625",
+      "https://img1.wsimg.com/isteam/getty/2239914694"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T05:25:43.331Z",
+    "lastUpdated": "2026-06-19T05:25:43.331Z",
+    "gettyId": "2280338100",
+    "alternativeGettyIds": [
+      "2247153625",
+      "2239914694"
+    ],
+    "orientations": "horizontal",
+    "graphicalStyles": "photography",
+    "minimumSize": "large"
+  },
+  "portfolio/solace-brand": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/1211621290",
+    "searchQuery": "brand system visual identity design typography elegant",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/1332708128",
+      "https://img1.wsimg.com/isteam/getty/2281753782"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T05:25:44.274Z",
+    "lastUpdated": "2026-06-19T05:25:44.274Z",
+    "gettyId": "1211621290",
+    "alternativeGettyIds": [
+      "1332708128",
+      "2281753782"
+    ],
+    "orientations": "horizontal",
+    "graphicalStyles": "photography",
+    "minimumSize": "large"
+  },
+  "portfolio/drift-editorial": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/1807617224",
+    "searchQuery": "editorial design magazine layout graphic design print",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/2265238147",
+      "https://img1.wsimg.com/isteam/getty/2232924386"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T05:25:45.288Z",
+    "lastUpdated": "2026-06-19T05:25:45.288Z",
+    "gettyId": "1807617224",
+    "alternativeGettyIds": [
+      "2265238147",
+      "2232924386"
+    ],
+    "orientations": "horizontal",
+    "graphicalStyles": "photography",
+    "minimumSize": "large"
+  },
+  "pages/about/designer-workspace": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/2182501816",
+    "searchQuery": "designer workspace minimal dark desk creative studio",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/1166536329",
+      "https://img1.wsimg.com/isteam/getty/1139629453"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T05:25:46.338Z",
+    "lastUpdated": "2026-06-19T05:25:46.338Z",
+    "gettyId": "2182501816",
+    "alternativeGettyIds": [
+      "1166536329",
+      "1139629453"
+    ],
+    "orientations": "horizontal",
+    "graphicalStyles": "photography",
+    "minimumSize": "large"
+  },
+  "portfolio/sotart-fps": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/2240024585",
+    "searchQuery": "dark futuristic first person shooter game corridor neon glow",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/1809659079",
+      "https://img1.wsimg.com/isteam/getty/1361484971"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T06:00:25.768Z",
+    "lastUpdated": "2026-06-19T06:00:25.768Z",
+    "gettyId": "2240024585",
+    "alternativeGettyIds": [
+      "1809659079",
+      "1361484971"
+    ],
+    "requestedSize": {
+      "width": 1200,
+      "height": 525,
+      "fit": "cover"
+    },
+    "orientations": "horizontal",
+    "moods": "dramatic,bold",
+    "graphicalStyles": "photography"
+  },
+  "logo/primary": {
+    "mediaType": "logo",
+    "currentUrl": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/transparent-fe95dcb6a92bb063c55dad7ee1f5d8cf/logo-ganodigital-fe95dc.png",
+    "searchQuery": "A distinctive monoline geometric logo for \"Gano Digital\", a premium managed-host",
+    "alternatives": [
+      "/airo-assets/uploads/airo-logo-shimmer-square.svg"
+    ],
+    "solidUrlMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/transparent-fe95dcb6a92bb063c55dad7ee1f5d8cf/logo-ganodigital-fe95dc.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/solid-6c4c3b21a25e9858cd31da84d2cf0de2/logo-ganodigital-6c4c3b.png"
+    },
+    "reversedUrlMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/transparent-fe95dcb6a92bb063c55dad7ee1f5d8cf/logo-ganodigital-fe95dc.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/reversed-33f98a41d8cf55b3d926d113b2c5b2b3/logo-ganodigital-33f98a.png"
+    },
+    "reversedSolidUrlMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/transparent-fe95dcb6a92bb063c55dad7ee1f5d8cf/logo-ganodigital-fe95dc.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/reversed-solid-b9bf46cb48d74f669dd8ac341541fc53/logo-ganodigital-b9bf46.png"
+    },
+    "mockupUrlMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/transparent-fe95dcb6a92bb063c55dad7ee1f5d8cf/logo-ganodigital-fe95dc.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/mockup-459703f8c672f6a7140fc9ec22ceeaa9/logo-ganodigital-459703.png"
+    },
+    "landscapeMockupUrlMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/transparent-fe95dcb6a92bb063c55dad7ee1f5d8cf/logo-ganodigital-fe95dc.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/landscape-mockup-73c88405167cd8fa17da018bf61602a5/logo-ganodigital-73c884.png"
+    },
+    "logoSourceMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/transparent-fe95dcb6a92bb063c55dad7ee1f5d8cf/logo-ganodigital-fe95dc.png": {
+        "sessionId": "cdb342a7-0f5a-43d2-be61-c9cd0f9305b1",
+        "logoId": "fe95dcb6"
+      }
+    },
+    "userModified": false,
+    "createdAt": "2026-06-19T07:57:48.841Z",
+    "lastUpdated": "2026-06-19T07:59:05.395Z"
+  },
+  "logo/horizontal": {
+    "mediaType": "logo",
+    "currentUrl": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/fdc182d6-4fc5-4b57-893b-3790853a045f/horizontal-transparent-27e513e519bf0d102d381845e497dd3b/logo-logo-27e513.png",
+    "searchQuery": "A distinctive monoline geometric logo for \"Gano Digital\", a premium managed-host",
+    "alternatives": [
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/horizontal-transparent-5239584f4f196941e8755fff18f61bf0/logo-ganodigital-523958.png",
+      "/airo-assets/uploads/airo-logo-shimmer-horizontal.svg"
+    ],
+    "solidUrlMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/horizontal-transparent-5239584f4f196941e8755fff18f61bf0/logo-ganodigital-523958.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/horizontal-solid-a1c66e7843adf2ae0dd622b1ad749f63/logo-ganodigital-a1c66e.png",
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/fdc182d6-4fc5-4b57-893b-3790853a045f/horizontal-transparent-27e513e519bf0d102d381845e497dd3b/logo-logo-27e513.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/fdc182d6-4fc5-4b57-893b-3790853a045f/horizontal-solid-afa6d1d99355718968a2cf9a06c37f42/logo-logo-afa6d1.png"
+    },
+    "reversedUrlMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/horizontal-transparent-5239584f4f196941e8755fff18f61bf0/logo-ganodigital-523958.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/horizontal-reversed-b66be085c0ae508d2e90b5a75a8aed7f/logo-ganodigital-b66be0.png",
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/fdc182d6-4fc5-4b57-893b-3790853a045f/horizontal-transparent-27e513e519bf0d102d381845e497dd3b/logo-logo-27e513.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/fdc182d6-4fc5-4b57-893b-3790853a045f/horizontal-reversed-30ee3fe632f57efa537c5e83814a700c/logo-logo-30ee3f.png"
+    },
+    "reversedSolidUrlMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/horizontal-transparent-5239584f4f196941e8755fff18f61bf0/logo-ganodigital-523958.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/horizontal-reversed-solid-cb824de760b3208478c28a6e40ba8e71/logo-ganodigital-cb824d.png",
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/fdc182d6-4fc5-4b57-893b-3790853a045f/horizontal-transparent-27e513e519bf0d102d381845e497dd3b/logo-logo-27e513.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/fdc182d6-4fc5-4b57-893b-3790853a045f/horizontal-reversed-solid-7324daa2bc83c3ce013d2bb6754cbb59/logo-logo-7324da.png"
+    },
+    "mockupUrlMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/horizontal-transparent-5239584f4f196941e8755fff18f61bf0/logo-ganodigital-523958.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/horizontal-mockup-fcca2f6437dcd43d9f90df05e41aa9e5/logo-ganodigital-fcca2f.png",
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/fdc182d6-4fc5-4b57-893b-3790853a045f/horizontal-transparent-27e513e519bf0d102d381845e497dd3b/logo-logo-27e513.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/fdc182d6-4fc5-4b57-893b-3790853a045f/horizontal-mockup-23a7b84b331b53a2f70e6bce109ac8e5/logo-logo-23a7b8.png"
+    },
+    "landscapeMockupUrlMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/horizontal-transparent-5239584f4f196941e8755fff18f61bf0/logo-ganodigital-523958.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/horizontal-mockup-fcca2f6437dcd43d9f90df05e41aa9e5/logo-ganodigital-fcca2f.png",
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/fdc182d6-4fc5-4b57-893b-3790853a045f/horizontal-transparent-27e513e519bf0d102d381845e497dd3b/logo-logo-27e513.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/fdc182d6-4fc5-4b57-893b-3790853a045f/horizontal-mockup-23a7b84b331b53a2f70e6bce109ac8e5/logo-logo-23a7b8.png"
+    },
+    "logoSourceMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/horizontal-transparent-5239584f4f196941e8755fff18f61bf0/logo-ganodigital-523958.png": {
+        "sessionId": "cdb342a7-0f5a-43d2-be61-c9cd0f9305b1",
+        "logoId": "fe95dcb6"
+      },
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/fdc182d6-4fc5-4b57-893b-3790853a045f/horizontal-transparent-27e513e519bf0d102d381845e497dd3b/logo-logo-27e513.png": {
+        "sessionId": "fdc182d6-4fc5-4b57-893b-3790853a045f",
+        "logoId": "27e513e5"
+      }
+    },
+    "userModified": false,
+    "createdAt": "2026-06-19T07:57:48.841Z",
+    "lastUpdated": "2026-06-20T21:53:59.210Z"
+  },
+  "logo/vertical": {
+    "mediaType": "logo",
+    "currentUrl": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/vertical-transparent-3cf1a57576368bdac515b400ac56197d/logo-ganodigital-3cf1a5.png",
+    "searchQuery": "A distinctive monoline geometric logo for \"Gano Digital\", a premium managed-host",
+    "alternatives": [
+      "/airo-assets/uploads/airo-logo-shimmer-vertical.svg"
+    ],
+    "solidUrlMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/vertical-transparent-3cf1a57576368bdac515b400ac56197d/logo-ganodigital-3cf1a5.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/vertical-solid-a1ea21bb803fac797abe260fc01104d1/logo-ganodigital-a1ea21.png"
+    },
+    "reversedUrlMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/vertical-transparent-3cf1a57576368bdac515b400ac56197d/logo-ganodigital-3cf1a5.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/vertical-reversed-5d8bc9da00a34874727eee6c294baf6a/logo-ganodigital-5d8bc9.png"
+    },
+    "reversedSolidUrlMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/vertical-transparent-3cf1a57576368bdac515b400ac56197d/logo-ganodigital-3cf1a5.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/vertical-reversed-solid-5c6c6a29d86beb8f1c3a47bda2059a60/logo-ganodigital-5c6c6a.png"
+    },
+    "mockupUrlMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/vertical-transparent-3cf1a57576368bdac515b400ac56197d/logo-ganodigital-3cf1a5.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/vertical-mockup-e1077a6ab1419887b0a17c55778ea778/logo-ganodigital-e1077a.png"
+    },
+    "landscapeMockupUrlMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/vertical-transparent-3cf1a57576368bdac515b400ac56197d/logo-ganodigital-3cf1a5.png": "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/vertical-mockup-e1077a6ab1419887b0a17c55778ea778/logo-ganodigital-e1077a.png"
+    },
+    "logoSourceMap": {
+      "https://isteam.wsimg.com/genai-assistant/logoagent/customer/3adde9e1-061c-446d-845b-0580e89ce529/session/cdb342a7-0f5a-43d2-be61-c9cd0f9305b1/vertical-transparent-3cf1a57576368bdac515b400ac56197d/logo-ganodigital-3cf1a5.png": {
+        "sessionId": "cdb342a7-0f5a-43d2-be61-c9cd0f9305b1",
+        "logoId": "fe95dcb6"
+      }
+    },
+    "userModified": false,
+    "createdAt": "2026-06-19T07:57:48.841Z",
+    "lastUpdated": "2026-06-19T07:59:05.395Z"
+  },
+  "portfolio/demo-fps": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/2271860216",
+    "searchQuery": "first person shooter 3D game neon dark abstract render",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/1370687004",
+      "https://img1.wsimg.com/isteam/getty/1936840753"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T20:53:41.633Z",
+    "lastUpdated": "2026-06-19T20:53:41.633Z",
+    "gettyId": "2271860216",
+    "alternativeGettyIds": [
+      "1370687004",
+      "1936840753"
+    ],
+    "orientations": "horizontal",
+    "compositions": "wide_shot",
+    "moods": "dramatic,bold"
+  },
+  "portfolio/migracion-woocommerce": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/523581471",
+    "searchQuery": "ecommerce online store dashboard server migration data",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/522646751"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T20:53:48.433Z",
+    "lastUpdated": "2026-06-19T20:53:48.433Z",
+    "gettyId": "523581471",
+    "alternativeGettyIds": [
+      "522646751"
+    ],
+    "orientations": "horizontal",
+    "compositions": "wide_shot",
+    "moods": "cool"
+  },
+  "portfolio/blindaje-seguridad": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/530972363",
+    "searchQuery": "cybersecurity network security firewall dark server room",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/1395875219",
+      "https://img1.wsimg.com/isteam/getty/1129101580"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T20:53:50.001Z",
+    "lastUpdated": "2026-06-19T20:53:50.001Z",
+    "gettyId": "530972363",
+    "alternativeGettyIds": [
+      "1395875219",
+      "1129101580"
+    ],
+    "orientations": "horizontal",
+    "compositions": "close_up",
+    "moods": "dramatic,cool"
+  },
+  "portfolio/optimizacion-velocidad": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/2204318092",
+    "searchQuery": "data center NVMe SSD storage speed performance fiber optic",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/1464561980",
+      "https://img1.wsimg.com/isteam/getty/696235178"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T20:53:53.244Z",
+    "lastUpdated": "2026-06-19T20:53:53.244Z",
+    "gettyId": "2204318092",
+    "alternativeGettyIds": [
+      "1464561980",
+      "696235178"
+    ],
+    "orientations": "horizontal",
+    "compositions": "close_up",
+    "moods": "cool,bold"
+  },
+  "portfolio/email-corporativo": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/2267274852",
+    "searchQuery": "professional email business communication office laptop",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/1369248590",
+      "https://img1.wsimg.com/isteam/getty/2279727936"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T20:53:53.853Z",
+    "lastUpdated": "2026-06-19T20:53:53.853Z",
+    "gettyId": "2267274852",
+    "alternativeGettyIds": [
+      "1369248590",
+      "2279727936"
+    ],
+    "orientations": "horizontal",
+    "compositions": "medium_shot",
+    "moods": "cool,natural"
+  },
+  "portfolio/negocio-local": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/1849452075",
+    "searchQuery": "small local business owner storefront responsive website mobile",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/1921981528",
+      "https://img1.wsimg.com/isteam/getty/1906760191"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T20:53:55.297Z",
+    "lastUpdated": "2026-06-19T20:53:55.297Z",
+    "gettyId": "1849452075",
+    "alternativeGettyIds": [
+      "1921981528",
+      "1906760191"
+    ],
+    "orientations": "horizontal",
+    "compositions": "medium_shot",
+    "moods": "warm,natural"
+  },
+  "portfolio/ecosistema-wordpress": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/2265894409",
+    "searchQuery": "web development workspace code design wireframe screens",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/2274945510",
+      "https://img1.wsimg.com/isteam/getty/1928146086"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T20:53:58.269Z",
+    "lastUpdated": "2026-06-19T20:53:58.269Z",
+    "gettyId": "2265894409",
+    "alternativeGettyIds": [
+      "2274945510",
+      "1928146086"
+    ],
+    "orientations": "horizontal",
+    "compositions": "wide_shot",
+    "moods": "cool,bold"
+  },
+  "portfolio/diagnostico-soberania": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/2262384858",
+    "searchQuery": "technical audit analytics dashboard data charts monitoring",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/1522426822",
+      "https://img1.wsimg.com/isteam/getty/1493772856"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-19T20:53:59.002Z",
+    "lastUpdated": "2026-06-19T20:53:59.002Z",
+    "gettyId": "2262384858",
+    "alternativeGettyIds": [
+      "1522426822",
+      "1493772856"
+    ],
+    "orientations": "horizontal",
+    "compositions": "close_up",
+    "moods": "cool"
+  },
+  "pages/portfolio/teaser-poster": {
+    "mediaType": "image",
+    "currentUrl": "https://img1.wsimg.com/isteam/getty/2273550206",
+    "searchQuery": "dark abstract server room data center infrastructure glowing network technology",
+    "alternatives": [
+      "https://img1.wsimg.com/isteam/getty/1339219820",
+      "https://img1.wsimg.com/isteam/getty/1482883928",
+      "https://img1.wsimg.com/isteam/getty/1131198394"
+    ],
+    "userModified": false,
+    "createdAt": "2026-06-20T00:28:19.290Z",
+    "lastUpdated": "2026-06-20T00:28:19.290Z",
+    "gettyId": "2273550206",
+    "alternativeGettyIds": [
+      "1339219820",
+      "1482883928",
+      "1131198394"
+    ],
+    "orientations": "horizontal",
+    "compositions": "wide_shot",
+    "moods": "dramatic,warm"
+  },
+  "pages/portfolio/teaser-reel": {
+    "mediaType": "video",
+    "currentUrl": "/airo-assets/uploads/pages-portfolio-teaser-reel-7754c178.mp4",
+    "searchQuery": "",
+    "alternatives": [],
+    "userModified": true,
+    "createdAt": "2026-06-20T00:29:29.072Z",
+    "lastUpdated": "2026-06-20T00:29:29.072Z",
+    "uploadSources": {
+      "/airo-assets/uploads/pages-portfolio-teaser-reel-7754c178.mp4": "4ptq77h2c9_1781914739885_file_eIou6P1bL3.mp4"
+    },
+    "uploadContentHash": "7754c1782671c92011e4b6c491834341643bb978196efe22764a3c766dfe7921"
+  },
+  "pages/portfolio/lab-experiment": {
+    "mediaType": "video",
+    "currentUrl": "/airo-assets/uploads/pages-portfolio-lab-experiment-37b1d9cb.mp4",
+    "searchQuery": "",
+    "alternatives": [
+      "/airo-assets/uploads/pages-portfolio-lab-experiment-7754c178.mp4"
+    ],
+    "userModified": true,
+    "createdAt": "2026-06-20T01:14:10.142Z",
+    "lastUpdated": "2026-06-20T01:32:43.449Z",
+    "uploadSources": {
+      "/airo-assets/uploads/pages-portfolio-lab-experiment-7754c178.mp4": "4ptq77h2c9_1781914739885_file_eIou6P1bL3.mp4",
+      "/airo-assets/uploads/pages-portfolio-lab-experiment-37b1d9cb.mp4": "4ptq77h2c9_1781917807214_file_KkVkJFhjGD.mp4"
+    },
+    "uploadContentHash": "37b1d9cbf9ff89e8392fe127ad369cb8d90d860a39b1e7d0e954125759113a32"
+  }
+}

@@ -1,0 +1,204 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* ────────────────────────────────────────────────────────────────
+   * MODO CLARO (por defecto) — "cálido editorial".
+   * Fondo crema/hueso (#F5F1ED ≈ 36 33% 94%), texto casi-negro cálido,
+   * acento terracota #D97E3A intacto. Suaviza el salto visual hacia el
+   * escaparate de GoDaddy sin perder la identidad Gano Digital.
+   * ──────────────────────────────────────────────────────────────── */
+  :root {
+    /* Core Colors */
+    --background: 36 33% 94%;        /* #F5F1ED crema cálido */
+    --foreground: 24 10% 12%;        /* casi negro con calidez */
+    --card: 36 36% 97%;              /* tarjeta apenas más clara que el fondo */
+    --card-foreground: 24 10% 12%;
+    --popover: 36 36% 97%;
+    --popover-foreground: 24 10% 12%;
+    --primary: 26 68% 54%;           /* #D97E3A terracota — idéntico al oscuro */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 33 24% 88%;         /* arena suave para superficies secundarias */
+    --secondary-foreground: 24 12% 18%;
+    --muted: 33 22% 90%;             /* fondos sutiles */
+    --muted-foreground: 24 8% 40%;   /* texto secundario con contraste AA */
+    --accent: 27 75% 58%;            /* acento cálido, un punto más saturado */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 32 18% 84%;            /* bordes cálidos discretos */
+    --input: 32 18% 84%;
+    --ring: 26 68% 54%;
+
+    /* Extended Colors */
+    --chart-1: 26 68% 74%;
+    --chart-2: 26 67% 62%;
+    --chart-3: 26 68% 54%;
+    --chart-4: 26 68% 42%;
+    --chart-5: 26 67% 30%;
+
+    /* Sidebar Colors */
+    --sidebar: 36 30% 91%;
+    --sidebar-foreground: 24 10% 12%;
+    --sidebar-primary: 26 68% 54%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 27 75% 58%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 32 18% 84%;
+    --sidebar-ring: 26 68% 54%;
+
+    /* Typography */
+    --font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-heading: "Syne", -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-serif: ui-serif, Georgia, "Times New Roman", serif;
+    --font-mono: ui-monospace, "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+
+    /* Border Radius — más generoso para una sensación orgánica y suave */
+    --radius: 0.875rem;
+
+    /* Shadows — elevación orgánica en capas con tinte cálido (terracota 24°).
+     * Cada nivel combina una sombra de contacto nítida + una difusa amplia,
+     * imitando luz natural: los elementos parecen flotar sobre el lienzo crema. */
+    --shadow-2xs: 0 1px 2px -1px hsl(24 30% 28% / 0.06);
+    --shadow-xs: 0 1px 2px -1px hsl(24 30% 28% / 0.08), 0 2px 4px -2px hsl(24 30% 28% / 0.05);
+    --shadow-sm: 0 1px 2px -1px hsl(24 30% 28% / 0.08), 0 4px 8px -3px hsl(24 30% 28% / 0.08);
+    --shadow: 0 2px 4px -2px hsl(24 30% 28% / 0.08), 0 8px 16px -6px hsl(24 30% 28% / 0.10);
+    --shadow-md: 0 4px 8px -3px hsl(24 30% 28% / 0.09), 0 14px 28px -8px hsl(24 30% 28% / 0.12);
+    --shadow-lg: 0 8px 16px -6px hsl(24 30% 28% / 0.10), 0 24px 48px -12px hsl(24 30% 28% / 0.16);
+    --shadow-xl: 0 12px 24px -8px hsl(24 30% 28% / 0.12), 0 40px 72px -16px hsl(24 30% 28% / 0.20);
+    --shadow-2xl: 0 24px 56px -12px hsl(24 35% 24% / 0.26);
+  }
+
+  /* ────────────────────────────────────────────────────────────────
+   * MODO OSCURO — el esquema editorial original de Gano Digital,
+   * preservado intacto. Se activa con la clase .dark en <html>.
+   * ──────────────────────────────────────────────────────────────── */
+  .dark {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 96%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 96%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 26 68% 54%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 64%;
+    --accent: 27 75% 64%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 26 68% 54%;
+
+    --chart-1: 26 68% 84%;
+    --chart-2: 26 67% 69%;
+    --chart-3: 26 68% 54%;
+    --chart-4: 26 68% 39%;
+    --chart-5: 26 67% 24%;
+
+    --sidebar: 0 0% 12%;
+    --sidebar-foreground: 0 0% 96%;
+    --sidebar-primary: 26 68% 54%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 27 75% 64%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 16%;
+    --sidebar-ring: 26 68% 54%;
+
+    /* Shadows (oscuro) — profundidad negra en capas para elevación real
+     * sobre el lienzo #0A0A0A; los niveles altos ganan difusión amplia. */
+    --shadow-2xs: 0 1px 2px -1px hsl(0 0% 0% / 0.30);
+    --shadow-xs: 0 1px 2px -1px hsl(0 0% 0% / 0.36), 0 2px 4px -2px hsl(0 0% 0% / 0.30);
+    --shadow-sm: 0 1px 2px -1px hsl(0 0% 0% / 0.40), 0 4px 8px -3px hsl(0 0% 0% / 0.36);
+    --shadow: 0 2px 4px -2px hsl(0 0% 0% / 0.44), 0 8px 16px -6px hsl(0 0% 0% / 0.44);
+    --shadow-md: 0 4px 8px -3px hsl(0 0% 0% / 0.48), 0 14px 28px -8px hsl(0 0% 0% / 0.50);
+    --shadow-lg: 0 8px 16px -6px hsl(0 0% 0% / 0.52), 0 24px 48px -12px hsl(0 0% 0% / 0.58);
+    --shadow-xl: 0 12px 24px -8px hsl(0 0% 0% / 0.56), 0 40px 72px -16px hsl(0 0% 0% / 0.64);
+    --shadow-2xl: 0 24px 56px -12px hsl(0 0% 0% / 0.72);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  
+    font-family: var(--font-sans);
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading) !important;
+  }
+}
+
+/* Custom utility classes */
+@layer utilities {
+  .animate-in {
+    animation-duration: 0.2s;
+    animation-fill-mode: both;
+  }
+
+  .fade-in {
+    animation-name: fadeIn;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* Unless told otherwise, keep it for smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Burbuja de Argos: leve "respiración" flotante para que se sienta vivo.
+ * El bloque global de prefers-reduced-motion de abajo la neutraliza solo. */
+@keyframes argosFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.argos-bubble {
+  animation: argosFloat 3.2s ease-in-out infinite;
+}
+
+.argos-bubble:hover {
+  animation-play-state: paused;
+}
+
+/* Accesibilidad: respeta a quien pide menos movimiento. Red de seguridad
+ * global — neutraliza animaciones, transiciones y scroll suave aunque algún
+ * efecto no pase por la capa motion-physics (que ya lo respeta por su cuenta). */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
