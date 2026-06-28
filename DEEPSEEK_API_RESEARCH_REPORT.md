@@ -38,7 +38,7 @@ DeepSeek is a Chinese AI company offering high-performance language models via a
 ```
 Header: Authorization: Bearer {API_KEY}
 Format: API key obtained from https://platform.deepseek.com/api_keys
-Example: Authorization: Bearer sk-0302b562eb404d1097c13d70dc64bb87
+Example: Authorization: Bearer sk-REVOKED-see-issue-352
 ```
 
 ### Required Headers
@@ -295,7 +295,7 @@ from openai import OpenAI
 
 # Minimal setup
 client = OpenAI(
-    api_key="sk-0302b562eb404d1097c13d70dc64bb87",
+    api_key="sk-REVOKED-see-issue-352",
     base_url="https://api.deepseek.com/v1"
 )
 
@@ -314,7 +314,7 @@ print(response.choices[0].message.content)
 import OpenAI from "openai";
 
 const client = new OpenAI({
-  apiKey: "sk-0302b562eb404d1097c13d70dc64bb87",
+  apiKey: "sk-REVOKED-see-issue-352",
   baseURL: "https://api.deepseek.com/v1",
 });
 
@@ -488,7 +488,7 @@ One 10K-token request:
 ### Action Items
 
 1. **Immediate (Week 1):**
-   - [ ] Verify API key works: `sk-0302b562eb404d1097c13d70dc64bb87`
+   - [ ] Verify API key works: `sk-REVOKED-see-issue-352`
    - [ ] Create Python wrapper around OpenAI client with Deepseek endpoint
    - [ ] Add Deepseek-V4-Pro as secondary fallback (after Opus rate limit)
    - [ ] Implement exponential backoff for HTTP 429 responses
@@ -570,7 +570,7 @@ Quality Tradeoff:
 # Test your API key
 curl -X POST https://api.deepseek.com/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer sk-0302b562eb404d1097c13d70dc64bb87" \
+  -H "Authorization: Bearer sk-REVOKED-see-issue-352" \
   -d '{
     "model": "deepseek-v4-flash",
     "messages": [{"role": "user", "content": "Hello"}],
