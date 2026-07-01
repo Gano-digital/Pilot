@@ -488,7 +488,7 @@ One 10K-token request:
 ### Action Items
 
 1. **Immediate (Week 1):**
-   - [ ] Verify API key works: `sk-REVOKED-see-issue-352`
+   - [ ] Obtain a new DeepSeek API key at platform.deepseek.com and verify it works (set as `DEEPSEEK_API_KEY` env var — never commit the key)
    - [ ] Create Python wrapper around OpenAI client with Deepseek endpoint
    - [ ] Add Deepseek-V4-Pro as secondary fallback (after Opus rate limit)
    - [ ] Implement exponential backoff for HTTP 429 responses
