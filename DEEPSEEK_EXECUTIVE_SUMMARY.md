@@ -86,7 +86,7 @@ With 100% V4-Flash (high-volume tier):
 ### API Details
 ```
 Endpoint: https://api.deepseek.com/v1/chat/completions
-Auth: Bearer token (sk-0302b562eb404d1097c13d70dc64bb87)
+Auth: Bearer token (sk-REVOKED-see-issue-352)
 Format: 100% OpenAI-compatible
 Models: deepseek-v4-pro | deepseek-v4-flash
 Rate Limits: Dynamic (no published RPM/TPM caps)
@@ -100,7 +100,7 @@ from openai import OpenAI
 
 # That's literally it
 deepseek = OpenAI(
-    api_key="sk-0302b562eb404d1097c13d70dc64bb87",
+    api_key="sk-REVOKED-see-issue-352",
     base_url="https://api.deepseek.com/v1"
 )
 

@@ -147,7 +147,7 @@ Week 4+: Sustain (Ongoing)
 
 API Details
   Base URL: https://api.deepseek.com/v1
-  Auth: Bearer token (sk-0302b562eb404d1097c13d70dc64bb87)
+  Auth: Bearer token (sk-REVOKED-see-issue-352)
   Format: 100% OpenAI-compatible
   Rate Limits: Dynamic (no published caps)
   Context: 1M tokens
@@ -182,7 +182,7 @@ Python 3 Lines Setup
 from openai import OpenAI
 
 deepseek = OpenAI(
-    api_key="sk-0302b562eb404d1097c13d70dc64bb87",
+    api_key="sk-REVOKED-see-issue-352",
     base_url="https://api.deepseek.com/v1"
 )
 
@@ -201,7 +201,7 @@ Node.js Setup
 import OpenAI from "openai";
 
 const deepseek = new OpenAI({
-  apiKey: "sk-0302b562eb404d1097c13d70dc64bb87",
+  apiKey: "sk-REVOKED-see-issue-352",
   baseURL: "https://api.deepseek.com/v1",
 });
 

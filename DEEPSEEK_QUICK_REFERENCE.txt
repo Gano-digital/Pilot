@@ -62,7 +62,7 @@ Endpoints
 Authentication
   Header:                 Authorization: Bearer {API_KEY}
   Format:                 Bearer token (from platform.deepseek.com)
-  Example key:            sk-0302b562eb404d1097c13d70dc64bb87
+  Example key:            sk-REVOKED-see-issue-352
 
 Models
   Primary:                deepseek-v4-pro (1.6T/49B, quality-focused)
@@ -132,7 +132,7 @@ Python (Drop-in Replacement)
 from openai import OpenAI
 
 deepseek = OpenAI(
-    api_key="sk-0302b562eb404d1097c13d70dc64bb87",
+    api_key="sk-REVOKED-see-issue-352",
     base_url="https://api.deepseek.com/v1"
 )
 
@@ -146,7 +146,7 @@ Node.js (Drop-in Replacement)
 import OpenAI from "openai";
 
 const deepseek = new OpenAI({
-  apiKey: "sk-0302b562eb404d1097c13d70dc64bb87",
+  apiKey: "sk-REVOKED-see-issue-352",
   baseURL: "https://api.deepseek.com/v1",
 });
 
