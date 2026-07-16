@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       
       - name: "Fetch catalog from RCC"
         env:
@@ -64,7 +64,7 @@ jobs:
     needs: fetch-catalog
     
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       
       - name: "Check plugin SKUs"
         run: |
@@ -86,7 +86,7 @@ jobs:
     if: github.event.inputs.action != '' || github.event_name == 'schedule'
     
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       
       - name: "Execute sync action"
         env:

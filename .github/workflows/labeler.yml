@@ -15,5 +15,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout (config .github/labeler.yml del PR)
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - uses: actions/labeler@v6
