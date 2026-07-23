@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       
       - name: "Check plugin directories"
         run: |
@@ -167,7 +167,7 @@ jobs:
     needs: [validate-structure, ssh-preflight]
     
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: "Setup SSH key"
         env:
@@ -216,7 +216,7 @@ jobs:
     needs: [validate-structure, ssh-preflight, test-activation]
     
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       
       - name: "Create report"
         run: |
